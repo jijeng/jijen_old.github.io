@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[Hello World]]></title>
-    <url>%2F2018%2F05%2F23%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+    <title><![CDATA[等概率生成器]]></title>
+    <url>%2F2018%2F05%2F28%2F%E7%AD%89%E6%A6%82%E7%8E%87%E7%94%9F%E6%88%90%E5%99%A8%2F</url>
+    <content type="text"><![CDATA[给定一个可以等概率生成1-3的rand3()函数生成器，求解可以随机等概率生成1-7的rand7()函数生成器。 解题思路使用rand3()函数生成1-9的数字，然后丢弃8,9两种可能。 实现代码(python3)12345678910class Solution: def random7(self): x =8 while x&gt;7: x =self.random3() + (self.random3()-1)*3 return x def random3(self): return if __name__ =="__main__": print(Solution().random7())]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>等概率生成器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[机器学习优化方法]]></title>
+    <url>%2F2018%2F05%2F28%2F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[机器学习的优化方法有很多，这里主要解释的是 Gradient Descent 和 Newton’s Method. 梯度下降（gradient descent）梯度下降法是最早最简单，也是最为常用的最优化方法。梯度下降法实现简单，当目标函数是凸函数时，梯度下降法的解是全局解。接下来衍生的的子类批量梯度下降法（Batch Gradient Descent，BGD）随机梯度下降（Stochastic Gradient Descent，SGD） 牛顿法和拟牛顿法（Newton’s method &amp; Quasi-Newton Methods）牛顿法最大的特点就在于它的收敛速度很快。个人感觉牛顿法只是在在每次迭代的时候进行了两次运算，和梯度下降在总的运算次数上并没有很大的差别，为什么会收敛速度更快呢？ 牛顿法和梯度下降的不同点 名词解释凸优化对凸优化的问题我们在基础数学上面已经有了很多解决方法，例如可以将凸优化问题Lagerange做对偶化，然后用Newton、梯度下降算法求解凸集合 凸函数Jacobian矩阵和Hessian矩阵在向量分析中, 雅可比矩阵是一阶偏导数以一定方式排列成的矩阵, 其行列式称为雅可比行列式Hessian矩阵]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>优化</tag>
+        <tag>Gradient Descent</tag>
+        <tag>Newton&#39;s Method</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[求解平方根]]></title>
+    <url>%2F2018%2F05%2F28%2F%E6%B1%82%E8%A7%A3%E5%B9%B3%E6%96%B9%E6%A0%B9%2F</url>
+    <content type="text"><![CDATA[求解平方根的算法主要有两种：二分法(binary search) 和牛顿迭代法(Newton’s Method) Just give me codes…1234567891011121314151617181920212223242526272829from math import sqrt# you needn't import sqrt, I do that just for comparing the results of different methodsclass Solution: # in-built function def my_sqrt(self, n): return sqrt(n) def sqrt_binary(self, n): low, high =0,n mid =(low+high)/2 while abs(mid*mid- n)&gt; 1e-9: if mid*mid&gt;n: high =mid else: low =mid mid =(low+high)/2 return mid # Newton method: math def newton_method(self, n): k =1 while abs(k*k-n) &gt;1e-9: k =(k+n/k)/2 return k if __name__ =="__main__": print(Solution().my_sqrt(2)) print(Solution().sqrt_binary(2)) print(Solution().newton_method(2)) 运行结果1231.4142135623730951 #built-in function1.4142135623842478 # binary search1.4142135623746899 # Newton method 从结果中看，Newton method比 binary sqrt更加接近系统自带的sqrt function. 并且从数学上可以证明 Newton method 比 binary sqrt需要更少的迭代次数。 附录：牛顿迭代法是求方程根的重要方法之一，其最大优点是在方程f(x) = 0的单根附近具有平方收敛，而且该法还可以用来求方程的重根,复根。牛顿迭代法结论其实就是取泰勒级数前两项等于0求得的,泰勒公式表示为更简练的写法为：通过 Newton methond逼近方程的解的过程可以表示为下图所以：迭代公式的推导过程： referrences:https://blog.csdn.net/ycf74514/article/details/48996383]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>Newton&#39;s Method</tag>
+        <tag>求解平方根</tag>
+        <tag>binary search</tag>
+      </tags>
   </entry>
 </search>
