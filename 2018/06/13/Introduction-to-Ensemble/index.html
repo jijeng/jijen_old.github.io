@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="模型融合(Ensemble)," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
+<meta name="keywords" content="模型融合(Ensemble)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction_to_Ensemble">
+<meta property="og:url" content="http://yoursite.com/2018/06/13/Introduction-to-Ensemble/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/47340483.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/93565225.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/12164157.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/15404991.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/52483658.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/82384876.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/11434494.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/78451107.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/52534893.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/79026872.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/52483658.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/56890358.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/29323029.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/73757528.jpg">
+<meta property="og:updated_time" content="2018-06-13T02:45:58.418Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Introduction_to_Ensemble">
+<meta name="twitter:description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
+<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/47340483.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/13/Introduction-to-Ensemble/"/>
+
+
+
+
+
+  <title>Introduction_to_Ensemble | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/13/Introduction-to-Ensemble/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Introduction_to_Ensemble</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-13T10:35:17+08:00">
+                2018-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>虽然在<a href="https://jijeng.github.io/2018/06/05/Titanic-Challenge/" target="_blank" rel="noopener">Titanic Challenge</a>博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package.</p>
+<p>在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说ROC曲线和AUC值。<br>好，我们进入正文。</p>
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>本文书写过程中沿用参考博客(<a href="https://www.dataquest.io/blog/introduction-to-ensembles/" target="_blank" rel="noopener">Introduction to Python Ensembles</a>)的数据集。可以去<a href="https://github.com/fivethirtyeight/data/tree/master/science-giving" target="_blank" rel="noopener">这里</a>下载，当然推荐使用原作者处理之后的数据集，you can find <a href="https://www.dataquest.io/blog/large_files/gen_data.py" target="_blank" rel="noopener">here</a>。<br>简单介绍一下这个数据集：<br>Federal Election Commission这个组织收集了2007到2016年的donations记录，最后得出 <a href="https://fivethirtyeight.com/features/when-scientists-donate-to-politicians-its-usually-to-democrats/" target="_blank" rel="noopener">When Scientists Donate To Politicians, It’s Usually To Democrats</a>这样的结论。原文(The dataset is from the Federal Election Commission, filtered to donations form the following occupations from 2007 to 2016)</p>
+<p>好了，不想在数据集这里花太多时间，即使你上面不很明白，下文依然也是可以学习的，因为下文并没有进行很多的特征分析的内容，更多的是模型融合。当然你如果能够看懂，可以欣赏一下这个上述结论的有趣之处。</p>
+<p>Give me codes:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import pandas as pd</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"># import data</span><br><span class="line"># Always good to set a seed for reproducibility</span><br><span class="line">SEED = 222</span><br><span class="line">np.random.seed(SEED)</span><br><span class="line">df = pd.read_csv(&apos;input.csv&apos;)</span><br><span class="line">from sklearn.model_selection import train_test_split</span><br><span class="line">from sklearn.metrics import roc_auc_score</span><br><span class="line"></span><br><span class="line">def get_train_test(test_size= 0.95):</span><br><span class="line">    y =1*(df.cand_pty_affiliation ==&apos;REP&apos;)    </span><br><span class="line">    X = df.drop([&quot;cand_pty_affiliation&quot;], axis=1)</span><br><span class="line">    X = pd.get_dummies(X, sparse=True)</span><br><span class="line">    X.drop(X.columns[X.std() == 0], axis=1, inplace=True)</span><br><span class="line">    return train_test_split(X, y, test_size=test_size, random_state=SEED)</span><br><span class="line">xtrain, xtest, ytrain, ytest = get_train_test()</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/47340483.jpg" alt="avatar"><br>简单看一下数据长什么样子，虽然有人可能不太懂。</p>
+<h2 id="Begin-with-ensemble"><a href="#Begin-with-ensemble" class="headerlink" title="Begin with ensemble"></a>Begin with ensemble</h2><p>之前的<a href="https://jijeng.github.io/2018/06/05/%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88/" target="_blank" rel="noopener">博客</a>主要从ensemble分类的角度阐述，现在从概念的角度阐述。<br>有时候我觉得英文说得很清楚，所以就不翻译成中文了，求不被打。<br>Ensemble: combining predictions from several models averages out idiosyncratic(怪异的) errors and yield better overall predictions.<br>简单的说，就是可以防止过拟合。当过拟合时，边界曲线就回去过分考虑某一个或某一些少数的点，这时候 ensemble通过某种combine机制，然后得到一个泛化性能比较好的边界曲线，也就是比较好的模型。</p>
+<h3 id="Decision-Tree"><a href="#Decision-Tree" class="headerlink" title="Decision Tree"></a>Decision Tree</h3><p>首先我们从 decision tree开始。<br>A decision tree, which is a tree of <strong>if-then</strong> rules<br>The deeper the tree, the more complex the patterns it can capture, but the more prone to overfitting it will be. Because of this, we will need an alternative way of building complex models of decision trees, and an ensemble of different decision trees is one such way.<br>我们先使用 depth =1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from IPython.display import Image</span><br><span class="line">from sklearn.metrics import roc_auc_score</span><br><span class="line">from sklearn.tree import DecisionTreeClassifier</span><br><span class="line"></span><br><span class="line">t1 = DecisionTreeClassifier(max_depth=1, random_state=SEED)</span><br><span class="line">t1.fit(xtrain, ytrain)</span><br><span class="line">p = t1.predict_proba(xtest)[:, 1]</span><br><span class="line">print(&quot;Decision tree ROC-AUC score: %.3f&quot; % roc_auc_score(ytest, p))</span><br></pre></td></tr></table></figure></p>
+<p>Decision tree ROC-AUC score: 0.672</p>
+<p>发现结果不太理想，加深depth.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">t2 =DecisionTreeClassifier(max_depth=3, random_state=SEED)</span><br><span class="line">t2.fit(xtrain, ytrain)</span><br><span class="line">p =t2.predict_proba(xtest)[:, 1]</span><br><span class="line">print(&quot;Decision tree ROC-AUC score: %.3f&quot; % roc_auc_score(ytest, p))</span><br></pre></td></tr></table></figure></p>
+<p>Decision tree ROC-AUC score: 0.751</p>
+<p>由于我们最后要ensemble，而这要求我们要构造有差异但每个不是那么差的模型。首先我们考虑到使用不同的数据集。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xtrain_slim =xtrain.drop([&apos;transaction_amt&apos;], axis=1)</span><br><span class="line">xtest_slim =xtest.drop([&apos;transaction_amt&apos;], axis=1)</span><br><span class="line"></span><br><span class="line">t3=DecisionTreeClassifier(max_depth=3, random_state=SEED)</span><br><span class="line">t3.fit(xtrain_slim, ytrain)</span><br><span class="line">p =t3.predict_proba(xtest_slim)[:,1]</span><br><span class="line">print(&apos;Decision tree ROC-AUC score:&#123;&#125;&apos;.format(roc_auc_score(ytest, p)))</span><br></pre></td></tr></table></figure></p>
+<p>Decision tree ROC-AUC score:0.7403182587884118<br>通过corr()来检验两者的相关性(差异性)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p1 =t2.predict_proba(xtest)[:,1]</span><br><span class="line">p2 =t3.predict_proba(xtest_slim)[:,1]</span><br><span class="line">pd.DataFrame(&#123;&apos;full_data&apos;:p1, &apos;red_data&apos;:p2&#125;).corr()</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/93565225.jpg" alt="avatar"><br>发现有一定的相关性，但是还是可以容忍的。于是开始融合。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p1 = t2.predict_proba(xtest)[:, 1]</span><br><span class="line">p2 = t3.predict_proba(xtest_slim)[:, 1]</span><br><span class="line">p = np.mean([p1, p2], axis=0)</span><br><span class="line">print(&quot;Average of decision tree ROC-AUC score: %.3f&quot; % roc_auc_score(ytest, p))</span><br></pre></td></tr></table></figure></p>
+<p>Average of decision tree ROC-AUC score: 0.783<br>我们发现：两个旗鼓相当（0.74 0.73）的可以得到一个更好的结果，可以减少决策失误  的平均是0.78。</p>
+<p>需要注意的是我们在构造第二个模型时候通过drop()丢掉一个feature，反而得到一个更好的模型。于是乎，我们想通过使用不同的子集（不同的特征）构造不同的模型，是不是能得到更好的模型？</p>
+<h3 id="Random-Forest-Bagging"><a href="#Random-Forest-Bagging" class="headerlink" title="Random Forest(Bagging)"></a>Random Forest(Bagging)</h3><p>A fast approach that works well in practice is to randomly select a subset of features, fit one decision tree on each draw and average their predictions.This process is known as bootstrapped averaging (often abbreviated bagging), and when applied to decision trees, the resultant model is a Random Forest. (我觉得原作者比我说的清楚，借用了)<br>我的理解，在上面小节中我们使用的是Decision Tree,在实际应用中发现有差异的多个子树的效果要更好一些。而实现这个途径快速的方法就是 Random Forest。Random 在这里表示任意几个子树(特征)，然后这些Tree组成了Forest。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.ensemble import RandomForestClassifier</span><br><span class="line">rf =RandomForestClassifier(</span><br><span class="line">    n_estimators=10,</span><br><span class="line">    max_features= 3,</span><br><span class="line">    random_state=SEED</span><br><span class="line">)</span><br><span class="line">rf.fit(xtrain, ytrain)</span><br><span class="line">p =rf.predict_proba(xtest)[:, 1]</span><br><span class="line">print(&apos;Average of decision tree ROC-AUC score:&#123;&#125;&apos;.format(roc_auc_score(ytest, p)))</span><br></pre></td></tr></table></figure></p>
+<p>Average of decision tree ROC-AUC score:0.844018408542404<br>这就是叫做 质的飞跃 从那个0.783-&gt; 0.844(将近6个百分点，好吧，有点神经质了…)<br>From nobody to somebody, we are on something..</p>
+<h3 id="Ensemble-of-various-models"><a href="#Ensemble-of-various-models" class="headerlink" title="Ensemble of various models"></a>Ensemble of various models</h3><p>可以看出上述模型中，最后的模型（Random Forest）的子模型(Decision Tree)。但是子模型并不是局限树这一种结构，我们更多的选择：linear models, kernel-based models, non-parametric models, neural networks or even other ensembles!</p>
+<p>为了避免代码的冗余构造了以下的helper function.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"># A host of Scikit-learn models</span><br><span class="line">from sklearn.svm import SVC, LinearSVC</span><br><span class="line">from sklearn.naive_bayes import GaussianNB</span><br><span class="line">from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier</span><br><span class="line">from sklearn.linear_model import LogisticRegression</span><br><span class="line">from sklearn.neighbors import KNeighborsClassifier</span><br><span class="line">from sklearn.neural_network import MLPClassifier</span><br><span class="line">from sklearn.kernel_approximation import Nystroem</span><br><span class="line">from sklearn.kernel_approximation import RBFSampler</span><br><span class="line">from sklearn.pipeline import make_pipeline</span><br><span class="line"></span><br><span class="line">def get_models():</span><br><span class="line">    &quot;&quot;&quot;Generate a library of base learners.&quot;&quot;&quot;</span><br><span class="line">    nb = GaussianNB()</span><br><span class="line">    svc = SVC(C=100, probability=True)</span><br><span class="line">    # C越大边界越复杂，会导致过拟合</span><br><span class="line">    knn = KNeighborsClassifier(n_neighbors=3)</span><br><span class="line">    # KNN算法寻找训练数据中的K个最近的数据，它使用指向最多的那个类别来作为预测的输出。</span><br><span class="line">    lr = LogisticRegression(C=100, random_state=SEED)</span><br><span class="line">    # 对于这个 c 能知道的就是正则化系数 smaller values specify stronger regularization.</span><br><span class="line">    nn = MLPClassifier((80, 10), early_stopping=False, random_state=SEED)</span><br><span class="line">    gb = GradientBoostingClassifier(n_estimators=100, random_state=SEED)</span><br><span class="line">    # 子模型的数量，默认是100, gbc通常 robust to over-fitting, so a large number results in better performance</span><br><span class="line">    rf = RandomForestClassifier(n_estimators=10, max_features=3, random_state=SEED)</span><br><span class="line">    models = &#123;&apos;svm&apos;: svc,</span><br><span class="line">              &apos;knn&apos;: knn,</span><br><span class="line">              &apos;naive bayes&apos;: nb,</span><br><span class="line">              &apos;mlp-nn&apos;: nn,</span><br><span class="line">              &apos;random forest&apos;: rf,</span><br><span class="line">              &apos;gbm&apos;: gb,</span><br><span class="line">              &apos;logistic&apos;: lr,</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">    return models</span><br><span class="line">    </span><br><span class="line">def train_predict(model_list):</span><br><span class="line">    P =np.zeros((ytest.shape[0], len(model_list)))</span><br><span class="line">    P =pd.DataFrame(P)</span><br><span class="line">    print(&apos;Fitting models&apos;)</span><br><span class="line">    cols =list()</span><br><span class="line">    for i, (name, m) in enumerate(models.items()):</span><br><span class="line">        print(&quot;%s...&quot; % name, end=&quot; &quot;, flush=False)</span><br><span class="line">        m.fit(xtrain, ytrain)</span><br><span class="line">        P.iloc[:, i] =m.predict_proba(xtest)[:, 1]</span><br><span class="line">        cols.append(name)</span><br><span class="line">        print(&apos;Done&apos;)</span><br><span class="line">    P.columns =cols</span><br><span class="line">    print(&apos;Done.\n&apos;)</span><br><span class="line">    return P</span><br><span class="line">    </span><br><span class="line">def score_models(P, y):</span><br><span class="line">    &quot;&quot;&quot;Score model in predication DF&quot;&quot;&quot;</span><br><span class="line">    print(&apos;Scoring models&apos;)</span><br><span class="line">    for m in P.columns:</span><br><span class="line">        score =roc_auc_score(y, P.loc[:, m])</span><br><span class="line">        print(&quot;%-26s: %.3f&quot; % (m, score))</span><br><span class="line">    print(&apos;Done, \n&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>let’s go…<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">models =get_models()</span><br><span class="line">P =train_predict(models)</span><br><span class="line">score_models(P, ytest)</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/12164157.jpg" alt="avatar"><br>This is our base line.<br>Gradient Boosting Machine(GBM) 果然名不虚传, does best<br>我们来分析一下模型之间的相关性，原作者使用的mlens package(You can install it with: pip install mlens)，我这里用的是seaborn(install it with: pip install seaborn).<br>在检查相关性(Pearson相关性:衡量两个数据集合的线性相关性)时候，我们使用的是经过处理的相关性。具体说来可以称之为 error correlation,详细见代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># look at error correlations  is more promising, errors are significantly correlated </span><br><span class="line">import seaborn as sns</span><br><span class="line">plt.subplots(figsize=(10,8))  </span><br><span class="line">corrmat = P.apply(lambda pred: 1*(pred &gt;= 0.5) - ytest.values).corr()</span><br><span class="line">sns.set(font_scale=1.5)  </span><br><span class="line">hm = sns.heatmap(corrmat, cbar=True, annot=True, square=True, fmt=&apos;.2f&apos;, annot_kws=&#123;&apos;size&apos;: 10&#125;)  </span><br><span class="line">plt.title(&apos;Pearson Correlation of Features&apos;, y=1.05, size=15)  </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/15404991.jpg" alt="avatar"><br>预测值和真实值之间的差异称之为error，查看error的 Pearson correlation，效果更加明显。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;Ensemble ROC-AUC score: %.3f&quot; % roc_auc_score(ytest, P.mean(axis=1)))</span><br></pre></td></tr></table></figure></p>
+<p>Ensemble ROC-AUC score: 0.884<br>结果高于每一个单独的模型，但是不是那么明显。</p>
+<h3 id="Visualize-Curve-ROC-helper-function"><a href="#Visualize-Curve-ROC-helper-function" class="headerlink" title="Visualize Curve ROC(helper function)"></a>Visualize Curve ROC(helper function)</h3><p>我们注意到之前使用的所有的结果的评价标准都是 roc_auc_score，但是并没有提及这是什么。当然在正文中也不打算解释，如果不是很清楚，可以查看本文最后<strong>补充概念</strong>.简单来说AUC可以用来衡量”二分问题”的泛化能力，是一种评价指标。我们这里想说的是 visualize Curve ROC,可视化。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># a helper function for roc_curve</span><br><span class="line">from sklearn.metrics import roc_curve</span><br><span class="line">def plot_roc_curve(ytest, P_base_learners, P_ensemble, labels, ens_label):</span><br><span class="line">    &quot;&quot;&quot;Plot the roc curve for base learners and ensemble.&quot;&quot;&quot;</span><br><span class="line">    plt.figure(figsize=(10, 8))</span><br><span class="line">    plt.plot([0, 1], [0, 1], &apos;k--&apos;)</span><br><span class="line">    cm = [plt.cm.rainbow(i) for i in np.linspace(0, 1.0, P_base_learners.shape[1] + 1)]</span><br><span class="line">      </span><br><span class="line">    for i in range(P_base_learners.shape[1]):</span><br><span class="line">        p = P_base_learners[:, i]</span><br><span class="line">        fpr, tpr, _ = roc_curve(ytest, p)</span><br><span class="line">        plt.plot(fpr, tpr, label=labels[i], c=cm[i + 1])</span><br><span class="line"></span><br><span class="line">    fpr, tpr, _ = roc_curve(ytest, P_ensemble)</span><br><span class="line">    plt.plot(fpr, tpr, label=ens_label, c=cm[0])</span><br><span class="line">        </span><br><span class="line">    plt.xlabel(&apos;False positive rate&apos;)</span><br><span class="line">    plt.ylabel(&apos;True positive rate&apos;)</span><br><span class="line">    plt.title(&apos;ROC curve&apos;)</span><br><span class="line">    plt.legend(frameon=False)</span><br><span class="line">    plt.show()</span><br><span class="line">plot_roc_curve(ytest, P.values, P.mean(axis=1), list(P.columns), &quot;ensemble&quot;)</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/52483658.jpg" alt="avatar"><br>我们顺便把刚才的模型可视化，发现ensemble的AUC是最大的，意味这泛化性能是最好，这也是符合我们的认知的 。</p>
+<h3 id="Beyond-ensembles-as-a-simple-average"><a href="#Beyond-ensembles-as-a-simple-average" class="headerlink" title="Beyond ensembles as a simple average"></a>Beyond ensembles as a simple average</h3><p>我们回到主线上，在上一个模型中我们提及最后的 ensemble的结果是好于每个单独的模型，但是没有那么突出。根据ROC曲线我们也可以看出，有的模型(KNN)在这里表现的没有那么好，我们在想是不是由于因为这个而拉底了最后的结果，当然这只是猜测，于是我们找到了 try的方向。<br>可能第一直觉去掉这个模型再进行融合，在这个实验表明该策略最后的结果0.883，相比与0.884，你懂得，并没有变好。<br>我们还有一种策略:learn a sensible set of weights to use when averaging predictions.让模型自己去学习如何调整各个模型之间的比例。</p>
+<h3 id="Learning-to-combine-predications"><a href="#Learning-to-combine-predications" class="headerlink" title="Learning to combine predications"></a>Learning to combine predications</h3><p>为了让模型自学习各个之间的预测比例，我们引入了 meta learner(meta是元，理解为最基础的) to learn how to best combine these predictions.</p>
+<p>除此之外，我们将使用不同的数据集，像Random Forest使用不同的数据子集(不同的特征组成的数据集)。于是我们需要a method for splitting the training data between the base learners and the meta learner.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">base_learners =get_models()</span><br><span class="line">meta_learner = GradientBoostingClassifier(</span><br><span class="line">    n_estimators=1000,</span><br><span class="line">    loss=&quot;exponential&quot;,</span><br><span class="line">    max_features=4,</span><br><span class="line">    max_depth=3,</span><br><span class="line">    subsample=0.5,</span><br><span class="line">    learning_rate=0.005,     </span><br><span class="line">    random_state=SEED</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>使用最强模型GBM作为 meta learner并定义好 base_learners.<br>To keep things simple, we split the full training set into a training and prediction set of the base learners. This method is sometimes referred to as <strong>Blending</strong>. Unfortunately, the terminology differs between communities, so it’s not always easy to know what type of cross-validation the ensemble is using.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># sefine a procedure for generating train and test sets</span><br><span class="line">xtrain_base , xpred_base, ytrain_base, ypred_base =train_test_split(xtrain, ytrain, test_size=0.5, random_state=SEED)</span><br><span class="line"></span><br><span class="line">def train_base_learners(base_learners, inp, out, verbose =True):</span><br><span class="line">    if verbose: print(&apos;Fitting models&apos;)</span><br><span class="line">    for i, (name, m) in enumerate(base_learners.items()):</span><br><span class="line">        if verbose: print(&quot;%s...&quot; % name, end=&quot; &quot;, flush=False)</span><br><span class="line">        m.fit(inp, out)</span><br><span class="line">        if verbose: print(&apos;Done.&apos;)</span><br><span class="line">train_base_learners(base_learners, xtrain_base, ytrain_base)</span><br></pre></td></tr></table></figure></p>
+<p>(注意我们只是使用了50%的data去train, test_size =0.5)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def predict_base_learners(pred_base_learners, inp, verbose=True):</span><br><span class="line">    &quot;&quot;&quot;Generate a prediction matrix.&quot;&quot;&quot;</span><br><span class="line">    P = np.zeros((inp.shape[0], len(pred_base_learners)))</span><br><span class="line"></span><br><span class="line">    if verbose: print(&quot;Generating base learner predictions.&quot;)</span><br><span class="line">    for i, (name, m) in enumerate(pred_base_learners.items()):</span><br><span class="line">        if verbose: print(&quot;%s...&quot; % name, end=&quot; &quot;, flush=False)</span><br><span class="line">        p = m.predict_proba(inp)</span><br><span class="line">        # With two classes, need only predictions for one class</span><br><span class="line">        P[:, i] = p[:, 1]</span><br><span class="line">        if verbose: print(&quot;done&quot;)</span><br><span class="line"></span><br><span class="line">    return P</span><br><span class="line">P_base = predict_base_learners(base_learners, xpred_base)</span><br></pre></td></tr></table></figure></p>
+<p>现在我们得到了base_learners的predications，接下来我们应该使用的是这个流程，<strong>在base learners的基础上</strong>（类似两层结构了 meta learner 学习的如何搭配这些base learner使得最后的结果 predications最大）进行训练，而不是训练原来的数据集。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/82384876.jpg" alt="avatar"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">meta_learner.fit(P_base, ypred_base)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#meta_learner.fit(P_base, ypred_base)</span><br><span class="line">def ensemble_predict(base_learners, meta_learner, inp, verbose=True):</span><br><span class="line">    &quot;&quot;&quot;Generate predictions from the ensemble.&quot;&quot;&quot;</span><br><span class="line">    P_pred = predict_base_learners(base_learners, inp, verbose=verbose)</span><br><span class="line">    return P_pred, meta_learner.predict_proba(P_pred)[:, 1]</span><br><span class="line">P_pred, p = ensemble_predict(base_learners, meta_learner, xtest)</span><br><span class="line">print(&quot;\nEnsemble ROC-AUC score: %.3f&quot; % roc_auc_score(ytest, p))</span><br></pre></td></tr></table></figure>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/11434494.jpg" alt="avatar"><br>最后的结果是0.881 相比与之前最好的0.884（使用相同的数据集，没有进行 meta_learner的操作）<br>这是因为我们在划分数据集的使用只是使用了0.5的数据集，而前者的模型使用了全部的train sets。<br>有人不免疑问：为什么不使用全部的data？我的理解是划分xtrain_base , xpred_base, ytrain_base, ypred_base使用的是 train_test_split()，总是需要设定一个数值的，即使train_size =0.01，也是没有用到全部的datas.</p>
+<h3 id="Training-with-cross-validation"><a href="#Training-with-cross-validation" class="headerlink" title="Training with cross-validation"></a>Training with cross-validation</h3><p>我们使用cross-validation 来缓解上面那个问题。<br>During cross-validated training of the base learners, a copy of each base learner is fitted on K−1 folds, and predict the left-out fold. This process is iterated until every fold has been predicted. The more folds we specify, the less data is being left out in each training pass. This makes cross-validated predictions less noisy and a better reflection of performance during test time. The cost is significantly increased training time. Fitting an <strong>ensemble</strong> with <strong>cross-validation</strong> is often referred to as <strong>stacking</strong>, while the ensemble itself is known as the Super Learner.</p>
+<p>To understand how cross-validation works, we can think of it as an outer loop over our previous ensemble. The outer loop iterates over K distinct test folds, with the remaining data used for training. The inner loop trains the base learners and generate predictions for the held-out data. Here’s a simple stacking implementation:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.base import clone</span><br><span class="line"></span><br><span class="line">def stacking(base_learners, meta_learner, X, y, generator):</span><br><span class="line">    &quot;&quot;&quot;Simple training routine for stacking.&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    # Train final base learners for test time</span><br><span class="line">    print(&quot;Fitting final base learners...&quot;, end=&quot;&quot;)</span><br><span class="line">    train_base_learners(base_learners, X, y, verbose=False)</span><br><span class="line">    print(&quot;done&quot;)</span><br><span class="line"></span><br><span class="line">    # Generate predictions for training meta learners</span><br><span class="line">    # Outer loop:</span><br><span class="line">    print(&quot;Generating cross-validated predictions...&quot;)</span><br><span class="line">    cv_preds, cv_y = [], []</span><br><span class="line">    for i, (train_idx, test_idx) in enumerate(generator.split(X)):</span><br><span class="line"></span><br><span class="line">        fold_xtrain, fold_ytrain = X[train_idx, :], y[train_idx]</span><br><span class="line">        fold_xtest, fold_ytest = X[test_idx, :], y[test_idx]</span><br><span class="line"></span><br><span class="line">        # Inner loop: step 4 and 5</span><br><span class="line">        fold_base_learners = &#123;name: clone(model)</span><br><span class="line">                              for name, model in base_learners.items()&#125;</span><br><span class="line">        train_base_learners(</span><br><span class="line">            fold_base_learners, fold_xtrain, fold_ytrain, verbose=False)</span><br><span class="line"></span><br><span class="line">        fold_P_base = predict_base_learners(</span><br><span class="line">            fold_base_learners, fold_xtest, verbose=False)</span><br><span class="line"></span><br><span class="line">        cv_preds.append(fold_P_base)</span><br><span class="line">        cv_y.append(fold_ytest)</span><br><span class="line">        print(&quot;Fold %i done&quot; % (i + 1))</span><br><span class="line"></span><br><span class="line">    print(&quot;CV-predictions done&quot;)</span><br><span class="line">    </span><br><span class="line">    # Be careful to get rows in the right order</span><br><span class="line">    cv_preds = np.vstack(cv_preds)</span><br><span class="line">    cv_y = np.hstack(cv_y)</span><br><span class="line"></span><br><span class="line">    # Train meta learner</span><br><span class="line">    print(&quot;Fitting meta learner...&quot;, end=&quot;&quot;)</span><br><span class="line">    meta_learner.fit(cv_preds, cv_y)</span><br><span class="line">    print(&quot;done&quot;)</span><br><span class="line">    return base_learners, meta_learner</span><br></pre></td></tr></table></figure></p>
+<p>尤其在cv_preds和cv_y的维度问题上，注意小心。<br>The basic difference between blending and stacking is therefore that stacking allows both base learners and the meta learner to train on the full data set. Using 2-fold cross-validation, we can measure the difference this makes in our case:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.model_selection import KFold</span><br><span class="line"># Train with stacking</span><br><span class="line">cv_base_learners, cv_meta_learner = stacking(</span><br><span class="line">    get_models(), clone(meta_learner), xtrain.values, ytrain.values, KFold(2))</span><br><span class="line"></span><br><span class="line">P_pred, p = ensemble_predict(cv_base_learners, cv_meta_learner, xtest, verbose=False)</span><br><span class="line">print(&quot;\nEnsemble ROC-AUC score: %.3f&quot; % roc_auc_score(ytest, p))</span><br></pre></td></tr></table></figure></p>
+<p>Ensemble ROC-AUC score: 0.889<br>这是目前为止最好的结果了。<br>Stacking yields a sizeable increase in performance: in fact, it gives us our best score so far. This outcome is typical for small and medium-sized data sets, where the effect of blending can be severe. As the data set size increases, blending and stacking performs similarly.</p>
+<h2 id="Use-packages"><a href="#Use-packages" class="headerlink" title="Use packages"></a>Use packages</h2><p>快要接近尾声了，在文章的开始，我们提及要安利一个resemble好用的package. So, it’s now.<br>Here, we use Ensemble and build our previous generalized ensemble, but now using 10-fold cross-validation:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from mlens.ensemble import SuperLearner</span><br><span class="line"></span><br><span class="line"># Instantiate the ensemble with 10 folds</span><br><span class="line">sl = SuperLearner(</span><br><span class="line">    folds=10,</span><br><span class="line">    random_state=SEED,</span><br><span class="line">    verbose=2,</span><br><span class="line">    backend=&quot;multiprocessing&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># Add the base learners and the meta learner</span><br><span class="line">sl.add(list(base_learners.values()), proba=True) </span><br><span class="line">sl.add_meta(meta_learner, proba=True)</span><br><span class="line"></span><br><span class="line"># Train the ensemble</span><br><span class="line">sl.fit(xtrain, ytrain)</span><br><span class="line"></span><br><span class="line"># Predict the test set</span><br><span class="line">p_sl = sl.predict_proba(xtest)</span><br><span class="line"></span><br><span class="line">print(&quot;\nSuper Learner ROC-AUC score: %.3f&quot; % roc_auc_score(ytest, p_sl[:, 1]))</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/78451107.jpg" alt="avatar"><br>So simple!<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plot_roc_curve(ytest, p.reshape(-1, 1), P.mean(axis=1), [&quot;Simple average&quot;], &quot;Super Learner&quot;)</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/52534893.jpg" alt="avatar"></p>
+<p>发现super learner(meta learner)和 basic learner的mean的结果已经不相上下了。super learner得到了很好的训练。</p>
+<h2 id="补充概念"><a href="#补充概念" class="headerlink" title="补充概念"></a>补充概念</h2><ul>
+<li><p>ROC曲线和AUC值<br>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说道这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。好丑的图片啊…<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/79026872.jpg" alt="avatar"><br>接着我们计算TRP(True Positive Radio)，FRP(False Positive Ratio)用于描述ROC曲线，分别表示该曲线的Y轴，X轴。<br>TPR=TP/(TP+FN)<br>FPR=FP/(FP+TN)<br>最后就形成了类似这样的图像(来源于上述的训练模型)<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/52483658.jpg" alt="avatar"><br>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从途中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。<br>在机器学习中关于这方面经常涉及到的还有precision, recall两个概念，下面是计算公式。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/56890358.jpg" alt="avatar"><br>其中n= TP+FP<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/29323029.jpg" alt="avatar"><br>总结：图中的x，y轴的计算和 precision, recall不是一个概念，虽然 recall 和y 轴在计算上是相同的。precision  是针对于预测数据来说的，而x轴，y轴(recall)的计算某种意义上是针对原来真实数据而言的。所以我们在训练模型过程可以追求 precision 和 recall的双高(即图像的左上角)。x，y轴的计算是针对于原来真实数据来说的。</p>
+</li>
+<li><p>majority/ soft/ hard voting<br>an ensemble that averages classifier predictions is known as a <strong>majority voting</strong> classifier. When an ensembles averages based on probabilities (as above), we refer to it as <strong>soft voting</strong>, averaging final class label predictions is known as <strong>hard voting</strong>.</p>
+</li>
+<li><p>Pearson相关性<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/73757528.jpg" alt="avatar"><br>协方差除以各自的标准差</p>
+</li>
+<li><p>GBC参数<br>这些参数中，类似于Adaboost，我们把重要参数分为两类，第一类是Boosting框架的重要参数，第二类是弱学习器即CART回归树的重要参数。<br>n_estimators: 也就是弱学习器的最大迭代次数，或者说最大的弱学习器的个数。<br>learning_rate: 即每个弱学习器的权重缩减系数ν，也称作步长<br>对于分类模型，有对数似然损失函数”deviance”和指数损失函数”exponential”两者输入选择。默认是对数似然损失函数”deviance”。在原理篇中对这些分类损失函数有详细的介绍。一般来说，推荐使用默认的”deviance”。它对二元分离和多元分类各自都有比较好的优化。而指数损失函数等于把我们带到了Adaboost算法。<br>对于回归模型，有均方差”ls”, 绝对损失”lad”, Huber损失”huber”和分位数损失“quantile”。默认是均方差”ls”。一般来说，如果数据的噪音点不多，用默认的均方差”ls”比较好。如果是噪音点较多，则推荐用抗噪音的损失函数”huber”。而如果我们需要对训练集进行分段预测的时候，则采用“quantile”。<br>max_features:可以使用很多种类型的值，默认是”None”,意味着划分时考虑所有的特征数.<br>subsample: 选择小于1的比例可以减少方差，即防止过拟合，但是会增加样本拟合的偏差，因此取值不能太低。推荐在[0.5, 0.8]之间，默认是1.0，即不使用子采样。</p>
+</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://www.cnblogs.com/pinard/p/6143927.html" target="_blank" rel="noopener">GBC参数设置</a><br><a href="https://www.cnblogs.com/gatherstars/p/6084696.html" target="_blank" rel="noopener">ROC曲线和AUC值</a><br><a href="https://www.dataquest.io/blog/introduction-to-ensembles/" target="_blank" rel="noopener">Introduction to Python Ensembles</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/模型融合-Ensemble/" rel="tag"># 模型融合(Ensemble)</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/05/对抗性生成网络/" rel="next" title="对抗性生成网络实验对比">
+                <i class="fa fa-chevron-left"></i> 对抗性生成网络实验对比
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset"><span class="nav-number">1.</span> <span class="nav-text">Dataset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Begin-with-ensemble"><span class="nav-number">2.</span> <span class="nav-text">Begin with ensemble</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Decision-Tree"><span class="nav-number">2.1.</span> <span class="nav-text">Decision Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Forest-Bagging"><span class="nav-number">2.2.</span> <span class="nav-text">Random Forest(Bagging)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ensemble-of-various-models"><span class="nav-number">2.3.</span> <span class="nav-text">Ensemble of various models</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualize-Curve-ROC-helper-function"><span class="nav-number">2.4.</span> <span class="nav-text">Visualize Curve ROC(helper function)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Beyond-ensembles-as-a-simple-average"><span class="nav-number">2.5.</span> <span class="nav-text">Beyond ensembles as a simple average</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Learning-to-combine-predications"><span class="nav-number">2.6.</span> <span class="nav-text">Learning to combine predications</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-with-cross-validation"><span class="nav-number">2.7.</span> <span class="nav-text">Training with cross-validation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Use-packages"><span class="nav-number">3.</span> <span class="nav-text">Use packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充概念"><span class="nav-number">4.</span> <span class="nav-text">补充概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
