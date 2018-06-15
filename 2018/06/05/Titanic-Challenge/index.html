@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Kaggle,Titanic,泰坦尼克," />
+  <meta name="keywords" content="Titanic,泰坦尼克,Kaggle," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="用此博客记录自己解决 Kaggle Titanic challenge过程中的个人总结。 问题描述说道Titanic(泰坦尼克号)，最熟悉莫过于Titanic(1997 film),这部由著名导演詹姆斯·卡梅隆执导，莱昂纳多·迪卡普里奥、凯特·温斯莱特领衔主演的电影，经久不衰…但是我们今天的画风不是这样的… 我们今天解决的问题是以该事件问背景，但是没有那么浪漫。关于这个案例的介绍网上有很多内容，为">
-<meta name="keywords" content="Kaggle,Titanic,泰坦尼克">
+<meta name="keywords" content="Titanic,泰坦尼克,Kaggle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Titanic Challenge">
 <meta property="og:url" content="http://yoursite.com/2018/06/05/Titanic-Challenge/index.html">
@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/72110289.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/48291250.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/17534343.jpg">
-<meta property="og:updated_time" content="2018-06-13T02:46:54.011Z">
+<meta property="og:updated_time" content="2018-06-14T14:37:59.658Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Titanic Challenge">
 <meta name="twitter:description" content="用此博客记录自己解决 Kaggle Titanic challenge过程中的个人总结。 问题描述说道Titanic(泰坦尼克号)，最熟悉莫过于Titanic(1997 film),这部由著名导演詹姆斯·卡梅隆执导，莱昂纳多·迪卡普里奥、凯特·温斯莱特领衔主演的电影，经久不衰…但是我们今天的画风不是这样的… 我们今天解决的问题是以该事件问背景，但是没有那么浪漫。关于这个案例的介绍网上有很多内容，为">
@@ -405,15 +405,13 @@
 <li>pandas 原生数据分析函数<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">train =pd.read_csv(&apos;data/train.csv&apos;)</span><br><span class="line">test =pd.read_csv(&apos;data/test.csv&apos;)</span><br><span class="line">train.describe(include=&apos;all&apos;)</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/96019771.jpg" alt="vatar"><br>除了上面 train.describe()，下面这两个也是比较常用的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train.describe()</span><br><span class="line">train.columns</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/96019771.jpg" alt="avatar"><br>除了上面 train.describe()，下面这两个也是比较常用的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train.head()</span><br><span class="line">train.columns</span><br></pre></td></tr></table></figure></p>
 <p>因为总体的数据量比较少，所以我们选择把train set 和test set连接起来进行数据分析和处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">combined2 = pd.concat([train_data, test_data], axis=0)</span><br></pre></td></tr></table></figure></p>
 <h3 id="数据质量分析"><a href="#数据质量分析" class="headerlink" title="数据质量分析"></a>数据质量分析</h3><ul>
-<li>缺省值 </li>
+<li>缺省值<br>对于缺省值，常用的手段就是填充，但是针对不同的数据有不同的填充手段，有的是均值填充，有的是默认值填充还有的是根据现有数据训练一个 regression进行拟合(这种情况出现在缺省的数据比较重要，对于结果的预测有比较强的相关性的时候)。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">combined2.Embarked.fillna(&apos;S&apos;, inplace=True)</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<p>对于缺省值，常用的手段就是填充，但是针对不同的数据有不同的填充手段，有的是均值填充，有的是默认值填充还有的是根据现有数据训练一个 regression进行拟合(这种情况出现在缺省的数据比较重要，对于结果的预测有比较强的相关性的时候)。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">combined2.Embarked.fillna(&apos;S&apos;, inplace=True)</span><br></pre></td></tr></table></figure>
-<p>Embardked(上船港口)不是那么能表现出和结果(survival)相关的变量，我么可以直接采用某个默认值进行填充。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">combined2.Fare.fillna(np.median(combined2.Fare[combined2.Fare.notnull()]), inplace=True)</span><br></pre></td></tr></table></figure>
+<p>Embardked(上船港口)不是那么能表现出和结果(survival)相关的变量，我么可以直接采用某个默认值进行填充。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">combined2.Fare.fillna(np.median(combined2.Fare[combined2.Fare.notnull()]), inplace=True)</span><br></pre></td></tr></table></figure></p>
 <p>Fare(船票)我们选择使用均值填充</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">classers = [&apos;Fare&apos;,&apos;Parch&apos;,&apos;Pclass&apos;,&apos;SibSp&apos;,&apos;TitleCat&apos;,&apos;CabinCat&apos;,&apos;Sex_female&apos;,&apos;Sex_male&apos;, &apos;EmbarkedCat&apos;, &apos;FamilySize&apos;, &apos;NameLength&apos;, &apos;FamilyId&apos;]</span><br><span class="line">age_et = ExtraTreesRegressor(n_estimators=200)</span><br><span class="line">X_train = full_data.loc[full_data.Age.notnull(),classers]</span><br><span class="line">Y_train = full_data.loc[full_data.Age.notnull(),[&apos;Age&apos;]]</span><br><span class="line">X_test = full_data.loc[full_data.Age.isnull(),classers]</span><br><span class="line">age_et.fit(X_train,np.ravel(Y_train))</span><br><span class="line">age_preds = age_et.predict(X_test)</span><br><span class="line">full_data.loc[full_data.Age.isnull(),[&apos;Age&apos;]] = age_preds</span><br></pre></td></tr></table></figure>
 <p>因为在特征提取看来 age 是一个比较重要的属性（下文中使用age来进一步计算性别特征，而性别特征对于survival 是重要的因素），所以需要通过 fit来进行填充 null 值。</p>
@@ -421,8 +419,7 @@
 <li>异常值<br>异常值的检测<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">combined2.boxplot()</span><br><span class="line">plt.ylim(0, 1000)</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/40620519.jpg" alt="avatar"></p>
-<p>异常值处理<br>大多数情况下我们都采取忽视，但是有时候异常值中却跟结果有比较强的相关性，比如说该题目分数在0.9的一位大神在博客中使用的特征包含名字长度。这个在我一开始的特征提取中确实没有太在意名字长度也可以当作一种和结果(servival or dead)相关的特征。</p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/40620519.jpg" alt="avatar"><br>异常值处理<br>大多数情况下我们都采取忽视，但是有时候异常值中却跟结果有比较强的相关性，比如说该题目分数在0.9的一位大神在博客中使用的特征包含名字长度。这个在我一开始的特征提取中确实没有太在意名字长度也可以当作一种和结果(servival or dead)相关的特征。</p>
 <ul>
 <li>重复值<br>重复值的检测<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train[train.duplicated()==True]</span><br></pre></td></tr></table></figure>
 </li>
@@ -430,11 +427,11 @@
 <p>如果运行结果为空，那么就是没有重复值,如果有重复值，一般使用下面类似的代码都是可以去除掉的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.drop_duplicates()</span><br></pre></td></tr></table></figure></p>
 <h3 id="分布特征分析"><a href="#分布特征分析" class="headerlink" title="分布特征分析"></a>分布特征分析</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#分布分析</span><br><span class="line">fig ,ax =plt.subplots(2,2, figsize=(8,6))</span><br><span class="line">sns.countplot(&apos;Embarked&apos;, data =train, ax =ax[0,0])</span><br><span class="line">sns.countplot(&apos;Pclass&apos;, data =train, ax =ax[0,1])</span><br><span class="line">sns.violinplot(&apos;Survived&apos;, &apos;Age&apos;, data= train, ax =ax[1,0]).set(ylim =(-10, 80))</span><br><span class="line">sns.countplot(x =&apos;Survived&apos;, data= train, ax =ax[1,1])</span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/87343336.jpg" alt="avatar"><br>运行需要导入 seaborn<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import seaborn as sns</span><br></pre></td></tr></table></figure></p>
-<p>这这里安利一个数据可视化工具-seaborn。回正题 counplot()可以直观的看出单个数据的特征，但是我们更加关心的是数据和数据之间的关系，更准确的是数据和预测数据(survival )之间的关系。所以…<br>我们进行相关性分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">plt.subplots(figsize=(10,8))  </span><br><span class="line">corrmat = train[train.columns[1:]].corr()</span><br><span class="line">sns.set(font_scale=1.5)  </span><br><span class="line">hm = sns.heatmap(corrmat, cbar=True, annot=True, square=True, fmt=&apos;.2f&apos;, annot_kws=&#123;&apos;size&apos;: 10&#125;)  </span><br><span class="line">plt.title(&apos;Pearson Correlation of Features&apos;, y=1.05, size=15)  </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>这里安利一个数据可视化工具-seaborn。回正题 counplot()可以直观的看出单个数据的特征，但是我们更加关心的是数据和数据之间的关系，更准确的是数据和预测数据(survival )之间的关系。所以,我们进行相关性分析。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">plt.subplots(figsize=(10,8))  </span><br><span class="line">corrmat = train[train.columns[1:]].corr()</span><br><span class="line">sns.set(font_scale=1.5)  </span><br><span class="line">hm = sns.heatmap(corrmat, cbar=True, annot=True, square=True, fmt=&apos;.2f&apos;, annot_kws=&#123;&apos;size&apos;: 10&#125;)  </span><br><span class="line">plt.title(&apos;Pearson Correlation of Features&apos;, y=1.05, size=15)  </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/90618337.jpg" alt="avatar"></p>
 <p>从图中可以看出，在原始数据集特征中(为什么这么说，嗯，这意味着我们下文还要进行 generate new features),Fare特征是和 survival最相关的。这从数据角度这你船票价钱越高，你生存的几率就越大(三观尽毁)。嗯，这是符合经济社会的运行规律的。我们在分析 Pearson Correlation的时候，关注的是数值的绝对值，如果是正值，表示正相关；如果是负值，表示负相关。</p>
 <p>如果细心的小伙伴发现，这个并没有把所有的变量的相关性表示出来，是的，下文我将给出一个加强版的。</p>
-<h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><p>当我们对数据有了一个初步的认识，这时候就可以进行特征工程了。网上流传很广的一句话”数据决定了机器学习的上限，而算法只是尽可能逼近这个上限”，我深有体会。因为之前进行特征提取，然后在kaggle的submission score是0.73205,经过模型融合然后达到了0.78947，提高了5个百分点。当自己在思考数据特征重新进行特征提取的时候，最后的score 是0.82296.这都是以10个百分点的提高啊。所以这句话很有道理，我试图找到这句话的出处，以表示我对于版权的尊重，但是科学上网能力有限，没有找见，也许这就是群众的智慧吧。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/68525093.jpg" alt="avatar"><br>图为我在kaggle 的submission 和相应的score</p>
+<h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><p>当我们对数据有了一个初步的认识，这时候就可以进行特征工程了。网上流传很广的一句话”数据特征决定了机器学习的上限，而算法优化只是尽可能逼近这个上限”，我深有体会。因为之前进行特征提取，然后在kaggle的submission score是0.73205,经过模型融合然后达到了0.78947，提高了5个百分点。当自己在思考数据特征重新进行特征提取的时候，最后的score 是0.82296.这都是以10个百分点的提高啊。所以这句话很有道理，我试图找到这句话的出处，以表示我对于版权的尊重，但是科学上网能力有限，没有找见，也许这句话来自群众的智慧吧。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/68525093.jpg" alt="avatar"><br>图：我在kaggle 的submission 和相应的score</p>
 <p>但是我想强调的是特征提取是个很难有模板化的东西，这得看个人对于这个问题的理解和对于数据的理解，对于数据异常值的处理。并且还想说的是这个一个迭代的过程，不是一步到位的。<br>当初步构造好自己特征之后可以使用图形化工具进行简单的分析一下。(下图是我第一次构造的特征工程的图形化)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">def correlation_heatmap(df):  </span><br><span class="line">    _ , ax = plt.subplots(figsize =(14, 12))  </span><br><span class="line">    colormap = sns.diverging_palette(220, 10, as_cmap = True)  </span><br><span class="line">      </span><br><span class="line">    _ = sns.heatmap(  </span><br><span class="line">        df.corr(),   </span><br><span class="line">        cmap = colormap,  </span><br><span class="line">        square=True,   </span><br><span class="line">        cbar_kws=&#123;&apos;shrink&apos;:.9 &#125;,   </span><br><span class="line">        ax=ax,  </span><br><span class="line">        annot=True,   </span><br><span class="line">        linewidths=0.1,vmax=1.0, linecolor=&apos;white&apos;,  </span><br><span class="line">        annot_kws=&#123;&apos;fontsize&apos;:12 &#125;  </span><br><span class="line">    )  </span><br><span class="line">      </span><br><span class="line">    plt.title(&apos;Pearson Correlation of Features&apos;, y=1.05, size=15)  </span><br><span class="line">train2 =train1.drop([&apos;NullCabin&apos;], axis =1)</span><br><span class="line">correlation_heatmap(train2)</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/34929686.jpg" alt="avatar"></p>
 <p>上图是第一次特征分析的结果(kaggle score: 0.73205),survival和Pclass和Fare是有较强的正相关性。</p>
@@ -471,11 +468,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Kaggle/" rel="tag"># Kaggle</a>
-          
             <a href="/tags/Titanic/" rel="tag"># Titanic</a>
           
             <a href="/tags/泰坦尼克/" rel="tag"># 泰坦尼克</a>
+          
+            <a href="/tags/Kaggle/" rel="tag"># Kaggle</a>
           
         </div>
       

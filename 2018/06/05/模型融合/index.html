@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/80388486.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/76702885.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/68508635.jpg">
-<meta property="og:updated_time" content="2018-06-05T13:57:22.523Z">
+<meta property="og:updated_time" content="2018-06-14T14:05:36.808Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="模型融合">
 <meta name="twitter:description" content="多个有差异性的模型融合可以提高整体的性能。它能同时降低最终模型的bias 和variance，从而在提高竞赛分数的同时降低overfitting 的风险。 从结果文件中融合这种做法不需要重新训练模型，融合竞赛提交的结果文件就可以，简单便捷。  Voting投票制：少数服从多数。如一个分类问题，多个模型的投票（当然可以设置权重，若没有就是平均投票），最终投票数最多的类就是被预测的类。对于加权表决融合">
@@ -406,13 +406,12 @@
 </li>
 </ul>
 <h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><ul>
-<li>cross validation交叉验证<br>当评估不同的参数设置，对算法表现的影响时，仍然存在则过拟合的风险。因为在调整参数，优化测试集的算法表现时，测试集的信息已经泄漏进模型中了。</li>
-</ul>
-<p>为了解决这个问题，需要一部分数据作为验证集(validation set)。 这样，用训练集(Train set)的数据训练模型；用验证集对模型参数调剂，如上述程序中的C值；最后，算法的评价在测试集(Test set)上完成。但是当数据有原来的两份化成三份之后，降低了寻数据量；另外算法的表现依赖于三个数据集的划分。<br>解决上述两个问题的常见方法: cross validation. 测试集仍然单独划分出来，但是 validation set不用单独划分。将训练集划分为k个小的数据集，称之为k-fold CV。对每个fold进行下列过程： </p>
-<ol>
+<li>cross validation交叉验证<br>当评估不同的参数设置，对算法表现的影响时，仍然存在则过拟合的风险。因为在调整参数，优化测试集的算法表现时，测试集的信息已经泄漏进模型中了。<br>为了解决这个问题，需要一部分数据作为验证集(validation set)。 这样，用训练集(Train set)的数据训练模型；用验证集对模型参数调剂，如上述程序中的C值；最后，算法的评价在测试集(Test set)上完成。但是当数据有原来的两份化成三份之后，降低了寻数据量；另外算法的表现依赖于三个数据集的划分。<br>解决上述两个问题的常见方法: cross validation. 测试集仍然单独划分出来，但是 validation set不用单独划分。将训练集划分为k个小的数据集，称之为k-fold CV。对每个fold进行下列过程： <ol>
 <li>用其他k-1 folds 作为training sets，训练模型</li>
 <li>模型的结果用剩下的一个 fold进行评价<br>模型的性能用上述循环中的 k-fold 交叉验证集的平均值表现，这样的做法增加了计算量，但是提高数据的利用效率。</li>
 </ol>
+</li>
+</ul>
 <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://blog.csdn.net/u013395516/article/details/79745063" target="_blank" rel="noopener">https://blog.csdn.net/u013395516/article/details/79745063</a><br><a href="https://blog.csdn.net/u012969412/article/details/76636336" target="_blank" rel="noopener">https://blog.csdn.net/u012969412/article/details/76636336</a><br><a href="https://blog.csdn.net/u012604810/article/details/77579782" target="_blank" rel="noopener">https://blog.csdn.net/u012604810/article/details/77579782</a></p>
 
       
