@@ -101,7 +101,7 @@
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/56890358.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/29323029.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/73757528.jpg">
-<meta property="og:updated_time" content="2018-06-15T02:27:28.714Z">
+<meta property="og:updated_time" content="2018-06-25T14:25:12.434Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction_to_Ensemble">
 <meta name="twitter:description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
@@ -447,7 +447,7 @@
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/52534893.jpg" alt="avatar"></p>
 <p>发现super learner(meta learner)和 basic learner的mean的结果已经不相上下了。super learner得到了很好的训练。</p>
 <h2 id="补充概念"><a href="#补充概念" class="headerlink" title="补充概念"></a>补充概念</h2><ul>
-<li><p>ROC曲线和AUC值<br>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说道这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。好丑的图片啊…<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/79026872.jpg" alt="avatar"><br>接着我们计算TRP(True Positive Radio)，FRP(False Positive Ratio)用于描述ROC曲线，分别表示该曲线的Y轴，X轴。<br>TPR=TP/(TP+FN)<br>FPR=FP/(FP+TN)<br>最后就形成了类似这样的图像(来源于上述的训练模型)<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/52483658.jpg" alt="avatar"><br>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从途中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。<br>在机器学习中关于这方面经常涉及到的还有precision(查准率), recall(查全率)两个概念，下面是计算公式。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/56890358.jpg" alt="avatar"><br>其中n= TP+FP<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/29323029.jpg" alt="avatar"><br>总结：图中的x，y轴的计算和 precision, recall不是一个概念，虽然 recall 和y 轴在计算上是相同的。precision 是针对于预测数据(predication结果)来说的，而x轴，y轴(recall)的计算某种意义上是针对原来真实数据而言的。所以我们在训练模型过程可以追求 precision 和 recall的双高(即图像的左上角)。这时候引入了F1-measure(F1 =(2<em>P</em>R)/(R+P)).(P: precision, R: recall)</p>
+<li><p>ROC曲线和AUC值<br>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。好丑的图片啊…<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/79026872.jpg" alt="avatar"><br>接着我们计算TRP(True Positive Radio)，FRP(False Positive Ratio)用于描述ROC曲线，分别表示该曲线的Y轴，X轴。<br>TPR=TP/(TP+FN)<br>FPR=FP/(FP+TN)<br>最后就形成了类似这样的图像(来源于上述的训练模型)<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/52483658.jpg" alt="avatar"><br>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从图中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。<br>在机器学习中关于这方面经常涉及到的还有precision(查准率), recall(查全率)两个概念，下面是计算公式。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/56890358.jpg" alt="avatar"><br>其中n= TP+FP<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/29323029.jpg" alt="avatar"><br>总结：图中的x，y轴的计算和 precision, recall不是一个概念，虽然 recall 和y 轴在计算上是相同的。precision 是针对于预测数据(predication结果)来说的，而x轴，y轴(recall)的计算某种意义上是针对原来真实数据而言的。所以我们在训练模型过程可以追求 precision 和 recall的双高(即图像的左上角)。这时候引入了F1-measure(F1 =(2<em>P</em>R)/(R+P)).(P: precision, R: recall)</p>
 </li>
 <li><p>majority/ soft/ hard voting<br>an ensemble that averages classifier predictions is known as a <strong>majority voting</strong> classifier. When an ensembles averages based on probabilities (as above), we refer to it as <strong>soft voting</strong>, averaging final class label predictions is known as <strong>hard voting</strong>.</p>
 </li>
@@ -580,7 +580,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -602,7 +602,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
