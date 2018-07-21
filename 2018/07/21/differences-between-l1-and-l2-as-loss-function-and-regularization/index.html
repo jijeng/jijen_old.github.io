@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="优化,Gradient Descent,Newton's Method," />
+  <meta name="keywords" content="l1," />
 
 
 
@@ -79,23 +79,27 @@
 
 
 
-<meta name="description" content="机器学习的优化方法有很多，这里主要解释的是 Gradient Descent 和 Newton’s Method.  梯度下降（gradient  descent）  梯度下降法是最早最简单，也是最为常用的最优化方法。梯度下降法实现简单，当目标函数是凸函数时，梯度下降法的解是全局解。接下来衍生的的子类:批量梯度下降法（Batch Gradient Descent，BGD）随机梯度下降（Stocha">
-<meta name="keywords" content="优化,Gradient Descent,Newton&#39;s Method">
+<meta name="description" content="如果补交作业也算作业的话，那么这篇博文就算做作业。L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。本文大量借鉴于该博客，原文是英文，如果读者英文能够handle，建议读原文。 As loss functionloss function or error function 是用来衡量真实y 和生">
+<meta name="keywords" content="l1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="机器学习优化方法">
-<meta property="og:url" content="http://yoursite.com/2018/05/28/机器学习优化方法/index.html">
+<meta property="og:title" content="differences-between-l1-and-l2-as-loss-function-and-regularization">
+<meta property="og:url" content="http://yoursite.com/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="机器学习的优化方法有很多，这里主要解释的是 Gradient Descent 和 Newton’s Method.  梯度下降（gradient  descent）  梯度下降法是最早最简单，也是最为常用的最优化方法。梯度下降法实现简单，当目标函数是凸函数时，梯度下降法的解是全局解。接下来衍生的的子类:批量梯度下降法（Batch Gradient Descent，BGD）随机梯度下降（Stocha">
+<meta property="og:description" content="如果补交作业也算作业的话，那么这篇博文就算做作业。L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。本文大量借鉴于该博客，原文是英文，如果读者英文能够handle，建议读原文。 As loss functionloss function or error function 是用来衡量真实y 和生">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/6594984.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/24366718.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/93259333.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/65836119.jpg">
-<meta property="og:updated_time" content="2018-06-05T13:47:23.637Z">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/35322217.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/37430433.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/80680309.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/73111516.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/75850249.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/78934923.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/88209822.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/82495076.jpg">
+<meta property="og:updated_time" content="2018-07-21T06:23:32.296Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="机器学习优化方法">
-<meta name="twitter:description" content="机器学习的优化方法有很多，这里主要解释的是 Gradient Descent 和 Newton’s Method.  梯度下降（gradient  descent）  梯度下降法是最早最简单，也是最为常用的最优化方法。梯度下降法实现简单，当目标函数是凸函数时，梯度下降法的解是全局解。接下来衍生的的子类:批量梯度下降法（Batch Gradient Descent，BGD）随机梯度下降（Stocha">
-<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/6594984.jpg">
+<meta name="twitter:title" content="differences-between-l1-and-l2-as-loss-function-and-regularization">
+<meta name="twitter:description" content="如果补交作业也算作业的话，那么这篇博文就算做作业。L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。本文大量借鉴于该博客，原文是英文，如果读者英文能够handle，建议读原文。 As loss functionloss function or error function 是用来衡量真实y 和生">
+<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/35322217.jpg">
 
 
 
@@ -125,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/28/机器学习优化方法/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/"/>
 
 
 
 
 
-  <title>机器学习优化方法 | Jijeng's blog</title>
+  <title>differences-between-l1-and-l2-as-loss-function-and-regularization | Jijeng's blog</title>
   
 
 
@@ -302,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/机器学习优化方法/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -319,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">机器学习优化方法</h1>
+          <h1 class="post-title" itemprop="name headline">differences-between-l1-and-l2-as-loss-function-and-regularization</h1>
         
 
         <div class="post-meta">
@@ -331,8 +335,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T22:10:28+08:00">
-                2018-05-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:22:27+08:00">
+                2018-07-21
               </time>
             
 
@@ -391,20 +395,16 @@
       
 
       
-        <p>机器学习的优化方法有很多，这里主要解释的是 Gradient Descent 和 Newton’s Method.</p>
-<ul>
-<li>梯度下降（gradient  descent）</li>
-</ul>
-<p>梯度下降法是最早最简单，也是最为常用的最优化方法。梯度下降法实现简单，当目标函数是凸函数时，梯度下降法的解是全局解。接下来衍生的的子类:<br>批量梯度下降法（Batch Gradient Descent，BGD）<br>随机梯度下降（Stochastic Gradient Descent，SGD）</p>
-<ul>
-<li>牛顿法和拟牛顿法（Newton’s method &amp; Quasi-Newton Methods）</li>
-</ul>
-<p>牛顿法最大的特点就在于它的收敛速度很快。个人感觉牛顿法只是在在每次迭代的时候进行了两次运算，和梯度下降在总的运算次数上并没有很大的差别，为什么会收敛速度更快呢？<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/6594984.jpg" alt="avatar"></p>
-<ul>
-<li>名词解释</li>
-</ul>
-<p>凸优化:对凸优化的问题我们在基础数学上面已经有了很多解决方法，例如可以将凸优化问题Lagerange做对偶化，然后用Newton、梯度下降算法求解。<br>凸集合:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/24366718.jpg" alt="avatar"></p>
-<p>凸函数：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/93259333.jpg" alt="avatar"><br>Jacobian矩阵和Hessian矩阵：在向量分析中, 雅可比矩阵是一阶偏导数以一定方式排列成的矩阵, 其行列式称为雅可比行列式。<br>Hessian矩阵：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/65836119.jpg" alt="avatar"></p>
+        <p>如果补交作业也算作业的话，那么这篇博文就算做作业。<br>L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。<br>本文大量借鉴于<a href="http://www.chioka.in/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">该博客</a>，原文是英文，如果读者英文能够handle，建议读原文。</p>
+<h2 id="As-loss-function"><a href="#As-loss-function" class="headerlink" title="As loss function"></a>As loss function</h2><p>loss function or error function 是用来衡量真实y 和生成的f(x) 之间差距的函数。在模型训练中我们一般情况下不断训练模型使得loss function不断下降（如果task要求loss function是增大，这时候一般加上符号或者转换成 1- loss fucntion，最后实现的还是loss function下降）。好的回到L1 loss function和L2 loss fucntion. </p>
+<p>L1-norm loss function is also known as least absolute deviations(LAD), least absolute errors. It is basically minimizing the sum of the absolute differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/35322217.jpg" alt="avatar"><br>L2-norm loss function is also known as least squares error(LSE). It is basically minimizing the sum of the square of the differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/37430433.jpg" alt="avatar"><br>主要你从一下三个指标去衡量两者的不同： robustness，stability和是否具有唯一解。<br>wiki 中关于<a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="noopener">robust</a> 中是这样定义： A learning algorithm that can reduce the chance of fitting noise is called robust。具有更好的泛化性能，不去过度拟合noise. 关于<a href="https://en.wikipedia.org/wiki/Stability_(learning_theory" target="_blank" rel="noopener">stability</a>) wiki 是这样定义：Stability, also known as algorithmic stability, is a notion in computational learning theory of how a machine learning algorithm is perturbed by small changes to its inputs.</p>
+<p>我对于前两个指标的理解：robustness 是对于原始的train 样本中离群点的态度，如果某个模型是robustness的，那么对于该数据集中的离群点是能够抗干扰的。反之则是不具有robustness的。stability是对于原始train 数据的轻微的平移的反应，如果对于某个原始数据的轻微平移，最后的结果没有产生很大的波动，那么该模型就是具有stability, 反之，则不具有stability.</p>
+<p>比较L1-norm 和L2-norm在前两个评价指标中的表现：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/80680309.jpg" alt="avatar"><br>对于第三点，我想在下面进行介绍。因为这点和后面和下面的solution uniqueness是相同的。</p>
+<h2 id="As-regularization"><a href="#As-regularization" class="headerlink" title="As regularization"></a>As regularization</h2><p>从<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">XGBoost调参指南</a>中我们知道objective function = loss funcion + regularization. 而我们大多数情况下提及的都是loss function,常常忽略了regularization 的作用。所以正确的姿态应该是这样的：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/73111516.jpg" alt="avatar"><br>The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>对于模型训练，一开始的想法是尽量的overfitting, 因为就现在不成熟的经验而言，对于overfitting这个问题有很多处理方法，比如卷积深度神经网络中的dropout, LightGBM中的early stop 和随机采样的思想。 这些方法都是可以缓解overfitting，所以可以出现overfitting。相反，如果你的模型是underfitting，那么你就微显尴尬了。好，收回到L1 and L2。</p>
+<p>先上公式<br>L1 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/75850249.jpg" alt="avatar"><br>L2 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/78934923.jpg" alt="avatar"><br>The difference between their properties can be promptly summarized as follows:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/88209822.jpg" alt="avatar"></p>
+<p>对于第一点computational efficient的理解：平方比绝对值更容易计算，平方可以求导直接求最值，但是绝对值就无法求导。并且L1 regularization在 non-sparse cases中是 computational inefficient，但是在 sparse(0比较多) cases中是有相应的稀疏算法来进行优化的，所以是computational efficient.<br>对于第二点是否具有sparse solution可以从几何意义的角度解读：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/82495076.jpg" alt="avatar"><br>The green line(L2-norm) is the unique shortest path, while the red, blue yellow(L1-norm) are all same length for the same route.</p>
+<p>Built-in feature selection is frequently mentioned as a useful property of the L1-norm, which the L2-norm does not. This is actually a result of the L1-norm, which tends to produces sparse coefficients (explained below). Suppose the model have 100 coefficients but only 10 of them have non-zero coefficients, this is effectively saying that “the other 90 predictors are useless in predicting the target values”. L2-norm produces non-sparse coefficients, so does not have this property.</p>
+<p>所以表格中第三点也是顺理成章的了。<br>至此，我们区分了L1-norm vs L2-norm loss function 和L1-regularization vs L2-regularization。</p>
 
       
     </div>
@@ -422,11 +422,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/优化/" rel="tag"># 优化</a>
-          
-            <a href="/tags/Gradient-Descent/" rel="tag"># Gradient Descent</a>
-          
-            <a href="/tags/Newton-s-Method/" rel="tag"># Newton's Method</a>
+            <a href="/tags/l1/" rel="tag"># l1</a>
           
         </div>
       
@@ -439,8 +435,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/28/求解平方根/" rel="next" title="求解平方根">
-                <i class="fa fa-chevron-left"></i> 求解平方根
+              <a href="/2018/07/21/LightGBM和XGBoost及其调参/" rel="next" title="LightGBM和XGBoost及其调参">
+                <i class="fa fa-chevron-left"></i> LightGBM和XGBoost及其调参
               </a>
             
           </div>
@@ -448,10 +444,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/28/等概率生成器/" rel="prev" title="等概率生成器">
-                等概率生成器 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -503,8 +495,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -584,6 +585,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#As-loss-function"><span class="nav-number">1.</span> <span class="nav-text">As loss function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#As-regularization"><span class="nav-number">2.</span> <span class="nav-text">As regularization</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

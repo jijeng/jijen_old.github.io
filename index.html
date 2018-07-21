@@ -296,6 +296,500 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" itemprop="url">differences-between-l1-and-l2-as-loss-function-and-regularization</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:22:27+08:00">
+                2018-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果补交作业也算作业的话，那么这篇博文就算做作业。<br>L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。<br>本文大量借鉴于<a href="http://www.chioka.in/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">该博客</a>，原文是英文，如果读者英文能够handle，建议读原文。</p>
+<h2 id="As-loss-function"><a href="#As-loss-function" class="headerlink" title="As loss function"></a>As loss function</h2><p>loss function or error function 是用来衡量真实y 和生成的f(x) 之间差距的函数。在模型训练中我们一般情况下不断训练模型使得loss function不断下降（如果task要求loss function是增大，这时候一般加上符号或者转换成 1- loss fucntion，最后实现的还是loss function下降）。好的回到L1 loss function和L2 loss fucntion. </p>
+<p>L1-norm loss function is also known as least absolute deviations(LAD), least absolute errors. It is basically minimizing the sum of the absolute differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/35322217.jpg" alt="avatar"><br>L2-norm loss function is also known as least squares error(LSE). It is basically minimizing the sum of the square of the differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/37430433.jpg" alt="avatar"><br>主要你从一下三个指标去衡量两者的不同： robustness，stability和是否具有唯一解。<br>wiki 中关于<a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="noopener">robust</a> 中是这样定义： A learning algorithm that can reduce the chance of fitting noise is called robust。具有更好的泛化性能，不去过度拟合noise. 关于<a href="https://en.wikipedia.org/wiki/Stability_(learning_theory" target="_blank" rel="noopener">stability</a>) wiki 是这样定义：Stability, also known as algorithmic stability, is a notion in computational learning theory of how a machine learning algorithm is perturbed by small changes to its inputs.</p>
+<p>我对于前两个指标的理解：robustness 是对于原始的train 样本中离群点的态度，如果某个模型是robustness的，那么对于该数据集中的离群点是能够抗干扰的。反之则是不具有robustness的。stability是对于原始train 数据的轻微的平移的反应，如果对于某个原始数据的轻微平移，最后的结果没有产生很大的波动，那么该模型就是具有stability, 反之，则不具有stability.</p>
+<p>比较L1-norm 和L2-norm在前两个评价指标中的表现：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/80680309.jpg" alt="avatar"><br>对于第三点，我想在下面进行介绍。因为这点和后面和下面的solution uniqueness是相同的。</p>
+<h2 id="As-regularization"><a href="#As-regularization" class="headerlink" title="As regularization"></a>As regularization</h2><p>从<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">XGBoost调参指南</a>中我们知道objective function = loss funcion + regularization. 而我们大多数情况下提及的都是loss function,常常忽略了regularization 的作用。所以正确的姿态应该是这样的：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/73111516.jpg" alt="avatar"><br>The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>对于模型训练，一开始的想法是尽量的overfitting, 因为就现在不成熟的经验而言，对于overfitting这个问题有很多处理方法，比如卷积深度神经网络中的dropout, LightGBM中的early stop 和随机采样的思想。 这些方法都是可以缓解overfitting，所以可以出现overfitting。相反，如果你的模型是underfitting，那么你就微显尴尬了。好，收回到L1 and L2。</p>
+<p>先上公式<br>L1 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/75850249.jpg" alt="avatar"><br>L2 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/78934923.jpg" alt="avatar"><br>The difference between their properties can be promptly summarized as follows:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/88209822.jpg" alt="avatar"></p>
+<p>对于第一点computational efficient的理解：平方比绝对值更容易计算，平方可以求导直接求最值，但是绝对值就无法求导。并且L1 regularization在 non-sparse cases中是 computational inefficient，但是在 sparse(0比较多) cases中是有相应的稀疏算法来进行优化的，所以是computational efficient.<br>对于第二点是否具有sparse solution可以从几何意义的角度解读：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/82495076.jpg" alt="avatar"><br>The green line(L2-norm) is the unique shortest path, while the red, blue yellow(L1-norm) are all same length for the same route.</p>
+<p>Built-in feature selection is frequently mentioned as a useful property of the L1-norm, which the L2-norm does not. This is actually a result of the L1-norm, which tends to produces sparse coefficients (explained below). Suppose the model have 100 coefficients but only 10 of them have non-zero coefficients, this is effectively saying that “the other 90 predictors are useless in predicting the target values”. L2-norm produces non-sparse coefficients, so does not have this property.</p>
+<p>所以表格中第三点也是顺理成章的了。<br>至此，我们区分了L1-norm vs L2-norm loss function 和L1-regularization vs L2-regularization。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/LightGBM和XGBoost及其调参/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/21/LightGBM和XGBoost及其调参/" itemprop="url">LightGBM和XGBoost及其调参</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:17:35+08:00">
+                2018-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="lightGBM调参-常用参数"><a href="#lightGBM调参-常用参数" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><p>Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So when growing on the same leaf in Light GBM, the leaf-wise algorithm can reduce more loss than the level-wise algorithm and hence results in much better accuracy which can rarely be achieved by any of the existing boosting algorithms. Also, it is surprisingly very fast, hence the word ‘Light’.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg" alt="avatar"><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/21729887.jpg" alt="avatar"><br>Leaf wise splits lead to increase in complexity and may lead to overfitting and it can be overcome by specifying another parameter max_depth parameter.</p>
+<h3 id="Advantages-of-LightGBM"><a href="#Advantages-of-LightGBM" class="headerlink" title="Advantages of LightGBM"></a>Advantages of LightGBM</h3><ul>
+<li>faster training speed and higher efficiency<br>Light GBM use histogram based algorithm i.e it buckets continuous feature values into discrete bins which fasten the training procedure.</li>
+<li>lower memory usage<br>Replaces continuous values to discrete bins which result in lower memory usage.</li>
+<li>better accuracy than any other boosting algorithm<br>It produces much more complex trees by following leaf wise split approach rather than a level-wise approach which is the main factor in achieving higher accuracy. </li>
+<li>compatibility with large datasets<br>It is capable of performing equally good with large datasets with a significant reduction in training time as compared to XGBOOST.</li>
+<li>parallel learning supported</li>
+</ul>
+<h3 id="lightGBM调参-常用参数-1"><a href="#lightGBM调参-常用参数-1" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><ul>
+<li><strong>task</strong><br>default= train, option: train, prediction</li>
+<li>application<br>default= regression, option: regression, binary, multiclass, lambdarank(lambdarank application)</li>
+<li>data<br>training data, 这个比较诡异，你需要创建一个lightGBM类型的data</li>
+<li>num_iterations<br>default =100, 可以设置为的大一些，然后使用early_stopping进行调节。</li>
+<li>early_stopping_round<br>default =0, will stop training if one metric of one validation data doesn’t improve in last early_stopping_round rounds.</li>
+<li>num_leaves<br>default =31, number of leaves in a tree</li>
+<li>device<br>default =cpu, options: gpu, cpu, choose gpu for faster training.</li>
+<li>max_depth<br>specify the max depth to which tree will grow, which is very important.</li>
+<li>feature_fraction<br>default =1, specifies the fraction of features to be taken for each iteration.</li>
+<li>bagging_fraction<br>default =1, spefifies the fraction of data to be used for each iteration and it generally used to speed up the training and avoid overfitting.</li>
+<li>max_bin<br>max number of bins to bucket the feature values.因为模型是基于bin训练的，如果bin 数量越多，得到better accuracy,同时更加容易 overfitting.</li>
+<li>num_threads</li>
+<li>label<br>specify the label columns.</li>
+<li>categorical_feature<br>specify the categorical features</li>
+<li>num_class<br>default =1, used only for multi-class classification</li>
+</ul>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/50917702.jpg" alt="avatar"></p>
+<h3 id="referrence"><a href="#referrence" class="headerlink" title="referrence"></a>referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/" target="_blank" rel="noopener">which-algorithm-takes-the-crown-light-gbm-vs-xgboost</a><br><a href="https://blog.csdn.net/aliceyangxi1987/article/details/80711014" target="_blank" rel="noopener">LightGBM 如何调参</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html" target="_blank" rel="noopener">官方文档param_tuning</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters.html" target="_blank" rel="noopener">官方文档parameter</a></p>
+<h3 id="XGBoost调参"><a href="#XGBoost调参" class="headerlink" title="XGBoost调参"></a>XGBoost调参</h3><h3 id="Advantage-of-XGBoost"><a href="#Advantage-of-XGBoost" class="headerlink" title="Advantage of XGBoost"></a>Advantage of XGBoost</h3><ul>
+<li>regularization<br>standard GBM implementation has no regularization, in fact, XGBoost is also known as ‘regularized boosting’ technique.</li>
+<li>parallel processing<br>we know that boosting is sequential process so how can it be parallelized? <a href="http://zhanpengfang.github.io/418home.html" target="_blank" rel="noopener">this link</a> to explore further.</li>
+<li>high flexibility<br>XGBoost allow users to define <strong>custom optimization objectives and evaluation criteria</strong></li>
+<li>handling missing values<br>very useful property. XGBoost has an in-built routine to handle missing values. User is required to supply a different value than other observations and pass that as a parameter. XGBoost tries different things as it encounter a missing value on each node and learns which path to take for missing values in future.</li>
+<li>Tree pruning<br>A GBM would stop splitting a node when it encounters a negative loss in the split. Thus it is more of a greedy algorithm. XGBoost on the other hand make splits upon the max_depth specified and then start pruning the tree backwards and remove splits beyond which there is no positive gain.</li>
+<li>built-in cross-validation<br>This is unlike GBM where we have to run a grid-search and only a limited values can be tested. </li>
+<li>continue on existing model</li>
+</ul>
+<h3 id="XGBoost-Parameters"><a href="#XGBoost-Parameters" class="headerlink" title="XGBoost Parameters"></a>XGBoost Parameters</h3><h4 id="general-parameters"><a href="#general-parameters" class="headerlink" title="general parameters"></a>general parameters</h4><p>General Parameters: Guide the overall functioning</p>
+<ul>
+<li>booster:<br>default =gbtree, can be gbtree, gblinear or dart. 一般使用gbtree.</li>
+<li>silent:<br>default =0, silent mode is activated if set to 1(no running messages will be printed)</li>
+<li>nthread:<br>default to maximum of threads.<h4 id="booster-parameters"><a href="#booster-parameters" class="headerlink" title="booster parameters"></a>booster parameters</h4>Booster Parameters: Guide the individual booster (tree/regression) at each step</li>
+<li>eta(learning rate):<br>default=0.3, typical final values to be used: 0.01-0.2, using CV to tune</li>
+<li>min_child_weight:<br>minimum sum of instance weight (hessian) needed in a child. If the tree partition step results in a leaf node with the sum of instance weight less than min_child_weight, then the building process will give up further partitioning. In linear regression mode, this simply corresponds to minimum number of instances needed to be in each node. The larger, the more conservative the algorithm will be.<br>default =1,too high values can lead to under-fitting, it should be tuned using CV. 数值越小越容易过拟合，越大越容易 under-fitting.</li>
+<li>max_depth:<br>default =6, typical values: 3-10, should be tuned using CV.</li>
+<li>gamma:<br>default =0, Gamma specifies the minimum loss reduction required to make a split.如果在分裂过程中小于该值，那么就不会继续分裂。</li>
+<li>subsample:<br>default =1, typical values: 0.5-1. Denotes the fraction of observations to be randomly samples for each tree.</li>
+<li>colsample_bytree:<br>default =1, typical values: 0.5-1. colsample_bytree和subsample不同点：colsample_by是特征的随机fraction, subsample是rows的随机fraction。</li>
+<li>lambda:<br>default =1, L2 regularization term on weights(analogous to Ridge regression). Though many data scientists don’t use it often, it should be explored to reduce overfitting.</li>
+<li>alpha:<br>default =0, L1 regularization term on weight (analogous to Lasso regression)</li>
+<li>scale_pos_weight:<br>default =1,  a value greater than 0 should be used in case of high class imbalance as it helps in faster convergence.<h4 id="learning-task-parameters"><a href="#learning-task-parameters" class="headerlink" title="learning task parameters"></a>learning task parameters</h4>Learning Task Parameters: Guide the optimization performed</li>
+<li><strong>objective</strong><br>binary: logistic- returns predicated probability(not class)<br>multi: softmax- returns predicated class(not probabilities)<br>multi: softprob- returns predicated probability of each data point belonging to each class.</li>
+<li>eval_metirc<br>default according to objective(rmse for regression and error for classification), used for validation data.<br>typical values: rmse(root mean square error), mse(mean absolute error), logloss(negative log-likelihood), error(binary classification error rate, 0.5 threshold), auc(area under the curve)</li>
+<li>seed<br>default =0, used for reproducible results and also for <strong>parameter tuning</strong>.<h4 id="Control-Overfitting"><a href="#Control-Overfitting" class="headerlink" title="Control Overfitting"></a>Control Overfitting</h4>There are in general two ways that you can control overfitting in xgboost. </li>
+<li>The first way is to directly control model complexity.</li>
+</ul>
+<h3 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence"></a>Referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/" target="_blank" rel="noopener">complete guide parameter tuning xgboost with codes python</a><br><a href="http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html" target="_blank" rel="noopener">官方文档 param_tuning</a><br><a href="http://xgboost.readthedocs.io/en/latest/parameter.html" target="_blank" rel="noopener">官方文档 parameter</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/那些年的算法题目（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/21/那些年的算法题目（二）/" itemprop="url">那些年的算法题目（二）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:13:54+08:00">
+                2018-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="最长01相同子串"><a href="#最长01相同子串" class="headerlink" title="最长01相同子串"></a>最长01相同子串</h2><p>已知一个长度为N的字符串，只由0和1组成， 求一个最长的子串，要求该子串出0和1出现的次数相等。<br>思路：<br>最简单的方式是先生成字串，然后判断每个字串是否满足0的个数和1的个数相同。这种暴力求解时间复杂度O(n^3),明显是不合理的。<br>下面说一下简单的做法：<br>定义一个数组B[N]，B[i]表示从A[0…i]中 num_of_0 - num_of_1，0的个数与1的个数的差 。那么如果A[i] ~ A[j]是符合条件的子串，一定有 B[i] == B[j]，因为中间的部分0、1个数相等，相减等于0。</p>
+<p>代码实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def lengest01SubStr(s):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    最长0,1 相等的子串长度</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    count =[0, 0]</span><br><span class="line">    B =[0]*len(s)</span><br><span class="line">    dic =&#123;&#125;</span><br><span class="line">    lengest =0</span><br><span class="line"></span><br><span class="line">    for i in range(len(s)):</span><br><span class="line">        count[int(s[i])]  +=1</span><br><span class="line">        B[i]  =count[0] - count[1]</span><br><span class="line">        if B[i] ==0:</span><br><span class="line">            lengest +=1</span><br><span class="line">            continue</span><br><span class="line">        if B[i] in dic:</span><br><span class="line">            lengest =max(lengest, i- dic[B[i]])</span><br><span class="line">        else:</span><br><span class="line">            dic[B[i]] =i</span><br><span class="line">    return lengest</span><br><span class="line"></span><br><span class="line">a =&apos;1011010&apos;</span><br><span class="line">b =&apos;10110100&apos;</span><br><span class="line">print(lengest01SubStr(a))</span><br><span class="line">print(lengest01SubStr(b))</span><br></pre></td></tr></table></figure></p>
+<h2 id="顺时针打印矩阵"><a href="#顺时针打印矩阵" class="headerlink" title="顺时针打印矩阵"></a>顺时针打印矩阵</h2><p>输入一个矩阵，按照从外向里以顺时针的顺序依次扫印出每一个数字。<br>思路：发现网上有很多使用递归的，但是使用四个循环就可以解决这个问题。找到每次开始的起点，然后按照最上面一行，最右面一列，最小面一行和最左面一行这样的顺序进行打印即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">def printMatrix(matrix):</span><br><span class="line">    if matrix ==[[]]:</span><br><span class="line">        return</span><br><span class="line">        # 第一次见这样判断空的matrix</span><br><span class="line">    row =len(matrix)</span><br><span class="line">    column =len(matrix[0])</span><br><span class="line">    # 这里的left, right, up, down 都是真实能够access到数据的</span><br><span class="line"></span><br><span class="line">    left =0</span><br><span class="line">    right =column -1</span><br><span class="line">    up =0</span><br><span class="line">    down =row -1</span><br><span class="line">    res =[]</span><br><span class="line">    while right &gt;left and up &lt;down:</span><br><span class="line">        # from left to right</span><br><span class="line">        for i in range(left, right+1):</span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">        # from up to down</span><br><span class="line">        for i in range(up+1, down+1):</span><br><span class="line">            res.append(matrix[i][right])</span><br><span class="line">        # from right to left</span><br><span class="line">        for i in range(right-1, left-1, -1):</span><br><span class="line">            res.append(matrix[down][i])</span><br><span class="line">        for i in range(down-1, up, -1):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">        left +=1</span><br><span class="line">        right -=1</span><br><span class="line">        up +=1</span><br><span class="line">        down -=1</span><br><span class="line">    # 最后对于这种特殊情况的处理是容易忘记的</span><br><span class="line">    # left one row 这种情况很特殊，只是从左往右遍历</span><br><span class="line">    if up ==down and left &lt;right:</span><br><span class="line">        for i in range(left, right+1):</span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">    # left one column 只有可能是从上往下遍历</span><br><span class="line">    if left ==right and up &lt;down:</span><br><span class="line">        for i in range(up, down+1):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">    if up ==down and left ==right:</span><br><span class="line">        res.append(matrix[left][up])</span><br><span class="line">    return res</span><br><span class="line">print(printMatrix(matrix))</span><br></pre></td></tr></table></figure></p>
+<p>下面这个版本并没有运行成功，但是中间有个语法点是可以学习的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">def printMatrix(matrix):</span><br><span class="line">    res =[]</span><br><span class="line">    # 第一个坐标表示行数，第二个坐标表示列数</span><br><span class="line">    # m 表示行数，n 表示列数</span><br><span class="line">    m =len(matrix)</span><br><span class="line">    n = len(matrix[0])</span><br><span class="line">    if m ==1 and n ==1:</span><br><span class="line">        res =[matrix[0][0]]</span><br><span class="line">        return res</span><br><span class="line">    else:</span><br><span class="line">        for o in range(int((min(m,n)+1)/2)):</span><br><span class="line">            # 不加这个[] 会有语法错误</span><br><span class="line">            [res.append(matrix[o][i]) for i in range(o, n-o)]</span><br><span class="line">            [res.append(matrix[j][n-o-1]) for j in range(o, m-o) if matrix[j][n-o-1] not in res ]</span><br><span class="line">            # 感觉这个最后的not in 是不合理的，万一这两个数字就是相同呢，试一下</span><br><span class="line">            [res.append(matrix[m-o-1][k]) for k in range(n-1, o-1, -1) if matrix[m-o-1][k] not in res]</span><br><span class="line">            [res.append(matrix[l][o]) for l in range(m-1-o, o-1,-1) if matrix[l][o] not in res]</span><br><span class="line">            # 这种写法还是少用，可以使用append,就少用这种，可读性不强，容易错</span><br><span class="line">        return resdef printMatrix(matrix):</span><br><span class="line">    res =[]</span><br><span class="line">    # 第一个坐标表示行数，第二个坐标表示列数</span><br><span class="line">    # m 表示行数，n 表示列数</span><br><span class="line">    m =len(matrix)</span><br><span class="line">    n = len(matrix[0])</span><br><span class="line">    if m ==1 and n ==1:</span><br><span class="line">        res =[matrix[0][0]]</span><br><span class="line">        return res</span><br><span class="line">    else:</span><br><span class="line">        for o in range(int((min(m,n)+1)/2)):</span><br><span class="line">            # 不加这个[] 会有语法错误</span><br><span class="line">            [res.append(matrix[o][i]) for i in range(o, n-o)]</span><br><span class="line">            [res.append(matrix[j][n-o-1]) for j in range(o, m-o) if matrix[j][n-o-1] not in res ]</span><br><span class="line">            # 感觉这个最后的not in 是不合理的，万一这两个数字就是相同呢，试一下</span><br><span class="line">            [res.append(matrix[m-o-1][k]) for k in range(n-1, o-1, -1) if matrix[m-o-1][k] not in res]</span><br><span class="line">            [res.append(matrix[l][o]) for l in range(m-1-o, o-1,-1) if matrix[l][o] not in res]</span><br><span class="line">            # 这种写法还是少用，可以使用append,就少用这种，可读性不强，容易错</span><br><span class="line">        return res</span><br></pre></td></tr></table></figure></p>
+<h2 id="最短摘要生成"><a href="#最短摘要生成" class="headerlink" title="最短摘要生成"></a>最短摘要生成</h2><p>思路：<br>两个指针begin和end, 首先将end 指针向后移动至包含所有的字符集q的位置；然后将begin向后移动直至再移动一次将不再包含q，记录该位置长度。然后将begin向后移动一位，end继续向后移动直至包含所有q，周而复始。比较位置长度，然后得出最短距离。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;stdio.h&quot;</span><br><span class="line">#include &quot;string.h&quot;</span><br><span class="line">#include &quot;assert.h&quot;</span><br><span class="line">#define MAX 1024</span><br><span class="line">int isMatchAll(const char *str,const char *key,int begin,int end)</span><br><span class="line">&#123;</span><br><span class="line">	int ret =0;</span><br><span class="line">	char hash[256];</span><br><span class="line">	int i =0;</span><br><span class="line">	int lenK = strlen(key);</span><br><span class="line">	memset(hash,0,sizeof(hash));</span><br><span class="line">	for(i=begin;i&lt;=end;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		hash[str[i]]=1;</span><br><span class="line">	&#125;</span><br><span class="line">	// 标记string之后，然后再遍历key中的字符是否存在 </span><br><span class="line">	for(i=0;i&lt;lenK;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		if(hash[key[i]]==0)</span><br><span class="line">			break;	</span><br><span class="line">	&#125;</span><br><span class="line">	if(i == lenK )</span><br><span class="line">		ret =1;</span><br><span class="line">		</span><br><span class="line">	return ret;</span><br><span class="line">&#125;</span><br><span class="line">void find(const char *str,const char *key)</span><br><span class="line">&#123;</span><br><span class="line"> </span><br><span class="line">	int lenS = strlen(str);</span><br><span class="line">	int lenK = strlen(key);</span><br><span class="line">	</span><br><span class="line">	int begin = 0;</span><br><span class="line">	int end = 0;</span><br><span class="line">	int minLength = 0x7FFFFFFF;</span><br><span class="line">	int mstart = 0;</span><br><span class="line">	int mend =0;</span><br><span class="line">	assert(str&amp;&amp;key);</span><br><span class="line">	for(;;)</span><br><span class="line">	&#123;</span><br><span class="line">		while(!isMatchAll(str,key,begin,end)&amp;&amp;end&lt;lenS)</span><br><span class="line">		&#123;</span><br><span class="line">			end++;		</span><br><span class="line">		&#125;</span><br><span class="line">		while(isMatchAll(str,key,begin,end))</span><br><span class="line">		&#123;</span><br><span class="line">			if(end-begin+1 &lt;minLength)</span><br><span class="line">			&#123;</span><br><span class="line">				minLength = end-begin+1;</span><br><span class="line">				mstart =begin;</span><br><span class="line">				mend =end;</span><br><span class="line">			&#125;</span><br><span class="line">			begin++;</span><br><span class="line">		&#125;</span><br><span class="line">		if(end&gt;=lenS)</span><br><span class="line">			break;</span><br><span class="line">	&#125;</span><br><span class="line">	printf(&quot;%d\n&quot;,minLength);</span><br><span class="line">	for(;mstart&lt;=mend;mstart++)</span><br><span class="line">		printf(&quot;%c&quot;,str[mstart]);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">/**</span><br><span class="line"></span><br><span class="line">	char *str =&quot;hello  are  you bottom of do the is bot doke astring&quot;;</span><br><span class="line">	char *key =&quot;abde&quot;</span><br><span class="line">	</span><br><span class="line">*/</span><br><span class="line">	char str[MAX];</span><br><span class="line">	char key[MAX];</span><br><span class="line">	</span><br><span class="line">	gets(str);</span><br><span class="line">	gets(key);</span><br><span class="line">	find(str,key);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -782,7 +1276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/22/那些年的面试题目/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/22/那些年的面试题目（一）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -801,7 +1295,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/22/那些年的面试题目/" itemprop="url">那些年的面试题目</a></h1>
+                <a class="post-title-link" href="/2018/06/22/那些年的面试题目（一）/" itemprop="url">那些年的面试题目（一）</a></h1>
         
 
         <div class="post-meta">
@@ -1527,466 +2021,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/模型融合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/05/模型融合/" itemprop="url">模型融合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:37:44+08:00">
-                2018-06-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">竞赛</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>多个有差异性的模型融合可以提高整体的性能。它能同时降低最终模型的bias 和variance，从而在提高竞赛分数的同时降低overfitting 的风险。</p>
-<h3 id="从结果文件中融合"><a href="#从结果文件中融合" class="headerlink" title="从结果文件中融合"></a>从结果文件中融合</h3><p>这种做法不需要重新训练模型，融合竞赛提交的结果文件就可以，简单便捷。</p>
-<ul>
-<li>Voting<br>投票制：少数服从多数。如一个分类问题，多个模型的投票（当然可以设置权重，若没有就是平均投票），最终投票数最多的类就是被预测的类。<br>对于加权表决融合，性能表现较差的模型（权值比较低）只能通过和其他模型保持一致增强自己的说服力。对于结果取平均融合，在不同的评估准则上也能获得不错的效果在于：取均值常常能减少过拟合的现象。如图所示：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/45850387.jpg" alt="avatar"><br>如果单个模型过拟合产生了绿色的边缘，这时候去平均这种策略使得决策边界变成黑色的边缘，这样的效果更好。机器学习的目的并不是让模型记住训练数据，而是具有更好的泛化性。</li>
-<li>Ranking<br>Rank的思想其实和Averaging一致，但Rank是把排名做平均，对于<strong>AUC指标</strong>比较有效。</li>
-</ul>
-<h3 id="训练模型融合"><a href="#训练模型融合" class="headerlink" title="训练模型融合"></a>训练模型融合</h3><ul>
-<li>Bagging:<br>使用训练数据的不同随机子集来训练每个 Base Model，最后进行每个 Base Model 权重相同的 Vote。也即 Random Forest 的原理。</li>
-<li>Boosting:<br>Boosting是一种迭代的方法，每一次训练会更关心上一次被分错的样本，比如改变被错分的样本的权重的Adaboost方法。也即 Gradient Boosting，Adaboost 的原理。比 Bagging 效果好，但更容易 Overfit。 </li>
-<li>Blending<br>用不相交的数据训练不同的 Base Model，将它们的输出取（加权）平均。实现简单，但对训练数据利用少了。</li>
-<li><p>Stackinig(以二层为例)<br>在网上为数不多的关于stacking的内容中，相信你已经看过这张图片：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/80388486.jpg" alt="avatar"><br>PS:这不是原图，是在原图的基础上经过修改（把最上面标题的model 1，2,3,4,5 修改为model 1,1,1,1,1。因为这个一个model 的不同阶段，不是多个模型）</p>
-<p>  想比较而言我更加喜欢下面这张图片，因为它把stacking 的不同阶段表达的更加清楚，尤其是经过model 1之后，model 2是在model 1的基础上进行训练的。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/76702885.jpg" alt="avatar"><br>  对于第二阶段使用的样本集合，上图使用的是第一阶段的结果数据集，当然还有一种方式，如下图所示。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/68508635.jpg" alt="avatar"><br>  在该图中上一阶段的结果(prob 1-N)列和原始数据集组成新的特征向量，训练第二阶段模型。</p>
-</li>
-</ul>
-<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><ul>
-<li>cross validation交叉验证<br>当评估不同的参数设置，对算法表现的影响时，仍然存在则过拟合的风险。因为在调整参数，优化测试集的算法表现时，测试集的信息已经泄漏进模型中了。<br>为了解决这个问题，需要一部分数据作为验证集(validation set)。 这样，用训练集(Train set)的数据训练模型；用验证集对模型参数调剂，如上述程序中的C值；最后，算法的评价在测试集(Test set)上完成。但是当数据有原来的两份化成三份之后，降低了寻数据量；另外算法的表现依赖于三个数据集的划分。<br>解决上述两个问题的常见方法: cross validation. 测试集仍然单独划分出来，但是 validation set不用单独划分。将训练集划分为k个小的数据集，称之为k-fold CV。对每个fold进行下列过程： <ol>
-<li>用其他k-1 folds 作为training sets，训练模型</li>
-<li>模型的结果用剩下的一个 fold进行评价<br>模型的性能用上述循环中的 k-fold 交叉验证集的平均值表现，这样的做法增加了计算量，但是提高数据的利用效率。</li>
-</ol>
-</li>
-</ul>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://blog.csdn.net/u013395516/article/details/79745063" target="_blank" rel="noopener">https://blog.csdn.net/u013395516/article/details/79745063</a><br><a href="https://blog.csdn.net/u012969412/article/details/76636336" target="_blank" rel="noopener">https://blog.csdn.net/u012969412/article/details/76636336</a><br><a href="https://blog.csdn.net/u012604810/article/details/77579782" target="_blank" rel="noopener">https://blog.csdn.net/u012604810/article/details/77579782</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/XGBoost/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/05/XGBoost/" itemprop="url">XGBoost</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:33:28+08:00">
-                2018-06-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">竞赛</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Introduction-to-XGBoost"><a href="#Introduction-to-XGBoost" class="headerlink" title="Introduction to XGBoost"></a>Introduction to XGBoost</h3><p>XGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Friedman. XGBoost is based on this original model. And most of the content is based on the websit(<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">http://xgboost.readthedocs.io/en/latest/model.html</a>)</p>
-<h3 id="element-of-Supervised-learning"><a href="#element-of-Supervised-learning" class="headerlink" title="element of Supervised learning"></a>element of Supervised learning</h3><p>XGBoost is used for supervised learning problems, where we use the training data (with multiple features) xi to predict a target variable yi.</p>
-<h3 id="Objective-Function-Training-Loss-Regularization"><a href="#Objective-Function-Training-Loss-Regularization" class="headerlink" title="Objective Function: Training Loss + Regularization"></a>Objective Function: Training Loss + Regularization</h3><p>A very important fact about objective functions is they <strong>must always</strong> contain two parts: training loss and regularization.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg" alt="avatar"><br>For example, a commomly used training loss is mean squared error.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/20584283.jpg" alt="avatar"><br>Another commonly used loss function is logistic loss for logistic regression<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43560274.jpg" alt="avatar"></p>
-<p>The <strong>regularization term</strong> is what people usually forget to add. The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>The general principle is we want both a simple and predictive model. The tradeoff between the two is also referred as bias-variance tradeoff in machine learning.</p>
-<h3 id="Tree-Ensemble"><a href="#Tree-Ensemble" class="headerlink" title="Tree Ensemble"></a>Tree Ensemble</h3><p>The tree ensemble model is a set of classification and regression trees(CART). Here is a simple example of a CART that classifies whether someone will like computer games.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/81320459.jpg" alt="avatar"><br>A CART is a bit different from decision trees, where the leaf only contains decision values. In CART, a real score is associated with each of the leaves, which gives us richer interpretations that go beyond classification. This also makes the unified optimization step easier, as we will see in a later part of this tutorial.</p>
-<p>Usually, a single tree is not strong enough to be used in practice. What is actually used is the so-called tree ensemble model, which sums the prediction of multiple trees together.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43017405.jpg" alt="avatar"><br>Here is an example of a tree ensemble of two trees. The prediction scores of each individual tree are summed up to get the final score. If you look at the example, an important fact is that the two trees try to complement each other. </p>
-<p>Now here comes the question, what is the model for random forests? It is exactly tree ensembles! So random forests and boosted trees are not different in terms of model, the difference is how we train them. This means if you write a predictive service of tree ensembles, you only need to write one of them and they should directly work for both random forests and boosted trees. One example of why elements of supervised learning rock.</p>
-<h3 id="Tree-Boosting"><a href="#Tree-Boosting" class="headerlink" title="Tree Boosting"></a>Tree Boosting</h3><p>After introducing the model, let us begin with the real training part. How should we learn the trees? The answer is, as is always for all supervised learning models: define an objective function, and optimize it!</p>
-<p>Assume we have the following objective function (remember it always needs to contain training loss and regularization)</p>
-<h3 id="Additive-Training"><a href="#Additive-Training" class="headerlink" title="Additive Training"></a>Additive Training</h3><p>First thing we want to ask is what are the parameters of trees? You can find that what we need to learn are those functions fi, with each containing the structure of the tree and the leaf scores. This is much harder than traditional optimization problem where you can take the gradient and go. It is not easy to train all the trees at once. Instead, we use an additive strategy: fix what we have learned, and add one new tree at a time. </p>
-<p>It remains to ask, which tree do we want at each step? A natural thing is to add the one that optimizes our objective.</p>
-<h3 id="Training-model"><a href="#Training-model" class="headerlink" title="Training model"></a>Training model</h3><p>The XGBoost model for classification is called <strong>XGBClassifier</strong>(regression is called XGBRegressor). We can create and and fit it to our training dataset. Models are fit using the scikit-learn API and the <strong>model.fit()</strong> function.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/等概率生成器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/等概率生成器/" itemprop="url">等概率生成器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T22:20:24+08:00">
-                2018-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>给定一个可以等概率生成1-3的rand3()函数生成器，求解可以随机等概率生成1-7的rand7()函数生成器。</p>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>使用rand3()函数生成1-9的数字，然后丢弃8,9两种可能。</p>
-<h3 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Solution: </span><br><span class="line">    def random7(self):</span><br><span class="line">        x =8</span><br><span class="line">        while x&gt;7:</span><br><span class="line">            x =self.random3() + (self.random3()-1)*3</span><br><span class="line">        return x</span><br><span class="line">    def random3(self):</span><br><span class="line">        return </span><br><span class="line">if __name__ ==&quot;__main__&quot;:</span><br><span class="line">    print(Solution().random7())</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2041,7 +2075,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2063,7 +2097,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

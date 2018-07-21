@@ -296,6 +296,466 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/模型融合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/05/模型融合/" itemprop="url">模型融合</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:37:44+08:00">
+                2018-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/竞赛/" itemprop="url" rel="index">
+                    <span itemprop="name">竞赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>多个有差异性的模型融合可以提高整体的性能。它能同时降低最终模型的bias 和variance，从而在提高竞赛分数的同时降低overfitting 的风险。</p>
+<h3 id="从结果文件中融合"><a href="#从结果文件中融合" class="headerlink" title="从结果文件中融合"></a>从结果文件中融合</h3><p>这种做法不需要重新训练模型，融合竞赛提交的结果文件就可以，简单便捷。</p>
+<ul>
+<li>Voting<br>投票制：少数服从多数。如一个分类问题，多个模型的投票（当然可以设置权重，若没有就是平均投票），最终投票数最多的类就是被预测的类。<br>对于加权表决融合，性能表现较差的模型（权值比较低）只能通过和其他模型保持一致增强自己的说服力。对于结果取平均融合，在不同的评估准则上也能获得不错的效果在于：取均值常常能减少过拟合的现象。如图所示：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/45850387.jpg" alt="avatar"><br>如果单个模型过拟合产生了绿色的边缘，这时候去平均这种策略使得决策边界变成黑色的边缘，这样的效果更好。机器学习的目的并不是让模型记住训练数据，而是具有更好的泛化性。</li>
+<li>Ranking<br>Rank的思想其实和Averaging一致，但Rank是把排名做平均，对于<strong>AUC指标</strong>比较有效。</li>
+</ul>
+<h3 id="训练模型融合"><a href="#训练模型融合" class="headerlink" title="训练模型融合"></a>训练模型融合</h3><ul>
+<li>Bagging:<br>使用训练数据的不同随机子集来训练每个 Base Model，最后进行每个 Base Model 权重相同的 Vote。也即 Random Forest 的原理。</li>
+<li>Boosting:<br>Boosting是一种迭代的方法，每一次训练会更关心上一次被分错的样本，比如改变被错分的样本的权重的Adaboost方法。也即 Gradient Boosting，Adaboost 的原理。比 Bagging 效果好，但更容易 Overfit。 </li>
+<li>Blending<br>用不相交的数据训练不同的 Base Model，将它们的输出取（加权）平均。实现简单，但对训练数据利用少了。</li>
+<li><p>Stackinig(以二层为例)<br>在网上为数不多的关于stacking的内容中，相信你已经看过这张图片：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/80388486.jpg" alt="avatar"><br>PS:这不是原图，是在原图的基础上经过修改（把最上面标题的model 1，2,3,4,5 修改为model 1,1,1,1,1。因为这个一个model 的不同阶段，不是多个模型）</p>
+<p>  想比较而言我更加喜欢下面这张图片，因为它把stacking 的不同阶段表达的更加清楚，尤其是经过model 1之后，model 2是在model 1的基础上进行训练的。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/76702885.jpg" alt="avatar"><br>  对于第二阶段使用的样本集合，上图使用的是第一阶段的结果数据集，当然还有一种方式，如下图所示。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/68508635.jpg" alt="avatar"><br>  在该图中上一阶段的结果(prob 1-N)列和原始数据集组成新的特征向量，训练第二阶段模型。</p>
+</li>
+</ul>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><ul>
+<li>cross validation交叉验证<br>当评估不同的参数设置，对算法表现的影响时，仍然存在则过拟合的风险。因为在调整参数，优化测试集的算法表现时，测试集的信息已经泄漏进模型中了。<br>为了解决这个问题，需要一部分数据作为验证集(validation set)。 这样，用训练集(Train set)的数据训练模型；用验证集对模型参数调剂，如上述程序中的C值；最后，算法的评价在测试集(Test set)上完成。但是当数据有原来的两份化成三份之后，降低了寻数据量；另外算法的表现依赖于三个数据集的划分。<br>解决上述两个问题的常见方法: cross validation. 测试集仍然单独划分出来，但是 validation set不用单独划分。将训练集划分为k个小的数据集，称之为k-fold CV。对每个fold进行下列过程： <ol>
+<li>用其他k-1 folds 作为training sets，训练模型</li>
+<li>模型的结果用剩下的一个 fold进行评价<br>模型的性能用上述循环中的 k-fold 交叉验证集的平均值表现，这样的做法增加了计算量，但是提高数据的利用效率。</li>
+</ol>
+</li>
+</ul>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://blog.csdn.net/u013395516/article/details/79745063" target="_blank" rel="noopener">https://blog.csdn.net/u013395516/article/details/79745063</a><br><a href="https://blog.csdn.net/u012969412/article/details/76636336" target="_blank" rel="noopener">https://blog.csdn.net/u012969412/article/details/76636336</a><br><a href="https://blog.csdn.net/u012604810/article/details/77579782" target="_blank" rel="noopener">https://blog.csdn.net/u012604810/article/details/77579782</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/XGBoost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/05/XGBoost/" itemprop="url">XGBoost</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:33:28+08:00">
+                2018-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/竞赛/" itemprop="url" rel="index">
+                    <span itemprop="name">竞赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Introduction-to-XGBoost"><a href="#Introduction-to-XGBoost" class="headerlink" title="Introduction to XGBoost"></a>Introduction to XGBoost</h3><p>XGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Friedman. XGBoost is based on this original model. And most of the content is based on the websit(<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">http://xgboost.readthedocs.io/en/latest/model.html</a>)</p>
+<h3 id="element-of-Supervised-learning"><a href="#element-of-Supervised-learning" class="headerlink" title="element of Supervised learning"></a>element of Supervised learning</h3><p>XGBoost is used for supervised learning problems, where we use the training data (with multiple features) xi to predict a target variable yi.</p>
+<h3 id="Objective-Function-Training-Loss-Regularization"><a href="#Objective-Function-Training-Loss-Regularization" class="headerlink" title="Objective Function: Training Loss + Regularization"></a>Objective Function: Training Loss + Regularization</h3><p>A very important fact about objective functions is they <strong>must always</strong> contain two parts: training loss and regularization.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg" alt="avatar"><br>For example, a commomly used training loss is mean squared error.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/20584283.jpg" alt="avatar"><br>Another commonly used loss function is logistic loss for logistic regression<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43560274.jpg" alt="avatar"></p>
+<p>The <strong>regularization term</strong> is what people usually forget to add. The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>The general principle is we want both a simple and predictive model. The tradeoff between the two is also referred as bias-variance tradeoff in machine learning.</p>
+<h3 id="Tree-Ensemble"><a href="#Tree-Ensemble" class="headerlink" title="Tree Ensemble"></a>Tree Ensemble</h3><p>The tree ensemble model is a set of classification and regression trees(CART). Here is a simple example of a CART that classifies whether someone will like computer games.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/81320459.jpg" alt="avatar"><br>A CART is a bit different from decision trees, where the leaf only contains decision values. In CART, a real score is associated with each of the leaves, which gives us richer interpretations that go beyond classification. This also makes the unified optimization step easier, as we will see in a later part of this tutorial.</p>
+<p>Usually, a single tree is not strong enough to be used in practice. What is actually used is the so-called tree ensemble model, which sums the prediction of multiple trees together.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43017405.jpg" alt="avatar"><br>Here is an example of a tree ensemble of two trees. The prediction scores of each individual tree are summed up to get the final score. If you look at the example, an important fact is that the two trees try to complement each other. </p>
+<p>Now here comes the question, what is the model for random forests? It is exactly tree ensembles! So random forests and boosted trees are not different in terms of model, the difference is how we train them. This means if you write a predictive service of tree ensembles, you only need to write one of them and they should directly work for both random forests and boosted trees. One example of why elements of supervised learning rock.</p>
+<h3 id="Tree-Boosting"><a href="#Tree-Boosting" class="headerlink" title="Tree Boosting"></a>Tree Boosting</h3><p>After introducing the model, let us begin with the real training part. How should we learn the trees? The answer is, as is always for all supervised learning models: define an objective function, and optimize it!</p>
+<p>Assume we have the following objective function (remember it always needs to contain training loss and regularization)</p>
+<h3 id="Additive-Training"><a href="#Additive-Training" class="headerlink" title="Additive Training"></a>Additive Training</h3><p>First thing we want to ask is what are the parameters of trees? You can find that what we need to learn are those functions fi, with each containing the structure of the tree and the leaf scores. This is much harder than traditional optimization problem where you can take the gradient and go. It is not easy to train all the trees at once. Instead, we use an additive strategy: fix what we have learned, and add one new tree at a time. </p>
+<p>It remains to ask, which tree do we want at each step? A natural thing is to add the one that optimizes our objective.</p>
+<h3 id="Training-model"><a href="#Training-model" class="headerlink" title="Training model"></a>Training model</h3><p>The XGBoost model for classification is called <strong>XGBClassifier</strong>(regression is called XGBRegressor). We can create and and fit it to our training dataset. Models are fit using the scikit-learn API and the <strong>model.fit()</strong> function.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/等概率生成器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/28/等概率生成器/" itemprop="url">等概率生成器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T22:20:24+08:00">
+                2018-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>给定一个可以等概率生成1-3的rand3()函数生成器，求解可以随机等概率生成1-7的rand7()函数生成器。</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>使用rand3()函数生成1-9的数字，然后丢弃8,9两种可能。</p>
+<h3 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Solution: </span><br><span class="line">    def random7(self):</span><br><span class="line">        x =8</span><br><span class="line">        while x&gt;7:</span><br><span class="line">            x =self.random3() + (self.random3()-1)*3</span><br><span class="line">        return x</span><br><span class="line">    def random3(self):</span><br><span class="line">        return </span><br><span class="line">if __name__ ==&quot;__main__&quot;:</span><br><span class="line">    print(Solution().random7())</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/机器学习优化方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -639,7 +1099,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -661,7 +1121,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
