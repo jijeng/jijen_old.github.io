@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/21729887.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/50917702.jpg">
-<meta property="og:updated_time" content="2018-07-21T06:19:43.459Z">
+<meta property="og:updated_time" content="2018-07-23T01:35:07.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LightGBM和XGBoost及其调参">
 <meta name="twitter:description" content="lightGBM调参(常用参数)Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So">
@@ -430,7 +430,10 @@
 <ul>
 <li>booster:<br>default =gbtree, can be gbtree, gblinear or dart. 一般使用gbtree.</li>
 <li>silent:<br>default =0, silent mode is activated if set to 1(no running messages will be printed)</li>
-<li>nthread:<br>default to maximum of threads.<h4 id="booster-parameters"><a href="#booster-parameters" class="headerlink" title="booster parameters"></a>booster parameters</h4>Booster Parameters: Guide the individual booster (tree/regression) at each step</li>
+<li>nthread:<br>default to maximum of threads.</li>
+</ul>
+<h4 id="booster-parameters"><a href="#booster-parameters" class="headerlink" title="booster parameters"></a>booster parameters</h4><p>Booster Parameters: Guide the individual booster (tree/regression) at each step</p>
+<ul>
 <li>eta(learning rate):<br>default=0.3, typical final values to be used: 0.01-0.2, using CV to tune</li>
 <li>min_child_weight:<br>minimum sum of instance weight (hessian) needed in a child. If the tree partition step results in a leaf node with the sum of instance weight less than min_child_weight, then the building process will give up further partitioning. In linear regression mode, this simply corresponds to minimum number of instances needed to be in each node. The larger, the more conservative the algorithm will be.<br>default =1,too high values can lead to under-fitting, it should be tuned using CV. 数值越小越容易过拟合，越大越容易 under-fitting.</li>
 <li>max_depth:<br>default =6, typical values: 3-10, should be tuned using CV.</li>
@@ -439,11 +442,18 @@
 <li>colsample_bytree:<br>default =1, typical values: 0.5-1. colsample_bytree和subsample不同点：colsample_by是特征的随机fraction, subsample是rows的随机fraction。</li>
 <li>lambda:<br>default =1, L2 regularization term on weights(analogous to Ridge regression). Though many data scientists don’t use it often, it should be explored to reduce overfitting.</li>
 <li>alpha:<br>default =0, L1 regularization term on weight (analogous to Lasso regression)</li>
-<li>scale_pos_weight:<br>default =1,  a value greater than 0 should be used in case of high class imbalance as it helps in faster convergence.<h4 id="learning-task-parameters"><a href="#learning-task-parameters" class="headerlink" title="learning task parameters"></a>learning task parameters</h4>Learning Task Parameters: Guide the optimization performed</li>
+<li>scale_pos_weight:<br>default =1,  a value greater than 0 should be used in case of high class imbalance as it helps in faster convergence.</li>
+</ul>
+<h4 id="learning-task-parameters"><a href="#learning-task-parameters" class="headerlink" title="learning task parameters"></a>learning task parameters</h4><p>Learning Task Parameters: Guide the optimization performed</p>
+<ul>
 <li><strong>objective</strong><br>binary: logistic- returns predicated probability(not class)<br>multi: softmax- returns predicated class(not probabilities)<br>multi: softprob- returns predicated probability of each data point belonging to each class.</li>
 <li>eval_metirc<br>default according to objective(rmse for regression and error for classification), used for validation data.<br>typical values: rmse(root mean square error), mse(mean absolute error), logloss(negative log-likelihood), error(binary classification error rate, 0.5 threshold), auc(area under the curve)</li>
-<li>seed<br>default =0, used for reproducible results and also for <strong>parameter tuning</strong>.<h4 id="Control-Overfitting"><a href="#Control-Overfitting" class="headerlink" title="Control Overfitting"></a>Control Overfitting</h4>There are in general two ways that you can control overfitting in xgboost. </li>
+<li>seed<br>default =0, used for reproducible results and also for <strong>parameter tuning</strong>.</li>
+</ul>
+<h4 id="Control-Overfitting"><a href="#Control-Overfitting" class="headerlink" title="Control Overfitting"></a>Control Overfitting</h4><p>There are in general two ways that you can control overfitting in xgboost. </p>
+<ul>
 <li>The first way is to directly control model complexity.</li>
+<li>The second way is to add regularization parameters</li>
 </ul>
 <h3 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence"></a>Referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/" target="_blank" rel="noopener">complete guide parameter tuning xgboost with codes python</a><br><a href="http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html" target="_blank" rel="noopener">官方文档 param_tuning</a><br><a href="http://xgboost.readthedocs.io/en/latest/parameter.html" target="_blank" rel="noopener">官方文档 parameter</a></p>
 
@@ -573,7 +583,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -584,7 +594,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -595,7 +605,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="优化,Kaggle," />
+  <meta name="keywords" content="文本相似度,Simhash," />
 
 
 
@@ -79,23 +79,22 @@
 
 
 
-<meta name="description" content="多个有差异性的模型融合可以提高整体的性能。它能同时降低最终模型的bias 和variance，从而在提高竞赛分数的同时降低overfitting 的风险。 从结果文件中融合这种做法不需要重新训练模型，融合竞赛提交的结果文件就可以，简单便捷。  Voting投票制：少数服从多数。如一个分类问题，多个模型的投票（当然可以设置权重，若没有就是平均投票），最终投票数最多的类就是被预测的类。对于加权表决融合">
-<meta name="keywords" content="优化,Kaggle">
+<meta name="description" content="我只是想说我还没有放弃这个网站… 本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：  基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”. 根据关键字计算simhash编码，然后使用ham">
+<meta name="keywords" content="文本相似度,Simhash">
 <meta property="og:type" content="article">
-<meta property="og:title" content="模型融合">
-<meta property="og:url" content="http://yoursite.com/2018/06/05/模型融合/index.html">
+<meta property="og:title" content="基于simhash的文本相似度比较">
+<meta property="og:url" content="http://yoursite.com/2018/08/23/基于simhash的文本相似度比较/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="多个有差异性的模型融合可以提高整体的性能。它能同时降低最终模型的bias 和variance，从而在提高竞赛分数的同时降低overfitting 的风险。 从结果文件中融合这种做法不需要重新训练模型，融合竞赛提交的结果文件就可以，简单便捷。  Voting投票制：少数服从多数。如一个分类问题，多个模型的投票（当然可以设置权重，若没有就是平均投票），最终投票数最多的类就是被预测的类。对于加权表决融合">
+<meta property="og:description" content="我只是想说我还没有放弃这个网站… 本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：  基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”. 根据关键字计算simhash编码，然后使用ham">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/45850387.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/80388486.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/76702885.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/68508635.jpg">
-<meta property="og:updated_time" content="2018-06-14T14:05:36.808Z">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/41166141.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/57579705.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/91557560.jpg">
+<meta property="og:updated_time" content="2018-08-23T12:30:17.687Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="模型融合">
-<meta name="twitter:description" content="多个有差异性的模型融合可以提高整体的性能。它能同时降低最终模型的bias 和variance，从而在提高竞赛分数的同时降低overfitting 的风险。 从结果文件中融合这种做法不需要重新训练模型，融合竞赛提交的结果文件就可以，简单便捷。  Voting投票制：少数服从多数。如一个分类问题，多个模型的投票（当然可以设置权重，若没有就是平均投票），最终投票数最多的类就是被预测的类。对于加权表决融合">
-<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/45850387.jpg">
+<meta name="twitter:title" content="基于simhash的文本相似度比较">
+<meta name="twitter:description" content="我只是想说我还没有放弃这个网站… 本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：  基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”. 根据关键字计算simhash编码，然后使用ham">
+<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/41166141.jpg">
 
 
 
@@ -125,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/05/模型融合/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/23/基于simhash的文本相似度比较/"/>
 
 
 
 
 
-  <title>模型融合 | Jijeng's blog</title>
+  <title>基于simhash的文本相似度比较 | Jijeng's blog</title>
   
 
 
@@ -302,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/模型融合/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/23/基于simhash的文本相似度比较/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -319,7 +318,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">模型融合</h1>
+          <h1 class="post-title" itemprop="name headline">基于simhash的文本相似度比较</h1>
         
 
         <div class="post-meta">
@@ -331,8 +330,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:37:44+08:00">
-                2018-06-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-23T20:20:14+08:00">
+                2018-08-23
               </time>
             
 
@@ -354,8 +353,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">竞赛</span>
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
                   </a>
                 </span>
 
@@ -391,28 +390,27 @@
       
 
       
-        <p>多个有差异性的模型融合可以提高整体的性能。它能同时降低最终模型的bias 和variance，从而在提高竞赛分数的同时降低overfitting 的风险。</p>
-<h3 id="从结果文件中融合"><a href="#从结果文件中融合" class="headerlink" title="从结果文件中融合"></a>从结果文件中融合</h3><p>这种做法不需要重新训练模型，融合竞赛提交的结果文件就可以，简单便捷。</p>
+        <p>我只是想说我还没有放弃这个网站…</p>
+<p>本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：</p>
 <ul>
-<li>Voting<br>投票制：少数服从多数。如一个分类问题，多个模型的投票（当然可以设置权重，若没有就是平均投票），最终投票数最多的类就是被预测的类。<br>对于加权表决融合，性能表现较差的模型（权值比较低）只能通过和其他模型保持一致增强自己的说服力。对于结果取平均融合，在不同的评估准则上也能获得不错的效果在于：取均值常常能减少过拟合的现象。如图所示：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/45850387.jpg" alt="avatar"><br>如果单个模型过拟合产生了绿色的边缘，这时候去平均这种策略使得决策边界变成黑色的边缘，这样的效果更好。机器学习的目的并不是让模型记住训练数据，而是具有更好的泛化性。</li>
-<li>Ranking<br>Rank的思想其实和Averaging一致，但Rank是把排名做平均，对于<strong>AUC指标</strong>比较有效。</li>
+<li>基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”.</li>
+<li>根据关键字计算simhash编码，然后使用hamming distance进行比较两者的不同。<br>如果对于上述概念比较模糊，建议首先阅读<a href="https://jijeng.github.io/2018/08/23/文本相似度比较基本知识/" target="_blank" rel="noopener">该篇博客</a>。</li>
 </ul>
-<h3 id="训练模型融合"><a href="#训练模型融合" class="headerlink" title="训练模型融合"></a>训练模型融合</h3><ul>
-<li>Bagging:<br>使用训练数据的不同随机子集来训练每个 Base Model，最后进行每个 Base Model 权重相同的 Vote。也即 Random Forest 的原理。</li>
-<li>Boosting:<br>Boosting是一种迭代的方法，每一次训练会更关心上一次被分错的样本，比如改变被错分的样本的权重的Adaboost方法。也即 Gradient Boosting，Adaboost 的原理。比 Bagging 效果好，但更容易 Overfit。 </li>
-<li>Blending<br>用不相交的数据训练不同的 Base Model，将它们的输出取（加权）平均。实现简单，但对训练数据利用少了。</li>
-<li><p>Stackinig(以二层为例)<br>在网上为数不多的关于stacking的内容中，相信你已经看过这张图片：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/80388486.jpg" alt="avatar"><br>PS:这不是原图，是在原图的基础上经过修改（把最上面标题的model 1，2,3,4,5 修改为model 1,1,1,1,1。因为这个一个model 的不同阶段，不是多个模型）</p>
-<p>  想比较而言我更加喜欢下面这张图片，因为它把stacking 的不同阶段表达的更加清楚，尤其是经过model 1之后，model 2是在model 1的基础上进行训练的。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/76702885.jpg" alt="avatar"><br>  对于第二阶段使用的样本集合，上图使用的是第一阶段的结果数据集，当然还有一种方式，如下图所示。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-4/68508635.jpg" alt="avatar"><br>  在该图中上一阶段的结果(prob 1-N)列和原始数据集组成新的特征向量，训练第二阶段模型。</p>
-</li>
-</ul>
-<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><ul>
-<li>cross validation交叉验证<br>当评估不同的参数设置，对算法表现的影响时，仍然存在则过拟合的风险。因为在调整参数，优化测试集的算法表现时，测试集的信息已经泄漏进模型中了。<br>为了解决这个问题，需要一部分数据作为验证集(validation set)。 这样，用训练集(Train set)的数据训练模型；用验证集对模型参数调剂，如上述程序中的C值；最后，算法的评价在测试集(Test set)上完成。但是当数据有原来的两份化成三份之后，降低了寻数据量；另外算法的表现依赖于三个数据集的划分。<br>解决上述两个问题的常见方法: cross validation. 测试集仍然单独划分出来，但是 validation set不用单独划分。将训练集划分为k个小的数据集，称之为k-fold CV。对每个fold进行下列过程： <ol>
-<li>用其他k-1 folds 作为training sets，训练模型</li>
-<li>模型的结果用剩下的一个 fold进行评价<br>模型的性能用上述循环中的 k-fold 交叉验证集的平均值表现，这样的做法增加了计算量，但是提高数据的利用效率。</li>
-</ol>
-</li>
-</ul>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://blog.csdn.net/u013395516/article/details/79745063" target="_blank" rel="noopener">https://blog.csdn.net/u013395516/article/details/79745063</a><br><a href="https://blog.csdn.net/u012969412/article/details/76636336" target="_blank" rel="noopener">https://blog.csdn.net/u012969412/article/details/76636336</a><br><a href="https://blog.csdn.net/u012604810/article/details/77579782" target="_blank" rel="noopener">https://blog.csdn.net/u012604810/article/details/77579782</a></p>
+<p>顺滑过渡到代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 常规导包</span><br><span class="line">import sys,codecs</span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import jieba.posseg</span><br><span class="line">import jieba.analyse</span><br><span class="line">from sklearn import feature_extraction</span><br><span class="line">from sklearn.feature_extraction.text import TfidfTransformer</span><br><span class="line">from sklearn.feature_extraction.text import CountVectorizer</span><br><span class="line"># 数据集的路径</span><br><span class="line">path =&quot;../tianmao2.csv&quot;</span><br><span class="line">names =[&apos;where&apos;, &apos;time&apos;, &apos;title&apos;, &apos;url&apos;, &apos;contents&apos;]</span><br><span class="line">data =pd.read_csv(path, delimiter=&apos;\t&apos;, names= names, nrows=200)</span><br><span class="line">data[&apos;id&apos;] =data.index+1</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/41166141.jpg" alt=""><br>我们使用title和contents 组合作为原始处理的数据，我们认为该数据能够就是文章的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stopkey = [w.strip() for w in codecs.open(&apos;../keyword_extraction/data/stopWord.txt&apos;, &apos;r&apos;).readlines()]</span><br></pre></td></tr></table></figure></p>
+<p>该stop words是中文停用词，就是常见的”的 了”。常见的有百度停用词表、哈尔滨工业大学停用词表以及中科院的停用词表。这里使用的是中科院的停用词。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def dataPrepos(text, stopkey):</span><br><span class="line">    l = []</span><br><span class="line">    pos = [&apos;n&apos;, &apos;nz&apos;, &apos;v&apos;, &apos;vd&apos;, &apos;vn&apos;, &apos;l&apos;, &apos;a&apos;, &apos;d&apos;]  # 定义选取的词性</span><br><span class="line">    seg = jieba.posseg.cut(text)  # 分词</span><br><span class="line">    for i in seg:</span><br><span class="line">        if i.word not in stopkey and i.flag in pos:  # 去停用词 + 词性筛选</span><br><span class="line">            l.append(i.word)</span><br><span class="line">    return l</span><br></pre></td></tr></table></figure></p>
+<p>我们选择名词作为主要的分析对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">idList, titleList, abstractList = data[&apos;id&apos;], data[&apos;title&apos;], data[&apos;contents&apos;]</span><br><span class="line">corpus = []  # 将所有文档输出到一个list中，一行就是一个文档</span><br><span class="line"># 这个 虽然使用 &quot; &quot; 进行分割 但是实际上还是一个打的list</span><br><span class="line">for index in range(len(idList)):</span><br><span class="line">    text = &apos;%s。%s&apos; % (titleList[index], abstractList[index])  # 拼接标题和摘要</span><br><span class="line">    text = dataPrepos(text, stopkey)  # 文本预处理</span><br><span class="line">    text = &quot; &quot;.join(text)  # 连接成字符串，空格分隔</span><br><span class="line">    corpus.append(text)</span><br></pre></td></tr></table></figure></p>
+<p>这里的corus 是将所有的经过预处理文档作为当前计算 idf 的语料库。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vectorizer = CountVectorizer()</span><br><span class="line">X = vectorizer.fit_transform(corpus)  # 词频矩阵,a[i][j]:表示j词在第i个文本中的词频</span><br><span class="line"># 2、统计每个词的tf-idf权值</span><br><span class="line">transformer = TfidfTransformer()</span><br><span class="line">tfidf = transformer.fit_transform(X)</span><br><span class="line"># 3、获取词袋模型中的关键词</span><br><span class="line">word = vectorizer.get_feature_names()</span><br><span class="line"># 4、获取tf-idf矩阵，a[i][j]表示j词在i篇文本中的tf-idf权重</span><br><span class="line">weight = tfidf.toarray()</span><br></pre></td></tr></table></figure></p>
+<p>使用sklearn 内置的函数计算tf-idf。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">topK = 10</span><br><span class="line">ids, titles, keys, weights = [], [], [], []</span><br><span class="line">for i in range(len(weight)):</span><br><span class="line">    print(&quot;-------这里输出第&quot;, i + 1, &quot;篇文本的词语tf-idf------&quot;)</span><br><span class="line">    ids.append(idList[i])</span><br><span class="line">    titles.append(titleList[i])</span><br><span class="line">    df_word, df_weight = [], []  # 当前文章的所有词汇列表、词汇对应权重列表</span><br><span class="line">    for j in range(len(word)):</span><br><span class="line">        # print(word[j],weight[i][j])</span><br><span class="line">        df_word.append(word[j])</span><br><span class="line">        df_weight.append(weight[i][j])</span><br><span class="line">    df_word = pd.DataFrame(df_word, columns=[&apos;word&apos;])</span><br><span class="line">    df_weight = pd.DataFrame(df_weight, columns=[&apos;weight&apos;])</span><br><span class="line">    word_weight = pd.concat([df_word, df_weight], axis=1)  # 拼接词汇列表和权重列表</span><br><span class="line">    word_weight = word_weight.sort_values(by=&quot;weight&quot;, ascending=False)  # 按照权重值降序排列</span><br><span class="line">    # 在这里可以查看 k的选取的数值应该是多大，</span><br><span class="line">    # from ipdb import set_trace</span><br><span class="line">    # set_trace()</span><br><span class="line">    keyword = np.array(word_weight[&apos;word&apos;])  # 选择词汇列并转成数组格式</span><br><span class="line">    word_split = [keyword[x] for x in range(0, topK)]  # 抽取前topK个词汇作为关键词</span><br><span class="line">    word_split = &quot; &quot;.join(word_split)</span><br><span class="line">    keys.append(word_split)</span><br><span class="line">    wei = np.array(word_weight[&apos;weight&apos;])</span><br><span class="line">    wei_split = [str(wei[x]) for x in range(0, topK)]</span><br><span class="line">    wei_split = &quot; &quot;.join(wei_split)</span><br><span class="line">    weights.append(wei_split)</span><br><span class="line">    # 这里的命名 容易混淆</span><br><span class="line">result = pd.DataFrame(&#123;&quot;id&quot;: ids, &quot;title&quot;: titles, &quot;key&quot;: keys, &apos;weight&apos;: weights&#125;,</span><br><span class="line">                      columns=[&apos;id&apos;, &apos;title&apos;, &apos;key&apos;, &apos;weight&apos;])</span><br></pre></td></tr></table></figure></p>
+<p>选择前10个频率最高的词语作为该篇文章的代表，当然这个参数是可以调整，需要根据具体的问题和结果进行调整。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result.head()</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/57579705.jpg" alt=""><br>最后的效果如上。至此我们第一步的提取文章的关键词就已经做完。下面进行相似度的比较。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import jieba</span><br><span class="line">import jieba.analyse</span><br><span class="line">import pandas as pd</span><br><span class="line">#日常导包</span><br></pre></td></tr></table></figure>
+<p>数据和上述的一样，所以就不截图了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">datasets =pd.read_csv(&quot;../tianmao2-tf-idf.csv&quot;)</span><br><span class="line">tokens =datasets[&apos;key&apos;]</span><br><span class="line">weights =datasets[&apos;weight&apos;]</span><br></pre></td></tr></table></figure></p>
+<p>提取关键词和对应的权重。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">print(tokens[0], len(tokens[0]))</span><br><span class="line">print(weights[0], len(weights[0]))</span><br><span class="line">tokens0 =tokens[0].split()</span><br><span class="line">weights0 =weights[0].split()</span><br><span class="line">len(tokens0)</span><br><span class="line">len(weights0)</span><br><span class="line"></span><br><span class="line">tokens1 =tokens[1].split()</span><br><span class="line">weights1 =weights[1].split()</span><br><span class="line">import ast</span><br><span class="line">weights0 =[ ast.literal_eval(i) for i in weights0]</span><br><span class="line">weights1 =[ ast.literal_eval(i) for i in weights1]</span><br></pre></td></tr></table></figure></p>
+<p>构造测试用例。因为权重是字符串，所以简单处理转成整数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dict0 =dict(zip(tokens0, weights0))</span><br><span class="line">dict1 =dict(zip(tokens1, weights1))</span><br></pre></td></tr></table></figure>
+<p>定义一个Simhash，提供对文档的数值映射和文档间相似度计算的功能.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">class Simhash(object):</span><br><span class="line">    </span><br><span class="line">    # 初始化函数</span><br><span class="line">    def __init__(self, weights_dict, tokens=&apos;&apos;, hashbits=64):</span><br><span class="line">        self.hashbits = hashbits</span><br><span class="line">        self.hash = self.simhash_function(tokens, weights_dict)</span><br><span class="line">    </span><br><span class="line">    # toString函数</span><br><span class="line">    # 不懂这个 self.hash ，凡是带有self 的函数都是可以类变量，所以这个就是返回的 self.hash这个变量</span><br><span class="line">    #凡是使用__str__ 这种类型的函数 都是重写 原来的函数</span><br><span class="line">    def __str__(self):</span><br><span class="line">        return str(self.hash)</span><br><span class="line">    </span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    ord() 函数是 chr() 函数（对于8位的ASCII字符串）或 unichr() </span><br><span class="line">    函数（对于Unicode对象）的配对函数，它以一个字符（长度为1的字符串）作为参数，返回对应的 ASCII 数值，或者 Unicode 数值   </span><br><span class="line">    </span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # 给每一个单词生成对应的hash值</span><br><span class="line">    # 这个操作搞懂之后一定很简洁， 但是现在很难理解，因为不是字符串，而是位操作</span><br><span class="line">    def _string_hash(self, source):</span><br><span class="line">        if source == &apos;&apos;:</span><br><span class="line">            return 0</span><br><span class="line">        else:</span><br><span class="line">            x = ord(source[0]) &lt;&lt; 7</span><br><span class="line">            # &lt;&lt; 表示 乘以2^7 ; &gt;&gt; 表示除以 ; ** 表示次方的意思</span><br><span class="line">            # ^ : 按位异或 (二进制进行异或)； &amp; 按位进行与 操作</span><br><span class="line">            # 左移位操作也是可以理解为 2^x 的操作，因为存储是二进制，这样左移一位 表示×2 一次</span><br><span class="line">            m = 1000003</span><br><span class="line">            mask = 2 ** self.hashbits - 1</span><br><span class="line">            for c in source:</span><br><span class="line">                x = ((x * m) ^ ord(c)) &amp; mask</span><br><span class="line">            x ^= len(source)</span><br><span class="line">            if x == -1:</span><br><span class="line">                x = -2</span><br><span class="line">            return x</span><br><span class="line">    # 生成simhash值</span><br><span class="line">    def simhash_function(self, tokens, weights_dict):</span><br><span class="line">        v = [0] * self.hashbits</span><br><span class="line">        # 这种使用 &#123;&#125; dictionary 然后强行得到item 再进行遍历也是牛逼</span><br><span class="line">        for key, t in &#123;x: self._string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">            for i in range(self.hashbits):</span><br><span class="line">                bitmask = 1 &lt;&lt; i</span><br><span class="line">                if t &amp; bitmask:</span><br><span class="line">                    v[i] += weights_dict[key]</span><br><span class="line">                else:</span><br><span class="line">                    v[i] -= weights_dict[key]</span><br><span class="line">        </span><br><span class="line">        fingerprint = 0</span><br><span class="line">        for i in range(self.hashbits):</span><br><span class="line">            if v[i] &gt;= 0:</span><br><span class="line">                fingerprint += 1 &lt;&lt; i</span><br><span class="line">        return fingerprint</span><br><span class="line">    </span><br><span class="line">    # 求文档间的海明距离</span><br><span class="line">    def hamming_distance(self, other):</span><br><span class="line">        x = (self.hash ^ other.hash) &amp; ((1 &lt;&lt; self.hashbits) - 1 )</span><br><span class="line">        tot = 0</span><br><span class="line">        while x :</span><br><span class="line">            tot += 1</span><br><span class="line">            x &amp;= x - 1</span><br><span class="line">        return tot</span><br><span class="line">    </span><br><span class="line">    #求相似度</span><br><span class="line">    # 这个相似度的计算，十分简单，如果两个数接近，那么就是认为相似。越是接近1 越是相似，</span><br><span class="line">    # 不是原先那种以某一个参数整数 如3 为距离的相似度</span><br><span class="line">    def similarity(self, other):</span><br><span class="line">        a = float(self.hash)</span><br><span class="line">        b = float(other.hash)</span><br><span class="line">        if a &gt; b:</span><br><span class="line">            return b / a</span><br><span class="line">        else: </span><br><span class="line">            return a / b</span><br><span class="line">    </span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    hash0 = Simhash(weights_dict=dict0, tokens=tokens0)</span><br><span class="line">    print(hash0)</span><br><span class="line">    hash1 = Simhash(weights_dict=dict1, tokens=tokens1)</span><br><span class="line">    print(hash1)</span><br><span class="line">    print(hash0.hamming_distance(hash1))</span><br><span class="line">    print(hash0.similarity(hash1))</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/91557560.jpg" alt=""><br>结果如上。可以看出该例子中使用的两两比较的方式，对于大数据来说，一般可能会用到倒排索引和cpu并行技术。</p>
 
       
     </div>
@@ -430,9 +428,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/优化/" rel="tag"># 优化</a>
+            <a href="/tags/文本相似度/" rel="tag"># 文本相似度</a>
           
-            <a href="/tags/Kaggle/" rel="tag"># Kaggle</a>
+            <a href="/tags/Simhash/" rel="tag"># Simhash</a>
           
         </div>
       
@@ -445,8 +443,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/05/XGBoost/" rel="next" title="XGBoost">
-                <i class="fa fa-chevron-left"></i> XGBoost
+              <a href="/2018/08/23/文本相似度比较基本知识/" rel="next" title="文本相似度比较基本知识">
+                <i class="fa fa-chevron-left"></i> 文本相似度比较基本知识
               </a>
             
           </div>
@@ -454,10 +452,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/05/Titanic-Challenge/" rel="prev" title="Titanic Challenge">
-                Titanic Challenge <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -509,17 +503,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -599,22 +584,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#从结果文件中融合"><span class="nav-number">1.</span> <span class="nav-text">从结果文件中融合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练模型融合"><span class="nav-number">2.</span> <span class="nav-text">训练模型融合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#名词解释"><span class="nav-number">3.</span> <span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

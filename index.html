@@ -296,6 +296,303 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/23/基于simhash的文本相似度比较/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/23/基于simhash的文本相似度比较/" itemprop="url">基于simhash的文本相似度比较</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-23T20:20:14+08:00">
+                2018-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我只是想说我还没有放弃这个网站…</p>
+<p>本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：</p>
+<ul>
+<li>基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”.</li>
+<li>根据关键字计算simhash编码，然后使用hamming distance进行比较两者的不同。<br>如果对于上述概念比较模糊，建议首先阅读<a href="https://jijeng.github.io/2018/08/23/文本相似度比较基本知识/" target="_blank" rel="noopener">该篇博客</a>。</li>
+</ul>
+<p>顺滑过渡到代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 常规导包</span><br><span class="line">import sys,codecs</span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import jieba.posseg</span><br><span class="line">import jieba.analyse</span><br><span class="line">from sklearn import feature_extraction</span><br><span class="line">from sklearn.feature_extraction.text import TfidfTransformer</span><br><span class="line">from sklearn.feature_extraction.text import CountVectorizer</span><br><span class="line"># 数据集的路径</span><br><span class="line">path =&quot;../tianmao2.csv&quot;</span><br><span class="line">names =[&apos;where&apos;, &apos;time&apos;, &apos;title&apos;, &apos;url&apos;, &apos;contents&apos;]</span><br><span class="line">data =pd.read_csv(path, delimiter=&apos;\t&apos;, names= names, nrows=200)</span><br><span class="line">data[&apos;id&apos;] =data.index+1</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/41166141.jpg" alt=""><br>我们使用title和contents 组合作为原始处理的数据，我们认为该数据能够就是文章的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stopkey = [w.strip() for w in codecs.open(&apos;../keyword_extraction/data/stopWord.txt&apos;, &apos;r&apos;).readlines()]</span><br></pre></td></tr></table></figure></p>
+<p>该stop words是中文停用词，就是常见的”的 了”。常见的有百度停用词表、哈尔滨工业大学停用词表以及中科院的停用词表。这里使用的是中科院的停用词。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def dataPrepos(text, stopkey):</span><br><span class="line">    l = []</span><br><span class="line">    pos = [&apos;n&apos;, &apos;nz&apos;, &apos;v&apos;, &apos;vd&apos;, &apos;vn&apos;, &apos;l&apos;, &apos;a&apos;, &apos;d&apos;]  # 定义选取的词性</span><br><span class="line">    seg = jieba.posseg.cut(text)  # 分词</span><br><span class="line">    for i in seg:</span><br><span class="line">        if i.word not in stopkey and i.flag in pos:  # 去停用词 + 词性筛选</span><br><span class="line">            l.append(i.word)</span><br><span class="line">    return l</span><br></pre></td></tr></table></figure></p>
+<p>我们选择名词作为主要的分析对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">idList, titleList, abstractList = data[&apos;id&apos;], data[&apos;title&apos;], data[&apos;contents&apos;]</span><br><span class="line">corpus = []  # 将所有文档输出到一个list中，一行就是一个文档</span><br><span class="line"># 这个 虽然使用 &quot; &quot; 进行分割 但是实际上还是一个打的list</span><br><span class="line">for index in range(len(idList)):</span><br><span class="line">    text = &apos;%s。%s&apos; % (titleList[index], abstractList[index])  # 拼接标题和摘要</span><br><span class="line">    text = dataPrepos(text, stopkey)  # 文本预处理</span><br><span class="line">    text = &quot; &quot;.join(text)  # 连接成字符串，空格分隔</span><br><span class="line">    corpus.append(text)</span><br></pre></td></tr></table></figure></p>
+<p>这里的corus 是将所有的经过预处理文档作为当前计算 idf 的语料库。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vectorizer = CountVectorizer()</span><br><span class="line">X = vectorizer.fit_transform(corpus)  # 词频矩阵,a[i][j]:表示j词在第i个文本中的词频</span><br><span class="line"># 2、统计每个词的tf-idf权值</span><br><span class="line">transformer = TfidfTransformer()</span><br><span class="line">tfidf = transformer.fit_transform(X)</span><br><span class="line"># 3、获取词袋模型中的关键词</span><br><span class="line">word = vectorizer.get_feature_names()</span><br><span class="line"># 4、获取tf-idf矩阵，a[i][j]表示j词在i篇文本中的tf-idf权重</span><br><span class="line">weight = tfidf.toarray()</span><br></pre></td></tr></table></figure></p>
+<p>使用sklearn 内置的函数计算tf-idf。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">topK = 10</span><br><span class="line">ids, titles, keys, weights = [], [], [], []</span><br><span class="line">for i in range(len(weight)):</span><br><span class="line">    print(&quot;-------这里输出第&quot;, i + 1, &quot;篇文本的词语tf-idf------&quot;)</span><br><span class="line">    ids.append(idList[i])</span><br><span class="line">    titles.append(titleList[i])</span><br><span class="line">    df_word, df_weight = [], []  # 当前文章的所有词汇列表、词汇对应权重列表</span><br><span class="line">    for j in range(len(word)):</span><br><span class="line">        # print(word[j],weight[i][j])</span><br><span class="line">        df_word.append(word[j])</span><br><span class="line">        df_weight.append(weight[i][j])</span><br><span class="line">    df_word = pd.DataFrame(df_word, columns=[&apos;word&apos;])</span><br><span class="line">    df_weight = pd.DataFrame(df_weight, columns=[&apos;weight&apos;])</span><br><span class="line">    word_weight = pd.concat([df_word, df_weight], axis=1)  # 拼接词汇列表和权重列表</span><br><span class="line">    word_weight = word_weight.sort_values(by=&quot;weight&quot;, ascending=False)  # 按照权重值降序排列</span><br><span class="line">    # 在这里可以查看 k的选取的数值应该是多大，</span><br><span class="line">    # from ipdb import set_trace</span><br><span class="line">    # set_trace()</span><br><span class="line">    keyword = np.array(word_weight[&apos;word&apos;])  # 选择词汇列并转成数组格式</span><br><span class="line">    word_split = [keyword[x] for x in range(0, topK)]  # 抽取前topK个词汇作为关键词</span><br><span class="line">    word_split = &quot; &quot;.join(word_split)</span><br><span class="line">    keys.append(word_split)</span><br><span class="line">    wei = np.array(word_weight[&apos;weight&apos;])</span><br><span class="line">    wei_split = [str(wei[x]) for x in range(0, topK)]</span><br><span class="line">    wei_split = &quot; &quot;.join(wei_split)</span><br><span class="line">    weights.append(wei_split)</span><br><span class="line">    # 这里的命名 容易混淆</span><br><span class="line">result = pd.DataFrame(&#123;&quot;id&quot;: ids, &quot;title&quot;: titles, &quot;key&quot;: keys, &apos;weight&apos;: weights&#125;,</span><br><span class="line">                      columns=[&apos;id&apos;, &apos;title&apos;, &apos;key&apos;, &apos;weight&apos;])</span><br></pre></td></tr></table></figure></p>
+<p>选择前10个频率最高的词语作为该篇文章的代表，当然这个参数是可以调整，需要根据具体的问题和结果进行调整。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result.head()</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/57579705.jpg" alt=""><br>最后的效果如上。至此我们第一步的提取文章的关键词就已经做完。下面进行相似度的比较。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import jieba</span><br><span class="line">import jieba.analyse</span><br><span class="line">import pandas as pd</span><br><span class="line">#日常导包</span><br></pre></td></tr></table></figure>
+<p>数据和上述的一样，所以就不截图了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">datasets =pd.read_csv(&quot;../tianmao2-tf-idf.csv&quot;)</span><br><span class="line">tokens =datasets[&apos;key&apos;]</span><br><span class="line">weights =datasets[&apos;weight&apos;]</span><br></pre></td></tr></table></figure></p>
+<p>提取关键词和对应的权重。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">print(tokens[0], len(tokens[0]))</span><br><span class="line">print(weights[0], len(weights[0]))</span><br><span class="line">tokens0 =tokens[0].split()</span><br><span class="line">weights0 =weights[0].split()</span><br><span class="line">len(tokens0)</span><br><span class="line">len(weights0)</span><br><span class="line"></span><br><span class="line">tokens1 =tokens[1].split()</span><br><span class="line">weights1 =weights[1].split()</span><br><span class="line">import ast</span><br><span class="line">weights0 =[ ast.literal_eval(i) for i in weights0]</span><br><span class="line">weights1 =[ ast.literal_eval(i) for i in weights1]</span><br></pre></td></tr></table></figure></p>
+<p>构造测试用例。因为权重是字符串，所以简单处理转成整数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dict0 =dict(zip(tokens0, weights0))</span><br><span class="line">dict1 =dict(zip(tokens1, weights1))</span><br></pre></td></tr></table></figure>
+<p>定义一个Simhash，提供对文档的数值映射和文档间相似度计算的功能.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">class Simhash(object):</span><br><span class="line">    </span><br><span class="line">    # 初始化函数</span><br><span class="line">    def __init__(self, weights_dict, tokens=&apos;&apos;, hashbits=64):</span><br><span class="line">        self.hashbits = hashbits</span><br><span class="line">        self.hash = self.simhash_function(tokens, weights_dict)</span><br><span class="line">    </span><br><span class="line">    # toString函数</span><br><span class="line">    # 不懂这个 self.hash ，凡是带有self 的函数都是可以类变量，所以这个就是返回的 self.hash这个变量</span><br><span class="line">    #凡是使用__str__ 这种类型的函数 都是重写 原来的函数</span><br><span class="line">    def __str__(self):</span><br><span class="line">        return str(self.hash)</span><br><span class="line">    </span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    ord() 函数是 chr() 函数（对于8位的ASCII字符串）或 unichr() </span><br><span class="line">    函数（对于Unicode对象）的配对函数，它以一个字符（长度为1的字符串）作为参数，返回对应的 ASCII 数值，或者 Unicode 数值   </span><br><span class="line">    </span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # 给每一个单词生成对应的hash值</span><br><span class="line">    # 这个操作搞懂之后一定很简洁， 但是现在很难理解，因为不是字符串，而是位操作</span><br><span class="line">    def _string_hash(self, source):</span><br><span class="line">        if source == &apos;&apos;:</span><br><span class="line">            return 0</span><br><span class="line">        else:</span><br><span class="line">            x = ord(source[0]) &lt;&lt; 7</span><br><span class="line">            # &lt;&lt; 表示 乘以2^7 ; &gt;&gt; 表示除以 ; ** 表示次方的意思</span><br><span class="line">            # ^ : 按位异或 (二进制进行异或)； &amp; 按位进行与 操作</span><br><span class="line">            # 左移位操作也是可以理解为 2^x 的操作，因为存储是二进制，这样左移一位 表示×2 一次</span><br><span class="line">            m = 1000003</span><br><span class="line">            mask = 2 ** self.hashbits - 1</span><br><span class="line">            for c in source:</span><br><span class="line">                x = ((x * m) ^ ord(c)) &amp; mask</span><br><span class="line">            x ^= len(source)</span><br><span class="line">            if x == -1:</span><br><span class="line">                x = -2</span><br><span class="line">            return x</span><br><span class="line">    # 生成simhash值</span><br><span class="line">    def simhash_function(self, tokens, weights_dict):</span><br><span class="line">        v = [0] * self.hashbits</span><br><span class="line">        # 这种使用 &#123;&#125; dictionary 然后强行得到item 再进行遍历也是牛逼</span><br><span class="line">        for key, t in &#123;x: self._string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">            for i in range(self.hashbits):</span><br><span class="line">                bitmask = 1 &lt;&lt; i</span><br><span class="line">                if t &amp; bitmask:</span><br><span class="line">                    v[i] += weights_dict[key]</span><br><span class="line">                else:</span><br><span class="line">                    v[i] -= weights_dict[key]</span><br><span class="line">        </span><br><span class="line">        fingerprint = 0</span><br><span class="line">        for i in range(self.hashbits):</span><br><span class="line">            if v[i] &gt;= 0:</span><br><span class="line">                fingerprint += 1 &lt;&lt; i</span><br><span class="line">        return fingerprint</span><br><span class="line">    </span><br><span class="line">    # 求文档间的海明距离</span><br><span class="line">    def hamming_distance(self, other):</span><br><span class="line">        x = (self.hash ^ other.hash) &amp; ((1 &lt;&lt; self.hashbits) - 1 )</span><br><span class="line">        tot = 0</span><br><span class="line">        while x :</span><br><span class="line">            tot += 1</span><br><span class="line">            x &amp;= x - 1</span><br><span class="line">        return tot</span><br><span class="line">    </span><br><span class="line">    #求相似度</span><br><span class="line">    # 这个相似度的计算，十分简单，如果两个数接近，那么就是认为相似。越是接近1 越是相似，</span><br><span class="line">    # 不是原先那种以某一个参数整数 如3 为距离的相似度</span><br><span class="line">    def similarity(self, other):</span><br><span class="line">        a = float(self.hash)</span><br><span class="line">        b = float(other.hash)</span><br><span class="line">        if a &gt; b:</span><br><span class="line">            return b / a</span><br><span class="line">        else: </span><br><span class="line">            return a / b</span><br><span class="line">    </span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    hash0 = Simhash(weights_dict=dict0, tokens=tokens0)</span><br><span class="line">    print(hash0)</span><br><span class="line">    hash1 = Simhash(weights_dict=dict1, tokens=tokens1)</span><br><span class="line">    print(hash1)</span><br><span class="line">    print(hash0.hamming_distance(hash1))</span><br><span class="line">    print(hash0.similarity(hash1))</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/91557560.jpg" alt=""><br>结果如上。可以看出该例子中使用的两两比较的方式，对于大数据来说，一般可能会用到倒排索引和cpu并行技术。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/23/文本相似度比较基本知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/23/文本相似度比较基本知识/" itemprop="url">文本相似度比较基本知识</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-23T20:19:58+08:00">
+                2018-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文服务于<a href="https://jijeng.github.io/2018/08/23/基于simhash的文本相似度比较/" target="_blank" rel="noopener">该篇博客</a>,主要进行名词解释。</p>
+<h2 id="simhash"><a href="#simhash" class="headerlink" title="simhash"></a>simhash</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>simhash 也是一种hash，一般的hash 函数映射规则只需要满足以下两个条件：</p>
+<ul>
+<li>对很多不同的特征来说，它们对所对应的向量是均匀随机分布的</li>
+<li>相同的特征来说对应的向量是唯一<br>简单来说普通的hash映射需要满足随机分布和唯一性两个条件。simhash想要实现的是，如果原来的文本的特征是相似，那么映射之后的编码也是相似。这里使用 hamming distance 进行比较simhash映射之后的距离。根据经验值，对64位的 SimHash值，海明距离在3以内的可认为相似度比较高。编码之后的表示在英文中是 fingerprint(指纹)。<br>simhash最初被google 用于网页去重，当时使用的fingerprint 是64,所以这里沿用了这个传统。64位的签名可以表示多达264个象限，因此只保存所在象限的信息也足够表征一个文档了。<br>更进一步，表示的文档的数字最多是多少？这个应该可以准确计算特征的个数应为如果用三位(01) 表示，那么有8种，那么2^64 这么多种特征，所以16*10^18 这么多。<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3>第一步：文本预处理得到分词（去重，去除的了stop words）,然后weight权重可以使用分词的frequency 或者tfidf 进行得到<br>第二步：进行hash 映射（可以使用md5这种传统的映射方式，基本的要求就是均匀映射到一个空间，这种映射并不能反映原始样本的相关性）<br>第三步：hash 映射值和weight 进行相乘，如果原来是1 则乘以1，如果是0 则乘以-1，<br>第四步： 列向相加，得到summing weights,进行降维如果是正数那么为1，如果是负数那么为-1<br>然后这个simhash就出来了.<br>有图有真相<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/22402623.jpg" alt=""><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/11071129.jpg" alt=""><h3 id="simhash的局限性："><a href="#simhash的局限性：" class="headerlink" title="simhash的局限性："></a>simhash的局限性：</h3>只考虑到文章存在哪些词，没有考虑到词的顺序。不过相应的优点是，可以实现海量文章相似度计算。文章相似度计算忽略词的顺序之后效果更好。所以在处理大文本时候，simhash是有效的，但是在处理小文本，这种效果往往不能被保证。直观上理解，在一片段文章或者段落中，词语出现的顺序还是比较重要的。<h2 id="minhash"><a href="#minhash" class="headerlink" title="minhash"></a>minhash</h2>可以参考<a href="https://www.youtube.com/watch?v=96WOGPUgMfw" target="_blank" rel="noopener">该视频</a>和<a href="http://www.cnblogs.com/maybe2030/p/4953039.html" target="_blank" rel="noopener">这篇文章</a>。<h2 id="Locality-Sensitive-Hashing"><a href="#Locality-Sensitive-Hashing" class="headerlink" title="Locality Sensitive Hashing"></a>Locality Sensitive Hashing</h2>Locality Sensitive Hashing(局部敏感哈希)作用就是从海量的数据中挖掘出相似的数据，可以具体应用到文本相似度检测、网页搜索等领域。上面的simhah和minhash 就是该思想的实现。<h2 id="距离函数"><a href="#距离函数" class="headerlink" title="距离函数"></a>距离函数</h2>这里的距离函数都是用来文本相似度。<h3 id="Jaccard相似度"><a href="#Jaccard相似度" class="headerlink" title="Jaccard相似度"></a>Jaccard相似度</h3>简单来说交集除以并集。这个集合中存放的是文章或者段落的关键词。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def JaccardSim(str_a, str_b):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    Jaccard相似性系数</span><br><span class="line">    计算sa和sb的相似度 len（sa &amp; sb）/ len（sa | sb）</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    seta = splitWords(str_a)[1]</span><br><span class="line">    setb = splitWords(str_b)[1]</span><br><span class="line"></span><br><span class="line">    sa_sb = 1.0 * len(seta &amp; setb) / len(seta | setb)</span><br><span class="line"></span><br><span class="line">    return sa_sb</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>可以看到核心代码很简单，经过分词之后，就是seta 和setb 进行的操作。</p>
+<h3 id="cosine"><a href="#cosine" class="headerlink" title="cosine"></a>cosine</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def cos_sim(a, b):</span><br><span class="line">    a = np.array(a)</span><br><span class="line">    b = np.array(b)</span><br><span class="line">    # return &#123;&quot;文本的余弦相似度:&quot;:np.sum(a*b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))&#125;</span><br><span class="line">    return np.sum(a * b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))</span><br></pre></td></tr></table></figure>
+<p>将文本的关键词映射成某种高维函数，然后在高维空间中计算两者的相似度。</p>
+<h3 id="tf-idf"><a href="#tf-idf" class="headerlink" title="tf-idf"></a>tf-idf</h3><p>在simhash 中使用 tf-idf作为我们的比较函数。TF-IDF的主要思想就是：如果某个词在一篇文档中出现的频率高，也即TF高；并且在语料库中其他文档中很少出现，即DF的低，也即IDF高，则认为这个词具有很好的类别区分能力。<br>词频(term frequency)有两种计算方式,后者考虑了相对的情况。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/52502045.jpg" alt=""><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/28700629.jpg" alt=""><br>计算idf(inverse document frequency):<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/29062439.jpg" alt=""><br>TF-IDF 优点是简单快速，比较符合实际。缺点，无法体现词的位置信息，所有的位置都是被认为重要性相同，但是开头结尾，段落的开头和段落的结尾，therefore，so，but这些词语都是没有体现的。</p>
+<h3 id="hamming-distance"><a href="#hamming-distance" class="headerlink" title="hamming distance"></a>hamming distance</h3><p>hamming distance就是比较01串的不同，按照位进行比较。算法：异或时，只有在两个比较的位不同时其结果是1 ，否则结果为0，两个二进制“异或”后得到1的个数即为海明距离的大小。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hashbits =64 # 使用64位进行编码</span><br><span class="line">def simhash_function(tokens, weights_dict):</span><br><span class="line">    v = [0] * hashbits</span><br><span class="line">    # 这种 &#123;key: value&#125;.item() 的操作也是没有了谁了</span><br><span class="line">    for key, t in &#123;x: _string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">        for i in range(hashbits):</span><br><span class="line">            bitmask = 1 &lt;&lt; i</span><br><span class="line">            if t &amp; bitmask:</span><br><span class="line">                v[i] += weights_dict[key]</span><br><span class="line">            else:</span><br><span class="line">                v[i] -= weights_dict[key]</span><br><span class="line"></span><br><span class="line">    fingerprint = 0</span><br><span class="line">    for i in range(hashbits):</span><br><span class="line">        if v[i] &gt;= 0:</span><br><span class="line">            fingerprint += 1 &lt;&lt; i</span><br><span class="line">    return fingerprint</span><br><span class="line">fingerprint = simhash_function(tokens, weights)</span><br></pre></td></tr></table></figure></p>
+<h3 id="min-edit-distance"><a href="#min-edit-distance" class="headerlink" title="min edit distance"></a>min edit distance</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 最小编辑距离</span><br><span class="line">def min_edit_distance(str1, str2):</span><br><span class="line">    rows  =len(str2) +1</span><br><span class="line">    cols =len(str1) +1</span><br><span class="line">    arr =[[0 for _ in range(cols)] for _ in range(rows)]</span><br><span class="line">    # 这种简洁的代码也是牛逼</span><br><span class="line">    for j in range(cols):</span><br><span class="line">        arr[0][j] =j</span><br><span class="line">    for i in range(rows):</span><br><span class="line">        arr[i][0] =i</span><br><span class="line">    for i in range(1, rows):</span><br><span class="line">        for j in range(1, cols):</span><br><span class="line">            # 因为string 是从0 ，len(str) -1的</span><br><span class="line">            if str2[i-1] ==str1[j-1]:</span><br><span class="line">                arr[i][j] =arr[i-1][j-1]</span><br><span class="line">            else:</span><br><span class="line">                # 以后见到这样的式子，就要想到这个二维的数组，因为这个是可以帮助记忆的</span><br><span class="line">                arr[i][j] =1 +min(arr[i-1][j-1], arr[i-1][j], arr[i][j-1])</span><br><span class="line">    # 右下角就是距离</span><br><span class="line">    return arr[rows-1][cols-1]</span><br><span class="line">str_a =&quot;abcdef&quot;</span><br><span class="line">str_b =&quot;azced&quot;</span><br><span class="line">result =min_edit_distance(str_a, str_b)</span><br><span class="line">result</span><br></pre></td></tr></table></figure>
+<p>具体可以参看<a href="https://www.youtube.com/user/tusharroy2525/featured" target="_blank" rel="noopener">该视频</a>讲解。(ps. 如果刷leetcode,也可以参看该视频)</p>
+<h2 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h2><p>在英文中存在天然的空格可以进行分词操作，但是中文的分词就比较复杂了。常用的中文分词开源工具有 jieba和<a href="https://github.com/hankcs/HanLP" target="_blank" rel="noopener">HanLP</a><br>前者简单易行，容易上手；后者在自然语言处理作为汉语言处理包，可以用于词性标注，命名实体识别等一系列功能。常用的英文分词 <a href="https://stanfordnlp.github.io/CoreNLP/" target="_blank" rel="noopener">corenlp</a></p>
+<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>倒排索引使用python在实现上就是一个dictionary 嵌套一个 set(). 一般的索引都是数字或者英文字母映射内容，具体在放到simhash的情景下就是使用文章的序列号对应提取出来的关键词。但是倒排索引就是关键词对应文章的序列号，类似与原来的”值”对应这”键”，所以称之为倒排索引。可以参考<a href="https://blog.csdn.net/u011239443/article/details/60604017" target="_blank" rel="noopener">这篇文章</a>。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -580,7 +877,10 @@
 <ul>
 <li>booster:<br>default =gbtree, can be gbtree, gblinear or dart. 一般使用gbtree.</li>
 <li>silent:<br>default =0, silent mode is activated if set to 1(no running messages will be printed)</li>
-<li>nthread:<br>default to maximum of threads.<h4 id="booster-parameters"><a href="#booster-parameters" class="headerlink" title="booster parameters"></a>booster parameters</h4>Booster Parameters: Guide the individual booster (tree/regression) at each step</li>
+<li>nthread:<br>default to maximum of threads.</li>
+</ul>
+<h4 id="booster-parameters"><a href="#booster-parameters" class="headerlink" title="booster parameters"></a>booster parameters</h4><p>Booster Parameters: Guide the individual booster (tree/regression) at each step</p>
+<ul>
 <li>eta(learning rate):<br>default=0.3, typical final values to be used: 0.01-0.2, using CV to tune</li>
 <li>min_child_weight:<br>minimum sum of instance weight (hessian) needed in a child. If the tree partition step results in a leaf node with the sum of instance weight less than min_child_weight, then the building process will give up further partitioning. In linear regression mode, this simply corresponds to minimum number of instances needed to be in each node. The larger, the more conservative the algorithm will be.<br>default =1,too high values can lead to under-fitting, it should be tuned using CV. 数值越小越容易过拟合，越大越容易 under-fitting.</li>
 <li>max_depth:<br>default =6, typical values: 3-10, should be tuned using CV.</li>
@@ -589,11 +889,18 @@
 <li>colsample_bytree:<br>default =1, typical values: 0.5-1. colsample_bytree和subsample不同点：colsample_by是特征的随机fraction, subsample是rows的随机fraction。</li>
 <li>lambda:<br>default =1, L2 regularization term on weights(analogous to Ridge regression). Though many data scientists don’t use it often, it should be explored to reduce overfitting.</li>
 <li>alpha:<br>default =0, L1 regularization term on weight (analogous to Lasso regression)</li>
-<li>scale_pos_weight:<br>default =1,  a value greater than 0 should be used in case of high class imbalance as it helps in faster convergence.<h4 id="learning-task-parameters"><a href="#learning-task-parameters" class="headerlink" title="learning task parameters"></a>learning task parameters</h4>Learning Task Parameters: Guide the optimization performed</li>
+<li>scale_pos_weight:<br>default =1,  a value greater than 0 should be used in case of high class imbalance as it helps in faster convergence.</li>
+</ul>
+<h4 id="learning-task-parameters"><a href="#learning-task-parameters" class="headerlink" title="learning task parameters"></a>learning task parameters</h4><p>Learning Task Parameters: Guide the optimization performed</p>
+<ul>
 <li><strong>objective</strong><br>binary: logistic- returns predicated probability(not class)<br>multi: softmax- returns predicated class(not probabilities)<br>multi: softprob- returns predicated probability of each data point belonging to each class.</li>
 <li>eval_metirc<br>default according to objective(rmse for regression and error for classification), used for validation data.<br>typical values: rmse(root mean square error), mse(mean absolute error), logloss(negative log-likelihood), error(binary classification error rate, 0.5 threshold), auc(area under the curve)</li>
-<li>seed<br>default =0, used for reproducible results and also for <strong>parameter tuning</strong>.<h4 id="Control-Overfitting"><a href="#Control-Overfitting" class="headerlink" title="Control Overfitting"></a>Control Overfitting</h4>There are in general two ways that you can control overfitting in xgboost. </li>
+<li>seed<br>default =0, used for reproducible results and also for <strong>parameter tuning</strong>.</li>
+</ul>
+<h4 id="Control-Overfitting"><a href="#Control-Overfitting" class="headerlink" title="Control Overfitting"></a>Control Overfitting</h4><p>There are in general two ways that you can control overfitting in xgboost. </p>
+<ul>
 <li>The first way is to directly control model complexity.</li>
+<li>The second way is to add regularization parameters</li>
 </ul>
 <h3 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence"></a>Referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/" target="_blank" rel="noopener">complete guide parameter tuning xgboost with codes python</a><br><a href="http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html" target="_blank" rel="noopener">官方文档 param_tuning</a><br><a href="http://xgboost.readthedocs.io/en/latest/parameter.html" target="_blank" rel="noopener">官方文档 parameter</a></p>
 
@@ -1224,8 +1531,8 @@
 <h3 id="插入排序-Insert-Sort"><a href="#插入排序-Insert-Sort" class="headerlink" title="插入排序(Insert Sort)"></a>插入排序(Insert Sort)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def insert_sort(lists):</span><br><span class="line">    count = len(lists)</span><br><span class="line">    for i in range(1, count):</span><br><span class="line">        key =lists[i]</span><br><span class="line">        j =i-1</span><br><span class="line">        while j &gt;= 0:</span><br><span class="line">            if lists[j] &gt;key:</span><br><span class="line">                lists[j+1] =lists[j]</span><br><span class="line">                lists[j] =key</span><br><span class="line">            j -= 1</span><br><span class="line">    return lists</span><br><span class="line"></span><br><span class="line"># test</span><br><span class="line">lists =[1,2,-3, 90,34]</span><br><span class="line">print(insert_sort(lists))</span><br></pre></td></tr></table></figure>
 <h3 id="选择排序-Select-Sort"><a href="#选择排序-Select-Sort" class="headerlink" title="选择排序(Select Sort)"></a>选择排序(Select Sort)</h3><p>为每个位置选择当前元素最小的。选择最小的元素和a[0]交换，选择次最小的和a[1]交换，以此类推。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/15755472.jpg" alt="avatar"><br>代码实现:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def select_sort(lists):</span><br><span class="line">    count =len(lists)</span><br><span class="line">    for i in range(0, count):</span><br><span class="line">        min =i</span><br><span class="line">        for j in range(i+1, count):</span><br><span class="line">            if lists[min] &gt;lists[j]:</span><br><span class="line">                min =j</span><br><span class="line">        lists[min], lists[i] =lists[i], lists[min]</span><br><span class="line">    return lists</span><br><span class="line"></span><br><span class="line"># test</span><br><span class="line">lists =[1, 23,45, 0,-1]</span><br><span class="line">print(select_sort(lists))</span><br></pre></td></tr></table></figure></p>
 <h3 id="冒泡排序-Bubble-Sort"><a href="#冒泡排序-Bubble-Sort" class="headerlink" title="冒泡排序(Bubble Sort)"></a>冒泡排序(Bubble Sort)</h3><p>重复遍历要排序的数列，一次比较两个元素，如果顺序错误就交换位置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def bubble_sort(lists):</span><br><span class="line">    count =len(lists)</span><br><span class="line">    for i in range(0, count):</span><br><span class="line">        for j in range(i+1, count):</span><br><span class="line">            if lists[i]&gt; lists[j]:</span><br><span class="line">                lists[i], lists[j] =lists[j], lists[i]</span><br><span class="line">    return lists</span><br><span class="line"></span><br><span class="line"># test</span><br><span class="line">lists =[1,34,45,0,89]</span><br><span class="line">print(bubble_sort(lists))</span><br></pre></td></tr></table></figure></p>
-<h3 id="归并排序-Merge-Sort"><a href="#归并排序-Merge-Sort" class="headerlink" title="归并排序(Merge Sort)"></a>归并排序(Merge Sort)</h3><p>归并排序，应该是我第一个接触的排序算法。然后在在某次重要面试时候，使用该算法救急。该算法是采用采用分治法(Divide and Conquer)的思想:先使得子序列有序，然后合并子序列。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def merge(left, right):</span><br><span class="line">    i, j =0,0</span><br><span class="line">    result =[]</span><br><span class="line">    while i&lt;len(left) and j &lt;len(right):</span><br><span class="line">        if left[i] &lt;= right[j]:</span><br><span class="line">            result.append(left[i])</span><br><span class="line">            i +=1</span><br><span class="line">        else:</span><br><span class="line">            result.append(right[j])</span><br><span class="line">            j +=1</span><br><span class="line">    result += left[i:]</span><br><span class="line">    result += right[j:]</span><br><span class="line">    return result</span><br><span class="line"></span><br><span class="line">def merge_sort(lists):</span><br><span class="line">    if len(lists) &lt;=1:</span><br><span class="line">        return  lists</span><br><span class="line">    num =int(len(lists)/2)</span><br><span class="line">    left =merge_sort(lists[:num])</span><br><span class="line">    right = merge_sort(lists[num:])</span><br><span class="line">    return merge(left, right)</span><br><span class="line"></span><br><span class="line"># test</span><br><span class="line">lists =[1, 34, 23,45,0,9]</span><br><span class="line">print(merge_sort(lists))</span><br></pre></td></tr></table></figure></p>
-<h3 id="快速排序-Quick-Sort"><a href="#快速排序-Quick-Sort" class="headerlink" title="快速排序(Quick Sort)"></a>快速排序(Quick Sort)</h3><p>快速排序的思想：任意选择一个key(通常选择a[0])，将比他小的数据放在它的前面，比他大的数字放在它的后面。递归进行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">def quick_sort(lists, left, right):</span><br><span class="line">    if left &gt;= right:</span><br><span class="line">        return lists</span><br><span class="line">    key =lists[left]</span><br><span class="line">    low =left</span><br><span class="line">    high  =right</span><br><span class="line">    while left &lt; right:</span><br><span class="line">        while left &lt;right and lists[right]&gt;=key:</span><br><span class="line">            right  -= 1</span><br><span class="line">        lists[left] =lists[right]</span><br><span class="line">        while left &lt; right and lists[left] &lt;= key:</span><br><span class="line">            left +=1</span><br><span class="line">        lists[right] =lists[left]</span><br><span class="line">    lists[right] =key</span><br><span class="line">    quick_sort(lists, low, left-1)</span><br><span class="line">    quick_sort(lists, left+1, high)</span><br><span class="line">    return  lists</span><br><span class="line"># test</span><br><span class="line">lists =[3,2,45, 1,56]</span><br><span class="line">print(quick_sort(lists, 0, len(lists)-1))</span><br></pre></td></tr></table></figure></p>
+<h3 id="归并排序-Merge-Sort"><a href="#归并排序-Merge-Sort" class="headerlink" title="归并排序(Merge Sort)"></a>归并排序(Merge Sort)</h3><p>归并排序，应该是我第一个接触的排序算法。然后在在某次重要面试时候，使用该算法救急。该算法是采用采用分治法(Divide and Conquer)的思想:先使得子序列有序，然后合并子序列。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">def merge(left, right):</span><br><span class="line">    i, j =0,0</span><br><span class="line">    result =[]</span><br><span class="line">    while i&lt;len(left) and j &lt;len(right):</span><br><span class="line">        if left[i] &lt;= right[j]:</span><br><span class="line">            result.append(left[i])</span><br><span class="line">            i +=1</span><br><span class="line">        else:</span><br><span class="line">            result.append(right[j])</span><br><span class="line">            j +=1</span><br><span class="line">    result += left[i:]</span><br><span class="line">    result += right[j:]</span><br><span class="line">    return result</span><br><span class="line"></span><br><span class="line">def merge_sort(lists):</span><br><span class="line">    if len(lists) &lt;=1:</span><br><span class="line">        return  lists</span><br><span class="line">    num =int(len(lists)/2)</span><br><span class="line">    left =merge_sort(lists[:num])</span><br><span class="line">    right = merge_sort(lists[num:])</span><br><span class="line">    return merge(left, right)</span><br><span class="line"># merge_sort 是先切分，然后再整合，quick sort 是两个指针</span><br><span class="line"></span><br><span class="line"># test</span><br><span class="line">lists =[1, 34, 23,45,0,9]</span><br><span class="line">print(merge_sort(lists))</span><br></pre></td></tr></table></figure></p>
+<h3 id="快速排序-Quick-Sort"><a href="#快速排序-Quick-Sort" class="headerlink" title="快速排序(Quick Sort)"></a>快速排序(Quick Sort)</h3><p>快速排序的思想：任意选择一个key(通常选择a[0])，将比他小的数据放在它的前面，比他大的数字放在它的后面。递归进行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def quick_sort(lists, left, right):</span><br><span class="line">    if left &gt;= right:</span><br><span class="line">        return lists</span><br><span class="line">    key =lists[left]</span><br><span class="line">    low =left</span><br><span class="line">    high  =right</span><br><span class="line">    while left &lt; right:</span><br><span class="line">        # 因为你最初key 取得是left，然后从右边找到一个比key小的，然后替换left 的位置</span><br><span class="line">        while left &lt;right and lists[right]&gt;=key:</span><br><span class="line">            right  -= 1</span><br><span class="line">        lists[left] =lists[right]</span><br><span class="line">        while left &lt; right and lists[left] &lt;= key:</span><br><span class="line">            left +=1</span><br><span class="line">        lists[right] =lists[left]</span><br><span class="line">    lists[left] =key</span><br><span class="line">    # 这里的left 和right 都是可以的，因为从while 中出来之后两者是相同的</span><br><span class="line">    # 这个步伐是1,所以只能是一个个变化</span><br><span class="line">    quick_sort(lists, low, left-1)</span><br><span class="line">    quick_sort(lists, left+1, high)</span><br><span class="line">    # 因为left的位置已经被占了，所以只是划分左边一块，右边一块就是可以的</span><br><span class="line">    return  lists</span><br><span class="line"># test</span><br><span class="line">lists =[3,2,45, 100,1,56,56]</span><br><span class="line">#lists =[1,2,3,2,2,2,5,4,2]</span><br><span class="line">print(quick_sort(lists, 0, len(lists)-1))</span><br></pre></td></tr></table></figure></p>
 <h3 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h3><p>参看另一篇<a href="https://jijeng.github.io/2018/06/22/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98%E7%9B%AE/" target="_blank" rel="noopener">博客</a>中堆排序。</p>
 <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="http://ictar.github.io/2015/12/01/%E4%B9%9D%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6Python%E5%AE%9E%E7%8E%B0%E4%B9%8B%E7%AE%80%E5%8D%95%E6%8E%92%E5%BA%8F/" target="_blank" rel="noopener">算法动图效果</a><br><a href="http://python.jobbole.com/82270/" target="_blank" rel="noopener">排序算法分类</a></p>
 
@@ -1378,12 +1685,12 @@
 <p>参考文献<br><a href="http://www.voidcn.com/article/p-kbxsvnyq-yq.html" target="_blank" rel="noopener">http://www.voidcn.com/article/p-kbxsvnyq-yq.html</a><br><a href="https://www.toutiao.com/i6192546626911126017/" target="_blank" rel="noopener">https://www.toutiao.com/i6192546626911126017/</a><br><a href="https://blog.csdn.net/psc0606/article/details/48742239" target="_blank" rel="noopener">https://blog.csdn.net/psc0606/article/details/48742239</a></p>
 <h2 id="inplace-去除连续的-0"><a href="#inplace-去除连续的-0" class="headerlink" title="inplace 去除连续的 0"></a>inplace 去除连续的 0</h2><p>给定一个一维整数数组，不使用额外的空间，本地去掉数组中连续的0。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int RemoveDuplicates(int* sortBuffer,int length)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    if(sortBuffer == NULL || length == 0)</span><br><span class="line">    &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int count = 0;</span><br><span class="line">    for(int i = 1; i &lt; length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        if(sortBuffer[i] ==0 &amp;&amp; 0 == sortBuffer[i-1])</span><br><span class="line">        &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            sortBuffer[count]=sortBuffer[i];</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return count;    </span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int length =sizeof(array)/sizeof(int);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="最大连续子数组和"><a href="#最大连续子数组和" class="headerlink" title="最大连续子数组和"></a>最大连续子数组和</h2><p>已知一个整数二维数组，求最大的子数组和(子数组的定义从左上角(x0,y0) 到右下角(x1,y1)的数组)<br>先考虑一维整数数组的情况。<br>最大连续子序列的DP动态转移方程为<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-21/32657894.jpg" alt="avatar"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int Max(int a, int b)&#123;</span><br><span class="line">	return a&gt;b ?a:b;</span><br><span class="line">&#125;</span><br><span class="line">int FindGreatestSubarray(int *arr, int n)&#123;</span><br><span class="line">	int sum =arr[0];</span><br><span class="line">	int max =arr[0];</span><br><span class="line">	for(int i =1; i&lt;n; i++)&#123;</span><br><span class="line">		sum =Max(sum+arr[i], arr[i]);</span><br><span class="line">		if(sum &gt;=max)&#123;</span><br><span class="line">			max =sum;</span><br><span class="line">		&#125; </span><br><span class="line">	&#125;</span><br><span class="line">	return max;</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int Max(int a, int b)&#123;</span><br><span class="line">	return a&gt;b ?a:b;</span><br><span class="line">&#125;</span><br><span class="line">int FindGreatestSubarray(int *arr, int n)&#123;</span><br><span class="line">	int sum =arr[0];</span><br><span class="line">	int max =arr[0];</span><br><span class="line">	for(int i =1; i&lt;n; i++)&#123;</span><br><span class="line">		sum =Max(sum+arr[i], arr[i]);</span><br><span class="line">        max =Max(sum, max)</span><br><span class="line">        /**</span><br><span class="line">		if(sum &gt;=max)&#123;</span><br><span class="line">			max =sum;</span><br><span class="line">		&#125; </span><br><span class="line">        */</span><br><span class="line">	&#125;</span><br><span class="line">	return max;</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>本题目的要求是从二位的数组中求解最大的子矩阵。我们可以将其转化成一维数组的问题。如果是二维数组可以压缩为一维数组（我当时也是不懂这里）。如果最大子矩阵和原矩阵等高，就可以这样压缩。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-21/83888372.jpg" alt="avatar"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define inf 0x3f3f3f3f</span><br><span class="line">int Max(int a, int b)&#123;</span><br><span class="line">    return a&gt;b? a:b;</span><br><span class="line">&#125;</span><br><span class="line">// 求解一维数组的最大连续子数列</span><br><span class="line">int FindGreatestSubarray(int *arr, int n)&#123;</span><br><span class="line">    int sum =arr[0];</span><br><span class="line">    int max =arr[0];</span><br><span class="line">    for(int i =1;i&lt;n;i++)&#123;</span><br><span class="line">        sum =Max(sum+arr[i], arr[i])</span><br><span class="line">        if(sum &gt;=max)&#123;</span><br><span class="line">            max =sum;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    return max;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int GreatestMatrix(int[][] arr, int rows, int cols)&#123;</span><br><span class="line">    int maxVal =- inf</span><br><span class="line">    </span><br><span class="line">    for(int i =0 ; i &lt;rows; i++)&#123;</span><br><span class="line">        vector&lt;int&gt; temp(arr[i]);</span><br><span class="line">        maxVal =Max(maxVal, FindGreatestSubarray(temp));</span><br><span class="line">        // 得到第一行的最大和</span><br><span class="line">        // 将行的n个元素加到上一行，然后计算最大和</span><br><span class="line">        for(int j =i+1; j&lt;rows; j++)&#123;</span><br><span class="line">            for(int k =0;k&lt;cols ;k++)&#123;</span><br><span class="line">                temp[k] =arr[j][k];</span><br><span class="line">            &#125;</span><br><span class="line">            // 依次0~k行的最大和</span><br><span class="line">            maxVal =Max(maxVal, FindGreatestSubarray(temp))</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">int main()&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="聚类-clustering"><a href="#聚类-clustering" class="headerlink" title="聚类(clustering )"></a>聚类(clustering )</h2><p>聚类是一种无监督学习(Unsupervised Learning)，该算法基于数据内部的特征寻找样本的自然族群(集群)。通常使用数据可视化来评价结果。应用场景：新闻聚类，文章推荐，细分客户。</p>
 <p>最常见的聚类算法就是K均值(K-Means)：以空间中k个点为中心进行聚类，对最靠近他们的对象归类，通过迭代的方法，逐次更新各聚类中心的值，直到得到最好的聚类结果。最后希望达到的目的：聚类中的对象相似度较高，聚类之间的相似度比较低。</p>
 <p>相似度计算：不同的算法需要的”相似度”是不一样的，对于空间中的点，我们一般选取欧式距离来进行衡量，认为距离越近，数据之间越相似。</p>
-<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><p>堆是一种<strong>完全二叉树</strong>，堆排序是一种树形选择排序.堆排序是一种选择排序，其时间复杂度为O(nlogn)，空间复杂度:对于记录较少的文件不推荐使用，对于较大的文件还是有效的.堆分为大根堆和小根堆。大根堆的要求是每个节点的值都不大于其父节点的值，即A[PARENT[i]] &gt;= A[i]。小根堆的要求是每个节点的值都不小于其父节点的值，即A[PARENT[i]] &lt;= A[i]。</p>
+<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><p>堆是一种<strong>完全二叉树</strong>，堆排序是一种树形选择排序，其时间复杂度为O(nlogn)，空间复杂度:对于记录较少的文件不推荐使用，对于较大的文件还是有效的.堆分为大根堆和小根堆。大根堆的要求是每个节点的值都不大于其父节点的值，即A[PARENT[i]] &gt;= A[i]。小根堆的要求是每个节点的值都不小于其父节点的值，即A[PARENT[i]] &lt;= A[i]。</p>
 <p>堆栈是计算机的两种最基本的数据结构。堆的特点就是FIFO(first in first out)先进先出，栈的特性正好与堆相反，是属于FILO(first in/last out)先进后出的类型。<br>堆的每次调整交换堆顶和最后一个元素，然后只是调整堆顶和堆顶的左右孩子树的关系。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-21/19691875.jpg" alt="avatar"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"># heap modify</span><br><span class="line">def MAX_Heapify(heap, HeapSize, root):</span><br><span class="line">    left =2* root+1</span><br><span class="line">    right = left +1</span><br><span class="line">    larger =root</span><br><span class="line">    if left &lt;HeapSize and heap[larger] &lt;heap[left]:</span><br><span class="line">        larger =left</span><br><span class="line">    if right &lt; HeapSize and heap[larger] &lt;heap[right]:</span><br><span class="line">        larger =right</span><br><span class="line">    # if modify the larger then exchange it</span><br><span class="line">    if larger != root:</span><br><span class="line">        heap[larger], heap[root] =heap[root], heap[larger]</span><br><span class="line">        MAX_Heapify(heap, HeapSize, larger)</span><br><span class="line"></span><br><span class="line"># Build the heap</span><br><span class="line">def Build_MAX_Heap(heap):</span><br><span class="line">    HeapSize =len(heap)</span><br><span class="line">    # from the end to the begin</span><br><span class="line">    for i in range((HeapSize -2)//2, -1,-1):</span><br><span class="line">        MAX_Heapify(heap, HeapSize, i)</span><br><span class="line"></span><br><span class="line"># sort after building the heap</span><br><span class="line">def HeapSort(heap):</span><br><span class="line">    Build_MAX_Heap(heap)</span><br><span class="line">    for i in range(len(heap)-1, -1, -1):</span><br><span class="line">        heap[0], heap[i] =heap[i], heap[0]</span><br><span class="line">        MAX_Heapify(heap, i, 0)</span><br><span class="line">    return heap</span><br><span class="line"></span><br><span class="line">if __name__ ==&quot;__main__&quot;:</span><br><span class="line">    a =[30, 50, 57, 77, 62, 78, 94, 80, 84]</span><br><span class="line">    print(a)</span><br><span class="line">    print(&quot;without sort but with build heap&quot;)</span><br><span class="line">    Build_MAX_Heap(a)</span><br><span class="line">    print(a)</span><br></pre></td></tr></table></figure>
 <p>参考文献<br><a href="https://blog.csdn.net/minxihou/article/details/51850001" target="_blank" rel="noopener">https://blog.csdn.net/minxihou/article/details/51850001</a><br><a href="https://blog.csdn.net/chibangyuxun/article/details/53018294" target="_blank" rel="noopener">https://blog.csdn.net/chibangyuxun/article/details/53018294</a></p>
@@ -1638,389 +1945,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/对抗性生成网络/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/05/对抗性生成网络/" itemprop="url">对抗性生成网络实验对比</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T22:27:25+08:00">
-                2018-06-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Deep learning</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>GAN模型是典型的隐式无监督生成模型，建模过程中没有利用到数据的语义标签。但在实际应用中生成模型的可控性至关重要，根据标签生成对可控有样本更具实际应用价值。图像生成模型被广泛应用于数据增强、风格转换和数据补全领域，需要可控且语义完备的生成模型。<br>条件GAN模型在GAN模型建模思路的基础上，将语义标签加入了建模过程，将无监督生成模型转变为有监督的条件生成模型。条件GAN模型具体包括Conditional GAN模型、Semi-GAN模型和AC-GAN模型。</p>
-<h3 id="实验模型介绍"><a href="#实验模型介绍" class="headerlink" title="实验模型介绍"></a>实验模型介绍</h3><p>（1）Conditional GAN模型<br>GAN模型中判别器D对输入的数据样本的来源进行判别，是典型的判别模型流程。如果在GAN框架中加入有监督信息来辅助训练，如图像的类别信息来辅助判别器D进行判别，则会帮助生成更加真实的样本。其中最初的尝试方式是Conditional GAN模型，结构如图所示。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/89027900.jpg" alt="avatar"><br>Conditional GAN模型在生成器G和判别器D输入中都加入了标签信息，试图让生成器G学习到从数据标签y到样本x的映射，让判别器D学习对样本x和标签y的组合进行判别。<br>与GAN模型相比，Conditional GAN模型增加了标签信息的输入将模型转变为条件生成模型，在一定程度上提高了模型的稳定性。Conditional GAN模型训练过程中，判别器D对样本x和标签y的类别组合进行训练，并没有输入样本x和标签y的类别错误组合进行训练，因此模型并没有学习样本x和标签y的联合分布。<br>（2）Semi-GAN模型<br>Conditional GAN模型利用了标签信息进行建模，但没有对标签语义的信息进行表征，导致模型能够学到的信息有限。在生成模型过程中，如果判别器D能够明确指出生成样本的类别错误，则可为生成器G提供更加精确的梯度信息，最终能生成更加真实的样本。<br>Semi-GAN基于此思路进行改进，具体结构如图9所示。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/89762825.jpg" alt="avatar"><br>Semi-GAN模型在Conditional GAN模型的基础上，对判别器D的分类输出进行细化加入了半监督学习过程。<br>（3）AC-GAN模型<br>与Conditional GAN模型相比，Semi-GAN模型中判别器D能够判别真实样本的来源，增强了判别器D的判别能力。但研究表明过强的判别信息会影响生产样本的质量，具体原因为Semi-GAN模型的建模过程为半监督分类过程，目标优化函数为无监督分类和有监督分类目标函数之和。若判别器D的监督分类信息过强，则会削弱判别器D对样本来源的判别能力。<br>Conditional GAN模型能够生成指定类别的样本，Semi-GAN模型能够判别样本的类别信息。AC-GAN模型将以上两个模型思路进行整合，得到够进行条件生成的生成器G，和能够判别样本类别和来源信息的判别器D。AC-GAN模型的结构如图10所示。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/23586830.jpg" alt="avatar"><br>AC-GAN模型在Conditional GAN的基础上，让判别器D在判别样本来源的同时，让样本进行分类。此时的判别器D的输出分为样本来源信息LS和样本分类LC信息。</p>
-<h3 id="不同模型比较"><a href="#不同模型比较" class="headerlink" title="不同模型比较"></a>不同模型比较</h3><p>下面用表格的方式对比在实验中使用的模型的目标函数(ps,图画比较丑，之后再修改)</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center"><em>Name</em></th>
-<th style="text-align:center"><em>Paper Link</em></th>
-<th style="text-align:left"><em>Value Function</em></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><strong>GAN</strong></td>
-<td style="text-align:center"><a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">Arxiv</a></td>
-<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/55901553.jpg" alt="avatar"></td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>DCGAN</strong></td>
-<td style="text-align:center"><a href="https://arxiv.org/abs/1511.06434" target="_blank" rel="noopener">Arxiv</a></td>
-<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/90451211.jpg" alt="avatar"></td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>Semi-GAN</strong></td>
-<td style="text-align:center"><a href="https://arxiv.org/abs/1606.01583" target="_blank" rel="noopener">Arxiv</a></td>
-<td style="text-align:left">和GAN 模型相同</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>CGAN</strong></td>
-<td style="text-align:center"><a href="https://arxiv.org/abs/1411.1784" target="_blank" rel="noopener">Arxiv</a></td>
-<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/78212709.jpg" alt="avatar"></td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>ACGAN</strong></td>
-<td style="text-align:center"><a href="https://arxiv.org/abs/1610.09585" target="_blank" rel="noopener">Arxiv</a></td>
-<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/84966180.jpg" alt="avatar"></td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>our model</strong></td>
-<td style="text-align:center"><a href="https://arxiv.org/abs/1705.07215" target="_blank" rel="noopener">Arxiv</a></td>
-<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/48822906.jpg" alt="avatar"></td>
-</tr>
-</tbody>
-</table>
-<h3 id="数据集介绍"><a href="#数据集介绍" class="headerlink" title="数据集介绍"></a>数据集介绍</h3><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/70807095.jpg" alt="avatar"><br>在常用于图像生成的图像数据集中，大部分数据的标签类型为离散类型。其中MNIST和Fashion-MNIST为常用的灰度图像数据，每类样本分布较为独立，常用于进行图像分类和样本生成的实验；SVHN和CIFAR10为彩色数据集图像像素分布较为复杂，其中CIFAR10常用来检验分类网络性能的评价数据集；CelebA为大规模的人脸识别和属性分类数据集，每幅人脸图像包括40个属性标签；ImageNet为图像分类和识别数据集，数据集类别分布比较复杂具体包括自然图像和人为图像。UnityEyes为人眼视觉合成数据集，数据集标签包括瞳孔标签和视觉方向标签，其中视觉方向标签为连续的语言标签。<br>常见的离散标签图像数据集的样例:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/73164393.jpg" alt="avatar"></p>
-<h3 id="我们的模型"><a href="#我们的模型" class="headerlink" title="我们的模型"></a>我们的模型</h3><p>在原始GAN模型中，目标函数定义为生成器G和判别器D的博弈过程，定义V(G;D)为模型的目标函数，由生成器G和判别器D组成。语义匹配目标函数FMloss。基于语义匹配的条件生成网络模型的生成器G和判别器D的目标函数分别为：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/48822906.jpg" alt="avatar"><br>如上式，LS为样本来源，LC为分类结果。判别器D目标为最大化LC+ LS + FMloss，其试图对输入样本进行分类，并通过来源和语义匹配区分生成样本和原始样本。生成器G的目的是最大化LC − LS −FMloss，其试图通过样本分类结果、样本来源和语义匹配结果来欺骗判别器D。LS来源损失与原始GAN模型相同，LC为语义标签分类损失，在类别分类中使用交叉信息熵，在数值回归中则使用均方差回归。</p>
-<h3 id="生成结果对比"><a href="#生成结果对比" class="headerlink" title="生成结果对比"></a>生成结果对比</h3><p>MNIST数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/60239019.jpg" alt="avatar"><br>Fashion-MNIST数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/25827392.jpg" alt="avatar"><br>SVHN数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/12463336.jpg" alt="avatar"><br>CIFAR10数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/62008706.jpg" alt="avatar"><br>CelebA数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/12335202.jpg" alt="avatar"><br>UnityEyes数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/34168567.jpg" alt="avatar"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/Titanic-Challenge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/05/Titanic-Challenge/" itemprop="url">Titanic Challenge</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:40:46+08:00">
-                2018-06-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">竞赛</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>用此博客记录自己解决 Kaggle Titanic challenge过程中的个人总结。</p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>说道Titanic(泰坦尼克号)，最熟悉莫过于Titanic(1997 film),这部由著名导演詹姆斯·卡梅隆执导，莱昂纳多·迪卡普里奥、凯特·温斯莱特领衔主演的电影，经久不衰…但是我们今天的画风不是这样的…</p>
-<p>我们今天解决的问题是以该事件问背景，但是没有那么浪漫。<br>关于这个案例的介绍网上有很多内容，为了避免累赘，在这里就不进行详述。总的要求：预测在这个事件中乘客是否死亡。<br>附上对于train sets和 test sets中数据的介绍。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/47360135.jpg" alt="avatar"><br>更多详细的内容参看：<a href="https://www.kaggle.com/c/titanic" target="_blank" rel="noopener">https://www.kaggle.com/c/titanic</a></p>
-<h2 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h2><p>顺滑过渡到第二阶段，数据分析，对于竞赛而言，我感觉对于数据的认识的重要性完全不亚于模型的重要性。之后我们将再次提到这句话。<br>我将结合代码进行数据分析。</p>
-<ul>
-<li>pandas 原生数据分析函数<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">train =pd.read_csv(&apos;data/train.csv&apos;)</span><br><span class="line">test =pd.read_csv(&apos;data/test.csv&apos;)</span><br><span class="line">train.describe(include=&apos;all&apos;)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/96019771.jpg" alt="avatar"><br>除了上面 train.describe()，下面这两个也是比较常用的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train.head()</span><br><span class="line">train.columns</span><br></pre></td></tr></table></figure></p>
-<p>因为总体的数据量比较少，所以我们选择把train set 和test set连接起来进行数据分析和处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">combined2 = pd.concat([train_data, test_data], axis=0)</span><br></pre></td></tr></table></figure></p>
-<h3 id="数据质量分析"><a href="#数据质量分析" class="headerlink" title="数据质量分析"></a>数据质量分析</h3><ul>
-<li>缺省值<br>对于缺省值，常用的手段就是填充，但是针对不同的数据有不同的填充手段，有的是均值填充，有的是默认值填充还有的是根据现有数据训练一个 regression进行拟合(这种情况出现在缺省的数据比较重要，对于结果的预测有比较强的相关性的时候)。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">combined2.Embarked.fillna(&apos;S&apos;, inplace=True)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>Embardked(上船港口)不是那么能表现出和结果(survival)相关的变量，我么可以直接采用某个默认值进行填充。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">combined2.Fare.fillna(np.median(combined2.Fare[combined2.Fare.notnull()]), inplace=True)</span><br></pre></td></tr></table></figure></p>
-<p>Fare(船票)我们选择使用均值填充</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">classers = [&apos;Fare&apos;,&apos;Parch&apos;,&apos;Pclass&apos;,&apos;SibSp&apos;,&apos;TitleCat&apos;,&apos;CabinCat&apos;,&apos;Sex_female&apos;,&apos;Sex_male&apos;, &apos;EmbarkedCat&apos;, &apos;FamilySize&apos;, &apos;NameLength&apos;, &apos;FamilyId&apos;]</span><br><span class="line">age_et = ExtraTreesRegressor(n_estimators=200)</span><br><span class="line">X_train = full_data.loc[full_data.Age.notnull(),classers]</span><br><span class="line">Y_train = full_data.loc[full_data.Age.notnull(),[&apos;Age&apos;]]</span><br><span class="line">X_test = full_data.loc[full_data.Age.isnull(),classers]</span><br><span class="line">age_et.fit(X_train,np.ravel(Y_train))</span><br><span class="line">age_preds = age_et.predict(X_test)</span><br><span class="line">full_data.loc[full_data.Age.isnull(),[&apos;Age&apos;]] = age_preds</span><br></pre></td></tr></table></figure>
-<p>因为在特征提取看来 age 是一个比较重要的属性（下文中使用age来进一步计算性别特征，而性别特征对于survival 是重要的因素），所以需要通过 fit来进行填充 null 值。</p>
-<ul>
-<li>异常值<br>异常值的检测<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">combined2.boxplot()</span><br><span class="line">plt.ylim(0, 1000)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/40620519.jpg" alt="avatar"><br>异常值处理<br>大多数情况下我们都采取忽视，但是有时候异常值中却跟结果有比较强的相关性，比如说该题目分数在0.9的一位大神在博客中使用的特征包含名字长度。这个在我一开始的特征提取中确实没有太在意名字长度也可以当作一种和结果(servival or dead)相关的特征。</p>
-<ul>
-<li>重复值<br>重复值的检测<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train[train.duplicated()==True]</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>如果运行结果为空，那么就是没有重复值,如果有重复值，一般使用下面类似的代码都是可以去除掉的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.drop_duplicates()</span><br></pre></td></tr></table></figure></p>
-<h3 id="分布特征分析"><a href="#分布特征分析" class="headerlink" title="分布特征分析"></a>分布特征分析</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#分布分析</span><br><span class="line">fig ,ax =plt.subplots(2,2, figsize=(8,6))</span><br><span class="line">sns.countplot(&apos;Embarked&apos;, data =train, ax =ax[0,0])</span><br><span class="line">sns.countplot(&apos;Pclass&apos;, data =train, ax =ax[0,1])</span><br><span class="line">sns.violinplot(&apos;Survived&apos;, &apos;Age&apos;, data= train, ax =ax[1,0]).set(ylim =(-10, 80))</span><br><span class="line">sns.countplot(x =&apos;Survived&apos;, data= train, ax =ax[1,1])</span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/87343336.jpg" alt="avatar"><br>运行需要导入 seaborn<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import seaborn as sns</span><br></pre></td></tr></table></figure></p>
-<p>这里安利一个数据可视化工具-seaborn。回正题 counplot()可以直观的看出单个数据的特征，但是我们更加关心的是数据和数据之间的关系，更准确的是数据和预测数据(survival )之间的关系。所以,我们进行相关性分析。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">plt.subplots(figsize=(10,8))  </span><br><span class="line">corrmat = train[train.columns[1:]].corr()</span><br><span class="line">sns.set(font_scale=1.5)  </span><br><span class="line">hm = sns.heatmap(corrmat, cbar=True, annot=True, square=True, fmt=&apos;.2f&apos;, annot_kws=&#123;&apos;size&apos;: 10&#125;)  </span><br><span class="line">plt.title(&apos;Pearson Correlation of Features&apos;, y=1.05, size=15)  </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/90618337.jpg" alt="avatar"></p>
-<p>从图中可以看出，在原始数据集特征中(为什么这么说，嗯，这意味着我们下文还要进行 generate new features),Fare特征是和 survival最相关的。这从数据角度这你船票价钱越高，你生存的几率就越大(三观尽毁)。嗯，这是符合经济社会的运行规律的。我们在分析 Pearson Correlation的时候，关注的是数值的绝对值，如果是正值，表示正相关；如果是负值，表示负相关。</p>
-<p>如果细心的小伙伴发现，这个并没有把所有的变量的相关性表示出来，是的，下文我将给出一个加强版的。</p>
-<h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><p>当我们对数据有了一个初步的认识，这时候就可以进行特征工程了。网上流传很广的一句话”数据特征决定了机器学习的上限，而算法优化只是尽可能逼近这个上限”，我深有体会。因为之前进行特征提取，然后在kaggle的submission score是0.73205,经过模型融合然后达到了0.78947，提高了5个百分点。当自己在思考数据特征重新进行特征提取的时候，最后的score 是0.82296.这都是以10个百分点的提高啊。所以这句话很有道理，我试图找到这句话的出处，以表示我对于版权的尊重，但是科学上网能力有限，没有找见，也许这句话来自群众的智慧吧。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/68525093.jpg" alt="avatar"><br>图：我在kaggle 的submission 和相应的score</p>
-<p>但是我想强调的是特征提取是个很难有模板化的东西，这得看个人对于这个问题的理解和对于数据的理解，对于数据异常值的处理。并且还想说的是这个一个迭代的过程，不是一步到位的。<br>当初步构造好自己特征之后可以使用图形化工具进行简单的分析一下。(下图是我第一次构造的特征工程的图形化)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">def correlation_heatmap(df):  </span><br><span class="line">    _ , ax = plt.subplots(figsize =(14, 12))  </span><br><span class="line">    colormap = sns.diverging_palette(220, 10, as_cmap = True)  </span><br><span class="line">      </span><br><span class="line">    _ = sns.heatmap(  </span><br><span class="line">        df.corr(),   </span><br><span class="line">        cmap = colormap,  </span><br><span class="line">        square=True,   </span><br><span class="line">        cbar_kws=&#123;&apos;shrink&apos;:.9 &#125;,   </span><br><span class="line">        ax=ax,  </span><br><span class="line">        annot=True,   </span><br><span class="line">        linewidths=0.1,vmax=1.0, linecolor=&apos;white&apos;,  </span><br><span class="line">        annot_kws=&#123;&apos;fontsize&apos;:12 &#125;  </span><br><span class="line">    )  </span><br><span class="line">      </span><br><span class="line">    plt.title(&apos;Pearson Correlation of Features&apos;, y=1.05, size=15)  </span><br><span class="line">train2 =train1.drop([&apos;NullCabin&apos;], axis =1)</span><br><span class="line">correlation_heatmap(train2)</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/34929686.jpg" alt="avatar"></p>
-<p>上图是第一次特征分析的结果(kaggle score: 0.73205),survival和Pclass和Fare是有较强的正相关性。</p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/72110289.jpg" alt="avatar"><br>该图是第二次特征分析分析结果（kaggle score:0.82296,survival与male_adult(-0.56)、sex_male(-0.54)负相关,和female_adult(0.54)、sex_female(0.52)正相关。你的survival的概率和你的性别和年龄有关，如果你是成年女子，那么你很大的概率不会死亡(像Rose那样)；如果你是成年男子，那么你有很大概率体现英伦的绅士风度，主动(Jack那样)或者被选择死亡。瞬间想起了Titanic电影中Jack和Rose 的场景，好感人啊!!!</p>
-<h2 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h2><p>发现写了这么久，还没有开始训练模型。加快脚步…下面的内容以第一次训练模型为例。在建立基本模型之前我们需要先引入评价函数，以评价不同模型性能的好坏。</p>
-<p>通过均值和方差来评价模型性能的优劣<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from sklearn import cross_validation  </span><br><span class="line">def rmsl(clf):  </span><br><span class="line">    s = cross_validation.cross_val_score(clf, X_train, y_train, cv=5)  </span><br><span class="line">    return (s.mean(),s.std())</span><br></pre></td></tr></table></figure></p>
-<p>建立基本模型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">from sklearn import svm, tree, linear_model, neighbors, naive_bayes, ensemble, discriminant_analysis,gaussian_process</span><br><span class="line"></span><br><span class="line">NLA =[</span><br><span class="line">    #ensemble  methods</span><br><span class="line">    ensemble.AdaBoostClassifier(),</span><br><span class="line">    ensemble.BaggingRegressor(),</span><br><span class="line">    ensemble.GradientBoostingClassifier(),</span><br><span class="line">    ensemble.RandomForestClassifier(n_estimators=60),</span><br><span class="line">    </span><br><span class="line">    # Gaussian process</span><br><span class="line">    gaussian_process.GaussianProcessClassifier(),</span><br><span class="line">    # LM</span><br><span class="line">    linear_model.LogisticRegression(C=1.0, penalty=&apos;l1&apos;),</span><br><span class="line">    #Navies Bayes</span><br><span class="line">    naive_bayes.GaussianNB(),</span><br><span class="line">    # Nearest Neighbor</span><br><span class="line">    neighbors.KNeighborsClassifier(n_neighbors=3),</span><br><span class="line">    # Svm</span><br><span class="line">    svm.SVC(probability=True),</span><br><span class="line">    svm.LinearSVC(),</span><br><span class="line">    #Tree</span><br><span class="line">    tree.DecisionTreeClassifier(),</span><br><span class="line">    tree.ExtraTreeClassifier()    </span><br><span class="line">]</span><br><span class="line">#create table to compare MLA</span><br><span class="line">MLA_columns = [&apos;MLA Name&apos;, &apos;MLA Parameters&apos;,&apos;MLA Train Accuracy Mean&apos;, &apos;MLA Test Accuracy Mean&apos;, &apos;MLA Test Accuracy Min&apos; ,&apos;MLA Time&apos;]  </span><br><span class="line">MLA_compare = pd.DataFrame(columns = MLA_columns) </span><br><span class="line"></span><br><span class="line">row_index = 0  </span><br><span class="line">for alg in MLA:  </span><br><span class="line">    #set name and parameters  </span><br><span class="line">    MLA_compare.loc[row_index, &apos;MLA Name&apos;] = alg.__class__.__name__  </span><br><span class="line">    MLA_compare.loc[row_index, &apos;MLA Parameters&apos;] = str(alg.get_params())  </span><br><span class="line">      </span><br><span class="line">    #score model with cross validation:   </span><br><span class="line">    cv_results = model_selection.cross_validate(alg, X_train, y_train, cv  =5,return_train_score=True)  </span><br><span class="line">    MLA_compare.loc[row_index, &apos;MLA Time&apos;] = cv_results[&apos;fit_time&apos;].mean()  </span><br><span class="line">    MLA_compare.loc[row_index, &apos;MLA Train Accuracy Mean&apos;] = cv_results[&apos;train_score&apos;].mean()  </span><br><span class="line">    MLA_compare.loc[row_index, &apos;MLA Test Accuracy Mean&apos;] = cv_results[&apos;test_score&apos;].mean()     </span><br><span class="line">    MLA_compare.loc[row_index, &apos;MLA Test Accuracy Min&apos;] = cv_results[&apos;test_score&apos;].min()   #let&apos;s know the worst that can happen!  </span><br><span class="line">  </span><br><span class="line">    row_index+=1</span><br><span class="line"></span><br><span class="line">MLA_compare.sort_values(by = [&apos;MLA Test Accuracy Mean&apos;], ascending = False, inplace = True)</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/48291250.jpg" alt="avatar"><br>当我们发现某个模型效果比较好的时候，我们仍然可以进一步调参。但是这种调参并不是每次会得到better result,有时候只是一个decent result。调参是个技术活。以上图中的 DecisionTreeClassifier为例进行调参。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">param_grid = &#123;&apos;criterion&apos;: [&apos;gini&apos;, &apos;entropy&apos;],   </span><br><span class="line">              &apos;splitter&apos;: [&apos;best&apos;, &apos;random&apos;],  </span><br><span class="line">              &apos;max_depth&apos;: [None, 2,4,6,8,10],  </span><br><span class="line">              &apos;min_samples_split&apos;: [5,10,15,20,25],  </span><br><span class="line">              &apos;max_features&apos;: [None, &apos;auto&apos;, &apos;sqrt&apos;, &apos;log2&apos;]  </span><br><span class="line">             &#125;</span><br><span class="line">tune_model = model_selection.GridSearchCV(tree.DecisionTreeClassifier(), param_grid=param_grid, scoring = &apos;accuracy&apos;, cv = 5)  </span><br><span class="line">cv_results = model_selection.cross_validate(tune_model, X_train, y_train, cv  = 5)</span><br></pre></td></tr></table></figure></p>
-<p>使用的是sklearn 中的model_selection 模块，进行GridSearch，其实只是把调参过程自动化程序化。得到的结果是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0.863068608315 #train mean</span><br><span class="line">0.79803322024 # test mean</span><br><span class="line">0.77094972067 #test min</span><br></pre></td></tr></table></figure></p>
-<p>我们通过比对发现这个结果和上图的结果是稍微变差的。<br>可视化显示各个算法的效率：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sns.barplot(x=&apos;MLA Test Accuracy Mean&apos;, y = &apos;MLA Name&apos;, data = MLA_compare, color = &apos;m&apos;)  </span><br><span class="line">plt.title(&apos;Machine Learning Algorithm Accuracy Score \n&apos;)  </span><br><span class="line">plt.xlabel(&apos;Accuracy Score (%)&apos;)  </span><br><span class="line">plt.ylabel(&apos;Algorithm&apos;)</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/17534343.jpg" alt="avatar"><br>对比之后我们选取几个效果比较“好”的模型，然后进行下一步的模型融合。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">MLA_best = [  </span><br><span class="line">    #Ensemble Methods  </span><br><span class="line">    ensemble.AdaBoostClassifier(), # 0.76076  </span><br><span class="line">    ensemble.BaggingClassifier(), # 0.72248  </span><br><span class="line">    ensemble.GradientBoostingClassifier(), # 0.73684  </span><br><span class="line">    ensemble.RandomForestClassifier(n_estimators = 60), # 0.72727  </span><br><span class="line">    #GLM  </span><br><span class="line">    linear_model.LogisticRegression(C=1.0, penalty=&apos;l1&apos;, tol=1e-6), # 0.77990  </span><br><span class="line">    linear_model.RidgeClassifierCV(), # 0.77033  </span><br><span class="line">    linear_model.LogisticRegressionCV()  #0.77033  </span><br><span class="line">]  </span><br><span class="line">row_index = 0  </span><br><span class="line">for alg in MLA_best:  </span><br><span class="line">    algname = alg.__class__.__name__  </span><br><span class="line">    alg.fit(X_train, y_train)  </span><br><span class="line">    predictions = alg.predict(X_test)  </span><br><span class="line">    result = pd.DataFrame(&#123;&apos;PassengerId&apos;:test[&apos;PassengerId&apos;].as_matrix(), &apos;Survived&apos;:predictions.astype(np.int32)&#125;)  </span><br><span class="line">    result.to_csv(algname+&quot;.csv&quot;, index=False)  # save the results</span><br><span class="line">    row_index+=1</span><br></pre></td></tr></table></figure></p>
-<h3 id="模型融合"><a href="#模型融合" class="headerlink" title="模型融合"></a>模型融合</h3><p>简单的说模型融合就是通过多个decent模型的结果通过某种方式的结合，产生了比原来单个模型better的结果。关于模型融合的详细内容，请移步另一篇文章<a href="https://jijeng.github.io/2018/06/05/模型融合/" target="_blank" rel="noopener">模型融合(Ensemble learning)</a><br>我们这里以stacking(二层)为例说明模型融合。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">ntrain = train.shape[0] #891  </span><br><span class="line">ntest = test.shape[0]   #418  </span><br><span class="line">SEED = 0 # for reproducibility  </span><br><span class="line">NFOLDS = 5 # set folds for out-of-fold prediction  </span><br><span class="line">kf =model_selection.KFold(n_splits=NFOLDS, random_state=SEED)</span><br><span class="line"># 封装算法基本操作  </span><br><span class="line">class SklearnHelper(object):  </span><br><span class="line">    def __init__(self, clf, seed=0, params=None):  </span><br><span class="line">        params[&apos;random_state&apos;] = seed  </span><br><span class="line">        self.clf = clf(**params)  </span><br><span class="line">  </span><br><span class="line">    def train(self, x_train, y_train):  </span><br><span class="line">        self.clf.fit(x_train, y_train)  </span><br><span class="line">  </span><br><span class="line">    def predict(self, x):  </span><br><span class="line">        return self.clf.predict(x)  </span><br><span class="line">      </span><br><span class="line">    def fit(self,x,y):  </span><br><span class="line">        return self.clf.fit(x,y)  </span><br><span class="line">      </span><br><span class="line">    def feature_importances(self,x,y):  </span><br><span class="line">        print(self.clf.fit(x,y).feature_importances_)  </span><br><span class="line">        return self.clf.fit(x,y).feature_importances_</span><br></pre></td></tr></table></figure></p>
-<p>下面是定义五折交叉验证的方法，默认是三折。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">def get_oof(clf, x_train, y_train, x_test):  </span><br><span class="line">    oof_train = np.zeros((ntrain,))  </span><br><span class="line">    oof_test = np.zeros((ntest,))  </span><br><span class="line">    oof_test_skf = np.empty((NFOLDS, ntest))  </span><br><span class="line">  </span><br><span class="line">    for i, (train_index, test_index) in enumerate(kf.split(x_train)):  </span><br><span class="line">        x_tr = x_train[train_index]  </span><br><span class="line">        y_tr = y_train[train_index]  </span><br><span class="line">        x_te = x_train[test_index]  </span><br><span class="line">  </span><br><span class="line">        clf.train(x_tr, y_tr)  </span><br><span class="line">  </span><br><span class="line">        oof_train[test_index] = clf.predict(x_te)  </span><br><span class="line">        oof_test_skf[i, :] = clf.predict(x_test)  </span><br><span class="line">  </span><br><span class="line">    oof_test[:] = oof_test_skf.mean(axis=0)  </span><br><span class="line">    return  oof_train.reshape(-1, 1), oof_test.reshape(-1, 1) # 想让z变成只有一列，行数不知道多少</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier,AdaBoostClassifier, GradientBoostingClassifier</span><br><span class="line"># 定义四个不同的弱分类器的参数值  </span><br><span class="line">  </span><br><span class="line"># Random Forest parameters  </span><br><span class="line">rf_params = &#123;  </span><br><span class="line">    &apos;n_jobs&apos;: -1,&apos;n_estimators&apos;: 500,&apos;warm_start&apos;: True, &apos;max_depth&apos;: 6,&apos;min_samples_leaf&apos;: 2,  </span><br><span class="line">     &apos;max_features&apos; : &apos;sqrt&apos;,&apos;verbose&apos;: 0#&apos;max_features&apos;: 0.2,    </span><br><span class="line">&#125;  </span><br><span class="line"># Extra Trees Parameters  </span><br><span class="line">et_params = &#123;  </span><br><span class="line">    &apos;n_jobs&apos;: -1,&apos;n_estimators&apos;:500,&apos;max_depth&apos;: 8,&apos;min_samples_leaf&apos;: 2,&apos;verbose&apos;: 0  </span><br><span class="line">    #&apos;max_features&apos;: 0.5,      </span><br><span class="line">&#125;  </span><br><span class="line"># AdaBoost parameters  </span><br><span class="line">ada_params = &#123;  </span><br><span class="line">    &apos;n_estimators&apos;: 500,&apos;learning_rate&apos; : 0.75  </span><br><span class="line">&#125;  </span><br><span class="line"># Gradient Boosting parameters  </span><br><span class="line">gb_params = &#123;  </span><br><span class="line">    &apos;n_estimators&apos;: 500,&apos;max_depth&apos;: 5,&apos;min_samples_leaf&apos;: 2, &apos;verbose&apos;: 0  </span><br><span class="line">     #&apos;max_features&apos;: 0.2,     </span><br><span class="line">&#125;  </span><br><span class="line"># Support Vector Classifier parameters   </span><br><span class="line"># svc_params = &#123;  </span><br><span class="line">#     &apos;kernel&apos; : &apos;linear&apos;,&apos;C&apos; : 0.025   </span><br><span class="line">#     &#125;  </span><br><span class="line">  </span><br><span class="line"># 创建四个若分类器模型  </span><br><span class="line">rf = SklearnHelper(clf=RandomForestClassifier, seed=SEED, params=rf_params)  </span><br><span class="line">et = SklearnHelper(clf=ExtraTreesClassifier, seed=SEED, params=et_params)  </span><br><span class="line">ada = SklearnHelper(clf=AdaBoostClassifier, seed=SEED, params=ada_params)  </span><br><span class="line">gb = SklearnHelper(clf=GradientBoostingClassifier, seed=SEED, params=gb_params)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#X_train =X_train.values</span><br><span class="line">#X_test =X_test.values</span><br><span class="line"># 使用五折交叉方法分别计算出使用不同算法的预测结果，这些结果将用于Stacking的第二层预测  </span><br><span class="line">et_oof_train, et_oof_test = get_oof(et, X_train, y_train, X_test) # Extra Trees  </span><br><span class="line">rf_oof_train, rf_oof_test = get_oof(rf,X_train, y_train, X_test) # Random Forest  </span><br><span class="line">ada_oof_train, ada_oof_test = get_oof(ada, X_train, y_train, X_test) # AdaBoost   </span><br><span class="line">gb_oof_train, gb_oof_test = get_oof(gb,X_train, y_train, X_test) # Gradient Boost  </span><br><span class="line">  </span><br><span class="line">rf_feature = rf.feature_importances(X_train,y_train)  </span><br><span class="line">et_feature = et.feature_importances(X_train, y_train)  </span><br><span class="line">ada_feature = ada.feature_importances(X_train, y_train)  </span><br><span class="line">gb_feature = gb.feature_importances(X_train,y_train) </span><br><span class="line"></span><br><span class="line">feature_dataframe = pd.DataFrame( &#123;&apos;features&apos;: cols,  </span><br><span class="line">     &apos;Random Forest feature importances&apos;: rf_feature,  </span><br><span class="line">     &apos;Extra Trees  feature importances&apos;: et_feature,  </span><br><span class="line">      &apos;AdaBoost feature importances&apos;: ada_feature,  </span><br><span class="line">                                     </span><br><span class="line">     &apos;Gradient Boost feature importances&apos;: gb_feature  </span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
-<p>接下来以第一层为为基础训练第二层<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">base_predictions_train = pd.DataFrame( &#123;  </span><br><span class="line">    &apos;RandomForest&apos;: rf_oof_train.ravel(),# # ravel函数在降维时默认是行序优先  </span><br><span class="line">     &apos;ExtraTrees&apos;: et_oof_train.ravel(),  </span><br><span class="line">     &apos;AdaBoost&apos;: ada_oof_train.ravel(),  </span><br><span class="line">      &apos;GradientBoost&apos;: gb_oof_train.ravel()  </span><br><span class="line">    &#125;)  </span><br><span class="line">X_train2 = np.concatenate(( et_oof_train, rf_oof_train, ada_oof_train, gb_oof_train), axis=1)  </span><br><span class="line">X_test2 = np.concatenate(( et_oof_test, rf_oof_test, ada_oof_test, gb_oof_test), axis=1)</span><br></pre></td></tr></table></figure></p>
-<p>使用XGBoost训练第二层的数据。关于XGBoost为什么是有效的和相关的概念，请移步<a href="https://jijeng.github.io/2018/06/05/XGBoost/" target="_blank" rel="noopener">XGBoost</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># XGboost </span><br><span class="line">import xgboost as xgb</span><br><span class="line">gbm = xgb.XGBClassifier(  </span><br><span class="line">    #learning_rate = 0.02,  </span><br><span class="line"> n_estimators= 2000,  </span><br><span class="line"> max_depth= 4,  </span><br><span class="line"> min_child_weight= 2,  </span><br><span class="line"> #gamma=1,  </span><br><span class="line"> gamma=0.9,                          </span><br><span class="line"> subsample=0.8,  </span><br><span class="line"> colsample_bytree=0.8,  </span><br><span class="line"> objective= &apos;binary:logistic&apos;,  </span><br><span class="line"> nthread= -1,  </span><br><span class="line"> scale_pos_weight=1).fit(X_train2, y_train)  </span><br><span class="line">predictions = gbm.predict(X_test2)</span><br></pre></td></tr></table></figure></p>
-<p>最后产生结果文件 StackingSubmission.csv<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">StackingSubmission = pd.DataFrame(&#123;&apos;PassengerId&apos;:test.PassengerId, &apos;Survived&apos;: predictions &#125;)  </span><br><span class="line">StackingSubmission.to_csv(&quot;StackingSubmission.csv&quot;, index=False) # 0.78947</span><br></pre></td></tr></table></figure></p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>本文在效果可视化中借鉴<a href="https://blog.csdn.net/u012063773/article/details/79347499" target="_blank" rel="noopener">该博客</a><br>特征提取参看kaggle多位大神，在这里就谢过…</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2075,7 +1999,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2086,7 +2010,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -2097,7 +2021,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
