@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Back_to_my_blog]]></title>
+    <url>%2F2019%2F03%2F07%2FBack-to-my-blog%2F</url>
+    <content type="text"><![CDATA[个人网站中的图片都不能显示了，心里一万个草泥马，了解以后发现七牛抽风，哎。果断弃之，换了个大厂子产品，希望以后能好好待我，不要出幺蛾子。证明一下图片是能出来的。]]></content>
+      <categories>
+        <category>人间不值得</category>
+      </categories>
+  </entry>
+  <entry>
     <title><![CDATA[基于simhash的文本相似度比较]]></title>
     <url>%2F2018%2F08%2F23%2F%E5%9F%BA%E4%BA%8Esimhash%E7%9A%84%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%AF%94%E8%BE%83%2F</url>
     <content type="text"><![CDATA[我只是想说我还没有放弃这个网站… 本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下： 基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”. 根据关键字计算simhash编码，然后使用hamming distance进行比较两者的不同。如果对于上述概念比较模糊，建议首先阅读该篇博客。 顺滑过渡到代码实现：123456789101112131415# 常规导包import sys,codecsimport pandas as pdimport numpy as npimport jieba.possegimport jieba.analysefrom sklearn import feature_extractionfrom sklearn.feature_extraction.text import TfidfTransformerfrom sklearn.feature_extraction.text import CountVectorizer# 数据集的路径path =&quot;../tianmao2.csv&quot;names =[&apos;where&apos;, &apos;time&apos;, &apos;title&apos;, &apos;url&apos;, &apos;contents&apos;]data =pd.read_csv(path, delimiter=&apos;\t&apos;, names= names, nrows=200)data[&apos;id&apos;] =data.index+1data.head() 我们使用title和contents 组合作为原始处理的数据，我们认为该数据能够就是文章的内容。1stopkey = [w.strip() for w in codecs.open(&apos;../keyword_extraction/data/stopWord.txt&apos;, &apos;r&apos;).readlines()] 该stop words是中文停用词，就是常见的”的 了”。常见的有百度停用词表、哈尔滨工业大学停用词表以及中科院的停用词表。这里使用的是中科院的停用词。12345678def dataPrepos(text, stopkey): l = [] pos = [&apos;n&apos;, &apos;nz&apos;, &apos;v&apos;, &apos;vd&apos;, &apos;vn&apos;, &apos;l&apos;, &apos;a&apos;, &apos;d&apos;] # 定义选取的词性 seg = jieba.posseg.cut(text) # 分词 for i in seg: if i.word not in stopkey and i.flag in pos: # 去停用词 + 词性筛选 l.append(i.word) return l 我们选择名词作为主要的分析对象。12345678idList, titleList, abstractList = data[&apos;id&apos;], data[&apos;title&apos;], data[&apos;contents&apos;]corpus = [] # 将所有文档输出到一个list中，一行就是一个文档# 这个 虽然使用 &quot; &quot; 进行分割 但是实际上还是一个打的listfor index in range(len(idList)): text = &apos;%s。%s&apos; % (titleList[index], abstractList[index]) # 拼接标题和摘要 text = dataPrepos(text, stopkey) # 文本预处理 text = &quot; &quot;.join(text) # 连接成字符串，空格分隔 corpus.append(text) 这里的corus 是将所有的经过预处理文档作为当前计算 idf 的语料库。123456789vectorizer = CountVectorizer()X = vectorizer.fit_transform(corpus) # 词频矩阵,a[i][j]:表示j词在第i个文本中的词频# 2、统计每个词的tf-idf权值transformer = TfidfTransformer()tfidf = transformer.fit_transform(X)# 3、获取词袋模型中的关键词word = vectorizer.get_feature_names()# 4、获取tf-idf矩阵，a[i][j]表示j词在i篇文本中的tf-idf权重weight = tfidf.toarray() 使用sklearn 内置的函数计算tf-idf。1234567891011121314151617181920212223242526272829topK = 10ids, titles, keys, weights = [], [], [], []for i in range(len(weight)): print(&quot;-------这里输出第&quot;, i + 1, &quot;篇文本的词语tf-idf------&quot;) ids.append(idList[i]) titles.append(titleList[i]) df_word, df_weight = [], [] # 当前文章的所有词汇列表、词汇对应权重列表 for j in range(len(word)): # print(word[j],weight[i][j]) df_word.append(word[j]) df_weight.append(weight[i][j]) df_word = pd.DataFrame(df_word, columns=[&apos;word&apos;]) df_weight = pd.DataFrame(df_weight, columns=[&apos;weight&apos;]) word_weight = pd.concat([df_word, df_weight], axis=1) # 拼接词汇列表和权重列表 word_weight = word_weight.sort_values(by=&quot;weight&quot;, ascending=False) # 按照权重值降序排列 # 在这里可以查看 k的选取的数值应该是多大， # from ipdb import set_trace # set_trace() keyword = np.array(word_weight[&apos;word&apos;]) # 选择词汇列并转成数组格式 word_split = [keyword[x] for x in range(0, topK)] # 抽取前topK个词汇作为关键词 word_split = &quot; &quot;.join(word_split) keys.append(word_split) wei = np.array(word_weight[&apos;weight&apos;]) wei_split = [str(wei[x]) for x in range(0, topK)] wei_split = &quot; &quot;.join(wei_split) weights.append(wei_split) # 这里的命名 容易混淆result = pd.DataFrame(&#123;&quot;id&quot;: ids, &quot;title&quot;: titles, &quot;key&quot;: keys, &apos;weight&apos;: weights&#125;, columns=[&apos;id&apos;, &apos;title&apos;, &apos;key&apos;, &apos;weight&apos;]) 选择前10个频率最高的词语作为该篇文章的代表，当然这个参数是可以调整，需要根据具体的问题和结果进行调整。1result.head() 最后的效果如上。至此我们第一步的提取文章的关键词就已经做完。下面进行相似度的比较。 1234import jiebaimport jieba.analyseimport pandas as pd#日常导包 数据和上述的一样，所以就不截图了。123datasets =pd.read_csv(&quot;../tianmao2-tf-idf.csv&quot;)tokens =datasets[&apos;key&apos;]weights =datasets[&apos;weight&apos;] 提取关键词和对应的权重。123456789101112print(tokens[0], len(tokens[0]))print(weights[0], len(weights[0]))tokens0 =tokens[0].split()weights0 =weights[0].split()len(tokens0)len(weights0)tokens1 =tokens[1].split()weights1 =weights[1].split()import astweights0 =[ ast.literal_eval(i) for i in weights0]weights1 =[ ast.literal_eval(i) for i in weights1] 构造测试用例。因为权重是字符串，所以简单处理转成整数。 12dict0 =dict(zip(tokens0, weights0))dict1 =dict(zip(tokens1, weights1)) 定义一个Simhash，提供对文档的数值映射和文档间相似度计算的功能.123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081class Simhash(object): # 初始化函数 def __init__(self, weights_dict, tokens=&apos;&apos;, hashbits=64): self.hashbits = hashbits self.hash = self.simhash_function(tokens, weights_dict) # toString函数 # 不懂这个 self.hash ，凡是带有self 的函数都是可以类变量，所以这个就是返回的 self.hash这个变量 #凡是使用__str__ 这种类型的函数 都是重写 原来的函数 def __str__(self): return str(self.hash) &quot;&quot;&quot; ord() 函数是 chr() 函数（对于8位的ASCII字符串）或 unichr() 函数（对于Unicode对象）的配对函数，它以一个字符（长度为1的字符串）作为参数，返回对应的 ASCII 数值，或者 Unicode 数值 &quot;&quot;&quot; # 给每一个单词生成对应的hash值 # 这个操作搞懂之后一定很简洁， 但是现在很难理解，因为不是字符串，而是位操作 def _string_hash(self, source): if source == &apos;&apos;: return 0 else: x = ord(source[0]) &lt;&lt; 7 # &lt;&lt; 表示 乘以2^7 ; &gt;&gt; 表示除以 ; ** 表示次方的意思 # ^ : 按位异或 (二进制进行异或)； &amp; 按位进行与 操作 # 左移位操作也是可以理解为 2^x 的操作，因为存储是二进制，这样左移一位 表示×2 一次 m = 1000003 mask = 2 ** self.hashbits - 1 for c in source: x = ((x * m) ^ ord(c)) &amp; mask x ^= len(source) if x == -1: x = -2 return x # 生成simhash值 def simhash_function(self, tokens, weights_dict): v = [0] * self.hashbits # 这种使用 &#123;&#125; dictionary 然后强行得到item 再进行遍历也是牛逼 for key, t in &#123;x: self._string_hash(x) for x in tokens&#125;.items(): for i in range(self.hashbits): bitmask = 1 &lt;&lt; i if t &amp; bitmask: v[i] += weights_dict[key] else: v[i] -= weights_dict[key] fingerprint = 0 for i in range(self.hashbits): if v[i] &gt;= 0: fingerprint += 1 &lt;&lt; i return fingerprint # 求文档间的海明距离 def hamming_distance(self, other): x = (self.hash ^ other.hash) &amp; ((1 &lt;&lt; self.hashbits) - 1 ) tot = 0 while x : tot += 1 x &amp;= x - 1 return tot #求相似度 # 这个相似度的计算，十分简单，如果两个数接近，那么就是认为相似。越是接近1 越是相似， # 不是原先那种以某一个参数整数 如3 为距离的相似度 def similarity(self, other): a = float(self.hash) b = float(other.hash) if a &gt; b: return b / a else: return a / b if __name__ == &apos;__main__&apos;: hash0 = Simhash(weights_dict=dict0, tokens=tokens0) print(hash0) hash1 = Simhash(weights_dict=dict1, tokens=tokens1) print(hash1) print(hash0.hamming_distance(hash1)) print(hash0.similarity(hash1)) 结果如上。可以看出该例子中使用的两两比较的方式，对于大数据来说，一般可能会用到倒排索引和cpu并行技术。]]></content>
@@ -60,9 +68,9 @@
         <category>机器学习</category>
       </categories>
       <tags>
+        <tag>优化</tag>
         <tag>Loss Function</tag>
         <tag>Activation Function</tag>
-        <tag>优化</tag>
       </tags>
   </entry>
   <entry>
@@ -130,9 +138,9 @@
         <category>竞赛</category>
       </categories>
       <tags>
+        <tag>Kaggle</tag>
         <tag>Titanic</tag>
         <tag>泰坦尼克</tag>
-        <tag>Kaggle</tag>
       </tags>
   </entry>
   <entry>
@@ -143,8 +151,8 @@
         <category>竞赛</category>
       </categories>
       <tags>
-        <tag>优化</tag>
         <tag>Kaggle</tag>
+        <tag>优化</tag>
       </tags>
   </entry>
   <entry>
@@ -155,8 +163,8 @@
         <category>竞赛</category>
       </categories>
       <tags>
-        <tag>模型融合(Ensemble)</tag>
         <tag>XGBoost</tag>
+        <tag>模型融合(Ensemble)</tag>
         <tag>Kaggle</tag>
       </tags>
   </entry>
