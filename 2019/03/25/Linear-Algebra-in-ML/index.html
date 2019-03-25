@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="XGBoost,模型融合(Ensemble),Kaggle," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,24 +79,20 @@
 
 
 
-<meta name="description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
-<meta name="keywords" content="XGBoost,模型融合(Ensemble),Kaggle">
+<meta name="description" content="我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care. 变量（特征个数）和解的关系多变量和最后target的关系是可以使用 matrices 进">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XGBoost">
-<meta property="og:url" content="http://yoursite.com/2018/06/05/XGBoost/index.html">
+<meta property="og:title" content="Linear Algebra in ML">
+<meta property="og:url" content="http://yoursite.com/2019/03/25/Linear-Algebra-in-ML/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
+<meta property="og:description" content="我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care. 变量（特征个数）和解的关系多变量和最后target的关系是可以使用 matrices 进">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/20584283.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43560274.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/81320459.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43017405.jpg">
-<meta property="og:updated_time" content="2018-06-13T02:41:22.000Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1etf4u36aj20q00dutdk.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1eu88lj31j20ao048jrl.jpg">
+<meta property="og:updated_time" content="2019-03-25T03:22:20.353Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="XGBoost">
-<meta name="twitter:description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
-<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg">
+<meta name="twitter:title" content="Linear Algebra in ML">
+<meta name="twitter:description" content="我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care. 变量（特征个数）和解的关系多变量和最后target的关系是可以使用 matrices 进">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1etf4u36aj20q00dutdk.jpg">
 
 
 
@@ -126,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/05/XGBoost/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/03/25/Linear-Algebra-in-ML/"/>
 
 
 
 
 
-  <title>XGBoost | Jijeng's blog</title>
+  <title>Linear Algebra in ML | Jijeng's blog</title>
   
 
 
@@ -303,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/XGBoost/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Linear-Algebra-in-ML/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -320,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">XGBoost</h1>
+          <h1 class="post-title" itemprop="name headline">Linear Algebra in ML</h1>
         
 
         <div class="post-meta">
@@ -332,8 +328,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:33:28+08:00">
-                2018-06-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:14:40+08:00">
+                2019-03-25
               </time>
             
 
@@ -355,8 +351,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">竞赛</span>
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
                   </a>
                 </span>
 
@@ -392,18 +388,17 @@
       
 
       
-        <h3 id="Introduction-to-XGBoost"><a href="#Introduction-to-XGBoost" class="headerlink" title="Introduction to XGBoost"></a>Introduction to XGBoost</h3><p>XGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Friedman. XGBoost is based on this original model. And most of the content is based on the websit(<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">http://xgboost.readthedocs.io/en/latest/model.html</a>)</p>
-<h3 id="element-of-Supervised-learning"><a href="#element-of-Supervised-learning" class="headerlink" title="element of Supervised learning"></a>element of Supervised learning</h3><p>XGBoost is used for supervised learning problems, where we use the training data (with multiple features) xi to predict a target variable yi.</p>
-<h3 id="Objective-Function-Training-Loss-Regularization"><a href="#Objective-Function-Training-Loss-Regularization" class="headerlink" title="Objective Function: Training Loss + Regularization"></a>Objective Function: Training Loss + Regularization</h3><p>A very important fact about objective functions is they <strong>must always</strong> contain two parts: training loss and regularization.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg" alt="avatar"><br>For example, a commomly used training loss is mean squared error.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/20584283.jpg" alt="avatar"><br>Another commonly used loss function is logistic loss for logistic regression<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43560274.jpg" alt="avatar"></p>
-<p>The <strong>regularization term</strong> is what people usually forget to add. The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>The general principle is we want both a simple and predictive model. The tradeoff between the two is also referred as bias-variance tradeoff in machine learning.</p>
-<h3 id="Tree-Ensemble"><a href="#Tree-Ensemble" class="headerlink" title="Tree Ensemble"></a>Tree Ensemble</h3><p>The tree ensemble model is a set of classification and regression trees(CART). Here is a simple example of a CART that classifies whether someone will like computer games.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/81320459.jpg" alt="avatar"><br>A CART is a bit different from decision trees, where the leaf only contains decision values. In CART, a real score is associated with each of the leaves, which gives us richer interpretations that go beyond classification. This also makes the unified optimization step easier, as we will see in a later part of this tutorial.</p>
-<p>Usually, a single tree is not strong enough to be used in practice. What is actually used is the so-called tree ensemble model, which sums the prediction of multiple trees together.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43017405.jpg" alt="avatar"><br>Here is an example of a tree ensemble of two trees. The prediction scores of each individual tree are summed up to get the final score. If you look at the example, an important fact is that the two trees try to complement each other. </p>
-<p>Now here comes the question, what is the model for random forests? It is exactly tree ensembles! So random forests and boosted trees are not different in terms of model, the difference is how we train them. This means if you write a predictive service of tree ensembles, you only need to write one of them and they should directly work for both random forests and boosted trees. One example of why elements of supervised learning rock.</p>
-<h3 id="Tree-Boosting"><a href="#Tree-Boosting" class="headerlink" title="Tree Boosting"></a>Tree Boosting</h3><p>After introducing the model, let us begin with the real training part. How should we learn the trees? The answer is, as is always for all supervised learning models: define an objective function, and optimize it!</p>
-<p>Assume we have the following objective function (remember it always needs to contain training loss and regularization)</p>
-<h3 id="Additive-Training"><a href="#Additive-Training" class="headerlink" title="Additive Training"></a>Additive Training</h3><p>First thing we want to ask is what are the parameters of trees? You can find that what we need to learn are those functions fi, with each containing the structure of the tree and the leaf scores. This is much harder than traditional optimization problem where you can take the gradient and go. It is not easy to train all the trees at once. Instead, we use an additive strategy: fix what we have learned, and add one new tree at a time. </p>
-<p>It remains to ask, which tree do we want at each step? A natural thing is to add the one that optimizes our objective.</p>
-<h3 id="Training-model"><a href="#Training-model" class="headerlink" title="Training model"></a>Training model</h3><p>The XGBoost model for classification is called <strong>XGBClassifier</strong>(regression is called XGBRegressor). We can create and and fit it to our training dataset. Models are fit using the scikit-learn API and the <strong>model.fit()</strong> function.</p>
+        <p>我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care.</p>
+<h2 id="变量（特征个数）和解的关系"><a href="#变量（特征个数）和解的关系" class="headerlink" title="变量（特征个数）和解的关系"></a>变量（特征个数）和解的关系</h2><p>多变量和最后target的关系是可以使用 matrices 进行表示的，这就是一种数学公式化。</p>
+<blockquote>
+<p>Broadly speaking, in linear algebra data is represented in the form of linear equations. These linear equations are in turn represented in the form of matrices and vectors.</p>
+</blockquote>
+<p>先直观的感受一下变量和图形（可视化）的关系。两个变量组成的equations 是两条线的相交情况。而三个变量在空间中有三种情况： 相交，平行，不在一个平面上。三个变量组成的equations 是三个面的相交情况。有四种情况 (try hard to figure it out)：<br>No intersection at all.<br>Planes intersect in a line.<br>They can intersect in a plane.<br>All the three planes intersect at a point.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1etf4u36aj20q00dutdk.jpg" alt=""></p>
+<p>当到达4 dims 的时候，it’s impossible to visulize it.</p>
+<h2 id="terms-in-related-to-matrix"><a href="#terms-in-related-to-matrix" class="headerlink" title="terms in related to matrix"></a>terms in related to matrix</h2><p>这些词汇 (terms) 经常在文献中出现，需要对于其含义有个比较好的认识。<br><strong>Order of matrix</strong> – If a matrix has 3 rows and 4 columns, order of the matrix is 3<em>4 i.e. row</em>column. (翻译成 矩阵的阶)<br><strong>Square matrix</strong> – The matrix in which the number of rows is equal to the number of columns.<br><strong>Diagonal matrix</strong> – A matrix with all the non-diagonal elements equal to 0 is called a diagonal matrix.<br><strong>Upper triangular matrix</strong> – Square matrix with all the elements below diagonal equal to 0.<br><strong>Lower triangular matrix</strong> – Square matrix with all the elements above the diagonal equal to 0.<br><strong>Scalar matrix</strong> – Square matrix with all the diagonal elements equal to some constant k.<br><strong>Identity matrix</strong> – Square matrix with all the diagonal elements equal to 1 and all the non-diagonal elements equal to 0.<br><strong>Column matrix</strong> –  The matrix which consists of only 1 column. Sometimes, it is used to represent a vector.<br><strong>Row matrix</strong> –  A matrix consisting only of row.<br><strong>Trace</strong> – It is the sum of all the diagonal elements of a square matrix.<br><strong>Rank of a matrix</strong> – Rank of a matrix is equal to the maximum number of linearly independent row vectors in a matrix.<br><strong>Determinant of a matrix</strong> - 矩阵的行列式<br><strong>转置</strong> -在图形 matrix中还是很常见的。<br>$$\mathrm { A } _ { \mathrm { ij } } ^ { \mathrm{T}} = \mathrm { A } _ { \mathrm { ji } }$$</p>
+<p>这个矩阵乘法和元素相称的区别，后者是element-wise 进行的。可以从另外一个角度去列及矩阵相称： This operation on a vector is called linear transformation. 就是后面的vector 映射到了前面的矩阵空间。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1eu88lj31j20ao048jrl.jpg" alt=""></p>
+<h2 id="特征值和奇异值"><a href="#特征值和奇异值" class="headerlink" title="特征值和奇异值"></a>特征值和奇异值</h2><p>着两个是分别对应着PCA 和SVD。<br>Eigenvalues and Eigenvectors<br>如公式所示，特征值和特征向量的乘积就是方阵和特征向量的乘积，原先的方阵是可以降维表示成特征向量和特征值的。$ A x  = \lambda  x $</p>
+<p>对于奇异值分解，最常见的就是这种表达：$A = U \Sigma V ^ { T }$<br>特征值分解和奇异值分解都是给一个矩阵(线性变换)找一组特殊的基，特征值分解找到了特征向量这组基，在这组基下该线性变换只有缩放效果。而奇异值分解则是找到另一组基，这组基下线性变换的旋转、缩放、投影三种功能独立地展示出来了。</p>
 
       
     </div>
@@ -419,16 +414,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
-          
-            <a href="/tags/模型融合-Ensemble/" rel="tag"># 模型融合(Ensemble)</a>
-          
-            <a href="/tags/Kaggle/" rel="tag"># Kaggle</a>
-          
-        </div>
-      
 
       
       
@@ -438,8 +423,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/28/等概率生成器/" rel="next" title="等概率生成器">
-                <i class="fa fa-chevron-left"></i> 等概率生成器
+              <a href="/2019/03/07/Back-to-my-blog/" rel="next" title="Back_to_my_blog">
+                <i class="fa fa-chevron-left"></i> Back_to_my_blog
               </a>
             
           </div>
@@ -448,8 +433,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/05/模型融合/" rel="prev" title="模型融合">
-                模型融合 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/25/Dimension-Reduction/" rel="prev" title="Dimension Reduction">
+                Dimension Reduction <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -602,7 +587,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction-to-XGBoost"><span class="nav-number">1.</span> <span class="nav-text">Introduction to XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#element-of-Supervised-learning"><span class="nav-number">2.</span> <span class="nav-text">element of Supervised learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Objective-Function-Training-Loss-Regularization"><span class="nav-number">3.</span> <span class="nav-text">Objective Function: Training Loss + Regularization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-Ensemble"><span class="nav-number">4.</span> <span class="nav-text">Tree Ensemble</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-Boosting"><span class="nav-number">5.</span> <span class="nav-text">Tree Boosting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Additive-Training"><span class="nav-number">6.</span> <span class="nav-text">Additive Training</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-model"><span class="nav-number">7.</span> <span class="nav-text">Training model</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#变量（特征个数）和解的关系"><span class="nav-number">1.</span> <span class="nav-text">变量（特征个数）和解的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#terms-in-related-to-matrix"><span class="nav-number">2.</span> <span class="nav-text">terms in related to matrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征值和奇异值"><span class="nav-number">3.</span> <span class="nav-text">特征值和奇异值</span></a></li></ol></div>
             
 
           </div>

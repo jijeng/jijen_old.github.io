@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="XGBoost,模型融合(Ensemble),Kaggle," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,24 +79,17 @@
 
 
 
-<meta name="description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
-<meta name="keywords" content="XGBoost,模型融合(Ensemble),Kaggle">
+<meta name="description" content="Data Cleaning:这个步骤主要处理 missing values 和 noisy data (outlier).对于missing values 通常有一下处理手段：  ignore the tuple;  fill in the missing value manually use a global constant to fill in the missing  value use">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XGBoost">
-<meta property="og:url" content="http://yoursite.com/2018/06/05/XGBoost/index.html">
+<meta property="og:title" content="Data Pre-processing 学习笔记">
+<meta property="og:url" content="http://yoursite.com/2019/03/25/Data-Pre-processing/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
+<meta property="og:description" content="Data Cleaning:这个步骤主要处理 missing values 和 noisy data (outlier).对于missing values 通常有一下处理手段：  ignore the tuple;  fill in the missing value manually use a global constant to fill in the missing  value use">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/20584283.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43560274.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/81320459.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43017405.jpg">
-<meta property="og:updated_time" content="2018-06-13T02:41:22.000Z">
+<meta property="og:updated_time" content="2019-03-25T03:27:23.188Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="XGBoost">
-<meta name="twitter:description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
-<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg">
+<meta name="twitter:title" content="Data Pre-processing 学习笔记">
+<meta name="twitter:description" content="Data Cleaning:这个步骤主要处理 missing values 和 noisy data (outlier).对于missing values 通常有一下处理手段：  ignore the tuple;  fill in the missing value manually use a global constant to fill in the missing  value use">
 
 
 
@@ -126,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/05/XGBoost/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/03/25/Data-Pre-processing/"/>
 
 
 
 
 
-  <title>XGBoost | Jijeng's blog</title>
+  <title>Data Pre-processing 学习笔记 | Jijeng's blog</title>
   
 
 
@@ -303,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/XGBoost/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Data-Pre-processing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -320,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">XGBoost</h1>
+          <h1 class="post-title" itemprop="name headline">Data Pre-processing 学习笔记</h1>
         
 
         <div class="post-meta">
@@ -332,8 +325,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:33:28+08:00">
-                2018-06-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:26:27+08:00">
+                2019-03-25
               </time>
             
 
@@ -355,8 +348,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">竞赛</span>
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
                   </a>
                 </span>
 
@@ -392,18 +385,22 @@
       
 
       
-        <h3 id="Introduction-to-XGBoost"><a href="#Introduction-to-XGBoost" class="headerlink" title="Introduction to XGBoost"></a>Introduction to XGBoost</h3><p>XGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Friedman. XGBoost is based on this original model. And most of the content is based on the websit(<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">http://xgboost.readthedocs.io/en/latest/model.html</a>)</p>
-<h3 id="element-of-Supervised-learning"><a href="#element-of-Supervised-learning" class="headerlink" title="element of Supervised learning"></a>element of Supervised learning</h3><p>XGBoost is used for supervised learning problems, where we use the training data (with multiple features) xi to predict a target variable yi.</p>
-<h3 id="Objective-Function-Training-Loss-Regularization"><a href="#Objective-Function-Training-Loss-Regularization" class="headerlink" title="Objective Function: Training Loss + Regularization"></a>Objective Function: Training Loss + Regularization</h3><p>A very important fact about objective functions is they <strong>must always</strong> contain two parts: training loss and regularization.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg" alt="avatar"><br>For example, a commomly used training loss is mean squared error.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/20584283.jpg" alt="avatar"><br>Another commonly used loss function is logistic loss for logistic regression<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43560274.jpg" alt="avatar"></p>
-<p>The <strong>regularization term</strong> is what people usually forget to add. The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>The general principle is we want both a simple and predictive model. The tradeoff between the two is also referred as bias-variance tradeoff in machine learning.</p>
-<h3 id="Tree-Ensemble"><a href="#Tree-Ensemble" class="headerlink" title="Tree Ensemble"></a>Tree Ensemble</h3><p>The tree ensemble model is a set of classification and regression trees(CART). Here is a simple example of a CART that classifies whether someone will like computer games.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/81320459.jpg" alt="avatar"><br>A CART is a bit different from decision trees, where the leaf only contains decision values. In CART, a real score is associated with each of the leaves, which gives us richer interpretations that go beyond classification. This also makes the unified optimization step easier, as we will see in a later part of this tutorial.</p>
-<p>Usually, a single tree is not strong enough to be used in practice. What is actually used is the so-called tree ensemble model, which sums the prediction of multiple trees together.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43017405.jpg" alt="avatar"><br>Here is an example of a tree ensemble of two trees. The prediction scores of each individual tree are summed up to get the final score. If you look at the example, an important fact is that the two trees try to complement each other. </p>
-<p>Now here comes the question, what is the model for random forests? It is exactly tree ensembles! So random forests and boosted trees are not different in terms of model, the difference is how we train them. This means if you write a predictive service of tree ensembles, you only need to write one of them and they should directly work for both random forests and boosted trees. One example of why elements of supervised learning rock.</p>
-<h3 id="Tree-Boosting"><a href="#Tree-Boosting" class="headerlink" title="Tree Boosting"></a>Tree Boosting</h3><p>After introducing the model, let us begin with the real training part. How should we learn the trees? The answer is, as is always for all supervised learning models: define an objective function, and optimize it!</p>
-<p>Assume we have the following objective function (remember it always needs to contain training loss and regularization)</p>
-<h3 id="Additive-Training"><a href="#Additive-Training" class="headerlink" title="Additive Training"></a>Additive Training</h3><p>First thing we want to ask is what are the parameters of trees? You can find that what we need to learn are those functions fi, with each containing the structure of the tree and the leaf scores. This is much harder than traditional optimization problem where you can take the gradient and go. It is not easy to train all the trees at once. Instead, we use an additive strategy: fix what we have learned, and add one new tree at a time. </p>
-<p>It remains to ask, which tree do we want at each step? A natural thing is to add the one that optimizes our objective.</p>
-<h3 id="Training-model"><a href="#Training-model" class="headerlink" title="Training model"></a>Training model</h3><p>The XGBoost model for classification is called <strong>XGBClassifier</strong>(regression is called XGBRegressor). We can create and and fit it to our training dataset. Models are fit using the scikit-learn API and the <strong>model.fit()</strong> function.</p>
+        <h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning:"></a>Data Cleaning:</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier).<br>对于<strong>missing values</strong> 通常有一下处理手段：</p>
+<ul>
+<li>ignore the tuple; </li>
+<li>fill in the missing value manually</li>
+<li>use a global constant to fill in the missing  value</li>
+<li>use the attribute mean to fill in the missing value (均值)</li>
+<li>use the most probable value to fill in the missing value (mode 众数)</li>
+<li>有时候就是根据某几个特征然后弄一个简单的回归模型，根据模型进行predict<br>关于这几种方法如何去选择，我如果说 “it depends”，那么其他人不认为这是一个具有说服力的答案，他们更像知道 it depends what, and when and why to use specific method? 我认为应该是根据缺省值程度和重要性进行经验性的选择，这也去就是 empirical study吧。</li>
+</ul>
+<p>接着是 <strong>noisy data (outlier)</strong>，我的观点是首先得认识到这个是错误的数据，不是真实的数据来源，可能是来自人为的笔误 或者仪器记录的问题，这个是需要修改的。可以使用聚类 (clustering) 进行noisy data 的检测，找到之后这个就类似 missing value了，可以采取以上的手段进行操作，应该注意到的这个 noisy data 所占比例不会很高，否则就成了主要的数据分布了。</p>
+<h3 id="Data-Integration"><a href="#Data-Integration" class="headerlink" title="Data Integration:"></a>Data Integration:</h3><p>处理数据库数据，经常是需要处理子表信息的，那么必然存在着主表，而子表系信息往往是主表信息的某一方面的细化。所以有必要将两者连接起来。</p>
+<h3 id="Data-Transformation"><a href="#Data-Transformation" class="headerlink" title="Data Transformation:"></a>Data Transformation:</h3><p>In data transformation, the data are transformed or consolidated into forms appropriate for mining.<br>这里想要澄清的是很多相同的内容都可以用不同的方式表达，并且可以放在数据处理的不同阶段，并且这种工作不是一次性完成的，而是迭代的 until you run out your patience and time.<br>首先我接触的最常见的就是 discrete variables -&gt; continuous variables. 当然对于 discrete variables，基于树结构的机器学习模型是可以处理的，这里想说的是有这种方式。这种 transformation 常见的处理方式: one-hot 或者 label encoding. </p>
+<p>如果按照 data transformation的预设，那么 normalization 就也属于该模块的内容。 不论是在 machine learning 还是在 图像处理的时候，对于原始的数据经常采取 normalization. 一方面这个是可以预防梯度消失 或者 gradient exploding, 如果你采用了 SIgmoid的激活函数的话。另一方面我认为更加重要的原因是将 不同的数据放在了同一个尺度下，如果你采取了 normalization之后。实现这种normalization 经常采用的是以下三种方式：<br>min-max normalization: $x ^ { \prime } = \frac { x - \min ( x ) } { \max ( x ) - \min ( x ) }$<br>mean normalization:$x ^ { \prime } = \frac { x - \text { average } ( x ) } { \max ( x ) - \min ( x ) }$<br>standardization: $x ^ { \prime } = \frac { x - \overline { x } } { \sigma }$</p>
+<h3 id="Data-Reduction"><a href="#Data-Reduction" class="headerlink" title="Data Reduction:"></a>Data Reduction:</h3><p>一般来说很少提及到到 data reducation的必要性，如果非要给出原因，那么可以从时间和空间的角度进行考虑。更加需要关注的是如何做的问题。 </p>
+<p>我的理解reducation 可以从两个维度进行考虑，假设一个 matrics A 是 m*n，这个是一个二维的矩阵，那么可以从 行列两方面入手。映射到机器学习中一般这样描述 从dimension 和 data两个角度去描述，分别称之为 dimension reduction 和 data compression. 前者指的是特征的选取，后者是数据size的减少。<br>dimension reduction: where irrelevant, weakly relevant, or redundant attributes or dimensions may be detected and removed.<br>data compression: PCA 线性降维 to reduce the data set size. 这个是针对某一个特征展开的。</p>
+<p>机器学习中的特征工程是有一定技巧可言，其中我觉得最为有趣的是: generation or you can call it abstraction. 对于特征的泛的提取才是对于问题本身或者特征的理解，这不仅需要积累，更需要对于该问题领域的专业知识， that’s all.举个栗子，在 “Home Credit Default Risk” (kaggle 竞赛)中，原始的训练数据有信贷金额和客户的年收入，这个时候 “credit_income_percent” 就是类似这种性质的提取特征。</p>
 
       
     </div>
@@ -419,16 +416,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
-          
-            <a href="/tags/模型融合-Ensemble/" rel="tag"># 模型融合(Ensemble)</a>
-          
-            <a href="/tags/Kaggle/" rel="tag"># Kaggle</a>
-          
-        </div>
-      
 
       
       
@@ -438,8 +425,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/28/等概率生成器/" rel="next" title="等概率生成器">
-                <i class="fa fa-chevron-left"></i> 等概率生成器
+              <a href="/2019/03/25/Dimension-Reduction/" rel="next" title="Dimension Reduction">
+                <i class="fa fa-chevron-left"></i> Dimension Reduction
               </a>
             
           </div>
@@ -447,10 +434,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/05/模型融合/" rel="prev" title="模型融合">
-                模型融合 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -602,7 +585,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction-to-XGBoost"><span class="nav-number">1.</span> <span class="nav-text">Introduction to XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#element-of-Supervised-learning"><span class="nav-number">2.</span> <span class="nav-text">element of Supervised learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Objective-Function-Training-Loss-Regularization"><span class="nav-number">3.</span> <span class="nav-text">Objective Function: Training Loss + Regularization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-Ensemble"><span class="nav-number">4.</span> <span class="nav-text">Tree Ensemble</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-Boosting"><span class="nav-number">5.</span> <span class="nav-text">Tree Boosting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Additive-Training"><span class="nav-number">6.</span> <span class="nav-text">Additive Training</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-model"><span class="nav-number">7.</span> <span class="nav-text">Training model</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction:</span></a></li></ol></div>
             
 
           </div>

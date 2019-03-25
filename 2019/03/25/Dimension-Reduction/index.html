@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="XGBoost,模型融合(Ensemble),Kaggle," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,24 +79,17 @@
 
 
 
-<meta name="description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
-<meta name="keywords" content="XGBoost,模型融合(Ensemble),Kaggle">
+<meta name="description" content="对于dimension reduction最近有了新的理解:广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XGBoost">
-<meta property="og:url" content="http://yoursite.com/2018/06/05/XGBoost/index.html">
+<meta property="og:title" content="Dimension Reduction">
+<meta property="og:url" content="http://yoursite.com/2019/03/25/Dimension-Reduction/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
+<meta property="og:description" content="对于dimension reduction最近有了新的理解:广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve)">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/20584283.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43560274.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/81320459.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43017405.jpg">
-<meta property="og:updated_time" content="2018-06-13T02:41:22.000Z">
+<meta property="og:updated_time" content="2019-03-25T03:25:38.807Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="XGBoost">
-<meta name="twitter:description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
-<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg">
+<meta name="twitter:title" content="Dimension Reduction">
+<meta name="twitter:description" content="对于dimension reduction最近有了新的理解:广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve)">
 
 
 
@@ -126,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/05/XGBoost/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/03/25/Dimension-Reduction/"/>
 
 
 
 
 
-  <title>XGBoost | Jijeng's blog</title>
+  <title>Dimension Reduction | Jijeng's blog</title>
   
 
 
@@ -303,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/XGBoost/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Dimension-Reduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -320,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">XGBoost</h1>
+          <h1 class="post-title" itemprop="name headline">Dimension Reduction</h1>
         
 
         <div class="post-meta">
@@ -332,8 +325,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:33:28+08:00">
-                2018-06-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:23:56+08:00">
+                2019-03-25
               </time>
             
 
@@ -355,8 +348,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">竞赛</span>
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
                   </a>
                 </span>
 
@@ -392,18 +385,42 @@
       
 
       
-        <h3 id="Introduction-to-XGBoost"><a href="#Introduction-to-XGBoost" class="headerlink" title="Introduction to XGBoost"></a>Introduction to XGBoost</h3><p>XGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Friedman. XGBoost is based on this original model. And most of the content is based on the websit(<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">http://xgboost.readthedocs.io/en/latest/model.html</a>)</p>
-<h3 id="element-of-Supervised-learning"><a href="#element-of-Supervised-learning" class="headerlink" title="element of Supervised learning"></a>element of Supervised learning</h3><p>XGBoost is used for supervised learning problems, where we use the training data (with multiple features) xi to predict a target variable yi.</p>
-<h3 id="Objective-Function-Training-Loss-Regularization"><a href="#Objective-Function-Training-Loss-Regularization" class="headerlink" title="Objective Function: Training Loss + Regularization"></a>Objective Function: Training Loss + Regularization</h3><p>A very important fact about objective functions is they <strong>must always</strong> contain two parts: training loss and regularization.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg" alt="avatar"><br>For example, a commomly used training loss is mean squared error.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/20584283.jpg" alt="avatar"><br>Another commonly used loss function is logistic loss for logistic regression<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43560274.jpg" alt="avatar"></p>
-<p>The <strong>regularization term</strong> is what people usually forget to add. The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>The general principle is we want both a simple and predictive model. The tradeoff between the two is also referred as bias-variance tradeoff in machine learning.</p>
-<h3 id="Tree-Ensemble"><a href="#Tree-Ensemble" class="headerlink" title="Tree Ensemble"></a>Tree Ensemble</h3><p>The tree ensemble model is a set of classification and regression trees(CART). Here is a simple example of a CART that classifies whether someone will like computer games.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/81320459.jpg" alt="avatar"><br>A CART is a bit different from decision trees, where the leaf only contains decision values. In CART, a real score is associated with each of the leaves, which gives us richer interpretations that go beyond classification. This also makes the unified optimization step easier, as we will see in a later part of this tutorial.</p>
-<p>Usually, a single tree is not strong enough to be used in practice. What is actually used is the so-called tree ensemble model, which sums the prediction of multiple trees together.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43017405.jpg" alt="avatar"><br>Here is an example of a tree ensemble of two trees. The prediction scores of each individual tree are summed up to get the final score. If you look at the example, an important fact is that the two trees try to complement each other. </p>
-<p>Now here comes the question, what is the model for random forests? It is exactly tree ensembles! So random forests and boosted trees are not different in terms of model, the difference is how we train them. This means if you write a predictive service of tree ensembles, you only need to write one of them and they should directly work for both random forests and boosted trees. One example of why elements of supervised learning rock.</p>
-<h3 id="Tree-Boosting"><a href="#Tree-Boosting" class="headerlink" title="Tree Boosting"></a>Tree Boosting</h3><p>After introducing the model, let us begin with the real training part. How should we learn the trees? The answer is, as is always for all supervised learning models: define an objective function, and optimize it!</p>
-<p>Assume we have the following objective function (remember it always needs to contain training loss and regularization)</p>
-<h3 id="Additive-Training"><a href="#Additive-Training" class="headerlink" title="Additive Training"></a>Additive Training</h3><p>First thing we want to ask is what are the parameters of trees? You can find that what we need to learn are those functions fi, with each containing the structure of the tree and the leaf scores. This is much harder than traditional optimization problem where you can take the gradient and go. It is not easy to train all the trees at once. Instead, we use an additive strategy: fix what we have learned, and add one new tree at a time. </p>
-<p>It remains to ask, which tree do we want at each step? A natural thing is to add the one that optimizes our objective.</p>
-<h3 id="Training-model"><a href="#Training-model" class="headerlink" title="Training model"></a>Training model</h3><p>The XGBoost model for classification is called <strong>XGBClassifier</strong>(regression is called XGBRegressor). We can create and and fit it to our training dataset. Models are fit using the scikit-learn API and the <strong>model.fit()</strong> function.</p>
+        <p>对于dimension reduction最近有了新的理解:<br>广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。<br>You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve) the model’s performance.</p>
+<p>不必纠结于采用降维的必要性，直接进入 techniques of dimension reduction.</p>
+<ul>
+<li>low variances<br>这个是针对一个特征内部的，如果一个特征的数据本身没有什么变化，那么这个类似就是一种“死”数据。</li>
+<li>high correlation filter<br>用来判别特征 x 和最后的 target之间的相关性</li>
+<li>principal component analysis (PCA)<br>our old good friend. 如果你提降维，但是你不知道PCA，那么就说不过去。该方法的基本思路：一个基（向量空间）的变换，使得变换后的数据有着最大的方差。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.<br>下面是PCA的一些特点：<blockquote>
+<p>A principal component is a linear combination of the original variables<br>Principal components are extracted in such a way that the first principal component explains maximum variance in the dataset<br>Second principal component tries to explain the remaining variance in the dataset and is uncorrelated to the first principal component<br>Third principal component tries to explain the variance which is not explained by the first two principal components and so on</p>
+</blockquote>
+</li>
+</ul>
+<p>主成分是不断生成的，在前者基础之上生成的。 The first component is the most important one, followed by the second, then the third, and so on.</p>
+<ul>
+<li><p>Singular Value Decomposition (SVD)<br>翻译成中文感觉还是挺别扭的，奇异值分解。关于奇异值，特征值这些数学概念打算另外写一个主题，wait a moment. 简单理解PCA 是针对方阵 (m<em>m), SVD是针对矩阵(m </em>n)，所以后者是具有更大的适用范围。</p>
+</li>
+<li><p>Independent Component Analysis (ICA)<br>这个是在面试的时候被问道的一种降维方法。抓住独立向量应该就没有问题。</p>
+<blockquote>
+<p>Independent Component Analysis (ICA) is based on information-theory and is also one of the most widely used dimensionality reduction techniques. The major difference between PCA and ICA is that PCA looks for uncorrelated factors while ICA looks for independent factors.</p>
+</blockquote>
+</li>
+</ul>
+<p>基本假设：</p>
+<blockquote>
+<p>This algorithm assumes that the given variables are linear mixtures of some unknown latent variables. It also assumes that these latent variables are mutually independent, i.e., they are not dependent on other variables and hence they are called the independent components of the observed data.</p>
+</blockquote>
+<p>ICA 和PCA的异同：从线性代数的角度去理解，PCA和ICA都是要找到一组基，这组基张成一个特征空间，数据的处理就都需要映射到新空间中去。ICA相比与PCA更能刻画变量的随机统计特性，且能抑制高斯噪声。</p>
+<ul>
+<li>T-SNE<br>就是指出 t-SNE 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。这个使用场景是在可视化中，经常会看见将数据或者 <blockquote>
+<p>So far we have learned that PCA is a good choice for dimensionality reduction and visualization for datasets with a large number of variables. But what if we could use something more advanced? What if we can easily search for patterns in a non-linear way? t-SNE is one such technique. There are mainly two types of approaches we can use to map the data points:<br>Local approaches :  They maps nearby points on the manifold to nearby points in the low dimensional representation.<br>Global approaches : They attempt to preserve geometry at all scales, i.e. mapping nearby points on manifold to nearby points in low dimensional representation as well as far away points to far away points.</p>
+</blockquote>
+</li>
+</ul>
+<p>下面介绍两种不是那么“常规”，但是也符合”dimension reduction” 定义的方式。</p>
+<ul>
+<li>projection<br>By projecting one vector onto the other, dimensionality can be reduced.</li>
+<li>autoencoder<br>网络结构通常有 encoder和decoder两部分组成，那么encoder 就作为 information abstraction,而 decoder作为一种重新映射。从这个角度NLP中的词向量也是可以是一种降维手段。</li>
+</ul>
 
       
     </div>
@@ -419,16 +436,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
-          
-            <a href="/tags/模型融合-Ensemble/" rel="tag"># 模型融合(Ensemble)</a>
-          
-            <a href="/tags/Kaggle/" rel="tag"># Kaggle</a>
-          
-        </div>
-      
 
       
       
@@ -438,8 +445,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/28/等概率生成器/" rel="next" title="等概率生成器">
-                <i class="fa fa-chevron-left"></i> 等概率生成器
+              <a href="/2019/03/25/Linear-Algebra-in-ML/" rel="next" title="Linear Algebra in ML">
+                <i class="fa fa-chevron-left"></i> Linear Algebra in ML
               </a>
             
           </div>
@@ -448,8 +455,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/05/模型融合/" rel="prev" title="模型融合">
-                模型融合 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/25/Data-Pre-processing/" rel="prev" title="Data Pre-processing 学习笔记">
+                Data Pre-processing 学习笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -502,17 +509,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -592,22 +590,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction-to-XGBoost"><span class="nav-number">1.</span> <span class="nav-text">Introduction to XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#element-of-Supervised-learning"><span class="nav-number">2.</span> <span class="nav-text">element of Supervised learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Objective-Function-Training-Loss-Regularization"><span class="nav-number">3.</span> <span class="nav-text">Objective Function: Training Loss + Regularization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-Ensemble"><span class="nav-number">4.</span> <span class="nav-text">Tree Ensemble</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-Boosting"><span class="nav-number">5.</span> <span class="nav-text">Tree Boosting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Additive-Training"><span class="nav-number">6.</span> <span class="nav-text">Additive Training</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-model"><span class="nav-number">7.</span> <span class="nav-text">Training model</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
