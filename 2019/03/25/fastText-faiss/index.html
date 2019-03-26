@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fbkxph28j20ia0560sm.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fboz6w71j20n20bedh7.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg">
-<meta property="og:updated_time" content="2019-03-25T13:15:47.326Z">
+<meta property="og:updated_time" content="2019-03-26T08:47:21.530Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fastText &amp; faiss">
 <meta name="twitter:description" content="fastTextfastText结合了自然语言处理和机器学习中最成功的理念。这些包括了使用词袋以及n-gram袋表征语句，还有使用子字(subword)信息，并通过隐藏表征在类别间共享信息。另外采用了一个softmax层级(利用了类别不均衡分布的优势)来加速运算过程。 fastText 主要是用来解决 word representations和 sentence classification. 有">
@@ -399,9 +399,9 @@
 </blockquote>
 <p>Take off:<br>fastText 方法包含三部分：模型架构、层次 Softmax 和 N-gram 特征。<br>fasttext 有两个用处： text classification 和 word embedding 。<br>使用场景：大型数据，高效计算</p>
 <p>下面进行细说：</p>
-<h3 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h3><p>这个是总的框架图。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8ph67dkj21280yuk1n.jpg" alt=""><br><sub><sup>抱歉哈 这个引用找不见了，如果有侵权，please email me..</sup></sub><br>分为两个部分介绍这个网络结构：<br>从input -&gt; hidden:<br>输入层输入的是一个已经分词后短文本。短文本中每个词的词向量是由该短文本的one-hot矩阵乘以一个初始化的矩阵w得到的。（原理图：下图是fasttext 运行的时候，这个分词是再处理成单词和n-gram 组成的特征，这个是不需要我们进行显性的操作的）<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8x600o5j21440lsjz0.jpg" alt=""><br>从 hidden -&gt; output：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8xzkf3yj213y0lsti8.jpg" alt=""><br>插播一句，我们经常使用的预训练模型中的weights 是从input-&gt; hidden。</p>
+<h3 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h3><p>这个是总的框架图。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8ph67dkj21280yuk1n.jpg" alt=""><br>&lt;:center&gt;<sub><sup>抱歉哈 这个引用找不见了，如果有侵权，please email me..</sup></sub><center><br>分为两个部分介绍这个网络结构：<br>从input -&gt; hidden:<br>输入层输入的是一个已经分词后短文本。短文本中每个词的词向量是由该短文本的one-hot矩阵乘以一个初始化的矩阵w得到的。（原理图：下图是fasttext 运行的时候，这个分词是再处理成单词和n-gram 组成的特征，这个是不需要我们进行显性的操作的）<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8x600o5j21440lsjz0.jpg" alt=""><br>从 hidden -&gt; output：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8xzkf3yj213y0lsti8.jpg" alt=""><br>插播一句，我们经常使用的预训练模型中的weights 是从input-&gt; hidden。</center></p>
 <h3 id="层次Softmax"><a href="#层次Softmax" class="headerlink" title="层次Softmax"></a>层次Softmax</h3><p>从名字上就知道这个是基于softmax的改进版本，主要是运算上的改进。具体说来：利用了类别（class）不均衡这个事实（一些类别出现次数比其他的更多），通过使用 Huffman 算法建立用于表征类别的树形结构。fastText 模型使用了层次 Softmax 技巧。层次 Softmax 技巧建立在Huffman的基础上，对标签进行编码，能够极大地缩小模型预测目标的数量。</p>
-<p>这个是softmax 的原始的计算公式：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fbkxph28j20ia0560sm.jpg" alt=""><br>采用二叉树的结构之后，时间上优化不少。$O ( N) \rightarrow O \left( \log _ { 2 } N \right)$。见下图。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fboz6w71j20n20bedh7.jpg" alt=""><br>和之前的神经网络模型相比，这里的huffmax树的所有内部节点就类似之前神经网络隐藏层的神经元。其中，根节点的词向量对应我们的投影后的词向量，而所有的叶子节点就类似于之前神经网络softmax输出层的神经元。叶子节点的个数就是词汇表的大小. </p>
+<p>这个是softmax 的原始的计算公式：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fbkxph28j20ia0560sm.jpg" alt=""><br>采用二叉树的结构之后，时间上优化不少。$O ( N) \rightarrow O \left( \log _ { 2 } N \right)$。见下图。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fboz6w71j20n20bedh7.jpg" alt=""><br>&lt;:center&gt;<sub><sup>抱歉哈 这个引用找不见了，如果有侵权，please email me..</sup></sub><center><br>和之前的神经网络模型相比，这里的huffmax树的所有内部节点就类似之前神经网络隐藏层的神经元。其中，根节点的词向量对应我们的投影后的词向量，而所有的叶子节点就类似于之前神经网络softmax输出层的神经元。叶子节点的个数就是词汇表的大小. </center></p>
 <p>和之前的相比，从隐藏层到输出层的softmax映射不是一下就完成的，而是沿着huffman树一步步完成的，因此这种softmax取名为”Hierarchical softmax”. </p>
 <h3 id="N-gram-特征"><a href="#N-gram-特征" class="headerlink" title="N-gram 特征"></a>N-gram 特征</h3><p>N-gram是基于这样的思想：某个词的出现依赖于其他若干个词，第二个特点是我们获得的信息越多，预测越准确。我想说，我们每个人的大脑中都有一个N-gram模型，而且是在不断完善和训练的。我们的见识与经历，都在丰富着我们的阅历，增强着我们的联想能力。</p>
 <p> N-gram模型是一种语言模型（Language Model，LM），语言模型是一个基于概率的判别模型，它的输入是一句话（单词的顺序序列），输出是这句话的概率，即这些单词的联合概率（joint probability）。 </p>
