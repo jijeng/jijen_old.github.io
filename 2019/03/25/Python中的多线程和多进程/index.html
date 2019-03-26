@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="多线程和多进程问题是可以对应到 并发 （cncurrency）和并行(parallelism)上的。 并发，就是一个单核cpu同时开始了多个任务，但是这个任务并不是同时独立进行的，而是通过cpu的不断切换，保存现场，然后重启这样的快速的切换，给用户的感觉是并发，但是实际上是cpu的计算能力受到了限制，用户体验比较好一些。如果在多核cpu （比如我的mac 是一cpu 6核）这样的话完全是可以达到并">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-25T13:11:21.880Z">
+<meta property="og:updated_time" content="2019-03-26T00:50:56.693Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中的多线程和多进程">
 <meta name="twitter:description" content="多线程和多进程问题是可以对应到 并发 （cncurrency）和并行(parallelism)上的。 并发，就是一个单核cpu同时开始了多个任务，但是这个任务并不是同时独立进行的，而是通过cpu的不断切换，保存现场，然后重启这样的快速的切换，给用户的感觉是并发，但是实际上是cpu的计算能力受到了限制，用户体验比较好一些。如果在多核cpu （比如我的mac 是一cpu 6核）这样的话完全是可以达到并">
@@ -390,29 +390,52 @@
 <blockquote>
 <p>So, before we go deeper into the multiprocessing module, it’s worthwhile ensuring you know the advantages of using multiprocessing over multithreading. The general rule of thumb is that, if you are trying to improve the performance of CPU-bound tasks, multiprocessing is what you want to use. However, if your particular task is Input/Output bound, then you’ll generally want to use multithreading to improve the performance of your applications.</p>
 </blockquote>
-<p>简单的介绍多线程多进程的demo。<br>“””</p>
-<h1 id="使用pool-能够很好的复用-之前的worker-process-这样节省了创建-process和销毁process-的开销，相比于直接使用-队列"><a href="#使用pool-能够很好的复用-之前的worker-process-这样节省了创建-process和销毁process-的开销，相比于直接使用-队列" class="headerlink" title="使用pool 能够很好的复用 之前的worker (process) 这样节省了创建 process和销毁process 的开销，相比于直接使用 队列"></a>使用pool 能够很好的复用 之前的worker (process) 这样节省了创建 process和销毁process 的开销，相比于直接使用 队列</h1><p>import multiprocessing as mp<br>def my_func(x):<br>  print(mp.current_process())<br>  return x**x<br>def main():<br>  pool = mp.Pool(mp.cpu_count())</p>
-<h1 id="这个还是很好的-pool-这个的个数和你的cpu-count-是保持一致的"><a href="#这个还是很好的-pool-这个的个数和你的cpu-count-是保持一致的" class="headerlink" title="这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的"></a>这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的</h1><p>  result = pool.map(my_func, [4,2,3,5,3,2,1,2])<br>  result_set_2 = pool.map(my_func, [4,6,5,4,6,3,23,4,6])<br>  print(result)<br>  print(result_set_2)<br>if <strong>name</strong> == “<strong>main</strong>“:<br>  main()<br>“””</p>
-<p>“””<br>import threading</p>
-<p>#from worker import Worker<br>import multiprocessing as mp</p>
-<p>class Worker(threading.Thread):</p>
-<pre><code># Our workers constructor, note the super() method which is vital if we want this
-# to function properly
-def __init__(self):
-    super(Worker, self).__init__()
+<p>下面是多线程的demo。<br>“””<br>    import multiprocessing as mp</p>
+<pre><code>def my_func(x):
+    print(mp.current_process())
+    return x ** x
 
-def run(self):
-    for i in range(10):
-       print(i)
-    #print(mp.current_process())
-    #这个显示的都是主进程，所以就是这一个进程
-</code></pre><p>def main():<br>  thread1 =Worker()<br>  thread1.start()</p>
-<p>  thread2 =Worker()<br>  thread2.start()</p>
-<p>  thread3 =Worker()<br>  thread3.start()</p>
-<p>  thread4 =Worker()<br>  thread4.start()</p>
-<p>  #This initializes ‘’thread1’’ as an instance of our Worker Thread</p>
-<p>  #This is the code needed to run our newly created thread</p>
-<p>if <strong>name</strong> == “<strong>main</strong>“:<br>      main()<br>“””</p>
+
+def main():
+    pool = mp.Pool(mp.cpu_count())
+    # 这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的
+    result = pool.map(my_func, [4, 2, 3, 5, 3, 2, 1, 2])
+    result_set_2 = pool.map(my_func, [4, 6, 5, 4, 6, 3, 23, 4, 6])
+    print(result)
+    print(result_set_2)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre><p>“””<br>这个是多进程的demo。<br>“””<br>    import threading</p>
+<pre><code>class Worker(threading.Thread):
+    # Our workers constructor, note the super() method which is vital if we want this
+    # to function properly
+    def __init__(self):
+        super(Worker, self).__init__()
+
+    def run(self):
+        for i in range(10):
+            print(i)
+
+
+def main():
+    thread1 = Worker()
+    thread1.start()
+
+    thread2 = Worker()
+    thread2.start()
+
+    thread3 = Worker()
+    thread3.start()
+
+    thread4 = Worker()
+    thread4.start()
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre><p>“””</p>
 
       
     </div>
@@ -501,17 +524,8 @@ def run(self):
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -530,7 +544,7 @@ def run(self):
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -552,7 +566,7 @@ def run(self):
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -591,22 +605,6 @@ def run(self):
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用pool-能够很好的复用-之前的worker-process-这样节省了创建-process和销毁process-的开销，相比于直接使用-队列"><span class="nav-number">1.</span> <span class="nav-text">使用pool 能够很好的复用 之前的worker (process) 这样节省了创建 process和销毁process 的开销，相比于直接使用 队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#这个还是很好的-pool-这个的个数和你的cpu-count-是保持一致的"><span class="nav-number">2.</span> <span class="nav-text">这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

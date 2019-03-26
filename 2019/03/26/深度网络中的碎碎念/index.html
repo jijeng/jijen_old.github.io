@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Loss Function,Activation Function,Optimizer," />
 
 
 
@@ -79,16 +79,22 @@
 
 
 
-<meta name="description" content="Stay Hungry, Stay Foolish">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Jijeng&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/archives/2018/08/index.html">
+<meta name="description" content="主要介绍了常见的网络中权重的初始化，激活函数和优化器。 Weights Initializationweights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。  Here’s another trick — before sq">
+<meta name="keywords" content="Loss Function,Activation Function,Optimizer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度网络中的碎碎念">
+<meta property="og:url" content="http://yoursite.com/2019/03/26/深度网络中的碎碎念/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="Stay Hungry, Stay Foolish">
+<meta property="og:description" content="主要介绍了常见的网络中权重的初始化，激活函数和优化器。 Weights Initializationweights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。  Here’s another trick — before sq">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fz79596rj20fu0boaad.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg">
+<meta property="og:updated_time" content="2019-03-26T02:42:29.225Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jijeng&#39;s blog">
-<meta name="twitter:description" content="Stay Hungry, Stay Foolish">
+<meta name="twitter:title" content="深度网络中的碎碎念">
+<meta name="twitter:description" content="主要介绍了常见的网络中权重的初始化，激活函数和优化器。 Weights Initializationweights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。  Here’s another trick — before sq">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg">
 
 
 
@@ -118,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2018/08/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/03/26/深度网络中的碎碎念/"/>
 
 
 
 
 
-  <title>Archive | Jijeng's blog</title>
+  <title>深度网络中的碎碎念 | Jijeng's blog</title>
   
 
 
@@ -143,7 +149,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -281,111 +287,215 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        Um..! 26 posts in total. Keep on posting.
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/深度网络中的碎碎念/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/08/23/基于simhash的文本相似度比较/" itemprop="url">
-              
-                <span itemprop="name">基于simhash的文本相似度比较</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">深度网络中的碎碎念</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-23T20:20:14+08:00"
-              content="2018-08-23" >
-          08-23
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-26T10:28:14+08:00">
+                2019-03-26
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/23/文本相似度比较基本知识/" itemprop="url">
-              
-                <span itemprop="name">文本相似度比较基本知识</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-23T20:19:58+08:00"
-              content="2018-08-23" >
-          08-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
+      
+        <p>主要介绍了常见的网络中权重的初始化，激活函数和优化器。</p>
+<h2 id="Weights-Initialization"><a href="#Weights-Initialization" class="headerlink" title="Weights Initialization"></a>Weights Initialization</h2><p>weights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。<br>这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。</p>
+<blockquote>
+<p>Here’s another trick — before squishing our scalar value (called an activation) into the sigmoid function, we can add a little number called the bias, b. There will be two biases, one for each user and one for each movie.</p>
+</blockquote>
+<h3 id="Random-Initialization"><a href="#Random-Initialization" class="headerlink" title="Random Initialization"></a>Random Initialization</h3><p>最基础的即使 bias 使用 zero initialization ，然后 weights 使用 random initialzation。这种方法的缺陷在于梯度消失。就是你的weights 如果很大或者很小的时候，再加上如果使用了sigmoid 那么很容易出现上述的现象。</p>
+<blockquote>
+<p>a) If weights are initialized with very high values the term np.dot(W,X)+bbecomes significantly higher and if an activation function like sigmoid() is applied, the function maps its value near to 1 where slope of gradient changes slowly and learning takes a lot of time.<br>b) If weights are initialized with low values it gets mapped to 0, where the case is same as above.</p>
+</blockquote>
+<h3 id="He-Initialization"><a href="#He-Initialization" class="headerlink" title="He Initialization"></a>He Initialization</h3><p>$$W^{[l]} =np.random.randn(size_l, size_l -1)* np.sqrt(2/size_l -1) $$<br>这个是使用 relu 或者说 leaky relu 配合使用的。</p>
+<p>所以上述的初始化从数学的角度去理解： 从(0,1) 标准正太分布 转换成了 (0, np.sqrt(2/ size_l -1)) 这样的分布，就是你网络结构是越宽，那么这个方差就是越小的，最后的结果是越集中的，就越集中的 均值 u 左右。从图像的角度看，方差越大，图像越矮胖；方差越小，图像越瘦高。</p>
+<h3 id="Xavier-initialization"><a href="#Xavier-initialization" class="headerlink" title="Xavier initialization"></a>Xavier initialization</h3><p>这个是使用tanh() 作为 activation function的。<br>$$W^{[l]} =np.random.randn(size_l, size_l -1)* np.sqrt( 1/size_l -1) $$<br>总的思想原则：<br>They set the weights neither too much bigger that 1, nor too much less than 1.<br>就是本来就是在 (0,1) 标准正太分布出来，然后进行了进一步的约束条件。</p>
+<h2 id="Activation-function"><a href="#Activation-function" class="headerlink" title="Activation function"></a>Activation function</h2><p>总的说可以分为线性和非线性的激活函数， activation function 的作用 就是对于网络的输出 说yes or no. It maps the resulting values in between 0 to 1 or -1 to 1 etc.</p>
+<h3 id="Sigmoid-function-Logistic-Activation"><a href="#Sigmoid-function-Logistic-Activation" class="headerlink" title="Sigmoid function (Logistic Activation)"></a>Sigmoid function (Logistic Activation)</h3><p>the only reason why we use sigmoid is because it exists between 0 to 1. 这个非常有利于 predict probability. 因为自然映射到 0 是不存在 然后1 是存在。而当多分类的时候，使用softmax。</p>
+<h3 id="Tanh-function"><a href="#Tanh-function" class="headerlink" title="Tanh function"></a>Tanh function</h3><blockquote>
+<p>The advantage is that the negative inputs will be mapped strongly negative and the zero inputs will be mapped near zero in the tanh graph.</p>
+</blockquote>
+<h3 id="Relu-Rectified-Linear-Unit-Activation"><a href="#Relu-Rectified-Linear-Unit-Activation" class="headerlink" title="Relu (Rectified Linear Unit) Activation"></a>Relu (Rectified Linear Unit) Activation</h3><p>本质上是分段函数。 range: [0, infinity]. The function and its derivative both are monotonic.</p>
+<h3 id="Leaky-Relu"><a href="#Leaky-Relu" class="headerlink" title="Leaky Relu"></a>Leaky Relu</h3><p>每当一个伟大的东西产出，总会伴随着比较明显的错误，然后紧跟着就是有一个  rectified(improved) 这种版本。这个相比之前就是修正了 当输入是负数的时候，怎么办的问题。</p>
+<h3 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h3><p>这个需要从数学的角度去理解，数学公式就是下面。有一个真实的例子： 如果一张”4” 的图片，输出一个网络，最后是softmax 激活函数，那么最后得到的 “4” 的概率是最大的，但是也是有其他的可能性存在的，这个就是softmax 的效果。 最主要的功能是 convert number into probabilities. 这种效果，不像sigmoid 那样有很明确的数学公式。</p>
+<p>$$\sigma ( z ) _ { j } = \frac { e ^ { z _ { j } } } { \sum _ { k = 1 } ^ { K } e ^ { z _ { k } } }$$</p>
+<blockquote>
+<p>Softmax function, a wonderfulactivation function that turns numbers aka logits into probabilities that sum to one.<br>Remember the takeaway is: the essential goal of softmax is to turn numbers into probabilities.</p>
+</blockquote>
+<h2 id="Optimizer"><a href="#Optimizer" class="headerlink" title="Optimizer"></a>Optimizer</h2><h3 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h3><p>最基本的应该是 gradient descent，这个算是开山鼻祖。给出了每次梯度变化的方向</p>
+<h3 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h3><p>个人更喜欢将其翻译成动量，这个gradient 考虑之前的gradient 的方向和大小，有点像动量的的含义。不仅考虑了current step, 而且accumulates gradient of the past steps.</p>
+<blockquote>
+<p> A very popular technique that is used along with SGD is called Momentum. Instead of using only the gradient of the current step to guide the search, momentum also accumulates the gradient of the past steps to determine the direction to go. </p>
+</blockquote>
+<p>好处在于:</p>
+<blockquote>
+<p>most recent is weighted than the less recent ones<br>the weightage of the most recent previous gradients is more than the less recent ones.<br>for example:</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg" alt=""></p>
+<h3 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h3><p>RMSprop, or Root Mean Square Propogation has an interesting history. RMSProp also tries to dampen the oscillations, but in a different way than momentum. </p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fz79596rj20fu0boaad.jpg" alt=""></p>
+<h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><p>这种套路总是一样的，总是有一个中和者，关键是如何整合到一起。</p>
+<blockquote>
+<p>Adam or Adaptive Moment Optimization  algorithms combines the heuristics of both Momentum and RMSProp.</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg" alt=""></p>
+<p>The hyperparameter beta1 is generally kept around 0.9 while beta_2 is kept at 0.99. Epsilon is chosen to be 1e-10 generally.</p>
+<p>对于公式的解释，Eq 1 and Eq 2是come from RMSprop,  Eq 3 comes from Adam。最后一步是 update 操作，条理清楚，没有问题。(公式中的v 表示导数，g 表示导数e 不太清楚)<br>Here, we compute the exponential average of the gradient as well as the squares of the gradient for each parameters (Eq 1, and Eq 2). To decide our learning step, we multiply our learning rate by average of the gradient (as was the case with momentum) and divide it by the root mean square of the exponential average of square of gradients (as was the case with momentum) in equation 3. Then, we add the update.)</p>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Loss-Function/" rel="tag"># Loss Function</a>
+          
+            <a href="/tags/Activation-Function/" rel="tag"># Activation Function</a>
+          
+            <a href="/tags/Optimizer/" rel="tag"># Optimizer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/26/siamese-network/" rel="next" title="siamese network">
+                <i class="fa fa-chevron-left"></i> siamese network
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -393,6 +503,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -413,8 +527,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -494,6 +617,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.2.</span> <span class="nav-text">He Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization"><span class="nav-number">1.3.</span> <span class="nav-text">Xavier initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -634,6 +773,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
