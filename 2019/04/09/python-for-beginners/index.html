@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="LightGBM,XGBoost,调参," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,22 +79,17 @@
 
 
 
-<meta name="description" content="lightGBM调参(常用参数)Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So">
-<meta name="keywords" content="LightGBM,XGBoost,调参">
+<meta name="description" content="modulepython 文件可以当做主文件进行运行或者当做函数的集合进行调用。如果是前者一般是需要包含”__name__ ==”__main__”。对于后者就是在其他的python文件中进行调用。 import my_module # python文件 from my_module import my_object  packagesfrom packageroot.packagefolder.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LightGBM和XGBoost及其调参">
-<meta property="og:url" content="http://yoursite.com/2018/07/21/LightGBM和XGBoost及其调参/index.html">
+<meta property="og:title" content="Python for Beginners">
+<meta property="og:url" content="http://yoursite.com/2019/04/09/python-for-beginners/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="lightGBM调参(常用参数)Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So">
+<meta property="og:description" content="modulepython 文件可以当做主文件进行运行或者当做函数的集合进行调用。如果是前者一般是需要包含”__name__ ==”__main__”。对于后者就是在其他的python文件中进行调用。 import my_module # python文件 from my_module import my_object  packagesfrom packageroot.packagefolder.">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/21729887.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/50917702.jpg">
-<meta property="og:updated_time" content="2018-07-23T01:35:07.759Z">
+<meta property="og:updated_time" content="2019-04-09T10:57:33.297Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LightGBM和XGBoost及其调参">
-<meta name="twitter:description" content="lightGBM调参(常用参数)Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So">
-<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg">
+<meta name="twitter:title" content="Python for Beginners">
+<meta name="twitter:description" content="modulepython 文件可以当做主文件进行运行或者当做函数的集合进行调用。如果是前者一般是需要包含”__name__ ==”__main__”。对于后者就是在其他的python文件中进行调用。 import my_module # python文件 from my_module import my_object  packagesfrom packageroot.packagefolder.">
 
 
 
@@ -124,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/07/21/LightGBM和XGBoost及其调参/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/04/09/python-for-beginners/"/>
 
 
 
 
 
-  <title>LightGBM和XGBoost及其调参 | Jijeng's blog</title>
+  <title>Python for Beginners | Jijeng's blog</title>
   
 
 
@@ -301,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/LightGBM和XGBoost及其调参/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/09/python-for-beginners/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -318,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">LightGBM和XGBoost及其调参</h1>
+          <h1 class="post-title" itemprop="name headline">Python for Beginners</h1>
         
 
         <div class="post-meta">
@@ -330,8 +325,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:17:35+08:00">
-                2018-07-21
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-09T18:47:46+08:00">
+                2019-04-09
               </time>
             
 
@@ -353,8 +348,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
                   </a>
                 </span>
 
@@ -390,73 +385,146 @@
       
 
       
-        <h3 id="lightGBM调参-常用参数"><a href="#lightGBM调参-常用参数" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><p>Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So when growing on the same leaf in Light GBM, the leaf-wise algorithm can reduce more loss than the level-wise algorithm and hence results in much better accuracy which can rarely be achieved by any of the existing boosting algorithms. Also, it is surprisingly very fast, hence the word ‘Light’.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg" alt="avatar"><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/21729887.jpg" alt="avatar"><br>Leaf wise splits lead to increase in complexity and may lead to overfitting and it can be overcome by specifying another parameter max_depth parameter.</p>
-<h3 id="Advantages-of-LightGBM"><a href="#Advantages-of-LightGBM" class="headerlink" title="Advantages of LightGBM"></a>Advantages of LightGBM</h3><ul>
-<li>faster training speed and higher efficiency<br>Light GBM use histogram based algorithm i.e it buckets continuous feature values into discrete bins which fasten the training procedure.</li>
-<li>lower memory usage<br>Replaces continuous values to discrete bins which result in lower memory usage.</li>
-<li>better accuracy than any other boosting algorithm<br>It produces much more complex trees by following leaf wise split approach rather than a level-wise approach which is the main factor in achieving higher accuracy. </li>
-<li>compatibility with large datasets<br>It is capable of performing equally good with large datasets with a significant reduction in training time as compared to XGBOOST.</li>
-<li>parallel learning supported</li>
-</ul>
-<h3 id="lightGBM调参-常用参数-1"><a href="#lightGBM调参-常用参数-1" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><ul>
-<li><strong>task</strong><br>default= train, option: train, prediction</li>
-<li>application<br>default= regression, option: regression, binary, multiclass, lambdarank(lambdarank application)</li>
-<li>data<br>training data, 这个比较诡异，你需要创建一个lightGBM类型的data</li>
-<li>num_iterations<br>default =100, 可以设置为的大一些，然后使用early_stopping进行调节。</li>
-<li>early_stopping_round<br>default =0, will stop training if one metric of one validation data doesn’t improve in last early_stopping_round rounds.</li>
-<li>num_leaves<br>default =31, number of leaves in a tree</li>
-<li>device<br>default =cpu, options: gpu, cpu, choose gpu for faster training.</li>
-<li>max_depth<br>specify the max depth to which tree will grow, which is very important.</li>
-<li>feature_fraction<br>default =1, specifies the fraction of features to be taken for each iteration.</li>
-<li>bagging_fraction<br>default =1, spefifies the fraction of data to be used for each iteration and it generally used to speed up the training and avoid overfitting.</li>
-<li>max_bin<br>max number of bins to bucket the feature values.因为模型是基于bin训练的，如果bin 数量越多，得到better accuracy,同时更加容易 overfitting.</li>
-<li>num_threads</li>
-<li>label<br>specify the label columns.</li>
-<li>categorical_feature<br>specify the categorical features</li>
-<li>num_class<br>default =1, used only for multi-class classification</li>
-</ul>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/50917702.jpg" alt="avatar"></p>
-<h3 id="referrence"><a href="#referrence" class="headerlink" title="referrence"></a>referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/" target="_blank" rel="noopener">which-algorithm-takes-the-crown-light-gbm-vs-xgboost</a><br><a href="https://blog.csdn.net/aliceyangxi1987/article/details/80711014" target="_blank" rel="noopener">LightGBM 如何调参</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html" target="_blank" rel="noopener">官方文档param_tuning</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters.html" target="_blank" rel="noopener">官方文档parameter</a></p>
-<h3 id="XGBoost调参"><a href="#XGBoost调参" class="headerlink" title="XGBoost调参"></a>XGBoost调参</h3><h3 id="Advantage-of-XGBoost"><a href="#Advantage-of-XGBoost" class="headerlink" title="Advantage of XGBoost"></a>Advantage of XGBoost</h3><ul>
-<li>regularization<br>standard GBM implementation has no regularization, in fact, XGBoost is also known as ‘regularized boosting’ technique.</li>
-<li>parallel processing<br>we know that boosting is sequential process so how can it be parallelized? <a href="http://zhanpengfang.github.io/418home.html" target="_blank" rel="noopener">this link</a> to explore further.</li>
-<li>high flexibility<br>XGBoost allow users to define <strong>custom optimization objectives and evaluation criteria</strong></li>
-<li>handling missing values<br>very useful property. XGBoost has an in-built routine to handle missing values. User is required to supply a different value than other observations and pass that as a parameter. XGBoost tries different things as it encounter a missing value on each node and learns which path to take for missing values in future.</li>
-<li>Tree pruning<br>A GBM would stop splitting a node when it encounters a negative loss in the split. Thus it is more of a greedy algorithm. XGBoost on the other hand make splits upon the max_depth specified and then start pruning the tree backwards and remove splits beyond which there is no positive gain.</li>
-<li>built-in cross-validation<br>This is unlike GBM where we have to run a grid-search and only a limited values can be tested. </li>
-<li>continue on existing model</li>
-</ul>
-<h3 id="XGBoost-Parameters"><a href="#XGBoost-Parameters" class="headerlink" title="XGBoost Parameters"></a>XGBoost Parameters</h3><h4 id="general-parameters"><a href="#general-parameters" class="headerlink" title="general parameters"></a>general parameters</h4><p>General Parameters: Guide the overall functioning</p>
-<ul>
-<li>booster:<br>default =gbtree, can be gbtree, gblinear or dart. 一般使用gbtree.</li>
-<li>silent:<br>default =0, silent mode is activated if set to 1(no running messages will be printed)</li>
-<li>nthread:<br>default to maximum of threads.</li>
-</ul>
-<h4 id="booster-parameters"><a href="#booster-parameters" class="headerlink" title="booster parameters"></a>booster parameters</h4><p>Booster Parameters: Guide the individual booster (tree/regression) at each step</p>
-<ul>
-<li>eta(learning rate):<br>default=0.3, typical final values to be used: 0.01-0.2, using CV to tune</li>
-<li>min_child_weight:<br>minimum sum of instance weight (hessian) needed in a child. If the tree partition step results in a leaf node with the sum of instance weight less than min_child_weight, then the building process will give up further partitioning. In linear regression mode, this simply corresponds to minimum number of instances needed to be in each node. The larger, the more conservative the algorithm will be.<br>default =1,too high values can lead to under-fitting, it should be tuned using CV. 数值越小越容易过拟合，越大越容易 under-fitting.</li>
-<li>max_depth:<br>default =6, typical values: 3-10, should be tuned using CV.</li>
-<li>gamma:<br>default =0, Gamma specifies the minimum loss reduction required to make a split.如果在分裂过程中小于该值，那么就不会继续分裂。</li>
-<li>subsample:<br>default =1, typical values: 0.5-1. Denotes the fraction of observations to be randomly samples for each tree.</li>
-<li>colsample_bytree:<br>default =1, typical values: 0.5-1. colsample_bytree和subsample不同点：colsample_by是特征的随机fraction, subsample是rows的随机fraction。</li>
-<li>lambda:<br>default =1, L2 regularization term on weights(analogous to Ridge regression). Though many data scientists don’t use it often, it should be explored to reduce overfitting.</li>
-<li>alpha:<br>default =0, L1 regularization term on weight (analogous to Lasso regression)</li>
-<li>scale_pos_weight:<br>default =1,  a value greater than 0 should be used in case of high class imbalance as it helps in faster convergence.</li>
-</ul>
-<h4 id="learning-task-parameters"><a href="#learning-task-parameters" class="headerlink" title="learning task parameters"></a>learning task parameters</h4><p>Learning Task Parameters: Guide the optimization performed</p>
-<ul>
-<li><strong>objective</strong><br>binary: logistic- returns predicated probability(not class)<br>multi: softmax- returns predicated class(not probabilities)<br>multi: softprob- returns predicated probability of each data point belonging to each class.</li>
-<li>eval_metirc<br>default according to objective(rmse for regression and error for classification), used for validation data.<br>typical values: rmse(root mean square error), mse(mean absolute error), logloss(negative log-likelihood), error(binary classification error rate, 0.5 threshold), auc(area under the curve)</li>
-<li>seed<br>default =0, used for reproducible results and also for <strong>parameter tuning</strong>.</li>
-</ul>
-<h4 id="Control-Overfitting"><a href="#Control-Overfitting" class="headerlink" title="Control Overfitting"></a>Control Overfitting</h4><p>There are in general two ways that you can control overfitting in xgboost. </p>
-<ul>
-<li>The first way is to directly control model complexity.</li>
-<li>The second way is to add regularization parameters</li>
-</ul>
-<h3 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence"></a>Referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/" target="_blank" rel="noopener">complete guide parameter tuning xgboost with codes python</a><br><a href="http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html" target="_blank" rel="noopener">官方文档 param_tuning</a><br><a href="http://xgboost.readthedocs.io/en/latest/parameter.html" target="_blank" rel="noopener">官方文档 parameter</a></p>
+        <h3 id="module"><a href="#module" class="headerlink" title="module"></a>module</h3><p>python 文件可以当做主文件进行运行或者当做函数的集合进行调用。如果是前者一般是需要包含”__name__ ==”__main__”。对于后者就是在其他的python文件中进行调用。</p>
+<pre><code>import my_module # python文件
+from my_module import my_object 
+</code></pre><h3 id="packages"><a href="#packages" class="headerlink" title="packages"></a>packages</h3><pre><code>from packageroot.packagefolder.mod import my_object
+</code></pre><p>Note: Ensure each directory within your package import contains a file __init__.py</p>
+<h3 id="pythonpath"><a href="#pythonpath" class="headerlink" title="pythonpath"></a>pythonpath</h3><p>python2 和python3 使用不同的解释器，导致在一些函数命名和计算上有一些差别，最好在文件的开头标明使用的解释器。</p>
+<h3 id="while-for"><a href="#while-for" class="headerlink" title="while for"></a>while for</h3><p>while : provide a condition and run the loop until the condition is not met.</p>
+<p>loop for a number of specific times; loop over items or characters of a string.</p>
+<p>examples:</p>
+<pre><code>[Variable] AggregateFunction([Value] for [item] in [collection])
+x =[1, 2,3, 4, 5]
+y =[ 2*a for a in x if a%2 ==0]
+y &gt;&gt; [4, 8]
+</code></pre><p>或者可以使用这样更加简洁的语句：</p>
+<pre><code>lambda arguments : expressio
+fun1 = lambda a,b,c : a+b+c
+print(fun1(5,6,2))
+</code></pre><p>来个比较复杂的例子</p>
+<pre><code>nums =[1,2,3,4,5]
+letters =[&apos;a&apos;, &apos;b&apos;, &apos;c&apos;,&apos;d&apos;,&apos;e&apos;]
+nums_letters =[[n, l] for n in nums for l in letters ]
+nums_letters
+</code></pre><h3 id="break-continue-pass"><a href="#break-continue-pass" class="headerlink" title="break continue pass"></a>break continue pass</h3><p>The break, continue, and pass statements in Python will allow you to use for loops and while loops more effectively in your code.</p>
+<pre><code>number = 0
+for number in range(10):
+   number = number + 1
 
+   if number == 5:
+      pass    # pass here
+
+   print(&apos;Number is &apos; + str(number))
+
+print(&apos;Out of loop&apos;)
+</code></pre><p>The pass statement occurring after the if conditional statement is telling the program to continue to run the loop and ignore the fact that the variable number evaluates as equivalent to 5 during one of its iterations.</p>
+<p>可以用用作新的 if的测试。<br>The pass statement can create minimal classes, or act as a placeholder when working on new code and thinking on an algorithmic level before hammering out details.</p>
+<h3 id="yield-return"><a href="#yield-return" class="headerlink" title="yield return"></a>yield return</h3><p>经常被用来作为生成器。</p>
+<blockquote>
+<p>when you call a normal function with a return statement the function is terminated whenever it encounters a return statement. In a function with a yield statement the state of the function is ‘saved’ from the last call and can be picked up the next time you call a generator function.</p>
+</blockquote>
+<p>for examples</p>
+<pre><code>gen_exp =(x **2 for x in range(10) if x %2 ==0)
+for x in gen_exp:
+  print(x)
+
+def my_gen():
+  for x in range(5):
+    yield x
+
+gen1 =my_gen()
+next(gen1)
+
+def my_generator1():
+  yield 1
+  yield 2
+  yield 3
+
+my_gen =my_generator1()
+next(my_gen)
+</code></pre><h3 id="recursion"><a href="#recursion" class="headerlink" title="recursion"></a>recursion</h3><p>A function calling itself is known as recursion.</p>
+<h3 id="list-tuples-dictionary"><a href="#list-tuples-dictionary" class="headerlink" title="list, tuples, dictionary"></a>list, tuples, dictionary</h3><p>在python 中是使用频繁的data structure，这个是属于 collection 类别，里面放的是element<br>to add/update/ delete an item of a colletion ( list)</p>
+<pre><code>my_list.append(&apos;C&apos;) #adds at the end
+my_list[1] = &apos;D&apos; #update
+my_list.pop(1) # removes
+
+mylist.pop() # 默认就是类似 栈的结构，就是pop 出来最后一个
+mylist.pop(0) # 当然也可以根据index 指定特定的 pop(delete) 的element
+or 
+del mylist[1:2] # 通过指定 index range 然后进行del
+mylist.sort() # 支持 sorting 然后是从小到大, 这个sort是一种操作，inplace 的操作
+</code></pre><p>tuples<br>tuples store a sequence of objects, the object can be of any typle. Tuples are faster than lists.</p>
+<p>dictionary:<br>It stores key/value pair objects.</p>
+<pre><code>my_dict =dict()
+my_dict[&apos;key&apos;] =&apos;value&apos;
+or 
+my_dict ={&apos;key&apos;: &apos;value&apos;, ...}
+
+for key in my_dict:
+# do something
+if &apos;some key&apos; in my_dict:
+# do something
+</code></pre><h3 id="Iterators"><a href="#Iterators" class="headerlink" title="Iterators"></a>Iterators</h3><pre><code>class yrange:
+  def __init__(self, n):
+    self.i =0
+    self.n =n
+  # 这个表明是一个 iterator，make an object iterable
+  def __iter__(self):
+    return self
+  # 这个next 函数就被当做是 class的属性，可以被外部调用的，
+  def next(self):
+    if self.i &lt; self.n:
+      i =self.i
+      self.i +=1
+      return i
+    else:
+      raise StopIteration()
+</code></pre><h3 id="shallow-vs-deep-copy"><a href="#shallow-vs-deep-copy" class="headerlink" title="shallow vs deep copy"></a>shallow vs deep copy</h3><p>python3 中：<br>对于简单的数据类型，像int ，string，这种 copy() 和copy.deepcopy() 这两者都是相同的，copy 都是一种映射，都是相当于”值“ 上的引用；</p>
+<pre><code>aa =2
+bb =aa
+print(id(aa), id(bb)) # 相同
+bb =3
+print(id(aa), id(bb)) # 不同，因为把3 这个值重新复制给了变量bb
+</code></pre><p>对于复杂的数据类型，使用deepcopy() 的时候，本来就是会重新拷贝一份到内存中。在python3 中copy() 和deepcopy() 这个是没有什么区别的。</p>
+<pre><code>list1 =[&apos;a&apos;, &apos;b&apos;]
+list2 =list1 # 这个是引用，所以和list1 是相同的
+list3 =copy.copy(list1)  # 这个id 和list1 不同
+list4 =copy.deepcopy(list1)# 这个id 和list1 不同 
+print(id(list1), id(list2), id(list3), id(list4))
+</code></pre><h3 id="object-oriented-design"><a href="#object-oriented-design" class="headerlink" title="object oriented design"></a>object oriented design</h3><pre><code>class ParentClass:
+ def my_function(self):
+   print &apos;I am here&apos;
+
+class SubClass1(ParentClass): 
+class SubClass2(ParentClass): 
+</code></pre><p>对于多继承的支持 （接口）</p>
+<pre><code>class A(B,C):  #A implments B and C
+</code></pre><p>如果想要call parent class function then you can dp:</p>
+<pre><code>super(A, self).funcion_name()
+</code></pre><h3 id="garbage-collection"><a href="#garbage-collection" class="headerlink" title="garbage collection"></a>garbage collection</h3><p>all the objects  in python are stored in a heap space. Python has an in-built garbage collection mechanism.</p>
+<blockquote>
+<p>In computer science, a heap is a specialized tree-based data structure which is essentially an almost complete[1] tree that satisfies the heap property: if P is a parent node of C, then the key(the value) of P is either greater than or equal to (in a max heap) or less than or equal to (in a min heap) the key of C.</p>
+</blockquote>
+<h3 id="try…catch"><a href="#try…catch" class="headerlink" title="try…catch"></a>try…catch</h3><pre><code># raise exceptions
+try:
+  raise TyeError
+except:
+  print(&apos;exception&apos;)
+
+# catching exceptions
+try:
+  do_something()
+except:
+  print(&apos;exception&apos;)
+# try/ catch /finally
+try:
+  do_something()
+except TypeError:
+  print(&apos;exception&apos;)
+finally:
+  close_connections()
+</code></pre>
       
     </div>
     
@@ -471,16 +539,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/LightGBM/" rel="tag"># LightGBM</a>
-          
-            <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
-          
-            <a href="/tags/调参/" rel="tag"># 调参</a>
-          
-        </div>
-      
 
       
       
@@ -490,8 +548,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/21/那些年的算法题目（二）/" rel="next" title="那些年的算法题目（二）">
-                <i class="fa fa-chevron-left"></i> 那些年的算法题目（二）
+              <a href="/2019/04/06/The-evaluation-of-sentence-similarity/" rel="next" title="The-evaluation-of-sentence-similarity">
+                <i class="fa fa-chevron-left"></i> The-evaluation-of-sentence-similarity
               </a>
             
           </div>
@@ -500,8 +558,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" rel="prev" title="differences-between-l1-and-l2-as-loss-function-and-regularization">
-                differences-between-l1-and-l2-as-loss-function-and-regularization <i class="fa fa-chevron-right"></i>
+              <a href="/2019/04/09/cyclegan-stylegan/" rel="prev" title="CycleGAN & StyleGAN">
+                CycleGAN & StyleGAN <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -654,7 +712,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数"><span class="nav-number">1.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantages-of-LightGBM"><span class="nav-number">2.</span> <span class="nav-text">Advantages of LightGBM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数-1"><span class="nav-number">3.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#referrence"><span class="nav-number">4.</span> <span class="nav-text">referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost调参"><span class="nav-number">5.</span> <span class="nav-text">XGBoost调参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantage-of-XGBoost"><span class="nav-number">6.</span> <span class="nav-text">Advantage of XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost-Parameters"><span class="nav-number">7.</span> <span class="nav-text">XGBoost Parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#general-parameters"><span class="nav-number">7.1.</span> <span class="nav-text">general parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#booster-parameters"><span class="nav-number">7.2.</span> <span class="nav-text">booster parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#learning-task-parameters"><span class="nav-number">7.3.</span> <span class="nav-text">learning task parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Control-Overfitting"><span class="nav-number">7.4.</span> <span class="nav-text">Control Overfitting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Referrence"><span class="nav-number">8.</span> <span class="nav-text">Referrence</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#module"><span class="nav-number">1.</span> <span class="nav-text">module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#packages"><span class="nav-number">2.</span> <span class="nav-text">packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pythonpath"><span class="nav-number">3.</span> <span class="nav-text">pythonpath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-for"><span class="nav-number">4.</span> <span class="nav-text">while for</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#break-continue-pass"><span class="nav-number">5.</span> <span class="nav-text">break continue pass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yield-return"><span class="nav-number">6.</span> <span class="nav-text">yield return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#recursion"><span class="nav-number">7.</span> <span class="nav-text">recursion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list-tuples-dictionary"><span class="nav-number">8.</span> <span class="nav-text">list, tuples, dictionary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Iterators"><span class="nav-number">9.</span> <span class="nav-text">Iterators</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shallow-vs-deep-copy"><span class="nav-number">10.</span> <span class="nav-text">shallow vs deep copy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#object-oriented-design"><span class="nav-number">11.</span> <span class="nav-text">object oriented design</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#garbage-collection"><span class="nav-number">12.</span> <span class="nav-text">garbage collection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#try…catch"><span class="nav-number">13.</span> <span class="nav-text">try…catch</span></a></li></ol></div>
             
 
           </div>
