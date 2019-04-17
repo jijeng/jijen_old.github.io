@@ -296,6 +296,382 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/17/a-not-so-gentle-introduction-to-hyperparameters-tuning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/17/a-not-so-gentle-introduction-to-hyperparameters-tuning/" itemprop="url">A Not-So-Gentle Introduction to Hyperparameters Tuning</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-17T21:14:15+08:00">
+                2019-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Setting the hyper-parameters seems like a black art that requires years of experience to acquire. Currently, there are no simple and easy ways to set hyper-parameters- specifically, batch size, learning rate, momentum, and weight decay. A grid search or random search maybe sounds like a good idea. In this blog, I’d like to share you my idea from reading papers and my projects.</p>
+<h2 id="Hyper-parameters"><a href="#Hyper-parameters" class="headerlink" title="Hyper-parameters"></a>Hyper-parameters</h2><h3 id="Batch-Size"><a href="#Batch-Size" class="headerlink" title="Batch Size"></a>Batch Size</h3><p>Learning rate is maybe the most important hyper-parameters, but we choose batch size firstly because large batch size needs a large learning rate in most circumstances.</p>
+<p>A general principle is: use as a large batch size as possible to fit your CPU memory or/both GPU memory. There are several reasons:</p>
+<ul>
+<li>larger batch sizes permit the use of larger learning rates</li>
+<li>A constant number of iterations favors larger batch sizes</li>
+</ul>
+<p>However, small batch sizes add regularization while large batch sizes add less. So utilize it while balancing the proper amount of regularization.</p>
+<h3 id="Learning-Rate"><a href="#Learning-Rate" class="headerlink" title="Learning Rate"></a>Learning Rate</h3><p>We will introduce the idea from [Cyclical Learning Rates for Training Neural Networks][1]: Cyclical Learning Rates.</p>
+<p>Instead of monotonically decreasing the learning rate, this method lets the learning rate cyclically vary between reasonable boundary values. The essence of this learning rate policy comes from the observation that increasing the learning rate might have a short term negative effect and yet achieve a longer term beneficial effect. This observation leads to the idea of letting the learning rate vary within a range of values rather than adopting a stepwise fixed or exponentially decreasing value. That is, one sets minimum and maximum boundaries and the learning rate cyclically varies between these bounds.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g25wjj6cu9j20p80gcwh4.jpg" alt=""><br><small>From Cyclical Learning Rates for Training Neural Networks </small></p>
+<p>An intuitive understanding of why CLR methods work comes from considering the loss function topology. Dauphin et al. argue that the difficulty in minimizing the loss arises from saddle points rather than poor local minima. Saddle points have small gradients that slow the learning process. However, increasing the learning rate allows for more rapid traversal of saddle point plateaus.</p>
+<p>But the question is that how can we find the Minimum bound and Maximum bound. There is a simple way to estimate the reasonable minimum and maximum boundary values with one training run of the network for a few epochs. It is a “LR range test”; run your model for several epochs while letting the learning rate increase linearly between low and high LR values. For example, set both the step size and max iter to the same number of iterations. In this case, the learning rate will increase linearly from the minimum value to the maximum value during this short run. Next, plot the accuracy versus learning rate. Note the learning rate value when the accuracy starts to increase and when the accuracy slows, becomes ragged, or starts to fall. These two learning rates are good choices for bounds; that is, set base-lr to the first value and set max-lr to the latter value.</p>
+<h3 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h3><p>Since learning rate is regarded as the most important hyper-parameter to tune then momentum is also important. Like learning rates, it is valuable to set momentum as large as possible without causing instabilities during training.</p>
+<p>The large learning rate can deal with local minimum but works fail when it comes to saddle point where momentum comes to rescue.</p>
+<p>The local minimum is like the following picture.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g25x29cb1dj20y00iogs2.jpg" alt=""><br>In mathematics, a saddle point or minimax point is a point on the surface of the graph of a function <strong>where the slopes (derivatives) in orthogonal directions are all zero</strong> (a critical point), but which is not a local extremum of the function.</p>
+<p>Your first step from the very top would likely take you down, but then you’d be on a flat rice terrace. The gradient would be zero, and you’d have nowhere to go. To remedy this, we employ momentum - the algorithm remembers its last step and adds some psroportion of it to the current step. This way, even if the algorithm is stuck in a flat region, or a small local minimum, it can get out and continue towards the true minimum.</p>
+<p>In summary: when performing gradient descent, learning rate measures how much the current situation affects the next step, while momentum measures how much past steps affect the next step.</p>
+<h3 id="Weights-Decay"><a href="#Weights-Decay" class="headerlink" title="Weights Decay"></a>Weights Decay</h3><p>When training neural networks, it is common to use “weight decay,” where after each update, the weights are multiplied by a factor slightly less than 1. This prevents the weights from growing too large and can be seen as gradient descent on a quadratic regularization term.</p>
+<p>But why?</p>
+<p>Large weights might correlate with certain patterns in the input data (x), this means that the model almost hard codes certain values. This then makes our training data fit well but our test data fit less well.</p>
+<p>The idea of weight decay is simple: to prevent overfitting, every time we update a weight $w$ with the gradient $∇J$ in respect to $w$, we also subtract from it $λ∙w$. This gives the weights a tendency to decay towards zero, hence the name. L2 is a type of weights decay.<br>$$<br>J ( W ; X , y ) + \frac { 1 } { 2 } \lambda \cdot | W | ^ { 2 }<br>$$</p>
+<p>But weights decay is not necessarily true for all gradient-base algorithms and was recently shown to not be the case for adaptive gradient algorithms, such as Adam.</p>
+<p>In addition, weight decay is not the only regularization technique. In the past few years, some other approaches have been introduced such as Dropout, Bagging, Early Stop, and Parameter Sharing which work very well in NNs.</p>
+<h2 id="Takeoff"><a href="#Takeoff" class="headerlink" title="Takeoff"></a>Takeoff</h2><ol>
+<li>Batch Size</li>
+</ol>
+<p>Use as a large batch size as possible to fit your memory</p>
+<ol start="2">
+<li>Learning Rate</li>
+</ol>
+<p>Perform a learning rate range test to identify a “large” learning rate.</p>
+<ol start="3">
+<li>Momentum</li>
+</ol>
+<p>Test with short runs of momentum values 0.99, 0.97, 0.95, and 0.9 to get the best value for momentum.</p>
+<p>If using the 1-cycle learning rate schedule, it is better to use a cyclical momentum (CM) that starts at this maximum momentum value and decreases with increasing learning rate to a value of 0.8 or 0.85.</p>
+<ol start="4">
+<li>Weights Decay</li>
+</ol>
+<p>A grid search to determine the proper magnitude but usually does not require more than one significant figure accuracy.<br>A more complex dataset requires less regularization so test smaller weight decay values, such as $10^{−4} $, $10^{−5} $, $10^{−6} $, 0.<br>A shallow architecture requires more regularization so test larger weight decay values, such as $10^{−2} $, $10^{−3} $, $10^{−4} $.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1]. <a href="https://arxiv.org/abs/1506.01186" target="_blank" rel="noopener">Cyclical Learning Rates for Training Neural Networks</a><br>[2]. <a href="https://arxiv.org/abs/1803.09820" target="_blank" rel="noopener">A disciplined approach to neural network hyper-parameters</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/17/weights-initialization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/17/weights-initialization/" itemprop="url">Weights Initialization</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-17T21:04:44+08:00">
+                2019-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Training a neural network consists of four steps: initialize weights and biases, forward propagation, compute the loss function and backward propagation. This blog mainly focuses on the first part: weights initialization.</p>
+<p>After completing this tutorial, you will know:</p>
+<ul>
+<li><p>Four main types of weights initialization</p>
+</li>
+<li><p>How to choose between Xavier initialization and He initialization</p>
+</li>
+</ul>
+<h2 id="Types-of-Weights-Initialization"><a href="#Types-of-Weights-Initialization" class="headerlink" title="Types of Weights Initialization"></a>Types of Weights Initialization</h2><ol>
+<li>Initializing weights with zero</li>
+</ol>
+<p>When you set all weights in a neural network to zero, the derivative with respect to loss function is the same for every $ w$ in the same layer, thus all the weights have the same values in the subsequent iteration, which makes your model equivalent to a linear model.</p>
+<ol start="2">
+<li>Initializing weights randomly</li>
+</ol>
+<p>You can get weights like this (Python):</p>
+<pre><code>w =np.random.randn(layer_size[l],layer_size[l-1])
+</code></pre><p>The weighs follows standard normal distribution while it can potentially lead to two issues: vanishing gradients and exploding gradients.</p>
+<p>If the weights start too small, then the signal shrinks as it passes through each layer until it’s too small to be useful.</p>
+<p>If the weights start too large, then the signal grows as it passes through each layer until it’s too massive to be useful (big value in sigmoid function).</p>
+<p>Thus there are two necessary conditions to consider:</p>
+<ul>
+<li><p>The values of each activation layer won’t be zero</p>
+</li>
+<li><p>The values of each activation layer won’t go into the area of saturation</p>
+</li>
+</ul>
+<ol start="3">
+<li>Xavier/Glorot Initialization</li>
+</ol>
+<p>For deep networks, we can use a heuristic to initialize the weights depending on the non-linear activation function. This applies to Xavier and He initialization.</p>
+<p>Xavier/Glorot Initialization initializes the weights in your network by drawing them from a distribution with zero mean and a specific variance.<br>$$ { var } ( w _ { i } ) = \frac { 1 } { layer_{l-1}}$$</p>
+<pre><code>w=np.random.randn(layer_size[l],layer_size[l-1])*np.sqrt(1/layer_size[l-1])
+</code></pre><p>In practice, it works better for layers with sigmoid or tanh function. </p>
+<ol start="4">
+<li>He Initialization</li>
+</ol>
+<p>Using RELU or Leaky RELU is relatively robust to the vanishing/ exploding gradient issues compared with sigmoid function especially for networks that are not too deep. And it the case of Leaky RELU, it never has zero gradients. For RELU, we multiply the randomly generated values of $w$ by: </p>
+<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } } }$$</p>
+<pre><code>w=np.random.randn(layer_size[l],layer_size[l-1])*np.sqrt(2/layer_size[l-1])
+</code></pre><p>Sometimes, we combine the idea of Xavier initialization and He initializaiton so the variance becomes the following:</p>
+<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } + \operatorname { layer } _ { [ l ] } } }$$</p>
+<pre><code>w=np.random.randn(layer_size[l],layer_size[l-1])*np.sqrt(2/(layer_size[l-1]+layer_size[l]))
+</code></pre><p>The idea behind this is that we set the weights neither too much bigger than 1 nor too much less than 1 so the gradients do not vanish or explode too quickly.</p>
+<h2 id="Takeoff"><a href="#Takeoff" class="headerlink" title="Takeoff"></a>Takeoff</h2><p>In summary, the main difference in machine learning is the following:</p>
+<ul>
+<li><p>He initialization works better for layers with ReLu(s) activation.</p>
+</li>
+<li><p>Xavier initialization works better for layers with sigmoid activation.</p>
+</li>
+</ul>
+<h2 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence:"></a>Referrence:</h2><p><a href="https://arxiv.org/abs/1502.01852" target="_blank" rel="noopener">He initialization</a></p>
+<p><a href="http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf" target="_blank" rel="noopener">Xavier initialization</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/09/cyclegan-stylegan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -766,7 +1142,7 @@ finally:
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/06/The-evaluation-of-sentence-similarity/" itemprop="url">The-evaluation-of-sentence-similarity</a></h1>
+                <a class="post-title-link" href="/2019/04/06/The-evaluation-of-sentence-similarity/" itemprop="url">The Evaluation of Sentence Similarity</a></h1>
         
 
         <div class="post-meta">
@@ -1902,345 +2278,11 @@ if __name__ == &quot;__main__&quot;:
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Data-Pre-processing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/25/Data-Pre-processing/" itemprop="url">Data Pre-processing 学习笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:26:27+08:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning:"></a>Data Cleaning:</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier).<br>对于<strong>missing values</strong> 通常有一下处理手段：</p>
-<ul>
-<li>ignore the tuple; </li>
-<li>fill in the missing value manually</li>
-<li>use a global constant to fill in the missing  value</li>
-<li>use the attribute mean to fill in the missing value (均值)</li>
-<li>use the most probable value to fill in the missing value (mode 众数)</li>
-<li>有时候就是根据某几个特征然后弄一个简单的回归模型，根据模型进行predict<br>关于这几种方法如何去选择，我如果说 “it depends”，那么其他人不认为这是一个具有说服力的答案，他们更像知道 it depends what, and when and why to use specific method? 我认为应该是根据缺省值程度和重要性进行经验性的选择，这也去就是 empirical study吧。</li>
-</ul>
-<p>接着是 <strong>noisy data (outlier)</strong>，我的观点是首先得认识到这个是错误的数据，不是真实的数据来源，可能是来自人为的笔误 或者仪器记录的问题，这个是需要修改的。可以使用聚类 (clustering) 进行noisy data 的检测，找到之后这个就类似 missing value了，可以采取以上的手段进行操作，应该注意到的这个 noisy data 所占比例不会很高，否则就成了主要的数据分布了。</p>
-<h3 id="Data-Integration"><a href="#Data-Integration" class="headerlink" title="Data Integration:"></a>Data Integration:</h3><p>处理数据库数据，经常是需要处理子表信息的，那么必然存在着主表，而子表系信息往往是主表信息的某一方面的细化。所以有必要将两者连接起来。</p>
-<h3 id="Data-Transformation"><a href="#Data-Transformation" class="headerlink" title="Data Transformation:"></a>Data Transformation:</h3><p>In data transformation, the data are transformed or consolidated into forms appropriate for mining.<br>这里想要澄清的是很多相同的内容都可以用不同的方式表达，并且可以放在数据处理的不同阶段，并且这种工作不是一次性完成的，而是迭代的 until you run out your patience and time.<br>首先我接触的最常见的就是 discrete variables -&gt; continuous variables. 当然对于 discrete variables，基于树结构的机器学习模型是可以处理的，这里想说的是有这种方式。这种 transformation 常见的处理方式: one-hot 或者 label encoding. </p>
-<p>如果按照 data transformation的预设，那么 normalization 就也属于该模块的内容。 不论是在 machine learning 还是在 图像处理的时候，对于原始的数据经常采取 normalization. 一方面这个是可以预防梯度消失 或者 gradient exploding, 如果你采用了 SIgmoid的激活函数的话。另一方面我认为更加重要的原因是将 不同的数据放在了同一个尺度下，如果你采取了 normalization之后。实现这种normalization 经常采用的是以下三种方式：<br>min-max normalization: $x ^ { \prime } = \frac { x - \min ( x ) } { \max ( x ) - \min ( x ) }$<br>mean normalization:$x ^ { \prime } = \frac { x - \text { average } ( x ) } { \max ( x ) - \min ( x ) }$<br>standardization: $x ^ { \prime } = \frac { x - \overline { x } } { \sigma }$</p>
-<h3 id="Data-Reduction"><a href="#Data-Reduction" class="headerlink" title="Data Reduction:"></a>Data Reduction:</h3><p>一般来说很少提及到到 data reducation的必要性，如果非要给出原因，那么可以从时间和空间的角度进行考虑。更加需要关注的是如何做的问题。 </p>
-<p>我的理解reducation 可以从两个维度进行考虑，假设一个 matrics A 是 m*n，这个是一个二维的矩阵，那么可以从 行列两方面入手。映射到机器学习中一般这样描述 从dimension 和 data两个角度去描述，分别称之为 dimension reduction 和 data compression. 前者指的是特征的选取，后者是数据size的减少。<br>dimension reduction: where irrelevant, weakly relevant, or redundant attributes or dimensions may be detected and removed.<br>data compression: PCA 线性降维 to reduce the data set size. 这个是针对某一个特征展开的。</p>
-<p>机器学习中的特征工程是有一定技巧可言，其中我觉得最为有趣的是: generation or you can call it abstraction. 对于特征的泛的提取才是对于问题本身或者特征的理解，这不仅需要积累，更需要对于该问题领域的专业知识， that’s all.举个栗子，在 “Home Credit Default Risk” (kaggle 竞赛)中，原始的训练数据有信贷金额和客户的年收入，这个时候 “credit_income_percent” 就是类似这种性质的提取特征。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Dimension-Reduction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/25/Dimension-Reduction/" itemprop="url">Dimension Reduction</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:23:56+08:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>对于dimension reduction最近有了新的理解:<br>广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。<br>You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve) the model’s performance.</p>
-<p>不必纠结于采用降维的必要性，直接进入 techniques of dimension reduction.</p>
-<ul>
-<li>low variances<br>这个是针对一个特征内部的，如果一个特征的数据本身没有什么变化，那么这个类似就是一种“死”数据。</li>
-<li>high correlation filter<br>用来判别特征 x 和最后的 target之间的相关性</li>
-<li>principal component analysis (PCA)<br>our old good friend. 如果你提降维，但是你不知道PCA，那么就说不过去。该方法的基本思路：一个基（向量空间）的变换，使得变换后的数据有着最大的方差。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.<br>下面是PCA的一些特点：<blockquote>
-<p>A principal component is a linear combination of the original variables<br>Principal components are extracted in such a way that the first principal component explains maximum variance in the dataset<br>Second principal component tries to explain the remaining variance in the dataset and is uncorrelated to the first principal component<br>Third principal component tries to explain the variance which is not explained by the first two principal components and so on</p>
-</blockquote>
-</li>
-</ul>
-<p>主成分是不断生成的，在前者基础之上生成的。 The first component is the most important one, followed by the second, then the third, and so on.</p>
-<ul>
-<li><p>Singular Value Decomposition (SVD)<br>翻译成中文感觉还是挺别扭的，奇异值分解。关于奇异值，特征值这些数学概念打算另外写一个主题，wait a moment. 简单理解PCA 是针对方阵 (m<em>m), SVD是针对矩阵(m </em>n)，所以后者是具有更大的适用范围。</p>
-</li>
-<li><p>Independent Component Analysis (ICA)<br>这个是在面试的时候被问道的一种降维方法。抓住独立向量应该就没有问题。</p>
-<blockquote>
-<p>Independent Component Analysis (ICA) is based on information-theory and is also one of the most widely used dimensionality reduction techniques. The major difference between PCA and ICA is that PCA looks for uncorrelated factors while ICA looks for independent factors.</p>
-</blockquote>
-</li>
-</ul>
-<p>基本假设：</p>
-<blockquote>
-<p>This algorithm assumes that the given variables are linear mixtures of some unknown latent variables. It also assumes that these latent variables are mutually independent, i.e., they are not dependent on other variables and hence they are called the independent components of the observed data.</p>
-</blockquote>
-<p>ICA 和PCA的异同：从线性代数的角度去理解，PCA和ICA都是要找到一组基，这组基张成一个特征空间，数据的处理就都需要映射到新空间中去。ICA相比与PCA更能刻画变量的随机统计特性，且能抑制高斯噪声。</p>
-<ul>
-<li>T-SNE<br>就是指出 t-SNE 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。这个使用场景是在可视化中，经常会看见将数据或者 <blockquote>
-<p>So far we have learned that PCA is a good choice for dimensionality reduction and visualization for datasets with a large number of variables. But what if we could use something more advanced? What if we can easily search for patterns in a non-linear way? t-SNE is one such technique. There are mainly two types of approaches we can use to map the data points:<br>Local approaches :  They maps nearby points on the manifold to nearby points in the low dimensional representation.<br>Global approaches : They attempt to preserve geometry at all scales, i.e. mapping nearby points on manifold to nearby points in low dimensional representation as well as far away points to far away points.</p>
-</blockquote>
-</li>
-</ul>
-<p>下面介绍两种不是那么“常规”，但是也符合”dimension reduction” 定义的方式。</p>
-<ul>
-<li>projection<br>By projecting one vector onto the other, dimensionality can be reduced.</li>
-<li>autoencoder<br>网络结构通常有 encoder和decoder两部分组成，那么encoder 就作为 information abstraction,而 decoder作为一种重新映射。从这个角度NLP中的词向量也是可以是一种降维手段。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2290,7 +2332,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
