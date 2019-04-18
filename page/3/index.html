@@ -296,6 +296,176 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/07/Loss-Activation-and-Optimisation-Function/" itemprop="url">Loss-Activation-and-Optimisation-Function</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T13:37:05+08:00">
+                2018-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>用图说话…</p>
+<h2 id="Loss-Function-Error-Function"><a href="#Loss-Function-Error-Function" class="headerlink" title="Loss Function(Error Function)"></a>Loss Function(Error Function)</h2><p>For accurate predictions, one needs to minimize the calculated error. In a neural network, this is done using back propagation.<br>损失函数是用来估量你模型的预测值f(x)与真实值Y的不一致程度，它是一个非负实值函数,通常使用L(Y,f(x))来表示，损失函数越小，模型的鲁棒性就越好。<br>按照函数种类可以划分一下主要的几个类别。</p>
+<h3 id="log损失函数"><a href="#log损失函数" class="headerlink" title="log损失函数"></a>log损失函数</h3><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/49835120.jpg" alt="avatar"><br>常用于逻辑回归中。</p>
+<h3 id="平方损失函数"><a href="#平方损失函数" class="headerlink" title="平方损失函数"></a>平方损失函数</h3><p>又称为最小二乘法，最优拟合直线应该是使各点到回归直线的距离和最小的直线，即平方和最小。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/72402157.jpg" alt="avatar"><br>Y-f(X) 表示残差，残差在数理统计中是指实际观察值与估计值（拟合值）之间的差。整个式子表示的是残差的平方和。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/25515918.jpg" alt="avatar"></p>
+<h3 id="指数损失函数"><a href="#指数损失函数" class="headerlink" title="指数损失函数"></a>指数损失函数</h3><p>Adaboost的目标式子就是指数损失，在给定n个样本的情况下，Adaboost的损失函数为：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/36556640.jpg" alt="avatar"></p>
+<h3 id="Hinge损失函数"><a href="#Hinge损失函数" class="headerlink" title="Hinge损失函数"></a>Hinge损失函数</h3><p>听着名字怪怪的，但是SVM（support vector machine）的损失函数就是这个。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/54006907.jpg" alt="avatar"><br>从目标函数看来，lr 采用的logistic loss 和 svm 采用的 hinge loss function 思想都是增加对分类影响较大点的权重，减少那些与分类相关不大点的权重。但是两个方法处理的方法不同: LR采用一个sigmod的映射函数，通过这样的非线性映射，大大降低了离分类平面点远的权重 ; SVM 采用的是一个hinge loss function，通过上图可以看到，对于那些离超平面比较远的点，直接设为0了，也就是说直接忽视，只考虑那些对分类平面有影响的点，这些点就是我们经常听到的支持向量。另一方面，支持向量机只考虑局部的边界线附近的点，而逻辑回归考虑全局（远离的点对边界线的确定也起作用，虽然作用会相对小一些）。</p>
+<p>按照应用领域可以划分为:<br><strong>Regressive loss functions</strong>:<br>They are used in case of regressive problems, that is when the target variable is continuous. Most widely used regressive loss function is Mean Square Error.Other loss functions are:Absolute error — measures the mean absolute value of the element-wise difference between input.<br><strong>Classification loss functions</strong>:<br>The output variable in classification problem is usually a probability value f(x), called the score for the input x. Generally, the magnitude of the score represents the confidence of our prediction. The target variable y, is a binary variable, 1 for true and -1 for false.<br>On an example (x,y), the margin is defined as yf(x). The margin is a measure of how correct we are. Most classification losses mainly aim to maximize the margin. Some classification algorithms are: Binary Cross Entropy,Negative Log Likelihood,Margin Classifier and Soft Margin Classifier.<br><strong>Embedding loss functions</strong>:<br>It deals with problems where we have to measure whether two inputs are similar or dissimilar. Some examples are:</p>
+<ul>
+<li>L1 Hinge Error- Calculates the L1 distance between two inputs.</li>
+<li>Cosine Error- Cosine distance between two inputs.</li>
+</ul>
+<p><strong>Visualising Loss Functions</strong>:<br>We performed the task to reconstruct an image using a type of neural network called Autoencoders. Different results were obtained for the same task by using different Loss Functions, while everything else in the neural network architecture remained constant. Thus, the difference in result represents the properties of the different loss functions employed. A very simple data set, MNIST data set was used for this purpose. Three loss functions were used to reconstruct images.</p>
+<h2 id="Activation-Function"><a href="#Activation-Function" class="headerlink" title="Activation Function"></a>Activation Function</h2><p>What?<br>It’s just a thing (node) that you add to the output end of any neural network. It is also known as <strong>Transfer Function</strong>. It can also be attached in between two Neural Networks.</p>
+<h3 id="Sigmoid-or-Logistic-Activation-Function"><a href="#Sigmoid-or-Logistic-Activation-Function" class="headerlink" title="Sigmoid or Logistic Activation Function"></a>Sigmoid or Logistic Activation Function</h3><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/23910535.jpg" alt="avatar"><br>导数比较有特点：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/81953292.jpg" alt="avatar"></p>
+<h3 id="Softmax-Function"><a href="#Softmax-Function" class="headerlink" title="Softmax Function"></a>Softmax Function</h3><p>The softmax function is a more generalized logistic activation function which is used for <strong>multiclass classification</strong>.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/70983345.jpg" alt="avatar"><br>使用softmax和多个logistic的多分类的区别：softmax回归进行的多分类，类与类之间是互斥的，即一个输入只能被归为一类；多个logistic回归进行多分类，输出的类别并不是互斥的，即”苹果”这个词语既属于”水果”类也属于”3C”类别。</p>
+<h3 id="Tanh"><a href="#Tanh" class="headerlink" title="Tanh"></a>Tanh</h3><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/80881786.jpg" alt="avatar"></p>
+<h3 id="ReLU"><a href="#ReLU" class="headerlink" title="ReLU"></a>ReLU</h3><p>ReLU (Rectified Linear Unit) Activation Function<br>it is used in almost all the convolutional neural networks or deep learning.在卷积网络和深度网络中经常看到。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/78295605.jpg" alt="avatar"></p>
+<h3 id="Leaky-ReLU"><a href="#Leaky-ReLU" class="headerlink" title="Leaky ReLU"></a>Leaky ReLU</h3><p>明显的发现，Leaky ReLU是对于在 X&lt;0时候的改进。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/87669246.jpg" alt="avatar"><br>Both Leaky and Randomized ReLU functions are monotonic in nature. Also, their derivatives also monotonic in nature.</p>
+<h2 id="Optimisation-Algorithms"><a href="#Optimisation-Algorithms" class="headerlink" title="Optimisation Algorithms"></a>Optimisation Algorithms</h2><p>Optimisation Algoritms are used to update weights and biases i.e. the internal parameters of a model to reduce the error. They can be divided into two categories:<br>Back Propogation and Optimisation Function: Error J(w) is a function of internal parameters of model i.e weights and bias. For accurate predictions, one needs to minimize the calculated error. In a neural network, this is done using back propagation. The current error is typically propagated backwards to a previous layer, where it is used to modify the weights and bias in such a way that the error is minimized. The weights are modified using a function called Optimization Function.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/71294470.jpg" alt="avatar"><br>Optimisation functions usually calculate the gradient i.e. the partial derivative of loss function with respect to weights, and the weights are modified in the opposite direction of the calculated gradient. This cycle is repeated until we reach the minima of loss function.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/90062053.jpg" alt="avatar"></p>
+<h4 id="Constant-Learning-Rate-Algorithms"><a href="#Constant-Learning-Rate-Algorithms" class="headerlink" title="Constant Learning Rate Algorithms"></a>Constant Learning Rate Algorithms</h4><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/25023504.jpg" alt="avatar"><br>Here η is called as learning rate which is a hyperparameter that has to be tuned. Choosing a proper learning rate can be difficult.<br>选的小训练速度慢， While a learning rate that is too large can hinder convergence and cause the loss function to fluctuate around the minimum or even to diverge<br>A similar hyperparameter is momentum(动量), which determines the velocity with which learning rate has to be increased as we approach the minima.</p>
+<h4 id="Adaptive-Learning-Algorithms-自适应"><a href="#Adaptive-Learning-Algorithms-自适应" class="headerlink" title="Adaptive Learning Algorithms(自适应)"></a>Adaptive Learning Algorithms(自适应)</h4><p>Adaptive gradient descent algorithms such as Adagrad, Adadelta, RMSprop, Adam, provide an alternative to classical SGD. They have per-paramter learning rate methods, which provide heuristic approach without requiring expensive work in tuning hyperparameters for the learning rate schedule manually.</p>
+<p>The challenge of using gradient descent is that their hyper parameters have to be defined in advance and they depend heavily on the type of model and problem. Another problem is that the same learning rate is applied to all parameter updates. If we have sparse data, we may want to update the parameters in different extent instead.(假装翻译:gradient descent 的艰难之处在于需要提前 define这种hyper parameters, 并且不同数据的learning rate 应该是不同（学习率应该根据数据的稀疏与否变化))</p>
+<p>说到这我们就多说一些关于自适应算法的内容。<br>We used three first order optimisation functions and studied their effect-Stochastic Gradient Decent, Adagrad and Adam.</p>
+<p>Gradient Descent calcultes gradient for the whole dataset and updates values in direction opposite to the gradients until we find a local minima. Stochastic Gradient Descent performs a parameter update for each training example unlike normal Gradient Descent which performs only one update. Thus it is much faster. Gradient Decent algorithms can further be improved by tuning important parametes like momentum, learning rate etc.</p>
+<p>Adagrad is more preferrable for a sparse data set as it makes big updates for infrequent parameters and small updates for frequent parameters. It uses a different learning Rate for every parameter θ at a time step based on the past gradients which were computed for that parameter. Thus we do not need to manually tune the learning rate.</p>
+<p>Adam stands for Adaptive Moment Estimation. It also calculates different learning rate. Adam works well in practice, is faster, and outperforms other techniques.</p>
+<p>Stochastic Gradient Decent was much faster than the other algorithms but the results produced were far from optimum. Both, Adagrad and Adam produced better results that SGD, but they were computationally extensive. Adam was slightly faster than Adagrad. Thus, while using a particular optimization function, one has to make a trade off between more computation power and more optimum results.</p>
+<p>SGD 和 GDD的区别：<br>正如上所说，在∂E/∂wi=∑（h(x)-y）<em>(xi) 的时候∑耗费了大量的时间，特别是在训练集庞大的时候。所以肯定有人会猜想，如果把求和去掉如何，即变为∂E/∂wi=（h(x)-y）</em>(xi)。（只是专注于当前训练训练集合，当前的数据）对于步长η的取值，标准梯度下降的η比随机梯度下降的大。因为标准梯度下降的是使用准确的梯度，理直气壮地走，随机梯度下降使用的是近似的梯度，就得小心翼翼地走，怕一不小心误入歧途南辕北辙了。</p>
+<p>事实证明：中文和英文混在一起，排版是难看的。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/29/特征工程相关概念/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1817,161 +1987,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/机器学习优化方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/机器学习优化方法/" itemprop="url">机器学习优化方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T22:10:28+08:00">
-                2018-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>机器学习的优化方法有很多，这里主要解释的是 Gradient Descent 和 Newton’s Method.</p>
-<ul>
-<li>梯度下降（gradient  descent）</li>
-</ul>
-<p>梯度下降法是最早最简单，也是最为常用的最优化方法。梯度下降法实现简单，当目标函数是凸函数时，梯度下降法的解是全局解。接下来衍生的的子类:<br>批量梯度下降法（Batch Gradient Descent，BGD）<br>随机梯度下降（Stochastic Gradient Descent，SGD）</p>
-<ul>
-<li>牛顿法和拟牛顿法（Newton’s method &amp; Quasi-Newton Methods）</li>
-</ul>
-<p>牛顿法最大的特点就在于它的收敛速度很快。个人感觉牛顿法只是在在每次迭代的时候进行了两次运算，和梯度下降在总的运算次数上并没有很大的差别，为什么会收敛速度更快呢？<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/6594984.jpg" alt="avatar"></p>
-<ul>
-<li>名词解释</li>
-</ul>
-<p>凸优化:对凸优化的问题我们在基础数学上面已经有了很多解决方法，例如可以将凸优化问题Lagerange做对偶化，然后用Newton、梯度下降算法求解。<br>凸集合:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/24366718.jpg" alt="avatar"></p>
-<p>凸函数：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/93259333.jpg" alt="avatar"><br>Jacobian矩阵和Hessian矩阵：在向量分析中, 雅可比矩阵是一阶偏导数以一定方式排列成的矩阵, 其行列式称为雅可比行列式。<br>Hessian矩阵：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/65836119.jpg" alt="avatar"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2026,7 +2041,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

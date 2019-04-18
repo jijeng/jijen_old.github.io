@@ -296,6 +296,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/18/mode-collapse-in-gan/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/18/mode-collapse-in-gan/" itemprop="url">Mode Collapse in GANs</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-18T21:42:01+08:00">
+                2019-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Mode collapse, a failure case for GANs where the generator generate a limited diversity of samples, regardless of the input.</p>
+<p>But what causes the mode collapse? There are four reasons for that.</p>
+<p><strong>The objective of GANs</strong></p>
+<p>The generator, generates new data, while the discriminator evaluates it for authenticity but not for the diversity of generated instances.</p>
+<p>the generator can win by producing a polynomial number of training examples. And a low capacity discriminator cannot detect this process, thus, it cannot guide the generator to approximate the target distribution. Even if a high discriminator identifies and assigns the collapse part a low probability, then the generator will simply move from its collapsed output to focus on another fixed output point.</p>
+<p><strong>Generator</strong></p>
+<p>No matter the objective function is, if it only considers individual samples (without looking forward or backward) then the generator is not directly incentivised to produce diverse examples.</p>
+<p>From [1], standard GAN training corresponds exactly to updating the generator parameters using only the first term in this gradient because of a fixed discriminator during GAN training. Therefore, in standard GAN training, each generator updata step is a partial collapse towards a delta function.</p>
+<p>$$<br>\frac { \mathrm { d } f _ { K } \left( \theta _ { G } , \theta _ { D } \right) } { \mathrm { d } \theta _ { G } } = \frac { \partial f \left( \theta _ { G } , \theta _ { D } ^ { K } \left( \theta _ { G } , \theta _ { D } \right) \right) } { \partial \theta _ { G } } + \frac { \partial f \left( \theta _ { G } , \theta _ { D } ^ { K } \left( \theta _ { G } , \theta _ { D } \right) \right) } { \partial \theta _ { D } ^ { K } \left( \theta _ { G } , \theta _ { D } \right) } \frac { \mathrm { d } \theta _ { D } ^ { K } \left( \theta _ { G } , \theta _ { D } \right) } { \mathrm { d } \theta _ { G } }<br>$$</p>
+<p>Some methods have been proposed. Multiple generators and weight-sharing generators are developed to capture more modes of the distribution. </p>
+<p><strong>Discriminator</strong></p>
+<p>The mode collapse is often explained as gradient exploding of discriminator, which comes from the imbalance between the discriminator and the generator. For example, the technique of TTUR could help discriminator to keep its optimality. But some researchers believe that this is a desirable goal since a good discriminator can give good feedback and ignore the fact.</p>
+<p>In addition, the discriminator process each example independently, the generator depends on generator, thus  no mechanism to tell the outputs of the generator to become more similar to each other. </p>
+<p>The idea from [2], that we could use minibatch discrimination to help generator give better feedback</p>
+<p>A straightforward approach to handle multimodality is to take random noise vectors along with the conditional contexts as inputs, where the contexts determine the main content and noise vectors are responsible for variations.<br>The noise vectors are ignored or of minor impacts, since cGANs pay more attention to learn from the highdimensional and structured conditional contexts. </p>
+<p><strong>Another question</strong></p>
+<p>Mode collapse may happen only partially?<br>since training is stochastic progress, the input of generator network will vary and the sample drawn from the real distribution will also vary</p>
+<p>But sometimes mode collapse is not all bad news. In style transfer using GAN, we are happy to convert one image to just a good one, rather than finding all variants. Indeed, the specialization in the partial mode collapse sometimes creates higher quality images.</p>
+<h2 id="referrences"><a href="#referrences" class="headerlink" title="referrences:"></a>referrences:</h2><p>[1]. Section 2.4 of <a href="https://arxiv.org/abs/1611.02163" target="_blank" rel="noopener">Unrolled Generative Adversarial Networks</a><br>[2]. Section 3.2 of <a href="https://arxiv.org/abs/1606.03498" target="_blank" rel="noopener">Improved Techniques for Training GANs</a><br>[3]. <a href="https://arxiv.org/abs/1903.05628" target="_blank" rel="noopener">Mode Seeking Generative Adversarial Networks for Diverse Image Synthesis</a><br>[4]. <a href="https://arxiv.org/abs/1902.03984" target="_blank" rel="noopener">Improving Generalization and Stability of Generative Adversarial Networks</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/17/a-not-so-gentle-introduction-to-hyperparameters-tuning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2085,199 +2245,6 @@ spearman[[&apos;AVG-GLOVE&apos;, &apos;AVG-GLOVE-STOP&apos;,&apos;AVG-GLOVE-TFID
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Python中的多线程和多进程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/25/Python中的多线程和多进程/" itemprop="url">Python中的多线程和多进程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T21:09:35+08:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>多线程和多进程问题是可以对应到 并发 （cncurrency）和并行(parallelism)上的。 并发，就是一个单核cpu同时开始了多个任务，但是这个任务并不是同时独立进行的，而是通过cpu的不断切换，保存现场，然后重启这样的快速的切换，给用户的感觉是并发，但是实际上是cpu的计算能力受到了限制，用户体验比较好一些。如果在多核cpu （比如我的mac 是一cpu 6核）这样的话完全是可以达到并行的，这个是真正的独立操作(parallelism)，对应的是多进程的。对应python 中的实现多线程是使用threading，处理的是io 响应；多进程是Concurrency，使用multiprocessing包，处理的是多核cpu的操作。</p>
-<p>Take off: 如果处理io 响应，那么使用多线程；如果是计算，那么使用多进程。</p>
-<blockquote>
-<p>So, before we go deeper into the multiprocessing module, it’s worthwhile ensuring you know the advantages of using multiprocessing over multithreading. The general rule of thumb is that, if you are trying to improve the performance of CPU-bound tasks, multiprocessing is what you want to use. However, if your particular task is Input/Output bound, then you’ll generally want to use multithreading to improve the performance of your applications.</p>
-</blockquote>
-<p>下面是多线程的demo。</p>
-<pre><code>import multiprocessing as mp
-def my_func(x):
-    print(mp.current_process())
-    return x ** x
-
-
-def main():
-    pool = mp.Pool(mp.cpu_count())
-    # 这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的
-    result = pool.map(my_func, [4, 2, 3, 5, 3, 2, 1, 2])
-    result_set_2 = pool.map(my_func, [4, 6, 5, 4, 6, 3, 23, 4, 6])
-    print(result)
-    print(result_set_2)
-
-
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre><p>这个是多进程的demo。</p>
-<pre><code>import threading
-class Worker(threading.Thread):
-    # Our workers constructor, note the super() method which is vital if we want this
-    # to function properly
-    def __init__(self):
-        super(Worker, self).__init__()
-
-    def run(self):
-        for i in range(10):
-            print(i)
-
-
-def main():
-    thread1 = Worker()
-    thread1.start()
-
-    thread2 = Worker()
-    thread2.start()
-
-    thread3 = Worker()
-    thread3.start()
-
-    thread4 = Worker()
-    thread4.start()
-
-
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2332,7 +2299,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
