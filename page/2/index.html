@@ -296,6 +296,835 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/06/The-evaluation-of-sentence-similarity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/06/The-evaluation-of-sentence-similarity/" itemprop="url">The Evaluation of Sentence Similarity</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-06T15:11:01+08:00">
+                2019-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>I am trying to write my first english blog based on two reasons: First, the data set used in this blog is english; Second, I’d like to expand my reach and attract more audiences, although I should admit that nobody cares.</p>
+<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><p>Initially I want to use chinese corpus, but I cannot find a proper one. The data should sound like this one:</p>
+<blockquote>
+<p>word1    word2    similarity score<br>阿拉伯人    阿拉伯    7.2<br>畜产    农业    5.6<br>垂涎    崇敬    3.4<br>次序    秩序    4.7<br>定心丸    药品    4.3<br>房租    价格    5.2<br>翡翠    宝石    6.7<br>高科技    技术    7.5<br>购入    购买    8.5<br>观音    菩萨    8.2<br>归并    合并    7.7</p>
+</blockquote>
+<!-- come from https://biendata.com/ccf_tcci2018/datasets/tcci_tag/5 -->
+<p>not like this:</p>
+<blockquote>
+<p>为何我无法申请开通花呗信用卡收款    支付宝开通信用卡花呗收款不符合条件怎么回事    1<br>花呗分期付款会影响使用吗    花呗分期有什么影响吗    0<br>为什么我花呗没有临时额度    花呗没有临时额度怎么可以负    0<br>能不能开花呗老兄    花呗逾期了还能开通    0<br>我的怎么开通花呗收钱    这个花呗是个什么啥？我没开通 我怎么有账单    0<br>蚂蚁借呗可以停掉么    蚂蚁借呗为什么给我关掉了    0<br>我想把花呗功能关了    我去饭店吃饭，能用花呗支付吗    0<br>为什么我借呗开通了又关闭了    为什么借呗存在风险    0<br>支付宝被冻了花呗要怎么还    支付功能冻结了，花呗还不了怎么办    1</p>
+</blockquote>
+<p>If you can find the dataset where ‘similarity score’ is double, please donot hesitate to <a href="mailto:jiajizhengbuaa@gmail.com" target="_blank" rel="noopener">email me.</a></p>
+<p>So, the choice has to be enlgish corpus. The dataset used in this experiment are <a href="http://ixa2.si.ehu.es/stswiki/index.php/STSbenchmark" target="_blank" rel="noopener">STSbenchmark</a> and SICK data. The SICK data contains 10,000 sentence paris labeled with semantic relatedness and entailment relation.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1sqxx3vl0j219e07yaam.jpg" alt=""></p>
+<h2 id="Similarity-Methods"><a href="#Similarity-Methods" class="headerlink" title="Similarity Methods"></a>Similarity Methods</h2><h3 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h3><p>As the baseline, we just take the embedding of the words in sentence, and compute the average, weighted by frequency of each word.</p>
+<pre><code>def run_avg_benchmark(sentences1, sentences2, model=None, use_stoplist=False, doc_freqs=None):
+    if doc_freqs is not None:
+        N = doc_freqs[&quot;NUM_DOCS&quot;]
+
+    sims = []
+    for (sent1, sent2) in zip(sentences1, sentences2):
+
+        tokens1 = sent1.tokens_without_stop if use_stoplist else sent1.tokens
+        tokens2 = sent2.tokens_without_stop if use_stoplist else sent2.tokens
+
+        tokens1 = [token for token in tokens1 if token in model]
+        tokens2 = [token for token in tokens2 if token in model]
+
+        if len(tokens1) == 0 or len(tokens2) == 0:
+            sims.append(0)
+            continue
+
+        tokfreqs1 = Counter(tokens1)
+        tokfreqs2 = Counter(tokens2)
+
+        weights1 = [tokfreqs1[token] * math.log(N / (doc_freqs.get(token, 0) + 1))
+                    for token in tokfreqs1] if doc_freqs else None
+        weights2 = [tokfreqs2[token] * math.log(N / (doc_freqs.get(token, 0) + 1))
+                    for token in tokfreqs2] if doc_freqs else None
+
+        embedding1 = np.average([model[token] for token in tokfreqs1], axis=0, weights=weights1).reshape(1, -1)
+        embedding2 = np.average([model[token] for token in tokfreqs2], axis=0, weights=weights2).reshape(1, -1)
+
+        sim = cosine_similarity(embedding1, embedding2)[0][0]
+        sims.append(sim)
+
+    return sims
+</code></pre><h3 id="Smooth-Inverse-Frequency"><a href="#Smooth-Inverse-Frequency" class="headerlink" title="Smooth Inverse Frequency"></a>Smooth Inverse Frequency</h3><p>The baseline, like we did before, is very simple and crude of computing sentence embedding. Word frequency cannot reliably reflect its importance to sentence, semantically speaking. Smooth Inverse Frequency (SIF) tries to solve thhis problem.</p>
+<p>SIF is very similar to the weighted average we used before, with the difference that it’s weighted by this formular.<br>$$<br>\operatorname { SIF } ( w ) = \frac { a } { ( a + p ( w ) )}<br>$$<br>where $a$ is a hyper-parameter (set to 0.001 by default) and $ p(w)$ is the estimated word frequency in the corpus. </p>
+<p>Next, we need to perform common component removal: subtract from the sentence embeddingh obtained above the first principal component of the matrix. This corrects for the influence of high-frequency words that have syntactic or dicourse function, such as ‘but’, ‘and’, etc. You can find more information from <a href="https://openreview.net/pdf?id=SyK00v5xx" target="_blank" rel="noopener">this paper</a>.</p>
+<pre><code>def remove_first_principal_component(X):
+    svd = TruncatedSVD(n_components=1, n_iter=7, random_state=0)
+    svd.fit(X)
+    pc = svd.components_
+    XX = X - X.dot(pc.transpose()) * pc
+    return XX
+
+
+def run_sif_benchmark(sentences1, sentences2, model, freqs={}, use_stoplist=False, a=0.001):
+    total_freq = sum(freqs.values())
+
+    embeddings = []
+
+    # SIF requires us to first collect all sentence embeddings and then perform
+    # common component analysis.
+    for (sent1, sent2) in zip(sentences1, sentences2):
+        tokens1 = sent1.tokens_without_stop if use_stoplist else sent1.tokens
+        tokens2 = sent2.tokens_without_stop if use_stoplist else sent2.tokens
+
+        tokens1 = [token for token in tokens1 if token in model]
+        tokens2 = [token for token in tokens2 if token in model]
+
+        weights1 = [a / (a + freqs.get(token, 0) / total_freq) for token in tokens1]
+        weights2 = [a / (a + freqs.get(token, 0) / total_freq) for token in tokens2]
+
+        embedding1 = np.average([model[token] for token in tokens1], axis=0, weights=weights1)
+        embedding2 = np.average([model[token] for token in tokens2], axis=0, weights=weights2)
+
+        embeddings.append(embedding1)
+        embeddings.append(embedding2)
+
+    embeddings = remove_first_principal_component(np.array(embeddings))
+    sims = [cosine_similarity(embeddings[idx * 2].reshape(1, -1),
+                              embeddings[idx * 2 + 1].reshape(1, -1))[0][0]
+            for idx in range(int(len(embeddings) / 2))]
+
+    return sims
+</code></pre><h3 id="Google-Sentence-Encoder"><a href="#Google-Sentence-Encoder" class="headerlink" title="Google Sentence Encoder"></a>Google Sentence Encoder</h3><p><a href="https://github.com/facebookresearch/InferSent" target="_blank" rel="noopener">InferSent</a> is a pre-trained encoder that produces sentence embedding, which opensourced by Facebook. <a href="https://tfhub.dev/google/universal-sentence-encoder/1" target="_blank" rel="noopener">The Google Sentence Encoder</a> is Google’s answer to Facebook’s InferSent. In contrast to InferSent, the Google Sentence Encoder was trained on a combination of unsupervised data and supervised data (SNLI corpus), which tends to give better results.</p>
+<p>The codes can be used in <a href="https://colab.research.google.com/notebooks/welcome.ipynb#recent=true" target="_blank" rel="noopener">Google Jupyter Notebook</a></p>
+<pre><code>import tensorflow_hub as hub
+
+tf.logging.set_verbosity(tf.logging.ERROR)
+embed = hub.Module(&quot;https://tfhub.dev/google/universal-sentence-encoder/1&quot;)
+
+def run_gse_benchmark(sentences1, sentences2):
+    sts_input1 = tf.placeholder(tf.string, shape=(None))
+    sts_input2 = tf.placeholder(tf.string, shape=(None))
+
+    sts_encode1 = tf.nn.l2_normalize(embed(sts_input1))
+    sts_encode2 = tf.nn.l2_normalize(embed(sts_input2))
+
+    sim_scores = tf.reduce_sum(tf.multiply(sts_encode1, sts_encode2), axis=1)
+
+    with tf.Session() as session:
+        session.run(tf.global_variables_initializer())
+        session.run(tf.tables_initializer())
+
+        [gse_sims] = session.run(
+            [sim_scores],
+            feed_dict={
+                sts_input1: [sent1.raw for sent1 in sentences1],
+                sts_input2: [sent2.raw for sent2 in sentences2]
+            })
+    return gse_sims
+</code></pre><h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><pre><code>def run_experiment(df, benchmarks):
+    sentences1 = [Sentence(s) for s in df[&apos;sent_1&apos;]]
+    sentences2 = [Sentence(s) for s in df[&apos;sent_2&apos;]]
+
+    pearson_cors, spearman_cors = [], []
+    for label, method in benchmarks:
+        sims = method(sentences1, sentences2)
+        pearson_correlation = scipy.stats.pearsonr(sims, df[&apos;sim&apos;])[0]
+        print(label, pearson_correlation)
+        pearson_cors.append(pearson_correlation)
+        spearman_correlation = scipy.stats.spearmanr(sims, df[&apos;sim&apos;])[0]
+        spearman_cors.append(spearman_correlation)
+
+    return pearson_cors, spearman_cors
+</code></pre><p>Helper function:</p>
+<pre><code>import functools as ft
+
+benchmarks = [
+    (&quot;AVG-GLOVE&quot;, ft.partial(run_avg_benchmark, model=glove, use_stoplist=False)),
+    (&quot;AVG-GLOVE-STOP&quot;, ft.partial(run_avg_benchmark, model=glove, use_stoplist=True)),
+    (&quot;AVG-GLOVE-TFIDF&quot;, ft.partial(run_avg_benchmark, model=glove, use_stoplist=False, doc_freqs=doc_frequencies)),
+    (&quot;AVG-GLOVE-TFIDF-STOP&quot;, ft.partial(run_avg_benchmark, model=glove, use_stoplist=True, doc_freqs=doc_frequencies)),
+    (&quot;SIF-W2V&quot;, ft.partial(run_sif_benchmark, freqs=frequencies, model=word2vec, use_stoplist=False)),
+    (&quot;SIF-GLOVE&quot;, ft.partial(run_sif_benchmark, freqs=frequencies, model=glove, use_stoplist=False)),
+
+]
+</code></pre><h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><pre><code>import matplotlib.pyplot as plt
+plt.rcParams[&apos;figure.figsize&apos;] = (20,13)
+spearman[[&apos;AVG-GLOVE&apos;, &apos;AVG-GLOVE-STOP&apos;,&apos;AVG-GLOVE-TFIDF&apos;, &apos;AVG-GLOVE-TFIDF-STOP&apos;,&apos;GSE&apos;]].plot(kind=&quot;bar&quot;).legend(loc=&quot;lower left&quot;)
+</code></pre><p><strong>Take Off</strong></p>
+<ul>
+<li>Smooth Inverse Frequency methods are better than baseline, no matter with word2vec or Glove embeddings.</li>
+<li>Glove Sentence Encoder has the similar performance as Smooth Inverse Frequency.</li>
+<li>Using tf-idf weights does not help and using a stoplist looks like a reasonable choice.</li>
+</ul>
+<p>Pearson Correlation<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1swpqj9d0j20ps0h5t8z.jpg" alt=""><br>Spearman Correlation<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1swpqj9d0j20ps0h5t8z.jpg" alt=""></p>
+<p>Full codes can be found in <a href="https://github.com/jijeng/sentence-similarity" target="_blank" rel="noopener">here</a>.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/深度网络中的碎碎念/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/26/深度网络中的碎碎念/" itemprop="url">深度网络中的碎碎念</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-26T10:28:14+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>主要介绍了常见的网络中权重的初始化，激活函数和优化器。</p>
+<h2 id="Weights-Initialization"><a href="#Weights-Initialization" class="headerlink" title="Weights Initialization"></a>Weights Initialization</h2><p>weights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。<br>这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。</p>
+<blockquote>
+<p>Here’s another trick — before squishing our scalar value (called an activation) into the sigmoid function, we can add a little number called the bias, b. There will be two biases, one for each user and one for each movie.</p>
+</blockquote>
+<h3 id="Random-Initialization"><a href="#Random-Initialization" class="headerlink" title="Random Initialization"></a>Random Initialization</h3><p>最基础的即使 bias 使用 zero initialization ，然后 weights 使用 random initialzation。这种方法的缺陷在于梯度消失。就是你的weights 如果很大或者很小的时候，再加上如果使用了sigmoid 那么很容易出现上述的现象。</p>
+<blockquote>
+<p>a) If weights are initialized with very high values the term np.dot(W,X)+bbecomes significantly higher and if an activation function like sigmoid() is applied, the function maps its value near to 1 where slope of gradient changes slowly and learning takes a lot of time.<br>b) If weights are initialized with low values it gets mapped to 0, where the case is same as above.</p>
+</blockquote>
+<h3 id="He-Initialization"><a href="#He-Initialization" class="headerlink" title="He Initialization"></a>He Initialization</h3><p>$$W^{[l]} =np.random.randn(size_l, size_l -1)* np.sqrt(2/size_l -1) $$<br>这个是使用 relu 或者说 leaky relu 配合使用的。</p>
+<p>所以上述的初始化从数学的角度去理解： 从(0,1) 标准正太分布 转换成了 (0, np.sqrt(2/ size_l -1)) 这样的分布，就是你网络结构是越宽，那么这个方差就是越小的，最后的结果是越集中的，就越集中的 均值 u 左右。从图像的角度看，方差越大，图像越矮胖；方差越小，图像越瘦高。</p>
+<h3 id="Xavier-initialization"><a href="#Xavier-initialization" class="headerlink" title="Xavier initialization"></a>Xavier initialization</h3><p>这个是使用tanh() 作为 activation function的。<br>$$W^{[l]} =np.random.randn(size_l, size_l -1)* np.sqrt( 1/size_l -1) $$<br>总的思想原则：<br>They set the weights neither too much bigger that 1, nor too much less than 1.<br>就是本来就是在 (0,1) 标准正太分布出来，然后进行了进一步的约束条件。</p>
+<h2 id="Activation-function"><a href="#Activation-function" class="headerlink" title="Activation function"></a>Activation function</h2><p>总的说可以分为线性和非线性的激活函数， activation function 的作用 就是对于网络的输出 说yes or no. It maps the resulting values in between 0 to 1 or -1 to 1 etc.</p>
+<h3 id="Sigmoid-function-Logistic-Activation"><a href="#Sigmoid-function-Logistic-Activation" class="headerlink" title="Sigmoid function (Logistic Activation)"></a>Sigmoid function (Logistic Activation)</h3><p>the only reason why we use sigmoid is because it exists between 0 to 1. 这个非常有利于 predict probability. 因为自然映射到 0 是不存在 然后1 是存在。而当多分类的时候，使用softmax。</p>
+<h3 id="Tanh-function"><a href="#Tanh-function" class="headerlink" title="Tanh function"></a>Tanh function</h3><blockquote>
+<p>The advantage is that the negative inputs will be mapped strongly negative and the zero inputs will be mapped near zero in the tanh graph.</p>
+</blockquote>
+<h3 id="Relu-Rectified-Linear-Unit-Activation"><a href="#Relu-Rectified-Linear-Unit-Activation" class="headerlink" title="Relu (Rectified Linear Unit) Activation"></a>Relu (Rectified Linear Unit) Activation</h3><p>本质上是分段函数。 range: [0, infinity]. The function and its derivative both are monotonic.</p>
+<h3 id="Leaky-Relu"><a href="#Leaky-Relu" class="headerlink" title="Leaky Relu"></a>Leaky Relu</h3><p>每当一个伟大的东西产出，总会伴随着比较明显的错误，然后紧跟着就是有一个  rectified(improved) 这种版本。这个相比之前就是修正了 当输入是负数的时候，怎么办的问题。</p>
+<h3 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h3><p>这个需要从数学的角度去理解，数学公式就是下面。有一个真实的例子： 如果一张”4” 的图片，输出一个网络，最后是softmax 激活函数，那么最后得到的 “4” 的概率是最大的，但是也是有其他的可能性存在的，这个就是softmax 的效果。 最主要的功能是 convert number into probabilities. 这种效果，不像sigmoid 那样有很明确的数学公式。</p>
+<p>$$\sigma ( z ) _ { j } = \frac { e ^ { z _ { j } } } { \sum _ { k = 1 } ^ { K } e ^ { z _ { k } } }$$</p>
+<blockquote>
+<p>Softmax function, a wonderfulactivation function that turns numbers aka logits into probabilities that sum to one.<br>Remember the takeaway is: the essential goal of softmax is to turn numbers into probabilities.</p>
+</blockquote>
+<h2 id="Optimizer"><a href="#Optimizer" class="headerlink" title="Optimizer"></a>Optimizer</h2><h3 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h3><p>最基本的应该是 gradient descent，这个算是开山鼻祖。给出了每次梯度变化的方向</p>
+<h3 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h3><p>个人更喜欢将其翻译成动量，这个gradient 考虑之前的gradient 的方向和大小，有点像动量的的含义。不仅考虑了current step, 而且accumulates gradient of the past steps.</p>
+<blockquote>
+<p> A very popular technique that is used along with SGD is called Momentum. Instead of using only the gradient of the current step to guide the search, momentum also accumulates the gradient of the past steps to determine the direction to go. </p>
+</blockquote>
+<p>好处在于:</p>
+<blockquote>
+<p>most recent is weighted than the less recent ones<br>the weightage of the most recent previous gradients is more than the less recent ones.<br>for example:</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg" alt=""></p>
+<h3 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h3><p>RMSprop, or Root Mean Square Propogation has an interesting history. RMSProp also tries to dampen the oscillations, but in a different way than momentum. </p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fz79596rj20fu0boaad.jpg" alt=""></p>
+<h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><p>这种套路总是一样的，总是有一个中和者，关键是如何整合到一起。</p>
+<blockquote>
+<p>Adam or Adaptive Moment Optimization  algorithms combines the heuristics of both Momentum and RMSProp.</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg" alt=""></p>
+<p>The hyperparameter beta1 is generally kept around 0.9 while beta_2 is kept at 0.99. Epsilon is chosen to be 1e-10 generally.</p>
+<p>对于公式的解释，Eq 1 and Eq 2是come from RMSprop,  Eq 3 comes from Adam。最后一步是 update 操作，条理清楚，没有问题。(公式中的v 表示导数，g 表示导数e 不太清楚)<br>Here, we compute the exponential average of the gradient as well as the squares of the gradient for each parameters (Eq 1, and Eq 2). To decide our learning step, we multiply our learning rate by average of the gradient (as was the case with momentum) and divide it by the root mean square of the exponential average of square of gradients (as was the case with momentum) in equation 3. Then, we add the update.)</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/siamese-network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/26/siamese-network/" itemprop="url">siamese network</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-26T10:26:03+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>主要是介绍自己论文中的网络结构：siamese network。</p>
+<p>但凡优化，无非两条路：在好的基础上更快，在快的基础上效果更好。 Siamese network训练速度快，所以只是需要其在训练效果上更好。</p>
+<p>先来分析一下为什么训练速度快。那么不得不分析该网络结构。整个网络的输入是 (img1, img2, y) 这样的三元组，img 表示图片，y表示label。图片可以是同一类别的图片，也可以是不同类别的，y表示两张图片之间的相似程度，y的取值 (0,1)，0表示相似（同一类别），1 表示不相似（不同类别）。并且y 是double 类型，属于0-1 区间任意的数字。网路结构最后的输出是 0-1 区间的任意数字。通常是以0.5 作为分界线，如果小于0.5 那么认为两种图片是属于同一类别，或者说更相似；反之也成立。<br>重要的一点是中间的weights 实现了权值共享，这样可以加快网络的训练速度。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fwyu5fnsj20z90cq75v.jpg" alt=""></p>
+<h3 id="loss-function"><a href="#loss-function" class="headerlink" title="loss function"></a>loss function</h3><p>这个是属于经典的 contrastive loss function。当y 接近于0的时候，右半部分消失，这个是表示两张图片很是相似，然后就不断使得 欧氏距离减少；当y 接近于1的时候，左半部分消失，这个时候两张图片很不相似，然后右边就是 hinge loss。参数m 作为一种margin 是是可以调节，我的实验中 m 取1.<br>总的思想：就是使得相近的图像距离相近，不想近的图像距离变远。</p>
+<p>$L ( W , ( Y , X _ { 1 } , X _ { 2 } ) ) = ( 1 - Y ) \frac { 1 } { 2 } ( D _ { W } ) ^ { 2 } + ( Y ) \frac { 1 } { 2 } { \max ( 0 , m - D _ { W } ) } ^ { 2 }$</p>
+<h3 id="Spectral-Normalization"><a href="#Spectral-Normalization" class="headerlink" title="Spectral Normalization"></a>Spectral Normalization</h3><p>图像输入到网络之前使用正则化，然后输入到激活函数之前也是使用正则化，所以这种效果也是扩展到 weights，直接对 weights 进行正则化使其符合  Lipschitz 约束，避免使用大的gradients。在GAN 网络中的 discriminator 或者 generator 都发现了其可以稳定训练的过程。在实验中，我们扩大了了这种使用范围，把其应用到所有的网络的layer上。</p>
+<h3 id="self-attention-mechanism"><a href="#self-attention-mechanism" class="headerlink" title="self-attention mechanism"></a>self-attention mechanism</h3><p>Attention 机制自从 <a href="https://arxiv.org/pdf/1706.03762.pdf" target="_blank" rel="noopener">“Attention Is All You Need”</a> 开始火爆，并且实验的效果也是很好的，然后在图像领域也开始尝试使用 attention 机制来解决长依赖的问题。应用到图像领域主要是 explore spatial locality information, 说白了就是细节的信息。</p>
+<blockquote>
+<p>If we look at the DCGAN model, we see that regular GANs are heavily based on convolution operations, which use a local receptive field (convolutional kernel) to learn representations. Simple features like edges and corners are learned in the first few layers. Also, ConvNets are able to use these simple representations to learn more complex ones. However, long-range dependency might be hard to learn. Long-range dependency (long-term dependency) is from RNN, which we can say anything larger than trigram as a long term dependency. Thus, most of the image content does not exhibit elaborated shape such as sky or the ocean looks fine. The task of creating geometrically complex forms, such as four-legged animals, is far more challenging. This is where attention comes into play.</p>
+</blockquote>
+<p>而 self-attention 中QKV 三个部分是相同的，对于这种处理方法和Res_block 还是有点相似的。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fx354ispj210k0fsaae.jpg" alt=""></p>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>训练数据集使用是 Cifar-10，记录了训练过程中 acc 和loss 的变化情况。除了训练的效果比较好外，训练速度也是非常快的，可以清楚的看到model acc 在接近25 epoches的时候就开始收敛。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fx3rncspj20hi0d20t9.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/fastText-faiss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/25/fastText-faiss/" itemprop="url">fastText & faiss</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T21:13:52+08:00">
+                2019-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="fastText"><a href="#fastText" class="headerlink" title="fastText"></a>fastText</h2><p>fastText结合了自然语言处理和机器学习中最成功的理念。这些包括了使用词袋以及n-gram袋表征语句，还有使用子字(subword)信息，并通过隐藏表征在类别间共享信息。另外采用了一个softmax层级(利用了类别不均衡分布的优势)来加速运算过程。</p>
+<p>fastText 主要是用来解决 word representations和 sentence classification. 有趣的是前者是无监督的学习方式，后者是有监督的学习方式。分别主要来自 ”Enriching Word Vectors with Subword Information“ 和 “Bag of Tricks for Efficient Text Classification” 两篇论文。并且使用的是 shallow neural network 而不是深度网络。</p>
+<blockquote>
+<p>FastText is a library created by the Facebook Research Team for efficient learning of word representations and sentence classification.</p>
+</blockquote>
+<p>Take off:<br>fastText 方法包含三部分：模型架构、层次 Softmax 和 N-gram 特征。<br>fasttext 有两个用处： text classification 和 word embedding 。<br>使用场景：大型数据，高效计算</p>
+<p>下面进行细说：</p>
+<h3 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h3><p>这个是总的框架图。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8ph67dkj21280yuk1n.jpg" alt=""></p>
+<p><center><sub><sup>抱歉哈 这个引用找不见了，如果有侵权，please email me..</sup></sub><center><br>分为两个部分介绍这个网络结构：<br>从input -&gt; hidden:<br>输入层输入的是一个已经分词后短文本。短文本中每个词的词向量是由该短文本的one-hot矩阵乘以一个初始化的矩阵w得到的。（原理图：下图是fasttext 运行的时候，这个分词是再处理成单词和n-gram 组成的特征，这个是不需要我们进行显性的操作的）<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8x600o5j21440lsjz0.jpg" alt=""><br>从 hidden -&gt; output：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8xzkf3yj213y0lsti8.jpg" alt=""><br>插播一句，我们经常使用的预训练模型中的weights 是从input-&gt; hidden。</center></center></p>
+<h3 id="Hierarchical-Softmax"><a href="#Hierarchical-Softmax" class="headerlink" title="Hierarchical Softmax"></a>Hierarchical Softmax</h3><p>从名字上就知道这个是基于softmax的改进版本，主要是运算上的改进。具体说来：利用了类别（class）不均衡这个事实（一些类别出现次数比其他的更多），通过使用 Huffman 算法建立用于表征类别的树形结构。fastText 模型使用了层次 Softmax 技巧。层次 Softmax 技巧建立在Huffman的基础上，对标签进行编码，能够极大地缩小模型预测目标的数量。</p>
+<p>这个是softmax 的原始的计算公式：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fbkxph28j20ia0560sm.jpg" alt=""><br>采用二叉树的结构之后，时间上优化不少。$O ( N) \rightarrow O \left( \log _ { 2 } N \right)$。见下图。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fboz6w71j20n20bedh7.jpg" alt=""></p>
+<p><center><sub><sup>抱歉哈 这个引用找不见了，如果有侵权，please email me..</sup></sub><center><br>和之前的神经网络模型相比，这里的huffmax树的所有内部节点就类似之前神经网络隐藏层的神经元。其中，根节点的词向量对应我们的投影后的词向量，而所有的叶子节点就类似于之前神经网络softmax输出层的神经元。叶子节点的个数就是词汇表的大小. </center></center></p>
+<p>和之前的相比，从隐藏层到输出层的softmax映射不是一下就完成的，而是沿着 huffman树一步步完成的，因此这种 softmax取名为”Hierarchical softmax”. </p>
+<h3 id="N-gram-特征"><a href="#N-gram-特征" class="headerlink" title="N-gram 特征"></a>N-gram 特征</h3><p>N-gram是基于这样的思想：某个词的出现依赖于其他若干个词；我们获得的信息越多，预测越准确。我想说，我们每个人的大脑中都有一个N-gram模型，而且是在不断完善和训练的。我们的见识与经历，都在丰富着我们的阅历，增强着我们的联想能力。</p>
+<p> N-gram模型是一种语言模型（Language Model，LM），语言模型是一个基于概率的判别模型，它的输入是一句话（单词的顺序序列），输出是这句话的概率，即这些单词的联合概率（joint probability）。 </p>
+<p>这样的作用，使用N-gram来给文本添加额外的特征获得关于局部词顺序的部分信息。<br>举个栗子：对于句子：“我 喜欢 喝 咖啡”, 如果不考虑顺序，那么就是每个词，“我”，“喜欢”，“喝”，“咖啡”这五个单词的word embedding求平均。如果考虑2-gram, 那么除了以上五个词，还有“我喜欢”，“喜欢喝”，“喝咖啡”等词。“我喜欢”，“喜欢喝”，“喝咖啡”这三个词就作为这个句子的文本特征。<br>我们经常见到的场景：输入法的预选词汇。就是可以通过这种方式实现的。</p>
+<p>当然使用了更多的特征意味着造成了效率下降，于是该作者提出了两种解决方法：<br>过滤掉低词频；使用词粒度代替字粒度。<br>比如说海慧寺使用上面那个句子”我喜欢喝咖啡“，如果使用子粒度的2-gram，那么产生的特征是“我喜”，“喜欢”，“欢喝”，“喝咖”，“咖啡”。如果使用词粒度为2-gram，那么产生的特征是“我喜欢”，“喜欢喝”，“喝咖啡”。</p>
+<p>补充一句，subwords就是一个词的character-level的n-gram。比如单词”hello”，长度至少为3的char-level的ngram有”hel”,”ell”,”llo”,”hell”,”ello”以及本身”hello”。</p>
+<h3 id="Negative-Sampling"><a href="#Negative-Sampling" class="headerlink" title="Negative Sampling"></a>Negative Sampling</h3><p>这个技术不是 fastText 首创的，但是本着总结知识点的，也就放在这里了。<br>CBOW / Skip-gram模型 （这个论文中）提出了两种方法，一种是Hierarchical Softmax，另一种是Negative Sampling。论文中提出的两种方法都是用来提高计算效率的，下面说一下负采样。<br>在训练神经网络时，每当接受一个训练样本，然后调整所有神经单元权重参数，来使神经网络预测更加准确。换句话说，每个训练样本都将会调整所有神经网络中的参数。而 Negative Sampling 每次让一个训练样本仅仅更新一小部分的权重参数，从而降低梯度下降过程中的计算量。如果 vocabulary 大小为1万时， 当输入样本 ( “fox”, “quick”) 到神经网络时， “ fox” 经过 one-hot 编码，在输出层我们期望对应 “quick” 单词的那个神经元结点输出 1，其余 9999 个都应该输出0。在这里，这9999个我们期望输出为0的神经元结点所对应的单词我们称为 negative word，随机选择一小部分的 negative words，比如选 10个 negative words 来更新对应的权重参数。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>第一个应用场景：词向量。<br>fastText作为训练词向量认为可以有两种模式，一种是根据周围词语预测中心词汇的CBOW （continuous bag-of-words）模型，另一种是根据中心词汇预测上下文的 skip-gram 模型。</p>
+<blockquote>
+<p>./fasttext – It is used to invoke the FastText library.<br> skipgram/cbow – It is where you specify whether skipgram or cbow is to be used to create the word representations.<br> -input – This is the name of the parameter which specifies the following word to be used as the name of the file used for training. This argument should be used as is.<br> data.txt – a sample text file over which we wish to train the skipgram or cbow model. Change this name to the name of the text file you have.<br> -output – This is the name of the parameter which specifies the following word to be used as the name of the model being created. This argument is to be used as is.<br> model – This is the name of the model created.<br>Running the above command will create two files named model.bin and model.vec. model.bin contains the model parameters, dictionary and the hyperparameters and can be used to compute word vectors. model.vec is a text file that contains the word vectors for one word per line.</p>
+</blockquote>
+<p>最后生成有两个文件，一个 xxx.bin 文件，一个是 xxx.vec 文件，前者是预训练模型，后者是词向量。<br>这两个可能是最重要的格式了。</p>
+<blockquote>
+<p>The most important parameters of the model are its dimension and the range of size for the subwords. </p>
+</blockquote>
+<p>常见的代码格式：</p>
+<pre><code>./fasttext skipgram -input data/fil9 -output result/fil9 -minn 2 -maxn 5 -dim 300
+</code></pre><p>跑偏一下说一下shell的小技巧。<br>使用echo 或者 &lt; 这样进行单个词或者多个词的词向量的查询。</p>
+<blockquote>
+<p>./fasttext print-word-vectors model.bin &lt; queries.txt<br>echo “word” | ./fasttext print-word-vectors model.bin</p>
+</blockquote>
+<p>Finding simialr words:</p>
+<pre><code>./fasttext nn model.bin
+</code></pre><p>第二个应用场景：文本分类。</p>
+<blockquote>
+<p>Sentiment analysis and email classification are classic examples of text classification</p>
+</blockquote>
+<p>在训练数据集中label 默认是使用 “__label__” 进行表示的，当然也是可以进行自定义的。</p>
+<pre><code>./fasttext supervised -input train.ft.txt -output model_kaggle -label  __label__ -lr 0.5
+就是进行predict的时候，有时候并不是很能想起来只是predict top 3 这样的东西。
+# Predicting on the test dataset
+./fasttext predict model_kaggle.bin test.ft.txt
+# Predicting the top 3 labels
+./fasttext predict model_kaggle.bin test.ft.txt 3
+</code></pre><h2 id="faiss"><a href="#faiss" class="headerlink" title="faiss"></a>faiss</h2><p>用途：相似度检测和稠密向量的聚类。</p>
+<blockquote>
+<p>Faiss is a library for efficient similarity search and clustering of dense vectors.</p>
+</blockquote>
+<p>之前的实习经历主要是用faiss 处理文本的representation，但是这个是有偏差的，凡是能够打成词向量，都是可以使用faiss 进行计算的，当然这词向量需要满足：相近内容在相近的空间。</p>
+<blockquote>
+<p>Once the vectors are extracted by learning machinery (from images, videos, text documents, and elsewhere), they’re ready to feed into the similarity search library.</p>
+</blockquote>
+<h3 id="faiss的实现过程"><a href="#faiss的实现过程" class="headerlink" title="faiss的实现过程"></a>faiss的实现过程</h3><p>首先使用 index对于向量进行预处理，然后选择不同的模式。</p>
+<p>牺牲了一些精确性来使得运行速度更快。</p>
+<blockquote>
+<p>Similarity search can be made orders of magnitude faster if we’re willing to trade some accuracy; that is, deviate a bit from the reference result. For example, it may not matter much if the first and second results of an image similarity search are swapped, since they’re probably both correct results for a given query. Accelerating the search involves some pre-processing of the data set, an operation that we call indexing.</p>
+</blockquote>
+<p>向量的比较有两种metric：一种是L2 一种是基于consine (点乘)进行检索。前者是求解最小的值，后者是通过inner——product 求解maximum. 并且是支持GPU的，在原来CPU上建立的index，然后很好的迁移到 GPU上。</p>
+<p>在涉及index使用考虑速度，acc和内存大小三个不同的维度。然后不同的index 是有不同的侧重的。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/NLP中的碎碎念/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1251,661 +2080,6 @@ if __name__ == &quot;__main__&quot;:
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/23/基于simhash的文本相似度比较/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/23/基于simhash的文本相似度比较/" itemprop="url">基于simhash的文本相似度比较</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-23T20:20:14+08:00">
-                2018-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index">
-                    <span itemprop="name">NLP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我只是想说我还没有放弃这个网站…</p>
-<p>本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：</p>
-<ul>
-<li>基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”.</li>
-<li>根据关键字计算simhash编码，然后使用hamming distance进行比较两者的不同。<br>如果对于上述概念比较模糊，建议首先阅读<a href="https://jijeng.github.io/2018/08/23/文本相似度比较基本知识/" target="_blank" rel="noopener">该篇博客</a>。</li>
-</ul>
-<p>顺滑过渡到代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 常规导包</span><br><span class="line">import sys,codecs</span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import jieba.posseg</span><br><span class="line">import jieba.analyse</span><br><span class="line">from sklearn import feature_extraction</span><br><span class="line">from sklearn.feature_extraction.text import TfidfTransformer</span><br><span class="line">from sklearn.feature_extraction.text import CountVectorizer</span><br><span class="line"># 数据集的路径</span><br><span class="line">path =&quot;../tianmao2.csv&quot;</span><br><span class="line">names =[&apos;where&apos;, &apos;time&apos;, &apos;title&apos;, &apos;url&apos;, &apos;contents&apos;]</span><br><span class="line">data =pd.read_csv(path, delimiter=&apos;\t&apos;, names= names, nrows=200)</span><br><span class="line">data[&apos;id&apos;] =data.index+1</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/41166141.jpg" alt=""><br>我们使用title和contents 组合作为原始处理的数据，我们认为该数据能够就是文章的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stopkey = [w.strip() for w in codecs.open(&apos;../keyword_extraction/data/stopWord.txt&apos;, &apos;r&apos;).readlines()]</span><br></pre></td></tr></table></figure></p>
-<p>该stop words是中文停用词，就是常见的”的 了”。常见的有百度停用词表、哈尔滨工业大学停用词表以及中科院的停用词表。这里使用的是中科院的停用词。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def dataPrepos(text, stopkey):</span><br><span class="line">    l = []</span><br><span class="line">    pos = [&apos;n&apos;, &apos;nz&apos;, &apos;v&apos;, &apos;vd&apos;, &apos;vn&apos;, &apos;l&apos;, &apos;a&apos;, &apos;d&apos;]  # 定义选取的词性</span><br><span class="line">    seg = jieba.posseg.cut(text)  # 分词</span><br><span class="line">    for i in seg:</span><br><span class="line">        if i.word not in stopkey and i.flag in pos:  # 去停用词 + 词性筛选</span><br><span class="line">            l.append(i.word)</span><br><span class="line">    return l</span><br></pre></td></tr></table></figure></p>
-<p>我们选择名词作为主要的分析对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">idList, titleList, abstractList = data[&apos;id&apos;], data[&apos;title&apos;], data[&apos;contents&apos;]</span><br><span class="line">corpus = []  # 将所有文档输出到一个list中，一行就是一个文档</span><br><span class="line"># 这个 虽然使用 &quot; &quot; 进行分割 但是实际上还是一个打的list</span><br><span class="line">for index in range(len(idList)):</span><br><span class="line">    text = &apos;%s。%s&apos; % (titleList[index], abstractList[index])  # 拼接标题和摘要</span><br><span class="line">    text = dataPrepos(text, stopkey)  # 文本预处理</span><br><span class="line">    text = &quot; &quot;.join(text)  # 连接成字符串，空格分隔</span><br><span class="line">    corpus.append(text)</span><br></pre></td></tr></table></figure></p>
-<p>这里的corus 是将所有的经过预处理文档作为当前计算 idf 的语料库。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vectorizer = CountVectorizer()</span><br><span class="line">X = vectorizer.fit_transform(corpus)  # 词频矩阵,a[i][j]:表示j词在第i个文本中的词频</span><br><span class="line"># 2、统计每个词的tf-idf权值</span><br><span class="line">transformer = TfidfTransformer()</span><br><span class="line">tfidf = transformer.fit_transform(X)</span><br><span class="line"># 3、获取词袋模型中的关键词</span><br><span class="line">word = vectorizer.get_feature_names()</span><br><span class="line"># 4、获取tf-idf矩阵，a[i][j]表示j词在i篇文本中的tf-idf权重</span><br><span class="line">weight = tfidf.toarray()</span><br></pre></td></tr></table></figure></p>
-<p>使用sklearn 内置的函数计算tf-idf。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">topK = 10</span><br><span class="line">ids, titles, keys, weights = [], [], [], []</span><br><span class="line">for i in range(len(weight)):</span><br><span class="line">    print(&quot;-------这里输出第&quot;, i + 1, &quot;篇文本的词语tf-idf------&quot;)</span><br><span class="line">    ids.append(idList[i])</span><br><span class="line">    titles.append(titleList[i])</span><br><span class="line">    df_word, df_weight = [], []  # 当前文章的所有词汇列表、词汇对应权重列表</span><br><span class="line">    for j in range(len(word)):</span><br><span class="line">        # print(word[j],weight[i][j])</span><br><span class="line">        df_word.append(word[j])</span><br><span class="line">        df_weight.append(weight[i][j])</span><br><span class="line">    df_word = pd.DataFrame(df_word, columns=[&apos;word&apos;])</span><br><span class="line">    df_weight = pd.DataFrame(df_weight, columns=[&apos;weight&apos;])</span><br><span class="line">    word_weight = pd.concat([df_word, df_weight], axis=1)  # 拼接词汇列表和权重列表</span><br><span class="line">    word_weight = word_weight.sort_values(by=&quot;weight&quot;, ascending=False)  # 按照权重值降序排列</span><br><span class="line">    # 在这里可以查看 k的选取的数值应该是多大，</span><br><span class="line">    # from ipdb import set_trace</span><br><span class="line">    # set_trace()</span><br><span class="line">    keyword = np.array(word_weight[&apos;word&apos;])  # 选择词汇列并转成数组格式</span><br><span class="line">    word_split = [keyword[x] for x in range(0, topK)]  # 抽取前topK个词汇作为关键词</span><br><span class="line">    word_split = &quot; &quot;.join(word_split)</span><br><span class="line">    keys.append(word_split)</span><br><span class="line">    wei = np.array(word_weight[&apos;weight&apos;])</span><br><span class="line">    wei_split = [str(wei[x]) for x in range(0, topK)]</span><br><span class="line">    wei_split = &quot; &quot;.join(wei_split)</span><br><span class="line">    weights.append(wei_split)</span><br><span class="line">    # 这里的命名 容易混淆</span><br><span class="line">result = pd.DataFrame(&#123;&quot;id&quot;: ids, &quot;title&quot;: titles, &quot;key&quot;: keys, &apos;weight&apos;: weights&#125;,</span><br><span class="line">                      columns=[&apos;id&apos;, &apos;title&apos;, &apos;key&apos;, &apos;weight&apos;])</span><br></pre></td></tr></table></figure></p>
-<p>选择前10个频率最高的词语作为该篇文章的代表，当然这个参数是可以调整，需要根据具体的问题和结果进行调整。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result.head()</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/57579705.jpg" alt=""><br>最后的效果如上。至此我们第一步的提取文章的关键词就已经做完。下面进行相似度的比较。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import jieba</span><br><span class="line">import jieba.analyse</span><br><span class="line">import pandas as pd</span><br><span class="line">#日常导包</span><br></pre></td></tr></table></figure>
-<p>数据和上述的一样，所以就不截图了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">datasets =pd.read_csv(&quot;../tianmao2-tf-idf.csv&quot;)</span><br><span class="line">tokens =datasets[&apos;key&apos;]</span><br><span class="line">weights =datasets[&apos;weight&apos;]</span><br></pre></td></tr></table></figure></p>
-<p>提取关键词和对应的权重。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">print(tokens[0], len(tokens[0]))</span><br><span class="line">print(weights[0], len(weights[0]))</span><br><span class="line">tokens0 =tokens[0].split()</span><br><span class="line">weights0 =weights[0].split()</span><br><span class="line">len(tokens0)</span><br><span class="line">len(weights0)</span><br><span class="line"></span><br><span class="line">tokens1 =tokens[1].split()</span><br><span class="line">weights1 =weights[1].split()</span><br><span class="line">import ast</span><br><span class="line">weights0 =[ ast.literal_eval(i) for i in weights0]</span><br><span class="line">weights1 =[ ast.literal_eval(i) for i in weights1]</span><br></pre></td></tr></table></figure></p>
-<p>构造测试用例。因为权重是字符串，所以简单处理转成整数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dict0 =dict(zip(tokens0, weights0))</span><br><span class="line">dict1 =dict(zip(tokens1, weights1))</span><br></pre></td></tr></table></figure>
-<p>定义一个Simhash，提供对文档的数值映射和文档间相似度计算的功能.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">class Simhash(object):</span><br><span class="line">    </span><br><span class="line">    # 初始化函数</span><br><span class="line">    def __init__(self, weights_dict, tokens=&apos;&apos;, hashbits=64):</span><br><span class="line">        self.hashbits = hashbits</span><br><span class="line">        self.hash = self.simhash_function(tokens, weights_dict)</span><br><span class="line">    </span><br><span class="line">    # toString函数</span><br><span class="line">    # 不懂这个 self.hash ，凡是带有self 的函数都是可以类变量，所以这个就是返回的 self.hash这个变量</span><br><span class="line">    #凡是使用__str__ 这种类型的函数 都是重写 原来的函数</span><br><span class="line">    def __str__(self):</span><br><span class="line">        return str(self.hash)</span><br><span class="line">    </span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    ord() 函数是 chr() 函数（对于8位的ASCII字符串）或 unichr() </span><br><span class="line">    函数（对于Unicode对象）的配对函数，它以一个字符（长度为1的字符串）作为参数，返回对应的 ASCII 数值，或者 Unicode 数值   </span><br><span class="line">    </span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # 给每一个单词生成对应的hash值</span><br><span class="line">    # 这个操作搞懂之后一定很简洁， 但是现在很难理解，因为不是字符串，而是位操作</span><br><span class="line">    def _string_hash(self, source):</span><br><span class="line">        if source == &apos;&apos;:</span><br><span class="line">            return 0</span><br><span class="line">        else:</span><br><span class="line">            x = ord(source[0]) &lt;&lt; 7</span><br><span class="line">            # &lt;&lt; 表示 乘以2^7 ; &gt;&gt; 表示除以 ; ** 表示次方的意思</span><br><span class="line">            # ^ : 按位异或 (二进制进行异或)； &amp; 按位进行与 操作</span><br><span class="line">            # 左移位操作也是可以理解为 2^x 的操作，因为存储是二进制，这样左移一位 表示×2 一次</span><br><span class="line">            m = 1000003</span><br><span class="line">            mask = 2 ** self.hashbits - 1</span><br><span class="line">            for c in source:</span><br><span class="line">                x = ((x * m) ^ ord(c)) &amp; mask</span><br><span class="line">            x ^= len(source)</span><br><span class="line">            if x == -1:</span><br><span class="line">                x = -2</span><br><span class="line">            return x</span><br><span class="line">    # 生成simhash值</span><br><span class="line">    def simhash_function(self, tokens, weights_dict):</span><br><span class="line">        v = [0] * self.hashbits</span><br><span class="line">        # 这种使用 &#123;&#125; dictionary 然后强行得到item 再进行遍历也是牛逼</span><br><span class="line">        for key, t in &#123;x: self._string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">            for i in range(self.hashbits):</span><br><span class="line">                bitmask = 1 &lt;&lt; i</span><br><span class="line">                if t &amp; bitmask:</span><br><span class="line">                    v[i] += weights_dict[key]</span><br><span class="line">                else:</span><br><span class="line">                    v[i] -= weights_dict[key]</span><br><span class="line">        </span><br><span class="line">        fingerprint = 0</span><br><span class="line">        for i in range(self.hashbits):</span><br><span class="line">            if v[i] &gt;= 0:</span><br><span class="line">                fingerprint += 1 &lt;&lt; i</span><br><span class="line">        return fingerprint</span><br><span class="line">    </span><br><span class="line">    # 求文档间的海明距离</span><br><span class="line">    def hamming_distance(self, other):</span><br><span class="line">        x = (self.hash ^ other.hash) &amp; ((1 &lt;&lt; self.hashbits) - 1 )</span><br><span class="line">        tot = 0</span><br><span class="line">        while x :</span><br><span class="line">            tot += 1</span><br><span class="line">            x &amp;= x - 1</span><br><span class="line">        return tot</span><br><span class="line">    </span><br><span class="line">    #求相似度</span><br><span class="line">    # 这个相似度的计算，十分简单，如果两个数接近，那么就是认为相似。越是接近1 越是相似，</span><br><span class="line">    # 不是原先那种以某一个参数整数 如3 为距离的相似度</span><br><span class="line">    def similarity(self, other):</span><br><span class="line">        a = float(self.hash)</span><br><span class="line">        b = float(other.hash)</span><br><span class="line">        if a &gt; b:</span><br><span class="line">            return b / a</span><br><span class="line">        else: </span><br><span class="line">            return a / b</span><br><span class="line">    </span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    hash0 = Simhash(weights_dict=dict0, tokens=tokens0)</span><br><span class="line">    print(hash0)</span><br><span class="line">    hash1 = Simhash(weights_dict=dict1, tokens=tokens1)</span><br><span class="line">    print(hash1)</span><br><span class="line">    print(hash0.hamming_distance(hash1))</span><br><span class="line">    print(hash0.similarity(hash1))</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/91557560.jpg" alt=""><br>结果如上。可以看出该例子中使用的两两比较的方式，对于大数据来说，一般可能会用到倒排索引和cpu并行技术。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/23/文本相似度比较基本知识/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/23/文本相似度比较基本知识/" itemprop="url">文本相似度比较基本知识</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-23T20:19:58+08:00">
-                2018-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本文服务于<a href="https://jijeng.github.io/2018/08/23/基于simhash的文本相似度比较/" target="_blank" rel="noopener">该篇博客</a>,主要进行名词解释。</p>
-<h2 id="simhash"><a href="#simhash" class="headerlink" title="simhash"></a>simhash</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>simhash 也是一种hash，一般的hash 函数映射规则只需要满足以下两个条件：</p>
-<ul>
-<li>对很多不同的特征来说，它们对所对应的向量是均匀随机分布的</li>
-<li>相同的特征来说对应的向量是唯一<br>简单来说普通的hash映射需要满足随机分布和唯一性两个条件。simhash想要实现的是，如果原来的文本的特征是相似，那么映射之后的编码也是相似。这里使用 hamming distance 进行比较simhash映射之后的距离。根据经验值，对64位的 SimHash值，海明距离在3以内的可认为相似度比较高。编码之后的表示在英文中是 fingerprint(指纹)。<br>simhash最初被google 用于网页去重，当时使用的fingerprint 是64,所以这里沿用了这个传统。64位的签名可以表示多达264个象限，因此只保存所在象限的信息也足够表征一个文档了。<br>更进一步，表示的文档的数字最多是多少？这个应该可以准确计算特征的个数应为如果用三位(01) 表示，那么有8种，那么2^64 这么多种特征，所以16*10^18 这么多。<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3>第一步：文本预处理得到分词（去重，去除的了stop words）,然后weight权重可以使用分词的frequency 或者tfidf 进行得到<br>第二步：进行hash 映射（可以使用md5这种传统的映射方式，基本的要求就是均匀映射到一个空间，这种映射并不能反映原始样本的相关性）<br>第三步：hash 映射值和weight 进行相乘，如果原来是1 则乘以1，如果是0 则乘以-1，<br>第四步： 列向相加，得到summing weights,进行降维如果是正数那么为1，如果是负数那么为-1<br>然后这个simhash就出来了.<br>有图有真相<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/22402623.jpg" alt=""><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/11071129.jpg" alt=""><h3 id="simhash的局限性："><a href="#simhash的局限性：" class="headerlink" title="simhash的局限性："></a>simhash的局限性：</h3>只考虑到文章存在哪些词，没有考虑到词的顺序。不过相应的优点是，可以实现海量文章相似度计算。文章相似度计算忽略词的顺序之后效果更好。所以在处理大文本时候，simhash是有效的，但是在处理小文本，这种效果往往不能被保证。直观上理解，在一片段文章或者段落中，词语出现的顺序还是比较重要的。<h2 id="minhash"><a href="#minhash" class="headerlink" title="minhash"></a>minhash</h2>可以参考<a href="https://www.youtube.com/watch?v=96WOGPUgMfw" target="_blank" rel="noopener">该视频</a>和<a href="http://www.cnblogs.com/maybe2030/p/4953039.html" target="_blank" rel="noopener">这篇文章</a>。<h2 id="Locality-Sensitive-Hashing"><a href="#Locality-Sensitive-Hashing" class="headerlink" title="Locality Sensitive Hashing"></a>Locality Sensitive Hashing</h2>Locality Sensitive Hashing(局部敏感哈希)作用就是从海量的数据中挖掘出相似的数据，可以具体应用到文本相似度检测、网页搜索等领域。上面的simhah和minhash 就是该思想的实现。<h2 id="距离函数"><a href="#距离函数" class="headerlink" title="距离函数"></a>距离函数</h2>这里的距离函数都是用来文本相似度。<h3 id="Jaccard相似度"><a href="#Jaccard相似度" class="headerlink" title="Jaccard相似度"></a>Jaccard相似度</h3>简单来说交集除以并集。这个集合中存放的是文章或者段落的关键词。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def JaccardSim(str_a, str_b):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    Jaccard相似性系数</span><br><span class="line">    计算sa和sb的相似度 len（sa &amp; sb）/ len（sa | sb）</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    seta = splitWords(str_a)[1]</span><br><span class="line">    setb = splitWords(str_b)[1]</span><br><span class="line"></span><br><span class="line">    sa_sb = 1.0 * len(seta &amp; setb) / len(seta | setb)</span><br><span class="line"></span><br><span class="line">    return sa_sb</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>可以看到核心代码很简单，经过分词之后，就是seta 和setb 进行的操作。</p>
-<h3 id="cosine"><a href="#cosine" class="headerlink" title="cosine"></a>cosine</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def cos_sim(a, b):</span><br><span class="line">    a = np.array(a)</span><br><span class="line">    b = np.array(b)</span><br><span class="line">    # return &#123;&quot;文本的余弦相似度:&quot;:np.sum(a*b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))&#125;</span><br><span class="line">    return np.sum(a * b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))</span><br></pre></td></tr></table></figure>
-<p>将文本的关键词映射成某种高维函数，然后在高维空间中计算两者的相似度。</p>
-<h3 id="tf-idf"><a href="#tf-idf" class="headerlink" title="tf-idf"></a>tf-idf</h3><p>在simhash 中使用 tf-idf作为我们的比较函数。TF-IDF的主要思想就是：如果某个词在一篇文档中出现的频率高，也即TF高；并且在语料库中其他文档中很少出现，即DF的低，也即IDF高，则认为这个词具有很好的类别区分能力。<br>词频(term frequency)有两种计算方式,后者考虑了相对的情况。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/52502045.jpg" alt=""><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/28700629.jpg" alt=""><br>计算idf(inverse document frequency):<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/29062439.jpg" alt=""><br>TF-IDF 优点是简单快速，比较符合实际。缺点，无法体现词的位置信息，所有的位置都是被认为重要性相同，但是开头结尾，段落的开头和段落的结尾，therefore，so，but这些词语都是没有体现的。</p>
-<h3 id="hamming-distance"><a href="#hamming-distance" class="headerlink" title="hamming distance"></a>hamming distance</h3><p>hamming distance就是比较01串的不同，按照位进行比较。算法：异或时，只有在两个比较的位不同时其结果是1 ，否则结果为0，两个二进制“异或”后得到1的个数即为海明距离的大小。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hashbits =64 # 使用64位进行编码</span><br><span class="line">def simhash_function(tokens, weights_dict):</span><br><span class="line">    v = [0] * hashbits</span><br><span class="line">    # 这种 &#123;key: value&#125;.item() 的操作也是没有了谁了</span><br><span class="line">    for key, t in &#123;x: _string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">        for i in range(hashbits):</span><br><span class="line">            bitmask = 1 &lt;&lt; i</span><br><span class="line">            if t &amp; bitmask:</span><br><span class="line">                v[i] += weights_dict[key]</span><br><span class="line">            else:</span><br><span class="line">                v[i] -= weights_dict[key]</span><br><span class="line"></span><br><span class="line">    fingerprint = 0</span><br><span class="line">    for i in range(hashbits):</span><br><span class="line">        if v[i] &gt;= 0:</span><br><span class="line">            fingerprint += 1 &lt;&lt; i</span><br><span class="line">    return fingerprint</span><br><span class="line">fingerprint = simhash_function(tokens, weights)</span><br></pre></td></tr></table></figure></p>
-<h3 id="min-edit-distance"><a href="#min-edit-distance" class="headerlink" title="min edit distance"></a>min edit distance</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 最小编辑距离</span><br><span class="line">def min_edit_distance(str1, str2):</span><br><span class="line">    rows  =len(str2) +1</span><br><span class="line">    cols =len(str1) +1</span><br><span class="line">    arr =[[0 for _ in range(cols)] for _ in range(rows)]</span><br><span class="line">    # 这种简洁的代码也是牛逼</span><br><span class="line">    for j in range(cols):</span><br><span class="line">        arr[0][j] =j</span><br><span class="line">    for i in range(rows):</span><br><span class="line">        arr[i][0] =i</span><br><span class="line">    for i in range(1, rows):</span><br><span class="line">        for j in range(1, cols):</span><br><span class="line">            # 因为string 是从0 ，len(str) -1的</span><br><span class="line">            if str2[i-1] ==str1[j-1]:</span><br><span class="line">                arr[i][j] =arr[i-1][j-1]</span><br><span class="line">            else:</span><br><span class="line">                # 以后见到这样的式子，就要想到这个二维的数组，因为这个是可以帮助记忆的</span><br><span class="line">                arr[i][j] =1 +min(arr[i-1][j-1], arr[i-1][j], arr[i][j-1])</span><br><span class="line">    # 右下角就是距离</span><br><span class="line">    return arr[rows-1][cols-1]</span><br><span class="line">str_a =&quot;abcdef&quot;</span><br><span class="line">str_b =&quot;azced&quot;</span><br><span class="line">result =min_edit_distance(str_a, str_b)</span><br><span class="line">result</span><br></pre></td></tr></table></figure>
-<p>具体可以参看<a href="https://www.youtube.com/user/tusharroy2525/featured" target="_blank" rel="noopener">该视频</a>讲解。(ps. 如果刷leetcode,也可以参看该视频)</p>
-<h2 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h2><p>在英文中存在天然的空格可以进行分词操作，但是中文的分词就比较复杂了。常用的中文分词开源工具有 jieba和<a href="https://github.com/hankcs/HanLP" target="_blank" rel="noopener">HanLP</a><br>前者简单易行，容易上手；后者在自然语言处理作为汉语言处理包，可以用于词性标注，命名实体识别等一系列功能。常用的英文分词 <a href="https://stanfordnlp.github.io/CoreNLP/" target="_blank" rel="noopener">corenlp</a></p>
-<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>倒排索引使用python在实现上就是一个dictionary 嵌套一个 set(). 一般的索引都是数字或者英文字母映射内容，具体在放到simhash的情景下就是使用文章的序列号对应提取出来的关键词。但是倒排索引就是关键词对应文章的序列号，类似与原来的”值”对应这”键”，所以称之为倒排索引。可以参考<a href="https://blog.csdn.net/u011239443/article/details/60604017" target="_blank" rel="noopener">这篇文章</a>。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" itemprop="url">differences-between-l1-and-l2-as-loss-function-and-regularization</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:22:27+08:00">
-                2018-07-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>如果补交作业也算作业的话，那么这篇博文就算做作业。<br>L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。<br>本文大量借鉴于<a href="http://www.chioka.in/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">该博客</a>，原文是英文，如果读者英文能够handle，建议读原文。</p>
-<h2 id="As-loss-function"><a href="#As-loss-function" class="headerlink" title="As loss function"></a>As loss function</h2><p>loss function or error function 是用来衡量真实y 和生成的f(x) 之间差距的函数。在模型训练中我们一般情况下不断训练模型使得loss function不断下降（如果task要求loss function是增大，这时候一般加上符号或者转换成 1- loss fucntion，最后实现的还是loss function下降）。好的回到L1 loss function和L2 loss function. </p>
-<p>L1-norm loss function is also known as least absolute deviations(LAD), least absolute errors. It is basically minimizing the sum of the absolute differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/35322217.jpg" alt="avatar"><br>L2-norm loss function is also known as least squares error(LSE). It is basically minimizing the sum of the square of the differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/37430433.jpg" alt="avatar"><br>主要你从一下三个指标去衡量两者的不同： robustness，stability和是否具有唯一解。<br>wiki 中关于<a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="noopener">robust</a> 中是这样定义： A learning algorithm that can reduce the chance of fitting noise is called robust。具有更好的泛化性能，不去过度拟合noise. 关于<a href="https://en.wikipedia.org/wiki/Stability_(learning_theory" target="_blank" rel="noopener">stability</a>) wiki 是这样定义：Stability, also known as algorithmic stability, is a notion in computational learning theory of how a machine learning algorithm is perturbed by small changes to its inputs.</p>
-<p>我对于前两个指标的理解：robustness 是对于原始的train 样本中离群点的态度，如果某个模型是robustness的，那么对于该数据集中的离群点是能够抗干扰的。反之则是不具有robustness的。stability是对于原始train 数据的轻微的平移的反应，如果对于某个原始数据的轻微平移，最后的结果没有产生很大的波动，那么该模型就是具有stability, 反之，则不具有stability.</p>
-<p>比较L1-norm 和L2-norm在前两个评价指标中的表现：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/80680309.jpg" alt="avatar"><br>对于第三点，我想在下面进行介绍。因为这点和后面和下面的solution uniqueness是相同的。</p>
-<h2 id="As-regularization"><a href="#As-regularization" class="headerlink" title="As regularization"></a>As regularization</h2><p>从<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">XGBoost调参指南</a>中我们知道objective function = loss funcion + regularization. 而我们大多数情况下提及的都是loss function,常常忽略了regularization 的作用。所以正确的姿态应该是这样的：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/73111516.jpg" alt="avatar"><br>The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>对于模型训练，一开始的想法是尽量的overfitting, 因为就现在不成熟的经验而言，对于overfitting这个问题有很多处理方法，比如卷积深度神经网络中的dropout, LightGBM中的early stop 和随机采样的思想。 这些方法都是可以缓解overfitting，所以可以出现overfitting。相反，如果你的模型是underfitting，那么你就微显尴尬了。好，收回到L1 and L2。</p>
-<p>先上公式<br>L1 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/75850249.jpg" alt="avatar"><br>L2 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/78934923.jpg" alt="avatar"><br>The difference between their properties can be promptly summarized as follows:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/88209822.jpg" alt="avatar"></p>
-<p>对于第一点computational efficient的理解：平方比绝对值更容易计算，平方可以求导直接求最值，但是绝对值就无法求导。并且L1 regularization在 non-sparse cases中是 computational inefficient，但是在 sparse(0比较多) cases中是有相应的稀疏算法来进行优化的，所以是computational efficient.<br>对于第二点是否具有sparse solution可以从几何意义的角度解读：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/82495076.jpg" alt="avatar"><br>The green line(L2-norm) is the unique shortest path, while the red, blue yellow(L1-norm) are all same length for the same route.</p>
-<p>Built-in feature selection is frequently mentioned as a useful property of the L1-norm, which the L2-norm does not. This is actually a result of the L1-norm, which tends to produces sparse coefficients (explained below). Suppose the model have 100 coefficients but only 10 of them have non-zero coefficients, this is effectively saying that “the other 90 predictors are useless in predicting the target values”. L2-norm produces non-sparse coefficients, so does not have this property.</p>
-<p>所以表格中第三点也是顺理成章的了。<br>至此，我们区分了L1-norm vs L2-norm loss function 和L1-regularization vs L2-regularization。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/LightGBM和XGBoost及其调参/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/21/LightGBM和XGBoost及其调参/" itemprop="url">LightGBM和XGBoost及其调参</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:17:35+08:00">
-                2018-07-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="lightGBM调参-常用参数"><a href="#lightGBM调参-常用参数" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><p>Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So when growing on the same leaf in Light GBM, the leaf-wise algorithm can reduce more loss than the level-wise algorithm and hence results in much better accuracy which can rarely be achieved by any of the existing boosting algorithms. Also, it is surprisingly very fast, hence the word ‘Light’.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg" alt="avatar"><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/21729887.jpg" alt="avatar"><br>Leaf wise splits lead to increase in complexity and may lead to overfitting and it can be overcome by specifying another parameter max_depth parameter.</p>
-<h3 id="Advantages-of-LightGBM"><a href="#Advantages-of-LightGBM" class="headerlink" title="Advantages of LightGBM"></a>Advantages of LightGBM</h3><ul>
-<li>faster training speed and higher efficiency<br>Light GBM use histogram based algorithm i.e it buckets continuous feature values into discrete bins which fasten the training procedure.</li>
-<li>lower memory usage<br>Replaces continuous values to discrete bins which result in lower memory usage.</li>
-<li>better accuracy than any other boosting algorithm<br>It produces much more complex trees by following leaf wise split approach rather than a level-wise approach which is the main factor in achieving higher accuracy. </li>
-<li>compatibility with large datasets<br>It is capable of performing equally good with large datasets with a significant reduction in training time as compared to XGBOOST.</li>
-<li>parallel learning supported</li>
-</ul>
-<h3 id="lightGBM调参-常用参数-1"><a href="#lightGBM调参-常用参数-1" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><ul>
-<li><strong>task</strong><br>default= train, option: train, prediction</li>
-<li>application<br>default= regression, option: regression, binary, multiclass, lambdarank(lambdarank application)</li>
-<li>data<br>training data, 这个比较诡异，你需要创建一个lightGBM类型的data</li>
-<li>num_iterations<br>default =100, 可以设置为的大一些，然后使用early_stopping进行调节。</li>
-<li>early_stopping_round<br>default =0, will stop training if one metric of one validation data doesn’t improve in last early_stopping_round rounds.</li>
-<li>num_leaves<br>default =31, number of leaves in a tree</li>
-<li>device<br>default =cpu, options: gpu, cpu, choose gpu for faster training.</li>
-<li>max_depth<br>specify the max depth to which tree will grow, which is very important.</li>
-<li>feature_fraction<br>default =1, specifies the fraction of features to be taken for each iteration.</li>
-<li>bagging_fraction<br>default =1, spefifies the fraction of data to be used for each iteration and it generally used to speed up the training and avoid overfitting.</li>
-<li>max_bin<br>max number of bins to bucket the feature values.因为模型是基于bin训练的，如果bin 数量越多，得到better accuracy,同时更加容易 overfitting.</li>
-<li>num_threads</li>
-<li>label<br>specify the label columns.</li>
-<li>categorical_feature<br>specify the categorical features</li>
-<li>num_class<br>default =1, used only for multi-class classification</li>
-</ul>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/50917702.jpg" alt="avatar"></p>
-<h3 id="referrence"><a href="#referrence" class="headerlink" title="referrence"></a>referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/" target="_blank" rel="noopener">which-algorithm-takes-the-crown-light-gbm-vs-xgboost</a><br><a href="https://blog.csdn.net/aliceyangxi1987/article/details/80711014" target="_blank" rel="noopener">LightGBM 如何调参</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html" target="_blank" rel="noopener">官方文档param_tuning</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters.html" target="_blank" rel="noopener">官方文档parameter</a></p>
-<h3 id="XGBoost调参"><a href="#XGBoost调参" class="headerlink" title="XGBoost调参"></a>XGBoost调参</h3><h3 id="Advantage-of-XGBoost"><a href="#Advantage-of-XGBoost" class="headerlink" title="Advantage of XGBoost"></a>Advantage of XGBoost</h3><ul>
-<li>regularization<br>standard GBM implementation has no regularization, in fact, XGBoost is also known as ‘regularized boosting’ technique.</li>
-<li>parallel processing<br>we know that boosting is sequential process so how can it be parallelized? <a href="http://zhanpengfang.github.io/418home.html" target="_blank" rel="noopener">this link</a> to explore further.</li>
-<li>high flexibility<br>XGBoost allow users to define <strong>custom optimization objectives and evaluation criteria</strong></li>
-<li>handling missing values<br>very useful property. XGBoost has an in-built routine to handle missing values. User is required to supply a different value than other observations and pass that as a parameter. XGBoost tries different things as it encounter a missing value on each node and learns which path to take for missing values in future.</li>
-<li>Tree pruning<br>A GBM would stop splitting a node when it encounters a negative loss in the split. Thus it is more of a greedy algorithm. XGBoost on the other hand make splits upon the max_depth specified and then start pruning the tree backwards and remove splits beyond which there is no positive gain.</li>
-<li>built-in cross-validation<br>This is unlike GBM where we have to run a grid-search and only a limited values can be tested. </li>
-<li>continue on existing model</li>
-</ul>
-<h3 id="XGBoost-Parameters"><a href="#XGBoost-Parameters" class="headerlink" title="XGBoost Parameters"></a>XGBoost Parameters</h3><h4 id="general-parameters"><a href="#general-parameters" class="headerlink" title="general parameters"></a>general parameters</h4><p>General Parameters: Guide the overall functioning</p>
-<ul>
-<li>booster:<br>default =gbtree, can be gbtree, gblinear or dart. 一般使用gbtree.</li>
-<li>silent:<br>default =0, silent mode is activated if set to 1(no running messages will be printed)</li>
-<li>nthread:<br>default to maximum of threads.</li>
-</ul>
-<h4 id="booster-parameters"><a href="#booster-parameters" class="headerlink" title="booster parameters"></a>booster parameters</h4><p>Booster Parameters: Guide the individual booster (tree/regression) at each step</p>
-<ul>
-<li>eta(learning rate):<br>default=0.3, typical final values to be used: 0.01-0.2, using CV to tune</li>
-<li>min_child_weight:<br>minimum sum of instance weight (hessian) needed in a child. If the tree partition step results in a leaf node with the sum of instance weight less than min_child_weight, then the building process will give up further partitioning. In linear regression mode, this simply corresponds to minimum number of instances needed to be in each node. The larger, the more conservative the algorithm will be.<br>default =1,too high values can lead to under-fitting, it should be tuned using CV. 数值越小越容易过拟合，越大越容易 under-fitting.</li>
-<li>max_depth:<br>default =6, typical values: 3-10, should be tuned using CV.</li>
-<li>gamma:<br>default =0, Gamma specifies the minimum loss reduction required to make a split.如果在分裂过程中小于该值，那么就不会继续分裂。</li>
-<li>subsample:<br>default =1, typical values: 0.5-1. Denotes the fraction of observations to be randomly samples for each tree.</li>
-<li>colsample_bytree:<br>default =1, typical values: 0.5-1. colsample_bytree和subsample不同点：colsample_by是特征的随机fraction, subsample是rows的随机fraction。</li>
-<li>lambda:<br>default =1, L2 regularization term on weights(analogous to Ridge regression). Though many data scientists don’t use it often, it should be explored to reduce overfitting.</li>
-<li>alpha:<br>default =0, L1 regularization term on weight (analogous to Lasso regression)</li>
-<li>scale_pos_weight:<br>default =1,  a value greater than 0 should be used in case of high class imbalance as it helps in faster convergence.</li>
-</ul>
-<h4 id="learning-task-parameters"><a href="#learning-task-parameters" class="headerlink" title="learning task parameters"></a>learning task parameters</h4><p>Learning Task Parameters: Guide the optimization performed</p>
-<ul>
-<li><strong>objective</strong><br>binary: logistic- returns predicated probability(not class)<br>multi: softmax- returns predicated class(not probabilities)<br>multi: softprob- returns predicated probability of each data point belonging to each class.</li>
-<li>eval_metirc<br>default according to objective(rmse for regression and error for classification), used for validation data.<br>typical values: rmse(root mean square error), mse(mean absolute error), logloss(negative log-likelihood), error(binary classification error rate, 0.5 threshold), auc(area under the curve)</li>
-<li>seed<br>default =0, used for reproducible results and also for <strong>parameter tuning</strong>.</li>
-</ul>
-<h4 id="Control-Overfitting"><a href="#Control-Overfitting" class="headerlink" title="Control Overfitting"></a>Control Overfitting</h4><p>There are in general two ways that you can control overfitting in xgboost. </p>
-<ul>
-<li>The first way is to directly control model complexity.</li>
-<li>The second way is to add regularization parameters</li>
-</ul>
-<h3 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence"></a>Referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/" target="_blank" rel="noopener">complete guide parameter tuning xgboost with codes python</a><br><a href="http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html" target="_blank" rel="noopener">官方文档 param_tuning</a><br><a href="http://xgboost.readthedocs.io/en/latest/parameter.html" target="_blank" rel="noopener">官方文档 parameter</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1960,7 +2134,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1982,7 +2156,7 @@ if __name__ == &quot;__main__&quot;:
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
