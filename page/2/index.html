@@ -296,6 +296,210 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/09/python-for-beginners/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/09/python-for-beginners/" itemprop="url">Python for Beginners</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-09T18:47:46+08:00">
+                2019-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/09/python-for-beginners/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/04/09/python-for-beginners/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Basic-Skills"><a href="#Basic-Skills" class="headerlink" title="Basic Skills"></a>Basic Skills</h2><ol>
+<li>列表项</li>
+</ol>
+<h3 id="module"><a href="#module" class="headerlink" title="module"></a>module</h3><p>python 文件可以当做主文件进行运行或者当做函数的集合进行调用。如果是前者一般是需要包含”__name__ ==”__main__”。对于后者就是在其他的python文件中进行调用。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> my_module <span class="comment"># python文件</span></span><br><span class="line"><span class="keyword">from</span> my_module <span class="keyword">import</span> my_object</span><br></pre></td></tr></table></figure></p>
+<h3 id="packages"><a href="#packages" class="headerlink" title="packages"></a>packages</h3><pre><code>from packageroot.packagefolder.mod import my_object
+</code></pre><p>Note: Ensure each directory within your package import contains a file __init__.py</p>
+<h3 id="python-path"><a href="#python-path" class="headerlink" title="python-path"></a>python-path</h3><p>python2 和python3 使用不同的解释器，导致在一些函数命名和计算上有一些差别，最好在文件的开头标明使用的解释器。</p>
+<h3 id="while-for"><a href="#while-for" class="headerlink" title="while for"></a>while for</h3><p>while : provide a condition and run the loop until the condition is not met.</p>
+<p>loop for a number of specific times; loop over items or characters of a string.</p>
+<p>examples:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Variable] AggregateFunction([Value] <span class="keyword">for</span> [item] <span class="keyword">in</span> [collection])</span><br><span class="line">x =[<span class="number">1</span>, <span class="number">2</span>,<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">y =[ <span class="number">2</span>*a <span class="keyword">for</span> a <span class="keyword">in</span> x <span class="keyword">if</span> a%<span class="number">2</span> ==<span class="number">0</span>]</span><br><span class="line">y &gt;&gt; [<span class="number">4</span>, <span class="number">8</span>]</span><br></pre></td></tr></table></figure></p>
+<p>或者可以使用这样更加简洁的语句：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">lambda</span> arguments : expressio</span><br><span class="line">    fun1 = <span class="keyword">lambda</span> a,b,c : a+b+c</span><br><span class="line">    print(fun1(<span class="number">5</span>,<span class="number">6</span>,<span class="number">2</span>))</span><br><span class="line">```    </span><br><span class="line">来个比较复杂的例子</span><br><span class="line">```python</span><br><span class="line">    nums =[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">    letters =[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>]</span><br><span class="line">    nums_letters =[[n, l] <span class="keyword">for</span> n <span class="keyword">in</span> nums <span class="keyword">for</span> l <span class="keyword">in</span> letters ]</span><br><span class="line">    nums_letters</span><br></pre></td></tr></table></figure></p>
+<h3 id="break-continue-pass"><a href="#break-continue-pass" class="headerlink" title="break continue pass"></a>break continue pass</h3><p>The break, continue, and pass statements in Python will allow you to use for loops and while loops more effectively in your code.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">number = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> number <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">   number = number + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> number == <span class="number">5</span>:</span><br><span class="line">      <span class="keyword">pass</span>    <span class="comment"># pass here</span></span><br><span class="line"></span><br><span class="line">   print(<span class="string">'Number is '</span> + str(number))</span><br><span class="line"></span><br><span class="line">print(<span class="string">'Out of loop'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>The pass statement occurring after the if conditional statement is telling the program to continue to run the loop and ignore the fact that the variable number evaluates as equivalent to 5 during one of its iterations.</p>
+<p>可以用用作新的 if的测试。<br>The pass statement can create minimal classes, or act as a placeholder when working on new code and thinking on an algorithmic level before hammering out details.</p>
+<h3 id="yield-return"><a href="#yield-return" class="headerlink" title="yield return"></a>yield return</h3><p>经常被用来作为生成器。</p>
+<blockquote>
+<p>when you call a normal function with a return statement the function is terminated whenever it encounters a return statement. In a function with a yield statement the state of the function is ‘saved’ from the last call and can be picked up the next time you call a generator function.</p>
+</blockquote>
+<p>for examples<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">gen_exp =(x **<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>) <span class="keyword">if</span> x %<span class="number">2</span> ==<span class="number">0</span>)</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> gen_exp:</span><br><span class="line">  print(x)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_gen</span><span class="params">()</span>:</span></span><br><span class="line">  <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">    <span class="keyword">yield</span> x</span><br><span class="line"></span><br><span class="line">gen1 =my_gen()</span><br><span class="line">next(gen1)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_generator1</span><span class="params">()</span>:</span></span><br><span class="line">  <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">  <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">  <span class="keyword">yield</span> <span class="number">3</span></span><br><span class="line">  </span><br><span class="line">my_gen =my_generator1()</span><br><span class="line">next(my_gen)</span><br></pre></td></tr></table></figure></p>
+<h3 id="recursion"><a href="#recursion" class="headerlink" title="recursion"></a>recursion</h3><p>A function calling itself is known as recursion.</p>
+<h3 id="list-tuples-dictionary"><a href="#list-tuples-dictionary" class="headerlink" title="list, tuples, dictionary"></a>list, tuples, dictionary</h3><p>在python 中是使用频繁的data structure，这个是属于 collection 类别，里面放的是element<br>to add/update/ delete an item of a colletion ( list)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">my_list.append(<span class="string">'C'</span>) <span class="comment">#adds at the end</span></span><br><span class="line">my_list[<span class="number">1</span>] = <span class="string">'D'</span> <span class="comment">#update</span></span><br><span class="line">my_list.pop(<span class="number">1</span>) <span class="comment"># removes</span></span><br><span class="line"></span><br><span class="line">mylist.pop() <span class="comment"># 默认就是类似 栈的结构，就是pop 出来最后一个</span></span><br><span class="line">mylist.pop(<span class="number">0</span>) <span class="comment"># 当然也可以根据index 指定特定的 pop(delete) 的element</span></span><br></pre></td></tr></table></figure></p>
+<pre><code>or
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">del</span> mylist[<span class="number">1</span>:<span class="number">2</span>] <span class="comment"># 通过指定 index range 然后进行del</span></span><br><span class="line">mylist.sort() <span class="comment"># 支持 sorting 然后是从小到大, 这个sort是一种操作，inplace 的操作</span></span><br></pre></td></tr></table></figure>
+<p>tuples<br>tuples store a sequence of objects, the object can be of any typle. Tuples are faster than lists.</p>
+<p>dictionary:<br>It stores key/value pair objects.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">    my_dict =dict()</span><br><span class="line">    my_dict[<span class="string">'key'</span>] =<span class="string">'value'</span></span><br><span class="line">    <span class="keyword">or</span> </span><br><span class="line">    my_dict =&#123;<span class="string">'key'</span>: <span class="string">'value'</span>, ...&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> my_dict:</span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'some key'</span> <span class="keyword">in</span> my_dict:</span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line">```    </span><br><span class="line"><span class="comment">### Iterators###</span></span><br><span class="line">```python</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">yrange</span>:</span></span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        self.i =<span class="number">0</span></span><br><span class="line">        self.n =n</span><br><span class="line">      <span class="comment"># 这个表明是一个 iterator，make an object iterable</span></span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">      <span class="comment"># 这个next 函数就被当做是 class的属性，可以被外部调用的，</span></span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.i &lt; self.n:</span><br><span class="line">          i =self.i</span><br><span class="line">          self.i +=<span class="number">1</span></span><br><span class="line">          <span class="keyword">return</span> i</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          <span class="keyword">raise</span> StopIteration()</span><br></pre></td></tr></table></figure></p>
+<h3 id="shallow-vs-deep-copy"><a href="#shallow-vs-deep-copy" class="headerlink" title="shallow vs deep copy"></a>shallow vs deep copy</h3><p>python3 中：<br>对于简单的数据类型，像int ，string，这种 copy() 和copy.deepcopy() 这两者都是相同的，copy 都是一种映射，都是相当于”值“ 上的引用；<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">aa =<span class="number">2</span></span><br><span class="line">bb =aa</span><br><span class="line">print(id(aa), id(bb)) <span class="comment"># 相同</span></span><br><span class="line">bb =<span class="number">3</span></span><br><span class="line">print(id(aa), id(bb)) <span class="comment"># 不同，因为把3 这个值重新复制给了变量bb</span></span><br></pre></td></tr></table></figure></p>
+<p>对于复杂的数据类型，使用deepcopy() 的时候，本来就是会重新拷贝一份到内存中。在python3 中copy() 和deepcopy() 这个是没有什么区别的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list1 =[<span class="string">'a'</span>, <span class="string">'b'</span>]</span><br><span class="line">list2 =list1 <span class="comment"># 这个是引用，所以和list1 是相同的</span></span><br><span class="line">list3 =copy.copy(list1)  <span class="comment"># 这个id 和list1 不同</span></span><br><span class="line">list4 =copy.deepcopy(list1)<span class="comment"># 这个id 和list1 不同 </span></span><br><span class="line">print(id(list1), id(list2), id(list3), id(list4))</span><br></pre></td></tr></table></figure></p>
+<h3 id="object-oriented-design"><a href="#object-oriented-design" class="headerlink" title="object oriented design"></a>object oriented design</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ParentClass</span>:</span></span><br><span class="line">     <span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">(self)</span>:</span></span><br><span class="line">       <span class="keyword">print</span> <span class="string">'I am here'</span></span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">SubClass1</span><span class="params">(ParentClass)</span>:</span> </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">SubClass2</span><span class="params">(ParentClass)</span>:</span> </span><br><span class="line">```    </span><br><span class="line">对于多继承的支持 （接口）</span><br><span class="line">```python</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(B,C)</span>:</span>  <span class="comment">#A implments B and C</span></span><br><span class="line">```    </span><br><span class="line">如果想要call parent <span class="class"><span class="keyword">class</span> <span class="title">function</span> <span class="title">then</span> <span class="title">you</span> <span class="title">can</span> <span class="title">dp</span>:</span></span><br><span class="line">```python</span><br><span class="line">    super(A, self).funcion_name()</span><br><span class="line">```    </span><br><span class="line">    </span><br><span class="line"><span class="comment">### garbage collection###</span></span><br><span class="line">all the objects  <span class="keyword">in</span> python are stored <span class="keyword">in</span> a heap space. Python has an <span class="keyword">in</span>-built garbage collection mechanism.</span><br><span class="line"></span><br><span class="line">&gt; In computer science, a heap <span class="keyword">is</span> a specialized tree-based data structure which <span class="keyword">is</span> essentially an almost complete[<span class="number">1</span>] tree that satisfies the heap property: <span class="keyword">if</span> P <span class="keyword">is</span> a parent node of C, then the key(the value) of P <span class="keyword">is</span> either greater than <span class="keyword">or</span> equal to (<span class="keyword">in</span> a max heap) <span class="keyword">or</span> less than <span class="keyword">or</span> equal to (<span class="keyword">in</span> a min heap) the key of C.</span><br><span class="line"></span><br><span class="line"><span class="comment">### try...catch###</span></span><br><span class="line">```python</span><br><span class="line">    <span class="comment"># raise exceptions</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      <span class="keyword">raise</span> TyeError</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">      print(<span class="string">'exception'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># catching exceptions</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      do_something()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">      print(<span class="string">'exception'</span>)</span><br><span class="line">    <span class="comment"># try/ catch /finally</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      do_something()</span><br><span class="line">    <span class="keyword">except</span> TypeError:</span><br><span class="line">      print(<span class="string">'exception'</span>)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">      close_connections()</span><br><span class="line">```      </span><br><span class="line"></span><br><span class="line"><span class="comment">## Advanced Features</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### Lambda functions：</span></span><br><span class="line"></span><br><span class="line">A Lambda Function <span class="keyword">is</span> a small, anonymous function — anonymous <span class="keyword">in</span> the sense that it doesn’t actually have a name.</span><br><span class="line">A <span class="keyword">lambda</span> function can take any number of arguments, but must always have only one expression:</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">x = <span class="keyword">lambda</span> a, b : a * b</span><br><span class="line">	print(x(<span class="number">5</span>, <span class="number">6</span>)) <span class="comment"># prints '30'</span></span><br><span class="line">	x = <span class="keyword">lambda</span> a : a*<span class="number">3</span> + <span class="number">3</span></span><br><span class="line">	print(x(<span class="number">3</span>)) <span class="comment"># prints '12'</span></span><br></pre></td></tr></table></figure>
+<h3 id="Maps"><a href="#Maps" class="headerlink" title="Maps"></a>Maps</h3><p>Map() is a built-in Python function used to apply a function to a sequence of elements like a list or dictionary. It’s a very clean and most importantly readable way to perform such an operation.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">square_it_func</span><span class="params">(a)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a * a</span><br><span class="line">x = map(square_it_func, [<span class="number">1</span>, <span class="number">4</span>, <span class="number">7</span>])</span><br><span class="line">print(x) <span class="comment"># prints '[1, 16, 49]'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multiplier_func</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a * b</span><br><span class="line">x = map(multiplier_func, [<span class="number">1</span>, <span class="number">4</span>, <span class="number">7</span>], [<span class="number">2</span>, <span class="number">5</span>, <span class="number">8</span>])</span><br><span class="line">print(x) <span class="comment"># prints '[2, 20, 56]'</span></span><br></pre></td></tr></table></figure>
+<h3 id="Filtering"><a href="#Filtering" class="headerlink" title="Filtering"></a>Filtering</h3><p>The Filter built-in function is quite similar to the Map function in that it applies a function to a sequence (list, tuple, dictionary). The key difference is that filter() will only return the elements which the applied function returned as True.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   <span class="comment"># Our numbers</span></span><br><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>]</span><br><span class="line"><span class="comment"># Function that filters out all numbers which are odd</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">filter_odd_numbers</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> num % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">filtered_numbers = filter(filter_odd_numbers, numbers)</span><br><span class="line">print(filtered_numbers)</span><br><span class="line"><span class="comment"># filtered_numbers = [2, 4, 6, 8, 10, 12, 14]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> *</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_for_drop</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'Checking: '</span>, x)</span><br><span class="line">    <span class="keyword">return</span> (x &gt; <span class="number">5</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dropwhile(check_for_drop, [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>]):</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'Result: '</span>, i)</span><br></pre></td></tr></table></figure>
+<h3 id="Itertools"><a href="#Itertools" class="headerlink" title="Itertools"></a>Itertools</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># zip 就是一块访问的那种形式，返回的是一个tuple 数据类型</span></span><br><span class="line"><span class="comment"># zip ,joing two lists into a list of tuples</span></span><br><span class="line"><span class="comment"># Easy joining of two lists into a list of tuples</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> zip([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]):</span><br><span class="line">    <span class="keyword">print</span> (i)</span><br><span class="line"><span class="comment"># ('a', 1)</span></span><br><span class="line"><span class="comment"># ('b', 2)</span></span><br><span class="line"><span class="comment"># ('c', 3)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 就是一个count() 计数功能</span></span><br><span class="line"><span class="comment"># The count() function returns an interator that </span></span><br><span class="line"><span class="comment"># produces consecutive integers, forever. This </span></span><br><span class="line"><span class="comment"># one is great for adding indices next to your list </span></span><br><span class="line"><span class="comment"># elements for readability and convenience</span></span><br><span class="line"><span class="comment"># in python3, no need to import izip, use zip directly</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> zip(count(<span class="number">1</span>), [<span class="string">'Bob'</span>, <span class="string">'Emily'</span>, <span class="string">'Joe'</span>]):</span><br><span class="line">    <span class="keyword">print</span> (i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># (1, 'Bob')</span></span><br><span class="line"><span class="comment"># (2, 'Emily')</span></span><br><span class="line"><span class="comment"># (3, 'Joe')    </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># check ， becomes false for the first time 这个条件很关键</span></span><br><span class="line"><span class="comment"># The dropwhile() function returns an iterator that returns </span></span><br><span class="line"><span class="comment"># all the elements of the input which come after a certain </span></span><br><span class="line"><span class="comment"># condition becomes false for the first time. </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_for_drop</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'Checking: '</span>, x</span><br><span class="line">    <span class="keyword">return</span> (x &gt; <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dropwhile(check_for_drop, [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>]):</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'Result: '</span>, i</span><br><span class="line"><span class="comment"># 注意理解这个输出</span></span><br><span class="line"><span class="comment"># Checking: 2</span></span><br><span class="line"><span class="comment"># Result: 2</span></span><br><span class="line"><span class="comment"># Result: 4</span></span><br><span class="line"><span class="comment"># Result: 6</span></span><br><span class="line"><span class="comment"># Result: 8</span></span><br><span class="line"><span class="comment"># Result: 10</span></span><br><span class="line"><span class="comment"># Result: 12</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 我的理解这个 groupby  就和数据库中的groupby 是相同的效果</span></span><br><span class="line"><span class="comment"># The groupby() function is great for retrieving bunches</span></span><br><span class="line"><span class="comment"># of iterator elements which are the same or have similar </span></span><br><span class="line"><span class="comment"># properties</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> groupby</span><br><span class="line">things = [(<span class="string">"animal"</span>, <span class="string">"bear"</span>), (<span class="string">"animal"</span>, <span class="string">"duck"</span>), (<span class="string">"plant"</span>, <span class="string">"cactus"</span>), (<span class="string">"vehicle"</span>, <span class="string">"speed boat"</span>), (<span class="string">"vehicle"</span>, <span class="string">"school bus"</span>)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key, group <span class="keyword">in</span> groupby(things, <span class="keyword">lambda</span> x: x[<span class="number">0</span>]):</span><br><span class="line">    <span class="keyword">for</span> thing <span class="keyword">in</span> group:</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">"A %s is a %s."</span> % (thing[<span class="number">1</span>], key))</span><br><span class="line"></span><br><span class="line"><span class="comment">#A bear is a animal.</span></span><br><span class="line"><span class="comment">#A duck is a animal.</span></span><br><span class="line"><span class="comment">#A cactus is a plant.</span></span><br><span class="line"><span class="comment">#A speed boat is a vehicle.</span></span><br><span class="line"><span class="comment">#A school bus is a vehicle.</span></span><br></pre></td></tr></table></figure>
+<h3 id="Generator"><a href="#Generator" class="headerlink" title="Generator"></a>Generator</h3><p>Generator functions allow you to declare a function that behaves like an iterator, i.e. it can be used in a for loop. This greatly simplifies your code and is much more memory efficient than a simple for loop.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">numbers = list()</span><br><span class="line"><span class="comment"># range()</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    numbers.append(i + <span class="number">1</span>)</span><br><span class="line">total = sum(numbers)</span><br><span class="line"><span class="comment"># (2) Using a generator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_numbers</span><span class="params">(n)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> num &lt; n:</span><br><span class="line">        <span class="keyword">yield</span> num</span><br><span class="line">        <span class="comment"># 这个yield 之后，函数并没有结束，不像 return 那种函数</span></span><br><span class="line">        num += <span class="number">1</span></span><br><span class="line">total = sum(generate_numbers(<span class="number">1000</span>))</span><br><span class="line">print(total)</span><br><span class="line">total = sum(range(<span class="number">1000</span> + <span class="number">1</span>))</span><br><span class="line">print(total)</span><br></pre></td></tr></table></figure>
+<h2 id="List-Comprehension"><a href="#List-Comprehension" class="headerlink" title="List Comprehension"></a>List Comprehension</h2><p>常见的几种形式：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g383ooxrfkj20kl01nmwy.jpg" alt=""><br>(An iterable is something you can loop over)<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g383oy3v7zj20l001lq2q.jpg" alt=""></p>
+<p>list comprehensions vs loops:</p>
+<ul>
+<li>list comprehensions are more efficient both computationally and coding space </li>
+<li>Every list comprehension can be rewritten as a for loop, but not every for loop can be rewritten as a list comprehension.</li>
+</ul>
+<p>从优化的角度 list comprehensions是优于 for loop 中的if else 操作的。因为前者是 predicatable pattern 是可以预测的。<br>However, keep in mind that list comprehensions are faster because they are optimized for the Python interpreter to spot a predictable pattern during looping.</p>
+<p>a small code demo:在于使用功能 timeit libary 进行函数的计时比较。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">import</span> timeit</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">squares</span><span class="params">(size)</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> number <span class="keyword">in</span> range(size):</span><br><span class="line">        result.append(number*number)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">squares_comprehension</span><span class="params">(size)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [number*number <span class="keyword">for</span> number <span class="keyword">in</span> range(size)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(timeit.timeit(<span class="string">"squares(50)"</span>, <span class="string">"from __main__ import squares"</span>, number = <span class="number">1</span>_000_000))</span><br><span class="line">print(timeit.timeit(<span class="string">"squares_comprehension(50)"</span>, <span class="string">"from __main__ import squares_comprehension"</span>, number = <span class="number">1</span>_000_000))</span><br></pre></td></tr></table></figure></p>
+<p>more complex list comprehensions:<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g383s8zyjfj20ld01ht8i.jpg" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">18</span>, <span class="number">20</span>]</span><br><span class="line">	squares = [number <span class="keyword">for</span> number <span class="keyword">in</span> numbers <span class="keyword">if</span> number % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">if</span> number % <span class="number">3</span> == <span class="number">0</span>]</span><br><span class="line">	print(squares)</span><br><span class="line">output: [<span class="number">6</span>, <span class="number">18</span>]</span><br></pre></td></tr></table></figure>
+<p>在 output expression 中，也是可以使用 if else 进行进一步输出筛选。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g383vngz5jj20ma01m742.jpg" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">18</span>, <span class="number">20</span>]</span><br><span class="line">	squares = [<span class="string">"small"</span> <span class="keyword">if</span> number &lt; <span class="number">10</span> <span class="keyword">else</span> <span class="string">"big"</span> <span class="keyword">for</span> number <span class="keyword">in</span> numbers <span class="keyword">if</span> number % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">if</span> number % <span class="number">3</span> == <span class="number">0</span>]</span><br><span class="line">	print(squares)</span><br><span class="line"></span><br><span class="line">ouput: [<span class="string">'small'</span>, <span class="string">'big'</span>]</span><br></pre></td></tr></table></figure></p>
+<p>converting nested loops into list comprehension<br>代码功能： 都是把二维的 matrix 转成了一个 list （flattened）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">matrix = [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]]</span><br><span class="line">flattened = []</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> matrix:</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> row:</span><br><span class="line">        flattened.append(item)   </span><br><span class="line">print(flattened)</span><br></pre></td></tr></table></figure></p>
+<p>注意这个顺序，先是row in matrix 然后是 item in row.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	matrix = [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]]</span><br><span class="line">flattened = [item <span class="keyword">for</span> row <span class="keyword">in</span> matrix <span class="keyword">for</span> item <span class="keyword">in</span> row]   </span><br><span class="line">print(flattened)</span><br></pre></td></tr></table></figure></p>
+<p>ouput matric from nested list comprehensions:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">matrix = [[item <span class="keyword">for</span> item <span class="keyword">in</span> range(<span class="number">5</span>)] <span class="keyword">for</span> row <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line">print(matrix)</span><br></pre></td></tr></table></figure></p>
+<p>对于 dictionary 的支持： 主要是 dict1.items() 和 key, value 的使用<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">prices = &#123;<span class="string">"beer"</span>: <span class="number">2</span>, <span class="string">"fish"</span>: <span class="number">5</span>, <span class="string">"apple"</span>: <span class="number">1</span>&#125;</span><br><span class="line">float_prices = &#123;key:float(value) <span class="keyword">for</span> key, value <span class="keyword">in</span> prices.items()&#125;</span><br><span class="line">print(float_prices)</span><br></pre></td></tr></table></figure></p>
+<p>从代码的角度，可以看出，操作和最后的返回的形式是没有很大的关系，上面是 [], 这个是 {}, 分别对应的是 list 和 set 两种不同的格式。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">10</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">12</span>, <span class="number">-20</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">unique_squares = &#123;number**<span class="number">2</span> <span class="keyword">for</span> number <span class="keyword">in</span> numbers&#125;</span><br><span class="line">print(unique_squares)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/06/The-evaluation-of-sentence-similarity/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2037,159 +2241,6 @@ if __name__ == &quot;__main__&quot;:
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/07/Back-to-my-blog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/07/Back-to-my-blog/" itemprop="url">Back to my blog</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-07T21:44:25+08:00">
-                2019-03-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/人间不值得/" itemprop="url" rel="index">
-                    <span itemprop="name">人间不值得</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/07/Back-to-my-blog/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/03/07/Back-to-my-blog/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>直到某一天发现个人网站中的图片都显示不出来了，查了一下才发现之前的图床不能用了（点名批评七牛），果断弃之，换了个大厂子产品。证明一下图片是能出来的。<br><img src="https://wx4.sinaimg.cn/large/e9a223b5gy1g0uk59zzzjj20a00d6wft.jpg" alt="image"><br>ps：之前的图片有时间再整理到新的平台上。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2244,7 +2295,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
