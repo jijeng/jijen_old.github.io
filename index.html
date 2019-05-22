@@ -296,6 +296,378 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/22/beyond-word-embedding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/22/beyond-word-embedding/" itemprop="url">Beyond  Word Embedding</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-22T15:23:37+08:00">
+                2019-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/22/beyond-word-embedding/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/05/22/beyond-word-embedding/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Traditional-Word-Vectors"><a href="#Traditional-Word-Vectors" class="headerlink" title="Traditional Word Vectors"></a>Traditional Word Vectors</h2><p>Before diving directly into Word2Vec it’s worth while to do a brief overview of some of the traditional methods that pre-date neural embeddings.</p>
+<p>这个是用来描述文章的，有一个大的dict，然后一片文章是如何进行表示、<br><strong>Bag of Words</strong> or BoW vector representations are the most common used traditional vector representation. Each word or n-gram is linked to a vector index and marked as 0 or 1 depending on whether it occurs in a given document.</p>
+<p>An example of a one hot bag of words representation for documents with one word.</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a0alr102j20l104jt9t.jpg" alt=""><br>优缺点（重点是缺点）: 一方面只是一种counter，没有考虑语义信息；另一方面有些 words 是明显的 relevant than others.<br>BoW representations are often used in methods of document classification where the frequency of each word, bi-word or tri-word is a useful feature for training classifiers. One challenge with bag of word representations is that they don’t encode any information with regards to the meaning of a given word.<br>In BoW word occurrences are evenly weighted independently of how frequently or what context they occur. However in most NLP tasks some words are more relevant than others.</p>
+<p>这个是可以认识是对于 bag of words “relevant” 上的改进：使得 选择的words 更加的 “representative” 文章的调性。<br>TF-IDF, short for term frequency–inverse document frequency, is a numerical statistic that is intended to reflect how important a word or n-gram is to a document in a collection or corpus. They provide some weighting to a given word based on the context it occurs.The tf–idf value increases proportionally to the number of times a word appears in a document and is offset by the number of documents in the corpus that contain the word, which helps to adjust for the fact that some words appear more frequently than others.</p>
+<p>但是对于 bag of words 中“没有体现语义” 的缺陷还是没有 deal with。<br>However even though tf-idf BoW representations provide weights to different words they are unable to capture the word meaning.</p>
+<p>这个名字只是因为有定义而存在的名字<br><strong>Distributional Embeddings</strong> enable word vectors to encapsulate contextual context. Each embedding vector is represented based on the mutual information it has with other words in a given corpus.<br>重点就是这种方式是要 predict a target word from context words，一定是要能够体现语境的。<br><strong>Predictive models</strong> learn their vectors in order to improve their predictive ability of a loss such as the loss of predicting the vector for a target word from the vectors of the surrounding context words.<br>word2vec 是一种思想，有两种CBOW 和skip-gram 两种实现。<br><strong>Word2Vec</strong> is a predictive embedding model. There are two main Word2Vec architectures that are used to produce a distributed representation of words:</p>
+<p>CBOW没有体现 context words 的order，但是训练速度快。<br>Continuous bag-of-words (CBOW) — The order of context words does not influence prediction (bag-of-words assumption).</p>
+<p>skip-gram  weights nearbt context words heavily 效果相对于 cbow 更加， 但训练速度相对比较慢。<br>Continuous skip-gram weighs nearby context words more heavily than more distant context words. While order still is not captured each of the context vectors are weighed and compared independently vs CBOW which weighs against the average context.</p>
+<p>CBOW is faster while skip-gram is slower but does a better job for infrequent words.</p>
+<p><strong>glove</strong> （g lou v）<br>这个不属于 word2vec，其只是考虑了 local context，没有考虑 global context<br>Both CBOW and Skip-Grams are “predictive” models, in that they only take local contexts into account.  word2vec does not take advantage of global context.<br>(细节 能看懂就看)<br> GloVe embeddings by contrast leverage the same intuition behind the co-occurrence matrix (共生矩阵) used distributional embeddings, but uses neural methods to decompose the co-occurrence matrix into more expressive and dense word vectors.<br>效果，和word2vec 相比没有  definitively better results<br>While GloVe vectors are faster to train, neither GloVe or Word2Vec has been shown to provide definitively better results rather they should both be evaluated for a given dataset.</p>
+<p><strong>fasttext</strong><br>这个主要是 each word + n-gram within each word， 最后的效果是好于 word2vec 的。<br>FastText, builds on Word2Vec by learning vector representations for each word and the n-grams found within each word. The values of the representations are then averaged into one vector at each training step. While this adds a lot of additional computation to training it enables word embeddings to encode sub-word information. FastText vectors have been shown to be more accurate than Word2Vec vectors by a number of different measures</p>
+<h2 id="overview-of-Neural-NLP-Architectures"><a href="#overview-of-Neural-NLP-Architectures" class="headerlink" title="overview of Neural NLP Architectures"></a>overview of Neural NLP Architectures</h2><p>Deep Feed Forward Networks</p>
+<p>1D CNNs</p>
+<p>RNNs (LSTM/GRU)</p>
+<p>encoder- decoder 结构</p>
+<p>attention and copy mechanisms<br>这个是 attention 机制提出的背景：解决 句子中的长依赖。<br>While in theory they can capture long term dependencies they tend to struggle modeling longer sequences, this is still an open problem.</p>
+<p>One cause for sub-optimal performance standard RNN encoder-decoder models for sequence to sequence tasks such as NER or translation is that they weight the impact each input vector evenly on each output vector when in reality specific words in the input sequence may carry more importance at different time steps.<br>Attention mechanisms provide a means of weighting the contextual impact of each input vector on each output prediction of the RNN. These mechanisms are responsible for much of the current or near current state of the art in Natural language processing.</p>
+<blockquote>
+<p>attention</p>
+</blockquote>
+<p>In sum, algorithms can allocate attention, and they can learn how to do so, by adjusting the weights they assign to various inputs. Imagine a heat map over a photo. The heat is attention.<br>One of the limits of traditional word vectors is that they presume that a word’s meaning is relatively stable across sentences.<br>并不是物理上的二维关系能够表示词语之间的 relationship，有时候是需要高纬空间进行表示的。<br>In fact, the strongest relationships binding a given word to the rest of the sentence may be with words quite distant from it.<br>从 credit assignment的角度阐述了 neural networks 就是 allocating importance to input featueres。<br>The fundamental task of all neural networks is credit assignment. Credit assignment is allocating importance to input features through the weights of the neural network’s model. Learning is the process by which neural networks figure out which input features correlate highly with the outcomes the net tries to predict, and their learnings are embodied in the adjusted quantities of the weights that result in accurate decisions about the data they’re exposed to.<br>这个是传统的 LSTM （encoder -decoder） 模型，问题在于当句子过长（比如说大于20 words）之后，encoder 是无法 memory 之前的所有 words，所以效果就会变得差一些。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a478w59aj21hc0ixmzq.jpg" alt=""></p>
+<p>但是 attention 就是模仿了人翻译过程，一段作为一个单位，然后进行翻译。这样就可以持续保证较高中确率的输出。<br>In neural networks, attention primarily serves as a memory-access mechanism.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a47iu166j20ck072t90.jpg" alt=""><br>  就是每次的输出都是关注不同的地方，但是至于哪里更加重要，这个交给了 feedback mechanism 反向传播。<br>Above, a model highlights which pixels it is focusing on as it predicts the underlined word in the respective captions. Below, a language model highlights the words from one language, French, that were relevant as it produced the English words in the translation. As you can see, attention provides us with a route to interpretability. We can render attention as a heat map over input data such as words and pixels, and thus communicate to human operators how a neural network made a decision. (This could be the basis of a feedback mechanism whereby those humans tell the network to pay attention to certain features and not others.)<br> (This could be the basis of a feedback mechanism whereby those humans tell the network to pay attention to certain features and not others.)<br> <img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a487h7rej2078079mx1.jpg" alt=""></p>
+<p>Additionally in Machine Reading Comprehension and Summarization systems RNNs often tend to generate results, that while on first glance look structurally correct are in reality hallucinated or incorrect. One mechanism that helps mitigate some of these issues is the Copy Mechanism.<br>同上面那个是一样的<br>The copy mechanism is an additional layer applied during decoding that decides whether it is better to generate the next word from the source sentence or from the general embedding vocabulary.</p>
+<blockquote>
+<p>reading comprehension and summary</p>
+</blockquote>
+<p>上面是说的在 machine translation，下面说的是 阅读理解 和 summary领域。<br>Additionally in Machine Reading Comprehension and Summarization systems RNNs often tend to generate results, that while on first glance look structurally correct are in reality hallucinated or incorrect. One mechanism that helps mitigate some of these issues is the Copy Mechanism.<br>同上面那个是一样的<br>The copy mechanism is an additional layer applied during decoding that decides whether it is better to generate the next word from the source sentence or from the general embedding vocabulary.</p>
+<p>Taming Recurrent Neural Networks for Better Summarization<br>Two types of summarization：Extractive （You might think of these approaches as like a highlighter.） Abstractive（By the same analogy, these approaches are like a pen.）<br>The great majority of existing approaches to automatic summarization are extractive – mostly because it is much easier to select text than it is to generate text from scratch.<br>但是一个问题在于，只是使用 extrative way 可能得到相同的words，<br>Problem 1: The summaries sometimes reproduce factual details inaccurately (e.g. Germany beat Argentina 3-2). This is especially common for rare or out-of-vocabulary words such as 2-0.<br>Problem 2: The summaries sometimes repeat themselves (e.g. Germany beat Germany beat Germany beat…)<br>Easier Copying with Pointer-Generator Networks。这个跟 attention 不是很相关，简单说就是In this way, the pointer-generator network is a best of both worlds, combining both extraction (pointing) and abstraction (generating).</p>
+<p>To tackle Problem 2 (repetitive summaries), we use a technique called coverage. The idea is that we use the attention distribution to keep track of what’s been covered so far, and penalize the network for attending to same parts again.</p>
+<p>elmo (e l  mo)<br>elmo 产生一个 embedding 是根据 context 产生的。<br>ELMo is a model generates embeddings for a word based on the context it appears thus generating slightly different embeddings for each of its occurrence.<br>（感觉理解一个概念都是 根据其 for example 进行理解的）<br>For example, the word “play” in the sentence above using standard word embeddings encodes multiple meanings such as the verb to play or in the case of the sentence a theatre production. In standard word embeddings such as Glove, Fast Text or Word2Vec each instance of the word play would have the same representation.</p>
+<p>参考blog:<br><a href="https://towardsdatascience.com/beyond-word-embeddings-part-2-word-vectors-nlp-modeling-from-bow-to-bert-4ebd4711d0ec" target="_blank" rel="noopener">https://towardsdatascience.com/beyond-word-embeddings-part-2-word-vectors-nlp-modeling-from-bow-to-bert-4ebd4711d0ec</a></p>
+<p><a href="http://www.abigailsee.com/2017/04/16/taming-rnns-for-better-summarization.html" target="_blank" rel="noopener">http://www.abigailsee.com/2017/04/16/taming-rnns-for-better-summarization.html</a></p>
+<p><a href="https://skymind.ai/wiki/word2vec" target="_blank" rel="noopener">https://skymind.ai/wiki/word2vec</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/22/Hyperparameter-optimization-for-machine-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/22/Hyperparameter-optimization-for-machine-learning/" itemprop="url">Hyper-parameter Optimization for Machine Learning</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-22T15:18:44+08:00">
+                2019-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/22/Hyperparameter-optimization-for-machine-learning/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/05/22/Hyperparameter-optimization-for-machine-learning/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Following are four common methods of hyperparameter optimization for machine learning in order of increasing efficiency:</p>
+<ul>
+<li>Manual</li>
+<li>Grid search</li>
+<li>Random search</li>
+<li>Bayesian model-based optimization</li>
+</ul>
+<h2 id="Random-Search"><a href="#Random-Search" class="headerlink" title="Random Search"></a>Random Search</h2><p>First we will implement a common technique for hyperparameter optimization: random search. Each iteration, we choose a random set of model hyperparameters from a search space. Empirically, random search is very effective, returning nearly as good results as grid search with a significant reduction in time spent searching. However, it is still an uninformed method in the sense that it does not use past evaluations of the objective function to inform the choices it makes for the next evaluation.</p>
+<p>Random search uses the following four parts, which also are used in Bayesian hyperparameter optimization:</p>
+<ul>
+<li>Domain: values over which to search</li>
+<li>Optimization algorithm: pick the next values at random! (yes this qualifies as an algorithm)</li>
+<li>Objective function to minimize: in this case our metric is cross validation ROC AUC</li>
+<li>Results history that tracks the hyperparameters tried and the cross validation metric</li>
+</ul>
+<p>Random search can be implemented in the Scikit-Learn library using RandomizedSearchCV, however, because we are using Early Stopping (to determine the optimal number of estimators), we will have to implement the method ourselves (more practice!). This is pretty straightforward, and many of the ideas in random search will transfer over to Bayesian hyperparameter optimization.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Load libraries</span></span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> uniform</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model, datasets</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RandomizedSearchCV</span><br><span class="line"></span><br><span class="line"><span class="comment"># data and model</span></span><br><span class="line"><span class="comment"># Load data</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris.data</span><br><span class="line">y = iris.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create logistic regression</span></span><br><span class="line">logistic = linear_model.LogisticRegression()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create Hyperparameter Search Space</span></span><br><span class="line"><span class="comment"># Create regularization penalty space</span></span><br><span class="line"><span class="comment"># 如果比较少，那么久枚举出来</span></span><br><span class="line">penalty = [<span class="string">'l1'</span>, <span class="string">'l2'</span>]</span><br><span class="line"><span class="comment"># 如果是有规律的连续的，就使用这种方式列举出来</span></span><br><span class="line"><span class="comment"># Create regularization hyperparameter distribution using uniform distribution</span></span><br><span class="line">C = uniform(loc=<span class="number">0</span>, scale=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create hyperparameter options</span></span><br><span class="line">hyperparameters = dict(C=C, penalty=penalty)</span><br><span class="line"></span><br><span class="line"><span class="comment"># cv: cross validation, This approach involves randomly dividing the set of observations into k groups, or folds, of approximately equal size. The first fold is treated as a validation set, and the method is fit on the remaining k − 1 folds.</span></span><br><span class="line"><span class="comment"># Create randomized search 5-fold cross validation and 100 iterations</span></span><br><span class="line">clf = RandomizedSearchCV(logistic, hyperparameters, random_state=<span class="number">1</span>, n_iter=<span class="number">100</span>, cv=<span class="number">5</span>, verbose=<span class="number">0</span>, n_jobs=<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit randomized search</span></span><br><span class="line">best_model = clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># View best hyperparameters</span></span><br><span class="line"><span class="comment"># 注意这种获取best params 的方式</span></span><br><span class="line">print(<span class="string">'Best Penalty:'</span>, best_model.best_estimator_.get_params()[<span class="string">'penalty'</span>])</span><br><span class="line">print(<span class="string">'Best C:'</span>, best_model.best_estimator_.get_params()[<span class="string">'C'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Predict target vector</span></span><br><span class="line">best_model.predict(X)</span><br></pre></td></tr></table></figure>
+<p><strong>grid search and random search</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> randint <span class="keyword">as</span> sp_randint</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RandomizedSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_digits</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># get some data</span></span><br><span class="line">digits = load_digits()</span><br><span class="line">X, y = digits.data, digits.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># build a classifier</span></span><br><span class="line">clf = RandomForestClassifier(n_estimators=<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Utility function to report best scores</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">report</span><span class="params">(results, n_top=<span class="number">3</span>)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n_top + <span class="number">1</span>):</span><br><span class="line">        candidates = np.flatnonzero(results[<span class="string">'rank_test_score'</span>] == i)</span><br><span class="line">        <span class="keyword">for</span> candidate <span class="keyword">in</span> candidates:</span><br><span class="line">            print(<span class="string">"Model with rank: &#123;0&#125;"</span>.format(i))</span><br><span class="line">            print(<span class="string">"Mean validation score: &#123;0:.3f&#125; (std: &#123;1:.3f&#125;)"</span>.format(</span><br><span class="line">                  results[<span class="string">'mean_test_score'</span>][candidate],</span><br><span class="line">                  results[<span class="string">'std_test_score'</span>][candidate]))</span><br><span class="line">            print(<span class="string">"Parameters: &#123;0&#125;"</span>.format(results[<span class="string">'params'</span>][candidate]))</span><br><span class="line">            print(<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># specify parameters and distributions to sample from</span></span><br><span class="line">param_dist = &#123;<span class="string">"max_depth"</span>: [<span class="number">3</span>, <span class="keyword">None</span>],</span><br><span class="line">              <span class="string">"max_features"</span>: sp_randint(<span class="number">1</span>, <span class="number">11</span>),</span><br><span class="line">              <span class="string">"min_samples_split"</span>: sp_randint(<span class="number">2</span>, <span class="number">11</span>),</span><br><span class="line">              <span class="string">"bootstrap"</span>: [<span class="keyword">True</span>, <span class="keyword">False</span>],</span><br><span class="line">              <span class="string">"criterion"</span>: [<span class="string">"gini"</span>, <span class="string">"entropy"</span>]&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># run randomized search</span></span><br><span class="line">n_iter_search = <span class="number">20</span></span><br><span class="line">random_search = RandomizedSearchCV(clf, param_distributions=param_dist,</span><br><span class="line">                                   n_iter=n_iter_search, cv=<span class="number">5</span>, iid=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">start = time()</span><br><span class="line">random_search.fit(X, y)</span><br><span class="line">print(<span class="string">"RandomizedSearchCV took %.2f seconds for %d candidates"</span></span><br><span class="line">      <span class="string">" parameter settings."</span> % ((time() - start), n_iter_search))</span><br><span class="line">report(random_search.cv_results_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># use a full grid over all parameters</span></span><br><span class="line">param_grid = &#123;<span class="string">"max_depth"</span>: [<span class="number">3</span>, <span class="keyword">None</span>],</span><br><span class="line">              <span class="string">"max_features"</span>: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">10</span>],</span><br><span class="line">              <span class="string">"min_samples_split"</span>: [<span class="number">2</span>, <span class="number">3</span>, <span class="number">10</span>],</span><br><span class="line">              <span class="string">"bootstrap"</span>: [<span class="keyword">True</span>, <span class="keyword">False</span>],</span><br><span class="line">              <span class="string">"criterion"</span>: [<span class="string">"gini"</span>, <span class="string">"entropy"</span>]&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># run grid search</span></span><br><span class="line">grid_search = GridSearchCV(clf, param_grid=param_grid, cv=<span class="number">5</span>, iid=<span class="keyword">False</span>)</span><br><span class="line">start = time()</span><br><span class="line">grid_search.fit(X, y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"GridSearchCV took %.2f seconds for %d candidate parameter settings."</span></span><br><span class="line">      % (time() - start, len(grid_search.cv_results_[<span class="string">'params'</span>])))</span><br><span class="line">report(grid_search.cv_results_)</span><br></pre></td></tr></table></figure>
+<p><strong>Random search without in-built function:</strong><br>write it yourself, more information.<br><a href="https://github.com/WillKoehrsen/hyperparameter-optimization/blob/master/Bayesian%20Hyperparameter%20Optimization%20of%20Gradient%20Boosting%20Machine.ipynb" target="_blank" rel="noopener">https://github.com/WillKoehrsen/hyperparameter-optimization/blob/master/Bayesian%20Hyperparameter%20Optimization%20of%20Gradient%20Boosting%20Machine.ipynb</a></p>
+<h2 id="Bayesian-Hyperparameter-Optimization"><a href="#Bayesian-Hyperparameter-Optimization" class="headerlink" title="Bayesian Hyperparameter Optimization"></a>Bayesian Hyperparameter Optimization</h2><p>The one-sentence summary of Bayesian hyperparameter optimization is: build a probability model of the objective function and use it to select the most promising hyperparameters to evaluate in the true objective function.</p>
+<p>The basic idea is: spend a little more time selecting the next hyperparameters in order to make fewer calls to the objective function. </p>
+<p>In the case of hyperparameter optimization, the objective function is the validation error of a machine learning model using a set of hyperparameters. The aim is to find the hyperparameters that yield the lowest error on the validation set in the hope that these results generalize to the testing set. Evaluating the objective function is expensive because it requires training the machine learning model with a specific set of hyperparameters. Ideally, we want a method that can explore the search space while also limiting evaluations of poor hyperparameter choices. Bayesian hyperparameter tuning uses a continually updated probability model to “concentrate” on promising hyperparameters by reasoning from past results.</p>
+<p>有很多基于这种思想的实现，hyperopt 只是其中一种<br>There are several Bayesian optimization libraries in Python which differ in the algorithm for the surrogate of the objective function. In this article, we will work with Hyperopt, which uses the Tree Parzen Estimator (TPE) Other Python libraries include Spearmint (Gaussian Process surrogate) and SMAC (Random Forest Regression). </p>
+<p>There are four parts to a Bayesian Optimization problem:</p>
+<ul>
+<li>Objective Function: what we want to minimize, in this case the validation error of a machine learning model with respect to the hyperparameters （原来model 中的 objective function）</li>
+<li>Domain Space: hyperparameter values to search over （调参空间）</li>
+<li>Optimization algorithm: method for constructing the surrogate model and choosing the next hyperparameter values to evaluate （loss 和调参空间的 新的关系）</li>
+<li>Result history: stored outcomes from evaluations of the objective function consisting of the hyperparameters and validation loss （result 没有什么好说的）</li>
+</ul>
+<p>其中的 Bayesian Hyperparameter Optimization using Hyperopt是可以好好学习的。 data scientists  这种东西更加贴近于 data scientist 真的。<br>参考一：<br><a href="https://github.com/WillKoehrsen/hyperparameter-optimization/blob/master/Bayesian%20Hyperparameter%20Optimization%20of%20Gradient%20Boosting%20Machine.ipynb" target="_blank" rel="noopener">https://github.com/WillKoehrsen/hyperparameter-optimization/blob/master/Bayesian%20Hyperparameter%20Optimization%20of%20Gradient%20Boosting%20Machine.ipynb</a></p>
+<p>参考二：<br><a href="https://github.com/WillKoehrsen/hyperparameter-optimization/blob/master/Introduction%20to%20Bayesian%20Optimization%20with%20Hyperopt.ipynb" target="_blank" rel="noopener">https://github.com/WillKoehrsen/hyperparameter-optimization/blob/master/Introduction%20to%20Bayesian%20Optimization%20with%20Hyperopt.ipynb</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/21/Introduction-to-Natural-Language-Processing-for-Text/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2083,393 +2455,6 @@ db.gen_csv(filename =filename, fields =[&apos;name&apos;, &apos;ssn&apos;, &apos
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/17/weights-initialization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/17/weights-initialization/" itemprop="url">Weights Initialization</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-17T21:04:44+08:00">
-                2019-04-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Deep learning</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/17/weights-initialization/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/17/weights-initialization/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Training a neural network consists of four steps: initialize weights and biases, forward propagation, compute the loss function and backward propagation. This blog mainly focuses on the first part: weights initialization.</p>
-<p>After completing this tutorial, you will know:</p>
-<ul>
-<li><p>Four main types of weights initialization</p>
-</li>
-<li><p>How to choose between Xavier initialization and He initialization</p>
-</li>
-</ul>
-<h2 id="Types-of-Weights-Initialization"><a href="#Types-of-Weights-Initialization" class="headerlink" title="Types of Weights Initialization"></a>Types of Weights Initialization</h2><ol>
-<li>Initializing weights with zero</li>
-</ol>
-<p>When you set all weights in a neural network to zero, the derivative with respect to loss function is the same for every $ w$ in the same layer, thus all the weights have the same values in the subsequent iteration, which makes your model equivalent to a linear model.</p>
-<ol start="2">
-<li>Initializing weights randomly</li>
-</ol>
-<p>You can get weights like this (Python):</p>
-<pre><code>w =np.random.randn(layer_size[l],layer_size[l-1])
-</code></pre><p>The weighs follows standard normal distribution while it can potentially lead to two issues: vanishing gradients and exploding gradients.</p>
-<p>If the weights start too small, then the signal shrinks as it passes through each layer until it’s too small to be useful.</p>
-<p>If the weights start too large, then the signal grows as it passes through each layer until it’s too massive to be useful (big value in sigmoid function).</p>
-<p>Thus there are two necessary conditions to consider:</p>
-<ul>
-<li><p>The values of each activation layer won’t be zero</p>
-</li>
-<li><p>The values of each activation layer won’t go into the area of saturation</p>
-</li>
-</ul>
-<ol start="3">
-<li>Xavier/Glorot Initialization</li>
-</ol>
-<p>For deep networks, we can use a heuristic to initialize the weights depending on the non-linear activation function. This applies to Xavier and He initialization.</p>
-<p>Xavier/Glorot Initialization initializes the weights in your network by drawing them from a distribution with zero mean and a specific variance.<br>$$ { var } ( w _ { i } ) = \frac { 1 } { layer_{l-1}}$$</p>
-<pre><code>w=np.random.randn(layer_size[l],layer_size[l-1])*np.sqrt(1/layer_size[l-1])
-</code></pre><p>In practice, it works better for layers with sigmoid or tanh function. </p>
-<ol start="4">
-<li>He Initialization</li>
-</ol>
-<p>Using RELU or Leaky RELU is relatively robust to the vanishing/ exploding gradient issues compared with sigmoid function especially for networks that are not too deep. And it the case of Leaky RELU, it never has zero gradients. For RELU, we multiply the randomly generated values of $w$ by: </p>
-<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } } }$$</p>
-<pre><code>w=np.random.randn(layer_size[l],layer_size[l-1])*np.sqrt(2/layer_size[l-1])
-</code></pre><p>Sometimes, we combine the idea of Xavier initialization and He initializaiton so the variance becomes the following:</p>
-<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } + \operatorname { layer } _ { [ l ] } } }$$</p>
-<pre><code>w=np.random.randn(layer_size[l],layer_size[l-1])*np.sqrt(2/(layer_size[l-1]+layer_size[l]))
-</code></pre><p>The idea behind this is that we set the weights neither too much bigger than 1 nor too much less than 1 so the gradients do not vanish or explode too quickly.</p>
-<h2 id="Takeoff"><a href="#Takeoff" class="headerlink" title="Takeoff"></a>Takeoff</h2><p>In summary, the main difference in machine learning is the following:</p>
-<ul>
-<li><p>He initialization works better for layers with ReLu(s) activation.</p>
-</li>
-<li><p>Xavier initialization works better for layers with sigmoid activation.</p>
-</li>
-</ul>
-<h2 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence:"></a>Referrence:</h2><p><a href="https://arxiv.org/abs/1502.01852" target="_blank" rel="noopener">He initialization</a></p>
-<p><a href="http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf" target="_blank" rel="noopener">Xavier initialization</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/09/cyclegan-stylegan/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/09/cyclegan-stylegan/" itemprop="url">CycleGAN & StyleGAN</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-09T18:48:30+08:00">
-                2019-04-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Deep learning</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/09/cyclegan-stylegan/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/09/cyclegan-stylegan/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>In the past few yeas, GANs have been used in lots of different applications such as generating synthetic data, style transfer, super-resolution and text2image generation. But we donn’t aim to give a overview of what GANs are made for. There are many great and detailed blogs for your understanding.</p>
-<p>If you have fun about transfer learning, especially style transfer using GANs, this post might interest you!</p>
-<h2 id="What-this-post-is-about"><a href="#What-this-post-is-about" class="headerlink" title="What this post is about"></a>What this post is about</h2><ul>
-<li>Main ideas of CycleGAN</li>
-<li>Keypoints in StyleGAN</li>
-</ul>
-<h2 id="A-Gentle-Introduction-of-GANs"><a href="#A-Gentle-Introduction-of-GANs" class="headerlink" title="A Gentle Introduction of GANs"></a>A Gentle Introduction of GANs</h2><p>We assume the reader has some prior experience with neural networks. In addition, if you are familiar with GANs you can <a href="#jump">skip</a> this section.</p>
-<p>The famous minimax objective function can be formulated as following:<br>$$<br>\min _ { \theta _ { g } } \max _ { \theta _ { d } } \left[ \mathbb { E } _ { x \sim p _ { d a t a } } \log D _ { \theta _ { d } } ( x ) + \mathbb { E } _ { z \sim p ( z ) } \log \left( 1 - D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right) \right)<br>$$<br>But in practical, the loss function cannot work very well. So we have alternative objective function:</p>
-<ol>
-<li>Gradient ascent on discriminator</li>
-</ol>
-<p>$$<br>\max _ { \theta _ { d } } \left[ \mathbb { E } _ { x \sim p _ { d a t a } } \log D _ { \theta _ { d } } ( x ) + \mathbb { E } _ { z \sim p ( z ) } \log \left( 1 - D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right) \right]<br>$$</p>
-<ol start="2">
-<li>Gradient ascent on generator<br>$$<br>\max _ { \theta _ { g } } \mathbb { E } _ { z \sim p ( z ) } \log \left( D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right)<br>$$<br>The reasoning behind this can be found in original <a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">paper</a>. Simplily speaking, we can get higher gradient signal for bad samples, which works much better in practice.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1w9einh3uj20sk0dkn1c.jpg" alt=""><center><span id="jump">From Stanford CS231 Lecture 13 — Generative Models </span></center>
-
-</li>
-</ol>
-<h2 id="Main-ideas-of-CycleGAN"><a href="#Main-ideas-of-CycleGAN" class="headerlink" title="Main ideas of CycleGAN"></a>Main ideas of CycleGAN</h2><p>CycleGAN was introduced in 2017 out of Berkeley, <a href="https://arxiv.org/abs/1703.10593" target="_blank" rel="noopener">Unpaired Image-to-Image Translation Using Cycle-Coonsistent Adversarial Networks</a>.  This task is performed on unpaired data. Recent methods such as Pix2Pix depend on the availability of training examples where the samee data is availabel in both domains. However, CycleGAN is able to learning such pair information without one-to-one mapping between training data in source and target domains.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wb7eq678j20vg0kidpn.jpg" alt=""></p>
-<h2 id="Network-Architecture"><a href="#Network-Architecture" class="headerlink" title="Network Architecture"></a>Network Architecture</h2><p>We build three networks.</p>
-<ul>
-<li>A generator $F$ to convert image $y$ to image $ \hat{x}$</li>
-<li>A generator $G$ to convert image $\hat{x}$ to image $ \hat{y}$</li>
-<li>A discriminator $D$ to idenfify real image or generated picture<br>Simplified version of CycleGAN architecture can be showed in the following.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wbibdfe1j20i60c3wf0.jpg" alt=""><br>The function $F$ and $G$ are generator network, which consists of encoder, transformer and decoder. Encoder is extracting the features from an image which is done by convolution networks. Each convolution layer leads to extraction of progressively higher level features. We would like to transform the feature emebdding of an image from domain $X$ to that of domain $Y$. So for this, authors have used 6 layers of resnet blocks. Resnet block is a neural network layer which consists of two convolutiona layers when a residue of input ia added to the output. This is done to ensure peoperties of input of previous layers are available for later layers as well.Resnet block can be summarized in following image<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wet610p7j20km0ceabs.jpg" alt=""><br>The decoder transfer embedding from $y$ back to original embedding $x$.</li>
-</ul>
-<h2 id="Loss-function"><a href="#Loss-function" class="headerlink" title="Loss function"></a>Loss function</h2><p>There are two types of losses in CycleGAN. Besides adversarial loss, we have another loss named reconstruction cost.<br>Adversarial loss is similary to original GAN.<br>$$<br>\operatorname { Loss } _ { a d v } \left( F , D _ { x } , Y \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { x } \left( F \left( y _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>$$<br>\operatorname { Loss } _ { a d v } \left( G , D _ { y } , X \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { y } \left( G \left( x _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>However, the adversarial loss alone is not sufficient to produce good looking images, which can not enfore that the input and output are recognizably the same. The cycle consistency loss addresses this issue. It relies on the expectation that if you convert an image to the other domain and back again, and then you should get back something similar to what you put in. It enforces that $F ( G ( x ) ) \approx x$ and $G ( F ( y ) ) \approx y$.<br>$$<br>\operatorname { Loss } _ { c y c } ( G , F , X , Y ) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left[ F \left( G \left( x _ { i } \right) \right) - x _ { i } \right] + \left[ G \left( F \left( y _ { i } \right) \right) - y _ { i } \right]<br>$$<br>We can get the full objective function by putting these two together.<br>$$<br>\mathcal { L } \left( G , F , D _ { x} , D _ { y } \right) = \mathcal { L } _ { \text { GAN } } \left( G , D _ { y } , X , Y \right) + \mathcal { L } _ { \text { GAN } } \left( F , D _ { x } , Y , X \right) + \lambda \mathcal { L } _ { \text { cyc } } ( G , F )<br>$$</p>
-<h2 id="Keypoints-of-StyleGAN"><a href="#Keypoints-of-StyleGAN" class="headerlink" title="Keypoints of StyleGAN"></a>Keypoints of StyleGAN</h2><p>The StyleGAN offeras an upgrade version of ProGAN’s image generator, with a focus on the generator. </p>
-<p>ProGAN generates high-quality images but, in most models, its ability to control specific features of the generated image is very limited. In other word, the features are entangled and therefore attempting to tweak the input, even a bit, usually affects multiple features at the same time. A good illustrations would be following pictures.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfimzvg2g20ps0en4qq.gif" alt=""><br>Compared with first version (ProGAN), the new generator includes several additions to ProGAN’s generators.</p>
-<h2 id="Mapping-Network"><a href="#Mapping-Network" class="headerlink" title="Mapping Network"></a>Mapping Network</h2><p>The mapping network’s goal in to encode the input vector into an intermediate vector whose different elements control different visual features, which consists of 8 fully connected layers and its output $w$ is of the same size as the input.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfvtdeh3j20nn0b9gma.jpg" alt=""></p>
-<h2 id="Style-Modules-AdaIN"><a href="#Style-Modules-AdaIN" class="headerlink" title="Style Modules (AdaIN)"></a>Style Modules (AdaIN)</h2><p>The AdaIn (Adaptive Instance Normalization) module transfers the encoded information $w$, created by the mapping network, into the generated image.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wg3c5awfj20ca09q3z6.jpg" alt=""></p>
-<h2 id="Removing-traditional-input"><a href="#Removing-traditional-input" class="headerlink" title="Removing traditional input"></a>Removing traditional input</h2><p>Since the encoded information $w$ from mapping network was used into generator image, the traditional random input can be omitted and replaced by constant values.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2524,7 +2509,7 @@ db.gen_csv(filename =filename, fields =[&apos;name&apos;, &apos;ssn&apos;, &apos
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

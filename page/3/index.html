@@ -296,6 +296,357 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Dimension-Reduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/25/Dimension-Reduction/" itemprop="url">Dimension Reduction</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:23:56+08:00">
+                2019-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/25/Dimension-Reduction/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/25/Dimension-Reduction/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>对于dimension reduction最近有了新的理解:<br>广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。<br>You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve) the model’s performance.</p>
+<p>不必纠结于采用降维的必要性，直接进入 techniques of dimension reduction.</p>
+<ul>
+<li>low variances<br>这个是针对一个特征内部的，如果一个特征的数据本身没有什么变化，那么这个类似就是一种“死”数据。</li>
+<li>high correlation filter<br>用来判别特征 x 和最后的 target之间的相关性</li>
+<li>principal component analysis (PCA)<br>our old good friend. 如果你提降维，但是你不知道PCA，那么就说不过去。该方法的基本思路：一个基（向量空间）的变换，使得变换后的数据有着最大的方差。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.<br>下面是PCA的一些特点：<blockquote>
+<p>A principal component is a linear combination of the original variables<br>Principal components are extracted in such a way that the first principal component explains maximum variance in the dataset<br>Second principal component tries to explain the remaining variance in the dataset and is uncorrelated to the first principal component<br>Third principal component tries to explain the variance which is not explained by the first two principal components and so on</p>
+</blockquote>
+</li>
+</ul>
+<p>主成分是不断生成的，在前者基础之上生成的。 The first component is the most important one, followed by the second, then the third, and so on.</p>
+<ul>
+<li><p>Singular Value Decomposition (SVD)<br>翻译成中文感觉还是挺别扭的，奇异值分解。关于奇异值，特征值这些数学概念打算另外写一个主题，wait a moment. 简单理解PCA 是针对方阵 (m<em>m), SVD是针对矩阵(m </em>n)，所以后者是具有更大的适用范围。</p>
+</li>
+<li><p>Independent Component Analysis (ICA)<br>这个是在面试的时候被问道的一种降维方法。抓住独立向量应该就没有问题。</p>
+<blockquote>
+<p>Independent Component Analysis (ICA) is based on information-theory and is also one of the most widely used dimensionality reduction techniques. The major difference between PCA and ICA is that PCA looks for uncorrelated factors while ICA looks for independent factors.</p>
+</blockquote>
+</li>
+</ul>
+<p>基本假设：</p>
+<blockquote>
+<p>This algorithm assumes that the given variables are linear mixtures of some unknown latent variables. It also assumes that these latent variables are mutually independent, i.e., they are not dependent on other variables and hence they are called the independent components of the observed data.</p>
+</blockquote>
+<p>ICA 和PCA的异同：从线性代数的角度去理解，PCA和ICA都是要找到一组基，这组基张成一个特征空间，数据的处理就都需要映射到新空间中去。ICA相比与PCA更能刻画变量的随机统计特性，且能抑制高斯噪声。</p>
+<ul>
+<li>T-SNE<br>就是指出 t-SNE 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。这个使用场景是在可视化中，经常会看见将数据或者 <blockquote>
+<p>So far we have learned that PCA is a good choice for dimensionality reduction and visualization for datasets with a large number of variables. But what if we could use something more advanced? What if we can easily search for patterns in a non-linear way? t-SNE is one such technique. There are mainly two types of approaches we can use to map the data points:<br>Local approaches :  They maps nearby points on the manifold to nearby points in the low dimensional representation.<br>Global approaches : They attempt to preserve geometry at all scales, i.e. mapping nearby points on manifold to nearby points in low dimensional representation as well as far away points to far away points.</p>
+</blockquote>
+</li>
+</ul>
+<p>下面介绍两种不是那么“常规”，但是也符合”dimension reduction” 定义的方式。</p>
+<ul>
+<li>projection<br>By projecting one vector onto the other, dimensionality can be reduced.</li>
+<li>autoencoder<br>网络结构通常有 encoder和decoder两部分组成，那么encoder 就作为 information abstraction,而 decoder作为一种重新映射。从这个角度NLP中的词向量也是可以是一种降维手段。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Linear-Algebra-in-ML/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/25/Linear-Algebra-in-ML/" itemprop="url">Linear Algebra in ML</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:14:40+08:00">
+                2019-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/25/Linear-Algebra-in-ML/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/25/Linear-Algebra-in-ML/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care.</p>
+<h2 id="变量（特征个数）和解的关系"><a href="#变量（特征个数）和解的关系" class="headerlink" title="变量（特征个数）和解的关系"></a>变量（特征个数）和解的关系</h2><p>多变量和最后target的关系是可以使用 matrices 进行表示的，这就是一种数学公式化。</p>
+<blockquote>
+<p>Broadly speaking, in linear algebra data is represented in the form of linear equations. These linear equations are in turn represented in the form of matrices and vectors.</p>
+</blockquote>
+<p>先直观的感受一下变量和图形（可视化）的关系。两个变量组成的equations 是两条线的相交情况。而三个变量在空间中有三种情况： 相交，平行，不在一个平面上。三个变量组成的equations 是三个面的相交情况。有四种情况 (try hard to figure it out)：<br>No intersection at all.<br>Planes intersect in a line.<br>They can intersect in a plane.<br>All the three planes intersect at a point.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1etf4u36aj20q00dutdk.jpg" alt=""></p>
+<p>当到达4 dims 的时候，it’s impossible to visulize it.</p>
+<h2 id="terms-in-related-to-matrix"><a href="#terms-in-related-to-matrix" class="headerlink" title="terms in related to matrix"></a>terms in related to matrix</h2><p>这些词汇 (terms) 经常在文献中出现，需要对于其含义有个比较好的认识。<br><strong>Order of matrix</strong> – If a matrix has 3 rows and 4 columns, order of the matrix is 3<em>4 i.e. row</em>column. (翻译成 矩阵的阶)<br><strong>Square matrix</strong> – The matrix in which the number of rows is equal to the number of columns.<br><strong>Diagonal matrix</strong> – A matrix with all the non-diagonal elements equal to 0 is called a diagonal matrix.<br><strong>Upper triangular matrix</strong> – Square matrix with all the elements below diagonal equal to 0.<br><strong>Lower triangular matrix</strong> – Square matrix with all the elements above the diagonal equal to 0.<br><strong>Scalar matrix</strong> – Square matrix with all the diagonal elements equal to some constant k.<br><strong>Identity matrix</strong> – Square matrix with all the diagonal elements equal to 1 and all the non-diagonal elements equal to 0.<br><strong>Column matrix</strong> –  The matrix which consists of only 1 column. Sometimes, it is used to represent a vector.<br><strong>Row matrix</strong> –  A matrix consisting only of row.<br><strong>Trace</strong> – It is the sum of all the diagonal elements of a square matrix.<br><strong>Rank of a matrix</strong> – Rank of a matrix is equal to the maximum number of linearly independent row vectors in a matrix.<br><strong>Determinant of a matrix</strong> - 矩阵的行列式<br><strong>转置</strong> -在图形 matrix中还是很常见的。<br>$$\mathrm { A } _ { \mathrm { ij } } ^ { \mathrm{T}} = \mathrm { A } _ { \mathrm { ji } }$$</p>
+<p>这个矩阵乘法和元素相称的区别，后者是element-wise 进行的。可以从另外一个角度去列及矩阵相称： This operation on a vector is called linear transformation. 就是后面的vector 映射到了前面的矩阵空间。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1eu88lj31j20ao048jrl.jpg" alt=""></p>
+<h2 id="特征值和奇异值"><a href="#特征值和奇异值" class="headerlink" title="特征值和奇异值"></a>特征值和奇异值</h2><p>着两个是分别对应着PCA 和SVD。<br>Eigenvalues and Eigenvectors<br>如公式所示，特征值和特征向量的乘积就是方阵和特征向量的乘积，原先的方阵是可以降维表示成特征向量和特征值的。$ A x  = \lambda  x $</p>
+<p>对于奇异值分解，最常见的就是这种表达：$A = U \Sigma V ^ { T }$<br>特征值分解和奇异值分解都是给一个矩阵(线性变换)找一组特殊的基，特征值分解找到了特征向量这组基，在这组基下该线性变换只有缩放效果。而奇异值分解则是找到另一组基，这组基下线性变换的旋转、缩放、投影三种功能独立地展示出来了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/07/Back-to-my-blog/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1645,307 +1996,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/29/常见的排序算法总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/29/常见的排序算法总结/" itemprop="url">常见的排序算法总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-29T22:27:13+08:00">
-                2018-06-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/06/29/常见的排序算法总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/29/常见的排序算法总结/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="分类和总结"><a href="#分类和总结" class="headerlink" title="分类和总结"></a>分类和总结</h3><ul>
-<li>根据待排序的数据大小不同，使得排序过程中所涉及的存储器不同，可分为内部排序和外部排序。</li>
-<li>排序关键字可能出现重复，根据重复关键字的排序情况可分为稳定排序和不稳定排序。</li>
-<li>对于内部排序，依据不同的排序原则，可分为插入排序、交换(快速)排序、选择排序、归并排序和计数排序。</li>
-<li>针对内部排序所需的工作量划分，可分为:简单排序 O(n^2)、先进排序 O(nlogn)和基数排序 O(d*n)。<br>常见算法的性质总结：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/52393195.jpg" alt="avatar"></li>
-</ul>
-<p>排序算法实现默认都是升序…</p>
-<h3 id="插入排序-Insert-Sort"><a href="#插入排序-Insert-Sort" class="headerlink" title="插入排序(Insert Sort)"></a>插入排序(Insert Sort)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def insert_sort(lists):</span><br><span class="line">    count = len(lists)</span><br><span class="line">    for i in range(1, count):</span><br><span class="line">        key =lists[i]</span><br><span class="line">        j =i-1</span><br><span class="line">        while j &gt;= 0:</span><br><span class="line">            if lists[j] &gt;key:</span><br><span class="line">                lists[j+1] =lists[j]</span><br><span class="line">                lists[j] =key</span><br><span class="line">            j -= 1</span><br><span class="line">    return lists</span><br><span class="line"></span><br><span class="line"># test</span><br><span class="line">lists =[1,2,-3, 90,34]</span><br><span class="line">print(insert_sort(lists))</span><br></pre></td></tr></table></figure>
-<h3 id="选择排序-Select-Sort"><a href="#选择排序-Select-Sort" class="headerlink" title="选择排序(Select Sort)"></a>选择排序(Select Sort)</h3><p>为每个位置选择当前元素最小的。选择最小的元素和a[0]交换，选择次最小的和a[1]交换，以此类推。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/15755472.jpg" alt="avatar"><br>代码实现:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def select_sort(lists):</span><br><span class="line">    count =len(lists)</span><br><span class="line">    for i in range(0, count):</span><br><span class="line">        min =i</span><br><span class="line">        for j in range(i+1, count):</span><br><span class="line">            if lists[min] &gt;lists[j]:</span><br><span class="line">                min =j</span><br><span class="line">        lists[min], lists[i] =lists[i], lists[min]</span><br><span class="line">    return lists</span><br><span class="line"></span><br><span class="line"># test</span><br><span class="line">lists =[1, 23,45, 0,-1]</span><br><span class="line">print(select_sort(lists))</span><br></pre></td></tr></table></figure></p>
-<h3 id="冒泡排序-Bubble-Sort"><a href="#冒泡排序-Bubble-Sort" class="headerlink" title="冒泡排序(Bubble Sort)"></a>冒泡排序(Bubble Sort)</h3><p>重复遍历要排序的数列，一次比较两个元素，如果顺序错误就交换位置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def bubble_sort(lists):</span><br><span class="line">    count =len(lists)</span><br><span class="line">    for i in range(0, count):</span><br><span class="line">        for j in range(i+1, count):</span><br><span class="line">            if lists[i]&gt; lists[j]:</span><br><span class="line">                lists[i], lists[j] =lists[j], lists[i]</span><br><span class="line">    return lists</span><br><span class="line"></span><br><span class="line"># test</span><br><span class="line">lists =[1,34,45,0,89]</span><br><span class="line">print(bubble_sort(lists))</span><br></pre></td></tr></table></figure></p>
-<h3 id="归并排序-Merge-Sort"><a href="#归并排序-Merge-Sort" class="headerlink" title="归并排序(Merge Sort)"></a>归并排序(Merge Sort)</h3><p>归并排序，应该是我第一个接触的排序算法。然后在在某次重要面试时候，使用该算法救急。该算法是采用采用分治法(Divide and Conquer)的思想:先使得子序列有序，然后合并子序列。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">def merge(left, right):</span><br><span class="line">    i, j =0,0</span><br><span class="line">    result =[]</span><br><span class="line">    while i&lt;len(left) and j &lt;len(right):</span><br><span class="line">        if left[i] &lt;= right[j]:</span><br><span class="line">            result.append(left[i])</span><br><span class="line">            i +=1</span><br><span class="line">        else:</span><br><span class="line">            result.append(right[j])</span><br><span class="line">            j +=1</span><br><span class="line">    result += left[i:]</span><br><span class="line">    result += right[j:]</span><br><span class="line">    return result</span><br><span class="line"></span><br><span class="line">def merge_sort(lists):</span><br><span class="line">    if len(lists) &lt;=1:</span><br><span class="line">        return  lists</span><br><span class="line">    num =int(len(lists)/2)</span><br><span class="line">    left =merge_sort(lists[:num])</span><br><span class="line">    right = merge_sort(lists[num:])</span><br><span class="line">    return merge(left, right)</span><br><span class="line"># merge_sort 是先切分，然后再整合，quick sort 是两个指针</span><br><span class="line"></span><br><span class="line"># test</span><br><span class="line">lists =[1, 34, 23,45,0,9]</span><br><span class="line">print(merge_sort(lists))</span><br></pre></td></tr></table></figure></p>
-<h3 id="快速排序-Quick-Sort"><a href="#快速排序-Quick-Sort" class="headerlink" title="快速排序(Quick Sort)"></a>快速排序(Quick Sort)</h3><p>快速排序的思想：任意选择一个key(通常选择a[0])，将比他小的数据放在它的前面，比他大的数字放在它的后面。递归进行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def quick_sort(lists, left, right):</span><br><span class="line">    if left &gt;= right:</span><br><span class="line">        return lists</span><br><span class="line">    key =lists[left]</span><br><span class="line">    low =left</span><br><span class="line">    high  =right</span><br><span class="line">    while left &lt; right:</span><br><span class="line">        # 因为你最初key 取得是left，然后从右边找到一个比key小的，然后替换left 的位置</span><br><span class="line">        while left &lt;right and lists[right]&gt;=key:</span><br><span class="line">            right  -= 1</span><br><span class="line">        lists[left] =lists[right]</span><br><span class="line">        while left &lt; right and lists[left] &lt;= key:</span><br><span class="line">            left +=1</span><br><span class="line">        lists[right] =lists[left]</span><br><span class="line">    lists[left] =key</span><br><span class="line">    # 这里的left 和right 都是可以的，因为从while 中出来之后两者是相同的</span><br><span class="line">    # 这个步伐是1,所以只能是一个个变化</span><br><span class="line">    quick_sort(lists, low, left-1)</span><br><span class="line">    quick_sort(lists, left+1, high)</span><br><span class="line">    # 因为left的位置已经被占了，所以只是划分左边一块，右边一块就是可以的</span><br><span class="line">    return  lists</span><br><span class="line"># test</span><br><span class="line">lists =[3,2,45, 100,1,56,56]</span><br><span class="line">#lists =[1,2,3,2,2,2,5,4,2]</span><br><span class="line">print(quick_sort(lists, 0, len(lists)-1))</span><br></pre></td></tr></table></figure></p>
-<h3 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h3><p>参看另一篇<a href="https://jijeng.github.io/2018/06/22/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98%E7%9B%AE/" target="_blank" rel="noopener">博客</a>中堆排序。</p>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="http://ictar.github.io/2015/12/01/%E4%B9%9D%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6Python%E5%AE%9E%E7%8E%B0%E4%B9%8B%E7%AE%80%E5%8D%95%E6%8E%92%E5%BA%8F/" target="_blank" rel="noopener">算法动图效果</a><br><a href="http://python.jobbole.com/82270/" target="_blank" rel="noopener">排序算法分类</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/26/等概率生成器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/26/等概率生成器/" itemprop="url">Untitled</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-26T09:31:17+08:00">
-                2018-06-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/06/26/等概率生成器/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/26/等概率生成器/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-<p>title: 等概率生成器<br>date: 2018-05-28 22:20:24<br>tags: 等概率生成器</p>
-<h2 id="categories-算法"><a href="#categories-算法" class="headerlink" title="categories: 算法"></a>categories: 算法</h2><p>给定一个可以等概率生成1-3的rand3()函数生成器，求解可以随机等概率生成1-7的rand7()函数生成器。</p>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>使用rand3()函数生成1-9的数字，然后丢弃8,9两种可能。</p>
-<h3 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random7</span><span class="params">(self)</span>:</span></span><br><span class="line">        x =<span class="number">8</span></span><br><span class="line">        <span class="keyword">while</span> x&gt;<span class="number">7</span>:</span><br><span class="line">            x =self.random3() + (self.random3()<span class="number">-1</span>)*<span class="number">3</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random3</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> </span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">"__main__"</span>:</span><br><span class="line">    print(Solution().random7())</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2000,7 +2050,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

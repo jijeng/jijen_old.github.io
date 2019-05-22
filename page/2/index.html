@@ -296,6 +296,393 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/17/weights-initialization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/17/weights-initialization/" itemprop="url">Weights Initialization</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-17T21:04:44+08:00">
+                2019-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/17/weights-initialization/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/04/17/weights-initialization/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Training a neural network consists of four steps: initialize weights and biases, forward propagation, compute the loss function and backward propagation. This blog mainly focuses on the first part: weights initialization.</p>
+<p>After completing this tutorial, you will know:</p>
+<ul>
+<li><p>Four main types of weights initialization</p>
+</li>
+<li><p>How to choose between Xavier initialization and He initialization</p>
+</li>
+</ul>
+<h2 id="Types-of-Weights-Initialization"><a href="#Types-of-Weights-Initialization" class="headerlink" title="Types of Weights Initialization"></a>Types of Weights Initialization</h2><ol>
+<li>Initializing weights with zero</li>
+</ol>
+<p>When you set all weights in a neural network to zero, the derivative with respect to loss function is the same for every $ w$ in the same layer, thus all the weights have the same values in the subsequent iteration, which makes your model equivalent to a linear model.</p>
+<ol start="2">
+<li>Initializing weights randomly</li>
+</ol>
+<p>You can get weights like this (Python):</p>
+<pre><code>w =np.random.randn(layer_size[l],layer_size[l-1])
+</code></pre><p>The weighs follows standard normal distribution while it can potentially lead to two issues: vanishing gradients and exploding gradients.</p>
+<p>If the weights start too small, then the signal shrinks as it passes through each layer until it’s too small to be useful.</p>
+<p>If the weights start too large, then the signal grows as it passes through each layer until it’s too massive to be useful (big value in sigmoid function).</p>
+<p>Thus there are two necessary conditions to consider:</p>
+<ul>
+<li><p>The values of each activation layer won’t be zero</p>
+</li>
+<li><p>The values of each activation layer won’t go into the area of saturation</p>
+</li>
+</ul>
+<ol start="3">
+<li>Xavier/Glorot Initialization</li>
+</ol>
+<p>For deep networks, we can use a heuristic to initialize the weights depending on the non-linear activation function. This applies to Xavier and He initialization.</p>
+<p>Xavier/Glorot Initialization initializes the weights in your network by drawing them from a distribution with zero mean and a specific variance.<br>$$ { var } ( w _ { i } ) = \frac { 1 } { layer_{l-1}}$$</p>
+<pre><code>w=np.random.randn(layer_size[l],layer_size[l-1])*np.sqrt(1/layer_size[l-1])
+</code></pre><p>In practice, it works better for layers with sigmoid or tanh function. </p>
+<ol start="4">
+<li>He Initialization</li>
+</ol>
+<p>Using RELU or Leaky RELU is relatively robust to the vanishing/ exploding gradient issues compared with sigmoid function especially for networks that are not too deep. And it the case of Leaky RELU, it never has zero gradients. For RELU, we multiply the randomly generated values of $w$ by: </p>
+<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } } }$$</p>
+<pre><code>w=np.random.randn(layer_size[l],layer_size[l-1])*np.sqrt(2/layer_size[l-1])
+</code></pre><p>Sometimes, we combine the idea of Xavier initialization and He initializaiton so the variance becomes the following:</p>
+<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } + \operatorname { layer } _ { [ l ] } } }$$</p>
+<pre><code>w=np.random.randn(layer_size[l],layer_size[l-1])*np.sqrt(2/(layer_size[l-1]+layer_size[l]))
+</code></pre><p>The idea behind this is that we set the weights neither too much bigger than 1 nor too much less than 1 so the gradients do not vanish or explode too quickly.</p>
+<h2 id="Takeoff"><a href="#Takeoff" class="headerlink" title="Takeoff"></a>Takeoff</h2><p>In summary, the main difference in machine learning is the following:</p>
+<ul>
+<li><p>He initialization works better for layers with ReLu(s) activation.</p>
+</li>
+<li><p>Xavier initialization works better for layers with sigmoid activation.</p>
+</li>
+</ul>
+<h2 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence:"></a>Referrence:</h2><p><a href="https://arxiv.org/abs/1502.01852" target="_blank" rel="noopener">He initialization</a></p>
+<p><a href="http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf" target="_blank" rel="noopener">Xavier initialization</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/09/cyclegan-stylegan/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/09/cyclegan-stylegan/" itemprop="url">CycleGAN & StyleGAN</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-09T18:48:30+08:00">
+                2019-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/09/cyclegan-stylegan/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/04/09/cyclegan-stylegan/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>In the past few yeas, GANs have been used in lots of different applications such as generating synthetic data, style transfer, super-resolution and text2image generation. But we donn’t aim to give a overview of what GANs are made for. There are many great and detailed blogs for your understanding.</p>
+<p>If you have fun about transfer learning, especially style transfer using GANs, this post might interest you!</p>
+<h2 id="What-this-post-is-about"><a href="#What-this-post-is-about" class="headerlink" title="What this post is about"></a>What this post is about</h2><ul>
+<li>Main ideas of CycleGAN</li>
+<li>Keypoints in StyleGAN</li>
+</ul>
+<h2 id="A-Gentle-Introduction-of-GANs"><a href="#A-Gentle-Introduction-of-GANs" class="headerlink" title="A Gentle Introduction of GANs"></a>A Gentle Introduction of GANs</h2><p>We assume the reader has some prior experience with neural networks. In addition, if you are familiar with GANs you can <a href="#jump">skip</a> this section.</p>
+<p>The famous minimax objective function can be formulated as following:<br>$$<br>\min _ { \theta _ { g } } \max _ { \theta _ { d } } \left[ \mathbb { E } _ { x \sim p _ { d a t a } } \log D _ { \theta _ { d } } ( x ) + \mathbb { E } _ { z \sim p ( z ) } \log \left( 1 - D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right) \right)<br>$$<br>But in practical, the loss function cannot work very well. So we have alternative objective function:</p>
+<ol>
+<li>Gradient ascent on discriminator</li>
+</ol>
+<p>$$<br>\max _ { \theta _ { d } } \left[ \mathbb { E } _ { x \sim p _ { d a t a } } \log D _ { \theta _ { d } } ( x ) + \mathbb { E } _ { z \sim p ( z ) } \log \left( 1 - D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right) \right]<br>$$</p>
+<ol start="2">
+<li>Gradient ascent on generator<br>$$<br>\max _ { \theta _ { g } } \mathbb { E } _ { z \sim p ( z ) } \log \left( D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right)<br>$$<br>The reasoning behind this can be found in original <a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">paper</a>. Simplily speaking, we can get higher gradient signal for bad samples, which works much better in practice.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1w9einh3uj20sk0dkn1c.jpg" alt=""><center><span id="jump">From Stanford CS231 Lecture 13 — Generative Models </span></center>
+
+</li>
+</ol>
+<h2 id="Main-ideas-of-CycleGAN"><a href="#Main-ideas-of-CycleGAN" class="headerlink" title="Main ideas of CycleGAN"></a>Main ideas of CycleGAN</h2><p>CycleGAN was introduced in 2017 out of Berkeley, <a href="https://arxiv.org/abs/1703.10593" target="_blank" rel="noopener">Unpaired Image-to-Image Translation Using Cycle-Coonsistent Adversarial Networks</a>.  This task is performed on unpaired data. Recent methods such as Pix2Pix depend on the availability of training examples where the samee data is availabel in both domains. However, CycleGAN is able to learning such pair information without one-to-one mapping between training data in source and target domains.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wb7eq678j20vg0kidpn.jpg" alt=""></p>
+<h2 id="Network-Architecture"><a href="#Network-Architecture" class="headerlink" title="Network Architecture"></a>Network Architecture</h2><p>We build three networks.</p>
+<ul>
+<li>A generator $F$ to convert image $y$ to image $ \hat{x}$</li>
+<li>A generator $G$ to convert image $\hat{x}$ to image $ \hat{y}$</li>
+<li>A discriminator $D$ to idenfify real image or generated picture<br>Simplified version of CycleGAN architecture can be showed in the following.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wbibdfe1j20i60c3wf0.jpg" alt=""><br>The function $F$ and $G$ are generator network, which consists of encoder, transformer and decoder. Encoder is extracting the features from an image which is done by convolution networks. Each convolution layer leads to extraction of progressively higher level features. We would like to transform the feature emebdding of an image from domain $X$ to that of domain $Y$. So for this, authors have used 6 layers of resnet blocks. Resnet block is a neural network layer which consists of two convolutiona layers when a residue of input ia added to the output. This is done to ensure peoperties of input of previous layers are available for later layers as well.Resnet block can be summarized in following image<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wet610p7j20km0ceabs.jpg" alt=""><br>The decoder transfer embedding from $y$ back to original embedding $x$.</li>
+</ul>
+<h2 id="Loss-function"><a href="#Loss-function" class="headerlink" title="Loss function"></a>Loss function</h2><p>There are two types of losses in CycleGAN. Besides adversarial loss, we have another loss named reconstruction cost.<br>Adversarial loss is similary to original GAN.<br>$$<br>\operatorname { Loss } _ { a d v } \left( F , D _ { x } , Y \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { x } \left( F \left( y _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>$$<br>\operatorname { Loss } _ { a d v } \left( G , D _ { y } , X \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { y } \left( G \left( x _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>However, the adversarial loss alone is not sufficient to produce good looking images, which can not enfore that the input and output are recognizably the same. The cycle consistency loss addresses this issue. It relies on the expectation that if you convert an image to the other domain and back again, and then you should get back something similar to what you put in. It enforces that $F ( G ( x ) ) \approx x$ and $G ( F ( y ) ) \approx y$.<br>$$<br>\operatorname { Loss } _ { c y c } ( G , F , X , Y ) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left[ F \left( G \left( x _ { i } \right) \right) - x _ { i } \right] + \left[ G \left( F \left( y _ { i } \right) \right) - y _ { i } \right]<br>$$<br>We can get the full objective function by putting these two together.<br>$$<br>\mathcal { L } \left( G , F , D _ { x} , D _ { y } \right) = \mathcal { L } _ { \text { GAN } } \left( G , D _ { y } , X , Y \right) + \mathcal { L } _ { \text { GAN } } \left( F , D _ { x } , Y , X \right) + \lambda \mathcal { L } _ { \text { cyc } } ( G , F )<br>$$</p>
+<h2 id="Keypoints-of-StyleGAN"><a href="#Keypoints-of-StyleGAN" class="headerlink" title="Keypoints of StyleGAN"></a>Keypoints of StyleGAN</h2><p>The StyleGAN offeras an upgrade version of ProGAN’s image generator, with a focus on the generator. </p>
+<p>ProGAN generates high-quality images but, in most models, its ability to control specific features of the generated image is very limited. In other word, the features are entangled and therefore attempting to tweak the input, even a bit, usually affects multiple features at the same time. A good illustrations would be following pictures.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfimzvg2g20ps0en4qq.gif" alt=""><br>Compared with first version (ProGAN), the new generator includes several additions to ProGAN’s generators.</p>
+<h2 id="Mapping-Network"><a href="#Mapping-Network" class="headerlink" title="Mapping Network"></a>Mapping Network</h2><p>The mapping network’s goal in to encode the input vector into an intermediate vector whose different elements control different visual features, which consists of 8 fully connected layers and its output $w$ is of the same size as the input.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfvtdeh3j20nn0b9gma.jpg" alt=""></p>
+<h2 id="Style-Modules-AdaIN"><a href="#Style-Modules-AdaIN" class="headerlink" title="Style Modules (AdaIN)"></a>Style Modules (AdaIN)</h2><p>The AdaIn (Adaptive Instance Normalization) module transfers the encoded information $w$, created by the mapping network, into the generated image.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wg3c5awfj20ca09q3z6.jpg" alt=""></p>
+<h2 id="Removing-traditional-input"><a href="#Removing-traditional-input" class="headerlink" title="Removing traditional input"></a>Removing traditional input</h2><p>Since the encoded information $w$ from mapping network was used into generator image, the traditional random input can be omitted and replaced by constant values.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/09/python-for-beginners/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -427,7 +814,10 @@
 <p>dictionary:<br>It stores key/value pair objects.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">    my_dict =dict()</span><br><span class="line">    my_dict[<span class="string">'key'</span>] =<span class="string">'value'</span></span><br><span class="line">    <span class="keyword">or</span> </span><br><span class="line">    my_dict =&#123;<span class="string">'key'</span>: <span class="string">'value'</span>, ...&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> my_dict:</span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'some key'</span> <span class="keyword">in</span> my_dict:</span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line">```    </span><br><span class="line"><span class="comment">### Iterators###</span></span><br><span class="line">```python</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">yrange</span>:</span></span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        self.i =<span class="number">0</span></span><br><span class="line">        self.n =n</span><br><span class="line">      <span class="comment"># 这个表明是一个 iterator，make an object iterable</span></span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">      <span class="comment"># 这个next 函数就被当做是 class的属性，可以被外部调用的，</span></span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.i &lt; self.n:</span><br><span class="line">          i =self.i</span><br><span class="line">          self.i +=<span class="number">1</span></span><br><span class="line">          <span class="keyword">return</span> i</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          <span class="keyword">raise</span> StopIteration()</span><br></pre></td></tr></table></figure></p>
 <h3 id="shallow-vs-deep-copy"><a href="#shallow-vs-deep-copy" class="headerlink" title="shallow vs deep copy"></a>shallow vs deep copy</h3><p>python3 中：<br>对于简单的数据类型，像int ，string，这种 copy() 和copy.deepcopy() 这两者都是相同的，copy 都是一种映射，都是相当于”值“ 上的引用；<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">aa =<span class="number">2</span></span><br><span class="line">bb =aa</span><br><span class="line">print(id(aa), id(bb)) <span class="comment"># 相同</span></span><br><span class="line">bb =<span class="number">3</span></span><br><span class="line">print(id(aa), id(bb)) <span class="comment"># 不同，因为把3 这个值重新复制给了变量bb</span></span><br></pre></td></tr></table></figure></p>
 <p>对于复杂的数据类型，使用deepcopy() 的时候，本来就是会重新拷贝一份到内存中。在python3 中copy() 和deepcopy() 这个是没有什么区别的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list1 =[<span class="string">'a'</span>, <span class="string">'b'</span>]</span><br><span class="line">list2 =list1 <span class="comment"># 这个是引用，所以和list1 是相同的</span></span><br><span class="line">list3 =copy.copy(list1)  <span class="comment"># 这个id 和list1 不同</span></span><br><span class="line">list4 =copy.deepcopy(list1)<span class="comment"># 这个id 和list1 不同 </span></span><br><span class="line">print(id(list1), id(list2), id(list3), id(list4))</span><br></pre></td></tr></table></figure></p>
-<h3 id="object-oriented-design"><a href="#object-oriented-design" class="headerlink" title="object oriented design"></a>object oriented design</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ParentClass</span>:</span></span><br><span class="line">     <span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">(self)</span>:</span></span><br><span class="line">       <span class="keyword">print</span> <span class="string">'I am here'</span></span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">SubClass1</span><span class="params">(ParentClass)</span>:</span> </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">SubClass2</span><span class="params">(ParentClass)</span>:</span> </span><br><span class="line">```    </span><br><span class="line">对于多继承的支持 （接口）</span><br><span class="line">```python</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(B,C)</span>:</span>  <span class="comment">#A implments B and C</span></span><br><span class="line">```    </span><br><span class="line">如果想要call parent <span class="class"><span class="keyword">class</span> <span class="title">function</span> <span class="title">then</span> <span class="title">you</span> <span class="title">can</span> <span class="title">dp</span>:</span></span><br><span class="line">```python</span><br><span class="line">    super(A, self).funcion_name()</span><br><span class="line">```    </span><br><span class="line">    </span><br><span class="line"><span class="comment">### garbage collection###</span></span><br><span class="line">all the objects  <span class="keyword">in</span> python are stored <span class="keyword">in</span> a heap space. Python has an <span class="keyword">in</span>-built garbage collection mechanism.</span><br><span class="line"></span><br><span class="line">&gt; In computer science, a heap <span class="keyword">is</span> a specialized tree-based data structure which <span class="keyword">is</span> essentially an almost complete[<span class="number">1</span>] tree that satisfies the heap property: <span class="keyword">if</span> P <span class="keyword">is</span> a parent node of C, then the key(the value) of P <span class="keyword">is</span> either greater than <span class="keyword">or</span> equal to (<span class="keyword">in</span> a max heap) <span class="keyword">or</span> less than <span class="keyword">or</span> equal to (<span class="keyword">in</span> a min heap) the key of C.</span><br><span class="line"></span><br><span class="line"><span class="comment">### try...catch###</span></span><br><span class="line">```python</span><br><span class="line">    <span class="comment"># raise exceptions</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      <span class="keyword">raise</span> TyeError</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">      print(<span class="string">'exception'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># catching exceptions</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      do_something()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">      print(<span class="string">'exception'</span>)</span><br><span class="line">    <span class="comment"># try/ catch /finally</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      do_something()</span><br><span class="line">    <span class="keyword">except</span> TypeError:</span><br><span class="line">      print(<span class="string">'exception'</span>)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">      close_connections()</span><br><span class="line">```      </span><br><span class="line"></span><br><span class="line"><span class="comment">## Advanced Features</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### Lambda functions：</span></span><br><span class="line"></span><br><span class="line">A Lambda Function <span class="keyword">is</span> a small, anonymous function — anonymous <span class="keyword">in</span> the sense that it doesn’t actually have a name.</span><br><span class="line">A <span class="keyword">lambda</span> function can take any number of arguments, but must always have only one expression:</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">x = <span class="keyword">lambda</span> a, b : a * b</span><br><span class="line">	print(x(<span class="number">5</span>, <span class="number">6</span>)) <span class="comment"># prints '30'</span></span><br><span class="line">	x = <span class="keyword">lambda</span> a : a*<span class="number">3</span> + <span class="number">3</span></span><br><span class="line">	print(x(<span class="number">3</span>)) <span class="comment"># prints '12'</span></span><br></pre></td></tr></table></figure>
+<h3 id="object-oriented-design"><a href="#object-oriented-design" class="headerlink" title="object oriented design"></a>object oriented design</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ParentClass</span>:</span></span><br><span class="line">     <span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">(self)</span>:</span></span><br><span class="line">       <span class="keyword">print</span> <span class="string">'I am here'</span></span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">SubClass1</span><span class="params">(ParentClass)</span>:</span> </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">SubClass2</span><span class="params">(ParentClass)</span>:</span> </span><br><span class="line">```    </span><br><span class="line">对于多继承的支持 （接口）</span><br><span class="line">```python</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(B,C)</span>:</span>  <span class="comment">#A implments B and C</span></span><br><span class="line">```    </span><br><span class="line">如果想要call parent <span class="class"><span class="keyword">class</span> <span class="title">function</span> <span class="title">then</span> <span class="title">you</span> <span class="title">can</span> <span class="title">dp</span>:</span></span><br><span class="line">```python</span><br><span class="line">    super(A, self).funcion_name()</span><br><span class="line">```    </span><br><span class="line">    </span><br><span class="line"><span class="comment">### garbage collection###</span></span><br><span class="line">all the objects  <span class="keyword">in</span> python are stored <span class="keyword">in</span> a heap space. Python has an <span class="keyword">in</span>-built garbage collection mechanism.</span><br><span class="line"></span><br><span class="line">&gt; In computer science, a heap <span class="keyword">is</span> a specialized tree-based data structure which <span class="keyword">is</span> essentially an almost complete[<span class="number">1</span>] tree that satisfies the heap property: <span class="keyword">if</span> P <span class="keyword">is</span> a parent node of C, then the key(the value) of P <span class="keyword">is</span> either greater than <span class="keyword">or</span> equal to (<span class="keyword">in</span> a max heap) <span class="keyword">or</span> less than <span class="keyword">or</span> equal to (<span class="keyword">in</span> a min heap) the key of C.</span><br><span class="line"></span><br><span class="line"><span class="comment">### try...catch###</span></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">    <span class="comment"># raise exceptions</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      <span class="keyword">raise</span> TyeError</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">      print(<span class="string">'exception'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># catching exceptions</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      do_something()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">      print(<span class="string">'exception'</span>)</span><br><span class="line">    <span class="comment"># try/ catch /finally</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      do_something()</span><br><span class="line">    <span class="keyword">except</span> TypeError:</span><br><span class="line">      print(<span class="string">'exception'</span>)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">      close_connections()</span><br></pre></td></tr></table></figure>
+<h2 id="Advanced-Features"><a href="#Advanced-Features" class="headerlink" title="Advanced Features"></a>Advanced Features</h2><p>Let’s move on to advanced features.</p>
+<h3 id="Lambda-functions"><a href="#Lambda-functions" class="headerlink" title="Lambda functions"></a>Lambda functions</h3><p>A Lambda Function is a small, anonymous function — anonymous in the sense that it doesn’t actually have a name. A lambda function can take any number of arguments, but must always have only one expression:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="keyword">lambda</span> a, b : a * b</span><br><span class="line">	print(x(<span class="number">5</span>, <span class="number">6</span>)) <span class="comment"># prints '30'</span></span><br><span class="line">	x = <span class="keyword">lambda</span> a : a*<span class="number">3</span> + <span class="number">3</span></span><br><span class="line">	print(x(<span class="number">3</span>)) <span class="comment"># prints '12'</span></span><br></pre></td></tr></table></figure>
 <h3 id="Maps"><a href="#Maps" class="headerlink" title="Maps"></a>Maps</h3><p>Map() is a built-in Python function used to apply a function to a sequence of elements like a list or dictionary. It’s a very clean and most importantly readable way to perform such an operation.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">square_it_func</span><span class="params">(a)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a * a</span><br><span class="line">x = map(square_it_func, [<span class="number">1</span>, <span class="number">4</span>, <span class="number">7</span>])</span><br><span class="line">print(x) <span class="comment"># prints '[1, 16, 49]'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multiplier_func</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a * b</span><br><span class="line">x = map(multiplier_func, [<span class="number">1</span>, <span class="number">4</span>, <span class="number">7</span>], [<span class="number">2</span>, <span class="number">5</span>, <span class="number">8</span>])</span><br><span class="line">print(x) <span class="comment"># prints '[2, 20, 56]'</span></span><br></pre></td></tr></table></figure>
 <h3 id="Filtering"><a href="#Filtering" class="headerlink" title="Filtering"></a>Filtering</h3><p>The Filter built-in function is quite similar to the Map function in that it applies a function to a sequence (list, tuple, dictionary). The key difference is that filter() will only return the elements which the applied function returned as True.</p>
@@ -452,6 +842,12 @@
 <p>ouput matric from nested list comprehensions:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">matrix = [[item <span class="keyword">for</span> item <span class="keyword">in</span> range(<span class="number">5</span>)] <span class="keyword">for</span> row <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line">print(matrix)</span><br></pre></td></tr></table></figure></p>
 <p>对于 dictionary 的支持： 主要是 dict1.items() 和 key, value 的使用<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">prices = &#123;<span class="string">"beer"</span>: <span class="number">2</span>, <span class="string">"fish"</span>: <span class="number">5</span>, <span class="string">"apple"</span>: <span class="number">1</span>&#125;</span><br><span class="line">float_prices = &#123;key:float(value) <span class="keyword">for</span> key, value <span class="keyword">in</span> prices.items()&#125;</span><br><span class="line">print(float_prices)</span><br></pre></td></tr></table></figure></p>
 <p>从代码的角度，可以看出，操作和最后的返回的形式是没有很大的关系，上面是 [], 这个是 {}, 分别对应的是 list 和 set 两种不同的格式。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">10</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">12</span>, <span class="number">-20</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">unique_squares = &#123;number**<span class="number">2</span> <span class="keyword">for</span> number <span class="keyword">in</span> numbers&#125;</span><br><span class="line">print(unique_squares)</span><br></pre></td></tr></table></figure></p>
+<h2 id="Working-with-CSV-Json-and-XML"><a href="#Working-with-CSV-Json-and-XML" class="headerlink" title="Working with CSV, Json and XML"></a>Working with CSV, Json and XML</h2><p>Over the years, the list of possible formats that you can store your data in has grown significantly. But, there are 3 that dominate in their everyday usage: CSV, JSON, and XML. In this article, I’m going to share with you the easiest ways to work with these 3 popular data formats in Python!</p>
+<p>有两种方式去读写 csv file：一种是 pd.read_csv() ，一种是built-in 的library 中的库函数<br>之前一直使用的pd.read_csv(), 现在才发现python 有built-in 的library。<br>We can do both read and write of a CSV using the built-in Python csv library. Usually, we’ll read the data into a list of lists.</p>
+<p>python in-built function.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv </span><br><span class="line">filename = <span class="string">"my_data.csv"</span></span><br><span class="line">fields = [] </span><br><span class="line">rows = [] </span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>) <span class="keyword">as</span> csvfile: </span><br><span class="line">    csvreader = csv.reader(csvfile) </span><br><span class="line">    fields = csvreader.next() </span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> csvreader: </span><br><span class="line">        rows.append(row)</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows[:<span class="number">5</span>]: </span><br><span class="line">    print(row)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Writing to csv file </span></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'w+'</span>) <span class="keyword">as</span> csvfile: </span><br><span class="line">    csvwriter = csv.writer(csvfile) </span><br><span class="line">    csvwriter.writerow(fields) </span><br><span class="line">    csvwriter.writerows(rows)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> dicttoxml <span class="keyword">import</span> dicttoxml</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="comment"># Building our dataframe</span></span><br><span class="line">data = &#123;<span class="string">'Name'</span>: [<span class="string">'Emily'</span>, <span class="string">'Katie'</span>, <span class="string">'John'</span>, <span class="string">'Mike'</span>],</span><br><span class="line">        <span class="string">'Goals'</span>: [<span class="number">12</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">3</span>],</span><br><span class="line">        <span class="string">'Assists'</span>: [<span class="number">18</span>, <span class="number">24</span>, <span class="number">9</span>, <span class="number">14</span>],</span><br><span class="line">        <span class="string">'Shots'</span>: [<span class="number">112</span>, <span class="number">96</span>, <span class="number">101</span>, <span class="number">82</span>]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">df = pd.DataFrame(data, columns=data.keys())</span><br><span class="line"><span class="comment"># Converting the dataframe to a dictionary</span></span><br><span class="line"><span class="comment"># Then save it to file</span></span><br><span class="line">data_dict = df.to_dict(orient=<span class="string">"records"</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'output.json'</span>, <span class="string">"w+"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    json.dump(data_dict, f, indent=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Converting the dataframe to XML</span></span><br><span class="line"><span class="comment"># Then save it to file</span></span><br><span class="line">xml_data = dicttoxml(data_dict).decode()</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"output.xml"</span>, <span class="string">"w+"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(xml_data)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read the data from file</span></span><br><span class="line"><span class="comment"># We now have a Python dictionary</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data.json'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data_listofdict = json.load(f)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># We can do the same thing with pandas</span></span><br><span class="line">data_df = pd.read_json(<span class="string">'data.json'</span>, orient=<span class="string">'records'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># We can write a dictionary to JSON like so</span></span><br><span class="line"><span class="comment"># Use 'indent' and 'sort_keys' to make the JSON</span></span><br><span class="line"><span class="comment"># file look nice</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'new_data.json'</span>, <span class="string">'w+'</span>) <span class="keyword">as</span> json_file:</span><br><span class="line">    json.dump(data_listofdict, json_file, indent=<span class="number">4</span>, sort_keys=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># And again the same thing with pandas</span></span><br><span class="line">export = data_df.to_json(<span class="string">'new_data.json'</span>, orient=<span class="string">'records'</span>)</span><br></pre></td></tr></table></figure>
+<p>参考资料：<br><a href="https://towardsdatascience.com/the-easy-way-to-work-with-csv-json-and-xml-in-python-5056f9325ca9" target="_blank" rel="noopener">https://towardsdatascience.com/the-easy-way-to-work-with-csv-json-and-xml-in-python-5056f9325ca9</a></p>
 
           
         
@@ -1890,357 +2286,6 @@ if __name__ == &quot;__main__&quot;:
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Dimension-Reduction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/25/Dimension-Reduction/" itemprop="url">Dimension Reduction</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:23:56+08:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/25/Dimension-Reduction/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/03/25/Dimension-Reduction/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>对于dimension reduction最近有了新的理解:<br>广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。<br>You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve) the model’s performance.</p>
-<p>不必纠结于采用降维的必要性，直接进入 techniques of dimension reduction.</p>
-<ul>
-<li>low variances<br>这个是针对一个特征内部的，如果一个特征的数据本身没有什么变化，那么这个类似就是一种“死”数据。</li>
-<li>high correlation filter<br>用来判别特征 x 和最后的 target之间的相关性</li>
-<li>principal component analysis (PCA)<br>our old good friend. 如果你提降维，但是你不知道PCA，那么就说不过去。该方法的基本思路：一个基（向量空间）的变换，使得变换后的数据有着最大的方差。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.<br>下面是PCA的一些特点：<blockquote>
-<p>A principal component is a linear combination of the original variables<br>Principal components are extracted in such a way that the first principal component explains maximum variance in the dataset<br>Second principal component tries to explain the remaining variance in the dataset and is uncorrelated to the first principal component<br>Third principal component tries to explain the variance which is not explained by the first two principal components and so on</p>
-</blockquote>
-</li>
-</ul>
-<p>主成分是不断生成的，在前者基础之上生成的。 The first component is the most important one, followed by the second, then the third, and so on.</p>
-<ul>
-<li><p>Singular Value Decomposition (SVD)<br>翻译成中文感觉还是挺别扭的，奇异值分解。关于奇异值，特征值这些数学概念打算另外写一个主题，wait a moment. 简单理解PCA 是针对方阵 (m<em>m), SVD是针对矩阵(m </em>n)，所以后者是具有更大的适用范围。</p>
-</li>
-<li><p>Independent Component Analysis (ICA)<br>这个是在面试的时候被问道的一种降维方法。抓住独立向量应该就没有问题。</p>
-<blockquote>
-<p>Independent Component Analysis (ICA) is based on information-theory and is also one of the most widely used dimensionality reduction techniques. The major difference between PCA and ICA is that PCA looks for uncorrelated factors while ICA looks for independent factors.</p>
-</blockquote>
-</li>
-</ul>
-<p>基本假设：</p>
-<blockquote>
-<p>This algorithm assumes that the given variables are linear mixtures of some unknown latent variables. It also assumes that these latent variables are mutually independent, i.e., they are not dependent on other variables and hence they are called the independent components of the observed data.</p>
-</blockquote>
-<p>ICA 和PCA的异同：从线性代数的角度去理解，PCA和ICA都是要找到一组基，这组基张成一个特征空间，数据的处理就都需要映射到新空间中去。ICA相比与PCA更能刻画变量的随机统计特性，且能抑制高斯噪声。</p>
-<ul>
-<li>T-SNE<br>就是指出 t-SNE 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。这个使用场景是在可视化中，经常会看见将数据或者 <blockquote>
-<p>So far we have learned that PCA is a good choice for dimensionality reduction and visualization for datasets with a large number of variables. But what if we could use something more advanced? What if we can easily search for patterns in a non-linear way? t-SNE is one such technique. There are mainly two types of approaches we can use to map the data points:<br>Local approaches :  They maps nearby points on the manifold to nearby points in the low dimensional representation.<br>Global approaches : They attempt to preserve geometry at all scales, i.e. mapping nearby points on manifold to nearby points in low dimensional representation as well as far away points to far away points.</p>
-</blockquote>
-</li>
-</ul>
-<p>下面介绍两种不是那么“常规”，但是也符合”dimension reduction” 定义的方式。</p>
-<ul>
-<li>projection<br>By projecting one vector onto the other, dimensionality can be reduced.</li>
-<li>autoencoder<br>网络结构通常有 encoder和decoder两部分组成，那么encoder 就作为 information abstraction,而 decoder作为一种重新映射。从这个角度NLP中的词向量也是可以是一种降维手段。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Linear-Algebra-in-ML/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/25/Linear-Algebra-in-ML/" itemprop="url">Linear Algebra in ML</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:14:40+08:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/25/Linear-Algebra-in-ML/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/03/25/Linear-Algebra-in-ML/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care.</p>
-<h2 id="变量（特征个数）和解的关系"><a href="#变量（特征个数）和解的关系" class="headerlink" title="变量（特征个数）和解的关系"></a>变量（特征个数）和解的关系</h2><p>多变量和最后target的关系是可以使用 matrices 进行表示的，这就是一种数学公式化。</p>
-<blockquote>
-<p>Broadly speaking, in linear algebra data is represented in the form of linear equations. These linear equations are in turn represented in the form of matrices and vectors.</p>
-</blockquote>
-<p>先直观的感受一下变量和图形（可视化）的关系。两个变量组成的equations 是两条线的相交情况。而三个变量在空间中有三种情况： 相交，平行，不在一个平面上。三个变量组成的equations 是三个面的相交情况。有四种情况 (try hard to figure it out)：<br>No intersection at all.<br>Planes intersect in a line.<br>They can intersect in a plane.<br>All the three planes intersect at a point.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1etf4u36aj20q00dutdk.jpg" alt=""></p>
-<p>当到达4 dims 的时候，it’s impossible to visulize it.</p>
-<h2 id="terms-in-related-to-matrix"><a href="#terms-in-related-to-matrix" class="headerlink" title="terms in related to matrix"></a>terms in related to matrix</h2><p>这些词汇 (terms) 经常在文献中出现，需要对于其含义有个比较好的认识。<br><strong>Order of matrix</strong> – If a matrix has 3 rows and 4 columns, order of the matrix is 3<em>4 i.e. row</em>column. (翻译成 矩阵的阶)<br><strong>Square matrix</strong> – The matrix in which the number of rows is equal to the number of columns.<br><strong>Diagonal matrix</strong> – A matrix with all the non-diagonal elements equal to 0 is called a diagonal matrix.<br><strong>Upper triangular matrix</strong> – Square matrix with all the elements below diagonal equal to 0.<br><strong>Lower triangular matrix</strong> – Square matrix with all the elements above the diagonal equal to 0.<br><strong>Scalar matrix</strong> – Square matrix with all the diagonal elements equal to some constant k.<br><strong>Identity matrix</strong> – Square matrix with all the diagonal elements equal to 1 and all the non-diagonal elements equal to 0.<br><strong>Column matrix</strong> –  The matrix which consists of only 1 column. Sometimes, it is used to represent a vector.<br><strong>Row matrix</strong> –  A matrix consisting only of row.<br><strong>Trace</strong> – It is the sum of all the diagonal elements of a square matrix.<br><strong>Rank of a matrix</strong> – Rank of a matrix is equal to the maximum number of linearly independent row vectors in a matrix.<br><strong>Determinant of a matrix</strong> - 矩阵的行列式<br><strong>转置</strong> -在图形 matrix中还是很常见的。<br>$$\mathrm { A } _ { \mathrm { ij } } ^ { \mathrm{T}} = \mathrm { A } _ { \mathrm { ji } }$$</p>
-<p>这个矩阵乘法和元素相称的区别，后者是element-wise 进行的。可以从另外一个角度去列及矩阵相称： This operation on a vector is called linear transformation. 就是后面的vector 映射到了前面的矩阵空间。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1eu88lj31j20ao048jrl.jpg" alt=""></p>
-<h2 id="特征值和奇异值"><a href="#特征值和奇异值" class="headerlink" title="特征值和奇异值"></a>特征值和奇异值</h2><p>着两个是分别对应着PCA 和SVD。<br>Eigenvalues and Eigenvectors<br>如公式所示，特征值和特征向量的乘积就是方阵和特征向量的乘积，原先的方阵是可以降维表示成特征向量和特征值的。$ A x  = \lambda  x $</p>
-<p>对于奇异值分解，最常见的就是这种表达：$A = U \Sigma V ^ { T }$<br>特征值分解和奇异值分解都是给一个矩阵(线性变换)找一组特殊的基，特征值分解找到了特征向量这组基，在这组基下该线性变换只有缩放效果。而奇异值分解则是找到另一组基，这组基下线性变换的旋转、缩放、投影三种功能独立地展示出来了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2295,7 +2340,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
