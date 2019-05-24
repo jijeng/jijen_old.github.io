@@ -1045,7 +1045,7 @@
         sims.append(sim)
 
     return sims
-</code></pre><h3 id="Smooth-Inverse-Frequency"><a href="#Smooth-Inverse-Frequency" class="headerlink" title="Smooth Inverse Frequency"></a>Smooth Inverse Frequency</h3><p>The baseline, like we did before, is very simple and crude of computing sentence embedding. Word frequency cannot reliably reflect its importance to sentence, semantically speaking. Smooth Inverse Frequency (SIF) tries to solve thhis problem.</p>
+</code></pre><h3 id="Smooth-Inverse-Frequency"><a href="#Smooth-Inverse-Frequency" class="headerlink" title="Smooth Inverse Frequency"></a>Smooth Inverse Frequency</h3><p>The baseline, like we did before, is very simple and crude of computing sentence embedding. Word frequency cannot reliably reflect its importance to sentence, semantically speaking. Smooth Inverse Frequency (SIF) tries to solve this problem.</p>
 <p>SIF is very similar to the weighted average we used before, with the difference that it’s weighted by this formular.<br>$$<br>\operatorname { SIF } ( w ) = \frac { a } { ( a + p ( w ) )}<br>$$<br>where $a$ is a hyper-parameter (set to 0.001 by default) and $ p(w)$ is the estimated word frequency in the corpus. </p>
 <p>Next, we need to perform common component removal: subtract from the sentence embeddingh obtained above the first principal component of the matrix. This corrects for the influence of high-frequency words that have syntactic or dicourse function, such as ‘but’, ‘and’, etc. You can find more information from <a href="https://openreview.net/pdf?id=SyK00v5xx" target="_blank" rel="noopener">this paper</a>.</p>
 <pre><code>def remove_first_principal_component(X):
