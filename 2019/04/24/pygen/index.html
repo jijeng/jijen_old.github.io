@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dgyq294dj20kg09sq39.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dhis3u0qj20vm0iq75a.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dhj273lrj20vc0iwjsf.jpg">
-<meta property="og:updated_time" content="2019-04-24T03:12:18.833Z">
+<meta property="og:updated_time" content="2019-05-27T11:16:59.830Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pygen">
 <meta name="twitter:description" content="pygen功能：有关联的随机生成人名，邮箱，ID Card (ssn)，电话，地址等信息，并且可以选择保存为 pandas dataframe格式, 数据库”.db” 文件, Excel 文件和csv 文件格式，用于机器学习训练。项目地址github。 随机生成虚假个人信息具有很大的应用空间。首先，虚假的生成数据可以用于机器学习模型的“准备数据”，当真实的数据比较少或者难以获得的时候，可以使用生成">
@@ -415,18 +415,14 @@
 <li>符合国人使用习惯的邮箱电话</li>
 <li>提供保存多种保存文件格式，更加适合机器学习的训练</li>
 </ul>
-<p>中文名字有很强的性别属性。例如名字中带有“杰”“志”“宏”等字的一般为男性，带有“琬”“佩”“梅”等字的一般为女性。当然也有一些比较中性的字，例如“文”“安”“清”等，比较难猜测性别，关于这点会在另一个博客中展开，请期待。<br>在faker 中生成的结果如下图：</p>
-<pre><code>from faker import Faker
-fake = Faker(&apos;zh_CN&apos;)
-for _ in range(10):
-    print(fake.name(),fake.ssn(),fake.phone_number())
-</code></pre><p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dgyq294dj20kg09sq39.jpg" alt=""></p>
+<p>中文名字有很强的性别属性。例如名字中带有“杰”“志”“宏”等字的一般为男性，带有“琬”“佩”“梅”等字的一般为女性。当然也有一些比较中性的字，例如“文”“安”“清”等，比较难猜测性别，关于这点会在另一个博客中展开，请期待。</p>
+<p>faker 对中文的支持有限，比如下面这种情况。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> faker <span class="keyword">import</span> Faker</span><br><span class="line">fake = Faker(<span class="string">'zh_CN'</span>)</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    print(fake.name(),fake.ssn(),fake.phone_number())</span><br></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dgyq294dj20kg09sq39.jpg" alt=""></p>
 <p>从图中可以明显的看出 “王玉梅”和 “李桂花”都是两个女性，但是这种身份证信息（ssn）都没有体现这点。关于身份证的科普信息可以从这里获得。简单来说倒数第二位表示性别信息，如果是男性就是奇数如果是女性就是偶数。faker 生成的数据是不具有数据之间的相关性的。</p>
 <p>基于此，我们进行了改进。首先是姓名的生成，然后是性别的判断，最后再生成相应性别的身份证号码。</p>
-<pre><code>from pygen import pygen
-db =pygen()
-db.gen_dataframe(fields =[&apos;name&apos;, &apos;ssn&apos;, &apos;phone&apos;, &apos;email&apos;])
-</code></pre><p>效果如下：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dhis3u0qj20vm0iq75a.jpg" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pygen <span class="keyword">import</span> pygen</span><br><span class="line">db =pygen()</span><br><span class="line">db.gen_dataframe(fields =[<span class="string">'name'</span>, <span class="string">'ssn'</span>, <span class="string">'phone'</span>, <span class="string">'email'</span>])</span><br></pre></td></tr></table></figure>
+<p>效果如下：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dhis3u0qj20vm0iq75a.jpg" alt=""></p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dhj273lrj20vc0iwjsf.jpg" alt=""></p>
 <p>红色线条表示姓名和性别对应一致，蓝色线条表示结果不确定（“镜阳炎” 像是一个中性的名字），绿色表示生成了含有复姓的名字，增强了数据的多样性。</p>
 <p>从上图的 “mail” 一列可以看出邮箱前缀的命名基本上是中文名字中“姓” 和“民”的拼音组合，加强了数据之间的相关性和真实度。</p>

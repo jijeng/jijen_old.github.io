@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="Mode collapse, a failure case for GANs where the generator generate a limited diversity of samples, regardless of the input. But what causes the mode collapse? There are four reasons for that. The obj">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-18T13:44:30.534Z">
+<meta property="og:updated_time" content="2019-05-27T11:12:39.424Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mode Collapse in GANs">
 <meta name="twitter:description" content="Mode collapse, a failure case for GANs where the generator generate a limited diversity of samples, regardless of the input. But what causes the mode collapse? There are four reasons for that. The obj">
@@ -405,18 +405,18 @@
         <p>Mode collapse, a failure case for GANs where the generator generate a limited diversity of samples, regardless of the input.</p>
 <p>But what causes the mode collapse? There are four reasons for that.</p>
 <p><strong>The objective of GANs</strong></p>
-<p>The generator, generates new data, while the discriminator evaluates it for authenticity but not for the diversity of generated instances.</p>
+<p><strong>The generator, generates new data, while the discriminator evaluates it for authenticity but not for the diversity of generated instances.</strong></p>
 <p>the generator can win by producing a polynomial number of training examples. And a low capacity discriminator cannot detect this process, thus, it cannot guide the generator to approximate the target distribution. Even if a high discriminator identifies and assigns the collapse part a low probability, then the generator will simply move from its collapsed output to focus on another fixed output point.</p>
 <p><strong>Generator</strong></p>
-<p>No matter the objective function is, if it only considers individual samples (without looking forward or backward) then the generator is not directly incentivised to produce diverse examples.</p>
-<p>From [1], standard GAN training corresponds exactly to updating the generator parameters using only the first term in this gradient because of a fixed discriminator during GAN training. Therefore, in standard GAN training, each generator updata step is a partial collapse towards a delta function.</p>
+<p>No matter the objective function is, if it only <strong>considers individual samples (without looking forward or backward)</strong> then the generator is not directly incentivised to produce diverse examples.</p>
+<p>From [1], standard GAN training corresponds exactly to updating the generator parameters using only the first term in this gradient because of a fixed discriminator during GAN training. Therefore, in standard GAN training, each generator update step is a partial collapse towards a delta function.</p>
 <p>$$<br>\frac { \mathrm { d } f _ { K } \left( \theta _ { G } , \theta _ { D } \right) } { \mathrm { d } \theta _ { G } } = \frac { \partial f \left( \theta _ { G } , \theta _ { D } ^ { K } \left( \theta _ { G } , \theta _ { D } \right) \right) } { \partial \theta _ { G } } + \frac { \partial f \left( \theta _ { G } , \theta _ { D } ^ { K } \left( \theta _ { G } , \theta _ { D } \right) \right) } { \partial \theta _ { D } ^ { K } \left( \theta _ { G } , \theta _ { D } \right) } \frac { \mathrm { d } \theta _ { D } ^ { K } \left( \theta _ { G } , \theta _ { D } \right) } { \mathrm { d } \theta _ { G } }<br>$$</p>
 <p>Some methods have been proposed. Multiple generators and weight-sharing generators are developed to capture more modes of the distribution. </p>
 <p><strong>Discriminator</strong></p>
 <p>The mode collapse is often explained as gradient exploding of discriminator, which comes from the imbalance between the discriminator and the generator. For example, the technique of TTUR could help discriminator to keep its optimality. But some researchers believe that this is a desirable goal since a good discriminator can give good feedback and ignore the fact.</p>
-<p>In addition, the discriminator process each example independently, the generator depends on generator, thus  no mechanism to tell the outputs of the generator to become more similar to each other. </p>
-<p>The idea from [2], that we could use minibatch discrimination to help generator give better feedback</p>
-<p>A straightforward approach to handle multimodality is to take random noise vectors along with the conditional contexts as inputs, where the contexts determine the main content and noise vectors are responsible for variations.<br>The noise vectors are ignored or of minor impacts, since cGANs pay more attention to learn from the highdimensional and structured conditional contexts. </p>
+<p>In addition, <strong>the discriminator process each example independently</strong>, the generator depends on discriminator, thus  no mechanism to tell the outputs of the generator to become more similar to each other. </p>
+<p>The idea from [2], that we could use mini-batch discrimination to help generator give better feedback</p>
+<p>A straightforward approach to handle multimodality is to take random noise vectors along with the conditional contexts as inputs, where the contexts determine the main content and noise vectors are responsible for variations.<br>The noise vectors are ignored or of minor impacts, since cGANs pay more attention to learn from the high-dimensional and structured conditional contexts. </p>
 <p><strong>Another question</strong></p>
 <p>Mode collapse may happen only partially?<br>since training is stochastic progress, the input of generator network will vary and the sample drawn from the real distribution will also vary</p>
 <p>But sometimes mode collapse is not all bad news. In style transfer using GAN, we are happy to convert one image to just a good one, rather than finding all variants. Indeed, the specialization in the partial mode collapse sometimes creates higher quality images.</p>
@@ -451,8 +451,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/17/a-not-so-gentle-introduction-to-hyperparameters-tuning/" rel="next" title="A Not-So-Gentle Introduction to Hyperparameters Tuning">
-                <i class="fa fa-chevron-left"></i> A Not-So-Gentle Introduction to Hyperparameters Tuning
+              <a href="/2019/04/17/a-not-so-gentle-introduction-to-hyperparameters-tuning/" rel="next" title="A Not-So-Gentle Introduction to Hyper-parameters Tuning">
+                <i class="fa fa-chevron-left"></i> A Not-So-Gentle Introduction to Hyper-parameters Tuning
               </a>
             
           </div>
