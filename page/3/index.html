@@ -296,6 +296,380 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Python中的多线程和多进程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/25/Python中的多线程和多进程/" itemprop="url">Python中的多线程和多进程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T21:09:35+08:00">
+                2019-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/25/Python中的多线程和多进程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/25/Python中的多线程和多进程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>多线程和多进程问题是可以对应到 并发 （cncurrency）和并行(parallelism)上的。 并发，就是一个单核cpu同时开始了多个任务，但是这个任务并不是同时独立进行的，而是通过cpu的不断切换，保存现场，然后重启这样的快速的切换，给用户的感觉是并发，但是实际上是cpu的计算能力受到了限制，用户体验比较好一些。如果在多核cpu （比如我的mac 是一cpu 6核）这样的话完全是可以达到并行的，这个是真正的独立操作(parallelism)，对应的是多进程的。对应python 中的实现多线程是使用threading，处理的是io 响应；多进程是Concurrency，使用multiprocessing包，处理的是多核cpu的操作。</p>
+<p>Take off: 如果处理io 响应，那么使用多线程；如果是计算，那么使用多进程。</p>
+<blockquote>
+<p>So, before we go deeper into the multiprocessing module, it’s worthwhile ensuring you know the advantages of using multiprocessing over multithreading. The general rule of thumb is that, if you are trying to improve the performance of CPU-bound tasks, multiprocessing is what you want to use. However, if your particular task is Input/Output bound, then you’ll generally want to use multithreading to improve the performance of your applications.</p>
+</blockquote>
+<p>下面是多线程的demo。</p>
+<pre><code>import multiprocessing as mp
+def my_func(x):
+    print(mp.current_process())
+    return x ** x
+
+
+def main():
+    pool = mp.Pool(mp.cpu_count())
+    # 这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的
+    result = pool.map(my_func, [4, 2, 3, 5, 3, 2, 1, 2])
+    result_set_2 = pool.map(my_func, [4, 6, 5, 4, 6, 3, 23, 4, 6])
+    print(result)
+    print(result_set_2)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre><p>这个是多进程的demo。</p>
+<pre><code>import threading
+class Worker(threading.Thread):
+    # Our workers constructor, note the super() method which is vital if we want this
+    # to function properly
+    def __init__(self):
+        super(Worker, self).__init__()
+
+    def run(self):
+        for i in range(10):
+            print(i)
+
+
+def main():
+    thread1 = Worker()
+    thread1.start()
+
+    thread2 = Worker()
+    thread2.start()
+
+    thread3 = Worker()
+    thread3.start()
+
+    thread4 = Worker()
+    thread4.start()
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Data-Pre-processing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/25/Data-Pre-processing/" itemprop="url">Data Pre-processing 学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:26:27+08:00">
+                2019-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/25/Data-Pre-processing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/25/Data-Pre-processing/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning:"></a>Data Cleaning:</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier).<br>对于<strong>missing values</strong> ，可以分成两个问题，要不要处理 和如何处理，具体说来有一下处理手段：</p>
+<ul>
+<li>ignore the tuple; </li>
+<li>fill in the missing value manually</li>
+<li>use a global constant to fill in the missing  value</li>
+<li>use the attribute mean to fill in the missing value (均值)</li>
+<li>use the most probable value to fill in the missing value (mode 众数)</li>
+<li>有时候就是根据某几个特征然后弄一个简单的回归模型，根据模型进行predict</li>
+</ul>
+<p>关于这几种方法如何去选择，我如果说 “it depends”，那么其他人不认为这是一个具有说服力的答案，他们更像知道 it depends what, and when and why to use specific method? 我认为应该是根据缺省值程度和重要性进行经验性的选择，这也去就是 empirical study吧。</p>
+<p>接着是 <strong>noisy data (outlier)</strong>，我的观点是首先得认识到这个是错误的数据，不是真实的数据来源，可能是来自人为的笔误 或者仪器记录的问题，这个是需要修改的。可以使用聚类 (clustering) 进行noisy data 的检测，找到之后这个就类似 missing value了，可以采取以上的手段进行操作，应该注意到的这个 noisy data 所占比例不会很高，否则就成了主要的数据分布了。</p>
+<h3 id="Data-Integration"><a href="#Data-Integration" class="headerlink" title="Data Integration:"></a>Data Integration:</h3><p>处理数据库数据，经常是需要处理子表信息的，那么必然存在着主表，而子表系信息往往是主表信息的某一方面的细化。所以有必要将两者连接起来。</p>
+<h3 id="Data-Transformation"><a href="#Data-Transformation" class="headerlink" title="Data Transformation:"></a>Data Transformation:</h3><p>In data transformation, the data are transformed or consolidated into forms appropriate for mining.<br>这里想要澄清的是很多相同的内容都可以用不同的方式表达，并且可以放在数据处理的不同阶段，并且这种工作不是一次性完成的，而是迭代的 until you run out your patience and time.<br>首先我接触的最常见的就是 discrete variables -&gt; continuous variables. 当然对于 discrete variables，基于树结构的机器学习模型是可以处理的，这里想说的是有这种方式。这种 transformation 常见的处理方式: one-hot 或者 label encoding. </p>
+<p>如果按照 data transformation的预设，那么 normalization 就也属于该模块的内容。 不论是在 machine learning 还是在 图像处理的时候，对于原始的数据经常采取 normalization. 一方面这个是可以预防梯度消失 或者 gradient exploding, 如果你采用了 Sigmoid的激活函数的话。另一方面我认为更加重要的原因是将 不同的数据放在了同一个尺度下，如果你采取了 normalization之后。实现这种normalization 经常采用的是以下三种方式：</p>
+<p>min-max normalization: $x ^ { \prime } = \frac { x - \min ( x ) } { \max ( x ) - \min ( x ) }$<br>mean normalization:$x ^ { \prime } = \frac { x - \text { average } ( x ) } { \max ( x ) - \min ( x ) }$<br>standardization: $x ^ { \prime } = \frac { x - \overline { x } } { \sigma }$</p>
+<h3 id="Data-Reduction"><a href="#Data-Reduction" class="headerlink" title="Data Reduction:"></a>Data Reduction:</h3><p>一般来说很少提及到到 data reduction的必要性，如果非要给出原因，那么可以从时间和空间的角度进行考虑。更加需要关注的是如何做的问题。 </p>
+<p>我的理解reduction 可以从两个维度进行考虑，假设一个 matrics A 是 m*n，这个是一个二维的矩阵，那么可以从 行列两方面入手。映射到机器学习中一般这样描述 从dimension 和 data两个角度去描述，分别称之为 dimension reduction 和 data compression. 前者指的是特征的选取，后者是数据size的减少。<br>dimension reduction: where irrelevant, weakly relevant, or redundant attributes or dimensions may be detected and removed.<br>data compression: PCA 线性降维 to reduce the data set size. 这个是针对某一个特征展开的。</p>
+<p>机器学习中的特征工程是有一定技巧可言，其中我觉得最为有趣的是: generation or you can call it abstraction. 对于特征的泛的提取才是对于问题本身或者特征的理解，这不仅需要积累，更需要对于该问题领域的专业知识， that’s all.举个栗子，在 “Home Credit Default Risk” (kaggle 竞赛)中，原始的训练数据有信贷金额和客户的年收入，这个时候 “credit_income_percent” 就是类似这种性质的提取特征。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/Dimension-Reduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -405,37 +779,45 @@
 <ul>
 <li>low variances<br>这个是针对一个特征内部的，如果一个特征的数据本身没有什么变化，那么这个类似就是一种“死”数据。</li>
 <li>high correlation filter<br>用来判别特征 x 和最后的 target之间的相关性</li>
-<li>principal component analysis (PCA)<br>our old good friend. 如果你提降维，但是你不知道PCA，那么就说不过去。该方法的基本思路：一个基（向量空间）的变换，使得变换后的数据有着最大的方差。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.<br>下面是PCA的一些特点：<blockquote>
+<li>principal component analysis (PCA)<br>our old good friend. 如果你提降维，但是你不知道PCA，那么就说不过去。该方法的基本思路：一个基（向量空间）的变换，使得变换后的数据有着最大的方差。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.</li>
+</ul>
+<p>下面是PCA的一些特点：</p>
+<blockquote>
 <p>A principal component is a linear combination of the original variables<br>Principal components are extracted in such a way that the first principal component explains maximum variance in the dataset<br>Second principal component tries to explain the remaining variance in the dataset and is uncorrelated to the first principal component<br>Third principal component tries to explain the variance which is not explained by the first two principal components and so on</p>
 </blockquote>
-</li>
-</ul>
 <p>主成分是不断生成的，在前者基础之上生成的。 The first component is the most important one, followed by the second, then the third, and so on.</p>
 <ul>
-<li><p>Singular Value Decomposition (SVD)<br>翻译成中文感觉还是挺别扭的，奇异值分解。关于奇异值，特征值这些数学概念打算另外写一个主题，wait a moment. 简单理解PCA 是针对方阵 (m<em>m), SVD是针对矩阵(m </em>n)，所以后者是具有更大的适用范围。</p>
-</li>
-<li><p>Independent Component Analysis (ICA)<br>这个是在面试的时候被问道的一种降维方法。抓住独立向量应该就没有问题。</p>
-<blockquote>
-<p>Independent Component Analysis (ICA) is based on information-theory and is also one of the most widely used dimensionality reduction techniques. The major difference between PCA and ICA is that PCA looks for uncorrelated factors while ICA looks for independent factors.</p>
-</blockquote>
-</li>
+<li>Singular Value Decomposition (SVD)</li>
 </ul>
+<p>翻译成中文感觉还是挺别扭的，奇异值分解。关于奇异值，特征值这些数学概念打算另外写一个主题，wait a moment. 简单理解PCA 是针对方阵 (m<em>m), SVD是针对矩阵(m </em>n)，所以后者是具有更大的适用范围。</p>
+<ul>
+<li>Independent Component Analysis (ICA)</li>
+</ul>
+<p>这个是在面试的时候被问道的一种降维方法。抓住独立向量应该就没有问题。</p>
+<blockquote>
+<p>Independent Component Analysis (ICA) is based on information-theory and is also one of the most widely used dimensionality reduction techniques. The major difference between PCA and ICA is that PCA looks for uncorrelated factors while ICA looks for independent factors. pca 和 ica 的差别在于，相关性和独立性的差别。</p>
+</blockquote>
 <p>基本假设：</p>
 <blockquote>
 <p>This algorithm assumes that the given variables are linear mixtures of some unknown latent variables. It also assumes that these latent variables are mutually independent, i.e., they are not dependent on other variables and hence they are called the independent components of the observed data.</p>
 </blockquote>
 <p>ICA 和PCA的异同：从线性代数的角度去理解，PCA和ICA都是要找到一组基，这组基张成一个特征空间，数据的处理就都需要映射到新空间中去。ICA相比与PCA更能刻画变量的随机统计特性，且能抑制高斯噪声。</p>
 <ul>
-<li>T-SNE<br>就是指出 t-SNE 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。这个使用场景是在可视化中，经常会看见将数据或者 <blockquote>
+<li>T-SNE</li>
+</ul>
+<p>就是指出 t-SNE 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。这个使用场景是在可视化中，经常会看见将数据或者 </p>
+<blockquote>
 <p>So far we have learned that PCA is a good choice for dimensionality reduction and visualization for datasets with a large number of variables. But what if we could use something more advanced? What if we can easily search for patterns in a non-linear way? t-SNE is one such technique. There are mainly two types of approaches we can use to map the data points:<br>Local approaches :  They maps nearby points on the manifold to nearby points in the low dimensional representation.<br>Global approaches : They attempt to preserve geometry at all scales, i.e. mapping nearby points on manifold to nearby points in low dimensional representation as well as far away points to far away points.</p>
 </blockquote>
-</li>
-</ul>
 <p>下面介绍两种不是那么“常规”，但是也符合”dimension reduction” 定义的方式。</p>
 <ul>
-<li>projection<br>By projecting one vector onto the other, dimensionality can be reduced.</li>
-<li>autoencoder<br>网络结构通常有 encoder和decoder两部分组成，那么encoder 就作为 information abstraction,而 decoder作为一种重新映射。从这个角度NLP中的词向量也是可以是一种降维手段。</li>
+<li>projection</li>
 </ul>
+<p>By projecting one vector onto the other, dimensionality can be reduced.</p>
+<ul>
+<li>autoencoder</li>
+</ul>
+<p>网络结构通常有 encoder和decoder两部分组成，那么encoder 就作为 information abstraction,而 decoder作为一种重新映射。从这个角度NLP中的词向量也是可以是一种降维手段。</p>
 
           
         
@@ -912,7 +1294,7 @@
 </ul>
 <p>顺滑过渡到代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 常规导包</span><br><span class="line">import sys,codecs</span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import jieba.posseg</span><br><span class="line">import jieba.analyse</span><br><span class="line">from sklearn import feature_extraction</span><br><span class="line">from sklearn.feature_extraction.text import TfidfTransformer</span><br><span class="line">from sklearn.feature_extraction.text import CountVectorizer</span><br><span class="line"># 数据集的路径</span><br><span class="line">path =&quot;../tianmao2.csv&quot;</span><br><span class="line">names =[&apos;where&apos;, &apos;time&apos;, &apos;title&apos;, &apos;url&apos;, &apos;contents&apos;]</span><br><span class="line">data =pd.read_csv(path, delimiter=&apos;\t&apos;, names= names, nrows=200)</span><br><span class="line">data[&apos;id&apos;] =data.index+1</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/41166141.jpg" alt=""><br>我们使用title和contents 组合作为原始处理的数据，我们认为该数据能够就是文章的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stopkey = [w.strip() for w in codecs.open(&apos;../keyword_extraction/data/stopWord.txt&apos;, &apos;r&apos;).readlines()]</span><br></pre></td></tr></table></figure></p>
-<p>该stop words是中文停用词，就是常见的”的 了”。常见的有百度停用词表、哈尔滨工业大学停用词表以及中科院的停用词表。这里使用的是中科院的停用词。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def dataPrepos(text, stopkey):</span><br><span class="line">    l = []</span><br><span class="line">    pos = [&apos;n&apos;, &apos;nz&apos;, &apos;v&apos;, &apos;vd&apos;, &apos;vn&apos;, &apos;l&apos;, &apos;a&apos;, &apos;d&apos;]  # 定义选取的词性</span><br><span class="line">    seg = jieba.posseg.cut(text)  # 分词</span><br><span class="line">    for i in seg:</span><br><span class="line">        if i.word not in stopkey and i.flag in pos:  # 去停用词 + 词性筛选</span><br><span class="line">            l.append(i.word)</span><br><span class="line">    return l</span><br></pre></td></tr></table></figure></p>
+<p>该stop words是中文停用词，就是常见的”的 了”。常见的有百度停用词表、哈尔滨工业大学停用词表以及中科院的停用词表。这里使用的是中科院的停用词。对于停用词的存储，可以使用set ，因为set 要比 list的检索要快。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def dataPrepos(text, stopkey):</span><br><span class="line">    l = []</span><br><span class="line">    pos = [&apos;n&apos;, &apos;nz&apos;, &apos;v&apos;, &apos;vd&apos;, &apos;vn&apos;, &apos;l&apos;, &apos;a&apos;, &apos;d&apos;]  # 定义选取的词性</span><br><span class="line">    seg = jieba.posseg.cut(text)  # 分词</span><br><span class="line">    for i in seg:</span><br><span class="line">        if i.word not in stopkey and i.flag in pos:  # 去停用词 + 词性筛选</span><br><span class="line">            l.append(i.word)</span><br><span class="line">    return l</span><br></pre></td></tr></table></figure></p>
 <p>我们选择名词作为主要的分析对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">idList, titleList, abstractList = data[&apos;id&apos;], data[&apos;title&apos;], data[&apos;contents&apos;]</span><br><span class="line">corpus = []  # 将所有文档输出到一个list中，一行就是一个文档</span><br><span class="line"># 这个 虽然使用 &quot; &quot; 进行分割 但是实际上还是一个打的list</span><br><span class="line">for index in range(len(idList)):</span><br><span class="line">    text = &apos;%s。%s&apos; % (titleList[index], abstractList[index])  # 拼接标题和摘要</span><br><span class="line">    text = dataPrepos(text, stopkey)  # 文本预处理</span><br><span class="line">    text = &quot; &quot;.join(text)  # 连接成字符串，空格分隔</span><br><span class="line">    corpus.append(text)</span><br></pre></td></tr></table></figure></p>
 <p>这里的corus 是将所有的经过预处理文档作为当前计算 idf 的语料库。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vectorizer = CountVectorizer()</span><br><span class="line">X = vectorizer.fit_transform(corpus)  # 词频矩阵,a[i][j]:表示j词在第i个文本中的词频</span><br><span class="line"># 2、统计每个词的tf-idf权值</span><br><span class="line">transformer = TfidfTransformer()</span><br><span class="line">tfidf = transformer.fit_transform(X)</span><br><span class="line"># 3、获取词袋模型中的关键词</span><br><span class="line">word = vectorizer.get_feature_names()</span><br><span class="line"># 4、获取tf-idf矩阵，a[i][j]表示j词在i篇文本中的tf-idf权重</span><br><span class="line">weight = tfidf.toarray()</span><br></pre></td></tr></table></figure></p>
 <p>使用sklearn 内置的函数计算tf-idf。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">topK = 10</span><br><span class="line">ids, titles, keys, weights = [], [], [], []</span><br><span class="line">for i in range(len(weight)):</span><br><span class="line">    print(&quot;-------这里输出第&quot;, i + 1, &quot;篇文本的词语tf-idf------&quot;)</span><br><span class="line">    ids.append(idList[i])</span><br><span class="line">    titles.append(titleList[i])</span><br><span class="line">    df_word, df_weight = [], []  # 当前文章的所有词汇列表、词汇对应权重列表</span><br><span class="line">    for j in range(len(word)):</span><br><span class="line">        # print(word[j],weight[i][j])</span><br><span class="line">        df_word.append(word[j])</span><br><span class="line">        df_weight.append(weight[i][j])</span><br><span class="line">    df_word = pd.DataFrame(df_word, columns=[&apos;word&apos;])</span><br><span class="line">    df_weight = pd.DataFrame(df_weight, columns=[&apos;weight&apos;])</span><br><span class="line">    word_weight = pd.concat([df_word, df_weight], axis=1)  # 拼接词汇列表和权重列表</span><br><span class="line">    word_weight = word_weight.sort_values(by=&quot;weight&quot;, ascending=False)  # 按照权重值降序排列</span><br><span class="line">    # 在这里可以查看 k的选取的数值应该是多大，</span><br><span class="line">    # from ipdb import set_trace</span><br><span class="line">    # set_trace()</span><br><span class="line">    keyword = np.array(word_weight[&apos;word&apos;])  # 选择词汇列并转成数组格式</span><br><span class="line">    word_split = [keyword[x] for x in range(0, topK)]  # 抽取前topK个词汇作为关键词</span><br><span class="line">    word_split = &quot; &quot;.join(word_split)</span><br><span class="line">    keys.append(word_split)</span><br><span class="line">    wei = np.array(word_weight[&apos;weight&apos;])</span><br><span class="line">    wei_split = [str(wei[x]) for x in range(0, topK)]</span><br><span class="line">    wei_split = &quot; &quot;.join(wei_split)</span><br><span class="line">    weights.append(wei_split)</span><br><span class="line">    # 这里的命名 容易混淆</span><br><span class="line">result = pd.DataFrame(&#123;&quot;id&quot;: ids, &quot;title&quot;: titles, &quot;key&quot;: keys, &apos;weight&apos;: weights&#125;,</span><br><span class="line">                      columns=[&apos;id&apos;, &apos;title&apos;, &apos;key&apos;, &apos;weight&apos;])</span><br></pre></td></tr></table></figure></p>
@@ -1070,11 +1452,11 @@
 <h3 id="cosine"><a href="#cosine" class="headerlink" title="cosine"></a>cosine</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def cos_sim(a, b):</span><br><span class="line">    a = np.array(a)</span><br><span class="line">    b = np.array(b)</span><br><span class="line">    # return &#123;&quot;文本的余弦相似度:&quot;:np.sum(a*b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))&#125;</span><br><span class="line">    return np.sum(a * b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))</span><br></pre></td></tr></table></figure>
 <p>将文本的关键词映射成某种高维函数，然后在高维空间中计算两者的相似度。</p>
 <h3 id="tf-idf"><a href="#tf-idf" class="headerlink" title="tf-idf"></a>tf-idf</h3><p>在simhash 中使用 tf-idf作为我们的比较函数。TF-IDF的主要思想就是：如果某个词在一篇文档中出现的频率高，也即TF高；并且在语料库中其他文档中很少出现，即DF的低，也即IDF高，则认为这个词具有很好的类别区分能力。<br>词频(term frequency)有两种计算方式,后者考虑了相对的情况。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/52502045.jpg" alt=""><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/28700629.jpg" alt=""><br>计算idf(inverse document frequency):<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/29062439.jpg" alt=""><br>TF-IDF 优点是简单快速，比较符合实际。缺点，无法体现词的位置信息，所有的位置都是被认为重要性相同，但是开头结尾，段落的开头和段落的结尾，therefore，so，but这些词语都是没有体现的。</p>
-<h3 id="hamming-distance"><a href="#hamming-distance" class="headerlink" title="hamming distance"></a>hamming distance</h3><p>hamming distance就是比较01串的不同，按照位进行比较。算法：异或时，只有在两个比较的位不同时其结果是1 ，否则结果为0，两个二进制“异或”后得到1的个数即为海明距离的大小。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hashbits =64 # 使用64位进行编码</span><br><span class="line">def simhash_function(tokens, weights_dict):</span><br><span class="line">    v = [0] * hashbits</span><br><span class="line">    # 这种 &#123;key: value&#125;.item() 的操作也是没有了谁了</span><br><span class="line">    for key, t in &#123;x: _string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">        for i in range(hashbits):</span><br><span class="line">            bitmask = 1 &lt;&lt; i</span><br><span class="line">            if t &amp; bitmask:</span><br><span class="line">                v[i] += weights_dict[key]</span><br><span class="line">            else:</span><br><span class="line">                v[i] -= weights_dict[key]</span><br><span class="line"></span><br><span class="line">    fingerprint = 0</span><br><span class="line">    for i in range(hashbits):</span><br><span class="line">        if v[i] &gt;= 0:</span><br><span class="line">            fingerprint += 1 &lt;&lt; i</span><br><span class="line">    return fingerprint</span><br><span class="line">fingerprint = simhash_function(tokens, weights)</span><br></pre></td></tr></table></figure></p>
+<h3 id="Hamming-distance"><a href="#Hamming-distance" class="headerlink" title="Hamming distance"></a>Hamming distance</h3><p>hamming distance就是比较01串的不同，按照位进行比较。算法：异或时，只有在两个比较的位不同时其结果是1 ，否则结果为0，两个二进制“异或”后得到1的个数即为海明距离的大小。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hashbits =64 # 使用64位进行编码</span><br><span class="line">def simhash_function(tokens, weights_dict):</span><br><span class="line">    v = [0] * hashbits</span><br><span class="line">    # 这种 &#123;key: value&#125;.item() 的操作也是没有了谁了</span><br><span class="line">    for key, t in &#123;x: _string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">        for i in range(hashbits):</span><br><span class="line">            bitmask = 1 &lt;&lt; i</span><br><span class="line">            if t &amp; bitmask:</span><br><span class="line">                v[i] += weights_dict[key]</span><br><span class="line">            else:</span><br><span class="line">                v[i] -= weights_dict[key]</span><br><span class="line"></span><br><span class="line">    fingerprint = 0</span><br><span class="line">    for i in range(hashbits):</span><br><span class="line">        if v[i] &gt;= 0:</span><br><span class="line">            fingerprint += 1 &lt;&lt; i</span><br><span class="line">    return fingerprint</span><br><span class="line">fingerprint = simhash_function(tokens, weights)</span><br></pre></td></tr></table></figure></p>
 <h3 id="min-edit-distance"><a href="#min-edit-distance" class="headerlink" title="min edit distance"></a>min edit distance</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 最小编辑距离</span><br><span class="line">def min_edit_distance(str1, str2):</span><br><span class="line">    rows  =len(str2) +1</span><br><span class="line">    cols =len(str1) +1</span><br><span class="line">    arr =[[0 for _ in range(cols)] for _ in range(rows)]</span><br><span class="line">    # 这种简洁的代码也是牛逼</span><br><span class="line">    for j in range(cols):</span><br><span class="line">        arr[0][j] =j</span><br><span class="line">    for i in range(rows):</span><br><span class="line">        arr[i][0] =i</span><br><span class="line">    for i in range(1, rows):</span><br><span class="line">        for j in range(1, cols):</span><br><span class="line">            # 因为string 是从0 ，len(str) -1的</span><br><span class="line">            if str2[i-1] ==str1[j-1]:</span><br><span class="line">                arr[i][j] =arr[i-1][j-1]</span><br><span class="line">            else:</span><br><span class="line">                # 以后见到这样的式子，就要想到这个二维的数组，因为这个是可以帮助记忆的</span><br><span class="line">                arr[i][j] =1 +min(arr[i-1][j-1], arr[i-1][j], arr[i][j-1])</span><br><span class="line">    # 右下角就是距离</span><br><span class="line">    return arr[rows-1][cols-1]</span><br><span class="line">str_a =&quot;abcdef&quot;</span><br><span class="line">str_b =&quot;azced&quot;</span><br><span class="line">result =min_edit_distance(str_a, str_b)</span><br><span class="line">result</span><br></pre></td></tr></table></figure>
 <p>具体可以参看<a href="https://www.youtube.com/user/tusharroy2525/featured" target="_blank" rel="noopener">该视频</a>讲解。(ps. 如果刷leetcode,也可以参看该视频)</p>
 <h2 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h2><p>在英文中存在天然的空格可以进行分词操作，但是中文的分词就比较复杂了。常用的中文分词开源工具有 jieba和<a href="https://github.com/hankcs/HanLP" target="_blank" rel="noopener">HanLP</a><br>前者简单易行，容易上手；后者在自然语言处理作为汉语言处理包，可以用于词性标注，命名实体识别等一系列功能。常用的英文分词 <a href="https://stanfordnlp.github.io/CoreNLP/" target="_blank" rel="noopener">corenlp</a></p>
-<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>倒排索引使用python在实现上就是一个dictionary 嵌套一个 set(). 一般的索引都是数字或者英文字母映射内容，具体在放到simhash的情景下就是使用文章的序列号对应提取出来的关键词。但是倒排索引就是关键词对应文章的序列号，类似与原来的”值”对应这”键”，所以称之为倒排索引。可以参考<a href="https://blog.csdn.net/u011239443/article/details/60604017" target="_blank" rel="noopener">这篇文章</a>。</p>
+<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>倒排索引使用python在实现上就是一个dictionary 嵌套一个 set(). 一般的索引都是数字或者英文字母映射内容，具体在放到simhash的情景下就是使用文章的序列号对应提取出来的关键词。但是倒排索引就是关键词对应文章的序列号，类似与原来的”值”对应这”键”，所以称之为倒排索引。一般使用在召回的场景下，使用关键词然后出现了该关键词下的index 的集合。可以参考<a href="https://blog.csdn.net/u011239443/article/details/60604017" target="_blank" rel="noopener">这篇文章</a>。</p>
 
           
         
@@ -1142,7 +1524,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" itemprop="url">differences-between-l1-and-l2-as-loss-function-and-regularization</a></h1>
+                <a class="post-title-link" href="/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" itemprop="url">Differences Between l1 and l2 as Loss Function and Regularization</a></h1>
         
 
         <div class="post-meta">
@@ -1607,364 +1989,15 @@
       
         
           
-            <h2 id="最长01相同子串"><a href="#最长01相同子串" class="headerlink" title="最长01相同子串"></a>最长01相同子串</h2><p>已知一个长度为N的字符串，只由0和1组成， 求一个最长的子串，要求该子串出0和1出现的次数相等。<br>思路：<br>最简单的方式是先生成字串，然后判断每个字串是否满足0的个数和1的个数相同。这种暴力求解时间复杂度O(n^3),明显是不合理的。<br>下面说一下简单的做法：<br>定义一个数组B[N]，B[i]表示从A[0…i]中 num_of_0 - num_of_1，0的个数与1的个数的差 。那么如果A[i] ~ A[j]是符合条件的子串，一定有 B[i] == B[j]，因为中间的部分0、1个数相等，相减等于0。</p>
-<p>代码实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def lengest01SubStr(s):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    最长0,1 相等的子串长度</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    count =[0, 0]</span><br><span class="line">    B =[0]*len(s)</span><br><span class="line">    dic =&#123;&#125;</span><br><span class="line">    lengest =0</span><br><span class="line"></span><br><span class="line">    for i in range(len(s)):</span><br><span class="line">        count[int(s[i])]  +=1</span><br><span class="line">        B[i]  =count[0] - count[1]</span><br><span class="line">        if B[i] ==0:</span><br><span class="line">            lengest +=1</span><br><span class="line">            continue</span><br><span class="line">        if B[i] in dic:</span><br><span class="line">            lengest =max(lengest, i- dic[B[i]])</span><br><span class="line">        else:</span><br><span class="line">            dic[B[i]] =i</span><br><span class="line">    return lengest</span><br><span class="line"></span><br><span class="line">a =&apos;1011010&apos;</span><br><span class="line">b =&apos;10110100&apos;</span><br><span class="line">print(lengest01SubStr(a))</span><br><span class="line">print(lengest01SubStr(b))</span><br></pre></td></tr></table></figure></p>
-<h2 id="顺时针打印矩阵"><a href="#顺时针打印矩阵" class="headerlink" title="顺时针打印矩阵"></a>顺时针打印矩阵</h2><p>输入一个矩阵，按照从外向里以顺时针的顺序依次扫印出每一个数字。<br>思路：发现网上有很多使用递归的，但是使用四个循环就可以解决这个问题。找到每次开始的起点，然后按照最上面一行，最右面一列，最小面一行和最左面一行这样的顺序进行打印即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">def printMatrix(matrix):</span><br><span class="line">    if matrix ==[[]]:</span><br><span class="line">        return</span><br><span class="line">        # 第一次见这样判断空的matrix</span><br><span class="line">    row =len(matrix)</span><br><span class="line">    column =len(matrix[0])</span><br><span class="line">    # 这里的left, right, up, down 都是真实能够access到数据的</span><br><span class="line"></span><br><span class="line">    left =0</span><br><span class="line">    right =column -1</span><br><span class="line">    up =0</span><br><span class="line">    down =row -1</span><br><span class="line">    res =[]</span><br><span class="line">    while right &gt;left and up &lt;down:</span><br><span class="line">        # from left to right</span><br><span class="line">        for i in range(left, right+1):</span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">        # from up to down</span><br><span class="line">        for i in range(up+1, down+1):</span><br><span class="line">            res.append(matrix[i][right])</span><br><span class="line">        # from right to left</span><br><span class="line">        for i in range(right-1, left-1, -1):</span><br><span class="line">            res.append(matrix[down][i])</span><br><span class="line">        for i in range(down-1, up, -1):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">        left +=1</span><br><span class="line">        right -=1</span><br><span class="line">        up +=1</span><br><span class="line">        down -=1</span><br><span class="line">    # 最后对于这种特殊情况的处理是容易忘记的</span><br><span class="line">    # left one row 这种情况很特殊，只是从左往右遍历</span><br><span class="line">    if up ==down and left &lt;right:</span><br><span class="line">        for i in range(left, right+1):</span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">    # left one column 只有可能是从上往下遍历</span><br><span class="line">    if left ==right and up &lt;down:</span><br><span class="line">        for i in range(up, down+1):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">    if up ==down and left ==right:</span><br><span class="line">        res.append(matrix[left][up])</span><br><span class="line">    return res</span><br><span class="line">print(printMatrix(matrix))</span><br></pre></td></tr></table></figure></p>
+            <h2 id="最长01相同子串"><a href="#最长01相同子串" class="headerlink" title="最长01相同子串"></a>最长01相同子串</h2><p>已知一个长度为N的字符串，只由0和1组成， 求一个最长的子串，要求该子串出现0和1的次数相等。<br>思路：<br>最简单的方式是先生成字串，然后判断每个字串是否满足0的个数和1的个数相同。这种暴力求解时间复杂度O(n^3),明显是不合理的。<br>下面说一下简单的做法：<br>定义一个数组B[N]，B[i]表示从A[0…i]中 num_of_0 - num_of_1，0的个数与1的个数的差 。那么如果A[i] ~ A[j]是符合条件的子串，一定有 B[i] == B[j]，因为中间的部分0、1个数相等，相减等于0。</p>
+<p><strong>时间复杂度：O(n)，空间复杂度：O(n)</strong></p>
+<p>算法的思路是一样的。</p>
+<p>Following is a solution that uses O(n) extra space and solves the problem in O(n) time complexity.<br>Let input array be arr[] of size n and maxsize be the size of output subarray.<br>1) Consider all 0 values as -1. The problem now reduces to find out the maximum length subarray with sum = 0.<br>2) Create a temporary array sumleft[] of size n. Store the sum of all elements from arr[0] to arr[i] in sumleft[i]. This can be done in O(n) time.<br>3) There are two cases, the output subarray may <strong>start from 0th index or may start from some other index</strong>. We will return the max of the values obtained by two cases.<br>4) <strong>To find the maximum length subarray starting from 0th index, scan the sumleft[] and find the maximum i where sumleft[i] = 0.</strong><br>5) Now, we need to find the subarray where subarray sum is 0 and start index is not 0. This problem is equivalent to finding two indexes i &amp; j in sumleft[] such that sumleft[i] = sumleft[j] and j-i is maximum. To solve this, we can create a hash table with size = max-min+1 where min is the minimum value in the sumleft[] and max is the maximum value in the sumleft[]. The idea is to hash the leftmost occurrences of all different values in sumleft[]. The size of hash is chosen as max-min+1 because there can be these many different possible values in sumleft[]. Initialize all values in hash as -1<br>6) To fill and use hash[], traverse sumleft[] from 0 to n-1. If a value is not present in hash[], then store its index in hash. If the value is present, then calculate the difference of current index of sumleft[] and previously stored value in hash[]. If this difference is more than maxsize, then update the maxsize.<br>7) To handle corner cases (all 1s and all 0s), we initialize maxsize as -1. If the maxsize remains -1, then print there is no such subarray.</p>
+<p>代码实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">def lengest01SubStr(s):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    最长0,1 相等的子串长度</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    count =[0, 0]</span><br><span class="line">    B =[0]*len(s)</span><br><span class="line">    dic =&#123;&#125; # 保存 0 1 的差值</span><br><span class="line">    lengest =0</span><br><span class="line"></span><br><span class="line">    for i in range(len(s)):</span><br><span class="line">        count[int(s[i])]  +=1</span><br><span class="line">        B[i]  =count[0] - count[1]</span><br><span class="line">        # start from 0th index</span><br><span class="line">        if B[i] ==0:</span><br><span class="line">            lengest +=1</span><br><span class="line">            continue</span><br><span class="line">            </span><br><span class="line">        if B[i] in dic:</span><br><span class="line">        # i -dic[B[i]] , not from 0th index</span><br><span class="line">            lengest =max(lengest, i- dic[B[i]])</span><br><span class="line">        else:</span><br><span class="line">            dic[B[i]] =i</span><br><span class="line">    return lengest</span><br><span class="line"></span><br><span class="line">a =&apos;1011010&apos;</span><br><span class="line">b =&apos;10110100&apos;</span><br><span class="line">print(lengest01SubStr(a)) # 6 # &apos;011010&apos;</span><br><span class="line">print(lengest01SubStr(b)) # 8 # &apos;10110100&apos;</span><br></pre></td></tr></table></figure></p>
+<h2 id="顺时针打印矩阵"><a href="#顺时针打印矩阵" class="headerlink" title="顺时针打印矩阵"></a>顺时针打印矩阵</h2><p>输入一个矩阵，按照从外向里以顺时针的顺序依次扫印出每一个数字。<br>思路：发现网上有很多使用递归的，但是使用四个循环就可以解决这个问题。找到每次开始的起点，然后按照最上面一行，最右面一列，最小面一行和最左面一行这样的顺序进行打印即可。</p>
+<p>思路：<br>找到左上角的，一个start_point， 然后根据这个点进行上下左右的循环。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printMatrix</span><span class="params">(matrix)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> matrix ==[[]]:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">        <span class="comment"># 第一次见这样判断空的matrix</span></span><br><span class="line">    row =len(matrix)</span><br><span class="line">    column =len(matrix[<span class="number">0</span>])</span><br><span class="line">    <span class="comment"># 这里的left, right, up, down 都是真实能够access到数据的</span></span><br><span class="line"></span><br><span class="line">    left =<span class="number">0</span></span><br><span class="line">    right =column <span class="number">-1</span></span><br><span class="line">    up =<span class="number">0</span></span><br><span class="line">    down =row <span class="number">-1</span></span><br><span class="line">    res =[]</span><br><span class="line">    <span class="keyword">while</span> right &gt;left <span class="keyword">and</span> up &lt;down:</span><br><span class="line">        <span class="comment"># from left to right</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left, right+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">        <span class="comment"># from up to down</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(up+<span class="number">1</span>, down+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[i][right])</span><br><span class="line">        <span class="comment"># from right to left</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(right<span class="number">-1</span>, left<span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            res.append(matrix[down][i])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(down<span class="number">-1</span>, up, <span class="number">-1</span>):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">        left +=<span class="number">1</span></span><br><span class="line">        right -=<span class="number">1</span></span><br><span class="line">        up +=<span class="number">1</span></span><br><span class="line">        down -=<span class="number">1</span></span><br><span class="line">    <span class="comment"># 最后对于这种特殊情况的处理是容易忘记的</span></span><br><span class="line">    <span class="comment"># left one row 这种情况很特殊，只是从左往右遍历</span></span><br><span class="line">    <span class="keyword">if</span> up ==down <span class="keyword">and</span> left &lt;right:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left, right+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">    <span class="comment"># left one column 只有可能是从上往下遍历</span></span><br><span class="line">    <span class="keyword">if</span> left ==right <span class="keyword">and</span> up &lt;down:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(up, down+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">    <span class="keyword">if</span> up ==down <span class="keyword">and</span> left ==right:</span><br><span class="line">        res.append(matrix[left][up])</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">print(printMatrix(matrix))</span><br></pre></td></tr></table></figure>
 <p>下面这个版本并没有运行成功，但是中间有个语法点是可以学习的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">def printMatrix(matrix):</span><br><span class="line">    res =[]</span><br><span class="line">    # 第一个坐标表示行数，第二个坐标表示列数</span><br><span class="line">    # m 表示行数，n 表示列数</span><br><span class="line">    m =len(matrix)</span><br><span class="line">    n = len(matrix[0])</span><br><span class="line">    if m ==1 and n ==1:</span><br><span class="line">        res =[matrix[0][0]]</span><br><span class="line">        return res</span><br><span class="line">    else:</span><br><span class="line">        for o in range(int((min(m,n)+1)/2)):</span><br><span class="line">            # 不加这个[] 会有语法错误</span><br><span class="line">            [res.append(matrix[o][i]) for i in range(o, n-o)]</span><br><span class="line">            [res.append(matrix[j][n-o-1]) for j in range(o, m-o) if matrix[j][n-o-1] not in res ]</span><br><span class="line">            # 感觉这个最后的not in 是不合理的，万一这两个数字就是相同呢，试一下</span><br><span class="line">            [res.append(matrix[m-o-1][k]) for k in range(n-1, o-1, -1) if matrix[m-o-1][k] not in res]</span><br><span class="line">            [res.append(matrix[l][o]) for l in range(m-1-o, o-1,-1) if matrix[l][o] not in res]</span><br><span class="line">            # 这种写法还是少用，可以使用append,就少用这种，可读性不强，容易错</span><br><span class="line">        return resdef printMatrix(matrix):</span><br><span class="line">    res =[]</span><br><span class="line">    # 第一个坐标表示行数，第二个坐标表示列数</span><br><span class="line">    # m 表示行数，n 表示列数</span><br><span class="line">    m =len(matrix)</span><br><span class="line">    n = len(matrix[0])</span><br><span class="line">    if m ==1 and n ==1:</span><br><span class="line">        res =[matrix[0][0]]</span><br><span class="line">        return res</span><br><span class="line">    else:</span><br><span class="line">        for o in range(int((min(m,n)+1)/2)):</span><br><span class="line">            # 不加这个[] 会有语法错误</span><br><span class="line">            [res.append(matrix[o][i]) for i in range(o, n-o)]</span><br><span class="line">            [res.append(matrix[j][n-o-1]) for j in range(o, m-o) if matrix[j][n-o-1] not in res ]</span><br><span class="line">            # 感觉这个最后的not in 是不合理的，万一这两个数字就是相同呢，试一下</span><br><span class="line">            [res.append(matrix[m-o-1][k]) for k in range(n-1, o-1, -1) if matrix[m-o-1][k] not in res]</span><br><span class="line">            [res.append(matrix[l][o]) for l in range(m-1-o, o-1,-1) if matrix[l][o] not in res]</span><br><span class="line">            # 这种写法还是少用，可以使用append,就少用这种，可读性不强，容易错</span><br><span class="line">        return res</span><br></pre></td></tr></table></figure></p>
-<h2 id="最短摘要生成"><a href="#最短摘要生成" class="headerlink" title="最短摘要生成"></a>最短摘要生成</h2><p>思路：<br>两个指针begin和end, 首先将end 指针向后移动至包含所有的字符集q的位置；然后将begin向后移动直至再移动一次将不再包含q，记录该位置长度。然后将begin向后移动一位，end继续向后移动直至包含所有q，周而复始。比较位置长度，然后得出最短距离。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;stdio.h&quot;</span><br><span class="line">#include &quot;string.h&quot;</span><br><span class="line">#include &quot;assert.h&quot;</span><br><span class="line">#define MAX 1024</span><br><span class="line">int isMatchAll(const char *str,const char *key,int begin,int end)</span><br><span class="line">&#123;</span><br><span class="line">	int ret =0;</span><br><span class="line">	char hash[256];</span><br><span class="line">	int i =0;</span><br><span class="line">	int lenK = strlen(key);</span><br><span class="line">	memset(hash,0,sizeof(hash));</span><br><span class="line">	for(i=begin;i&lt;=end;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		hash[str[i]]=1;</span><br><span class="line">	&#125;</span><br><span class="line">	// 标记string之后，然后再遍历key中的字符是否存在 </span><br><span class="line">	for(i=0;i&lt;lenK;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		if(hash[key[i]]==0)</span><br><span class="line">			break;	</span><br><span class="line">	&#125;</span><br><span class="line">	if(i == lenK )</span><br><span class="line">		ret =1;</span><br><span class="line">		</span><br><span class="line">	return ret;</span><br><span class="line">&#125;</span><br><span class="line">void find(const char *str,const char *key)</span><br><span class="line">&#123;</span><br><span class="line"> </span><br><span class="line">	int lenS = strlen(str);</span><br><span class="line">	int lenK = strlen(key);</span><br><span class="line">	</span><br><span class="line">	int begin = 0;</span><br><span class="line">	int end = 0;</span><br><span class="line">	int minLength = 0x7FFFFFFF;</span><br><span class="line">	int mstart = 0;</span><br><span class="line">	int mend =0;</span><br><span class="line">	assert(str&amp;&amp;key);</span><br><span class="line">	for(;;)</span><br><span class="line">	&#123;</span><br><span class="line">		while(!isMatchAll(str,key,begin,end)&amp;&amp;end&lt;lenS)</span><br><span class="line">		&#123;</span><br><span class="line">			end++;		</span><br><span class="line">		&#125;</span><br><span class="line">		while(isMatchAll(str,key,begin,end))</span><br><span class="line">		&#123;</span><br><span class="line">			if(end-begin+1 &lt;minLength)</span><br><span class="line">			&#123;</span><br><span class="line">				minLength = end-begin+1;</span><br><span class="line">				mstart =begin;</span><br><span class="line">				mend =end;</span><br><span class="line">			&#125;</span><br><span class="line">			begin++;</span><br><span class="line">		&#125;</span><br><span class="line">		if(end&gt;=lenS)</span><br><span class="line">			break;</span><br><span class="line">	&#125;</span><br><span class="line">	printf(&quot;%d\n&quot;,minLength);</span><br><span class="line">	for(;mstart&lt;=mend;mstart++)</span><br><span class="line">		printf(&quot;%c&quot;,str[mstart]);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">/**</span><br><span class="line"></span><br><span class="line">	char *str =&quot;hello  are  you bottom of do the is bot doke astring&quot;;</span><br><span class="line">	char *key =&quot;abde&quot;</span><br><span class="line">	</span><br><span class="line">*/</span><br><span class="line">	char str[MAX];</span><br><span class="line">	char key[MAX];</span><br><span class="line">	</span><br><span class="line">	gets(str);</span><br><span class="line">	gets(key);</span><br><span class="line">	find(str,key);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/07/Loss-Activation-and-Optimisation-Function/" itemprop="url">Loss-Activation-and-Optimisation-Function</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T13:37:05+08:00">
-                2018-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/07/Loss-Activation-and-Optimisation-Function/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/07/07/Loss-Activation-and-Optimisation-Function/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>用图说话…</p>
-<h2 id="Loss-Function-Error-Function"><a href="#Loss-Function-Error-Function" class="headerlink" title="Loss Function(Error Function)"></a>Loss Function(Error Function)</h2><p>For accurate predictions, one needs to minimize the calculated error. In a neural network, this is done using back propagation.<br>损失函数是用来估量你模型的预测值f(x)与真实值Y的不一致程度，它是一个非负实值函数,通常使用L(Y,f(x))来表示，损失函数越小，模型的鲁棒性就越好。<br>按照函数种类可以划分一下主要的几个类别。</p>
-<h3 id="log损失函数"><a href="#log损失函数" class="headerlink" title="log损失函数"></a>log损失函数</h3><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/49835120.jpg" alt="avatar"><br>常用于逻辑回归中。</p>
-<h3 id="平方损失函数"><a href="#平方损失函数" class="headerlink" title="平方损失函数"></a>平方损失函数</h3><p>又称为最小二乘法，最优拟合直线应该是使各点到回归直线的距离和最小的直线，即平方和最小。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/72402157.jpg" alt="avatar"><br>Y-f(X) 表示残差，残差在数理统计中是指实际观察值与估计值（拟合值）之间的差。整个式子表示的是残差的平方和。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/25515918.jpg" alt="avatar"></p>
-<h3 id="指数损失函数"><a href="#指数损失函数" class="headerlink" title="指数损失函数"></a>指数损失函数</h3><p>Adaboost的目标式子就是指数损失，在给定n个样本的情况下，Adaboost的损失函数为：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/36556640.jpg" alt="avatar"></p>
-<h3 id="Hinge损失函数"><a href="#Hinge损失函数" class="headerlink" title="Hinge损失函数"></a>Hinge损失函数</h3><p>听着名字怪怪的，但是SVM（support vector machine）的损失函数就是这个。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/54006907.jpg" alt="avatar"><br>从目标函数看来，lr 采用的logistic loss 和 svm 采用的 hinge loss function 思想都是增加对分类影响较大点的权重，减少那些与分类相关不大点的权重。但是两个方法处理的方法不同: LR采用一个sigmod的映射函数，通过这样的非线性映射，大大降低了离分类平面点远的权重 ; SVM 采用的是一个hinge loss function，通过上图可以看到，对于那些离超平面比较远的点，直接设为0了，也就是说直接忽视，只考虑那些对分类平面有影响的点，这些点就是我们经常听到的支持向量。另一方面，支持向量机只考虑局部的边界线附近的点，而逻辑回归考虑全局（远离的点对边界线的确定也起作用，虽然作用会相对小一些）。</p>
-<p>按照应用领域可以划分为:<br><strong>Regressive loss functions</strong>:<br>They are used in case of regressive problems, that is when the target variable is continuous. Most widely used regressive loss function is Mean Square Error.Other loss functions are:Absolute error — measures the mean absolute value of the element-wise difference between input.<br><strong>Classification loss functions</strong>:<br>The output variable in classification problem is usually a probability value f(x), called the score for the input x. Generally, the magnitude of the score represents the confidence of our prediction. The target variable y, is a binary variable, 1 for true and -1 for false.<br>On an example (x,y), the margin is defined as yf(x). The margin is a measure of how correct we are. Most classification losses mainly aim to maximize the margin. Some classification algorithms are: Binary Cross Entropy,Negative Log Likelihood,Margin Classifier and Soft Margin Classifier.<br><strong>Embedding loss functions</strong>:<br>It deals with problems where we have to measure whether two inputs are similar or dissimilar. Some examples are:</p>
-<ul>
-<li>L1 Hinge Error- Calculates the L1 distance between two inputs.</li>
-<li>Cosine Error- Cosine distance between two inputs.</li>
-</ul>
-<p><strong>Visualising Loss Functions</strong>:<br>We performed the task to reconstruct an image using a type of neural network called Autoencoders. Different results were obtained for the same task by using different Loss Functions, while everything else in the neural network architecture remained constant. Thus, the difference in result represents the properties of the different loss functions employed. A very simple data set, MNIST data set was used for this purpose. Three loss functions were used to reconstruct images.</p>
-<h2 id="Activation-Function"><a href="#Activation-Function" class="headerlink" title="Activation Function"></a>Activation Function</h2><p>What?<br>It’s just a thing (node) that you add to the output end of any neural network. It is also known as <strong>Transfer Function</strong>. It can also be attached in between two Neural Networks.</p>
-<h3 id="Sigmoid-or-Logistic-Activation-Function"><a href="#Sigmoid-or-Logistic-Activation-Function" class="headerlink" title="Sigmoid or Logistic Activation Function"></a>Sigmoid or Logistic Activation Function</h3><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/23910535.jpg" alt="avatar"><br>导数比较有特点：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/81953292.jpg" alt="avatar"></p>
-<h3 id="Softmax-Function"><a href="#Softmax-Function" class="headerlink" title="Softmax Function"></a>Softmax Function</h3><p>The softmax function is a more generalized logistic activation function which is used for <strong>multiclass classification</strong>.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/70983345.jpg" alt="avatar"><br>使用softmax和多个logistic的多分类的区别：softmax回归进行的多分类，类与类之间是互斥的，即一个输入只能被归为一类；多个logistic回归进行多分类，输出的类别并不是互斥的，即”苹果”这个词语既属于”水果”类也属于”3C”类别。</p>
-<h3 id="Tanh"><a href="#Tanh" class="headerlink" title="Tanh"></a>Tanh</h3><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/80881786.jpg" alt="avatar"></p>
-<h3 id="ReLU"><a href="#ReLU" class="headerlink" title="ReLU"></a>ReLU</h3><p>ReLU (Rectified Linear Unit) Activation Function<br>it is used in almost all the convolutional neural networks or deep learning.在卷积网络和深度网络中经常看到。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/78295605.jpg" alt="avatar"></p>
-<h3 id="Leaky-ReLU"><a href="#Leaky-ReLU" class="headerlink" title="Leaky ReLU"></a>Leaky ReLU</h3><p>明显的发现，Leaky ReLU是对于在 X&lt;0时候的改进。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/87669246.jpg" alt="avatar"><br>Both Leaky and Randomized ReLU functions are monotonic in nature. Also, their derivatives also monotonic in nature.</p>
-<h2 id="Optimisation-Algorithms"><a href="#Optimisation-Algorithms" class="headerlink" title="Optimisation Algorithms"></a>Optimisation Algorithms</h2><p>Optimisation Algoritms are used to update weights and biases i.e. the internal parameters of a model to reduce the error. They can be divided into two categories:<br>Back Propogation and Optimisation Function: Error J(w) is a function of internal parameters of model i.e weights and bias. For accurate predictions, one needs to minimize the calculated error. In a neural network, this is done using back propagation. The current error is typically propagated backwards to a previous layer, where it is used to modify the weights and bias in such a way that the error is minimized. The weights are modified using a function called Optimization Function.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/71294470.jpg" alt="avatar"><br>Optimisation functions usually calculate the gradient i.e. the partial derivative of loss function with respect to weights, and the weights are modified in the opposite direction of the calculated gradient. This cycle is repeated until we reach the minima of loss function.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/90062053.jpg" alt="avatar"></p>
-<h4 id="Constant-Learning-Rate-Algorithms"><a href="#Constant-Learning-Rate-Algorithms" class="headerlink" title="Constant Learning Rate Algorithms"></a>Constant Learning Rate Algorithms</h4><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-7/25023504.jpg" alt="avatar"><br>Here η is called as learning rate which is a hyperparameter that has to be tuned. Choosing a proper learning rate can be difficult.<br>选的小训练速度慢， While a learning rate that is too large can hinder convergence and cause the loss function to fluctuate around the minimum or even to diverge<br>A similar hyperparameter is momentum(动量), which determines the velocity with which learning rate has to be increased as we approach the minima.</p>
-<h4 id="Adaptive-Learning-Algorithms-自适应"><a href="#Adaptive-Learning-Algorithms-自适应" class="headerlink" title="Adaptive Learning Algorithms(自适应)"></a>Adaptive Learning Algorithms(自适应)</h4><p>Adaptive gradient descent algorithms such as Adagrad, Adadelta, RMSprop, Adam, provide an alternative to classical SGD. They have per-paramter learning rate methods, which provide heuristic approach without requiring expensive work in tuning hyperparameters for the learning rate schedule manually.</p>
-<p>The challenge of using gradient descent is that their hyper parameters have to be defined in advance and they depend heavily on the type of model and problem. Another problem is that the same learning rate is applied to all parameter updates. If we have sparse data, we may want to update the parameters in different extent instead.(假装翻译:gradient descent 的艰难之处在于需要提前 define这种hyper parameters, 并且不同数据的learning rate 应该是不同（学习率应该根据数据的稀疏与否变化))</p>
-<p>说到这我们就多说一些关于自适应算法的内容。<br>We used three first order optimisation functions and studied their effect-Stochastic Gradient Decent, Adagrad and Adam.</p>
-<p>Gradient Descent calcultes gradient for the whole dataset and updates values in direction opposite to the gradients until we find a local minima. Stochastic Gradient Descent performs a parameter update for each training example unlike normal Gradient Descent which performs only one update. Thus it is much faster. Gradient Decent algorithms can further be improved by tuning important parametes like momentum, learning rate etc.</p>
-<p>Adagrad is more preferrable for a sparse data set as it makes big updates for infrequent parameters and small updates for frequent parameters. It uses a different learning Rate for every parameter θ at a time step based on the past gradients which were computed for that parameter. Thus we do not need to manually tune the learning rate.</p>
-<p>Adam stands for Adaptive Moment Estimation. It also calculates different learning rate. Adam works well in practice, is faster, and outperforms other techniques.</p>
-<p>Stochastic Gradient Decent was much faster than the other algorithms but the results produced were far from optimum. Both, Adagrad and Adam produced better results that SGD, but they were computationally extensive. Adam was slightly faster than Adagrad. Thus, while using a particular optimization function, one has to make a trade off between more computation power and more optimum results.</p>
-<p>SGD 和 GDD的区别：<br>正如上所说，在∂E/∂wi=∑（h(x)-y）<em>(xi) 的时候∑耗费了大量的时间，特别是在训练集庞大的时候。所以肯定有人会猜想，如果把求和去掉如何，即变为∂E/∂wi=（h(x)-y）</em>(xi)。（只是专注于当前训练训练集合，当前的数据）对于步长η的取值，标准梯度下降的η比随机梯度下降的大。因为标准梯度下降的是使用准确的梯度，理直气壮地走，随机梯度下降使用的是近似的梯度，就得小心翼翼地走，怕一不小心误入歧途南辕北辙了。</p>
-<p>事实证明：中文和英文混在一起，排版是难看的。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/29/特征工程相关概念/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/29/特征工程相关概念/" itemprop="url">特征工程相关概念</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-29T22:28:25+08:00">
-                2018-06-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/06/29/特征工程相关概念/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/29/特征工程相关概念/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="特征离散化？"><a href="#特征离散化？" class="headerlink" title="特征离散化？"></a>特征离散化？</h2><p>连续化特征就是一些不可枚举的有理数。那么什么是离散化特征呢？ 离散化特征就是可枚举的特征。离散化的作用是把数据变成可计算状态。而特征工程就是从原始字段中根据业务提取出对模型有效的特征出来。</p>
-<p>在线性模型下(w.x)，w已经确定的情况下，x的某个特征的值是20，或者30，w.x的值相差是很大的，但是往往20岁的人跟30岁的人对同一个广告的兴趣差距不会那么大。连续特征离散化的基本假设，是默认连续特征不同区间的取值对结果的贡献是不一样的。离散化和连续化最大的区别是，对一个字段做连续化后的结果就还只是一个特征，而离散化后的这一列有多少个key(字段可能的值)就会抽取出多少个特征。当经过离散化之后，特征各有各的权重，彼此之间就没有关系了。</p>
-<p>模型是使用离散特征还是连续特征,其实是一个“海量离散特征+简单模型” 同 “少量连续特征+复杂模型”的权衡。既可以离散化用线性模型，也可以用连续特征加深度学习。</p>
-<p>常用的选取离散点的方法：等距离离散，等样本离散、画图观察趋势和决策树模型(天生就可以对连续特征分段)。</p>
-<p>在工业界，很少直接将连续值作为特征喂给逻辑回归模型，而是将连续特征离散化为一系列0、1特征交给逻辑回归模型，这样做的优势有以下几点：</p>
-<ul>
-<li>单变量离散化为N个后，每个变量有单独的权重，在激活函数的作用下相当于为模型增加了非线性，能够提升模型表达能力，加大拟合。</li>
-<li>离散化后的特征对异常数据有很强的鲁棒性：比如一个特征是年龄&gt;30是1，否则0。如果特征没有离散化，一个异常数据“年龄300岁”会给模型造成很大的干扰，因为特征值的异常会导致权重也就是w的值也会异常。</li>
-<li>一定有同学担心特征过多会导致运算缓慢，但是LR是线性模型，我们在内部计算的时候是向量化计算，而不是循环迭代。稀疏向量内积乘法运算速度快，计算结果方便存储，容易扩展。</li>
-</ul>
-<p>所以不用担心像GBDT算法那样，特征多了就跑不动了(我们都说GBDT不能用离散特征不是因为它处理不了离散特征，而是因为离散化特征后会产生特别多的特征，决策树的叶子节点过多，遍历的时候太慢了)。 所以海量离散特征＋LR是业内常见的一个做法。而少量连续特征+复杂模型是另外一种做法，例如GBDT。</p>
-<p>当然也可以通过深度学习来进行特征选择：目前这种手段正在随着深度学习的流行而成为一种手段，尤其是在计算机视觉领域，原因是深度学习具有自动学习特征的能力，这也是深度学习又叫unsupervised feature learning的原因。从深度学习模型中选择某一神经层的特征后就可以用来进行最终目标模型的训练了。</p>
-<p>参考文献:<br><a href="https://blog.csdn.net/lujiandong1/article/details/52412123" target="_blank" rel="noopener">https://blog.csdn.net/lujiandong1/article/details/52412123</a></p>
-<h2 id="组合特征"><a href="#组合特征" class="headerlink" title="组合特征"></a>组合特征</h2><p>先是离散化，然后是特征组合。<br>交叉从理论上而言是为了引入特征之间的交互，也即为了引入非线性。<br>LR(逻辑回归）分类算法:因为线性函数的表达能力有限，所以我们引入激活函数就是给LR增加非线性关系。能让一条直线变成曲线。这样可以拟合出更好的效果。（也由此才后了后来说的过拟合问题而引入了正则化超参数）<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/72457357.jpg" alt="avatar"><br>LR模型之所以很受欢迎，主要是因为LR模型本质是对数线性模型，实现简单，易于并行，大规模扩展方便，迭代速度快，同时使用的特征比较好解释，预测输出在0与1之间契合概率模型。（模型的可解释性举例，比如A-B的权重比较大，A代表用户，B代表物品，那么可以认为A是对B比较感兴趣的）但是，线性模型对于非线性关系缺乏准确刻画，特征组合正好可以加入非线性表达，增强模型的表达能力。另外，广告LR中，基本特征可以认为是用于全局建模，组合特征更加精细，是个性化建模，因为在这种大规模离散LR中，单对全局建模会对部分用户有偏，对每一用户建模又数据不足易过拟合同时带来模型数量爆炸，所以基本特征+组合特征兼顾了全局和个性化。</p>
-<p>从统计的角度解释，基本特征仅仅是真实特征分布在低维的映射，不足以描述真实的分布，加入特征在高维空间拟合真实分布，使得预测更加准确。</p>
-<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>真正测试一个模型的不是简单与否，更重要在于它在预测新的情况时表现如何。小权重意味着网络的行为不会因为我们随意更改了一些输入而改变太多。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/38543547.jpg" alt="avatar"><br>这是我们加了正则化之后的成本函数，可以看我们后面加入了正则化 λ 的表达式来完善成本函数。为什么加入λ能够减轻过拟合呢？直观一点的解释是设置的λ值越大，那么参数w的值就会被压缩的越小(在梯度下降中, 每次迭代的步长，也就是这个公式w=w - 学习率*成本函数对w的导数， 现在由于成本函数增加了正则项，使得J和w变得数值相关了)。 假设λ设置的足够大，那么w会无限的趋近于0. 把多隐藏层的单元的权重设置为0以后，那么基本上就是消除掉了这些单元的作用，而使得网络模型得到简化，就像下面的图一样。由于正则化的设置，消除了一些隐藏单元的作用。而使得整个模型越来越接近于线性化，也就是从下图中的过拟合往欠拟合偏转。当然我们有一个适合的λ的值，能让我们的拟合状态达到最佳。所以我们在训练模型的时候，往往都会有一个Ｌ２正则项的超参数需要我们设置。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/26401076.jpg" alt="avatar"><br>这是我们的tanh激活函数， 可以看到当z的值越大时，整个函数的非线性就越大，而z的值越小(图中红色加粗部分),函数就越是呈现出线性分布。 所以当我们增加λ的值， w得值就越小，相应的z的值也就越小。因为z = wx + b。 而我们第一次说激活函数的时候就说过神经网络中基本上是不使用线性函数作为激活函数的，因为不论有多少层，多少个单元，线性激活函数会使得所有单元所计算的都呈现线性状态。</p>
-<h2 id="杂货铺"><a href="#杂货铺" class="headerlink" title="杂货铺"></a>杂货铺</h2><p>特征工程可以分为特征处理、Feature Selection（特征选择）、Feature Extraction（特征提取）和Feature construction（特征构造）等阶段。<br>归一化（去中心，方差归一）是属于特征(预)处理:把特征值压缩成0~1的区间。</p>
-<p>One-hot（也叫One-of-k）的方法把每个无序特征转化为一个数值向量。比如一个无序特征color有三种取值：red，green，blue。那么可以用一个长度为3的向量来表示它，向量中的各个值分别对应于red，green，blue。如：这种方法在NLP里用的很多，就是所谓的词向量模型。变换后的向量长度对于词典长度，每个词对应于向量中的一个元素。</p>
-<p>对于欠拟合: 增加神经网络复杂度，出现欠拟合的原因之一是由于函数的非线性不足，所以用更复杂的网络模型进行训练来加深拟合。<br>对于过拟合：增加数据规模， 出现过拟合的原因之一是数据规模不足而造成的数据分布不均，扩展数据规模能比较好的解决这个问题。当然另一个做法是正则化，我们采取使用正则化来解决过拟合问题，常用的是L2正则，其他的还有L1和 Dropout正则。</p>
-<p>很多人会想着既然线性分类器搞不定，那就直接找个非线性的好了，比如高斯核的SVM。我们确实可以通过这种简单换算法的方式解决这个简单的问题。但对于很多实际问题（如广告点击率预测），往往特征非常多，这时候时间约束通常不允许我们使用很复杂的非线性分类器。这也是为什么算法发展这么多年，广告点击率预测最常用的方法还是Logistic Regression (LogisticReg)。</p>
 
           
         
@@ -2004,7 +2037,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2054,7 +2087,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

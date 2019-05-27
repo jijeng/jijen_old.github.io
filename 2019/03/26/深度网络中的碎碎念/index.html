@@ -82,7 +82,7 @@
 <meta name="description" content="主要介绍了常见的网络中权重的初始化，激活函数和优化器。 Weights Initializationweights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。  Here’s another trick — before sq">
 <meta name="keywords" content="Loss Function,Activation Function,Optimizer">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深度网络中的碎碎念">
+<meta property="og:title" content="Weights Initialization &amp; Activation Function &amp; Optimizer">
 <meta property="og:url" content="http://yoursite.com/2019/03/26/深度网络中的碎碎念/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要介绍了常见的网络中权重的初始化，激活函数和优化器。 Weights Initializationweights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。  Here’s another trick — before sq">
@@ -90,9 +90,9 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fz79596rj20fu0boaad.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg">
-<meta property="og:updated_time" content="2019-03-26T02:42:29.225Z">
+<meta property="og:updated_time" content="2019-05-25T08:02:21.435Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="深度网络中的碎碎念">
+<meta name="twitter:title" content="Weights Initialization &amp; Activation Function &amp; Optimizer">
 <meta name="twitter:description" content="主要介绍了常见的网络中权重的初始化，激活函数和优化器。 Weights Initializationweights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。  Here’s another trick — before sq">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg">
 
@@ -130,7 +130,7 @@
 
 
 
-  <title>深度网络中的碎碎念 | Jijeng's blog</title>
+  <title>Weights Initialization & Activation Function & Optimizer | Jijeng's blog</title>
   
 
 
@@ -318,7 +318,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">深度网络中的碎碎念</h1>
+          <h1 class="post-title" itemprop="name headline">Weights Initialization & Activation Function & Optimizer</h1>
         
 
         <div class="post-meta">
@@ -417,7 +417,7 @@
 </blockquote>
 <h3 id="He-Initialization"><a href="#He-Initialization" class="headerlink" title="He Initialization"></a>He Initialization</h3><p>$$W^{[l]} =np.random.randn(size_l, size_l -1)* np.sqrt(2/size_l -1) $$<br>这个是使用 relu 或者说 leaky relu 配合使用的。</p>
 <p>所以上述的初始化从数学的角度去理解： 从(0,1) 标准正太分布 转换成了 (0, np.sqrt(2/ size_l -1)) 这样的分布，就是你网络结构是越宽，那么这个方差就是越小的，最后的结果是越集中的，就越集中的 均值 u 左右。从图像的角度看，方差越大，图像越矮胖；方差越小，图像越瘦高。</p>
-<h3 id="Xavier-initialization"><a href="#Xavier-initialization" class="headerlink" title="Xavier initialization"></a>Xavier initialization</h3><p>这个是使用tanh() 作为 activation function的。<br>$$W^{[l]} =np.random.randn(size_l, size_l -1)* np.sqrt( 1/size_l -1) $$<br>总的思想原则：<br>They set the weights neither too much bigger that 1, nor too much less than 1.<br>就是本来就是在 (0,1) 标准正太分布出来，然后进行了进一步的约束条件。</p>
+<h3 id="Xavier-initialization-ˈzeɪvjər-s"><a href="#Xavier-initialization-ˈzeɪvjər-s" class="headerlink" title="Xavier initialization /ˈzeɪvjər/s"></a>Xavier initialization /ˈzeɪvjər/s</h3><p>这个是使用tanh() 作为 activation function的。<br>$$W^{[l]} =np.random.randn(size_l, size_l -1)* np.sqrt( 1/size_l -1) $$<br>总的思想原则：<br>They set the weights neither too much bigger that 1, nor too much less than 1.<br>就是本来就是在 (0,1) 标准正太分布出来，然后进行了进一步的约束条件。</p>
 <h2 id="Activation-function"><a href="#Activation-function" class="headerlink" title="Activation function"></a>Activation function</h2><p>总的说可以分为线性和非线性的激活函数， activation function 的作用 就是对于网络的输出 说yes or no. It maps the resulting values in between 0 to 1 or -1 to 1 etc.</p>
 <h3 id="Sigmoid-function-Logistic-Activation"><a href="#Sigmoid-function-Logistic-Activation" class="headerlink" title="Sigmoid function (Logistic Activation)"></a>Sigmoid function (Logistic Activation)</h3><p>the only reason why we use sigmoid is because it exists between 0 to 1. 这个非常有利于 predict probability. 因为自然映射到 0 是不存在 然后1 是存在。而当多分类的时候，使用softmax。</p>
 <h3 id="Tanh-function"><a href="#Tanh-function" class="headerlink" title="Tanh function"></a>Tanh function</h3><blockquote>
@@ -586,7 +586,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -657,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.2.</span> <span class="nav-text">He Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization"><span class="nav-number">1.3.</span> <span class="nav-text">Xavier initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.2.</span> <span class="nav-text">He Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization-ˈzeɪvjər-s"><span class="nav-number">1.3.</span> <span class="nav-text">Xavier initialization /ˈzeɪvjər/s</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -855,7 +855,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/03/26/深度网络中的碎碎念/';
           this.page.identifier = '2019/03/26/深度网络中的碎碎念/';
-          this.page.title = '深度网络中的碎碎念';
+          this.page.title = 'Weights Initialization & Activation Function & Optimizer';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

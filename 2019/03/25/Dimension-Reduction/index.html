@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="对于dimension reduction最近有了新的理解:广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve)">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-25T03:25:38.807Z">
+<meta property="og:updated_time" content="2019-05-25T06:54:05.807Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dimension Reduction">
 <meta name="twitter:description" content="对于dimension reduction最近有了新的理解:广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve)">
@@ -406,37 +406,45 @@
 <ul>
 <li>low variances<br>这个是针对一个特征内部的，如果一个特征的数据本身没有什么变化，那么这个类似就是一种“死”数据。</li>
 <li>high correlation filter<br>用来判别特征 x 和最后的 target之间的相关性</li>
-<li>principal component analysis (PCA)<br>our old good friend. 如果你提降维，但是你不知道PCA，那么就说不过去。该方法的基本思路：一个基（向量空间）的变换，使得变换后的数据有着最大的方差。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.<br>下面是PCA的一些特点：<blockquote>
+<li>principal component analysis (PCA)<br>our old good friend. 如果你提降维，但是你不知道PCA，那么就说不过去。该方法的基本思路：一个基（向量空间）的变换，使得变换后的数据有着最大的方差。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.</li>
+</ul>
+<p>下面是PCA的一些特点：</p>
+<blockquote>
 <p>A principal component is a linear combination of the original variables<br>Principal components are extracted in such a way that the first principal component explains maximum variance in the dataset<br>Second principal component tries to explain the remaining variance in the dataset and is uncorrelated to the first principal component<br>Third principal component tries to explain the variance which is not explained by the first two principal components and so on</p>
 </blockquote>
-</li>
-</ul>
 <p>主成分是不断生成的，在前者基础之上生成的。 The first component is the most important one, followed by the second, then the third, and so on.</p>
 <ul>
-<li><p>Singular Value Decomposition (SVD)<br>翻译成中文感觉还是挺别扭的，奇异值分解。关于奇异值，特征值这些数学概念打算另外写一个主题，wait a moment. 简单理解PCA 是针对方阵 (m<em>m), SVD是针对矩阵(m </em>n)，所以后者是具有更大的适用范围。</p>
-</li>
-<li><p>Independent Component Analysis (ICA)<br>这个是在面试的时候被问道的一种降维方法。抓住独立向量应该就没有问题。</p>
-<blockquote>
-<p>Independent Component Analysis (ICA) is based on information-theory and is also one of the most widely used dimensionality reduction techniques. The major difference between PCA and ICA is that PCA looks for uncorrelated factors while ICA looks for independent factors.</p>
-</blockquote>
-</li>
+<li>Singular Value Decomposition (SVD)</li>
 </ul>
+<p>翻译成中文感觉还是挺别扭的，奇异值分解。关于奇异值，特征值这些数学概念打算另外写一个主题，wait a moment. 简单理解PCA 是针对方阵 (m<em>m), SVD是针对矩阵(m </em>n)，所以后者是具有更大的适用范围。</p>
+<ul>
+<li>Independent Component Analysis (ICA)</li>
+</ul>
+<p>这个是在面试的时候被问道的一种降维方法。抓住独立向量应该就没有问题。</p>
+<blockquote>
+<p>Independent Component Analysis (ICA) is based on information-theory and is also one of the most widely used dimensionality reduction techniques. The major difference between PCA and ICA is that PCA looks for uncorrelated factors while ICA looks for independent factors. pca 和 ica 的差别在于，相关性和独立性的差别。</p>
+</blockquote>
 <p>基本假设：</p>
 <blockquote>
 <p>This algorithm assumes that the given variables are linear mixtures of some unknown latent variables. It also assumes that these latent variables are mutually independent, i.e., they are not dependent on other variables and hence they are called the independent components of the observed data.</p>
 </blockquote>
 <p>ICA 和PCA的异同：从线性代数的角度去理解，PCA和ICA都是要找到一组基，这组基张成一个特征空间，数据的处理就都需要映射到新空间中去。ICA相比与PCA更能刻画变量的随机统计特性，且能抑制高斯噪声。</p>
 <ul>
-<li>T-SNE<br>就是指出 t-SNE 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。这个使用场景是在可视化中，经常会看见将数据或者 <blockquote>
+<li>T-SNE</li>
+</ul>
+<p>就是指出 t-SNE 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。这个使用场景是在可视化中，经常会看见将数据或者 </p>
+<blockquote>
 <p>So far we have learned that PCA is a good choice for dimensionality reduction and visualization for datasets with a large number of variables. But what if we could use something more advanced? What if we can easily search for patterns in a non-linear way? t-SNE is one such technique. There are mainly two types of approaches we can use to map the data points:<br>Local approaches :  They maps nearby points on the manifold to nearby points in the low dimensional representation.<br>Global approaches : They attempt to preserve geometry at all scales, i.e. mapping nearby points on manifold to nearby points in low dimensional representation as well as far away points to far away points.</p>
 </blockquote>
-</li>
-</ul>
 <p>下面介绍两种不是那么“常规”，但是也符合”dimension reduction” 定义的方式。</p>
 <ul>
-<li>projection<br>By projecting one vector onto the other, dimensionality can be reduced.</li>
-<li>autoencoder<br>网络结构通常有 encoder和decoder两部分组成，那么encoder 就作为 information abstraction,而 decoder作为一种重新映射。从这个角度NLP中的词向量也是可以是一种降维手段。</li>
+<li>projection</li>
 </ul>
+<p>By projecting one vector onto the other, dimensionality can be reduced.</p>
+<ul>
+<li>autoencoder</li>
+</ul>
+<p>网络结构通常有 encoder和decoder两部分组成，那么encoder 就作为 information abstraction,而 decoder作为一种重新映射。从这个角度NLP中的词向量也是可以是一种降维手段。</p>
 
       
     </div>
@@ -555,7 +563,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
