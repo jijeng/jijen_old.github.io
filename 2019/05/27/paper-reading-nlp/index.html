@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fuc693mrj211z0hbjur.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fuci4xodj213j0kitcq.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3flokoc0mj20ab07474a.jpg">
-<meta property="og:updated_time" content="2019-05-27T13:53:19.609Z">
+<meta property="og:updated_time" content="2019-05-28T12:31:21.199Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP Papers Reading">
 <meta name="twitter:description" content="nlp 论文阅读笔记, 随时 update… attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a repre">
@@ -438,8 +438,7 @@
 <p>模型的特点：<br>Positional embedding；（位置嵌入向量——其实类似word2vec，处理的语序的信息）。<br>multi-head attention; (多头注意力机制——点乘注意力的升级版本， 这个就类似ensemble的思想，不同的子空间的attention 进行融合）<br>Position-wise Feed-Forward Networks（位置全链接前馈网络——MLP变形）</p>
 <p>有两种常用的注意力函数，一种是加法注意力(additive attention)，另外一种是点乘注意力(dot-productattention)，论文所采用的就是点乘注意力，这种注意力机制对于加法注意力而言，更快，同时更节省空间。</p>
 <p>加法注意力<br>还是以传统的RNN的seq2seq问题为例子，加性注意力是最经典的注意力机制，它使用了有一个隐藏层的前馈网络（全连接）来计算注意力分配：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ep38emyqj20bl03o3zj.jpg" alt=""></p>
-<p>$$<br>e _ { i j } = \operatorname { score } \left( H _ { i _ { i } } , h _ { j } \right) = \tanh \left( W _ { 1 } <em> H _ { i } + W _ { 2 } </em> h _ { j } \right)<br>$$</p>
-<p>Another formular,<br>$$<br>\alpha _ { i j } = \frac { \exp \left( e _ { i j } \right) } { \sum _ { k = 1 } ^ { L } e _ { i k } }<br>$$</p>
+<p>公式:<br>$$<br>\alpha _ { i j } = \frac { \exp \left( e _ { i j } \right) } { \sum _ { k = 1 } ^ { L } e _ { i k } }<br>$$</p>
 <p>Scaled Dot-Product<br>这篇论文计算query和key相似度使用了dot-product attention，即query和key进行点乘（内积）来计算相似度。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ftfz3uxij206e088aa2.jpg" alt=""></p>
 <p>Multi-Head Attention:</p>
 <p>在实际中为了并行计算，可以在一组queries上计算注意力函数，将多个query堆叠成Q，同理keys和values也被堆叠成K和V，通过下面的公式来计算矩阵输出:<br>self-attention 模型就是自己对自己求attention，即𝑄=𝐾=𝑉<br>$$<br>\text { Attention } ( Q , K , V ) = \operatorname { softmax } \left( \frac { Q K ^ { T } } { \sqrt { d _ { k } } } \right) V<br>$$<br>之所以用内积除以维度的开方，论文给出的解释是：假设Q和K都是独立的随机变量，满足均值为0，方差为1，则点乘后结果均值为0，方差为dk。也即方差会随维度dk的增大而增大，而大的方差导致极小的梯度(我认为大方差导致有的输出单元a（a是softmax的一个输出）很小，softmax反向传播梯度就很小（梯度和a有关））。为了避免这种大方差带来的训练问题，论文中用内积除以维度的开方，使之变为均值为0，方差为1。</p>
@@ -584,7 +583,7 @@
 <p>P.s.：基于字符的模型不仅能够通过引入字符级信息丰富词向量表达，也能够在很大程度上解决NLP领域的OOV（Out-Of-Vocabulary）问题。</p>
 <p>ELMo用到上文提到的双向的language model, 给定N个tokens (t1, t2,…,tN), language model通过给定前面的k-1个位置的token序列计算第k个token的出现的概率:<br>$$<br>p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { 1 } , t _ { 2 } , \ldots , t _ { k - 1 } \right)<br>$$<br>后向的计算方法与前向相似:</p>
 <p>$$<br>p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { k + 1 } , t _ { k + 2 } , \ldots , t _ { N } \right)<br>$$<br>biLM训练过程中的目标就是最大化:<br>$$<br>\sum _ { k = 1 } ^ { N } \left( \log p \left( t _ { k } | t _ { 1 } , \ldots , t _ { k - 1 } ; \Theta _ { x } , \vec { \Theta } _ { L S T M } , \Theta _ { s } \right) + \log p \left( t _ { k } | t _ { k + 1 } , \ldots , t _ { N } ; \Theta _ { x } , \overline { \Theta } _ { L S T M } , \Theta _ { s } \right) \right)<br>$$</p>
-<p>ELMo对于每个token $t_k$, 通过一个L层的biLM计算出2L+1个表示:<br>$$<br>R _ { k } = \left{ x _ { k } ^ { L M } , \vec { h } _ { k , j } ^ { L M } , h _ { k , j } ^ { L M } | j = 1 , \ldots , L \right} = \left{ h _ { k , j } ^ { L M } | j = 0 , \ldots , L \right}<br>$$<br>其中$h _ { k , 0 } ^ { L M }$是对token进行直接编码的结果(这里是字符通过CNN编码), $h _ { k , j } ^ { L M } = \left[ \vec { h } _ { k , j } ^ { L M } ; \overline { h } _ { k , j } \right]$ 是每个biLSTM层输出的结果. 在实验中还发现不同层的biLM的输出的token表示对于不同的任务效果不同.</p>
+<p>ELMo对于每个token $t_k$, 通过一个L层的biLM计算出2L+1个表示:<br>$$<br>R_{ k } = \left{ x _ { k } ^ { L M } , \vec { h } _ { k , j } ^ { L M } , h _ { k , j } ^ { L M } | j = 1 , \ldots , L \right} = \left{ h _ { k , j } ^ { L M } | j = 0 , \ldots , L \right}<br>$$<br>其中$h _ { k , 0 } ^ { L M }$是对token进行直接编码的结果(这里是字符通过CNN编码), $h _ { k , j } ^ { L M } = \left[ \vec { h } _ { k , j } ^ { L M } ; \overline { h } _ { k , j } \right]$ 是每个biLSTM层输出的结果. 在实验中还发现不同层的biLM的输出的token表示对于不同的任务效果不同.</p>
 <p>应用中将ELMo中所有层的输出R压缩为单个向量, ELMok=E(Rk;Θϵ), 最简单的压缩方法是取最上层的结果做为token的表示:$E \left( R _ { k } \right) = h _ { k , L } ^ { L M }$ 更通用的做法是通过一些参数来联合所有层的信息:<br>$$E L M o _ { k } ^ { t a s k } = E \left( R _ { k } ; \Theta ^ { t a s k } \right) = \gamma ^ { t a s k } \sum _ { j = 0 } ^ { L } s _ { j } ^ { t a s k } h _ { k , j } ^ { L M }$$</p>
 <p>其中$s_j$是一个softmax出来的结果, $γ$是一个任务相关的scale参数, 我试了平均每个层的信息和学出来$s_j$发现学习出来的效果会好很多. 文中提到$γ$在不同任务中取不同的值效果会有较大的差异, 需要注意, 在SQuAD中设置为0.01取得的效果要好于设置为1时.</p>
 <p>ELMo: Context Matters</p>
