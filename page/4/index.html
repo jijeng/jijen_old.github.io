@@ -296,6 +296,167 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/那些年的算法题目（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/21/那些年的算法题目（二）/" itemprop="url">那些年的算法题目（二）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:13:54+08:00">
+                2018-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/21/那些年的算法题目（二）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/21/那些年的算法题目（二）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="最长01相同子串"><a href="#最长01相同子串" class="headerlink" title="最长01相同子串"></a>最长01相同子串</h2><p>已知一个长度为N的字符串，只由0和1组成， 求一个最长的子串，要求该子串出现0和1的次数相等。<br>思路：<br>最简单的方式是先生成字串，然后判断每个字串是否满足0的个数和1的个数相同。这种暴力求解时间复杂度O(n^3),明显是不合理的。<br>下面说一下简单的做法：<br>定义一个数组B[N]，B[i]表示从A[0…i]中 num_of_0 - num_of_1，0的个数与1的个数的差 。那么如果A[i] ~ A[j]是符合条件的子串，一定有 B[i] == B[j]，因为中间的部分0、1个数相等，相减等于0。</p>
+<p><strong>时间复杂度：O(n)，空间复杂度：O(n)</strong></p>
+<p>算法的思路是一样的。</p>
+<p>Following is a solution that uses O(n) extra space and solves the problem in O(n) time complexity.<br>Let input array be arr[] of size n and maxsize be the size of output subarray.<br>1) Consider all 0 values as -1. The problem now reduces to find out the maximum length subarray with sum = 0.<br>2) Create a temporary array sumleft[] of size n. Store the sum of all elements from arr[0] to arr[i] in sumleft[i]. This can be done in O(n) time.<br>3) There are two cases, the output subarray may <strong>start from 0th index or may start from some other index</strong>. We will return the max of the values obtained by two cases.<br>4) <strong>To find the maximum length subarray starting from 0th index, scan the sumleft[] and find the maximum i where sumleft[i] = 0.</strong><br>5) Now, we need to find the subarray where subarray sum is 0 and start index is not 0. This problem is equivalent to finding two indexes i &amp; j in sumleft[] such that sumleft[i] = sumleft[j] and j-i is maximum. To solve this, we can create a hash table with size = max-min+1 where min is the minimum value in the sumleft[] and max is the maximum value in the sumleft[]. The idea is to hash the leftmost occurrences of all different values in sumleft[]. The size of hash is chosen as max-min+1 because there can be these many different possible values in sumleft[]. Initialize all values in hash as -1<br>6) To fill and use hash[], traverse sumleft[] from 0 to n-1. If a value is not present in hash[], then store its index in hash. If the value is present, then calculate the difference of current index of sumleft[] and previously stored value in hash[]. If this difference is more than maxsize, then update the maxsize.<br>7) To handle corner cases (all 1s and all 0s), we initialize maxsize as -1. If the maxsize remains -1, then print there is no such subarray.</p>
+<p>代码实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">def lengest01SubStr(s):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    最长0,1 相等的子串长度</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    count =[0, 0]</span><br><span class="line">    B =[0]*len(s)</span><br><span class="line">    dic =&#123;&#125; # 保存 0 1 的差值</span><br><span class="line">    lengest =0</span><br><span class="line"></span><br><span class="line">    for i in range(len(s)):</span><br><span class="line">        count[int(s[i])]  +=1</span><br><span class="line">        B[i]  =count[0] - count[1]</span><br><span class="line">        # start from 0th index</span><br><span class="line">        if B[i] ==0:</span><br><span class="line">            lengest +=1</span><br><span class="line">            continue</span><br><span class="line">            </span><br><span class="line">        if B[i] in dic:</span><br><span class="line">        # i -dic[B[i]] , not from 0th index</span><br><span class="line">            lengest =max(lengest, i- dic[B[i]])</span><br><span class="line">        else:</span><br><span class="line">            dic[B[i]] =i</span><br><span class="line">    return lengest</span><br><span class="line"></span><br><span class="line">a =&apos;1011010&apos;</span><br><span class="line">b =&apos;10110100&apos;</span><br><span class="line">print(lengest01SubStr(a)) # 6 # &apos;011010&apos;</span><br><span class="line">print(lengest01SubStr(b)) # 8 # &apos;10110100&apos;</span><br></pre></td></tr></table></figure></p>
+<h2 id="顺时针打印矩阵"><a href="#顺时针打印矩阵" class="headerlink" title="顺时针打印矩阵"></a>顺时针打印矩阵</h2><p>输入一个矩阵，按照从外向里以顺时针的顺序依次扫印出每一个数字。<br>思路：发现网上有很多使用递归的，但是使用四个循环就可以解决这个问题。找到每次开始的起点，然后按照最上面一行，最右面一列，最小面一行和最左面一行这样的顺序进行打印即可。</p>
+<p>思路：<br>找到左上角的，一个start_point， 然后根据这个点进行上下左右的循环。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printMatrix</span><span class="params">(matrix)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> matrix ==[[]]:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">        <span class="comment"># 第一次见这样判断空的matrix</span></span><br><span class="line">    row =len(matrix)</span><br><span class="line">    column =len(matrix[<span class="number">0</span>])</span><br><span class="line">    <span class="comment"># 这里的left, right, up, down 都是真实能够access到数据的</span></span><br><span class="line"></span><br><span class="line">    left =<span class="number">0</span></span><br><span class="line">    right =column <span class="number">-1</span></span><br><span class="line">    up =<span class="number">0</span></span><br><span class="line">    down =row <span class="number">-1</span></span><br><span class="line">    res =[]</span><br><span class="line">    <span class="keyword">while</span> right &gt;left <span class="keyword">and</span> up &lt;down:</span><br><span class="line">        <span class="comment"># from left to right</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left, right+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">        <span class="comment"># from up to down</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(up+<span class="number">1</span>, down+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[i][right])</span><br><span class="line">        <span class="comment"># from right to left</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(right<span class="number">-1</span>, left<span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            res.append(matrix[down][i])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(down<span class="number">-1</span>, up, <span class="number">-1</span>):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">        left +=<span class="number">1</span></span><br><span class="line">        right -=<span class="number">1</span></span><br><span class="line">        up +=<span class="number">1</span></span><br><span class="line">        down -=<span class="number">1</span></span><br><span class="line">    <span class="comment"># 最后对于这种特殊情况的处理是容易忘记的</span></span><br><span class="line">    <span class="comment"># left one row 这种情况很特殊，只是从左往右遍历</span></span><br><span class="line">    <span class="keyword">if</span> up ==down <span class="keyword">and</span> left &lt;right:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left, right+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">    <span class="comment"># left one column 只有可能是从上往下遍历</span></span><br><span class="line">    <span class="keyword">if</span> left ==right <span class="keyword">and</span> up &lt;down:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(up, down+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">    <span class="keyword">if</span> up ==down <span class="keyword">and</span> left ==right:</span><br><span class="line">        res.append(matrix[left][up])</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">print(printMatrix(matrix))</span><br></pre></td></tr></table></figure>
+<p>下面这个版本并没有运行成功，但是中间有个语法点是可以学习的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">def printMatrix(matrix):</span><br><span class="line">    res =[]</span><br><span class="line">    # 第一个坐标表示行数，第二个坐标表示列数</span><br><span class="line">    # m 表示行数，n 表示列数</span><br><span class="line">    m =len(matrix)</span><br><span class="line">    n = len(matrix[0])</span><br><span class="line">    if m ==1 and n ==1:</span><br><span class="line">        res =[matrix[0][0]]</span><br><span class="line">        return res</span><br><span class="line">    else:</span><br><span class="line">        for o in range(int((min(m,n)+1)/2)):</span><br><span class="line">            # 不加这个[] 会有语法错误</span><br><span class="line">            [res.append(matrix[o][i]) for i in range(o, n-o)]</span><br><span class="line">            [res.append(matrix[j][n-o-1]) for j in range(o, m-o) if matrix[j][n-o-1] not in res ]</span><br><span class="line">            # 感觉这个最后的not in 是不合理的，万一这两个数字就是相同呢，试一下</span><br><span class="line">            [res.append(matrix[m-o-1][k]) for k in range(n-1, o-1, -1) if matrix[m-o-1][k] not in res]</span><br><span class="line">            [res.append(matrix[l][o]) for l in range(m-1-o, o-1,-1) if matrix[l][o] not in res]</span><br><span class="line">            # 这种写法还是少用，可以使用append,就少用这种，可读性不强，容易错</span><br><span class="line">        return resdef printMatrix(matrix):</span><br><span class="line">    res =[]</span><br><span class="line">    # 第一个坐标表示行数，第二个坐标表示列数</span><br><span class="line">    # m 表示行数，n 表示列数</span><br><span class="line">    m =len(matrix)</span><br><span class="line">    n = len(matrix[0])</span><br><span class="line">    if m ==1 and n ==1:</span><br><span class="line">        res =[matrix[0][0]]</span><br><span class="line">        return res</span><br><span class="line">    else:</span><br><span class="line">        for o in range(int((min(m,n)+1)/2)):</span><br><span class="line">            # 不加这个[] 会有语法错误</span><br><span class="line">            [res.append(matrix[o][i]) for i in range(o, n-o)]</span><br><span class="line">            [res.append(matrix[j][n-o-1]) for j in range(o, m-o) if matrix[j][n-o-1] not in res ]</span><br><span class="line">            # 感觉这个最后的not in 是不合理的，万一这两个数字就是相同呢，试一下</span><br><span class="line">            [res.append(matrix[m-o-1][k]) for k in range(n-1, o-1, -1) if matrix[m-o-1][k] not in res]</span><br><span class="line">            [res.append(matrix[l][o]) for l in range(m-1-o, o-1,-1) if matrix[l][o] not in res]</span><br><span class="line">            # 这种写法还是少用，可以使用append,就少用这种，可读性不强，容易错</span><br><span class="line">        return res</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -807,6 +968,11 @@
 <p>分析：<br>快速排序的时间复杂度在最坏情况下是O($N^2$)，平均的时间复杂度是O(N*logN)，采用的是分治的思想，二叉树的结构。</p>
 <p>下面以数列 a={30,40,60,10,20,50} 为例，演示它的快速排序过程(如下图)。 这个是经过一个迭代的结果，每一个迭代，都排好了基准数字的位置。按照同样的方法，对子数列进行递归遍历。最后得到有序数组！<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ddef4gxcj20sw0xbmzx.jpg" alt=""></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(lists, left, right)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> left &gt;= right:</span><br><span class="line">        <span class="keyword">return</span> lists</span><br><span class="line">    key =lists[left]</span><br><span class="line">    low =left</span><br><span class="line">    high  =right</span><br><span class="line">    <span class="keyword">while</span> left &lt; right:</span><br><span class="line">        <span class="comment"># 因为你最初key 取得是left，然后从右边找到一个比key小的，然后替换left 的位置</span></span><br><span class="line">        <span class="keyword">while</span> left &lt;right <span class="keyword">and</span> lists[right]&gt;=key:</span><br><span class="line">            right  -= <span class="number">1</span></span><br><span class="line">        lists[left] =lists[right]</span><br><span class="line">        <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> lists[left] &lt;= key:</span><br><span class="line">            left +=<span class="number">1</span></span><br><span class="line">        lists[right] =lists[left]</span><br><span class="line">    lists[left] =key</span><br><span class="line">    <span class="comment"># 这里的left 和right 都是可以的，因为从while 中出来之后两者是相同的</span></span><br><span class="line">    <span class="comment"># 这个步伐是1,所以只能是一个个变化</span></span><br><span class="line">    quick_sort(lists, low, left<span class="number">-1</span>)</span><br><span class="line">    quick_sort(lists, left+<span class="number">1</span>, high)</span><br><span class="line">    <span class="comment"># 因为left的位置已经被占了，所以只是划分左边一块，右边一块就是可以的</span></span><br><span class="line">    <span class="keyword">return</span>  lists</span><br><span class="line"><span class="comment"># test</span></span><br><span class="line">lists =[<span class="number">3</span>,<span class="number">2</span>,<span class="number">45</span>, <span class="number">100</span>,<span class="number">1</span>,<span class="number">56</span>,<span class="number">56</span>]</span><br><span class="line"><span class="comment">#lists =[1,2,3,2,2,2,5,4,2]</span></span><br><span class="line">print(quick_sort(lists, <span class="number">0</span>, len(lists)<span class="number">-1</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="Kth-Largest-Element-in-an-Array"><a href="#Kth-Largest-Element-in-an-Array" class="headerlink" title="Kth Largest Element in an Array"></a>Kth Largest Element in an Array</h3><blockquote>
+<p>Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.</p>
+</blockquote>
+<p>Tips:  使用的是 快排的思想，最后的平均时间复杂度是O(N) ，所以是一个不错的算法。 kth 和 ”快排“ 实现的时候稍微有一些区别，前者只有发现 一组数据（一个比pivot 大，一个比 pivot 小）才进行交换，后者是是 两个while， 只要发现一个就进行交换。这个是细微的差别。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self, nums, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        left, right = <span class="number">0</span>, len(nums) - <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            pos = self.partition(nums, left, right)</span><br><span class="line">            <span class="comment"># 这个在排序的时候，是把大的数字放到前面，而前面是pos 是从0 开始的，</span></span><br><span class="line">            <span class="comment"># 所以这里是 k-1</span></span><br><span class="line">            <span class="keyword">if</span> pos == k - <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> nums[pos]</span><br><span class="line">            <span class="comment"># 左边的并不足以构成k 个， 那么在右边</span></span><br><span class="line">            <span class="keyword">elif</span> pos &lt; k - <span class="number">1</span>:</span><br><span class="line">                left = pos + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                right = pos - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(self, nums, left, right)</span>:</span></span><br><span class="line">        <span class="comment"># choose nums[left] as pivot</span></span><br><span class="line">        pivot = nums[left]</span><br><span class="line">        <span class="comment"># p1, p2就类似 working 中的left right</span></span><br><span class="line">        p1, p2 = left + <span class="number">1</span>, right</span><br><span class="line">        <span class="keyword">while</span> p1 &lt;= p2:</span><br><span class="line">            <span class="keyword">if</span> nums[p1] &lt; pivot <span class="keyword">and</span> nums[p2] &gt; pivot:</span><br><span class="line">                nums[p1], nums[p2] = nums[p2], nums[p1]</span><br><span class="line">                p1, p2 = p1 + <span class="number">1</span>, p2 - <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> nums[p1] &gt;= pivot:</span><br><span class="line">                p1 += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>: <span class="comment">#nums[p2] &lt;= pivot:</span></span><br><span class="line">                p2 -=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">        nums[left], nums[p2] = nums[p2], nums[left]</span><br><span class="line">        <span class="keyword">return</span> p2</span><br></pre></td></tr></table></figure>
 <h3 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h3><p>参看另外一篇<a href="https://jijeng.github.io/2018/06/22/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%9A%84%E7%AE%97%E6%B3%95%E9%A2%98%E7%9B%AE%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="noopener">博客</a></p>
 <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="http://ictar.github.io/2015/12/01/%E4%B9%9D%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6Python%E5%AE%9E%E7%8E%B0%E4%B9%8B%E7%AE%80%E5%8D%95%E6%8E%92%E5%BA%8F/" target="_blank" rel="noopener">算法动图效果</a><br><a href="http://python.jobbole.com/82270/" target="_blank" rel="noopener">排序算法分类</a></p>
 
@@ -1987,176 +2153,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/等概率生成器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/等概率生成器/" itemprop="url">等概率生成器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T22:20:24+08:00">
-                2018-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/28/等概率生成器/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/28/等概率生成器/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>总体来说是可以有两种思路：一种是二级制的理解，一种是生成更大的数字的集合，然后求余+剪枝（重投）。</p>
-<p>给定一个可以等概率生成1-3的rand3()函数生成器，求解可以随机等概率生成1-7的rand7()函数生成器。</p>
-<p><strong><em>解题思路</em></strong></p>
-<p>使用rand3()函数生成1-9的数字，然后丢弃8,9两种可能。</p>
-<p><strong><em>实现代码</em></strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random7</span><span class="params">(self)</span>:</span></span><br><span class="line">        x =<span class="number">8</span></span><br><span class="line">        <span class="keyword">while</span> x&gt;<span class="number">7</span>:</span><br><span class="line">            x =self.random3() + (self.random3()<span class="number">-1</span>)*<span class="number">3</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random3</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> </span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">"__main__"</span>:</span><br><span class="line">    print(Solution().random7())</span><br></pre></td></tr></table></figure>
-<p><strong><em>Given a random number generator rand5() generate gen7()</em></strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rand7a</span><span class="params">()</span>:</span></span><br><span class="line">    rand7 =<span class="number">22</span></span><br><span class="line">    <span class="keyword">while</span> rand7&gt;=<span class="number">21</span>:</span><br><span class="line">        rand7 =rand5()+ rand5()*<span class="number">5</span></span><br><span class="line">    <span class="keyword">return</span> rand7 %<span class="number">7</span></span><br></pre></td></tr></table></figure>
-<p>1st approach:<br>rand2() in binary is 000 or 001 with 50-50 probability.<br>rand2()<em>2 is 000 or 010 with 50-50 probability.<br>rand2()</em>4 is 000 or 100 with 50-50 probability.<br>So the sum is binary xxx where each x has a 50-50 probability of 0 or 1; so each 000 to 111 has a probablilty of 1/8.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rand7b</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    rand7 =<span class="number">7</span></span><br><span class="line">    <span class="keyword">while</span> rand7 ==<span class="number">7</span>:</span><br><span class="line">        rand7 =rand2() +rand2()*<span class="number">2</span>+ rand2()*<span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rand7</span><br></pre></td></tr></table></figure>
-<p>2nd approach: going through each of the 8 possibilities of the 3 rand2()s:<br>0+0+0 or 1+0+0 or 0+2+0 or 1+2+0 or 0+0+4 or 1+0+4 or 0+2+4 or 1+2+4<br>all of these with equal probablilty 1/8.</p>
-<p>从大数字的 random 到小数字的random，需要做的是等概率的生成，所以对于不符合要求的是 就是 重新rand() </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int rand2() &#123;</span><br><span class="line">    int x = rand5();</span><br><span class="line">    <span class="keyword">if</span> x == <span class="number">4</span> <span class="keyword">return</span> rand2(); // restart</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> x % <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Given rand2(), you should get rand5()</p>
-<p>这个是可以从二进制的角度进行解析的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int rand7() &#123;</span><br><span class="line">     int x = rand2() * <span class="number">4</span> + rand2() * <span class="number">2</span> + rand2();</span><br><span class="line">     <span class="keyword">if</span> (x == <span class="number">7</span>) <span class="keyword">return</span> rand7(); // restart</span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其实不管 rand7() 是不是产生了7，即使产生了7 那么也是可以通过 “if condition” 进行提前进行处理的。</p>
-<p>这种算法都不是唯一的。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2211,7 +2207,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

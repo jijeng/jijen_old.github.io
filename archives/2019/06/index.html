@@ -82,7 +82,7 @@
 <meta name="description" content="Stay Hungry, Stay Foolish">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Jijeng&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/page/5/index.html">
+<meta property="og:url" content="http://yoursite.com/archives/2019/06/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="Stay Hungry, Stay Foolish">
 <meta property="og:locale" content="default">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/5/"/>
+  <link rel="canonical" href="http://yoursite.com/archives/2019/06/"/>
 
 
 
 
 
-  <title>Jijeng's blog</title>
+  <title>Archive | Jijeng's blog</title>
   
 
 
@@ -143,8 +143,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-archive">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -281,508 +280,73 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
-    
+
+  
+  
+  
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
+      <span class="archive-move-on"></span>
+
+      <span class="archive-page-counter">
+        
+        
+         
+        
+        OK! 43 posts in total. Keep on posting.
+      </span>
+
       
 
-  
+        
+        
+        
 
-  
-  
-  
+        
+          
+          <div class="collection-title">
+            <h1 class="archive-year" id="archive-year-2019">2019</h1>
+          </div>
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/等概率生成器/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2019/06/01/nlp-papers-reading-sentence-embedding/" itemprop="url">
+              
+                <span itemprop="name">NLP  Papers Reading-Sentence Embedding</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/等概率生成器/" itemprop="url">等概率生成器</a></h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T22:20:24+08:00">
-                2018-05-28
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2019-06-01T16:33:51+08:00"
+              content="2019-06-01" >
+          06-01
+        </time>
+      </div>
 
-            
+    </header>
+  </article>
 
-            
-          </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/28/等概率生成器/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/28/等概率生成器/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
 
       
-      
 
-      
-        
-          
-            <p>总体来说是可以有两种思路：一种是二级制的理解，一种是生成更大的数字的集合，然后求余+剪枝（重投）。</p>
-<p>给定一个可以等概率生成1-3的rand3()函数生成器，求解可以随机等概率生成1-7的rand7()函数生成器。</p>
-<p><strong><em>解题思路</em></strong></p>
-<p>使用rand3()函数生成1-9的数字，然后丢弃8,9两种可能。</p>
-<p><strong><em>实现代码</em></strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random7</span><span class="params">(self)</span>:</span></span><br><span class="line">        x =<span class="number">8</span></span><br><span class="line">        <span class="keyword">while</span> x&gt;<span class="number">7</span>:</span><br><span class="line">            x =self.random3() + (self.random3()<span class="number">-1</span>)*<span class="number">3</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">random3</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> </span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">"__main__"</span>:</span><br><span class="line">    print(Solution().random7())</span><br></pre></td></tr></table></figure>
-<p><strong><em>Given a random number generator rand5() generate gen7()</em></strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rand7a</span><span class="params">()</span>:</span></span><br><span class="line">    rand7 =<span class="number">22</span></span><br><span class="line">    <span class="keyword">while</span> rand7&gt;=<span class="number">21</span>:</span><br><span class="line">        rand7 =rand5()+ rand5()*<span class="number">5</span></span><br><span class="line">    <span class="keyword">return</span> rand7 %<span class="number">7</span></span><br></pre></td></tr></table></figure>
-<p>1st approach:<br>rand2() in binary is 000 or 001 with 50-50 probability.<br>rand2()<em>2 is 000 or 010 with 50-50 probability.<br>rand2()</em>4 is 000 or 100 with 50-50 probability.<br>So the sum is binary xxx where each x has a 50-50 probability of 0 or 1; so each 000 to 111 has a probablilty of 1/8.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rand7b</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    rand7 =<span class="number">7</span></span><br><span class="line">    <span class="keyword">while</span> rand7 ==<span class="number">7</span>:</span><br><span class="line">        rand7 =rand2() +rand2()*<span class="number">2</span>+ rand2()*<span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rand7</span><br></pre></td></tr></table></figure>
-<p>2nd approach: going through each of the 8 possibilities of the 3 rand2()s:<br>0+0+0 or 1+0+0 or 0+2+0 or 1+2+0 or 0+0+4 or 1+0+4 or 0+2+4 or 1+2+4<br>all of these with equal probablilty 1/8.</p>
-<p>从大数字的 random 到小数字的random，需要做的是等概率的生成，所以对于不符合要求的是 就是 重新rand() </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int rand2() &#123;</span><br><span class="line">    int x = rand5();</span><br><span class="line">    <span class="keyword">if</span> x == <span class="number">4</span> <span class="keyword">return</span> rand2(); // restart</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> x % <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Given rand2(), you should get rand5()</p>
-<p>这个是可以从二进制的角度进行解析的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int rand7() &#123;</span><br><span class="line">     int x = rand2() * <span class="number">4</span> + rand2() * <span class="number">2</span> + rand2();</span><br><span class="line">     <span class="keyword">if</span> (x == <span class="number">7</span>) <span class="keyword">return</span> rand7(); // restart</span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其实不管 rand7() 是不是产生了7，即使产生了7 那么也是可以通过 “if condition” 进行提前进行处理的。</p>
-<p>这种算法都不是唯一的。</p>
-
-          
-        
-      
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
   
   
   
-  </article>
-
-
-    
-      
 
   
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/机器学习优化方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/机器学习优化方法/" itemprop="url">机器学习优化方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T22:10:28+08:00">
-                2018-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/28/机器学习优化方法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/28/机器学习优化方法/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>机器学习的优化方法有很多，这里主要解释的是 Gradient Descent 和 Newton’s Method.</p>
-<ul>
-<li>梯度下降（gradient  descent）</li>
-</ul>
-<p>梯度下降法是最早最简单，也是最为常用的最优化方法。梯度下降法实现简单，当目标函数是凸函数时，梯度下降法的解是全局解。接下来衍生的的子类:<br>批量梯度下降法（Batch Gradient Descent，BGD）<br>随机梯度下降（Stochastic Gradient Descent，SGD）</p>
-<ul>
-<li>牛顿法和拟牛顿法（Newton’s method &amp; Quasi-Newton Methods）</li>
-</ul>
-<p>牛顿法最大的特点就在于它的收敛速度很快。个人感觉牛顿法只是在在每次迭代的时候进行了两次运算，和梯度下降在总的运算次数上并没有很大的差别，为什么会收敛速度更快呢？<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/6594984.jpg" alt="avatar"></p>
-<ul>
-<li>名词解释</li>
-</ul>
-<p>凸优化:对凸优化的问题我们在基础数学上面已经有了很多解决方法，例如可以将凸优化问题Lagerange做对偶化，然后用Newton、梯度下降算法求解。<br>凸集合:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/24366718.jpg" alt="avatar"></p>
-<p>凸函数：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-5/93259333.jpg" alt="avatar"><br>Jacobian矩阵和Hessian矩阵：在向量分析中, 雅可比矩阵是一阶偏导数以一定方式排列成的矩阵, 其行列式称为雅可比行列式。<br>Hessian矩阵：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/65836119.jpg" alt="avatar"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/求解平方根/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/求解平方根/" itemprop="url">求解平方根</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T22:03:59+08:00">
-                2018-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/28/求解平方根/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/28/求解平方根/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>求解平方根的算法主要有两种：二分法(binary search) 和牛顿迭代法(Newton’s Method)</p>
-<h3 id="Just-give-me-codes…"><a href="#Just-give-me-codes…" class="headerlink" title="Just give me codes…"></a>Just give me codes…</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</span><br><span class="line"><span class="comment"># you needn't import sqrt, I do that just for comparing the results of different methods</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="comment"># in-built function</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">my_sqrt</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> sqrt(n)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sqrt_binary</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        low, high =<span class="number">0</span>,n</span><br><span class="line">        mid =int((low+high)/<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">while</span> abs(mid*mid- n)&gt; <span class="number">1e-9</span>:</span><br><span class="line">            <span class="keyword">if</span> mid*mid&gt;n:</span><br><span class="line">                high =mid</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                low =mid</span><br><span class="line">            mid =(low+high)/<span class="number">2</span></span><br><span class="line">        <span class="keyword">return</span> mid</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># Newton method: math</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">newton_method</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        k =<span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> abs(k*k-n) &gt;<span class="number">1e-9</span>:</span><br><span class="line">            k =(k+n/k)/<span class="number">2</span></span><br><span class="line">        <span class="keyword">return</span> k</span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">"__main__"</span>:</span><br><span class="line">    print(Solution().my_sqrt(<span class="number">2</span>))</span><br><span class="line">    print(Solution().sqrt_binary(<span class="number">2</span>))</span><br><span class="line">    print(Solution().newton_method(<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.4142135623730951 #built-in function</span><br><span class="line">1.4142135623842478 # binary search</span><br><span class="line">1.4142135623746899 # Newton method</span><br></pre></td></tr></table></figure>
-<p>从结果中看，Newton method比 binary sqrt更加接近系统自带的sqrt function. 并且从数学上可以证明 Newton method 比 binary sqrt需要更少的迭代次数。</p>
-<h3 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h3><p>牛顿迭代法是求方程根的重要方法之一，其最大优点是在方程f(x) = 0的单根附近具有<strong>平方收敛</strong>，而且该法还可以用来求方程的重根,复根。<br>牛顿迭代法结论其实就是取泰勒级数前两项等于0求得的,泰勒公式表示为<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/68882814.jpg" alt="avatar"><br>更简练的写法为：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/64348458.jpg" alt="avatar"><br>通过 Newton methond逼近方程的解的过程可以表示为下图：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-5-28/9966097.jpg" alt="avatar"></p>
-<h3 id="referrences"><a href="#referrences" class="headerlink" title="referrences:"></a>referrences:</h3><p><a href="https://blog.csdn.net/ycf74514/article/details/48996383" target="_blank" rel="noopener">https://blog.csdn.net/ycf74514/article/details/48996383</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
-  </nav>
 
 
 

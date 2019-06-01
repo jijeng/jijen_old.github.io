@@ -296,6 +296,200 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/24/pygen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/24/pygen/" itemprop="url">pygen</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-24T10:54:05+08:00">
+                2019-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/24/pygen/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/04/24/pygen/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>pygen功能：</strong>有关联的随机生成人名，邮箱，ID Card (ssn)，电话，地址等信息，并且可以选择保存为 pandas dataframe格式, 数据库”.db” 文件, Excel 文件和csv 文件格式，用于机器学习训练。<a href="https://github.com/jijeng/pygen" target="_blank" rel="noopener">项目地址github</a>。</p>
+<p>随机生成虚假个人信息具有很大的应用空间。首先，虚假的生成数据可以用于机器学习模型的“准备数据”，当真实的数据比较少或者难以获得的时候，可以使用生成数据进行训练模型，待模型调通之后，然后使用真实的模型。并且，当真实的数据集中缺少某些特征时候，可以使用这种方法进行特征的填充。比如大的数据集中缺少现居城市地址的时候，可以调用该库中的 “city_real” 进行填充。</p>
+<p>当前使用最为广泛的是 <a href="https://faker.readthedocs.io/en/master/" target="_blank" rel="noopener">Faker</a> 开源库用于数据的生成。虽然该库支持中文，但是对于中文的支持力度有限，所以有时候并不能满足我的需求，比如说生成的身份证 (ssn) 和姓名所能体现的性别是不匹配(了解更多可以参考<a href="https://github.com/jayknoxqu/id-number-util" target="_blank" rel="noopener">这里</a>)、生成的姓名中缺少复姓和电话邮箱等信息不符合我们的使用习惯等等。所以我将从以下几点改进：</p>
+<ul>
+<li>增强数据之间相关性</li>
+<li>生成名字的多样性</li>
+<li>符合国人使用习惯的邮箱电话</li>
+<li>提供保存多种保存文件格式，更加适合机器学习的训练</li>
+</ul>
+<p>中文名字有很强的性别属性。例如名字中带有“杰”“志”“宏”等字的一般为男性，带有“琬”“佩”“梅”等字的一般为女性。当然也有一些比较中性的字，例如“文”“安”“清”等，比较难猜测性别，关于这点会在另一个博客中展开，请期待。</p>
+<p>faker 对中文的支持有限，比如下面这种情况。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> faker <span class="keyword">import</span> Faker</span><br><span class="line">fake = Faker(<span class="string">'zh_CN'</span>)</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    print(fake.name(),fake.ssn(),fake.phone_number())</span><br></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dgyq294dj20kg09sq39.jpg" alt=""></p>
+<p>从图中可以明显的看出 “王玉梅”和 “李桂花”都是两个女性，但是这种身份证信息（ssn）都没有体现这点。关于身份证的科普信息可以从这里获得。简单来说倒数第二位表示性别信息，如果是男性就是奇数如果是女性就是偶数。faker 生成的数据是不具有数据之间的相关性的。</p>
+<p>基于此，我们进行了改进。首先是姓名的生成，然后是性别的判断，最后再生成相应性别的身份证号码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pygen <span class="keyword">import</span> pygen</span><br><span class="line">db =pygen()</span><br><span class="line">db.gen_dataframe(fields =[<span class="string">'name'</span>, <span class="string">'ssn'</span>, <span class="string">'phone'</span>, <span class="string">'email'</span>])</span><br></pre></td></tr></table></figure>
+<p>效果如下：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dhis3u0qj20vm0iq75a.jpg" alt=""></p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g2dhj273lrj20vc0iwjsf.jpg" alt=""></p>
+<p>红色线条表示姓名和性别对应一致，蓝色线条表示结果不确定（“镜阳炎” 像是一个中性的名字），绿色表示生成了含有复姓的名字，增强了数据的多样性。</p>
+<p>从上图的 “mail” 一列可以看出邮箱前缀的命名基本上是中文名字中“姓” 和“民”的拼音组合，加强了数据之间的相关性和真实度。</p>
+<p>另外，电话号码按照运营商分为三类：0 表示移动，1表示联通，2表示电信。</p>
+<pre><code>print(&apos;移动字段:&apos;)
+for _ in range(5):
+  print(db.simple_ph_num(types =0))
+
+print(&apos;联通字段:&apos;)
+for _ in range(5):
+  print(db.simple_ph_num(types =1))
+
+print(&apos;电信字段：&apos;)
+for _ in range(5):
+  print(db.simple_ph_num(types =2))
+</code></pre><p>输出：</p>
+<blockquote>
+<p>移动字段: 15023689929 16771753917 16790223946 15950129353 15271129554<br>联通字段: 13869739303 13786227031 13950354445 15137578545 15240836142<br>电信字段： 17172983067 15658567011 18562313243 17073127396 15543448286</p>
+</blockquote>
+<p>最后提供了多种文件保存格式，包括”.csv”, “.db” 和”.xlsx”等格式。可以使用如下：</p>
+<pre><code>from pygen import pygen
+db =pygen()
+db.gen_table(filename =filename, fields =[&apos;name&apos;, &apos;ssn&apos;, &apos;phone&apos;, &apos;email&apos;])
+db.gen_excel(filename =filename, fields =[&apos;name&apos;, &apos;ssn&apos;, &apos;phone&apos;, &apos;email&apos;])
+db.gen_csv(filename =filename, fields =[&apos;name&apos;, &apos;ssn&apos;, &apos;phone&apos;, &apos;email&apos;])
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/18/mode-collapse-in-gan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1937,6 +2131,16 @@
 <blockquote>
 <p>Training a neural network means taking a training example and adjusting all of the neuron weights slightly so that it predicts that training sample more accurately. In other words, each training sample will tweak all of the weights in the neural network.<br>As we discussed above, the size of our word vocabulary means that our skip-gram neural network has a tremendous number of weights, all of which would be updated slightly by every one of our billions of training samples!<br>Negative sampling addresses this by having each training sample only modify a small percentage of the weights, rather than all of them. Here’s how it works.<br>When training the network on the word pair (“fox”, “quick”), recall that the “label” or “correct output” of the network is a one-hot vector. That is, for the output neuron corresponding to “quick” to output a 1, and for all of the other thousands of output neurons to output a 0.<br>With negative sampling, we are instead going to randomly select just a small number of “negative” words (let’s say 5) to update the weights for. (In this context, a “negative” word is one for which we want the network to output a 0 for). We will also still update the weights for our “positive” word (which is the word “quick” in our current example).<br>The paper says that selecting 5-20 words works well for smaller datasets, and you can get away with only 2-5 words for large datasets.<br>Recall that the output layer of our model has a weight matrix that’s 300 x 10,000. So we will just be updating the weights for our positive word (“quick”), plus the weights for 5 other words that we want to output 0. That’s a total of 6 output neurons, and 1,800 weight values total. That’s only 0.06% of the 3M weights in the output layer!<br>In the hidden layer, only the weights for the input word are updated (this is true whether you’re using Negative Sampling or not).</p>
 </blockquote>
+<h3 id="Positive-samples-and-Negative-samples"><a href="#Positive-samples-and-Negative-samples" class="headerlink" title="Positive samples and  Negative samples"></a>Positive samples and  Negative samples</h3><p>One little detail that’s missing from the description above is how do we select the negative samples.<br>The negative samples are chosen using the unigram distribution. Essentially, the probability of selecting a word as a negative sample is related to its frequency, with more frequent words being more likely to be selected as negative samples. Instead of using the raw frequency for<br>, in the original word2vec paper, each word is given a weight that’s equal to it’s frequency (word count) raised to the 3/4 power. The probability for selecting a word is just it’s weight divided by the sum of weights for all words.<br>This decision to raise the frequency to the 3/4 power appears to be empirical; as the author claims it outperformed other functions (e.g. just using unigram distribution).<br>Side note: The way this selection is implemented in the original word2vec C code is interesting. They have a large array with 100M elements (which they refer to as the unigram table). They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word’s index appears in the table is given by </p>
+<p>. Then, to actually select a negative sample, we just generate a random integer between 0 and 100M, and use the word at that index in the table. Since the higher probability words occur more times in the table, we’re more likely to pick those.</p>
+<p>这个也是有讲 任何进行negative sample的选择<br><a href="http://jalammar.github.io/illustrated-word2vec/" target="_blank" rel="noopener">http://jalammar.github.io/illustrated-word2vec/</a><br>一般来说在 word2vec 中context 是会选择到 5，然后这个 positive / negative sample 会是(???), 然后 nagative sample 是随机在 dictionary里面选的（所以有可能选到 positive sample）， 这个是这个dictionary 是根据频率，出现次数越多的，被选中的可能性也越大。<br>To address this, we need to introduce negative samples to our dataset – samples of words that are not neighbors. Our model needs to return 0 for those samples. Now that’s a challenge that the model has to work hard to solve – but still at blazing fast speed.<br>This idea is inspired by Noise-contrastive estimation [pdf]. We are contrasting the actual signal (positive examples of neighboring words) with noise (randomly selected words that are not neighbors). This leads to a great tradeoff of computational and statistical efficiency.</p>
+<p>Essentially, the probability for selecting a word as a negative sample is related to its frequency, with more frequent words being more likely to be selected as negative samples.</p>
+<p>They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word’s index appears in the table is given byP(wi)P(wi)* table_size. Then, to actually select a negative sample, you just generate a random integer between 0 and 100M, and use the word at that index in the table. Since the higher probability words occur more times in the table, you’re more likely to pick those.</p>
+<p>It’s now time to build out our skip-gram generator which will give us pair of words and their relevance</p>
+<ul>
+<li>(word, word in the same window), with label 1 (positive samples).</li>
+<li>(word, random word from the vocabulary), with label 0 (negative samples).</li>
+</ul>
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>第一个应用场景：词向量。<br>fastText作为训练词向量认为可以有两种模式，一种是根据周围词语预测中心词汇的CBOW （continuous bag-of-words）模型，另一种是根据中心词汇预测上下文的 skip-gram 模型。</p>
 <blockquote>
 <p>./fasttext – It is used to invoke the FastText library.<br> skipgram/cbow – It is where you specify whether skipgram or cbow is to be used to create the word representations.<br> -input – This is the name of the parameter which specifies the following word to be used as the name of the file used for training. This argument should be used as is.<br> data.txt – a sample text file over which we wish to train the skipgram or cbow model. Change this name to the name of the text file you have.<br> -output – This is the name of the parameter which specifies the following word to be used as the name of the model being created. This argument is to be used as is.<br> model – This is the name of the model created.<br>Running the above command will create two files named model.bin and model.vec. model.bin contains the model parameters, dictionary and the hyperparameters and can be used to compute word vectors. model.vec is a text file that contains the word vectors for one word per line.</p>
@@ -1979,164 +2183,6 @@
 </blockquote>
 <p>向量的比较有两种metric：一种是L2 一种是基于consine (点乘)进行检索。前者是求解最小的值，后者是通过inner——product 求解maximum. 并且是支持GPU的，在原来CPU上建立的index，然后很好的迁移到 GPU上。</p>
 <p>在涉及index使用考虑速度，acc和内存大小三个不同的维度。然后不同的index 是有不同的侧重的。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/NLP中的碎碎念/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/25/NLP中的碎碎念/" itemprop="url">NLP中的碎碎念</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T21:11:40+08:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index">
-                    <span itemprop="name">NLP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/25/NLP中的碎碎念/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/03/25/NLP中的碎碎念/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>主要介绍关键词提取并整理一下NLP相关的基础知识点。</p>
-<h2 id="关键词提取"><a href="#关键词提取" class="headerlink" title="关键词提取"></a>关键词提取</h2><h3 id="TF-IDF"><a href="#TF-IDF" class="headerlink" title="TF-IDF"></a>TF-IDF</h3><p>这个是可以参看之前自己写的一个<a href="https://jijeng.github.io/2018/08/23/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%AF%94%E8%BE%83%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" target="_blank" rel="noopener">博客</a></p>
-<h3 id="卡方分布"><a href="#卡方分布" class="headerlink" title="卡方分布"></a>卡方分布</h3><p>卡方检验是以χ2分布为基础的一种常用假设检验方法，它的无效假设H0是：观察频数与期望频数没有差别。该检验的基本思想是：首先假设H0成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。<br>而实际应用到特征选择中的时候，我们不需要知道自由度，不要知道卡方分布，我们只需要根据算出来的χ2 进行排序就好了，越大我们就越喜欢！挑选最大的一堆，于是就完成了利用卡方检验来进行特征提取。<br>卡方分布的缺点：<br>没有考虑词频</p>
-<h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>有一个与之很像的概念 pageRanking，最开始是用来计算网页的重要性。Textrank 主要用来提取文章的关键词，然后比较适合长文本。</p>
-<h2 id="CBOW和skip-gram"><a href="#CBOW和skip-gram" class="headerlink" title="CBOW和skip-gram"></a>CBOW和skip-gram</h2><p>举一个简单的小例子说明 CBOW和skip-gram的区别：skip-gram 是根据中心词汇然后预测上下文词汇，这个不是一下子输入上下文词汇的，而是一个过程，中心词汇和上下文词汇1 ，中心词汇和上下文词汇2，这样的进行输入。 cbow 和其的区别，在于简单相加了上下文词汇作为一个整体，然后和中心词汇进行输入，所以最后是这样的结果。</p>
-<p>使用skip gram训练的时间更长，但是对于出现频率不高的词汇，效果比较好。但CBOW的训练速度是相对来说比较快一些。</p>
 
           
         
@@ -2226,7 +2272,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
