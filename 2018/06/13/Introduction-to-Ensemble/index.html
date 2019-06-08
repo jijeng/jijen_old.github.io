@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="模型融合(Ensemble)," />
+  <meta name="keywords" content="模型融合(Ensemble),ROC," />
 
 
 
@@ -80,9 +80,9 @@
 
 
 <meta name="description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
-<meta name="keywords" content="模型融合(Ensemble)">
+<meta name="keywords" content="模型融合(Ensemble),ROC">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Introduction_to_Ensemble">
+<meta property="og:title" content="Introduction to Ensemble">
 <meta property="og:url" content="http://yoursite.com/2018/06/13/Introduction-to-Ensemble/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
@@ -96,14 +96,15 @@
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/11434494.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/78451107.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/52534893.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/79026872.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/52483658.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/e9a223b5ly1g3q453345pj205c046glh.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/e9a223b5ly1g3q4b2shb6j20at06vdfz.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/56890358.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/29323029.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/73757528.jpg">
-<meta property="og:updated_time" content="2018-06-25T14:25:12.000Z">
+<meta property="og:updated_time" content="2019-06-08T03:00:38.594Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Introduction_to_Ensemble">
+<meta name="twitter:title" content="Introduction to Ensemble">
 <meta name="twitter:description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
 <meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/47340483.jpg">
 
@@ -141,7 +142,7 @@
 
 
 
-  <title>Introduction_to_Ensemble | Jijeng's blog</title>
+  <title>Introduction to Ensemble | Jijeng's blog</title>
   
 
 
@@ -329,7 +330,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Introduction_to_Ensemble</h1>
+          <h1 class="post-title" itemprop="name headline">Introduction to Ensemble</h1>
         
 
         <div class="post-meta">
@@ -463,8 +464,21 @@
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/52534893.jpg" alt="avatar"></p>
 <p>发现super learner(meta learner)和 basic learner的mean的结果已经不相上下了。super learner得到了很好的训练。</p>
 <h2 id="补充概念"><a href="#补充概念" class="headerlink" title="补充概念"></a>补充概念</h2><ul>
-<li><p>ROC曲线和AUC值<br>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。好丑的图片啊…<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/79026872.jpg" alt="avatar"><br>接着我们计算TRP(True Positive Radio)，FRP(False Positive Ratio)用于描述ROC曲线，分别表示该曲线的Y轴，X轴。<br>TPR=TP/(TP+FN)<br>FPR=FP/(FP+TN)<br>最后就形成了类似这样的图像(来源于上述的训练模型)<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/52483658.jpg" alt="avatar"><br>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从图中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。<br>在机器学习中关于这方面经常涉及到的还有precision(查准率), recall(查全率)两个概念，下面是计算公式。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/56890358.jpg" alt="avatar"><br>其中n= TP+FP<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/29323029.jpg" alt="avatar"><br>总结：图中的x，y轴的计算和 precision, recall不是一个概念，虽然 recall 和y 轴在计算上是相同的。precision 是针对于预测数据(predication结果)来说的，而x轴，y轴(recall)的计算某种意义上是针对原来真实数据而言的。所以我们在训练模型过程可以追求 precision 和 recall的双高(即图像的左上角)。这时候引入了F1-measure(F1 =(2<em>P</em>R)/(R+P)).(P: precision, R: recall)</p>
-</li>
+<li>ROC曲线和AUC值<br>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。</li>
+</ul>
+<p>ROC 曲线<br>ROC 曲线（接收者操作特征曲线）是一种显示分类模型在所有分类阈值下的效果的图表。该曲线绘制了以下两个参数：</p>
+<ul>
+<li>真正例率</li>
+<li>假正例率<br>真正例率 (TPR) 是召回率的同义词，因此定义如下：<br>$$<br>T P R = \frac { T P } { T P + F N }<br>$$<br>假正例率 (FPR) 的定义如下：<br>$$<br>F P R = \frac { F P } { F P + T N }<br>$$</li>
+</ul>
+<p>ROC 中 TPR =(True positive / ( True positive +False negative)), 那个false negative 也是真实的类别，只不过是错误的当做了 negative（false negative）。（可以参见下图）<br><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg" alt=""></p>
+<p>ROC 曲线用于绘制采用不同分类阈值时的 TPR 与 FPR。降低分类阈值会导致将更多样本归为正类别，从而增加假正例和真正例的个数。下图显示了一个典型的 ROC 曲线。<br><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3q453345pj205c046glh.jpg" alt=""><br>为了计算 ROC 曲线上的点，我们可以使用不同的分类阈值多次评估逻辑回归模型，但这样做效率非常低。幸运的是，有一种基于排序的高效算法可以为我们提供此类信息，这种算法称为曲线下面积。</p>
+<p>ROC曲线，一般适用于你的分类器输出一个“概率值”，即这个样本属于某个类的概率是多少。 如此的话，你就需要设定一个阈值， 大于这个阈值属于正类，小于这个阈值属于负类。   从而，对于这个阈值P0， 就会得到对应的TPR, FPR, 也就是ROC曲线上的一个点，你设置不同的阈值，就会得到不同的TPR, FPR， 从而构成ROC曲线。   通常来说 阈值降低，即进入正类的门槛变低， TPR会变大，但是FPR也会变大， 看他们谁变的快。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">gbc = GradientBoostingClassifier()</span><br><span class="line">gbc.fit(x_train, y_train)</span><br><span class="line">resu = gbc.predict(x_test)  <span class="comment">#进行预测</span></span><br><span class="line">y_pred_gbc = gbc.predict_proba(x_test)[:,<span class="number">1</span>]  <span class="comment">###这玩意就是预测概率的</span></span><br><span class="line">fpr, tpr, threshold = roc_curve(y_test, y_pred_gbc)   <span class="comment">###画图的时候要用预测的概率，而不是你的预测的值</span></span><br><span class="line">plt.plot(fpr, tpr, <span class="string">'b'</span>, label=<span class="string">'AUC = %0.2f'</span> % rocauc)<span class="comment">#生成ROC曲线</span></span><br><span class="line">plt.legend(loc=<span class="string">'lower right'</span>)</span><br><span class="line">plt.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], <span class="string">'r--'</span>)</span><br><span class="line">plt.xlim([<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">plt.ylim([<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">plt.ylabel(<span class="string">'真正率'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'假正率'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3q4b2shb6j20at06vdfz.jpg" alt=""></p>
+<p>接着我们计算TRP(True Positive Radio)，FRP(False Positive Ratio)用于描述ROC曲线，分别表示该曲线的Y轴，X轴。<br>TPR=TP/(TP+FN)<br>FPR=FP/(FP+TN)<br>最后就形成了类似这样的图像(来源于上述的训练模型)</p>
+<p>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从图中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。<br>在机器学习中关于这方面经常涉及到的还有precision(查准率), recall(查全率)两个概念，下面是计算公式。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/56890358.jpg" alt="avatar"><br>其中n= TP+FP<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/29323029.jpg" alt="avatar"><br>总结：图中的x，y轴的计算和 precision, recall不是一个概念，虽然 recall 和y 轴在计算上是相同的。precision 是针对于预测数据(predication结果)来说的，而x轴，y轴(recall)的计算某种意义上是针对原来真实数据而言的。所以我们在训练模型过程可以追求 precision 和 recall的双高(即图像的左上角)。这时候引入了F1-measure(F1 =(2<em>P</em>R)/(R+P)).(P: precision, R: recall)</p>
+<ul>
 <li><p>majority/ soft/ hard voting<br>an ensemble that averages classifier predictions is known as a <strong>majority voting</strong> classifier. When an ensembles averages based on probabilities (as above), we refer to it as <strong>soft voting</strong>, averaging final class label predictions is known as <strong>hard voting</strong>.</p>
 </li>
 <li><p>Pearson相关性<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/73757528.jpg" alt="avatar"><br>协方差除以各自的标准差</p>
@@ -491,6 +505,8 @@
         <div class="post-tags">
           
             <a href="/tags/模型融合-Ensemble/" rel="tag"># 模型融合(Ensemble)</a>
+          
+            <a href="/tags/ROC/" rel="tag"># ROC</a>
           
         </div>
       
@@ -628,7 +644,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -875,7 +891,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2018/06/13/Introduction-to-Ensemble/';
           this.page.identifier = '2018/06/13/Introduction-to-Ensemble/';
-          this.page.title = 'Introduction_to_Ensemble';
+          this.page.title = 'Introduction to Ensemble';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

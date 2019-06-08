@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="knapsack problem: https://leetcode.com/problems/partition-equal-subset-sum/ Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets such that t">
+<meta name="description" content="Dynamic Programming is a method for solving a complex problem by breaking it down into a collection of simpler subproblems, solving each of those subproblems just once, and storing their solutions usi">
 <meta name="keywords" content="leetcode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dynamic Programming Examples">
 <meta property="og:url" content="http://yoursite.com/2019/05/27/Dynamic-Programming-Examples/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="knapsack problem: https://leetcode.com/problems/partition-equal-subset-sum/ Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets such that t">
+<meta property="og:description" content="Dynamic Programming is a method for solving a complex problem by breaking it down into a collection of simpler subproblems, solving each of those subproblems just once, and storing their solutions usi">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ft7nakbnj20lq0laads.jpg">
-<meta property="og:updated_time" content="2019-05-27T06:18:05.559Z">
+<meta property="og:updated_time" content="2019-06-07T03:30:03.332Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dynamic Programming Examples">
-<meta name="twitter:description" content="knapsack problem: https://leetcode.com/problems/partition-equal-subset-sum/ Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets such that t">
+<meta name="twitter:description" content="Dynamic Programming is a method for solving a complex problem by breaking it down into a collection of simpler subproblems, solving each of those subproblems just once, and storing their solutions usi">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ft7nakbnj20lq0laads.jpg">
 
 
@@ -404,7 +404,8 @@
       
 
       
-        <p><strong><em>knapsack problem:</em></strong></p>
+        <p>Dynamic Programming is a method for solving a complex problem by breaking it down into a collection of simpler subproblems, solving each of those subproblems just once, and storing their solutions using a memory-based data structure (array, map, etc.). So the next time the same sub-problem occurs, instead of recomputing its solution, one simply looks up the previously computed solution, thereby saving computation time.</p>
+<p><strong><em>knapsack problem:</em></strong></p>
 <p><a href="https://leetcode.com/problems/partition-equal-subset-sum/" target="_blank" rel="noopener">https://leetcode.com/problems/partition-equal-subset-sum/</a></p>
 <p>Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.</p>
 <p>Actually, this is a 0/1 knapsack problem, for each number, we can pick it or not. Let us assume dp[i][j] means whether the specific sum j can be gotten from the first i numbers. If we can pick such a series of numbers from 0-i whose sum is j, dp[i][j] is true, otherwise it is false.<br>Base case: dp[0][0] is true; (zero number consists of sum 0 is true)<br>Transition function: For each number, if we don’t pick it, dp[i][j] = dp[i-1][j], which means if the first i-1 elements has made it to j, dp[i][j] would also make it to j (we can just ignore nums[i]). If we pick nums[i]. dp[i][j] = dp[i-1][j-nums[i]], which represents that j is composed of the current value nums[i] and the remaining composed of other previous numbers. Thus, the transition function is dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i]]</p>
@@ -564,7 +565,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
