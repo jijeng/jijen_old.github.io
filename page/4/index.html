@@ -296,6 +296,224 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/LightGBM和XGBoost及其调参/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/21/LightGBM和XGBoost及其调参/" itemprop="url">LightGBM和XGBoost及其调参</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:17:35+08:00">
+                2018-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/21/LightGBM和XGBoost及其调参/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/21/LightGBM和XGBoost及其调参/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="lightGBM调参-常用参数"><a href="#lightGBM调参-常用参数" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><p>Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So when growing on the same leaf in Light GBM, the leaf-wise algorithm can reduce more loss than the level-wise algorithm and hence results in much better accuracy which can rarely be achieved by any of the existing boosting algorithms. Also, it is surprisingly very fast, hence the word ‘Light’.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg" alt="avatar"><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/21729887.jpg" alt="avatar"><br>Leaf wise splits lead to increase in complexity and may lead to overfitting and it can be overcome by specifying another parameter max_depth parameter.</p>
+<h3 id="Advantages-of-LightGBM"><a href="#Advantages-of-LightGBM" class="headerlink" title="Advantages of LightGBM"></a>Advantages of LightGBM</h3><ul>
+<li>faster training speed and higher efficiency<br>Light GBM use histogram based algorithm i.e it buckets continuous feature values into discrete bins which fasten the training procedure.</li>
+<li>lower memory usage<br>Replaces continuous values to discrete bins which result in lower memory usage.</li>
+<li>better accuracy than any other boosting algorithm<br>It produces much more complex trees by following leaf wise split approach rather than a level-wise approach which is the main factor in achieving higher accuracy. </li>
+<li>compatibility with large datasets<br>It is capable of performing equally good with large datasets with a significant reduction in training time as compared to XGBOOST.</li>
+<li>parallel learning supported</li>
+</ul>
+<h3 id="lightGBM调参-常用参数-1"><a href="#lightGBM调参-常用参数-1" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><ul>
+<li><strong>task</strong><br>default= train, option: train, prediction</li>
+<li>application<br>default= regression, option: regression, binary, multiclass, lambdarank(lambdarank application)</li>
+<li>data<br>training data, 这个比较诡异，你需要创建一个lightGBM类型的data</li>
+<li>num_iterations<br>default =100, 可以设置为的大一些，然后使用early_stopping进行调节。</li>
+<li>early_stopping_round<br>default =0, will stop training if one metric of one validation data doesn’t improve in last early_stopping_round rounds.</li>
+<li>num_leaves<br>default =31, number of leaves in a tree</li>
+<li>device<br>default =cpu, options: gpu, cpu, choose gpu for faster training.</li>
+<li>max_depth<br>specify the max depth to which tree will grow, which is very important.</li>
+<li>feature_fraction<br>default =1, specifies the fraction of features to be taken for each iteration.</li>
+<li>bagging_fraction<br>default =1, spefifies the fraction of data to be used for each iteration and it generally used to speed up the training and avoid overfitting.</li>
+<li>max_bin<br>max number of bins to bucket the feature values.因为模型是基于bin训练的，如果bin 数量越多，得到better accuracy,同时更加容易 overfitting.</li>
+<li>num_threads</li>
+<li>label<br>specify the label columns.</li>
+<li>categorical_feature<br>specify the categorical features</li>
+<li>num_class<br>default =1, used only for multi-class classification</li>
+</ul>
+<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/50917702.jpg" alt="avatar"></p>
+<h3 id="referrence"><a href="#referrence" class="headerlink" title="referrence"></a>referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/" target="_blank" rel="noopener">which-algorithm-takes-the-crown-light-gbm-vs-xgboost</a><br><a href="https://blog.csdn.net/aliceyangxi1987/article/details/80711014" target="_blank" rel="noopener">LightGBM 如何调参</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html" target="_blank" rel="noopener">官方文档param_tuning</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters.html" target="_blank" rel="noopener">官方文档parameter</a></p>
+<h3 id="XGBoost调参"><a href="#XGBoost调参" class="headerlink" title="XGBoost调参"></a>XGBoost调参</h3><h3 id="Advantage-of-XGBoost"><a href="#Advantage-of-XGBoost" class="headerlink" title="Advantage of XGBoost"></a>Advantage of XGBoost</h3><ul>
+<li>regularization<br>standard GBM implementation has no regularization, in fact, XGBoost is also known as ‘regularized boosting’ technique.</li>
+<li>parallel processing<br>we know that boosting is sequential process so how can it be parallelized? <a href="http://zhanpengfang.github.io/418home.html" target="_blank" rel="noopener">this link</a> to explore further.</li>
+<li>high flexibility<br>XGBoost allow users to define <strong>custom optimization objectives and evaluation criteria</strong></li>
+<li>handling missing values<br>very useful property. XGBoost has an in-built routine to handle missing values. User is required to supply a different value than other observations and pass that as a parameter. XGBoost tries different things as it encounter a missing value on each node and learns which path to take for missing values in future.</li>
+<li>Tree pruning<br>A GBM would stop splitting a node when it encounters a negative loss in the split. Thus it is more of a greedy algorithm. XGBoost on the other hand make splits upon the max_depth specified and then start pruning the tree backwards and remove splits beyond which there is no positive gain.</li>
+<li>built-in cross-validation<br>This is unlike GBM where we have to run a grid-search and only a limited values can be tested. </li>
+<li>continue on existing model</li>
+</ul>
+<h3 id="XGBoost-Parameters"><a href="#XGBoost-Parameters" class="headerlink" title="XGBoost Parameters"></a>XGBoost Parameters</h3><h4 id="general-parameters"><a href="#general-parameters" class="headerlink" title="general parameters"></a>general parameters</h4><p>General Parameters: Guide the overall functioning</p>
+<ul>
+<li>booster:<br>default =gbtree, can be gbtree, gblinear or dart. 一般使用gbtree.</li>
+<li>silent:<br>default =0, silent mode is activated if set to 1(no running messages will be printed)</li>
+<li>nthread:<br>default to maximum of threads.</li>
+</ul>
+<h4 id="booster-parameters"><a href="#booster-parameters" class="headerlink" title="booster parameters"></a>booster parameters</h4><p>Booster Parameters: Guide the individual booster (tree/regression) at each step</p>
+<ul>
+<li>eta(learning rate):<br>default=0.3, typical final values to be used: 0.01-0.2, using CV to tune</li>
+<li>min_child_weight:<br>minimum sum of instance weight (hessian) needed in a child. If the tree partition step results in a leaf node with the sum of instance weight less than min_child_weight, then the building process will give up further partitioning. In linear regression mode, this simply corresponds to minimum number of instances needed to be in each node. The larger, the more conservative the algorithm will be.<br>default =1,too high values can lead to under-fitting, it should be tuned using CV. 数值越小越容易过拟合，越大越容易 under-fitting.</li>
+<li>max_depth:<br>default =6, typical values: 3-10, should be tuned using CV.</li>
+<li>gamma:<br>default =0, Gamma specifies the minimum loss reduction required to make a split.如果在分裂过程中小于该值，那么就不会继续分裂。</li>
+<li>subsample:<br>default =1, typical values: 0.5-1. Denotes the fraction of observations to be randomly samples for each tree.</li>
+<li>colsample_bytree:<br>default =1, typical values: 0.5-1. colsample_bytree和subsample不同点：colsample_by是特征的随机fraction, subsample是rows的随机fraction。</li>
+<li>lambda:<br>default =1, L2 regularization term on weights(analogous to Ridge regression). Though many data scientists don’t use it often, it should be explored to reduce overfitting.</li>
+<li>alpha:<br>default =0, L1 regularization term on weight (analogous to Lasso regression)</li>
+<li>scale_pos_weight:<br>default =1,  a value greater than 0 should be used in case of high class imbalance as it helps in faster convergence.</li>
+</ul>
+<h4 id="learning-task-parameters"><a href="#learning-task-parameters" class="headerlink" title="learning task parameters"></a>learning task parameters</h4><p>Learning Task Parameters: Guide the optimization performed</p>
+<ul>
+<li><strong>objective</strong><br>binary: logistic- returns predicated probability(not class)<br>multi: softmax- returns predicated class(not probabilities)<br>multi: softprob- returns predicated probability of each data point belonging to each class.</li>
+<li>eval_metirc<br>default according to objective(rmse for regression and error for classification), used for validation data.<br>typical values: rmse(root mean square error), mse(mean absolute error), logloss(negative log-likelihood), error(binary classification error rate, 0.5 threshold), auc(area under the curve)</li>
+<li>seed<br>default =0, used for reproducible results and also for <strong>parameter tuning</strong>.</li>
+</ul>
+<h4 id="Control-Overfitting"><a href="#Control-Overfitting" class="headerlink" title="Control Overfitting"></a>Control Overfitting</h4><p>There are in general two ways that you can control overfitting in xgboost. </p>
+<ul>
+<li>The first way is to directly control model complexity.</li>
+<li>The second way is to add regularization parameters</li>
+</ul>
+<h3 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence"></a>Referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/" target="_blank" rel="noopener">complete guide parameter tuning xgboost with codes python</a><br><a href="http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html" target="_blank" rel="noopener">官方文档 param_tuning</a><br><a href="http://xgboost.readthedocs.io/en/latest/parameter.html" target="_blank" rel="noopener">官方文档 parameter</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/那些年的算法题目（二）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1364,21 +1582,23 @@
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/78451107.jpg" alt="avatar"><br>So simple!<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plot_roc_curve(ytest, p.reshape(-1, 1), P.mean(axis=1), [&quot;Simple average&quot;], &quot;Super Learner&quot;)</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/52534893.jpg" alt="avatar"></p>
 <p>发现super learner(meta learner)和 basic learner的mean的结果已经不相上下了。super learner得到了很好的训练。</p>
-<h2 id="补充概念"><a href="#补充概念" class="headerlink" title="补充概念"></a>补充概念</h2><ul>
-<li>ROC曲线和AUC值<br>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。</li>
-</ul>
-<p>ROC 曲线<br>ROC 曲线（接收者操作特征曲线）是一种显示分类模型在所有分类阈值下的效果的图表。该曲线绘制了以下两个参数：</p>
+<h2 id="补充概念"><a href="#补充概念" class="headerlink" title="补充概念"></a>补充概念</h2><h3 id="ROC曲线和AUC值"><a href="#ROC曲线和AUC值" class="headerlink" title="ROC曲线和AUC值"></a>ROC曲线和AUC值</h3><p>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。</p>
+<p><strong>ROC 曲线</strong>: ROC 曲线（接收者操作特征曲线）是一种显示分类模型在所有分类阈值下的效果的图表。该曲线绘制了以下两个参数：真正例率 和 假正例率。</p>
+<p>真正例率 (TPR) 是召回率的同义词，因此定义如下：<br>$$<br>T P R = \frac { T P } { T P + F N }<br>$$<br>假正例率 (FPR) 的定义如下：<br>$$<br>F P R = \frac { F P } { F P + T N }<br>$$</p>
+<p>ROC 中 TPR =(True positive / ( True positive +False negative)), 那个false negative 也是真实的类别，只不过是错误的当做了 negative（false negative）</p>
+<p><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg" alt=""><br>2针对一个二分类问题，将实例分成正类(postive)或者负类(negative)。但是实际中分类时，会出现四种情况.</p>
 <ul>
-<li>真正例率</li>
-<li>假正例率<br>真正例率 (TPR) 是召回率的同义词，因此定义如下：<br>$$<br>T P R = \frac { T P } { T P + F N }<br>$$<br>假正例率 (FPR) 的定义如下：<br>$$<br>F P R = \frac { F P } { F P + T N }<br>$$</li>
+<li>若一个实例是正类并且被预测为正类，即为真正类(True Postive TP)</li>
+<li>若一个实例是正类，但是被预测成为负类，即为假负类(False Negative FN)</li>
+<li>若一个实例是负类，但是被预测成为正类，即为假正类(False Postive FP)</li>
+<li>若一个实例是负类，但是被预测成为负类，即为真负类(True Negative TN)</li>
 </ul>
-<p>ROC 中 TPR =(True positive / ( True positive +False negative)), 那个false negative 也是真实的类别，只不过是错误的当做了 negative（false negative）。（可以参见下图）<br><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg" alt=""></p>
-<p>ROC 曲线用于绘制采用不同分类阈值时的 TPR 与 FPR。降低分类阈值会导致将更多样本归为正类别，从而增加假正例和真正例的个数。下图显示了一个典型的 ROC 曲线。<br><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3q453345pj205c046glh.jpg" alt=""><br>为了计算 ROC 曲线上的点，我们可以使用不同的分类阈值多次评估逻辑回归模型，但这样做效率非常低。幸运的是，有一种基于排序的高效算法可以为我们提供此类信息，这种算法称为曲线下面积。</p>
+<p><strong>ROC 曲线是如何绘制的</strong>: 采用不同分类阈值时的 TPR 与 FPR。降低分类阈值会导致将更多样本归为正类别，从而增加假正例和真正例的个数。下图显示了一个典型的 ROC 曲线。<br><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3q453345pj205c046glh.jpg" alt=""><br>为了计算 ROC 曲线上的点，我们可以使用不同的分类阈值多次评估逻辑回归模型，但这样做效率非常低。幸运的是，有一种基于排序的高效算法可以为我们提供此类信息，这种算法称为曲线下面积。</p>
 <p>ROC曲线，一般适用于你的分类器输出一个“概率值”，即这个样本属于某个类的概率是多少。 如此的话，你就需要设定一个阈值， 大于这个阈值属于正类，小于这个阈值属于负类。   从而，对于这个阈值P0， 就会得到对应的TPR, FPR, 也就是ROC曲线上的一个点，你设置不同的阈值，就会得到不同的TPR, FPR， 从而构成ROC曲线。   通常来说 阈值降低，即进入正类的门槛变低， TPR会变大，但是FPR也会变大， 看他们谁变的快。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">gbc = GradientBoostingClassifier()</span><br><span class="line">gbc.fit(x_train, y_train)</span><br><span class="line">resu = gbc.predict(x_test)  <span class="comment">#进行预测</span></span><br><span class="line">y_pred_gbc = gbc.predict_proba(x_test)[:,<span class="number">1</span>]  <span class="comment">###这玩意就是预测概率的</span></span><br><span class="line">fpr, tpr, threshold = roc_curve(y_test, y_pred_gbc)   <span class="comment">###画图的时候要用预测的概率，而不是你的预测的值</span></span><br><span class="line">plt.plot(fpr, tpr, <span class="string">'b'</span>, label=<span class="string">'AUC = %0.2f'</span> % rocauc)<span class="comment">#生成ROC曲线</span></span><br><span class="line">plt.legend(loc=<span class="string">'lower right'</span>)</span><br><span class="line">plt.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], <span class="string">'r--'</span>)</span><br><span class="line">plt.xlim([<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">plt.ylim([<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">plt.ylabel(<span class="string">'真正率'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'假正率'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 <p><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3q4b2shb6j20at06vdfz.jpg" alt=""></p>
 <p>接着我们计算TRP(True Positive Radio)，FRP(False Positive Ratio)用于描述ROC曲线，分别表示该曲线的Y轴，X轴。<br>TPR=TP/(TP+FN)<br>FPR=FP/(FP+TN)<br>最后就形成了类似这样的图像(来源于上述的训练模型)</p>
-<p>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从图中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。<br>在机器学习中关于这方面经常涉及到的还有precision(查准率), recall(查全率)两个概念，下面是计算公式。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/56890358.jpg" alt="avatar"><br>其中n= TP+FP<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-12/29323029.jpg" alt="avatar"><br>总结：图中的x，y轴的计算和 precision, recall不是一个概念，虽然 recall 和y 轴在计算上是相同的。precision 是针对于预测数据(predication结果)来说的，而x轴，y轴(recall)的计算某种意义上是针对原来真实数据而言的。所以我们在训练模型过程可以追求 precision 和 recall的双高(即图像的左上角)。这时候引入了F1-measure(F1 =(2<em>P</em>R)/(R+P)).(P: precision, R: recall)</p>
+<p>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从图中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。</p>
 <ul>
 <li><p>majority/ soft/ hard voting<br>an ensemble that averages classifier predictions is known as a <strong>majority voting</strong> classifier. When an ensembles averages based on probabilities (as above), we refer to it as <strong>soft voting</strong>, averaging final class label predictions is known as <strong>hard voting</strong>.</p>
 </li>
@@ -2002,170 +2222,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/XGBoost/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/05/XGBoost/" itemprop="url">XGBoost</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T21:33:28+08:00">
-                2018-06-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">竞赛</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/06/05/XGBoost/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/05/XGBoost/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Introduction-to-XGBoost"><a href="#Introduction-to-XGBoost" class="headerlink" title="Introduction to XGBoost"></a>Introduction to XGBoost</h3><p>XGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Friedman. XGBoost is based on this original model. And most of the content is based on the websit(<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">http://xgboost.readthedocs.io/en/latest/model.html</a>)</p>
-<h3 id="element-of-Supervised-learning"><a href="#element-of-Supervised-learning" class="headerlink" title="element of Supervised learning"></a>element of Supervised learning</h3><p>XGBoost is used for supervised learning problems, where we use the training data (with multiple features) xi to predict a target variable yi.</p>
-<h3 id="Objective-Function-Training-Loss-Regularization"><a href="#Objective-Function-Training-Loss-Regularization" class="headerlink" title="Objective Function: Training Loss + Regularization"></a>Objective Function: Training Loss + Regularization</h3><p>A very important fact about objective functions is they <strong>must always</strong> contain two parts: training loss and regularization.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/76591754.jpg" alt="avatar"><br>For example, a commomly used training loss is mean squared error.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/20584283.jpg" alt="avatar"><br>Another commonly used loss function is logistic loss for logistic regression<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43560274.jpg" alt="avatar"></p>
-<p>The <strong>regularization term</strong> is what people usually forget to add. The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>The general principle is we want both a simple and predictive model. The tradeoff between the two is also referred as bias-variance tradeoff in machine learning.</p>
-<h3 id="Tree-Ensemble"><a href="#Tree-Ensemble" class="headerlink" title="Tree Ensemble"></a>Tree Ensemble</h3><p>The tree ensemble model is a set of classification and regression trees(CART). Here is a simple example of a CART that classifies whether someone will like computer games.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/81320459.jpg" alt="avatar"><br>A CART is a bit different from decision trees, where the leaf only contains decision values. In CART, a real score is associated with each of the leaves, which gives us richer interpretations that go beyond classification. This also makes the unified optimization step easier, as we will see in a later part of this tutorial.</p>
-<p>Usually, a single tree is not strong enough to be used in practice. What is actually used is the so-called tree ensemble model, which sums the prediction of multiple trees together.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-2/43017405.jpg" alt="avatar"><br>Here is an example of a tree ensemble of two trees. The prediction scores of each individual tree are summed up to get the final score. If you look at the example, an important fact is that the two trees try to complement each other. </p>
-<p>Now here comes the question, what is the model for random forests? It is exactly tree ensembles! So random forests and boosted trees are not different in terms of model, the difference is how we train them. This means if you write a predictive service of tree ensembles, you only need to write one of them and they should directly work for both random forests and boosted trees. One example of why elements of supervised learning rock.</p>
-<h3 id="Tree-Boosting"><a href="#Tree-Boosting" class="headerlink" title="Tree Boosting"></a>Tree Boosting</h3><p>After introducing the model, let us begin with the real training part. How should we learn the trees? The answer is, as is always for all supervised learning models: define an objective function, and optimize it!</p>
-<p>Assume we have the following objective function (remember it always needs to contain training loss and regularization)</p>
-<h3 id="Additive-Training"><a href="#Additive-Training" class="headerlink" title="Additive Training"></a>Additive Training</h3><p>First thing we want to ask is what are the parameters of trees? You can find that what we need to learn are those functions fi, with each containing the structure of the tree and the leaf scores. This is much harder than traditional optimization problem where you can take the gradient and go. It is not easy to train all the trees at once. Instead, we use an additive strategy: fix what we have learned, and add one new tree at a time. </p>
-<p>It remains to ask, which tree do we want at each step? A natural thing is to add the one that optimizes our objective.</p>
-<h3 id="Training-model"><a href="#Training-model" class="headerlink" title="Training model"></a>Training model</h3><p>The XGBoost model for classification is called <strong>XGBClassifier</strong>(regression is called XGBRegressor). We can create and and fit it to our training dataset. Models are fit using the scikit-learn API and the <strong>model.fit()</strong> function.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2220,7 +2276,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2242,7 +2298,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
