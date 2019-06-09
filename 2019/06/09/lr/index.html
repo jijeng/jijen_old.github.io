@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LR," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="联系方式Email: jia1509309698@163.com 基本信息教育背景： 北京航空航天大学学历： 研究生目前所在城市： 北京 个人简介机器学习 深度学习 小白菜 技能清单python">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="逻辑回归从线性回归引申而来，对回归的结果进行 logistic 函数运算，将范围限制在[0,1]区间，并更改损失函数为二值交叉熵损失，使其可用于2分类问题(通过得到的概率值与阈值比较进行分类)。 损失函数：如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化">
+<meta name="keywords" content="LR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逻辑回归概念">
+<meta property="og:url" content="http://yoursite.com/2019/06/09/lr/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="联系方式Email: jia1509309698@163.com 基本信息教育背景： 北京航空航天大学学历： 研究生目前所在城市： 北京 个人简介机器学习 深度学习 小白菜 技能清单python">
+<meta property="og:description" content="逻辑回归从线性回归引申而来，对回归的结果进行 logistic 函数运算，将范围限制在[0,1]区间，并更改损失函数为二值交叉熵损失，使其可用于2分类问题(通过得到的概率值与阈值比较进行分类)。 损失函数：如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-23T02:13:53.000Z">
+<meta property="og:updated_time" content="2019-06-09T04:10:28.141Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="联系方式Email: jia1509309698@163.com 基本信息教育背景： 北京航空航天大学学历： 研究生目前所在城市： 北京 个人简介机器学习 深度学习 小白菜 技能清单python">
+<meta name="twitter:title" content="逻辑回归概念">
+<meta name="twitter:description" content="逻辑回归从线性回归引申而来，对回归的结果进行 logistic 函数运算，将范围限制在[0,1]区间，并更改损失函数为二值交叉熵损失，使其可用于2分类问题(通过得到的概率值与阈值比较进行分类)。 损失函数：如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/06/09/lr/"/>
 
 
 
 
 
-  <title>about | Jijeng's blog</title>
+  <title>逻辑回归概念 | Jijeng's blog</title>
   
 
 
@@ -284,37 +285,180 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/09/lr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">about</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <h1 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h1><p>Email: <a href="mailto:jia1509309698@163.com" target="_blank" rel="noopener">jia1509309698@163.com</a></p>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><p>教育背景： 北京航空航天大学<br>学历： 研究生<br>目前所在城市： 北京</p>
-<h1 id="个人简介"><a href="#个人简介" class="headerlink" title="个人简介"></a>个人简介</h1><p>机器学习 深度学习 小白菜</p>
-<h1 id="技能清单"><a href="#技能清单" class="headerlink" title="技能清单"></a>技能清单</h1><p>python</p>
-
+          <h1 class="post-title" itemprop="name headline">逻辑回归概念</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-09T12:08:16+08:00">
+                2019-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/09/lr/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/09/lr/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>逻辑回归从线性回归引申而来，对回归的结果进行 logistic 函数运算，将范围限制在[0,1]区间，并更改损失函数为二值交叉熵损失，使其可用于2分类问题(通过得到的概率值与阈值比较进行分类)。</p>
+<h2 id="损失函数："><a href="#损失函数：" class="headerlink" title="损失函数："></a>损失函数：</h2><p>如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化 MSE 损失容易陷入局部极小点.逻辑回归损失是如下的分情况的凸函数(单个x与y的损失):</p>
+<p>$$<br>\operatorname { cost } \left( h _ { \theta } ( x ) , y \right) = \left{ \begin{array} { l l } { - \log \left( h _ { \theta } ( x ) \right) } &amp; { , y = 1 } \ { - \log \left( 1 - h _ { \theta } ( x ) \right) } &amp; { , y = 0 } \end{array} \right.<br>$$</p>
+<p>为什么LR模型的损失函数是交叉熵,而线性回归模型的损失函数却是最小二乘呢？能否随意确定一个损失函数作为目标呢？<br>模型的损失函数由各自的响应变量y的概率分布决定，对于线性回归模型，其输出是连续值，所以我们对于该问题假设y服从正态分布；相对的，LR模型一般用来解决二分类问题，所以其输出是0/1，故而我们假设其输出服从伯努利分布；而进一步地，两者的损失函数都是通过极大似然估计推导的来的，所以模型的损失函数并非随意确定。<br>分类模型与回归模型之间有种种联系,比如 SVM 模型可以看作逻辑回归加L2正则项, 并使用了不同的损失函数.</p>
+<p>为什么不使用回归模型来做分类?<br>这是一种不好的做法, 因为阈值不好确定, 随着数据集的变动, 阈值也需要有较大变化.</p>
+<p><strong>正则项：</strong></p>
+<ul>
+<li>L2 解决过拟合</li>
+<li>L1 解决数据稀疏性 </li>
+</ul>
+<p><strong> L1和L2正则先验分别服从什么分布</strong><br>从信息论的角度看，向系统加入了正确先验这个信息，肯定会提高系统的性能。两者的差别感性的理解？L1是拉普拉斯分布，L2是高斯分布。<br>拉普拉斯分布：<br>$$<br>f ( x | \mu , b ) = \frac { 1 } { 2 b } e ^ { - \frac { | x - \mu | } { b } }<br>$$<br>高斯分布：<br>$$<br>f \left( x | \mu , \sigma ^ { 2 } \right) = \frac { 1 } { \sqrt { 2 \pi \sigma ^ { 2 } } } e ^ { - \frac { ( x - \mu ) ^ { 2 } } { 2 \sigma ^ { 2 } } }<br>$$</p>
+<h2 id="逻辑回归的特点："><a href="#逻辑回归的特点：" class="headerlink" title="逻辑回归的特点："></a>逻辑回归的特点：</h2><ul>
+<li><p>优点：<br>LR 能以概率的形式输出结果,而非只是 0,1 判定， 可以做 ranking model；<br>LR 的可解释性强,可控度高；<br>训练快</p>
+</li>
+<li><p>缺点：<br>容易欠拟合，一般准确度不太高<br>只能处理两分类问题. (可以应用多个逻辑回归实现多分类,类似SVM的方式; 另外对于父子类别同时分类的情况,使用逻辑回归要比Softmax等方式效果好)</p>
+</li>
+</ul>
+<p>“海量离散特征+简单模型” 同“少量连续特征+复杂模型”的权衡。既可以离散化用线性模型，也可以用连续特征加深度学习</p>
+<p><strong> 为什么对特征进行离散化</strong></p>
+<p>在工业界，很少直接将连续值作为逻辑回归模型的特征输入，而是将连续特征离散化为一系列0、1特征(one-hot编码)交给逻辑回归模型，这样做的优势有以下几点<br>离散特征的增加和减少都很容易，易于模型的快速迭代；<br>稀疏向量内积乘法运算速度快，计算结果方便存储，容易扩展；<br>离散化后的特征对异常数据有很强的鲁棒性：比如一个特征是年龄&gt;30是1，否则0。如果特征没有离散化，一个异常数据“年龄300岁”会给模型造成很大的干扰；<br>单变量离散化为N个后，每个变量有单独的权重，相当于为模型引入了非线性，能够提升模型表达能力，加大拟合<br>离散化后可以进行特征交叉</p>
+<p>具体的推导过程，可以参见纸质版打印。</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LR/" rel="tag"># LR</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/08/svm-all-you-need/" rel="next" title="SVM All You Need to Know">
+                <i class="fa fa-chevron-left"></i> SVM All You Need to Know
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -457,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#联系方式"><span class="nav-number">1.</span> <span class="nav-text">联系方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">2.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#个人简介"><span class="nav-number">3.</span> <span class="nav-text">个人简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#技能清单"><span class="nav-number">4.</span> <span class="nav-text">技能清单</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#损失函数："><span class="nav-number">1.</span> <span class="nav-text">损失函数：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归的特点："><span class="nav-number">2.</span> <span class="nav-text">逻辑回归的特点：</span></a></li></ol></div>
             
 
           </div>
@@ -653,9 +797,9 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/about/index.html';
-          this.page.identifier = 'about/index.html';
-          this.page.title = 'about';
+          this.page.url = 'http://yoursite.com/2019/06/09/lr/';
+          this.page.identifier = '2019/06/09/lr/';
+          this.page.title = '逻辑回归概念';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

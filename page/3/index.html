@@ -296,6 +296,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/siamese-network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/26/siamese-network/" itemprop="url">siamese network</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-26T10:26:03+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/26/siamese-network/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/26/siamese-network/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>主要是介绍自己论文中的网络结构：siamese network。</p>
+<p>但凡优化，无非两条路：在好的基础上更快，在快的基础上效果更好。 Siamese network训练速度快，所以只是需要其在训练效果上更好。</p>
+<p>先来分析一下为什么训练速度快。那么不得不分析该网络结构。整个网络的输入是 (img1, img2, y) 这样的三元组，img 表示图片，y表示label。图片可以是同一类别的图片，也可以是不同类别的，y表示两张图片之间的相似程度，y的取值 (0,1)，0表示相似（同一类别），1 表示不相似（不同类别）。并且y 是double 类型，属于0-1 区间任意的数字。网路结构最后的输出是 0-1 区间的任意数字。通常是以0.5 作为分界线，如果小于0.5 那么认为两种图片是属于同一类别，或者说更相似；反之也成立。<br>重要的一点是中间的weights 实现了权值共享，这样可以加快网络的训练速度。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fwyu5fnsj20z90cq75v.jpg" alt=""></p>
+<h3 id="loss-function"><a href="#loss-function" class="headerlink" title="loss function"></a>loss function</h3><p>这个是属于经典的 contrastive loss function。当y 接近于0的时候，右半部分消失，这个是表示两张图片很是相似，然后就不断使得 欧氏距离减少；当y 接近于1的时候，左半部分消失，这个时候两张图片很不相似，然后右边就是 hinge loss。参数m 作为一种margin 是是可以调节，我的实验中 m 取1.<br>总的思想：就是使得相近的图像距离相近，不想近的图像距离变远。</p>
+<p>$L ( W , ( Y , X _ { 1 } , X _ { 2 } ) ) = ( 1 - Y ) \frac { 1 } { 2 } ( D _ { W } ) ^ { 2 } + ( Y ) \frac { 1 } { 2 } { \max ( 0 , m - D _ { W } ) } ^ { 2 }$</p>
+<h3 id="Spectral-Normalization"><a href="#Spectral-Normalization" class="headerlink" title="Spectral Normalization"></a>Spectral Normalization</h3><p>图像输入到网络之前使用正则化，然后输入到激活函数之前也是使用正则化，所以这种效果也是扩展到 weights，直接对 weights 进行正则化使其符合  Lipschitz 约束，避免使用大的gradients。在GAN 网络中的 discriminator 或者 generator 都发现了其可以稳定训练的过程。在实验中，我们扩大了了这种使用范围，把其应用到所有的网络的layer上。</p>
+<h3 id="self-attention-mechanism"><a href="#self-attention-mechanism" class="headerlink" title="self-attention mechanism"></a>self-attention mechanism</h3><p>Attention 机制自从 <a href="https://arxiv.org/pdf/1706.03762.pdf" target="_blank" rel="noopener">“Attention Is All You Need”</a> 开始火爆，并且实验的效果也是很好的，然后在图像领域也开始尝试使用 attention 机制来解决长依赖的问题。应用到图像领域主要是 explore spatial locality information, 说白了就是细节的信息。</p>
+<blockquote>
+<p>If we look at the DCGAN model, we see that regular GANs are heavily based on convolution operations, which use a local receptive field (convolutional kernel) to learn representations. Simple features like edges and corners are learned in the first few layers. Also, ConvNets are able to use these simple representations to learn more complex ones. However, long-range dependency might be hard to learn. Long-range dependency (long-term dependency) is from RNN, which we can say anything larger than trigram as a long term dependency. Thus, most of the image content does not exhibit elaborated shape such as sky or the ocean looks fine. The task of creating geometrically complex forms, such as four-legged animals, is far more challenging. This is where attention comes into play.</p>
+</blockquote>
+<p>而 self-attention 中QKV 三个部分是相同的，对于这种处理方法和Res_block 还是有点相似的。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fx354ispj210k0fsaae.jpg" alt=""></p>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>训练数据集使用是 Cifar-10，记录了训练过程中 acc 和loss 的变化情况。除了训练的效果比较好外，训练速度也是非常快的，可以清楚的看到model acc 在接近25 epoches的时候就开始收敛。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fx3rncspj20hi0d20t9.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/fastText-faiss/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1877,168 +2041,6 @@ if __name__ == &quot;__main__&quot;:
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jijeng Jia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jijeng's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" itemprop="url">Differences Between l1 and l2 as Loss Function and Regularization</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:22:27+08:00">
-                2018-07-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>如果补交作业也算作业的话，那么这篇博文就算做作业。<br>L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。<br>本文大量借鉴于<a href="http://www.chioka.in/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">该博客</a>，原文是英文，如果读者英文能够handle，建议读原文。</p>
-<h2 id="As-loss-function"><a href="#As-loss-function" class="headerlink" title="As loss function"></a>As loss function</h2><p>loss function or error function 是用来衡量真实y 和生成的f(x) 之间差距的函数。在模型训练中我们一般情况下不断训练模型使得loss function不断下降（如果task要求loss function是增大，这时候一般加上符号或者转换成 1- loss fucntion，最后实现的还是loss function下降）。好的回到L1 loss function和L2 loss function. </p>
-<p>L1-norm loss function is also known as least absolute deviations(LAD), least absolute errors. It is basically minimizing the sum of the absolute differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/35322217.jpg" alt="avatar"><br>L2-norm loss function is also known as least squares error(LSE). It is basically minimizing the sum of the square of the differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/37430433.jpg" alt="avatar"><br>主要你从一下三个指标去衡量两者的不同： robustness，stability和是否具有唯一解。<br>wiki 中关于<a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="noopener">robust</a> 中是这样定义： A learning algorithm that can reduce the chance of fitting noise is called robust。具有更好的泛化性能，不去过度拟合noise. 关于<a href="https://en.wikipedia.org/wiki/Stability_(learning_theory" target="_blank" rel="noopener">stability</a>) wiki 是这样定义：Stability, also known as algorithmic stability, is a notion in computational learning theory of how a machine learning algorithm is perturbed by small changes to its inputs.</p>
-<p>我对于前两个指标的理解：robustness 是对于原始的train 样本中离群点的态度，如果某个模型是robustness的，那么对于该数据集中的离群点是能够抗干扰的。反之则是不具有robustness的。stability是对于原始train 数据的轻微的平移的反应，如果对于某个原始数据的轻微平移，最后的结果没有产生很大的波动，那么该模型就是具有stability, 反之，则不具有stability.</p>
-<p>比较L1-norm 和L2-norm在前两个评价指标中的表现：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/80680309.jpg" alt="avatar"><br>对于第三点，我想在下面进行介绍。因为这点和后面和下面的solution uniqueness是相同的。</p>
-<h2 id="As-regularization"><a href="#As-regularization" class="headerlink" title="As regularization"></a>As regularization</h2><p>从<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">XGBoost调参指南</a>中我们知道objective function = loss funcion + regularization. 而我们大多数情况下提及的都是loss function,常常忽略了regularization 的作用。所以正确的姿态应该是这样的：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/73111516.jpg" alt="avatar"><br>The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>对于模型训练，一开始的想法是尽量的overfitting, 因为就现在不成熟的经验而言，对于overfitting这个问题有很多处理方法，比如卷积深度神经网络中的dropout, LightGBM中的early stop 和随机采样的思想。 这些方法都是可以缓解overfitting，所以可以出现overfitting。相反，如果你的模型是underfitting，那么你就微显尴尬了。好，收回到L1 and L2。</p>
-<p>先上公式<br>L1 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/75850249.jpg" alt="avatar"><br>L2 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/78934923.jpg" alt="avatar"><br>The difference between their properties can be promptly summarized as follows:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/88209822.jpg" alt="avatar"></p>
-<p>对于第一点computational efficient的理解：平方比绝对值更容易计算，平方可以求导直接求最值，但是绝对值就无法求导。并且L1 regularization在 non-sparse cases中是 computational inefficient，但是在 sparse(0比较多) cases中是有相应的稀疏算法来进行优化的，所以是computational efficient.<br>对于第二点是否具有sparse solution可以从几何意义的角度解读：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/82495076.jpg" alt="avatar"><br>The green line(L2-norm) is the unique shortest path, while the red, blue yellow(L1-norm) are all same length for the same route.</p>
-<p>Built-in feature selection is frequently mentioned as a useful property of the L1-norm, which the L2-norm does not. This is actually a result of the L1-norm, which tends to produces sparse coefficients (explained below). Suppose the model have 100 coefficients but only 10 of them have non-zero coefficients, this is effectively saying that “the other 90 predictors are useless in predicting the target values”. L2-norm produces non-sparse coefficients, so does not have this property.</p>
-<p>所以表格中第三点也是顺理成章的了。<br>至此，我们区分了L1-norm vs L2-norm loss function 和L1-regularization vs L2-regularization。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2093,7 +2095,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2115,7 +2117,7 @@ if __name__ == &quot;__main__&quot;:
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
