@@ -400,20 +400,17 @@
       
         
           
-            <p>主要是介绍自己论文中的网络结构：siamese network。</p>
-<p>但凡优化，无非两条路：在好的基础上更快，在快的基础上效果更好。 Siamese network训练速度快，所以只是需要其在训练效果上更好。</p>
-<p>先来分析一下为什么训练速度快。那么不得不分析该网络结构。整个网络的输入是 (img1, img2, y) 这样的三元组，img 表示图片，y表示label。图片可以是同一类别的图片，也可以是不同类别的，y表示两张图片之间的相似程度，y的取值 (0,1)，0表示相似（同一类别），1 表示不相似（不同类别）。并且y 是double 类型，属于0-1 区间任意的数字。网路结构最后的输出是 0-1 区间的任意数字。通常是以0.5 作为分界线，如果小于0.5 那么认为两种图片是属于同一类别，或者说更相似；反之也成立。<br>重要的一点是中间的weights 实现了权值共享，这样可以加快网络的训练速度。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fwyu5fnsj20z90cq75v.jpg" alt=""></p>
-<h3 id="loss-function"><a href="#loss-function" class="headerlink" title="loss function"></a>loss function</h3><p>这个是属于经典的 contrastive loss function。当y 接近于0的时候，右半部分消失，这个是表示两张图片很是相似，然后就不断使得 欧氏距离减少；当y 接近于1的时候，左半部分消失，这个时候两张图片很不相似，然后右边就是 hinge loss。参数m 作为一种margin 是是可以调节，我的实验中 m 取1.<br>总的思想：就是使得相近的图像距离相近，不想近的图像距离变远。</p>
-<p>$L ( W , ( Y , X _ { 1 } , X _ { 2 } ) ) = ( 1 - Y ) \frac { 1 } { 2 } ( D _ { W } ) ^ { 2 } + ( Y ) \frac { 1 } { 2 } { \max ( 0 , m - D _ { W } ) } ^ { 2 }$</p>
-<h3 id="Spectral-Normalization"><a href="#Spectral-Normalization" class="headerlink" title="Spectral Normalization"></a>Spectral Normalization</h3><p>图像输入到网络之前使用正则化，然后输入到激活函数之前也是使用正则化，所以这种效果也是扩展到 weights，直接对 weights 进行正则化使其符合  Lipschitz 约束，避免使用大的gradients。在GAN 网络中的 discriminator 或者 generator 都发现了其可以稳定训练的过程。在实验中，我们扩大了了这种使用范围，把其应用到所有的网络的layer上。</p>
-<h3 id="self-attention-mechanism"><a href="#self-attention-mechanism" class="headerlink" title="self-attention mechanism"></a>self-attention mechanism</h3><p>Attention 机制自从 <a href="https://arxiv.org/pdf/1706.03762.pdf" target="_blank" rel="noopener">“Attention Is All You Need”</a> 开始火爆，并且实验的效果也是很好的，然后在图像领域也开始尝试使用 attention 机制来解决长依赖的问题。应用到图像领域主要是 explore spatial locality information, 说白了就是细节的信息。</p>
-<blockquote>
-<p>If we look at the DCGAN model, we see that regular GANs are heavily based on convolution operations, which use a local receptive field (convolutional kernel) to learn representations. Simple features like edges and corners are learned in the first few layers. Also, ConvNets are able to use these simple representations to learn more complex ones. However, long-range dependency might be hard to learn. Long-range dependency (long-term dependency) is from RNN, which we can say anything larger than trigram as a long term dependency. Thus, most of the image content does not exhibit elaborated shape such as sky or the ocean looks fine. The task of creating geometrically complex forms, such as four-legged animals, is far more challenging. This is where attention comes into play.</p>
-</blockquote>
-<p>而 self-attention 中QKV 三个部分是相同的，对于这种处理方法和Res_block 还是有点相似的。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fx354ispj210k0fsaae.jpg" alt=""></p>
-<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>训练数据集使用是 Cifar-10，记录了训练过程中 acc 和loss 的变化情况。除了训练的效果比较好外，训练速度也是非常快的，可以清楚的看到model acc 在接近25 epoches的时候就开始收敛。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fx3rncspj20hi0d20t9.jpg" alt=""></p>
-
-          
+          主要是介绍自己论文中的网络结构：siamese network。
+但凡优化，无非两条路：在好的基础上更快，在快的基础上效果更好。 Siamese network训练速度快，所以只是需要其在训练效果上更好。
+先来分析一下为什么训练速度快。那么不得不分析该网络结构。整个网络的输入是 (img1, img2, y) 这样的三元组，img 表示图片，y表示label。图片可以是同一类别的图片，也可以是不同类别的，y表示两张图片之间的相似程度，y的取值 (0,1)，0表示相似（同一类别），1 表示不相似（
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/26/siamese-network/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -564,83 +561,16 @@
       
         
           
-            <h2 id="fastText"><a href="#fastText" class="headerlink" title="fastText"></a>fastText</h2><p>fastText结合了自然语言处理和机器学习中最成功的理念。这些包括了使用词袋以及n-gram袋表征语句，还有使用子字(subword)信息，并通过隐藏表征在类别间共享信息。另外采用了一个softmax层级(利用了类别不均衡分布的优势)来加速运算过程。</p>
-<p>fastText 主要是用来解决 word representations和 sentence classification. 有趣的是前者是无监督的学习方式，后者是有监督的学习方式。分别主要来自 ”Enriching Word Vectors with Subword Information“ 和 “Bag of Tricks for Efficient Text Classification” 两篇论文。并且使用的是 shallow neural network 而不是深度网络。</p>
-<blockquote>
-<p>FastText is a library created by the Facebook Research Team for efficient learning of word representations and sentence classification.</p>
-</blockquote>
-<p>Take off:<br>fastText 方法包含三部分：模型架构、层次 Softmax 和 N-gram 特征。<br>fasttext 有两个用处： text classification 和 word embedding 。<br>使用场景：大型数据，高效计算</p>
-<p>下面进行细说：</p>
-<h3 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h3><p>这个是总的框架图。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8ph67dkj21280yuk1n.jpg" alt=""></p>
-<p><center><sub><sup>抱歉哈 这个引用找不见了，如果有侵权，please email me..</sup></sub><center><br>分为两个部分介绍这个网络结构：<br>从input -&gt; hidden:<br>输入层输入的是一个已经分词后短文本。短文本中每个词的词向量是由该短文本的one-hot矩阵乘以一个初始化的矩阵w得到的。（原理图：下图是fasttext 运行的时候，这个分词是再处理成单词和n-gram 组成的特征，这个是不需要我们进行显性的操作的）<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8x600o5j21440lsjz0.jpg" alt=""><br>从 hidden -&gt; output：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8xzkf3yj213y0lsti8.jpg" alt=""><br>插播一句，我们经常使用的预训练模型中的weights 是从input-&gt; hidden。</center></center></p>
-<h3 id="Hierarchical-Softmax"><a href="#Hierarchical-Softmax" class="headerlink" title="Hierarchical Softmax"></a>Hierarchical Softmax</h3><p>从名字上就知道这个是基于softmax的改进版本，主要是运算上的改进。具体说来：利用了类别（class）不均衡这个事实（一些类别出现次数比其他的更多），通过使用 Huffman 算法建立用于表征类别的树形结构。fastText 模型使用了层次 Softmax 技巧。层次 Softmax 技巧建立在Huffman的基础上，对标签进行编码，能够极大地缩小模型预测目标的数量。</p>
-<p>这个是softmax 的原始的计算公式：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fbkxph28j20ia0560sm.jpg" alt=""><br>采用二叉树的结构之后，时间上优化不少。$O ( N) \rightarrow O \left( \log _ { 2 } N \right)$。见下图。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fboz6w71j20n20bedh7.jpg" alt=""></p>
-<p><center><sub><sup>抱歉哈 这个引用找不见了，如果有侵权，please email me..</sup></sub><center><br>和之前的神经网络模型相比，这里的huffmax树的所有内部节点就类似之前神经网络隐藏层的神经元。其中，根节点的词向量对应我们的投影后的词向量，而所有的叶子节点就类似于之前神经网络softmax输出层的神经元。叶子节点的个数就是词汇表的大小. </center></center></p>
-<p>和之前的相比，从隐藏层到输出层的softmax映射不是一下就完成的，而是沿着 huffman树一步步完成的，因此这种 softmax取名为”Hierarchical softmax”. </p>
-<h3 id="N-gram-特征"><a href="#N-gram-特征" class="headerlink" title="N-gram 特征"></a>N-gram 特征</h3><p>N-gram是基于这样的思想：某个词的出现依赖于其他若干个词；我们获得的信息越多，预测越准确。我想说，我们每个人的大脑中都有一个N-gram模型，而且是在不断完善和训练的。我们的见识与经历，都在丰富着我们的阅历，增强着我们的联想能力。</p>
-<p> N-gram模型是一种语言模型（Language Model，LM），语言模型是一个基于概率的判别模型，它的输入是一句话（单词的顺序序列），输出是这句话的概率，即这些单词的联合概率（joint probability）。 </p>
-<p>这样的作用，使用N-gram来给文本添加额外的特征获得关于局部词顺序的部分信息。<br>举个栗子：对于句子：“我 喜欢 喝 咖啡”, 如果不考虑顺序，那么就是每个词，“我”，“喜欢”，“喝”，“咖啡”这五个单词的word embedding求平均。如果考虑2-gram, 那么除了以上五个词，还有“我喜欢”，“喜欢喝”，“喝咖啡”等词。“我喜欢”，“喜欢喝”，“喝咖啡”这三个词就作为这个句子的文本特征。<br>我们经常见到的场景：输入法的预选词汇。就是可以通过这种方式实现的。</p>
-<p>当然使用了更多的特征意味着造成了效率下降，于是该作者提出了两种解决方法：<br>过滤掉低词频；使用词粒度代替字粒度。<br>比如说海慧寺使用上面那个句子”我喜欢喝咖啡“，如果使用子粒度的2-gram，那么产生的特征是“我喜”，“喜欢”，“欢喝”，“喝咖”，“咖啡”。如果使用词粒度为2-gram，那么产生的特征是“我喜欢”，“喜欢喝”，“喝咖啡”。</p>
-<p>补充一句，subwords就是一个词的character-level的n-gram。比如单词”hello”，长度至少为3的char-level的ngram有”hel”,”ell”,”llo”,”hell”,”ello”以及本身”hello”。<br>n-gram 是一种思想，可以是针对words 之间的，也是可以针对一个word 内部的。前者就是候选词，哪些词语容易组合出现，后者主要是对于单词本身的伸展，可以把没有在dict 中的单词，使用字词（subword） 进行表示，扩充了模型的表达能力。</p>
-<h3 id="Negative-Sampling"><a href="#Negative-Sampling" class="headerlink" title="Negative Sampling"></a>Negative Sampling</h3><p>主要是减轻计算量的角度考虑的，每次让一个训练样本仅仅更新一部分的权重参数，<br>这个技术不是 fastText 首创的，但是本着总结知识点的，也就放在这里了。<br>CBOW / Skip-gram模型 （这个论文中）提出了两种方法，一种是Hierarchical Softmax，另一种是Negative Sampling。论文中提出的两种方法都是用来提高计算效率的，下面说一下负采样。<br>在训练神经网络时，每当接受一个训练样本，然后调整所有神经单元权重参数，来使神经网络预测更加准确。换句话说，每个训练样本都将会调整所有神经网络中的参数。而 Negative Sampling 每次让一个训练样本仅仅更新一小部分的权重参数，从而降低梯度下降过程中的计算量。如果 vocabulary 大小为1万时， 当输入样本 ( “fox”, “quick”) 到神经网络时， “ fox” 经过 one-hot 编码，在输出层我们期望对应 “quick” 单词的那个神经元结点输出 1，其余 9999 个都应该输出0。在这里，这9999个我们期望输出为0的神经元结点所对应的单词我们称为 negative word，随机选择一小部分的 negative words，比如选 10个 negative words 来更新对应的权重参数。<br>解决的问题，在最后一层 softmax 的计算量太大，相当于每一次word 都是需要整个dict 量的级别的更新。然后选择 k 个negative words，只是计算这些softmax 的值。</p>
-<blockquote>
-<p>Training a neural network means taking a training example and adjusting all of the neuron weights slightly so that it predicts that training sample more accurately. In other words, each training sample will tweak all of the weights in the neural network.<br>As we discussed above, the size of our word vocabulary means that our skip-gram neural network has a tremendous number of weights, all of which would be updated slightly by every one of our billions of training samples!<br>Negative sampling addresses this by having each training sample only modify a small percentage of the weights, rather than all of them. Here’s how it works.<br>When training the network on the word pair (“fox”, “quick”), recall that the “label” or “correct output” of the network is a one-hot vector. That is, for the output neuron corresponding to “quick” to output a 1, and for all of the other thousands of output neurons to output a 0.<br>With negative sampling, we are instead going to randomly select just a small number of “negative” words (let’s say 5) to update the weights for. (In this context, a “negative” word is one for which we want the network to output a 0 for). We will also still update the weights for our “positive” word (which is the word “quick” in our current example).<br>The paper says that selecting 5-20 words works well for smaller datasets, and you can get away with only 2-5 words for large datasets.<br>Recall that the output layer of our model has a weight matrix that’s 300 x 10,000. So we will just be updating the weights for our positive word (“quick”), plus the weights for 5 other words that we want to output 0. That’s a total of 6 output neurons, and 1,800 weight values total. That’s only 0.06% of the 3M weights in the output layer!<br>In the hidden layer, only the weights for the input word are updated (this is true whether you’re using Negative Sampling or not).</p>
-</blockquote>
-<h3 id="Positive-samples-and-Negative-samples"><a href="#Positive-samples-and-Negative-samples" class="headerlink" title="Positive samples and  Negative samples"></a>Positive samples and  Negative samples</h3><p>One little detail that’s missing from the description above is how do we select the negative samples.<br>The negative samples are chosen using the unigram distribution. Essentially, the probability of selecting a word as a negative sample is related to its frequency, with more frequent words being more likely to be selected as negative samples. Instead of using the raw frequency in the original word2vec paper, each word is given a weight that’s equal to it’s frequency (word count) raised to the 3/4 power. The probability for selecting a word is just it’s weight divided by the sum of weights for all words.<br>$$P \left( w _ { i } \right) = \frac { f \left( w _ { i } \right) ^ { 3 / 4 } } { \sum _ { i = 0 } ^ { n } \left( f \left( w _ { j } \right) ^ { 3 / 4 } \right) }$$<br>This decision to raise the frequency to the 3/4 power appears to be empirical; as the author claims it outperformed other functions (e.g. just using unigram distribution).<br>Side note: The way this selection is implemented in the original word2vec C code is interesting. They have a large array with 100M elements (which they refer to as the unigram table). They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word’s index appears in the table is given by </p>
-<p>Then, to actually select a negative sample, we just generate a random integer between 0 and 100M, and use the word at that index in the table. Since the higher probability words occur more times in the table, we’re more likely to pick those.</p>
-<p>这个也是有讲 任何进行negative sample的选择<br><a href="http://jalammar.github.io/illustrated-word2vec/" target="_blank" rel="noopener">http://jalammar.github.io/illustrated-word2vec/</a><br>一般来说在 word2vec 中context 是会选择到 5，然后这个 positive / negative sample 会是(1/6), 然后 nagative sample 是随机在 dictionary里面选的（所以有可能选到 positive sample）， 这个是这个dictionary 是根据频率，出现次数越多的，被选中的可能性也越大。<br>The number of negative samples is another factor of the training process. The original paper prescribes 5-20 as being a good number of negative samples. It also states that 2-5 seems to be enough when you have a large enough dataset. The Gensim default is 5 negative samples.</p>
-<p>To address this, we need to introduce negative samples to our dataset – samples of words that are not neighbors. Our model needs to return 0 for those samples. Now that’s a challenge that the model has to work hard to solve – but still at blazing fast speed.<br>This idea is inspired by Noise-contrastive estimation [pdf]. We are contrasting the actual signal (positive examples of neighboring words) with noise (randomly selected words that are not neighbors). This leads to a great tradeoff of computational and statistical efficiency.</p>
-<p>Essentially, the probability for selecting a word as a negative sample is related to its frequency, with more frequent words being more likely to be selected as negative samples.</p>
-<p>They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word’s index appears in the table is given byP(wi)P(wi)* table_size. Then, to actually select a negative sample, you just generate a random integer between 0 and 100M, and use the word at that index in the table. Since the higher probability words occur more times in the table, you’re more likely to pick those.</p>
-<p>It’s now time to build out our skip-gram generator which will give us pair of words and their relevance</p>
-<ul>
-<li>(word, word in the same window), with label 1 (positive samples).</li>
-<li>(word, random word from the vocabulary), with label 0 (negative samples).</li>
-</ul>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>第一个应用场景：词向量。<br>fastText作为训练词向量认为可以有两种模式，一种是根据周围词语预测中心词汇的CBOW （continuous bag-of-words）模型，另一种是根据中心词汇预测上下文的 skip-gram 模型。</p>
-<blockquote>
-<p>./fasttext – It is used to invoke the FastText library.<br> skipgram/cbow – It is where you specify whether skipgram or cbow is to be used to create the word representations.<br> -input – This is the name of the parameter which specifies the following word to be used as the name of the file used for training. This argument should be used as is.<br> data.txt – a sample text file over which we wish to train the skipgram or cbow model. Change this name to the name of the text file you have.<br> -output – This is the name of the parameter which specifies the following word to be used as the name of the model being created. This argument is to be used as is.<br> model – This is the name of the model created.<br>Running the above command will create two files named model.bin and model.vec. model.bin contains the model parameters, dictionary and the hyperparameters and can be used to compute word vectors. model.vec is a text file that contains the word vectors for one word per line.</p>
-</blockquote>
-<p>最后生成有两个文件，一个 xxx.bin 文件，一个是 xxx.vec 文件，前者是预训练模型，后者是词向量。<br>这两个可能是最重要的格式了。</p>
-<blockquote>
-<p>The most important parameters of the model are its dimension and the range of size for the subwords. </p>
-</blockquote>
-<p>常见的代码格式：</p>
-<pre><code>./fasttext skipgram -input data/fil9 -output result/fil9 -minn 2 -maxn 5 -dim 300
-</code></pre><p>跑偏一下说一下shell的小技巧。<br>使用echo 或者 &lt; 这样进行单个词或者多个词的词向量的查询。</p>
-<blockquote>
-<p>./fasttext print-word-vectors model.bin &lt; queries.txt<br>echo “word” | ./fasttext print-word-vectors model.bin</p>
-</blockquote>
-<p>Finding simialr words:</p>
-<pre><code>./fasttext nn model.bin
-</code></pre><p>第二个应用场景：文本分类。</p>
-<blockquote>
-<p>Sentiment analysis and email classification are classic examples of text classification</p>
-</blockquote>
-<p>在训练数据集中label 默认是使用 “__label__” 进行表示的，当然也是可以进行自定义的。</p>
-<pre><code>./fasttext supervised -input train.ft.txt -output model_kaggle -label  __label__ -lr 0.5
-就是进行predict的时候，有时候并不是很能想起来只是predict top 3 这样的东西。
-# Predicting on the test dataset
-./fasttext predict model_kaggle.bin test.ft.txt
-# Predicting the top 3 labels
-./fasttext predict model_kaggle.bin test.ft.txt 3
-</code></pre><h2 id="faiss"><a href="#faiss" class="headerlink" title="faiss"></a>faiss</h2><p>用途：相似度检测和稠密向量的聚类。</p>
-<blockquote>
-<p>Faiss is a library for efficient similarity search and clustering of dense vectors.</p>
-</blockquote>
-<p>之前的实习经历主要是用faiss 处理文本的representation，但是这个是有偏差的，凡是能够打成词向量，都是可以使用faiss 进行计算的，当然这词向量需要满足：相近内容在相近的空间。</p>
-<blockquote>
-<p>Once the vectors are extracted by learning machinery (from images, videos, text documents, and elsewhere), they’re ready to feed into the similarity search library.</p>
-</blockquote>
-<h3 id="faiss的实现过程"><a href="#faiss的实现过程" class="headerlink" title="faiss的实现过程"></a>faiss的实现过程</h3><p>首先使用 index对于向量进行预处理，然后选择不同的模式。</p>
-<p>牺牲了一些精确性来使得运行速度更快。</p>
-<blockquote>
-<p>Similarity search can be made orders of magnitude faster if we’re willing to trade some accuracy; that is, deviate a bit from the reference result. For example, it may not matter much if the first and second results of an image similarity search are swapped, since they’re probably both correct results for a given query. Accelerating the search involves some pre-processing of the data set, an operation that we call indexing.</p>
-</blockquote>
-<p>向量的比较有两种metric：一种是L2 一种是基于consine (点乘)进行检索。前者是求解最小的值，后者是通过inner——product 求解maximum. 并且是支持GPU的，在原来CPU上建立的index，然后很好的迁移到 GPU上。</p>
-<p>在涉及index使用考虑速度，acc和内存大小三个不同的维度。然后不同的index 是有不同的侧重的。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg" alt=""></p>
-
-          
+          fastTextfastText结合了自然语言处理和机器学习中最成功的理念。这些包括了使用词袋以及n-gram袋表征语句，还有使用子字(subword)信息，并通过隐藏表征在类别间共享信息。另外采用了一个softmax层级(利用了类别不均衡分布的优势)来加速运算过程。
+fastText 主要是用来解决 word representations和 sentence classification. 有趣的是前者是无监督的学习方式，后者是有监督的学习方式。分别主要来自 ”Enriching Word 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/25/fastText-faiss/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -791,14 +721,17 @@
       
         
           
-            <p>主要介绍关键词提取并整理一下NLP相关的基础知识点。</p>
-<h2 id="关键词提取"><a href="#关键词提取" class="headerlink" title="关键词提取"></a>关键词提取</h2><h3 id="TF-IDF"><a href="#TF-IDF" class="headerlink" title="TF-IDF"></a>TF-IDF</h3><p>这个是可以参看之前自己写的一个<a href="https://jijeng.github.io/2018/08/23/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%AF%94%E8%BE%83%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" target="_blank" rel="noopener">博客</a></p>
-<h3 id="卡方分布"><a href="#卡方分布" class="headerlink" title="卡方分布"></a>卡方分布</h3><p>卡方检验是以χ2分布为基础的一种常用假设检验方法，它的无效假设H0是：观察频数与期望频数没有差别。该检验的基本思想是：首先假设H0成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。<br>而实际应用到特征选择中的时候，我们不需要知道自由度，不要知道卡方分布，我们只需要根据算出来的χ2 进行排序就好了，越大我们就越喜欢！挑选最大的一堆，于是就完成了利用卡方检验来进行特征提取。<br>卡方分布的缺点：<br>没有考虑词频</p>
-<h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>有一个与之很像的概念 pageRanking，最开始是用来计算网页的重要性。Textrank 主要用来提取文章的关键词，然后比较适合长文本。</p>
-<h2 id="CBOW和skip-gram"><a href="#CBOW和skip-gram" class="headerlink" title="CBOW和skip-gram"></a>CBOW和skip-gram</h2><p>举一个简单的小例子说明 CBOW和skip-gram的区别：skip-gram 是根据中心词汇然后预测上下文词汇，这个不是一下子输入上下文词汇的，而是一个过程，中心词汇和上下文词汇1 ，中心词汇和上下文词汇2，这样的进行输入。 cbow 和其的区别，在于简单相加了上下文词汇作为一个整体，然后和中心词汇进行输入，所以最后是这样的结果。</p>
-<p>使用skip gram训练的时间更长，但是对于出现频率不高的词汇，效果比较好。但CBOW的训练速度是相对来说比较快一些。</p>
-
-          
+          主要介绍关键词提取并整理一下NLP相关的基础知识点。
+关键词提取TF-IDF这个是可以参看之前自己写的一个博客
+卡方分布卡方检验是以χ2分布为基础的一种常用假设检验方法，它的无效假设H0是：观察频数与期望频数没有差别。该检验的基本思想是：首先假设H0成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。而实际应用到特征选择中的时候，我们不需要知道自由度，不要知道卡方分布，我们只需要根据算出来的χ2 进行排序就好了，越大我们就越喜欢！挑选最大的一堆，于是就完成了利用卡方检验来进行特征提
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/25/NLP中的碎碎念/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -949,60 +882,15 @@
       
         
           
-            <p>多线程和多进程问题是可以对应到 并发 （cncurrency）和并行(parallelism)上的。 并发，就是一个单核cpu同时开始了多个任务，但是这个任务并不是同时独立进行的，而是通过cpu的不断切换，保存现场，然后重启这样的快速的切换，给用户的感觉是并发，但是实际上是cpu的计算能力受到了限制，用户体验比较好一些。如果在多核cpu （比如我的mac 是一cpu 6核）这样的话完全是可以达到并行的，这个是真正的独立操作(parallelism)，对应的是多进程的。对应python 中的实现多线程是使用threading，处理的是io 响应；多进程是Concurrency，使用multiprocessing包，处理的是多核cpu的操作。</p>
-<p>Take off: 如果处理io 响应，那么使用多线程；如果是计算，那么使用多进程。</p>
-<blockquote>
-<p>So, before we go deeper into the multiprocessing module, it’s worthwhile ensuring you know the advantages of using multiprocessing over multithreading. The general rule of thumb is that, if you are trying to improve the performance of CPU-bound tasks, multiprocessing is what you want to use. However, if your particular task is Input/Output bound, then you’ll generally want to use multithreading to improve the performance of your applications.</p>
-</blockquote>
-<p>下面是多线程的demo。</p>
-<pre><code>import multiprocessing as mp
-def my_func(x):
-    print(mp.current_process())
-    return x ** x
-
-
-def main():
-    pool = mp.Pool(mp.cpu_count())
-    # 这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的
-    result = pool.map(my_func, [4, 2, 3, 5, 3, 2, 1, 2])
-    result_set_2 = pool.map(my_func, [4, 6, 5, 4, 6, 3, 23, 4, 6])
-    print(result)
-    print(result_set_2)
-
-
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre><p>这个是多进程的demo。</p>
-<pre><code>import threading
-class Worker(threading.Thread):
-    # Our workers constructor, note the super() method which is vital if we want this
-    # to function properly
-    def __init__(self):
-        super(Worker, self).__init__()
-
-    def run(self):
-        for i in range(10):
-            print(i)
-
-
-def main():
-    thread1 = Worker()
-    thread1.start()
-
-    thread2 = Worker()
-    thread2.start()
-
-    thread3 = Worker()
-    thread3.start()
-
-    thread4 = Worker()
-    thread4.start()
-
-
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre>
-          
+          多线程和多进程问题是可以对应到 并发 （cncurrency）和并行(parallelism)上的。 并发，就是一个单核cpu同时开始了多个任务，但是这个任务并不是同时独立进行的，而是通过cpu的不断切换，保存现场，然后重启这样的快速的切换，给用户的感觉是并发，但是实际上是cpu的计算能力受到了限制，用户体验比较好一些。如果在多核cpu （比如我的mac 是一cpu 6核）这样的话完全是可以达到并行的，这个是真正的独立操作(parallelism)，对应的是多进程的。对应python 中的实现多
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/25/Python中的多线程和多进程/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1153,26 +1041,20 @@ if __name__ == &quot;__main__&quot;:
       
         
           
-            <h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning:"></a>Data Cleaning:</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier).<br>对于<strong>missing values</strong> ，可以分成两个问题，要不要处理 和如何处理，具体说来有一下处理手段：</p>
-<ul>
-<li>ignore the tuple; </li>
-<li>fill in the missing value manually</li>
-<li>use a global constant to fill in the missing  value</li>
-<li>use the attribute mean to fill in the missing value (均值)</li>
-<li>use the most probable value to fill in the missing value (mode 众数)</li>
-<li>有时候就是根据某几个特征然后弄一个简单的回归模型，根据模型进行predict</li>
-</ul>
-<p>关于这几种方法如何去选择，我如果说 “it depends”，那么其他人不认为这是一个具有说服力的答案，他们更像知道 it depends what, and when and why to use specific method? 我认为应该是根据缺省值程度和重要性进行经验性的选择，这也去就是 empirical study吧。</p>
-<p>接着是 <strong>noisy data (outlier)</strong>，我的观点是首先得认识到这个是错误的数据，不是真实的数据来源，可能是来自人为的笔误 或者仪器记录的问题，这个是需要修改的。可以使用聚类 (clustering) 进行noisy data 的检测，找到之后这个就类似 missing value了，可以采取以上的手段进行操作，应该注意到的这个 noisy data 所占比例不会很高，否则就成了主要的数据分布了。</p>
-<h3 id="Data-Integration"><a href="#Data-Integration" class="headerlink" title="Data Integration:"></a>Data Integration:</h3><p>处理数据库数据，经常是需要处理子表信息的，那么必然存在着主表，而子表系信息往往是主表信息的某一方面的细化。所以有必要将两者连接起来。</p>
-<h3 id="Data-Transformation"><a href="#Data-Transformation" class="headerlink" title="Data Transformation:"></a>Data Transformation:</h3><p>In data transformation, the data are transformed or consolidated into forms appropriate for mining.<br>这里想要澄清的是很多相同的内容都可以用不同的方式表达，并且可以放在数据处理的不同阶段，并且这种工作不是一次性完成的，而是迭代的 until you run out your patience and time.<br>首先我接触的最常见的就是 discrete variables -&gt; continuous variables. 当然对于 discrete variables，基于树结构的机器学习模型是可以处理的，这里想说的是有这种方式。这种 transformation 常见的处理方式: one-hot 或者 label encoding. </p>
-<p>如果按照 data transformation的预设，那么 normalization 就也属于该模块的内容。 不论是在 machine learning 还是在 图像处理的时候，对于原始的数据经常采取 normalization. 一方面这个是可以预防梯度消失 或者 gradient exploding, 如果你采用了 Sigmoid的激活函数的话。另一方面我认为更加重要的原因是将 不同的数据放在了同一个尺度下，如果你采取了 normalization之后。实现这种normalization 经常采用的是以下三种方式：</p>
-<p>min-max normalization: $x ^ { \prime } = \frac { x - \min ( x ) } { \max ( x ) - \min ( x ) }$<br>mean normalization:$x ^ { \prime } = \frac { x - \text { average } ( x ) } { \max ( x ) - \min ( x ) }$<br>standardization: $x ^ { \prime } = \frac { x - \overline { x } } { \sigma }$</p>
-<h3 id="Data-Reduction"><a href="#Data-Reduction" class="headerlink" title="Data Reduction:"></a>Data Reduction:</h3><p>一般来说很少提及到到 data reduction的必要性，如果非要给出原因，那么可以从时间和空间的角度进行考虑。更加需要关注的是如何做的问题。 </p>
-<p>我的理解reduction 可以从两个维度进行考虑，假设一个 matrics A 是 m*n，这个是一个二维的矩阵，那么可以从 行列两方面入手。映射到机器学习中一般这样描述 从dimension 和 data两个角度去描述，分别称之为 dimension reduction 和 data compression. 前者指的是特征的选取，后者是数据size的减少。<br>dimension reduction: where irrelevant, weakly relevant, or redundant attributes or dimensions may be detected and removed.<br>data compression: PCA 线性降维 to reduce the data set size. 这个是针对某一个特征展开的。</p>
-<p>机器学习中的特征工程是有一定技巧可言，其中我觉得最为有趣的是: generation or you can call it abstraction. 对于特征的泛的提取才是对于问题本身或者特征的理解，这不仅需要积累，更需要对于该问题领域的专业知识， that’s all.举个栗子，在 “Home Credit Default Risk” (kaggle 竞赛)中，原始的训练数据有信贷金额和客户的年收入，这个时候 “credit_income_percent” 就是类似这种性质的提取特征。</p>
+          Data Cleaning:这个步骤主要处理 missing values 和 noisy data (outlier).对于missing values ，可以分成两个问题，要不要处理 和如何处理，具体说来有一下处理手段：
 
-          
+ignore the tuple; 
+fill in the missing value manually
+use a global constant to fill in the missing  value
+use the attribute mean to fill
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/25/Data-Pre-processing/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1323,52 +1205,16 @@ if __name__ == &quot;__main__&quot;:
       
         
           
-            <p>对于dimension reduction最近有了新的理解:<br>广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。<br>You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve) the model’s performance.</p>
-<p>不必纠结于采用降维的必要性，直接进入 techniques of dimension reduction.</p>
-<ul>
-<li>low variances<br>这个是针对一个特征内部的，如果一个特征的数据本身没有什么变化，那么这个类似就是一种“死”数据。</li>
-<li>high correlation filter<br>用来判别特征 x 和最后的 target之间的相关性</li>
-<li>principal component analysis (PCA)<br>our old good friend. 如果你提降维，但是你不知道PCA，那么就说不过去。该方法的基本思路：一个基（向量空间）的变换，使得变换后的数据有着最大的方差。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.</li>
-</ul>
-<p>下面是PCA的一些特点：</p>
-<blockquote>
-<p>A principal component is a linear combination of the original variables<br>Principal components are extracted in such a way that the first principal component explains maximum variance in the dataset<br>Second principal component tries to explain the remaining variance in the dataset and is uncorrelated to the first principal component<br>Third principal component tries to explain the variance which is not explained by the first two principal components and so on</p>
-</blockquote>
-<p>主成分是不断生成的，在前者基础之上生成的。 The first component is the most important one, followed by the second, then the third, and so on.</p>
-<ul>
-<li>Singular Value Decomposition (SVD)</li>
-</ul>
-<p>翻译成中文感觉还是挺别扭的，奇异值分解。关于奇异值，特征值这些数学概念打算另外写一个主题，wait a moment. 简单理解PCA 是针对方阵 (m<em>m), SVD是针对矩阵(m </em>n)，所以后者是具有更大的适用范围。</p>
-<ul>
-<li>Independent Component Analysis (ICA)</li>
-</ul>
-<p>这个是在面试的时候被问道的一种降维方法。抓住独立向量应该就没有问题。</p>
-<blockquote>
-<p>Independent Component Analysis (ICA) is based on information-theory and is also one of the most widely used dimensionality reduction techniques. The major difference between PCA and ICA is that PCA looks for uncorrelated factors while ICA looks for independent factors. pca 和 ica 的差别在于，相关性和独立性的差别。</p>
-</blockquote>
-<p>基本假设：</p>
-<blockquote>
-<p>This algorithm assumes that the given variables are linear mixtures of some unknown latent variables. It also assumes that these latent variables are mutually independent, i.e., they are not dependent on other variables and hence they are called the independent components of the observed data.</p>
-</blockquote>
-<p>ICA 和PCA的异同：从线性代数的角度去理解，PCA和ICA都是要找到一组基，这组基张成一个特征空间，数据的处理就都需要映射到新空间中去。ICA相比与PCA更能刻画变量的随机统计特性，且能抑制高斯噪声。</p>
-<ul>
-<li>T-SNE</li>
-</ul>
-<p>就是指出 t-SNE 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。这个使用场景是在可视化中，经常会看见将数据或者 </p>
-<blockquote>
-<p>So far we have learned that PCA is a good choice for dimensionality reduction and visualization for datasets with a large number of variables. But what if we could use something more advanced? What if we can easily search for patterns in a non-linear way? t-SNE is one such technique. There are mainly two types of approaches we can use to map the data points:<br>Local approaches :  They maps nearby points on the manifold to nearby points in the low dimensional representation.<br>Global approaches : They attempt to preserve geometry at all scales, i.e. mapping nearby points on manifold to nearby points in low dimensional representation as well as far away points to far away points.</p>
-</blockquote>
-<p>下面介绍两种不是那么“常规”，但是也符合”dimension reduction” 定义的方式。</p>
-<ul>
-<li>projection</li>
-</ul>
-<p>By projecting one vector onto the other, dimensionality can be reduced.</p>
-<ul>
-<li>autoencoder</li>
-</ul>
-<p>网络结构通常有 encoder和decoder两部分组成，那么encoder 就作为 information abstraction,而 decoder作为一种重新映射。从这个角度NLP中的词向量也是可以是一种降维手段。</p>
-
-          
+          对于dimension reduction最近有了新的理解:广义上将降维就是使用更少的数据 (bits) 却保存了尽可能多的信息。You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve) the model’s performance.
+不必纠结于采用降维的必要性，直接进入 techn
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/25/Dimension-Reduction/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1519,19 +1365,18 @@ if __name__ == &quot;__main__&quot;:
       
         
           
-            <p>我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care.</p>
-<h2 id="变量（特征个数）和解的关系"><a href="#变量（特征个数）和解的关系" class="headerlink" title="变量（特征个数）和解的关系"></a>变量（特征个数）和解的关系</h2><p>多变量和最后target的关系是可以使用 matrices 进行表示的，这就是一种数学公式化。</p>
-<blockquote>
-<p>Broadly speaking, in linear algebra data is represented in the form of linear equations. These linear equations are in turn represented in the form of matrices and vectors.</p>
-</blockquote>
-<p>先直观的感受一下变量和图形（可视化）的关系。两个变量组成的equations 是两条线的相交情况。而三个变量在空间中有三种情况： 相交，平行，不在一个平面上。三个变量组成的equations 是三个面的相交情况。有四种情况 (try hard to figure it out)：<br>No intersection at all.<br>Planes intersect in a line.<br>They can intersect in a plane.<br>All the three planes intersect at a point.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1etf4u36aj20q00dutdk.jpg" alt=""></p>
-<p>当到达4 dims 的时候，it’s impossible to visulize it.</p>
-<h2 id="terms-in-related-to-matrix"><a href="#terms-in-related-to-matrix" class="headerlink" title="terms in related to matrix"></a>terms in related to matrix</h2><p>这些词汇 (terms) 经常在文献中出现，需要对于其含义有个比较好的认识。<br><strong>Order of matrix</strong> – If a matrix has 3 rows and 4 columns, order of the matrix is 3<em>4 i.e. row</em>column. (翻译成 矩阵的阶)<br><strong>Square matrix</strong> – The matrix in which the number of rows is equal to the number of columns.<br><strong>Diagonal matrix</strong> – A matrix with all the non-diagonal elements equal to 0 is called a diagonal matrix.<br><strong>Upper triangular matrix</strong> – Square matrix with all the elements below diagonal equal to 0.<br><strong>Lower triangular matrix</strong> – Square matrix with all the elements above the diagonal equal to 0.<br><strong>Scalar matrix</strong> – Square matrix with all the diagonal elements equal to some constant k.<br><strong>Identity matrix</strong> – Square matrix with all the diagonal elements equal to 1 and all the non-diagonal elements equal to 0.<br><strong>Column matrix</strong> –  The matrix which consists of only 1 column. Sometimes, it is used to represent a vector.<br><strong>Row matrix</strong> –  A matrix consisting only of row.<br><strong>Trace</strong> – It is the sum of all the diagonal elements of a square matrix.<br><strong>Rank of a matrix</strong> – Rank of a matrix is equal to the maximum number of linearly independent row vectors in a matrix.<br><strong>Determinant of a matrix</strong> - 矩阵的行列式<br><strong>转置</strong> -在图形 matrix中还是很常见的。<br>$$\mathrm { A } _ { \mathrm { ij } } ^ { \mathrm{T}} = \mathrm { A } _ { \mathrm { ji } }$$</p>
-<p>这个矩阵乘法和元素相称的区别，后者是element-wise 进行的。可以从另外一个角度去列及矩阵相称： This operation on a vector is called linear transformation. 就是后面的vector 映射到了前面的矩阵空间。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1eu88lj31j20ao048jrl.jpg" alt=""></p>
-<h2 id="特征值和奇异值"><a href="#特征值和奇异值" class="headerlink" title="特征值和奇异值"></a>特征值和奇异值</h2><p>着两个是分别对应着PCA 和SVD。<br>Eigenvalues and Eigenvectors<br>如公式所示，特征值和特征向量的乘积就是方阵和特征向量的乘积，原先的方阵是可以降维表示成特征向量和特征值的。$ A x  = \lambda  x $</p>
-<p>对于奇异值分解，最常见的就是这种表达：$A = U \Sigma V ^ { T }$<br>特征值分解和奇异值分解都是给一个矩阵(线性变换)找一组特殊的基，特征值分解找到了特征向量这组基，在这组基下该线性变换只有缩放效果。而奇异值分解则是找到另一组基，这组基下线性变换的旋转、缩放、投影三种功能独立地展示出来了。</p>
+          我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care.
+变量（特征个数）和解的关系多变量和最后target的关系是可以使用 matrices 进行表示的，这就是一种数学公式化。
 
-          
+Broadly speaking, in linear alge
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/25/Linear-Algebra-in-ML/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1682,9 +1527,16 @@ if __name__ == &quot;__main__&quot;:
       
         
           
-            <p>直到某一天发现个人网站中的图片都显示不出来了，查了一下才发现之前的图床不能用了（点名批评七牛），果断弃之，换了个大厂子产品。证明一下图片是能出来的。<br><img src="https://wx4.sinaimg.cn/large/e9a223b5gy1g0uk59zzzjj20a00d6wft.jpg" alt="image"><br>ps：之前的图片有时间再整理到新的平台上。</p>
+          直到某一天发现个人网站中的图片都显示不出来了，查了一下才发现之前的图床不能用了（点名批评七牛），果断弃之，换了个大厂子产品。证明一下图片是能出来的。ps：之前的图片有时间再整理到新的平台上。
 
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/07/Back-to-my-blog/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1835,29 +1687,21 @@ if __name__ == &quot;__main__&quot;:
       
         
           
-            <p>我只是想说我还没有放弃这个网站…</p>
-<p>本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：</p>
-<ul>
-<li>基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”.</li>
-<li>根据关键字计算simhash编码，然后使用hamming distance进行比较两者的不同。<br>如果对于上述概念比较模糊，建议首先阅读<a href="https://jijeng.github.io/2018/08/23/文本相似度比较基本知识/" target="_blank" rel="noopener">该篇博客</a>。</li>
-</ul>
-<p>顺滑过渡到代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 常规导包</span><br><span class="line">import sys,codecs</span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import jieba.posseg</span><br><span class="line">import jieba.analyse</span><br><span class="line">from sklearn import feature_extraction</span><br><span class="line">from sklearn.feature_extraction.text import TfidfTransformer</span><br><span class="line">from sklearn.feature_extraction.text import CountVectorizer</span><br><span class="line"># 数据集的路径</span><br><span class="line">path =&quot;../tianmao2.csv&quot;</span><br><span class="line">names =[&apos;where&apos;, &apos;time&apos;, &apos;title&apos;, &apos;url&apos;, &apos;contents&apos;]</span><br><span class="line">data =pd.read_csv(path, delimiter=&apos;\t&apos;, names= names, nrows=200)</span><br><span class="line">data[&apos;id&apos;] =data.index+1</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/41166141.jpg" alt=""><br>我们使用title和contents 组合作为原始处理的数据，我们认为该数据能够就是文章的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stopkey = [w.strip() for w in codecs.open(&apos;../keyword_extraction/data/stopWord.txt&apos;, &apos;r&apos;).readlines()]</span><br></pre></td></tr></table></figure></p>
-<p>该stop words是中文停用词，就是常见的”的 了”。常见的有百度停用词表、哈尔滨工业大学停用词表以及中科院的停用词表。这里使用的是中科院的停用词。对于停用词的存储，可以使用set ，因为set 要比 list的检索要快。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def dataPrepos(text, stopkey):</span><br><span class="line">    l = []</span><br><span class="line">    pos = [&apos;n&apos;, &apos;nz&apos;, &apos;v&apos;, &apos;vd&apos;, &apos;vn&apos;, &apos;l&apos;, &apos;a&apos;, &apos;d&apos;]  # 定义选取的词性</span><br><span class="line">    seg = jieba.posseg.cut(text)  # 分词</span><br><span class="line">    for i in seg:</span><br><span class="line">        if i.word not in stopkey and i.flag in pos:  # 去停用词 + 词性筛选</span><br><span class="line">            l.append(i.word)</span><br><span class="line">    return l</span><br></pre></td></tr></table></figure></p>
-<p>我们选择名词作为主要的分析对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">idList, titleList, abstractList = data[&apos;id&apos;], data[&apos;title&apos;], data[&apos;contents&apos;]</span><br><span class="line">corpus = []  # 将所有文档输出到一个list中，一行就是一个文档</span><br><span class="line"># 这个 虽然使用 &quot; &quot; 进行分割 但是实际上还是一个打的list</span><br><span class="line">for index in range(len(idList)):</span><br><span class="line">    text = &apos;%s。%s&apos; % (titleList[index], abstractList[index])  # 拼接标题和摘要</span><br><span class="line">    text = dataPrepos(text, stopkey)  # 文本预处理</span><br><span class="line">    text = &quot; &quot;.join(text)  # 连接成字符串，空格分隔</span><br><span class="line">    corpus.append(text)</span><br></pre></td></tr></table></figure></p>
-<p>这里的corus 是将所有的经过预处理文档作为当前计算 idf 的语料库。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vectorizer = CountVectorizer()</span><br><span class="line">X = vectorizer.fit_transform(corpus)  # 词频矩阵,a[i][j]:表示j词在第i个文本中的词频</span><br><span class="line"># 2、统计每个词的tf-idf权值</span><br><span class="line">transformer = TfidfTransformer()</span><br><span class="line">tfidf = transformer.fit_transform(X)</span><br><span class="line"># 3、获取词袋模型中的关键词</span><br><span class="line">word = vectorizer.get_feature_names()</span><br><span class="line"># 4、获取tf-idf矩阵，a[i][j]表示j词在i篇文本中的tf-idf权重</span><br><span class="line">weight = tfidf.toarray()</span><br></pre></td></tr></table></figure></p>
-<p>使用sklearn 内置的函数计算tf-idf。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">topK = 10</span><br><span class="line">ids, titles, keys, weights = [], [], [], []</span><br><span class="line">for i in range(len(weight)):</span><br><span class="line">    print(&quot;-------这里输出第&quot;, i + 1, &quot;篇文本的词语tf-idf------&quot;)</span><br><span class="line">    ids.append(idList[i])</span><br><span class="line">    titles.append(titleList[i])</span><br><span class="line">    df_word, df_weight = [], []  # 当前文章的所有词汇列表、词汇对应权重列表</span><br><span class="line">    for j in range(len(word)):</span><br><span class="line">        # print(word[j],weight[i][j])</span><br><span class="line">        df_word.append(word[j])</span><br><span class="line">        df_weight.append(weight[i][j])</span><br><span class="line">    df_word = pd.DataFrame(df_word, columns=[&apos;word&apos;])</span><br><span class="line">    df_weight = pd.DataFrame(df_weight, columns=[&apos;weight&apos;])</span><br><span class="line">    word_weight = pd.concat([df_word, df_weight], axis=1)  # 拼接词汇列表和权重列表</span><br><span class="line">    word_weight = word_weight.sort_values(by=&quot;weight&quot;, ascending=False)  # 按照权重值降序排列</span><br><span class="line">    # 在这里可以查看 k的选取的数值应该是多大，</span><br><span class="line">    # from ipdb import set_trace</span><br><span class="line">    # set_trace()</span><br><span class="line">    keyword = np.array(word_weight[&apos;word&apos;])  # 选择词汇列并转成数组格式</span><br><span class="line">    word_split = [keyword[x] for x in range(0, topK)]  # 抽取前topK个词汇作为关键词</span><br><span class="line">    word_split = &quot; &quot;.join(word_split)</span><br><span class="line">    keys.append(word_split)</span><br><span class="line">    wei = np.array(word_weight[&apos;weight&apos;])</span><br><span class="line">    wei_split = [str(wei[x]) for x in range(0, topK)]</span><br><span class="line">    wei_split = &quot; &quot;.join(wei_split)</span><br><span class="line">    weights.append(wei_split)</span><br><span class="line">    # 这里的命名 容易混淆</span><br><span class="line">result = pd.DataFrame(&#123;&quot;id&quot;: ids, &quot;title&quot;: titles, &quot;key&quot;: keys, &apos;weight&apos;: weights&#125;,</span><br><span class="line">                      columns=[&apos;id&apos;, &apos;title&apos;, &apos;key&apos;, &apos;weight&apos;])</span><br></pre></td></tr></table></figure></p>
-<p>选择前10个频率最高的词语作为该篇文章的代表，当然这个参数是可以调整，需要根据具体的问题和结果进行调整。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result.head()</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/57579705.jpg" alt=""><br>最后的效果如上。至此我们第一步的提取文章的关键词就已经做完。下面进行相似度的比较。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import jieba</span><br><span class="line">import jieba.analyse</span><br><span class="line">import pandas as pd</span><br><span class="line">#日常导包</span><br></pre></td></tr></table></figure>
-<p>数据和上述的一样，所以就不截图了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">datasets =pd.read_csv(&quot;../tianmao2-tf-idf.csv&quot;)</span><br><span class="line">tokens =datasets[&apos;key&apos;]</span><br><span class="line">weights =datasets[&apos;weight&apos;]</span><br></pre></td></tr></table></figure></p>
-<p>提取关键词和对应的权重。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">print(tokens[0], len(tokens[0]))</span><br><span class="line">print(weights[0], len(weights[0]))</span><br><span class="line">tokens0 =tokens[0].split()</span><br><span class="line">weights0 =weights[0].split()</span><br><span class="line">len(tokens0)</span><br><span class="line">len(weights0)</span><br><span class="line"></span><br><span class="line">tokens1 =tokens[1].split()</span><br><span class="line">weights1 =weights[1].split()</span><br><span class="line">import ast</span><br><span class="line">weights0 =[ ast.literal_eval(i) for i in weights0]</span><br><span class="line">weights1 =[ ast.literal_eval(i) for i in weights1]</span><br></pre></td></tr></table></figure></p>
-<p>构造测试用例。因为权重是字符串，所以简单处理转成整数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dict0 =dict(zip(tokens0, weights0))</span><br><span class="line">dict1 =dict(zip(tokens1, weights1))</span><br></pre></td></tr></table></figure>
-<p>定义一个Simhash，提供对文档的数值映射和文档间相似度计算的功能.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">class Simhash(object):</span><br><span class="line">    </span><br><span class="line">    # 初始化函数</span><br><span class="line">    def __init__(self, weights_dict, tokens=&apos;&apos;, hashbits=64):</span><br><span class="line">        self.hashbits = hashbits</span><br><span class="line">        self.hash = self.simhash_function(tokens, weights_dict)</span><br><span class="line">    </span><br><span class="line">    # toString函数</span><br><span class="line">    # 不懂这个 self.hash ，凡是带有self 的函数都是可以类变量，所以这个就是返回的 self.hash这个变量</span><br><span class="line">    #凡是使用__str__ 这种类型的函数 都是重写 原来的函数</span><br><span class="line">    def __str__(self):</span><br><span class="line">        return str(self.hash)</span><br><span class="line">    </span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    ord() 函数是 chr() 函数（对于8位的ASCII字符串）或 unichr() </span><br><span class="line">    函数（对于Unicode对象）的配对函数，它以一个字符（长度为1的字符串）作为参数，返回对应的 ASCII 数值，或者 Unicode 数值   </span><br><span class="line">    </span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # 给每一个单词生成对应的hash值</span><br><span class="line">    # 这个操作搞懂之后一定很简洁， 但是现在很难理解，因为不是字符串，而是位操作</span><br><span class="line">    def _string_hash(self, source):</span><br><span class="line">        if source == &apos;&apos;:</span><br><span class="line">            return 0</span><br><span class="line">        else:</span><br><span class="line">            x = ord(source[0]) &lt;&lt; 7</span><br><span class="line">            # &lt;&lt; 表示 乘以2^7 ; &gt;&gt; 表示除以 ; ** 表示次方的意思</span><br><span class="line">            # ^ : 按位异或 (二进制进行异或)； &amp; 按位进行与 操作</span><br><span class="line">            # 左移位操作也是可以理解为 2^x 的操作，因为存储是二进制，这样左移一位 表示×2 一次</span><br><span class="line">            m = 1000003</span><br><span class="line">            mask = 2 ** self.hashbits - 1</span><br><span class="line">            for c in source:</span><br><span class="line">                x = ((x * m) ^ ord(c)) &amp; mask</span><br><span class="line">            x ^= len(source)</span><br><span class="line">            if x == -1:</span><br><span class="line">                x = -2</span><br><span class="line">            return x</span><br><span class="line">    # 生成simhash值</span><br><span class="line">    def simhash_function(self, tokens, weights_dict):</span><br><span class="line">        v = [0] * self.hashbits</span><br><span class="line">        # 这种使用 &#123;&#125; dictionary 然后强行得到item 再进行遍历也是牛逼</span><br><span class="line">        for key, t in &#123;x: self._string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">            for i in range(self.hashbits):</span><br><span class="line">                bitmask = 1 &lt;&lt; i</span><br><span class="line">                if t &amp; bitmask:</span><br><span class="line">                    v[i] += weights_dict[key]</span><br><span class="line">                else:</span><br><span class="line">                    v[i] -= weights_dict[key]</span><br><span class="line">        </span><br><span class="line">        fingerprint = 0</span><br><span class="line">        for i in range(self.hashbits):</span><br><span class="line">            if v[i] &gt;= 0:</span><br><span class="line">                fingerprint += 1 &lt;&lt; i</span><br><span class="line">        return fingerprint</span><br><span class="line">    </span><br><span class="line">    # 求文档间的海明距离</span><br><span class="line">    def hamming_distance(self, other):</span><br><span class="line">        x = (self.hash ^ other.hash) &amp; ((1 &lt;&lt; self.hashbits) - 1 )</span><br><span class="line">        tot = 0</span><br><span class="line">        while x :</span><br><span class="line">            tot += 1</span><br><span class="line">            x &amp;= x - 1</span><br><span class="line">        return tot</span><br><span class="line">    </span><br><span class="line">    #求相似度</span><br><span class="line">    # 这个相似度的计算，十分简单，如果两个数接近，那么就是认为相似。越是接近1 越是相似，</span><br><span class="line">    # 不是原先那种以某一个参数整数 如3 为距离的相似度</span><br><span class="line">    def similarity(self, other):</span><br><span class="line">        a = float(self.hash)</span><br><span class="line">        b = float(other.hash)</span><br><span class="line">        if a &gt; b:</span><br><span class="line">            return b / a</span><br><span class="line">        else: </span><br><span class="line">            return a / b</span><br><span class="line">    </span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    hash0 = Simhash(weights_dict=dict0, tokens=tokens0)</span><br><span class="line">    print(hash0)</span><br><span class="line">    hash1 = Simhash(weights_dict=dict1, tokens=tokens1)</span><br><span class="line">    print(hash1)</span><br><span class="line">    print(hash0.hamming_distance(hash1))</span><br><span class="line">    print(hash0.similarity(hash1))</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/91557560.jpg" alt=""><br>结果如上。可以看出该例子中使用的两两比较的方式，对于大数据来说，一般可能会用到倒排索引和cpu并行技术。</p>
+          我只是想说我还没有放弃这个网站…
+本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：
 
-          
+基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”.
+根据关键字计算simhash编码，然后使用hamming distance进行比较两者的不同。如果对于上述概念比较模糊，建议首先阅读该篇博客。
+
+顺
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/23/基于simhash的文本相似度比较/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1986,28 +1830,19 @@ if __name__ == &quot;__main__&quot;:
       
         
           
-            <p>本文服务于<a href="https://jijeng.github.io/2018/08/23/基于simhash的文本相似度比较/" target="_blank" rel="noopener">该篇博客</a>,主要进行名词解释。</p>
-<h2 id="simhash"><a href="#simhash" class="headerlink" title="simhash"></a>simhash</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>simhash 也是一种hash，一般的hash 函数映射规则只需要满足以下两个条件：</p>
-<ul>
-<li>对很多不同的特征来说，它们对所对应的向量是均匀随机分布的</li>
-<li>相同的特征来说对应的向量是唯一<br>简单来说普通的hash映射需要满足随机分布和唯一性两个条件。simhash想要实现的是，如果原来的文本的特征是相似，那么映射之后的编码也是相似。这里使用 hamming distance 进行比较simhash映射之后的距离。根据经验值，对64位的 SimHash值，海明距离在3以内的可认为相似度比较高。编码之后的表示在英文中是 fingerprint(指纹)。<br>simhash最初被google 用于网页去重，当时使用的fingerprint 是64,所以这里沿用了这个传统。64位的签名可以表示多达264个象限，因此只保存所在象限的信息也足够表征一个文档了。<br>更进一步，表示的文档的数字最多是多少？这个应该可以准确计算特征的个数应为如果用三位(01) 表示，那么有8种，那么2^64 这么多种特征，所以16*10^18 这么多。<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3>第一步：文本预处理得到分词（去重，去除的了stop words）,然后weight权重可以使用分词的frequency 或者tfidf 进行得到<br>第二步：进行hash 映射（可以使用md5这种传统的映射方式，基本的要求就是均匀映射到一个空间，这种映射并不能反映原始样本的相关性）<br>第三步：hash 映射值和weight 进行相乘，如果原来是1 则乘以1，如果是0 则乘以-1，<br>第四步： 列向相加，得到summing weights,进行降维如果是正数那么为1，如果是负数那么为-1<br>然后这个simhash就出来了.<br>有图有真相<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afa1wa4qj20ka0cyt95.jpg" alt=""><br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afacg3bhj20j00ea42v.jpg" alt=""></li>
-</ul>
-<h3 id="simhash的局限性："><a href="#simhash的局限性：" class="headerlink" title="simhash的局限性："></a>simhash的局限性：</h3><p>只考虑到文章存在哪些词，没有考虑到词的顺序。不过相应的优点是，可以实现海量文章相似度计算。文章相似度计算忽略词的顺序之后效果更好。所以在处理大文本时候，simhash是有效的，但是在处理小文本，这种效果往往不能被保证。直观上理解，在一片段文章或者段落中，词语出现的顺序还是比较重要的。</p>
-<h2 id="minhash"><a href="#minhash" class="headerlink" title="minhash"></a>minhash</h2><p>可以参考<a href="https://www.youtube.com/watch?v=96WOGPUgMfw" target="_blank" rel="noopener">该视频</a>和<a href="http://www.cnblogs.com/maybe2030/p/4953039.html" target="_blank" rel="noopener">这篇文章</a>。</p>
-<h2 id="Locality-Sensitive-Hashing"><a href="#Locality-Sensitive-Hashing" class="headerlink" title="Locality Sensitive Hashing"></a>Locality Sensitive Hashing</h2><p>Locality Sensitive Hashing(局部敏感哈希)作用就是从海量的数据中挖掘出相似的数据，可以具体应用到文本相似度检测、网页搜索等领域。上面的simhah和minhash 就是该思想的实现。</p>
-<h2 id="距离函数"><a href="#距离函数" class="headerlink" title="距离函数"></a>距离函数</h2><p>这里的距离函数都是用来文本相似度。</p>
-<h3 id="Jaccard相似度"><a href="#Jaccard相似度" class="headerlink" title="Jaccard相似度"></a>Jaccard相似度</h3><p>简单来说交集除以并集。这个集合中存放的是文章或者段落的关键词。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def JaccardSim(str_a, str_b):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    Jaccard相似性系数</span><br><span class="line">    计算sa和sb的相似度 len（sa &amp; sb）/ len（sa | sb）</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    seta = splitWords(str_a)[1]</span><br><span class="line">    setb = splitWords(str_b)[1]</span><br><span class="line"></span><br><span class="line">    sa_sb = 1.0 * len(seta &amp; setb) / len(seta | setb)</span><br><span class="line"></span><br><span class="line">    return sa_sb</span><br></pre></td></tr></table></figure></p>
-<p>可以看到核心代码很简单，经过分词之后，就是seta 和setb 进行的操作。</p>
-<h3 id="cosine"><a href="#cosine" class="headerlink" title="cosine"></a>cosine</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def cos_sim(a, b):</span><br><span class="line">    a = np.array(a)</span><br><span class="line">    b = np.array(b)</span><br><span class="line">    # return &#123;&quot;文本的余弦相似度:&quot;:np.sum(a*b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))&#125;</span><br><span class="line">    return np.sum(a * b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))</span><br></pre></td></tr></table></figure>
-<p>将文本的关键词映射成某种高维函数，然后在高维空间中计算两者的相似度。</p>
-<h3 id="tf-idf"><a href="#tf-idf" class="headerlink" title="tf-idf"></a>tf-idf</h3><p>在simhash 中使用 tf-idf作为我们的比较函数。TF-IDF的主要思想就是：如果某个词在一篇文档中出现的频率高，也即TF高；并且在语料库中其他文档中很少出现，即DF的低，也即IDF高，则认为这个词具有很好的类别区分能力。<br>词频(term frequency)有两种计算方式,后者考虑了相对的情况。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/52502045.jpg" alt=""><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/28700629.jpg" alt=""><br>计算idf(inverse document frequency):<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/29062439.jpg" alt=""><br>TF-IDF 优点是简单快速，比较符合实际。缺点，无法体现词的位置信息，所有的位置都是被认为重要性相同，但是开头结尾，段落的开头和段落的结尾，therefore，so，but这些词语都是没有体现的。</p>
-<h3 id="Hamming-distance"><a href="#Hamming-distance" class="headerlink" title="Hamming distance"></a>Hamming distance</h3><p>hamming distance就是比较01串的不同，按照位进行比较。算法：异或时，只有在两个比较的位不同时其结果是1 ，否则结果为0，两个二进制“异或”后得到1的个数即为海明距离的大小。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hashbits =64 # 使用64位进行编码</span><br><span class="line">def simhash_function(tokens, weights_dict):</span><br><span class="line">    v = [0] * hashbits</span><br><span class="line">    # 这种 &#123;key: value&#125;.item() 的操作也是没有了谁了</span><br><span class="line">    for key, t in &#123;x: _string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">        for i in range(hashbits):</span><br><span class="line">            bitmask = 1 &lt;&lt; i</span><br><span class="line">            if t &amp; bitmask:</span><br><span class="line">                v[i] += weights_dict[key]</span><br><span class="line">            else:</span><br><span class="line">                v[i] -= weights_dict[key]</span><br><span class="line"></span><br><span class="line">    fingerprint = 0</span><br><span class="line">    for i in range(hashbits):</span><br><span class="line">        if v[i] &gt;= 0:</span><br><span class="line">            fingerprint += 1 &lt;&lt; i</span><br><span class="line">    return fingerprint</span><br><span class="line">fingerprint = simhash_function(tokens, weights)</span><br></pre></td></tr></table></figure></p>
-<h3 id="min-edit-distance"><a href="#min-edit-distance" class="headerlink" title="min edit distance"></a>min edit distance</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 最小编辑距离</span><br><span class="line">def min_edit_distance(str1, str2):</span><br><span class="line">    rows  =len(str2) +1</span><br><span class="line">    cols =len(str1) +1</span><br><span class="line">    arr =[[0 for _ in range(cols)] for _ in range(rows)]</span><br><span class="line">    # 这种简洁的代码也是牛逼</span><br><span class="line">    for j in range(cols):</span><br><span class="line">        arr[0][j] =j</span><br><span class="line">    for i in range(rows):</span><br><span class="line">        arr[i][0] =i</span><br><span class="line">    for i in range(1, rows):</span><br><span class="line">        for j in range(1, cols):</span><br><span class="line">            # 因为string 是从0 ，len(str) -1的</span><br><span class="line">            if str2[i-1] ==str1[j-1]:</span><br><span class="line">                arr[i][j] =arr[i-1][j-1]</span><br><span class="line">            else:</span><br><span class="line">                # 以后见到这样的式子，就要想到这个二维的数组，因为这个是可以帮助记忆的</span><br><span class="line">                arr[i][j] =1 +min(arr[i-1][j-1], arr[i-1][j], arr[i][j-1])</span><br><span class="line">    # 右下角就是距离</span><br><span class="line">    return arr[rows-1][cols-1]</span><br><span class="line">str_a =&quot;abcdef&quot;</span><br><span class="line">str_b =&quot;azced&quot;</span><br><span class="line">result =min_edit_distance(str_a, str_b)</span><br><span class="line">result</span><br></pre></td></tr></table></figure>
-<p>具体可以参看<a href="https://www.youtube.com/user/tusharroy2525/featured" target="_blank" rel="noopener">该视频</a>讲解。(ps. 如果刷leetcode,也可以参看该视频)</p>
-<h2 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h2><p>在英文中存在天然的空格可以进行分词操作，但是中文的分词就比较复杂了。常用的中文分词开源工具有 jieba和<a href="https://github.com/hankcs/HanLP" target="_blank" rel="noopener">HanLP</a><br>前者简单易行，容易上手；后者在自然语言处理作为汉语言处理包，可以用于词性标注，命名实体识别等一系列功能。常用的英文分词 <a href="https://stanfordnlp.github.io/CoreNLP/" target="_blank" rel="noopener">corenlp</a></p>
-<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>倒排索引使用python在实现上就是一个dictionary 嵌套一个 set(). 一般的索引都是数字或者英文字母映射内容，具体在放到simhash的情景下就是使用文章的序列号对应提取出来的关键词。但是倒排索引就是关键词对应文章的序列号，类似与原来的”值”对应这”键”，所以称之为倒排索引。一般使用在召回的场景下，使用关键词然后出现了该关键词下的index 的集合。可以参考<a href="https://blog.csdn.net/u011239443/article/details/60604017" target="_blank" rel="noopener">这篇文章</a>。</p>
+          本文服务于该篇博客,主要进行名词解释。
+simhash基本概念simhash 也是一种hash，一般的hash 函数映射规则只需要满足以下两个条件：
 
-          
+对很多不同的特征来说，它们对所对应的向量是均匀随机分布的
+相同的特征来说对应的向量是唯一简单来说普通的hash映射需要满足随机分布和唯一性两个条件。simhash想要实现的是，如果原来的文本的特征是相似，那么映射之后的编码也是相似。这里使用 hamming distance 进行比较simhash映射之后的距离。根据经验值，对64位的 SimHa
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/23/文本相似度比较基本知识/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
