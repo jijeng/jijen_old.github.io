@@ -87,15 +87,15 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="SVM 理论支持向量机分为三个部分，线性可分支持向量机、线性支持向量机、非线性支持向量机。 SVM 原理SVM 是一种二类分类模型。它的基本模型是在特征空间中寻找间隔最大化的分离超平面的线性分类器。 当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性可分支持向量机；当训练数据近似线性可分时，引入松弛变量，通过软间隔最大化，学习一个线性分类器，即线性支持向量机；当训练数据线性不可分时">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/e9a223b5ly1g3tlf561hbj20em07bmxe.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/e9a223b5ly1g3tlp6gqqzj20af07pweh.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/e9a223b5ly1g3tmhb22yaj20i6042dfn.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/e9a223b5ly1g3tmfcsgk1j20y60gg74q.jpg">
-<meta property="og:updated_time" content="2019-06-08T13:24:08.743Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tlf561hbj20em07bmxe.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tlp6gqqzj20af07pweh.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tmhb22yaj20i6042dfn.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tmfcsgk1j20y60gg74q.jpg">
+<meta property="og:updated_time" content="2019-06-17T03:49:37.666Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SVM All You Need to Know">
 <meta name="twitter:description" content="SVM 理论支持向量机分为三个部分，线性可分支持向量机、线性支持向量机、非线性支持向量机。 SVM 原理SVM 是一种二类分类模型。它的基本模型是在特征空间中寻找间隔最大化的分离超平面的线性分类器。 当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性可分支持向量机；当训练数据近似线性可分时，引入松弛变量，通过软间隔最大化，学习一个线性分类器，即线性支持向量机；当训练数据线性不可分时">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/e9a223b5ly1g3tlf561hbj20em07bmxe.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tlf561hbj20em07bmxe.jpg">
 
 
 
@@ -347,8 +347,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-08T21:24:08+08:00">
-                2019-06-08
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T11:49:37+08:00">
+                2019-06-17
               </time>
             
           </span>
@@ -402,18 +402,18 @@
 <p>当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性可分支持向量机；<br>当训练数据近似线性可分时，引入松弛变量，通过软间隔最大化，学习一个线性分类器，即线性支持向量机；<br>当训练数据线性不可分时，通过使用核技巧及软间隔最大化，学习非线性支持向量机。<br>以上各种情况下的数学推到应当掌握，硬间隔最大化（几何间隔）、学习的对偶问题、软间隔最大化（引入松弛变量）、非线性支持向量机（核技巧）。</p>
 <h3 id="SVM-为什么采用间隔最大化"><a href="#SVM-为什么采用间隔最大化" class="headerlink" title="SVM 为什么采用间隔最大化"></a>SVM 为什么采用间隔最大化</h3><p>当训练数据线性可分时，存在无穷个分离超平面可以将两类数据正确分开。感知机利用误分类最小策略，求得分离超平面，不过此时的解有无穷多个。线性可分支持向量机利用间隔最大化求得最优分离超平面，这时，解是唯一的。另一方面，此时的分隔超平面所产生的分类结果是最鲁棒的，对未知实例的泛化能力最强。可以借此机会阐述一下几何间隔以及函数间隔的关系。</p>
 <h3 id="为什么要将求解-SVM-的原始问题转换为其对偶问题"><a href="#为什么要将求解-SVM-的原始问题转换为其对偶问题" class="headerlink" title="为什么要将求解 SVM 的原始问题转换为其对偶问题"></a>为什么要将求解 SVM 的原始问题转换为其对偶问题</h3><p>一是对偶问题往往更易求解，当我们寻找约束存在时的最优点的时候，约束的存在虽然减小了需要搜寻的范围，但是却使问题变得更加复杂。为了使问题变得易于处理，我们的方法是把目标函数和约束全部融入一个新的函数，即拉格朗日函数，再通过这个函数来寻找最优点。二是可以自然引入核函数，进而推广到非线性分类问题。</p>
-<h3 id="为什么-SVM-要引入核函数"><a href="#为什么-SVM-要引入核函数" class="headerlink" title="为什么 SVM 要引入核函数"></a>为什么 SVM 要引入核函数</h3><p>当样本在原始空间线性不可分时，可将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分。而引入这样的映射后，所要求解的对偶问题的求解中，无需求解真正的映射函数，而只需要知道其核函数。核函数的定义：K(x,y)=&lt;ϕ(x),ϕ(y)&gt;，即在特征空间的内积等于它们在原始样本空间中通过核函数 K 计算的结果。一方面数据变成了高维空间中线性可分的数据，另一方面不需要求解具体的映射函数，只需要给定具体的核函数即可，这样使得求解的难度大大降低。<br><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3tlf561hbj20em07bmxe.jpg" alt=""></p>
+<h3 id="为什么-SVM-要引入核函数"><a href="#为什么-SVM-要引入核函数" class="headerlink" title="为什么 SVM 要引入核函数"></a>为什么 SVM 要引入核函数</h3><p>当样本在原始空间线性不可分时，可将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分。而引入这样的映射后，所要求解的对偶问题的求解中，无需求解真正的映射函数，而只需要知道其核函数。核函数的定义：K(x,y)=&lt;ϕ(x),ϕ(y)&gt;，即在特征空间的内积等于它们在原始样本空间中通过核函数 K 计算的结果。一方面数据变成了高维空间中线性可分的数据，另一方面不需要求解具体的映射函数，只需要给定具体的核函数即可，这样使得求解的难度大大降低。<br><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tlf561hbj20em07bmxe.jpg" alt=""></p>
 <h3 id="为什么SVM对缺失数据敏感"><a href="#为什么SVM对缺失数据敏感" class="headerlink" title="为什么SVM对缺失数据敏感"></a>为什么SVM对缺失数据敏感</h3><p>这里说的缺失数据是指缺失某些特征数据，向量数据不完整。SVM 没有处理缺失值的策略。而 SVM 希望样本在特征空间中线性可分，所以特征空间的好坏对SVM的性能很重要。缺失特征数据将影响训练结果的好坏。</p>
 <h3 id="SVM-核函数之间的区别"><a href="#SVM-核函数之间的区别" class="headerlink" title="SVM 核函数之间的区别"></a>SVM 核函数之间的区别</h3><p>一般选择线性核和高斯核，也就是线性核与 RBF 核。 线性核：主要用于线性可分的情形，参数少，速度快，对于一般数据，分类效果已经很理想了。 RBF 核：主要用于线性不可分的情形，参数多，分类结果非常依赖于参数。有很多人是通过训练数据的交叉验证来寻找合适的参数，不过这个过程比较耗时。 如果 Feature 的数量很大，跟样本数量差不多，这时候选用线性核的 SVM。 如果 Feature 的数量比较小，样本数量一般，不算大也不算小，选用高斯核的 SVM。</p>
 <p>以上是几个问题在面试中遇到 SVM 算法时，几乎是必问的问题，另外，大家一定要做到自己可以推导集合间隔、函数间隔以及对偶函数，并且理解对偶函数的引入对计算带来的优势。</p>
-<h3 id="支持向量"><a href="#支持向量" class="headerlink" title="支持向量"></a>支持向量</h3><p><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3tlp6gqqzj20af07pweh.jpg" alt=""></p>
+<h3 id="支持向量"><a href="#支持向量" class="headerlink" title="支持向量"></a>支持向量</h3><p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tlp6gqqzj20af07pweh.jpg" alt=""></p>
 <p>如图所示，上面只有三个点与求解的优化问题有关，它们就叫做支持向量。</p>
 <h2 id="SVM公式推导-线性可分条件下"><a href="#SVM公式推导-线性可分条件下" class="headerlink" title="SVM公式推导(线性可分条件下)"></a>SVM公式推导(线性可分条件下)</h2><p>假定样本空间如下<br>$$<br>{ ( x _ { 1 } , y _ { 1 } ) , ( x _ { 2 } , y _ { 2 } ) , \ldots , ( x _ { N } , y _ { N } ) }<br>$$</p>
 <p>共有N个向量，其中$x_k$是一个特征向量而不是一个单一数值。</p>
 <ol>
 <li>这是一个二分类问题，所以$y=+1 $或者$ y=−1$。那么我们就可以得到</li>
 </ol>
-<p><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3tmhb22yaj20i6042dfn.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tmhb22yaj20i6042dfn.jpg" alt=""></p>
 <p>那么，我们可以得到<br>$$<br>y _ { i } \cdot ( w ^ { T } x _ { i } + b ) \geq 1 , i = 1,2 , \ldots , N<br>$$</p>
 <ol start="2">
 <li><p>因为我们现在只讨论线性可分情况下的支持向量机，那么在这个样本空间中一定存在一个超平面可以将样本集按照y的值分割城两个部分，这个超平面可以表示为<br>$$<br>w ^ { T } x + b = 0<br>$$</p>
@@ -436,7 +436,7 @@
 <li><p>将第七步得到的w和b代入L函数</p>
 </li>
 </ol>
-<p><img src="https://ws1.sinaimg.cn/large/e9a223b5ly1g3tmfcsgk1j20y60gg74q.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tmfcsgk1j20y60gg74q.jpg" alt=""></p>
 <ol start="9">
 <li><p>至此，我们的目标函数已经变成了<br>$$<br>\arg \max _ { \alpha } ( \sum _ { i } \alpha _ { i } - \frac { 1 } { 2 } \sum _ { i } \sum _ { j } \alpha _ { i } \alpha _ { j } y _ { i } y _ { j } x _ { i } ^ { T } x _ { j } )<br>$$<br>$$<br>\text { s.t. } \sum _ { i } \alpha _ { i } y _ { i } = 0<br>$$<br>$$<br>\alpha _ { i } \geq 0 , i = 1,2 , \ldots , N<br>$$</p>
 </li>
