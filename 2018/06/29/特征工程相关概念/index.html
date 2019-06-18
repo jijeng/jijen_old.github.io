@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="特征工程," />
+  <meta name="keywords" content="PCA,SVD," />
 
 
 
@@ -79,22 +79,20 @@
 
 
 
-<meta name="description" content="特征离散化？连续化特征就是一些不可枚举的有理数。那么什么是离散化特征呢？ 离散化特征就是可枚举的特征。离散化的作用是把数据变成可计算状态。而特征工程就是从原始字段中根据业务提取出对模型有效的特征出来。 在线性模型下(w.x)，w已经确定的情况下，x的某个特征的值是20，或者30，w.x的值相差是很大的，但是往往20岁的人跟30岁的人对同一个广告的兴趣差距不会那么大。连续特征离散化的基本假设，是默认">
-<meta name="keywords" content="特征工程">
+<meta name="description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
+<meta name="keywords" content="PCA,SVD">
 <meta property="og:type" content="article">
-<meta property="og:title" content="特征工程相关概念">
+<meta property="og:title" content="特征工程">
 <meta property="og:url" content="http://yoursite.com/2018/06/29/特征工程相关概念/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="特征离散化？连续化特征就是一些不可枚举的有理数。那么什么是离散化特征呢？ 离散化特征就是可枚举的特征。离散化的作用是把数据变成可计算状态。而特征工程就是从原始字段中根据业务提取出对模型有效的特征出来。 在线性模型下(w.x)，w已经确定的情况下，x的某个特征的值是20，或者30，w.x的值相差是很大的，但是往往20岁的人跟30岁的人对同一个广告的兴趣差距不会那么大。连续特征离散化的基本假设，是默认">
+<meta property="og:description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/72457357.jpg">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/38543547.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/26401076.jpg">
-<meta property="og:updated_time" content="2019-05-25T03:22:15.766Z">
+<meta property="og:updated_time" content="2019-06-17T14:05:39.282Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="特征工程相关概念">
-<meta name="twitter:description" content="特征离散化？连续化特征就是一些不可枚举的有理数。那么什么是离散化特征呢？ 离散化特征就是可枚举的特征。离散化的作用是把数据变成可计算状态。而特征工程就是从原始字段中根据业务提取出对模型有效的特征出来。 在线性模型下(w.x)，w已经确定的情况下，x的某个特征的值是20，或者30，w.x的值相差是很大的，但是往往20岁的人跟30岁的人对同一个广告的兴趣差距不会那么大。连续特征离散化的基本假设，是默认">
-<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/72457357.jpg">
+<meta name="twitter:title" content="特征工程">
+<meta name="twitter:description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
+<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/38543547.jpg">
 
 
 
@@ -130,7 +128,7 @@
 
 
 
-  <title>特征工程相关概念 | Jijeng's blog</title>
+  <title>特征工程 | Jijeng's blog</title>
   
 
 
@@ -236,43 +234,9 @@
       
 
       
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            Search
-          </a>
-        </li>
-      
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -318,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">特征工程相关概念</h1>
+          <h1 class="post-title" itemprop="name headline">特征工程</h1>
         
 
         <div class="post-meta">
@@ -346,8 +310,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-25T11:22:15+08:00">
-                2019-05-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T22:05:39+08:00">
+                2019-06-17
               </time>
             
           </span>
@@ -418,7 +382,10 @@
       
 
       
-        <h2 id="特征离散化？"><a href="#特征离散化？" class="headerlink" title="特征离散化？"></a>特征离散化？</h2><p>连续化特征就是一些不可枚举的有理数。那么什么是离散化特征呢？ 离散化特征就是可枚举的特征。离散化的作用是把数据变成可计算状态。而特征工程就是从原始字段中根据业务提取出对模型有效的特征出来。</p>
+        <p>关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。</p>
+<a id="more"></a>
+<h2 id="特征生成"><a href="#特征生成" class="headerlink" title="特征生成"></a>特征生成</h2><p>机器学习的一大任务在于手工 create 特征。特征主要来源有两个，一个统计学知识，一个该场景下的特征。前者属于常规操作，后者需要有对业务领域比较熟悉的了解。后者举个例子，比如在衡量个人信用的时候， days_employed / days_birth 就是一个属于金融（保险）领域的较为熟悉，才能理解的一个特征, 这种百分比，占比的思想还是非常常见的。前者同样举个栗子，对于子表（传统机器学习还是有很多来自数据库的信息的）常用的操作是 aggregation 操作（min max sum variance mean）等聚合操作，然后和主表进行连接。</p>
+<h2 id="特征离散化？"><a href="#特征离散化？" class="headerlink" title="特征离散化？"></a>特征离散化？</h2><p>连续化特征就是一些不可枚举的有理数。那么什么是离散化特征呢？ 离散化特征就是可枚举的特征。离散化的作用是把数据变成可计算状态。而特征工程就是从原始字段中根据业务提取出对模型有效的特征出来。</p>
 <p>在线性模型下(w.x)，w已经确定的情况下，x的某个特征的值是20，或者30，w.x的值相差是很大的，但是往往20岁的人跟30岁的人对同一个广告的兴趣差距不会那么大。连续特征离散化的基本假设，是默认连续特征不同区间的取值对结果的贡献是不一样的。离散化和连续化最大的区别是，对一个字段做连续化后的结果就还只是一个特征，而离散化后的这一列有多少个key(字段可能的值)就会抽取出多少个特征。当经过离散化之后，特征各有各的权重，彼此之间就没有关系了。</p>
 <p>模型是使用离散特征还是连续特征, <strong>其实是一个“海量离散特征+简单模型” 同 “少量连续特征+复杂模型”的权衡</strong>。既可以离散化用线性模型，也可以用连续特征加深度学习。</p>
 <p>常用的选取离散点的方法：等距离离散，等样本离散、画图观察趋势和决策树模型(天生就可以对连续特征分段)。</p>
@@ -431,10 +398,41 @@
 <p>所以不用担心像GBDT算法那样，特征多了就跑不动了(我们都说GBDT不能用离散特征不是因为它处理不了离散特征，而是因为离散化特征后会产生特别多的特征，决策树的叶子节点过多，遍历的时候太慢了)。 所以海量离散特征＋LR是业内常见的一个做法。而少量连续特征+复杂模型是另外一种做法，例如GBDT。</p>
 <p>当然也可以通过深度学习来进行特征选择：目前这种手段正在随着深度学习的流行而成为一种手段，尤其是在计算机视觉领域，原因是深度学习具有自动学习特征的能力，这也是深度学习又叫unsupervised feature learning的原因。从深度学习模型中选择某一神经层的特征后就可以用来进行最终目标模型的训练了。</p>
 <p>参考文献:<br><a href="https://blog.csdn.net/lujiandong1/article/details/52412123" target="_blank" rel="noopener">https://blog.csdn.net/lujiandong1/article/details/52412123</a></p>
-<h2 id="组合特征"><a href="#组合特征" class="headerlink" title="组合特征"></a>组合特征</h2><p>先是离散化，然后是特征组合。<br>交叉从理论上而言是为了引入特征之间的交互，也即为了引入非线性。<br>LR(逻辑回归）分类算法:因为线性函数的表达能力有限，所以我们引入激活函数就是给LR增加非线性关系。能让一条直线变成曲线。这样可以拟合出更好的效果。（也由此才后了后来说的过拟合问题而引入了正则化超参数）<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/72457357.jpg" alt="avatar"><br>LR模型之所以很受欢迎，主要是因为LR模型本质是对数线性模型，实现简单，易于并行，大规模扩展方便，迭代速度快，同时使用的特征比较好解释，预测输出在0与1之间契合概率模型。（模型的可解释性举例，比如A-B的权重比较大，A代表用户，B代表物品，那么可以认为A是对B比较感兴趣的）但是，线性模型对于非线性关系缺乏准确刻画，特征组合正好可以加入非线性表达，增强模型的表达能力。另外，广告LR中，基本特征可以认为是用于全局建模，组合特征更加精细，是个性化建模，因为在这种大规模离散LR中，单对全局建模会对部分用户有偏，对每一用户建模又数据不足易过拟合同时带来模型数量爆炸，所以基本特征+组合特征兼顾了全局和个性化。</p>
+<h2 id="组合特征"><a href="#组合特征" class="headerlink" title="组合特征"></a>组合特征</h2><p>先是离散化，然后是特征组合。<br>交叉从理论上而言是为了引入特征之间的交互，也即为了引入非线性。<br>LR(逻辑回归）分类算法:因为线性函数的表达能力有限，所以我们引入激活函数就是给LR增加非线性关系。能让一条直线变成曲线。这样可以拟合出更好的效果。（也由此才后了后来说的过拟合问题而引入了正则化超参数）</p>
+<p>LR模型之所以很受欢迎，主要是因为LR模型本质是对数线性模型，实现简单，易于并行，大规模扩展方便，迭代速度快，同时使用的特征比较好解释，预测输出在0与1之间契合概率模型。（模型的可解释性举例，比如A-B的权重比较大，A代表用户，B代表物品，那么可以认为A是对B比较感兴趣的）但是，线性模型对于非线性关系缺乏准确刻画，特征组合正好可以加入非线性表达，增强模型的表达能力。另外，广告LR中，基本特征可以认为是用于全局建模，组合特征更加精细，是个性化建模，因为在这种大规模离散LR中，单对全局建模会对部分用户有偏，对每一用户建模又数据不足易过拟合同时带来模型数量爆炸，所以基本特征+组合特征兼顾了全局和个性化。</p>
 <p>从统计的角度解释，基本特征仅仅是真实特征分布在低维的映射，不足以描述真实的分布，加入特征在高维空间拟合真实分布，使得预测更加准确。</p>
-<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>真正测试一个模型的不是简单与否，更重要在于它在预测新的情况时表现如何。小权重意味着网络的行为不会因为我们随意更改了一些输入而改变太多。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/38543547.jpg" alt="avatar"><br>这是我们加了正则化之后的成本函数，可以看我们后面加入了正则化 λ 的表达式来完善成本函数。为什么加入λ能够减轻过拟合呢？直观一点的解释是设置的λ值越大，那么参数w的值就会被压缩的越小(在梯度下降中, 每次迭代的步长，也就是这个公式w=w - 学习率*成本函数对w的导数， 现在由于成本函数增加了正则项，使得J和w变得数值相关了)。 假设λ设置的足够大，那么w会无限的趋近于0. 把多隐藏层的单元的权重设置为0以后，那么基本上就是消除掉了这些单元的作用，而使得网络模型得到简化，就像下面的图一样。由于正则化的设置，消除了一些隐藏单元的作用。而使得整个模型越来越接近于线性化，也就是从下图中的过拟合往欠拟合偏转。当然我们有一个适合的λ的值，能让我们的拟合状态达到最佳。所以我们在训练模型的时候，往往都会有一个Ｌ２正则项的超参数需要我们设置。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/26401076.jpg" alt="avatar"><br>这是我们的tanh激活函数， 可以看到当z的值越大时，整个函数的非线性就越大，而z的值越小(图中红色加粗部分),函数就越是呈现出线性分布。 所以当我们增加λ的值， w得值就越小，相应的z的值也就越小。因为z = wx + b。 而我们第一次说激活函数的时候就说过神经网络中基本上是不使用线性函数作为激活函数的，因为不论有多少层，多少个单元，线性激活函数会使得所有单元所计算的都呈现线性状态。</p>
-<h2 id="杂货铺"><a href="#杂货铺" class="headerlink" title="杂货铺"></a>杂货铺</h2><p>特征工程可以分为特征处理、Feature Selection（特征选择）、Feature Extraction（特征提取）和Feature construction（特征构造）等阶段。<br>归一化（去中心，方差归一）是属于特征(预)处理:把特征值压缩成0~1的区间。</p>
+<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>真正测试一个模型的不是简单与否，更重要在于它在预测新的情况时表现如何。小权重意味着网络的行为不会因为我们随意更改了一些输入而改变太多。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/38543547.jpg" alt="avatar"><br>这是我们加了正则化之后的成本函数，可以看我们后面加入了正则化 λ 的表达式来完善成本函数。为什么加入λ能够减轻过拟合呢？直观一点的解释是设置的λ值越大，那么参数w的值就会被压缩的越小(在梯度下降中, 每次迭代的步长，也就是这个公式w=w - 学习率*成本函数对w的导数， 现在由于成本函数增加了正则项，使得J和w变得数值相关了)。 假设λ设置的足够大，那么w会无限的趋近于0. 把多隐藏层的单元的权重设置为0以后，那么基本上就是消除掉了这些单元的作用，而使得网络模型得到简化，就像下面的图一样。由于正则化的设置，消除了一些隐藏单元的作用。而使得整个模型越来越接近于线性化，也就是从下图中的过拟合往欠拟合偏转。当然我们有一个适合的λ的值，能让我们的拟合状态达到最佳。所以我们在训练模型的时候，往往都会有一个Ｌ２正则项的超参数需要我们设置。</p>
+<p>这是我们的tanh激活函数， 可以看到当z的值越大时，整个函数的非线性就越大，而z的值越小(图中红色加粗部分),函数就越是呈现出线性分布。 所以当我们增加λ的值， w得值就越小，相应的z的值也就越小。因为z = wx + b。 而我们第一次说激活函数的时候就说过神经网络中基本上是不使用线性函数作为激活函数的，因为不论有多少层，多少个单元，线性激活函数会使得所有单元所计算的都呈现线性状态。</p>
+<h2 id="feature-selection"><a href="#feature-selection" class="headerlink" title="feature selection"></a>feature selection</h2><p>feature selection 的过程就是dimension reduction的过程。就是说由较多的数据集 映射到 较少的数据集，这种方式就叫做降维。</p>
+<blockquote>
+<p>Using dimensionality reduction techniques, of course. You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve) the model’s performance.</p>
+</blockquote>
+<p>必要性分析：时间角度，空间（内存）角度。减少冗余信息，就减少了模型去拟合”噪声“数据的可能性。</p>
+<p>常见的有以下几种方式。</p>
+<ul>
+<li>Remove collinear features<br>具体说来 显示 corr,然后上三角形，然后根据阈值筛选相关性比较强的特征，最后drop。 PCA之类的，解决的是feature 个数的问题。</li>
+<li>Remove features with greater than a threshold percentage of missing values<br>根据isnull() 计算百分比，然后排序比较， 解决的是feature 个数的问题。</li>
+<li>Keep only the most relevant features using feature importances from a model<br>根据feature importance 进行feature selection， 解决的feature 个数的问题。</li>
+<li>根据数值型数据本身变化，如果variance 很小，则舍去。<br>因为网络本身就是学习的该特征的波动是如何影响最后的结果，所以如果数据本身没有波动性，那么是没有什么价值的。解决的是feature 个数的问题。</li>
+</ul>
+<p>插一句，如何 handle 单个特征本身表示长度的问题，思考一下 word2vec 是怎样进行操作的。</p>
+<h3 id="Principal-Component-Analysis-PCA"><a href="#Principal-Component-Analysis-PCA" class="headerlink" title="Principal Component Analysis (PCA)"></a>Principal Component Analysis (PCA)</h3><p>这个属于一句话的的思想：PCA的问题其实是一个基的变换，使得变换后的数据有着最大的方差。</p>
+<p>pca 的假设：<br>这个说得很清楚，higher dimensional space is mapped to lower dimension, 然后这种在lower dimensional 中数据的variance应该是保持max的。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.</p>
+<p>就是需要理解这个主成分是不断的生成的，在前者的基础之上生成的。<br>below are some of the key points you should know about PCA before proceeding further:</p>
+<ul>
+<li>A principal component is a linear combination of the original variables</li>
+<li>Principal components are extracted in such a way that the first principal component explains maximum variance in the dataset</li>
+<li>Second principal component tries to explain the remaining variance in the dataset and is uncorrelated to the first principal component</li>
+<li><p>Third principal component tries to explain the variance which is not explained by the first two principal components and so on</p>
+<p>The first component is the most important one, followed by the second, then the third, and so on.</p>
+</li>
+</ul>
+<h3 id="SVD"><a href="#SVD" class="headerlink" title="SVD"></a>SVD</h3><p>SVD decomposes the original variables into three constituent matrices. It is essentially used to remove redundant features from the dataset. It uses the concept of Eigenvalues and Eigenvectors to determine those three matrices. We will not go into the mathematics of it due to the scope of this article, but let’s stick to our plan, i.e. reducing the dimensions in our dataset.</p>
+<p>$$<br>\operatorname { Data } _ { m \times n } = U _ { m \times m } \Sigma _ { m \times n } V _ { n \times n } ^ { T }<br>$$<br>SVD将原始的数据集矩阵Data分解成三个矩阵：U、Sigma、VT，如果原始矩阵是m行n列，那么U、Sigma和VT分别就是m行m列、m行n列、n行n列。比较值得一提的是矩阵Sigma，该矩阵只有对角元素，其他元素均为0，有一个惯例是：Sigma的对角元素是从大到小排列的。这些对角元素就称为奇异值.</p>
+<h3 id="投影也是一种降维手段"><a href="#投影也是一种降维手段" class="headerlink" title="投影也是一种降维手段"></a>投影也是一种降维手段</h3><p>这种思想真的是服气，虽然我也不是很懂，但是思想是很好的<br>By projecting one vector onto the other, dimensionality can be reduced.<br>By projecting one vector onto the other, dimensionality can be reduced.<br>讲解了什么是 manifold 这个概念，还是很好的<br>These small portions where the Earth looks flat are manifolds, </p>
+<h3 id="T-sne"><a href="#T-sne" class="headerlink" title="T-sne"></a>T-sne</h3><p>就是指出 t-sne 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。（不知道对不对）<br>So far we have learned that PCA is a good choice for dimensionality reduction and visualization for datasets with a large number of variables. But what if we could use something more advanced? What if we can easily search for patterns in a non-linear way? t-SNE is one such technique. There are mainly two types of approaches we can use to map the data points:<br>Local approaches :  They maps nearby points on the manifold to nearby points in the low dimensional representation.<br>Global approaches : They attempt to preserve geometry at all scales, i.e. mapping nearby points on manifold to nearby points in low dimensional representation as well as far away points to far away points.</p>
+<h2 id="杂货铺"><a href="#杂货铺" class="headerlink" title="杂货铺"></a>杂货铺</h2><p><strong> 对于encodding 的理解</strong>，从字符转成数字，并且尽可能的保留原来的信息。接触的有三种，一种 label encoding，适合类别信息只有两类。如果大于两类那么就使用one-hot。第三种就是万物可以embedding，使用神经网络的思想。</p>
+<p>特征工程可以分为特征处理、Feature Selection（特征选择）、Feature Extraction（特征提取）和Feature construction（特征构造）等阶段。<br>归一化（去中心，方差归一）是属于特征(预)处理:把特征值压缩成0~1的区间。</p>
 <p>One-hot（也叫One-of-k）的方法把每个无序特征转化为一个数值向量。比如一个无序特征color有三种取值：red，green，blue。那么可以用一个长度为3的向量来表示它，向量中的各个值分别对应于red，green，blue。如：这种方法在NLP里用的很多，就是所谓的词向量模型。变换后的向量长度对于词典长度，每个词对应于向量中的一个元素。</p>
 <p>对于欠拟合: 增加神经网络复杂度，出现欠拟合的原因之一是由于函数的非线性不足，所以用更复杂的网络模型进行训练来加深拟合。<br>对于过拟合：增加数据规模， 出现过拟合的原因之一是数据规模不足而造成的数据分布不均，扩展数据规模能比较好的解决这个问题。当然另一个做法是正则化，我们采取使用正则化来解决过拟合问题，常用的是L2正则，其他的还有L1和 Dropout正则。</p>
 <p>很多人会想着既然线性分类器搞不定，那就直接找个非线性的好了，比如高斯核的SVM。我们确实可以通过这种简单换算法的方式解决这个简单的问题。但对于很多实际问题（如广告点击率预测），往往特征非常多，这时候时间约束通常不允许我们使用很复杂的非线性分类器。这也是为什么算法发展这么多年，广告点击率预测最常用的方法还是Logistic Regression (LogisticReg)。</p>
@@ -455,7 +453,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/特征工程/" rel="tag"># 特征工程</a>
+            <a href="/tags/PCA/" rel="tag"># PCA</a>
+          
+            <a href="/tags/SVD/" rel="tag"># SVD</a>
           
         </div>
       
@@ -593,7 +593,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -642,7 +642,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征离散化？"><span class="nav-number">1.</span> <span class="nav-text">特征离散化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合特征"><span class="nav-number">2.</span> <span class="nav-text">组合特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">3.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂货铺"><span class="nav-number">4.</span> <span class="nav-text">杂货铺</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征生成"><span class="nav-number">1.</span> <span class="nav-text">特征生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征离散化？"><span class="nav-number">2.</span> <span class="nav-text">特征离散化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合特征"><span class="nav-number">3.</span> <span class="nav-text">组合特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">4.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#feature-selection"><span class="nav-number">5.</span> <span class="nav-text">feature selection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Principal-Component-Analysis-PCA"><span class="nav-number">5.1.</span> <span class="nav-text">Principal Component Analysis (PCA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVD"><span class="nav-number">5.2.</span> <span class="nav-text">SVD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投影也是一种降维手段"><span class="nav-number">5.3.</span> <span class="nav-text">投影也是一种降维手段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T-sne"><span class="nav-number">5.4.</span> <span class="nav-text">T-sne</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂货铺"><span class="nav-number">6.</span> <span class="nav-text">杂货铺</span></a></li></ol></div>
             
 
           </div>
@@ -840,7 +840,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2018/06/29/特征工程相关概念/';
           this.page.identifier = '2018/06/29/特征工程相关概念/';
-          this.page.title = '特征工程相关概念';
+          this.page.title = '特征工程';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
@@ -876,323 +876,6 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
 
 
   
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 

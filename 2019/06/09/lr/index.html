@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="LR," />
+  <meta name="keywords" content="LR,Decision tree," />
 
 
 
@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="逻辑回归从线性回归引申而来，对回归的结果进行 logistic 函数运算，将范围限制在[0,1]区间，并更改损失函数为二值交叉熵损失，使其可用于2分类问题(通过得到的概率值与阈值比较进行分类)。 损失函数：如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化">
-<meta name="keywords" content="LR">
+<meta name="description" content="本文主要介绍逻辑回归（logistics regression）和决策树（Decision Tree）。逻辑回归从线性回归出发到逻辑回归，然后手推公式和相关的一些特点；介绍一下决策树的特点。">
+<meta name="keywords" content="LR,Decision tree">
 <meta property="og:type" content="article">
 <meta property="og:title" content="逻辑回归概念">
 <meta property="og:url" content="http://yoursite.com/2019/06/09/lr/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="逻辑回归从线性回归引申而来，对回归的结果进行 logistic 函数运算，将范围限制在[0,1]区间，并更改损失函数为二值交叉熵损失，使其可用于2分类问题(通过得到的概率值与阈值比较进行分类)。 损失函数：如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化">
+<meta property="og:description" content="本文主要介绍逻辑回归（logistics regression）和决策树（Decision Tree）。逻辑回归从线性回归出发到逻辑回归，然后手推公式和相关的一些特点；介绍一下决策树的特点。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3usrj3kntj20so04074w.jpg">
-<meta property="og:updated_time" content="2019-06-17T03:51:52.230Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g449t85fofj20rs075a9y.jpg">
+<meta property="og:updated_time" content="2019-06-17T11:44:47.424Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="逻辑回归概念">
-<meta name="twitter:description" content="逻辑回归从线性回归引申而来，对回归的结果进行 logistic 函数运算，将范围限制在[0,1]区间，并更改损失函数为二值交叉熵损失，使其可用于2分类问题(通过得到的概率值与阈值比较进行分类)。 损失函数：如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化">
-<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3usrj3kntj20so04074w.jpg">
+<meta name="twitter:description" content="本文主要介绍逻辑回归（logistics regression）和决策树（Decision Tree）。逻辑回归从线性回归出发到逻辑回归，然后手推公式和相关的一些特点；介绍一下决策树的特点。">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g449t85fofj20rs075a9y.jpg">
 
 
 
@@ -234,43 +234,9 @@
       
 
       
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            Search
-          </a>
-        </li>
-      
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -344,7 +310,7 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T11:51:52+08:00">
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T19:44:47+08:00">
                 2019-06-17
               </time>
             
@@ -394,21 +360,26 @@
       
 
       
-        <p>逻辑回归从线性回归引申而来，对回归的结果进行 logistic 函数运算，将范围限制在[0,1]区间，并更改损失函数为二值交叉熵损失，使其可用于2分类问题(通过得到的概率值与阈值比较进行分类)。</p>
-<h2 id="损失函数："><a href="#损失函数：" class="headerlink" title="损失函数："></a>损失函数：</h2><p>如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化 MSE 损失容易陷入局部极小点.逻辑回归损失是如下的分情况的凸函数(单个x与y的损失):<br><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3usrj3kntj20so04074w.jpg" alt=""><br>为什么LR模型的损失函数是交叉熵,而线性回归模型的损失函数却是最小二乘呢？能否随意确定一个损失函数作为目标呢？<br>模型的损失函数由各自的响应变量y的概率分布决定，对于线性回归模型，其输出是连续值，所以我们对于该问题假设y服从正态分布；相对的，LR模型一般用来解决二分类问题，所以其输出是0/1，故而我们假设其输出服从伯努利分布；而进一步地，两者的损失函数都是通过极大似然估计推导的来的，所以模型的损失函数并非随意确定。<br>分类模型与回归模型之间有种种联系,比如 SVM 模型可以看作逻辑回归加L2正则项, 并使用了不同的损失函数.</p>
-<p>为什么不使用回归模型来做分类?<br>这是一种不好的做法, 因为阈值不好确定, 随着数据集的变动, 阈值也需要有较大变化.</p>
-<p><strong>正则项：</strong></p>
-<ul>
-<li>L2 解决过拟合</li>
-<li>L1 解决数据稀疏性 </li>
-</ul>
-<p><strong> L1和L2正则先验分别服从什么分布</strong><br>从信息论的角度看，向系统加入了正确先验这个信息，肯定会提高系统的性能。两者的差别感性的理解？L1是拉普拉斯分布，L2是高斯分布。<br>拉普拉斯分布：<br>$$<br>f ( x | \mu , b ) = \frac { 1 } { 2 b } e ^ { - \frac { | x - \mu | } { b } }<br>$$<br>高斯分布：<br>$$<br>f \left( x | \mu , \sigma ^ { 2 } \right) = \frac { 1 } { \sqrt { 2 \pi \sigma ^ { 2 } } } e ^ { - \frac { ( x - \mu ) ^ { 2 } } { 2 \sigma ^ { 2 } } }<br>$$</p>
-<h2 id="逻辑回归的特点："><a href="#逻辑回归的特点：" class="headerlink" title="逻辑回归的特点："></a>逻辑回归的特点：</h2><ul>
-<li><p>优点：<br>LR 能以概率的形式输出结果,而非只是 0,1 判定， 可以做 ranking model；<br>LR 的可解释性强,可控度高；<br>训练快</p>
-</li>
-<li><p>缺点：<br>容易欠拟合，一般准确度不太高<br>只能处理两分类问题. (可以应用多个逻辑回归实现多分类,类似SVM的方式; 另外对于父子类别同时分类的情况,使用逻辑回归要比Softmax等方式效果好)</p>
-</li>
-</ul>
+        <p>本文主要介绍逻辑回归（logistics regression）和决策树（Decision Tree）。逻辑回归从线性回归出发到逻辑回归，然后手推公式和相关的一些特点；介绍一下决策树的特点。</p>
+<a id="more"></a>
+<h2 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a>逻辑回归</h2><p>逻辑回归是线性模型，虽然叫做”回归“，究其原因 逻辑回归从线性回归引申而来，对回归的结果进行 logistic 函数运算，将范围限制在[0,1]区间，并更改损失函数为二值交叉熵损失，使其可用于2分类问题(通过得到的概率值与阈值比较进行分类)。</p>
+<h3 id="公式推导"><a href="#公式推导" class="headerlink" title="公式推导"></a>公式推导</h3><p>从线性回归问题到逻辑回归过程的推导。</p>
+<p><strong>线性二分模型：</strong></p>
+<p>$$<br>f ( x ) = \theta ^ { T } x<br>$$</p>
+<p>逻辑回归决策函数是将此线性二分类嵌套一个sigmoid函数：</p>
+<p>$$<br>( f ( x ) )= \frac { 1 } { 1 + e ^ { - \theta ^ { T } x } }<br>$$</p>
+<p><strong> 损失函数：</strong><br>如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化 MSE 损失容易陷入局部极小点.逻辑回归损失是如下的分情况的凸函数(单个x与y的损失)。</p>
+<p>$$<br>P ( y = 1 | x ; \theta ) = h _ { \theta } ( x )<br>$$</p>
+<p>$$<br>P ( y = 0 | x ; \theta ) = 1 - h _ { \theta } ( x )<br>$$<br>最初是上述的分段函数，合并成下面的函数，方便计算。<br>$$<br>p ( y | x ; \theta ) = \left( h _ { \theta } ( x ) \right) ^ { y } \left( 1 - h _ { \theta } ( x ) \right) ^ { 1 - y }<br>$$<br>使用最大似然的思想解。假设我们有n个独立的训练样本{(x1, y1) ,(x2, y2),…, (xn, yn)}，y={0, 1}。那每一个观察到的样本(xi, yi)出现的概率是：<br><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g449t85fofj20rs075a9y.jpg" alt=""></p>
+<p>上述似然函数乘法太难算了，然后使用log 将其改为加法，变成了对数似然函数。<br>$$<br>\operatorname { loss } ( \theta ) = \log ( L ( \theta ) ) = \sum _ { i = 1 } ^ { m } y ^ { ( i ) } \log \left( h \left( x ^ { ( i ) } \right) \right) + \left( 1 - y ^ { ( i ) } \right) \log \left( 1 - h \left( x ^ { ( i ) } \right) \right)<br>$$</p>
+<p><strong>求导优化问题</strong><br>sigmoid 函数的特殊性质：<br>$$<br>\sigma ^ { \prime } ( x ) = \sigma ( x ) ( 1 - \sigma ( x ) )<br>$$<br>用L(θ)对θ求导，得到：</p>
+<p>$$<br>\frac { d } { d \theta _ { i } } \operatorname { loss } ( \theta ) = \left( y \frac { 1 } { \sigma \left( \theta ^ { T } x \right) } - ( 1 - y ) \frac { 1 } { 1 - \sigma \left( \theta ^ { T } x \right) } \right) \frac { d } { d \theta _ { i } } \sigma \left( \theta ^ { T } x \right)<br>$$</p>
+<p>$$<br>= \left( y \frac { 1 } { \sigma \left( \theta ^ { T } x \right) } - ( 1 - y ) \frac { 1 } { 1 - \sigma \left( \theta ^ { T } x \right) } \right) \sigma \left( \theta ^ { T } x \right) \left( 1 - \sigma \left( \theta ^ { T } x \right) \right) \frac { d } { d \theta _ { i } } \theta ^ { T } x<br>$$</p>
+<p>$$<br>= \left( y \left( 1 - \sigma \left( \theta ^ { T } x \right) \right) - ( 1 - y ) \sigma \left( \theta ^ { T } x \right) \right) x _ { i }<br>$$</p>
+<p>$$<br>= \left( y - h _ { \theta } ( x ) \right) x _ { i }<br>$$</p>
+<p>注意一会儿有 $\sum$ 一会儿没有的，其实我们更倾向于不用，采用矩阵相乘的方式更加简洁。只是在表达似然函数，使用$ \sum$更加直观<br>$$<br>\theta _ { i } : = \theta _ { j } + \alpha \left( y ^ { ( i ) } - h _ { \theta } \left( x ^ { ( i ) } \right) \right) x _ { j } ^ { ( i ) }<br>$$</p>
+<h3 id="逻辑回归的特点"><a href="#逻辑回归的特点" class="headerlink" title="逻辑回归的特点"></a>逻辑回归的特点</h3><p><strong> 优点：</strong><br> LR 能以概率的形式输出结果,而非只是 0,1 判定， 可以做 ranking model；<br> LR 的可解释性强,可控度高；<br> 训练快</p>
+<p><strong> 缺点：</strong><br> 容易欠拟合，一般准确度不太高<br> 只能处理两分类问题. (可以应用多个逻辑回归实现多分类,类似SVM的方式; 另外对于父子类别同时分类的情况,使用逻辑回归要比Softmax等方式效果好)</p>
 <p>“海量离散特征+简单模型” 同“少量连续特征+复杂模型”的权衡。既可以离散化用线性模型，也可以用连续特征加深度学习</p>
 <p><strong> 为什么对特征进行离散化</strong></p>
 <p>在工业界，很少直接将连续值作为逻辑回归模型的特征输入，而是将连续特征离散化为一系列0、1特征(one-hot编码)交给逻辑回归模型，这样做的优势有以下几点</p>
@@ -419,7 +390,28 @@
 <li>单变量离散化为N个后，每个变量有单独的权重，相当于为模型引入了非线性，能够提升模型表达能力，加大拟合</li>
 <li>离散化后可以进行特征交叉</li>
 </ul>
-<p>具体的推导过程，可以参见纸质版打印。</p>
+<p><strong> 为什么LR模型的损失函数是交叉熵,而线性回归模型的损失函数却是最小二乘呢？能否随意确定一个损失函数作为目标呢？</strong></p>
+<p>模型的损失函数由各自的响应变量y的概率分布决定，对于线性回归模型，其输出是连续值，所以我们对于该问题假设y服从正态分布；相对的，LR模型一般用来解决二分类问题，所以其输出是0/1，故而我们假设其输出服从伯努利分布；而进一步地，两者的损失函数都是通过极大似然估计推导的来的，所以模型的损失函数并非随意确定。<br>分类模型与回归模型之间有种种联系,比如 SVM 模型可以看作逻辑回归加L2正则项, 并使用了不同的损失函数.</p>
+<p>为什么不使用回归模型来做分类?<br>这是一种不好的做法, 因为阈值不好确定, 随着数据集的变动, 阈值也需要有较大变化.</p>
+<p><strong>正则项</strong></p>
+<ul>
+<li>L2 解决过拟合</li>
+<li>L1 解决数据稀疏性 </li>
+</ul>
+<p><strong> L1和L2正则先验分别服从什么分布</strong><br>从信息论的角度看，向系统加入了正确先验这个信息，肯定会提高系统的性能。两者的差别感性的理解？L1是拉普拉斯分布，L2是高斯分布。<br>拉普拉斯分布：<br>$$<br>f ( x | \mu , b ) = \frac { 1 } { 2 b } e ^ { - \frac { | x - \mu | } { b } }<br>$$<br>高斯分布：<br>$$<br>f \left( x | \mu , \sigma ^ { 2 } \right) = \frac { 1 } { \sqrt { 2 \pi \sigma ^ { 2 } } } e ^ { - \frac { ( x - \mu ) ^ { 2 } } { 2 \sigma ^ { 2 } } }<br>$$</p>
+<h2 id="Decision-tree"><a href="#Decision-tree" class="headerlink" title="Decision tree"></a>Decision tree</h2><p>主要介绍一下 决策树的特点。</p>
+<p>从这次学习中明显的感受到这个 decision tree 是非常容易过拟合的。</p>
+<blockquote>
+<p>We can make our tree more complex by increasing its size , which will result in more and more partitions trying to emulate the circular boundary.</p>
+</blockquote>
+<p>优点在于：可以handle 非线性的变化。decision tree 给人的感觉就是线性或者离散的(category)的都是可以使用，因为decision tree 得到就是一个离散的结果，最大的缺点就是容易过拟合。 </p>
+<blockquote>
+<p>This brings us to the biggest problem associated with Decision Trees, that is, they are highly biased class of models. You can make a decision tree model on your training set which might outperform all other algorithms but it’ll prove to be a poor predictor on your test set. You’ll have to rely heavily on pruning and cross validation to get a non-over-fitting model with Decision Trees.</p>
+</blockquote>
+<p>过拟合是可以通过剪枝或者 cross validation 进行缓解 overfit的效果的或者使用 random forest随机性进行”中和“。</p>
+<blockquote>
+<p>This problem of over-fitting is overcome to large extent by using Random Forests, which are nothing but a very clever extension of decision trees. But random forest take away easy to explain business rules because now you have thousands of such trees and their majority votes to make things complex. Also by decision trees have forced interactions between variables , which makes them rather inefficient if most of your variables have no or very weak interactions.</p>
+</blockquote>
 
       
     </div>
@@ -438,6 +430,8 @@
         <div class="post-tags">
           
             <a href="/tags/LR/" rel="tag"># LR</a>
+          
+            <a href="/tags/Decision-tree/" rel="tag"># Decision tree</a>
           
         </div>
       
@@ -575,7 +569,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -624,7 +618,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#损失函数："><span class="nav-number">1.</span> <span class="nav-text">损失函数：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归的特点："><span class="nav-number">2.</span> <span class="nav-text">逻辑回归的特点：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归"><span class="nav-number">1.</span> <span class="nav-text">逻辑回归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#公式推导"><span class="nav-number">1.1.</span> <span class="nav-text">公式推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑回归的特点"><span class="nav-number">1.2.</span> <span class="nav-text">逻辑回归的特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decision-tree"><span class="nav-number">2.</span> <span class="nav-text">Decision tree</span></a></li></ol></div>
             
 
           </div>
@@ -858,323 +852,6 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
 
 
   
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 

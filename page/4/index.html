@@ -231,43 +231,9 @@
       
 
       
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            Search
-          </a>
-        </li>
-      
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -661,7 +627,7 @@ Broadly speaking, in linear alge
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/23/基于simhash的文本相似度比较/" itemprop="url">基于simhash的文本相似度比较</a></h1>
+                <a class="post-title-link" href="/2018/08/23/基于simhash的文本相似度比较/" itemprop="url">基于simhash的大文本相似度比较</a></h1>
         
 
         <div class="post-meta">
@@ -689,8 +655,8 @@ Broadly speaking, in linear alge
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-25T14:39:26+08:00">
-                2019-05-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T16:20:26+08:00">
+                2019-06-17
               </time>
             
           </span>
@@ -758,13 +724,12 @@ Broadly speaking, in linear alge
       
         
           
-          我只是想说我还没有放弃这个网站…
-本文主要记录使用simhash比较中文文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：
+          本文主要记录使用simhash比较中文大文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：
 
 基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”.
 根据关键字计算simhash编码，然后使用hamming distance进行比较两者的不同。如果对于上述概念比较模糊，建议首先阅读该篇博客。
 
-顺
+实战顺滑过渡到代码实现：12345
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -866,7 +831,7 @@ Broadly speaking, in linear alge
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T11:55:32+08:00">
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T16:38:44+08:00">
                 2019-06-17
               </time>
             
@@ -913,11 +878,8 @@ Broadly speaking, in linear alge
       
         
           
-          本文服务于该篇博客,主要进行名词解释。
-simhash基本概念simhash 也是一种hash，一般的hash 函数映射规则只需要满足以下两个条件：
-
-对很多不同的特征来说，它们对所对应的向量是均匀随机分布的
-相同的特征来说对应的向量是唯一简单来说普通的hash映射需要满足随机分布和唯一性两个条件。simhash想要实现的是，如果原来的文本的特征是相似，那么映射之后的编码也是相似。这里使用 hamming distance 进行比较simhash映射之后的距离。根据经验值，对64位的 SimHa
+          本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。
+simhash对于文本去重而言，目前有很多NLP相关的算法可以在很高精度上来解决，但是我们现在处理的是大数据维度上的文本去重，这就对算法的效率有着很高的要求。但是在小的样本上这个是不一定有保证有效的。SimHash算法是Google公司进行海量网页去重的高效算法，它通过将原始的文本映射为64位的二进制数字串，然后通过比较二进制数字串的差异进而来表示原始文本内容的差异。本文服务于该篇博客,主要进
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1019,8 +981,8 @@ simhash基本概念simhash 也是一种hash，一般的hash 函数映射规则�
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-25T13:20:28+08:00">
-                2019-05-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T19:45:24+08:00">
+                2019-06-17
               </time>
             
           </span>
@@ -1087,10 +1049,7 @@ simhash基本概念simhash 也是一种hash，一般的hash 函数映射规则�
 
       
         
-          
-          如果补交作业也算作业的话，那么这篇博文就算做作业。L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。本文大量借鉴于该博客，原文是英文，如果读者英文能够handle，建议读原文。
-As loss functionloss function or error function 是用来衡量真实y 和生成的f(x) 之间差距的函数。在模型训练中我们一般情况下不断训练模型使得loss function不
-          ...
+          <p>本文主要介绍 L1 和L2 分别作为 loss function 和 regularization，最后谈一下 overfitting的事情。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/#more" rel="contents">
@@ -1362,8 +1321,8 @@ As loss functionloss function or error function 是用来衡量真实y 和生成
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-25T13:17:20+08:00">
-                2019-05-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T21:38:05+08:00">
+                2019-06-17
               </time>
             
           </span>
@@ -1677,7 +1636,7 @@ Loss Function(Error Function)For accurate predictions, one needs to minimize the
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/29/特征工程相关概念/" itemprop="url">特征工程相关概念</a></h1>
+                <a class="post-title-link" href="/2018/06/29/特征工程相关概念/" itemprop="url">特征工程</a></h1>
         
 
         <div class="post-meta">
@@ -1705,8 +1664,8 @@ Loss Function(Error Function)For accurate predictions, one needs to minimize the
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-25T11:22:15+08:00">
-                2019-05-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T22:05:39+08:00">
+                2019-06-17
               </time>
             
           </span>
@@ -1773,10 +1732,7 @@ Loss Function(Error Function)For accurate predictions, one needs to minimize the
 
       
         
-          
-          特征离散化？连续化特征就是一些不可枚举的有理数。那么什么是离散化特征呢？ 离散化特征就是可枚举的特征。离散化的作用是把数据变成可计算状态。而特征工程就是从原始字段中根据业务提取出对模型有效的特征出来。
-在线性模型下(w.x)，w已经确定的情况下，x的某个特征的值是20，或者30，w.x的值相差是很大的，但是往往20岁的人跟30岁的人对同一个广告的兴趣差距不会那么大。连续特征离散化的基本假设，是默认连续特征不同区间的取值对结果的贡献是不一样的。离散化和连续化最大的区别是，对一个字段做连续化后的结果
-          ...
+          <p>关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/06/29/特征工程相关概念/#more" rel="contents">
@@ -1877,8 +1833,8 @@ Loss Function(Error Function)For accurate predictions, one needs to minimize the
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-01T09:27:56+08:00">
-                2019-06-01
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T19:44:00+08:00">
+                2019-06-17
               </time>
             
           </span>
@@ -2072,7 +2028,7 @@ Loss Function(Error Function)For accurate predictions, one needs to minimize the
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -2323,323 +2279,6 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
 
 
   
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 

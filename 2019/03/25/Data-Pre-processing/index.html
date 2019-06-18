@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="Data Cleaning:这个步骤主要处理 missing values 和 noisy data (outlier).对于missing values ，可以分成两个问题，要不要处理 和如何处理，具体说来有一下处理手段：  ignore the tuple;  fill in the missing value manually use a global constant to fill in">
+<meta name="description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Data Pre-processing 学习笔记">
 <meta property="og:url" content="http://yoursite.com/2019/03/25/Data-Pre-processing/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="Data Cleaning:这个步骤主要处理 missing values 和 noisy data (outlier).对于missing values ，可以分成两个问题，要不要处理 和如何处理，具体说来有一下处理手段：  ignore the tuple;  fill in the missing value manually use a global constant to fill in">
+<meta property="og:description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-25T07:03:43.594Z">
+<meta property="og:updated_time" content="2019-06-17T23:50:40.303Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Data Pre-processing 学习笔记">
-<meta name="twitter:description" content="Data Cleaning:这个步骤主要处理 missing values 和 noisy data (outlier).对于missing values ，可以分成两个问题，要不要处理 和如何处理，具体说来有一下处理手段：  ignore the tuple;  fill in the missing value manually use a global constant to fill in">
+<meta name="twitter:description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。">
 
 
 
@@ -231,43 +231,9 @@
       
 
       
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            Search
-          </a>
-        </li>
-      
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -341,8 +307,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-25T15:03:43+08:00">
-                2019-05-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-18T07:50:40+08:00">
+                2019-06-18
               </time>
             
           </span>
@@ -413,7 +379,9 @@
       
 
       
-        <h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning:"></a>Data Cleaning:</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier).<br>对于<strong>missing values</strong> ，可以分成两个问题，要不要处理 和如何处理，具体说来有一下处理手段：</p>
+        <p>主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。</p>
+<a id="more"></a>
+<h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning:"></a>Data Cleaning:</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier).<br>对于<strong>missing values</strong> ，可以分成两个问题，要不要处理 和如何处理，具体说来有一下处理手段：</p>
 <ul>
 <li>ignore the tuple; </li>
 <li>fill in the missing value manually</li>
@@ -426,10 +394,36 @@
 <p>接着是 <strong>noisy data (outlier)</strong>，我的观点是首先得认识到这个是错误的数据，不是真实的数据来源，可能是来自人为的笔误 或者仪器记录的问题，这个是需要修改的。可以使用聚类 (clustering) 进行noisy data 的检测，找到之后这个就类似 missing value了，可以采取以上的手段进行操作，应该注意到的这个 noisy data 所占比例不会很高，否则就成了主要的数据分布了。</p>
 <h3 id="Data-Integration"><a href="#Data-Integration" class="headerlink" title="Data Integration:"></a>Data Integration:</h3><p>处理数据库数据，经常是需要处理子表信息的，那么必然存在着主表，而子表系信息往往是主表信息的某一方面的细化。所以有必要将两者连接起来。</p>
 <h3 id="Data-Transformation"><a href="#Data-Transformation" class="headerlink" title="Data Transformation:"></a>Data Transformation:</h3><p>In data transformation, the data are transformed or consolidated into forms appropriate for mining.<br>这里想要澄清的是很多相同的内容都可以用不同的方式表达，并且可以放在数据处理的不同阶段，并且这种工作不是一次性完成的，而是迭代的 until you run out your patience and time.<br>首先我接触的最常见的就是 discrete variables -&gt; continuous variables. 当然对于 discrete variables，基于树结构的机器学习模型是可以处理的，这里想说的是有这种方式。这种 transformation 常见的处理方式: one-hot 或者 label encoding. </p>
-<p>如果按照 data transformation的预设，那么 normalization 就也属于该模块的内容。 不论是在 machine learning 还是在 图像处理的时候，对于原始的数据经常采取 normalization. 一方面这个是可以预防梯度消失 或者 gradient exploding, 如果你采用了 Sigmoid的激活函数的话。另一方面我认为更加重要的原因是将 不同的数据放在了同一个尺度下，如果你采取了 normalization之后。实现这种normalization 经常采用的是以下三种方式：</p>
-<p>min-max normalization: $x ^ { \prime } = \frac { x - \min ( x ) } { \max ( x ) - \min ( x ) }$<br>mean normalization:$x ^ { \prime } = \frac { x - \text { average } ( x ) } { \max ( x ) - \min ( x ) }$<br>standardization: $x ^ { \prime } = \frac { x - \overline { x } } { \sigma }$</p>
+<p>如果按照 data transformation的预设，那么 normalization 就也属于该模块的内容。 不论是在 machine learning 还是在 图像处理的时候，对于原始的数据经常采取 normalization. 一方面这个是可以预防梯度消失 或者 gradient exploding, 如果你采用了 Sigmoid的激活函数的话。另一方面我认为更加重要的原因是将 不同的数据放在了同一个尺度下，如果你采取了 normalization之后。</p>
 <h3 id="Data-Reduction"><a href="#Data-Reduction" class="headerlink" title="Data Reduction:"></a>Data Reduction:</h3><p>一般来说很少提及到到 data reduction的必要性，如果非要给出原因，那么可以从时间和空间的角度进行考虑。更加需要关注的是如何做的问题。 </p>
 <p>我的理解reduction 可以从两个维度进行考虑，假设一个 matrics A 是 m*n，这个是一个二维的矩阵，那么可以从 行列两方面入手。映射到机器学习中一般这样描述 从dimension 和 data两个角度去描述，分别称之为 dimension reduction 和 data compression. 前者指的是特征的选取，后者是数据size的减少。<br>dimension reduction: where irrelevant, weakly relevant, or redundant attributes or dimensions may be detected and removed.<br>data compression: PCA 线性降维 to reduce the data set size. 这个是针对某一个特征展开的。</p>
+<h3 id="why-normalization？"><a href="#why-normalization？" class="headerlink" title="why normalization？"></a>why normalization？</h3><p>映射到 N(0,1) 的这种行为，叫做归一化。Feature scaling is the method to limit the range of variables so that they can be compared on common grounds. 有三个主要的原因。</p>
+<ul>
+<li><p>Because most of the Machine Learning models are based on Euclidean Distance.</p>
+<blockquote>
+<p>Age- 40 and 27<br>Salary- 72000 and 48000</p>
+</blockquote>
+<p>这两个特征，这两个距离相差很大；但是这个并不是我们想要的，我们想要的是相对值，而不是绝对值。</p>
+</li>
+<li><p>即使最后的loss function不是 euclidean distance，比如说decision tree，实践证明经过正则化的之后的数据的训练速度是快于 没有经过正则化的数据的。</p>
+</li>
+<li>经过归一化之后，数据是不容易出现梯度消失或者梯度爆炸的。</li>
+<li>很多模型的基本假设 就是 N(0,1) 高斯分布。</li>
+</ul>
+<p>实现的三种手段：</p>
+<ul>
+<li>rescaling (min-max normalization)</li>
+</ul>
+<p>$$<br>x ^ { \prime } = \frac { x - \min ( x ) } { \max ( x ) - \min ( x ) }<br>$$</p>
+<ul>
+<li>mean normalization</li>
+</ul>
+<p>$$<br>x ^ { \prime } = \frac { x - \operatorname { average } ( x ) } { \max ( x ) - \min ( x ) }<br>$$</p>
+<ul>
+<li>standardization</li>
+</ul>
+<p>$$<br>x ^ { \prime } = \frac { x - \overline { x } } { \sigma }<br>$$</p>
+<h2 id="data-imbalanced"><a href="#data-imbalanced" class="headerlink" title="data imbalanced"></a>data imbalanced</h2><p>这个举例子应该很好举，使用 auc 的理由也应该是会的。</p>
 <p>机器学习中的特征工程是有一定技巧可言，其中我觉得最为有趣的是: generation or you can call it abstraction. 对于特征的泛的提取才是对于问题本身或者特征的理解，这不仅需要积累，更需要对于该问题领域的专业知识， that’s all.举个栗子，在 “Home Credit Default Risk” (kaggle 竞赛)中，原始的训练数据有信贷金额和客户的年收入，这个时候 “credit_income_percent” 就是类似这种性质的提取特征。</p>
 
       
@@ -580,7 +574,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -629,7 +623,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction:</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#why-normalization？"><span class="nav-number">5.</span> <span class="nav-text">why normalization？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data-imbalanced"><span class="nav-number"></span> <span class="nav-text">data imbalanced</span></a></div>
             
 
           </div>
@@ -863,323 +857,6 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
 
 
   
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 

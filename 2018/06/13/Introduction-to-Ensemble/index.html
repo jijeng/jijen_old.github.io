@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="模型融合(Ensemble),ROC," />
+  <meta name="keywords" content="ROC," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
-<meta name="keywords" content="模型融合(Ensemble),ROC">
+<meta name="keywords" content="ROC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Introduction to Ensemble">
 <meta property="og:url" content="http://yoursite.com/2018/06/13/Introduction-to-Ensemble/index.html">
@@ -99,8 +99,7 @@
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg">
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q453345pj205c046glh.jpg">
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q4b2shb6j20at06vdfz.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/73757528.jpg">
-<meta property="og:updated_time" content="2019-06-17T03:58:14.065Z">
+<meta property="og:updated_time" content="2019-06-17T23:50:43.956Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction to Ensemble">
 <meta name="twitter:description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
@@ -246,43 +245,9 @@
       
 
       
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            Search
-          </a>
-        </li>
-      
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -356,8 +321,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T11:58:14+08:00">
-                2019-06-17
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-18T07:50:43+08:00">
+                2019-06-18
               </time>
             
           </span>
@@ -473,10 +438,10 @@
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/78451107.jpg" alt="avatar"><br>So simple!<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plot_roc_curve(ytest, p.reshape(-1, 1), P.mean(axis=1), [&quot;Simple average&quot;], &quot;Super Learner&quot;)</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/52534893.jpg" alt="avatar"></p>
 <p>发现super learner(meta learner)和 basic learner的mean的结果已经不相上下了。super learner得到了很好的训练。</p>
-<h2 id="补充概念"><a href="#补充概念" class="headerlink" title="补充概念"></a>补充概念</h2><h3 id="ROC曲线和AUC值"><a href="#ROC曲线和AUC值" class="headerlink" title="ROC曲线和AUC值"></a>ROC曲线和AUC值</h3><p>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。</p>
+<h2 id="ROC曲线和AUC值"><a href="#ROC曲线和AUC值" class="headerlink" title="ROC曲线和AUC值"></a>ROC曲线和AUC值</h2><p>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。</p>
 <p><strong>ROC 曲线</strong>: ROC 曲线（接收者操作特征曲线）是一种显示分类模型在所有分类阈值下的效果的图表。该曲线绘制了以下两个参数：真正例率 和 假正例率。</p>
 <p>真正例率 (TPR) 是召回率的同义词，因此定义如下：<br>$$<br>T P R = \frac { T P } { T P + F N }<br>$$<br>假正例率 (FPR) 的定义如下：<br>$$<br>F P R = \frac { F P } { F P + T N }<br>$$</p>
-<p>ROC 中 TPR =(True positive / ( True positive +False negative)), 那个false negative 也是真实的类别，只不过是错误的当做了 negative（false negative）</p>
+<p>ROC 中 TPR =(True positive / ( True positive +False negative)), 那个false negative 也是真实的类别，只不过是错误的当做了 negative（false negative）å</p>
 <p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg" alt=""><br>2针对一个二分类问题，将实例分成正类(postive)或者负类(negative)。但是实际中分类时，会出现四种情况.</p>
 <ul>
 <li>若一个实例是正类并且被预测为正类，即为真正类(True Postive TP)</li>
@@ -491,12 +456,7 @@
 <p>接着我们计算TRP(True Positive Radio)，FRP(False Positive Ratio)用于描述ROC曲线，分别表示该曲线的Y轴，X轴。<br>TPR=TP/(TP+FN)<br>FPR=FP/(FP+TN)<br>最后就形成了类似这样的图像(来源于上述的训练模型)</p>
 <p>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从图中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。</p>
 <ul>
-<li><p>majority/ soft/ hard voting<br>an ensemble that averages classifier predictions is known as a <strong>majority voting</strong> classifier. When an ensembles averages based on probabilities (as above), we refer to it as <strong>soft voting</strong>, averaging final class label predictions is known as <strong>hard voting</strong>.</p>
-</li>
-<li><p>Pearson相关性<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-13/73757528.jpg" alt="avatar"><br>协方差除以各自的标准差</p>
-</li>
-<li><p>GBC参数<br>这些参数中，类似于Adaboost，我们把重要参数分为两类，第一类是Boosting框架的重要参数，第二类是弱学习器即CART回归树的重要参数。<br>n_estimators: 也就是弱学习器的最大迭代次数，或者说最大的弱学习器的个数。<br>learning_rate: 即每个弱学习器的权重缩减系数ν，也称作步长<br>对于分类模型，有对数似然损失函数”deviance”和指数损失函数”exponential”两者输入选择。默认是对数似然损失函数”deviance”。一般来说，推荐使用默认的”deviance”。它对二元分离和多元分类各自都有比较好的优化。而指数损失函数等于把我们带到了Adaboost算法。<br>对于回归模型，有均方差”ls”, 绝对损失”lad”, Huber损失”huber”和分位数损失“quantile”。默认是均方差”ls”。一般来说，如果数据的噪音点不多，用默认的均方差”ls”比较好。如果是噪音点较多，则推荐用抗噪音的损失函数”huber”。而如果我们需要对训练集进行分段预测的时候，则采用“quantile”。<br>max_features:可以使用很多种类型的值，默认是”None”,意味着划分时考虑所有的特征数.<br>subsample: 选择小于1的比例可以减少方差，即防止过拟合，但是会增加样本拟合的偏差，因此取值不能太低。推荐在[0.5, 0.8]之间，默认是1.0，即不使用子采样。</p>
-</li>
+<li>GBC参数<br>这些参数中，类似于Adaboost，我们把重要参数分为两类，第一类是Boosting框架的重要参数，第二类是弱学习器即CART回归树的重要参数。<br>n_estimators: 也就是弱学习器的最大迭代次数，或者说最大的弱学习器的个数。<br>learning_rate: 即每个弱学习器的权重缩减系数ν，也称作步长<br>对于分类模型，有对数似然损失函数”deviance”和指数损失函数”exponential”两者输入选择。默认是对数似然损失函数”deviance”。一般来说，推荐使用默认的”deviance”。它对二元分离和多元分类各自都有比较好的优化。而指数损失函数等于把我们带到了Adaboost算法。<br>对于回归模型，有均方差”ls”, 绝对损失”lad”, Huber损失”huber”和分位数损失“quantile”。默认是均方差”ls”。一般来说，如果数据的噪音点不多，用默认的均方差”ls”比较好。如果是噪音点较多，则推荐用抗噪音的损失函数”huber”。而如果我们需要对训练集进行分段预测的时候，则采用“quantile”。<br>max_features:可以使用很多种类型的值，默认是”None”,意味着划分时考虑所有的特征数.<br>subsample: 选择小于1的比例可以减少方差，即防止过拟合，但是会增加样本拟合的偏差，因此取值不能太低。推荐在[0.5, 0.8]之间，默认是1.0，即不使用子采样。</li>
 </ul>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://www.cnblogs.com/pinard/p/6143927.html" target="_blank" rel="noopener">GBC参数设置</a><br><a href="https://www.cnblogs.com/gatherstars/p/6084696.html" target="_blank" rel="noopener">ROC曲线和AUC值</a><br><a href="https://www.dataquest.io/blog/introduction-to-ensembles/" target="_blank" rel="noopener">Introduction to Python Ensembles</a></p>
 
@@ -515,8 +475,6 @@
     <footer class="post-footer">
       
         <div class="post-tags">
-          
-            <a href="/tags/模型融合-Ensemble/" rel="tag"># 模型融合(Ensemble)</a>
           
             <a href="/tags/ROC/" rel="tag"># ROC</a>
           
@@ -656,7 +614,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -705,7 +663,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset"><span class="nav-number">1.</span> <span class="nav-text">Dataset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Begin-with-ensemble"><span class="nav-number">2.</span> <span class="nav-text">Begin with ensemble</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Decision-Tree"><span class="nav-number">2.1.</span> <span class="nav-text">Decision Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Forest-Bagging"><span class="nav-number">2.2.</span> <span class="nav-text">Random Forest(Bagging)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ensemble-of-various-models"><span class="nav-number">2.3.</span> <span class="nav-text">Ensemble of various models</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualize-Curve-ROC-helper-function"><span class="nav-number">2.4.</span> <span class="nav-text">Visualize Curve ROC(helper function)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Beyond-ensembles-as-a-simple-average"><span class="nav-number">2.5.</span> <span class="nav-text">Beyond ensembles as a simple average</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Learning-to-combine-predications"><span class="nav-number">2.6.</span> <span class="nav-text">Learning to combine predications</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-with-cross-validation"><span class="nav-number">2.7.</span> <span class="nav-text">Training with cross-validation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Use-packages"><span class="nav-number">3.</span> <span class="nav-text">Use packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充概念"><span class="nav-number">4.</span> <span class="nav-text">补充概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ROC曲线和AUC值"><span class="nav-number">4.1.</span> <span class="nav-text">ROC曲线和AUC值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset"><span class="nav-number">1.</span> <span class="nav-text">Dataset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Begin-with-ensemble"><span class="nav-number">2.</span> <span class="nav-text">Begin with ensemble</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Decision-Tree"><span class="nav-number">2.1.</span> <span class="nav-text">Decision Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Forest-Bagging"><span class="nav-number">2.2.</span> <span class="nav-text">Random Forest(Bagging)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ensemble-of-various-models"><span class="nav-number">2.3.</span> <span class="nav-text">Ensemble of various models</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualize-Curve-ROC-helper-function"><span class="nav-number">2.4.</span> <span class="nav-text">Visualize Curve ROC(helper function)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Beyond-ensembles-as-a-simple-average"><span class="nav-number">2.5.</span> <span class="nav-text">Beyond ensembles as a simple average</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Learning-to-combine-predications"><span class="nav-number">2.6.</span> <span class="nav-text">Learning to combine predications</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-with-cross-validation"><span class="nav-number">2.7.</span> <span class="nav-text">Training with cross-validation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Use-packages"><span class="nav-number">3.</span> <span class="nav-text">Use packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC曲线和AUC值"><span class="nav-number">4.</span> <span class="nav-text">ROC曲线和AUC值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
@@ -939,323 +897,6 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
 
 
   
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="overfitting," />
 
 
 
@@ -79,26 +79,24 @@
 
 
 
-<meta name="description" content="如果补交作业也算作业的话，那么这篇博文就算做作业。L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。本文大量借鉴于该博客，原文是英文，如果读者英文能够handle，建议读原文。 As loss functionloss function or error function 是用来衡量真实y 和生">
+<meta name="description" content="本文主要介绍 L1 和L2 分别作为 loss function 和 regularization，最后谈一下 overfitting的事情。">
+<meta name="keywords" content="overfitting">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Differences Between l1 and l2 as Loss Function and Regularization">
 <meta property="og:url" content="http://yoursite.com/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="如果补交作业也算作业的话，那么这篇博文就算做作业。L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。本文大量借鉴于该博客，原文是英文，如果读者英文能够handle，建议读原文。 As loss functionloss function or error function 是用来衡量真实y 和生">
+<meta property="og:description" content="本文主要介绍 L1 和L2 分别作为 loss function 和 regularization，最后谈一下 overfitting的事情。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/35322217.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/37430433.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/80680309.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/73111516.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/75850249.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/78934923.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/88209822.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/82495076.jpg">
-<meta property="og:updated_time" content="2019-05-25T05:20:28.610Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44de1ykfjj20aj039mwz.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44db9p4toj20ee022aa2.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dbhp8f4j20ee02274b.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dc1qt7gj20at03va9x.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dgr4ywvj206u06waaf.jpg">
+<meta property="og:updated_time" content="2019-06-17T11:45:24.051Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Differences Between l1 and l2 as Loss Function and Regularization">
-<meta name="twitter:description" content="如果补交作业也算作业的话，那么这篇博文就算做作业。L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。本文大量借鉴于该博客，原文是英文，如果读者英文能够handle，建议读原文。 As loss functionloss function or error function 是用来衡量真实y 和生">
-<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/35322217.jpg">
+<meta name="twitter:description" content="本文主要介绍 L1 和L2 分别作为 loss function 和 regularization，最后谈一下 overfitting的事情。">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44de1ykfjj20aj039mwz.jpg">
 
 
 
@@ -240,43 +238,9 @@
       
 
       
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            Search
-          </a>
-        </li>
-      
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -350,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-25T13:20:28+08:00">
-                2019-05-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T19:45:24+08:00">
+                2019-06-17
               </time>
             
           </span>
@@ -422,16 +386,31 @@
       
 
       
-        <p>如果补交作业也算作业的话，那么这篇博文就算做作业。<br>L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。<br>本文大量借鉴于<a href="http://www.chioka.in/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">该博客</a>，原文是英文，如果读者英文能够handle，建议读原文。</p>
+        <p>本文主要介绍 L1 和L2 分别作为 loss function 和 regularization，最后谈一下 overfitting的事情。</p>
+<a id="more"></a>
+<p>L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。<br>本文大量借鉴于<a href="http://www.chioka.in/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">该博客</a>，原文是英文，如果读者英文能够handle，建议读原文。</p>
 <h2 id="As-loss-function"><a href="#As-loss-function" class="headerlink" title="As loss function"></a>As loss function</h2><p>loss function or error function 是用来衡量真实y 和生成的f(x) 之间差距的函数。在模型训练中我们一般情况下不断训练模型使得loss function不断下降（如果task要求loss function是增大，这时候一般加上符号或者转换成 1- loss fucntion，最后实现的还是loss function下降）。好的回到L1 loss function和L2 loss function. </p>
-<p>L1-norm loss function is also known as least absolute deviations(LAD), least absolute errors. It is basically minimizing the sum of the absolute differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/35322217.jpg" alt="avatar"><br>L2-norm loss function is also known as least squares error(LSE). It is basically minimizing the sum of the square of the differences between the target value Y and the estimated values (f(x)).<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/37430433.jpg" alt="avatar"><br>主要你从一下三个指标去衡量两者的不同： robustness，stability和是否具有唯一解。<br>wiki 中关于<a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="noopener">robust</a> 中是这样定义： A learning algorithm that can reduce the chance of fitting noise is called robust。具有更好的泛化性能，不去过度拟合noise. 关于<a href="https://en.wikipedia.org/wiki/Stability_(learning_theory" target="_blank" rel="noopener">stability</a>) wiki 是这样定义：Stability, also known as algorithmic stability, is a notion in computational learning theory of how a machine learning algorithm is perturbed by small changes to its inputs.</p>
+<p>L1-norm loss function is also known as least absolute deviations(LAD), least absolute errors. It is basically minimizing the sum of the absolute differences between the target value Y and the estimated values (f(x)).</p>
+<p>$$<br>S = \sum _ { i = 1 } ^ { n } \left| y _ { i } - f \left( x _ { i } \right) \right|<br>$$</p>
+<p>L2-norm loss function is also known as least squares error(LSE). It is basically minimizing the sum of the square of the differences between the target value Y and the estimated values (f(x)).</p>
+<p>$$<br>S = \sum _ { i = 1 } ^ { n } \left( y _ { i } - f \left( x _ { i } \right) \right) ^ { 2 }<br>$$</p>
+<p>主要你从一下三个指标去衡量两者的不同： robustness，stability和是否具有唯一解。<br>wiki 中关于<a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="noopener">robust</a> 中是这样定义： A learning algorithm that can reduce the chance of fitting noise is called robust。具有更好的泛化性能，不去过度拟合noise. 关于<a href="https://en.wikipedia.org/wiki/Stability_(learning_theory" target="_blank" rel="noopener">stability</a>) wiki 是这样定义：Stability, also known as algorithmic stability, is a notion in computational learning theory of how a machine learning algorithm is perturbed by small changes to its inputs.</p>
 <p>我对于前两个指标的理解：robustness 是对于原始的train 样本中离群点的态度，如果某个模型是robustness的，那么对于该数据集中的离群点是能够抗干扰的。反之则是不具有robustness的。stability是对于原始train 数据的轻微的平移的反应，如果对于某个原始数据的轻微平移，最后的结果没有产生很大的波动，那么该模型就是具有stability, 反之，则不具有stability.</p>
-<p>比较L1-norm 和L2-norm在前两个评价指标中的表现：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/80680309.jpg" alt="avatar"><br>对于第三点，我想在下面进行介绍。因为这点和后面和下面的solution uniqueness是相同的。</p>
-<h2 id="As-regularization"><a href="#As-regularization" class="headerlink" title="As regularization"></a>As regularization</h2><p>从<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">XGBoost调参指南</a>中我们知道objective function = loss funcion + regularization. 而我们大多数情况下提及的都是loss function,常常忽略了regularization 的作用。所以正确的姿态应该是这样的：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/73111516.jpg" alt="avatar"><br>The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>对于模型训练，一开始的想法是尽量的overfitting, 因为就现在不成熟的经验而言，对于overfitting这个问题有很多处理方法，比如卷积深度神经网络中的dropout, LightGBM中的early stop 和随机采样的思想。 这些方法都是可以缓解overfitting，所以可以出现overfitting。相反，如果你的模型是underfitting，那么你就微显尴尬了。好，收回到L1 and L2。</p>
-<p>先上公式<br>L1 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/75850249.jpg" alt="avatar"><br>L2 regularization on least squares:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/78934923.jpg" alt="avatar"><br>The difference between their properties can be promptly summarized as follows:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/88209822.jpg" alt="avatar"></p>
-<p>对于第一点computational efficient的理解：平方比绝对值更容易计算，平方可以求导直接求最值，但是绝对值就无法求导。并且L1 regularization在 non-sparse cases中是 computational inefficient，但是在 sparse(0比较多) cases中是有相应的稀疏算法来进行优化的，所以是computational efficient.<br>对于第二点是否具有sparse solution可以从几何意义的角度解读：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/82495076.jpg" alt="avatar"><br>The green line(L2-norm) is the unique shortest path, while the red, blue yellow(L1-norm) are all same length for the same route.</p>
+<p>比较L1-norm 和L2-norm在前两个评价指标中的表现：</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44de1ykfjj20aj039mwz.jpg" alt=""></p>
+<p>对于第三点，我想在下面进行介绍。因为这点和后面和下面的solution uniqueness是相同的。</p>
+<h2 id="As-regularization"><a href="#As-regularization" class="headerlink" title="As regularization"></a>As regularization</h2><p>从<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">XGBoost调参指南</a>中我们知道objective function = loss funcion + regularization. 而我们大多数情况下提及的都是loss function,常常忽略了regularization 的作用。</p>
+<p>The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>对于模型训练，一开始的想法是尽量的overfitting, 因为就现在不成熟的经验而言，对于overfitting这个问题有很多处理方法，比如卷积深度神经网络中的dropout, LightGBM中的early stop 和随机采样的思想。 这些方法都是可以缓解overfitting，所以可以出现overfitting。相反，如果你的模型是underfitting，那么你就微显尴尬了。好，收回到L1 and L2。</p>
+<p>先上公式<br>L1 regularization on least squares:<br>$$<br>\mathbf { w } ^ { * } = \underset { \mathbf { w } } { \arg \min } \sum _ { j } \left( t \left( \mathbf { x } _ { j } \right) - \sum _ { i } w _ { i } h _ { i } \left( \mathbf { x } _ { j } \right) \right) ^ { 2 }<br>$$<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44db9p4toj20ee022aa2.jpg" alt=""></p>
+<p>L2 regularization on least squares:</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dbhp8f4j20ee02274b.jpg" alt=""></p>
+<p>The difference between their properties can be promptly summarized as follows:</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dc1qt7gj20at03va9x.jpg" alt=""></p>
+<p>对于第一点computational efficient的理解：平方比绝对值更容易计算，平方可以求导直接求最值，但是绝对值就无法求导。并且L1 regularization在 non-sparse cases中是 computational inefficient，但是在 sparse(0比较多) cases中是有相应的稀疏算法来进行优化的，所以是computational efficient.<br>对于第二点是否具有sparse solution可以从几何意义的角度解读：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dgr4ywvj206u06waaf.jpg" alt=""><br>The green line(L2-norm) is the unique shortest path, while the red, blue yellow(L1-norm) are all same length for the same route.</p>
 <p>Built-in feature selection is frequently mentioned as a useful property of the L1-norm, which the L2-norm does not. This is actually a result of the L1-norm, which tends to produces sparse coefficients (explained below). Suppose the model have 100 coefficients but only 10 of them have non-zero coefficients, this is effectively saying that “the other 90 predictors are useless in predicting the target values”. L2-norm produces non-sparse coefficients, so does not have this property.</p>
-<p>所以表格中第三点也是顺理成章的了。<br>至此，我们区分了L1-norm vs L2-norm loss function 和L1-regularization vs L2-regularization。</p>
+<p>所以表格中第三点也是顺理成章的了。<br>至此，我们区分了L1-norm vs L2-norm loss function 和L1-regularization vs L2-regularization，下面说一下 overfitting的东西。</p>
+<h2 id="overfitting"><a href="#overfitting" class="headerlink" title="overfitting"></a>overfitting</h2><p>现在，我们的训练优化算法是一个由两项内容组成的函数：一个是损失项，用于衡量模型与数据的拟合度，另一个是正则化项，用于衡量模型复杂度。</p>
+<p>对于过拟合有两种解读方式，一种是模型是复杂，然后是去拟合了所有的数据，没有了泛化性能； 一种是从数据角度，模型去拟合了noise ，这些random的数据。<br>然后从loss function的角度去优化的话，就是降低模型的复杂度，正则项就是降低模型复杂度的一种手段。所以从这个角度，L2 是降低模型复杂度的一种手段，也是一种减轻overfit的手段，这两者是相辅相成的。</p>
 
       
     </div>
@@ -446,6 +425,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/overfitting/" rel="tag"># overfitting</a>
+          
+        </div>
       
 
       
@@ -581,7 +566,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -630,7 +615,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#As-loss-function"><span class="nav-number">1.</span> <span class="nav-text">As loss function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#As-regularization"><span class="nav-number">2.</span> <span class="nav-text">As regularization</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#As-loss-function"><span class="nav-number">1.</span> <span class="nav-text">As loss function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#As-regularization"><span class="nav-number">2.</span> <span class="nav-text">As regularization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overfitting"><span class="nav-number">3.</span> <span class="nav-text">overfitting</span></a></li></ol></div>
             
 
           </div>
@@ -864,323 +849,6 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
 
 
   
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 
