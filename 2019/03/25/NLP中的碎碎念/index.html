@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="keywords," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="主要介绍关键词提取并整理一下NLP相关的基础知识点。 关键词提取TF-IDF这个是可以参看之前自己写的一个博客 卡方分布卡方检验是以χ2分布为基础的一种常用假设检验方法，它的无效假设H0是：观察频数与期望频数没有差别。该检验的基本思想是：首先假设H0成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。而实际应用到特征选择中的时候，我们不需要知道自由度，不要知道卡方分布，我们只需要根据">
+<meta name="description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
+<meta name="keywords" content="keywords">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NLP中的碎碎念">
 <meta property="og:url" content="http://yoursite.com/2019/03/25/NLP中的碎碎念/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="主要介绍关键词提取并整理一下NLP相关的基础知识点。 关键词提取TF-IDF这个是可以参看之前自己写的一个博客 卡方分布卡方检验是以χ2分布为基础的一种常用假设检验方法，它的无效假设H0是：观察频数与期望频数没有差别。该检验的基本思想是：首先假设H0成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。而实际应用到特征选择中的时候，我们不需要知道自由度，不要知道卡方分布，我们只需要根据">
+<meta property="og:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-25T13:16:04.037Z">
+<meta property="og:updated_time" content="2019-06-18T03:17:11.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP中的碎碎念">
-<meta name="twitter:description" content="主要介绍关键词提取并整理一下NLP相关的基础知识点。 关键词提取TF-IDF这个是可以参看之前自己写的一个博客 卡方分布卡方检验是以χ2分布为基础的一种常用假设检验方法，它的无效假设H0是：观察频数与期望频数没有差别。该检验的基本思想是：首先假设H0成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。而实际应用到特征选择中的时候，我们不需要知道自由度，不要知道卡方分布，我们只需要根据">
+<meta name="twitter:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
 
 
 
@@ -307,8 +308,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-03-25T21:16:04+08:00">
-                2019-03-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-18T11:17:11+08:00">
+                2019-06-18
               </time>
             
           </span>
@@ -379,13 +380,18 @@
       
 
       
-        <p>主要介绍关键词提取并整理一下NLP相关的基础知识点。</p>
+        <p>顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。</p>
+<a id="more"></a>
 <h2 id="关键词提取"><a href="#关键词提取" class="headerlink" title="关键词提取"></a>关键词提取</h2><h3 id="TF-IDF"><a href="#TF-IDF" class="headerlink" title="TF-IDF"></a>TF-IDF</h3><p>这个是可以参看之前自己写的一个<a href="https://jijeng.github.io/2018/08/23/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%AF%94%E8%BE%83%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" target="_blank" rel="noopener">博客</a></p>
 <h3 id="卡方分布"><a href="#卡方分布" class="headerlink" title="卡方分布"></a>卡方分布</h3><p>卡方检验是以χ2分布为基础的一种常用假设检验方法，它的无效假设H0是：观察频数与期望频数没有差别。该检验的基本思想是：首先假设H0成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。<br>而实际应用到特征选择中的时候，我们不需要知道自由度，不要知道卡方分布，我们只需要根据算出来的χ2 进行排序就好了，越大我们就越喜欢！挑选最大的一堆，于是就完成了利用卡方检验来进行特征提取。<br>卡方分布的缺点：<br>没有考虑词频</p>
 <h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>有一个与之很像的概念 pageRanking，最开始是用来计算网页的重要性。Textrank 主要用来提取文章的关键词，然后比较适合长文本。</p>
 <h2 id="CBOW和skip-gram"><a href="#CBOW和skip-gram" class="headerlink" title="CBOW和skip-gram"></a>CBOW和skip-gram</h2><p>举一个简单的小例子说明 CBOW和skip-gram的区别：skip-gram 是根据中心词汇然后预测上下文词汇，这个不是一下子输入上下文词汇的，而是一个过程，中心词汇和上下文词汇1 ，中心词汇和上下文词汇2，这样的进行输入。 cbow 和其的区别，在于简单相加了上下文词汇作为一个整体，然后和中心词汇进行输入，所以最后是这样的结果。</p>
 <p>使用skip gram训练的时间更长，但是对于出现频率不高的词汇，效果比较好。但CBOW的训练速度是相对来说比较快一些。</p>
-
+<h2 id="分词软件的原理"><a href="#分词软件的原理" class="headerlink" title="分词软件的原理"></a>分词软件的原理</h2><p>下面是常见的分词方式，但是并没有说明哪个软件是什么分词方法。</p>
+<h3 id="基于规则的分词方法"><a href="#基于规则的分词方法" class="headerlink" title="基于规则的分词方法"></a>基于规则的分词方法</h3><pre><code>这种方法又叫作机械分词方法、基于字典的分词方法，它是按照一定的策略将待分析的汉字串与一个“充分大的”机器词典中的词条进行匹配
+</code></pre><h3 id="基于统计的分词方法"><a href="#基于统计的分词方法" class="headerlink" title="基于统计的分词方法"></a>基于统计的分词方法</h3><pre><code>该方法的主要思想：词是稳定的组合，因此在上下文中，相邻的字同时出现的次数越多，就越有可能构成一个词。因此字与字相邻出现的概率或频率能较好地反映成词的可信度。可以对训练文本中相邻出现的各个字的组合的频度进行统计，计算它们之间的互现信息。互现信息体现了汉字之间结合关系的紧密程度。当紧密程 度高于某一个阈值时，便可以认为此字组可能构成了一个词。该方法又称为无字典分词。
+</code></pre><h3 id="基于语义的分词方法"><a href="#基于语义的分词方法" class="headerlink" title="基于语义的分词方法"></a>基于语义的分词方法</h3><pre><code>语义分词法引入了语义分析，对自然语言自身的语言信息进行更多的处理，如扩充转移网络法、知识分词语义分析法、邻接约束法、综合匹配法、后缀分词法、特征词库法、矩阵约束法、语法分析法等。
+</code></pre>
       
     </div>
     
@@ -399,6 +405,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/keywords/" rel="tag"># keywords</a>
+          
+        </div>
       
 
       
@@ -534,7 +546,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -583,7 +595,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Textrank"><span class="nav-number">1.3.</span> <span class="nav-text">Textrank</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Textrank"><span class="nav-number">1.3.</span> <span class="nav-text">Textrank</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件的原理"><span class="nav-number">3.</span> <span class="nav-text">分词软件的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于规则的分词方法"><span class="nav-number">3.1.</span> <span class="nav-text">基于规则的分词方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于统计的分词方法"><span class="nav-number">3.2.</span> <span class="nav-text">基于统计的分词方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于语义的分词方法"><span class="nav-number">3.3.</span> <span class="nav-text">基于语义的分词方法</span></a></li></ol></li></ol></div>
             
 
           </div>

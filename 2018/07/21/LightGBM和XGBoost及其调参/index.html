@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="LightGBM,XGBoost,调参," />
+  <meta name="keywords" content="XGBoost,LightGBM," />
 
 
 
@@ -79,22 +79,20 @@
 
 
 
-<meta name="description" content="lightGBM调参(常用参数)Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So">
-<meta name="keywords" content="LightGBM,XGBoost,调参">
+<meta name="description" content="先主要介绍树的基本知识，然后介绍LightGBM和XGBoost及其调参.">
+<meta name="keywords" content="XGBoost,LightGBM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LightGBM和XGBoost及其调参">
 <meta property="og:url" content="http://yoursite.com/2018/07/21/LightGBM和XGBoost及其调参/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="lightGBM调参(常用参数)Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So">
+<meta property="og:description" content="先主要介绍树的基本知识，然后介绍LightGBM和XGBoost及其调参.">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/21729887.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/50917702.jpg">
-<meta property="og:updated_time" content="2018-07-23T01:35:07.759Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g455x2q9e6j20i80ei3zq.jpg">
+<meta property="og:updated_time" content="2019-06-18T03:48:07.302Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LightGBM和XGBoost及其调参">
-<meta name="twitter:description" content="lightGBM调参(常用参数)Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So">
-<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg">
+<meta name="twitter:description" content="先主要介绍树的基本知识，然后介绍LightGBM和XGBoost及其调参.">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g455x2q9e6j20i80ei3zq.jpg">
 
 
 
@@ -312,8 +310,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2018-07-23T09:35:07+08:00">
-                2018-07-23
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-18T11:48:07+08:00">
+                2019-06-18
               </time>
             
           </span>
@@ -384,7 +382,11 @@
       
 
       
-        <h3 id="lightGBM调参-常用参数"><a href="#lightGBM调参-常用参数" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><p>Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So when growing on the same leaf in Light GBM, the leaf-wise algorithm can reduce more loss than the level-wise algorithm and hence results in much better accuracy which can rarely be achieved by any of the existing boosting algorithms. Also, it is surprisingly very fast, hence the word ‘Light’.<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/3852489.jpg" alt="avatar"><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/21729887.jpg" alt="avatar"><br>Leaf wise splits lead to increase in complexity and may lead to overfitting and it can be overcome by specifying another parameter max_depth parameter.</p>
+        <p>先主要介绍树的基本知识，然后介绍LightGBM和XGBoost及其调参.</p>
+<a id="more"></a>
+<p>进入正文之前简单的说一下决策树。一棵树很容易过拟合或者欠拟合（根据树的深度），然后需要使用多棵树进行组合预测，而GBDT是实现这个手段的方式之一。sklearn中也是实现了 GBDT 这种思想，但是比较难用，训练速度跟不上。但是 lightGBM 和XGBoost 实现的效果就比较好。</p>
+<h3 id="lightGBM调参-常用参数"><a href="#lightGBM调参-常用参数" class="headerlink" title="lightGBM调参(常用参数)"></a>lightGBM调参(常用参数)</h3><p>Since lightGBM is based on decision tree algorithms, it splits the tree with the best fit whereas boosting algorithms split the tree depth wise or level wise rather than leaf-wise. So when growing on the same leaf in Light GBM, the leaf-wise algorithm can reduce more loss than the level-wise algorithm and hence results in much better accuracy which can rarely be achieved by any of the existing boosting algorithms. Also, it is surprisingly very fast, hence the word ‘Light’.</p>
+<p>Leaf wise splits lead to increase in complexity and may lead to overfitting and it can be overcome by specifying another parameter max_depth parameter.</p>
 <h3 id="Advantages-of-LightGBM"><a href="#Advantages-of-LightGBM" class="headerlink" title="Advantages of LightGBM"></a>Advantages of LightGBM</h3><ul>
 <li>faster training speed and higher efficiency<br>Light GBM use histogram based algorithm i.e it buckets continuous feature values into discrete bins which fasten the training procedure.</li>
 <li>lower memory usage<br>Replaces continuous values to discrete bins which result in lower memory usage.</li>
@@ -409,7 +411,6 @@
 <li>categorical_feature<br>specify the categorical features</li>
 <li>num_class<br>default =1, used only for multi-class classification</li>
 </ul>
-<p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-7-19/50917702.jpg" alt="avatar"></p>
 <h3 id="referrence"><a href="#referrence" class="headerlink" title="referrence"></a>referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2017/06/which-algorithm-takes-the-crown-light-gbm-vs-xgboost/" target="_blank" rel="noopener">which-algorithm-takes-the-crown-light-gbm-vs-xgboost</a><br><a href="https://blog.csdn.net/aliceyangxi1987/article/details/80711014" target="_blank" rel="noopener">LightGBM 如何调参</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html" target="_blank" rel="noopener">官方文档param_tuning</a><br><a href="http://lightgbm.readthedocs.io/en/latest/Parameters.html" target="_blank" rel="noopener">官方文档parameter</a></p>
 <h3 id="XGBoost调参"><a href="#XGBoost调参" class="headerlink" title="XGBoost调参"></a>XGBoost调参</h3><h3 id="Advantage-of-XGBoost"><a href="#Advantage-of-XGBoost" class="headerlink" title="Advantage of XGBoost"></a>Advantage of XGBoost</h3><ul>
 <li>regularization<br>standard GBM implementation has no regularization, in fact, XGBoost is also known as ‘regularized boosting’ technique.</li>
@@ -450,6 +451,23 @@
 <li>The second way is to add regularization parameters</li>
 </ul>
 <h3 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence"></a>Referrence</h3><p><a href="https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/" target="_blank" rel="noopener">complete guide parameter tuning xgboost with codes python</a><br><a href="http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html" target="_blank" rel="noopener">官方文档 param_tuning</a><br><a href="http://xgboost.readthedocs.io/en/latest/parameter.html" target="_blank" rel="noopener">官方文档 parameter</a></p>
+<p>补充一些理论知识</p>
+<h3 id="LightGBM-和-XGBoost-的一些区别"><a href="#LightGBM-和-XGBoost-的一些区别" class="headerlink" title="LightGBM 和 XGBoost 的一些区别"></a>LightGBM 和 XGBoost 的一些区别</h3><ul>
+<li>树的增长方式</li>
+</ul>
+<p>这个原先是lightGBM所特有的，然后xgboost 在最新的版本上也实现该中方式，这估计就是开源，并不是一成不变的。<br>两者都是基于叶子进行增长的，但是增长的方式是不同的。一种是 level-wise 一种是 leaf-wise<br>both xgboost and lightGBM use the leaf-wise growth strategy when growing the decision tree.<br>there are two strategies that can be employed: level-wise and leaf-wise. level-wise maintains a balanced tree（平衡树，左右子树的高度差不超过1）;但是 leaf-wise 这个就比较随意了。<br>这个是这两者的区别：当叶子总数相同的时候，leaf-wise 这种生长方式得到的树的深度是大于 level-wise 的深度的。<br>Compared to the case of level-wise growth, a tree grown with leaf-wise growth will be deeper when the number of leaves is the same. </p>
+<ul>
+<li>find the best split</li>
+</ul>
+<p>The key challenge in training a GBDT is the process of finding the best split for each leaf.  The computational complexity is thus $O \left( n _ { \text {data} } n _ { \text {features} } \right)$.<br>这两者采用的方式都是：<br>现阶段的中的的数据 数据量和特征量都是很大的，所以这种方式是不可取的。然后这两种方法都是采用了 Histogram-based methods，这样最后的时间复杂度降低到：<br>reducing the computational complexity to $O \left( n _ { d a t a } n _ { b i n s } \right)$.</p>
+<p>这个复杂度是取决于number of bins。<br>这个是引入了一个超参数，number of bins ，trade off between precision and time, 当更多的 bins 的时候，这个precision 会提高，但是 time 也会增大。</p>
+<ul>
+<li>Ignoring sparse inputs</li>
+</ul>
+<p>这个是处理缺省值（或者 0）的手段：<br>两者在split 分裂点的时候，都是先不处理数值 0；然后找到分裂点之后，把0 放到哪边造成的loss 下降的比较大，然后就放到哪边。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g455x2q9e6j20i80ei3zq.jpg" alt=""></p>
+<ul>
+<li>Subsampling the data: Gradient-based One-Side Sampling (lightGBM)<br>biased sampling(抽样的基本原则是随机性，但是在抽样过程中由于一系列因素造成偏差抽样，造成样本是不符合真实样本的分布)<br>这个就是缓解，也不是为了彻底让其均衡，lightgbm increases the weigths of the samples.<br>This means that it is more efficient to concentrate on data points with larger gradients.<br>In order to mitigate this problem, lightGBM also randomly samples from data with small gradients.<br>lightGBM increases the weight of the samples with small gradients when computing their contribution to the change in loss (this is a form of importance sampling, a technique for efficient sampling from an arbitrary distribution).</li>
+</ul>
 
       
     </div>
@@ -467,11 +485,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/LightGBM/" rel="tag"># LightGBM</a>
-          
             <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
           
-            <a href="/tags/调参/" rel="tag"># 调参</a>
+            <a href="/tags/LightGBM/" rel="tag"># LightGBM</a>
           
         </div>
       
@@ -609,7 +625,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -658,7 +674,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数"><span class="nav-number">1.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantages-of-LightGBM"><span class="nav-number">2.</span> <span class="nav-text">Advantages of LightGBM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数-1"><span class="nav-number">3.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#referrence"><span class="nav-number">4.</span> <span class="nav-text">referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost调参"><span class="nav-number">5.</span> <span class="nav-text">XGBoost调参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantage-of-XGBoost"><span class="nav-number">6.</span> <span class="nav-text">Advantage of XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost-Parameters"><span class="nav-number">7.</span> <span class="nav-text">XGBoost Parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#general-parameters"><span class="nav-number">7.1.</span> <span class="nav-text">general parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#booster-parameters"><span class="nav-number">7.2.</span> <span class="nav-text">booster parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#learning-task-parameters"><span class="nav-number">7.3.</span> <span class="nav-text">learning task parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Control-Overfitting"><span class="nav-number">7.4.</span> <span class="nav-text">Control Overfitting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Referrence"><span class="nav-number">8.</span> <span class="nav-text">Referrence</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数"><span class="nav-number">1.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantages-of-LightGBM"><span class="nav-number">2.</span> <span class="nav-text">Advantages of LightGBM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数-1"><span class="nav-number">3.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#referrence"><span class="nav-number">4.</span> <span class="nav-text">referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost调参"><span class="nav-number">5.</span> <span class="nav-text">XGBoost调参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantage-of-XGBoost"><span class="nav-number">6.</span> <span class="nav-text">Advantage of XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost-Parameters"><span class="nav-number">7.</span> <span class="nav-text">XGBoost Parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#general-parameters"><span class="nav-number">7.1.</span> <span class="nav-text">general parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#booster-parameters"><span class="nav-number">7.2.</span> <span class="nav-text">booster parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#learning-task-parameters"><span class="nav-number">7.3.</span> <span class="nav-text">learning task parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Control-Overfitting"><span class="nav-number">7.4.</span> <span class="nav-text">Control Overfitting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Referrence"><span class="nav-number">8.</span> <span class="nav-text">Referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LightGBM-和-XGBoost-的一些区别"><span class="nav-number">9.</span> <span class="nav-text">LightGBM 和 XGBoost 的一些区别</span></a></li></ol></div>
             
 
           </div>
