@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tlp6gqqzj20af07pweh.jpg">
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tmhb22yaj20i6042dfn.jpg">
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3tmfcsgk1j20y60gg74q.jpg">
-<meta property="og:updated_time" content="2019-06-17T11:45:05.943Z">
+<meta property="og:updated_time" content="2019-06-19T01:05:31.357Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SVM All You Need to Know">
 <meta name="twitter:description" content="本文主要介绍SVM 相关内容，包括理论原理、在线性可分条件下的公式推导和 SVM的应用特点。最后综合 LR 和 Decision Tree的这篇博客，给出了一些小的建议。">
@@ -313,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T19:45:05+08:00">
-                2019-06-17
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-19T09:05:31+08:00">
+                2019-06-19
               </time>
             
           </span>
@@ -391,15 +391,15 @@
 <li><p>由此，根据第一步和第三步的结果，我们可以得到最基本的目标函数：</p>
 </li>
 </ol>
-<p>$$<br>\arg \max _ { w , b } \frac { 2 } { | w | }<br>$$<br>$$<br>\text {s.t. } y _ { i } ( w ^ { T } x _ { i } + b ) \geq 1 , i = 1,2 , \ldots , N<br>$$</p>
+<p>$$\arg \max _ { w , b } \frac { 2 } { | w | } ,  \text {s.t. } y _ { i } ( w ^ { T } x _ { i } + b ) \geq 1 , i = 1,2 , \ldots , N$$</p>
 <ol start="5">
 <li>我们还可以对这个目标函数进一步做变化：</li>
 </ol>
-<p>$$<br>\arg \min _ { w , b } \frac { 1 } { 2 } | w | ^ { 2 }<br>$$<br>$$<br>\text {s.t. } y _ { i } ( w ^ { T } x _ { i } + b ) \geq 1 , i = 1,2 , \ldots , N<br>$$</p>
+<p>$$\arg \min _ { w , b } \frac { 1 } { 2 } | w | ^ { 2 }, \text {s.t. } y _ { i } ( w ^ { T } x _ { i } + b ) \geq 1 , i = 1,2 , \ldots , N $$</p>
 <ol start="6">
 <li><p>我们无法继续直接进行计算了，因此引入拉格朗日乘子<br>$$<br>L ( w , b , \alpha ) = \frac { 1 } { 2 } | w | ^ { 2 } + \sum _ { i } \alpha _ { i } [ 1 - y _ { i } ( w ^ { T } x _ { i } + b ) ]<br>$$</p>
 </li>
-<li><p>对w和b分别求L的偏导，并令其偏导数等于0：<br>$$<br>\frac { \partial L } { \partial w } = w - \sum _ { i } \alpha _ { i } y _ { i } x _ { i } = 0 arrow w = \sum _ { i } \alpha _ { i } y _ { i } x _ { i }<br>$$<br>$$<br>\frac { \partial L } { \partial b } = \sum _ { i } \alpha _ { i } y _ { i } = 0<br>$$</p>
+<li><p>对w和b分别求L的偏导，并令其偏导数等于0：<br>$$\frac { \partial L } { \partial w } = w - \sum _ { i } \alpha _ { i } y _ { i } x _ { i } = 0 \Rightarrow w = \sum _ { i } \alpha _ { i } y _ { i } x _ { i }$$<br>$$\frac { \partial L } { \partial b } = \sum _ { i } \alpha _ { i } y _ { i } = 0$$</p>
 </li>
 <li><p>将第七步得到的w和b代入L函数</p>
 </li>
@@ -408,7 +408,7 @@
 <ol start="9">
 <li><p>至此，我们的目标函数已经变成了<br>$$<br>\arg \max _ { \alpha } ( \sum _ { i } \alpha _ { i } - \frac { 1 } { 2 } \sum _ { i } \sum _ { j } \alpha _ { i } \alpha _ { j } y _ { i } y _ { j } x _ { i } ^ { T } x _ { j } )<br>$$<br>$$<br>\text { s.t. } \sum _ { i } \alpha _ { i } y _ { i } = 0<br>$$<br>$$<br>\alpha _ { i } \geq 0 , i = 1,2 , \ldots , N<br>$$</p>
 </li>
-<li><p>用数值方法解出α以后，我们就可以得到</p>
+<li><p>用数值方法解出α以后，我们带入式子 7就可以得到</p>
 </li>
 </ol>
 <p>$$<br>w^ { * } = \sum _ { i } \alpha _ { i } ^ { * } y _ { i } x _ { i }<br>$$</p>
@@ -583,7 +583,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

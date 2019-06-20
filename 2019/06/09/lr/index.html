@@ -88,7 +88,8 @@
 <meta property="og:description" content="本文主要介绍逻辑回归（logistics regression）和决策树（Decision Tree）。逻辑回归从线性回归出发到逻辑回归，然后手推公式和相关的一些特点；介绍一下决策树的特点。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g449t85fofj20rs075a9y.jpg">
-<meta property="og:updated_time" content="2019-06-17T11:44:47.424Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g468268n4gj20jm04k0sn.jpg">
+<meta property="og:updated_time" content="2019-06-19T12:36:58.105Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="逻辑回归概念">
 <meta name="twitter:description" content="本文主要介绍逻辑回归（logistics regression）和决策树（Decision Tree）。逻辑回归从线性回归出发到逻辑回归，然后手推公式和相关的一些特点；介绍一下决策树的特点。">
@@ -310,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T19:44:47+08:00">
-                2019-06-17
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-19T20:36:58+08:00">
+                2019-06-19
               </time>
             
           </span>
@@ -367,22 +368,20 @@
 <p><strong>线性二分模型：</strong></p>
 <p>$$<br>f ( x ) = \theta ^ { T } x<br>$$</p>
 <p>逻辑回归决策函数是将此线性二分类嵌套一个sigmoid函数：</p>
-<p>$$<br>( f ( x ) )= \frac { 1 } { 1 + e ^ { - \theta ^ { T } x } }<br>$$</p>
+<p>$$<br> f ( x ) = \frac { 1 } { 1 + e ^ { - \theta ^ { T } x } }<br>$$</p>
 <p><strong> 损失函数：</strong><br>如果用平方误差（MSE）作为逻辑回归的损失函数,那么函数曲线将是跳跃式的,非凸的(non-convex),原因是logistic函数将数据范围限制在[0,1]区间,而真实标签值非0即1.最小化 MSE 损失容易陷入局部极小点.逻辑回归损失是如下的分情况的凸函数(单个x与y的损失)。</p>
 <p>$$<br>P ( y = 1 | x ; \theta ) = h _ { \theta } ( x )<br>$$</p>
-<p>$$<br>P ( y = 0 | x ; \theta ) = 1 - h _ { \theta } ( x )<br>$$<br>最初是上述的分段函数，合并成下面的函数，方便计算。<br>$$<br>p ( y | x ; \theta ) = \left( h _ { \theta } ( x ) \right) ^ { y } \left( 1 - h _ { \theta } ( x ) \right) ^ { 1 - y }<br>$$<br>使用最大似然的思想解。假设我们有n个独立的训练样本{(x1, y1) ,(x2, y2),…, (xn, yn)}，y={0, 1}。那每一个观察到的样本(xi, yi)出现的概率是：<br><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g449t85fofj20rs075a9y.jpg" alt=""></p>
-<p>上述似然函数乘法太难算了，然后使用log 将其改为加法，变成了对数似然函数。<br>$$<br>\operatorname { loss } ( \theta ) = \log ( L ( \theta ) ) = \sum _ { i = 1 } ^ { m } y ^ { ( i ) } \log \left( h \left( x ^ { ( i ) } \right) \right) + \left( 1 - y ^ { ( i ) } \right) \log \left( 1 - h \left( x ^ { ( i ) } \right) \right)<br>$$</p>
-<p><strong>求导优化问题</strong><br>sigmoid 函数的特殊性质：<br>$$<br>\sigma ^ { \prime } ( x ) = \sigma ( x ) ( 1 - \sigma ( x ) )<br>$$<br>用L(θ)对θ求导，得到：</p>
-<p>$$<br>\frac { d } { d \theta _ { i } } \operatorname { loss } ( \theta ) = \left( y \frac { 1 } { \sigma \left( \theta ^ { T } x \right) } - ( 1 - y ) \frac { 1 } { 1 - \sigma \left( \theta ^ { T } x \right) } \right) \frac { d } { d \theta _ { i } } \sigma \left( \theta ^ { T } x \right)<br>$$</p>
-<p>$$<br>= \left( y \frac { 1 } { \sigma \left( \theta ^ { T } x \right) } - ( 1 - y ) \frac { 1 } { 1 - \sigma \left( \theta ^ { T } x \right) } \right) \sigma \left( \theta ^ { T } x \right) \left( 1 - \sigma \left( \theta ^ { T } x \right) \right) \frac { d } { d \theta _ { i } } \theta ^ { T } x<br>$$</p>
-<p>$$<br>= \left( y \left( 1 - \sigma \left( \theta ^ { T } x \right) \right) - ( 1 - y ) \sigma \left( \theta ^ { T } x \right) \right) x _ { i }<br>$$</p>
-<p>$$<br>= \left( y - h _ { \theta } ( x ) \right) x _ { i }<br>$$</p>
+<p>$$<br>P ( y = 0 | x ; \theta ) = 1 - h _ { \theta } ( x )<br>$$<br>最初是上述的分段函数，合并成下面的函数，方便计算。<br>$$<br>p ( y | x ; \theta ) = \left( h _ { \theta } ( x ) \right) ^ { y } \left( 1 - h _ { \theta } ( x ) \right) ^ { 1 - y }<br>$$<br>使用最大似然的思想求解。假设我们有n个独立的训练样本{(x1, y1) ,(x2, y2),…, (xn, yn)}，y={0, 1}。那每一个观察到的样本(xi, yi)出现的概率是：<br><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g449t85fofj20rs075a9y.jpg" alt=""></p>
+<p>上述似然函数乘法太难算了，然后使用log 将其改为加法，变成了对数似然函数。<br>$$<br>J( \theta ) = \log ( L ( \theta ) ) = \sum _ { i = 1 } ^ { m } y ^ { ( i ) } \log \left( h \left( x ^ { ( i ) } \right) \right) + \left( 1 - y ^ { ( i ) } \right) \log \left( 1 - h \left( x ^ { ( i ) } \right) \right)<br>$$</p>
+<p><strong>求导优化问题</strong><br>sigmoid 函数的特殊性质：<br>$$<br>\sigma ^ { \prime } ( x ) = \sigma ( x ) ( 1 - \sigma ( x ) )<br>$$</p>
+<p>分成三部分求导：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g468268n4gj20jm04k0sn.jpg" alt=""></p>
+<p>用L(θ)对θ求导，得到：<br>$$<br>\begin{split}<br>\frac { d } { d \theta _ { i } } \operatorname { loss } ( \theta ) &amp;= \left( y \frac { 1 } { \sigma \left( \theta ^ { T } x \right) } - ( 1 - y ) \frac { 1 } { 1 - \sigma \left( \theta ^ { T } x \right) } \right) \frac { d } { d \theta _ { i } } \sigma \left( \theta ^ { T } x \right) \\<br>&amp;= \left( y \frac { 1 } { \sigma \left( \theta ^ { T } x \right) } - ( 1 - y ) \frac { 1 } { 1 - \sigma \left( \theta ^ { T } x \right) } \right) \sigma \left( \theta ^ { T } x \right) \left( 1 - \sigma \left( \theta ^ { T } x \right) \right) \frac { d } { d \theta _ { i } } \theta ^ { T } x \\<br>&amp;= \left( y \left( 1 - \sigma \left( \theta ^ { T } x \right) \right) - ( 1 - y ) \sigma \left( \theta ^ { T } x \right) \right) x _ { i } \\<br>&amp;= \left( y - h _ { \theta } ( x ) \right) x _ { i }<br>\end{split}<br>$$</p>
 <p>注意一会儿有 $\sum$ 一会儿没有的，其实我们更倾向于不用，采用矩阵相乘的方式更加简洁。只是在表达似然函数，使用$ \sum$更加直观<br>$$<br>\theta _ { i } : = \theta _ { j } + \alpha \left( y ^ { ( i ) } - h _ { \theta } \left( x ^ { ( i ) } \right) \right) x _ { j } ^ { ( i ) }<br>$$</p>
 <h3 id="逻辑回归的特点"><a href="#逻辑回归的特点" class="headerlink" title="逻辑回归的特点"></a>逻辑回归的特点</h3><p><strong> 优点：</strong><br> LR 能以概率的形式输出结果,而非只是 0,1 判定， 可以做 ranking model；<br> LR 的可解释性强,可控度高；<br> 训练快</p>
 <p><strong> 缺点：</strong><br> 容易欠拟合，一般准确度不太高<br> 只能处理两分类问题. (可以应用多个逻辑回归实现多分类,类似SVM的方式; 另外对于父子类别同时分类的情况,使用逻辑回归要比Softmax等方式效果好)</p>
 <p>“海量离散特征+简单模型” 同“少量连续特征+复杂模型”的权衡。既可以离散化用线性模型，也可以用连续特征加深度学习</p>
 <p><strong> 为什么对特征进行离散化</strong></p>
-<p>在工业界，很少直接将连续值作为逻辑回归模型的特征输入，而是将连续特征离散化为一系列0、1特征(one-hot编码)交给逻辑回归模型，这样做的优势有以下几点</p>
+<p>特征从连续变量状态到离散化的初衷在于我们认为不同的区间对于最后的结果的重要性是不同的。同样在工业界，很少直接将连续值作为逻辑回归模型的特征输入，而是将连续特征离散化为一系列0、1特征(one-hot编码)交给逻辑回归模型，这样做的优势有以下几点</p>
 <ul>
 <li>离散特征的增加和减少都很容易，易于模型的快速迭代；</li>
 <li>稀疏向量内积乘法运算速度快，计算结果方便存储，容易扩展；</li>
@@ -390,6 +389,7 @@
 <li>单变量离散化为N个后，每个变量有单独的权重，相当于为模型引入了非线性，能够提升模型表达能力，加大拟合</li>
 <li>离散化后可以进行特征交叉</li>
 </ul>
+<p>究其原因，使用 LR+离散模型在于可控可解释。而GBDT 直接使用连续的变量，一方面的原因在于如果特征过多，那么GBDT 是跑不动的。</p>
 <p><strong> 为什么LR模型的损失函数是交叉熵,而线性回归模型的损失函数却是最小二乘呢？能否随意确定一个损失函数作为目标呢？</strong></p>
 <p>模型的损失函数由各自的响应变量y的概率分布决定，对于线性回归模型，其输出是连续值，所以我们对于该问题假设y服从正态分布；相对的，LR模型一般用来解决二分类问题，所以其输出是0/1，故而我们假设其输出服从伯努利分布；而进一步地，两者的损失函数都是通过极大似然估计推导的来的，所以模型的损失函数并非随意确定。<br>分类模型与回归模型之间有种种联系,比如 SVM 模型可以看作逻辑回归加L2正则项, 并使用了不同的损失函数.</p>
 <p>为什么不使用回归模型来做分类?<br>这是一种不好的做法, 因为阈值不好确定, 随着数据集的变动, 阈值也需要有较大变化.</p>
@@ -569,7 +569,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

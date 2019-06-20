@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Loss Function,Activation Function,Optimizer," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,21 +79,22 @@
 
 
 
-<meta name="description" content="主要介绍了常见的网络中权重的初始化，激活函数和优化器。 Weights Initializationweights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。  Here’s another trick — before sq">
-<meta name="keywords" content="Loss Function,Activation Function,Optimizer">
+<meta name="description" content="介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Weights Initialization &amp; Activation Function &amp; Optimizer">
+<meta property="og:title" content="深度网络中的小概念">
 <meta property="og:url" content="http://yoursite.com/2019/03/26/深度网络中的碎碎念/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="主要介绍了常见的网络中权重的初始化，激活函数和优化器。 Weights Initializationweights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。  Here’s another trick — before sq">
+<meta property="og:description" content="介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fz79596rj20fu0boaad.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg">
-<meta property="og:updated_time" content="2019-05-25T08:02:21.435Z">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/ed14b5c14cb9fc02.gif">
+<meta property="og:image" content="https://upload.cc/i1/2019/06/20/cMRW62.jpg">
+<meta property="og:updated_time" content="2019-06-20T03:50:57.429Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Weights Initialization &amp; Activation Function &amp; Optimizer">
-<meta name="twitter:description" content="主要介绍了常见的网络中权重的初始化，激活函数和优化器。 Weights Initializationweights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。  Here’s another trick — before sq">
+<meta name="twitter:title" content="深度网络中的小概念">
+<meta name="twitter:description" content="介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器。">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg">
 
 
@@ -130,7 +131,7 @@
 
 
 
-  <title>Weights Initialization & Activation Function & Optimizer | Jijeng's blog</title>
+  <title>深度网络中的小概念 | Jijeng's blog</title>
   
 
 
@@ -284,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Weights Initialization & Activation Function & Optimizer</h1>
+          <h1 class="post-title" itemprop="name headline">深度网络中的小概念</h1>
         
 
         <div class="post-meta">
@@ -312,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-25T16:02:21+08:00">
-                2019-05-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-20T11:50:57+08:00">
+                2019-06-20
               </time>
             
           </span>
@@ -384,18 +385,38 @@
       
 
       
-        <p>主要介绍了常见的网络中权重的初始化，激活函数和优化器。</p>
-<h2 id="Weights-Initialization"><a href="#Weights-Initialization" class="headerlink" title="Weights Initialization"></a>Weights Initialization</h2><p>weights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。<br>这里的初始化都是指的是weights初始化。bias 这个变量就是在企图去描述真实的分布，通过引入随机性来表示这个是具有 推广性的。</p>
+        <p>介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器。</p>
+<a id="more"></a>
+<h2 id="Weights-Initialization"><a href="#Weights-Initialization" class="headerlink" title="Weights Initialization"></a>Weights Initialization</h2><p>weights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 表示偏差，噪声，作用在于企图去描述真实的分布（高斯分布），通过引入随机性来表示这个是具有推广性的。主要介绍常见的三种初始化方法和选择方法。</p>
 <blockquote>
 <p>Here’s another trick — before squishing our scalar value (called an activation) into the sigmoid function, we can add a little number called the bias, b. There will be two biases, one for each user and one for each movie.</p>
 </blockquote>
-<h3 id="Random-Initialization"><a href="#Random-Initialization" class="headerlink" title="Random Initialization"></a>Random Initialization</h3><p>最基础的即使 bias 使用 zero initialization ，然后 weights 使用 random initialzation。这种方法的缺陷在于梯度消失。就是你的weights 如果很大或者很小的时候，再加上如果使用了sigmoid 那么很容易出现上述的现象。</p>
+<h3 id="Random-Initialization"><a href="#Random-Initialization" class="headerlink" title="Random Initialization"></a>Random Initialization</h3><p>总结来说就是容易出现梯度消失和梯度爆炸，尤其是在layer_size（特征数量） 比较大的时候。从均值方差的角度进行分析。</p>
 <blockquote>
-<p>a) If weights are initialized with very high values the term np.dot(W,X)+bbecomes significantly higher and if an activation function like sigmoid() is applied, the function maps its value near to 1 where slope of gradient changes slowly and learning takes a lot of time.<br>b) If weights are initialized with low values it gets mapped to 0, where the case is same as above.</p>
+<p>a) If weights are initialized with very high values the term np.dot(W,X)+becomes significantly higher and if an activation function like sigmoid() is applied, the function maps its value near to 1 where slope of gradient changes slowly and learning takes a lot of time.<br>b) If weights are initialized with low values it gets mapped to 0, where the case is same as above.</p>
 </blockquote>
-<h3 id="He-Initialization"><a href="#He-Initialization" class="headerlink" title="He Initialization"></a>He Initialization</h3><p>$$W^{[l]} =np.random.randn(size_l, size_l -1)* np.sqrt(2/size_l -1) $$<br>这个是使用 relu 或者说 leaky relu 配合使用的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w =np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+<p>另外的表述方式：</p>
+<blockquote>
+<p>If the weights start too small, then the signal shrinks as it passes through each layer until it’s too small to be useful.<br>If the weights start too large, then the signal grows as it passes through each layer until it’s too massive to be useful (big value in sigmoid function).</p>
+</blockquote>
+<h3 id="Xavier-initialization-ˈzeɪvjər-s"><a href="#Xavier-initialization-ˈzeɪvjər-s" class="headerlink" title="Xavier initialization /ˈzeɪvjər/s"></a>Xavier initialization /ˈzeɪvjər/s</h3><p>For deep networks, we can use a heuristic to initialize the weights depending on the non-linear activation function. This applies to Xavier and He initialization. Xavier/Glorot Initialization initializes the weights in your network by drawing them from a distribution with zero mean and a specific variance.<br>$$ { var } ( w _ { i } ) = \frac { 1 } { layer_{l-1}}$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">1</span>/layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+<p>In practice, it works better for layers with sigmoid or tanh function. </p>
+<p>总的思想原则：<br>They set the weights neither too much bigger that 1, nor too much less than 1.<br>就是本来就是在 (0,1) 标准正太分布出来，然后进行了进一步的约束条件。思想当特征数量越大的时候，weights 的波动情况是成反比的，最后的weights 数值越接近于均值附近。</p>
+<h3 id="He-Initialization"><a href="#He-Initialization" class="headerlink" title="He Initialization"></a>He Initialization</h3><p>Using RELU or Leaky RELU is relatively robust to the vanishing/ exploding gradient issues compared with sigmoid function especially for networks that are not too deep. And it the case of Leaky RELU, it never has zero gradients. For RELU, we multiply the randomly generated values of $w$ by:</p>
+<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } } }$$<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">2</span>/layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></p>
+<p>Sometimes, we combine the idea of Xavier initialization and He initializaiton so the variance becomes the following:</p>
+<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } + \operatorname { layer } _ { [ l ] } } }$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">2</span>/(layer_size[l<span class="number">-1</span>]+layer_size[l]))</span><br><span class="line"><span class="comment"># 代码中 random() 中的两个参数是 shape，最后的np.sqrt 标准差</span></span><br></pre></td></tr></table></figure>
+<p>The idea behind this is that we set the weights neither too much bigger than 1 nor too much less than 1 so the gradients do not vanish or explode too quickly.</p>
 <p>所以上述的初始化从数学的角度去理解： 从(0,1) 标准正太分布 转换成了 (0, np.sqrt(2/ size_l -1)) 这样的分布，就是你网络结构是越宽，那么这个方差就是越小的，最后的结果是越集中的，就越集中的 均值 u 左右。从图像的角度看，方差越大，图像越矮胖；方差越小，图像越瘦高。</p>
-<h3 id="Xavier-initialization-ˈzeɪvjər-s"><a href="#Xavier-initialization-ˈzeɪvjər-s" class="headerlink" title="Xavier initialization /ˈzeɪvjər/s"></a>Xavier initialization /ˈzeɪvjər/s</h3><p>这个是使用tanh() 作为 activation function的。<br>$$W^{[l]} =np.random.randn(size_l, size_l -1)* np.sqrt( 1/size_l -1) $$<br>总的思想原则：<br>They set the weights neither too much bigger that 1, nor too much less than 1.<br>就是本来就是在 (0,1) 标准正太分布出来，然后进行了进一步的约束条件。</p>
+<p><strong> Takeoff</strong></p>
+<p>In summary, the main difference in machine learning is the following:</p>
+<ul>
+<li>He initialization works better for layers with ReLu(s) activation.</li>
+<li>Xavier initialization works better for layers with sigmoid activation.</li>
+</ul>
 <h2 id="Activation-function"><a href="#Activation-function" class="headerlink" title="Activation function"></a>Activation function</h2><p>总的说可以分为线性和非线性的激活函数， activation function 的作用 就是对于网络的输出 说yes or no. It maps the resulting values in between 0 to 1 or -1 to 1 etc.</p>
 <h3 id="Sigmoid-function-Logistic-Activation"><a href="#Sigmoid-function-Logistic-Activation" class="headerlink" title="Sigmoid function (Logistic Activation)"></a>Sigmoid function (Logistic Activation)</h3><p>the only reason why we use sigmoid is because it exists between 0 to 1. 这个非常有利于 predict probability. 因为自然映射到 0 是不存在 然后1 是存在。而当多分类的时候，使用softmax。</p>
 <h3 id="Tanh-function"><a href="#Tanh-function" class="headerlink" title="Tanh function"></a>Tanh function</h3><blockquote>
@@ -427,6 +448,22 @@
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg" alt=""></p>
 <p>The hyperparameter beta1 is generally kept around 0.9 while beta_2 is kept at 0.99. Epsilon is chosen to be 1e-10 generally.</p>
 <p>对于公式的解释，Eq 1 and Eq 2是come from RMSprop,  Eq 3 comes from Adam。最后一步是 update 操作，条理清楚，没有问题。(公式中的v 表示导数，g 表示导数e 不太清楚)<br>Here, we compute the exponential average of the gradient as well as the squares of the gradient for each parameters (Eq 1, and Eq 2). To decide our learning step, we multiply our learning rate by average of the gradient (as was the case with momentum) and divide it by the root mean square of the exponential average of square of gradients (as was the case with momentum) in equation 3. Then, we add the update.)</p>
+<h2 id="卷积网络"><a href="#卷积网络" class="headerlink" title="卷积网络"></a>卷积网络</h2><p>一个卷积神经网络由若干卷积层、Pooling层、全连接层组成。</p>
+<h3 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h3><p>$Input \rightarrow [Conv] \times N \rightarrow [Pool] \times M \rightarrow [FK] \times K$</p>
+<p>下面的动画显示了包含两个filter的卷积层的计算。我们可以看到 $7 \times 7 \times 3$ 输入，经过两个$3 \times 3 \times 3 $filter的卷积(步幅为2)，得到了$ 3 \times 3 \times 2 $的输出。另外我们也会看到下图的Zero padding是1，也就是在输入元素的周围补了一圈0。Zero padding对于图像边缘部分的特征提取是很有帮助的。</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/06/ed14b5c14cb9fc02.gif" alt=""></p>
+<p>对于包含两个3<em>3</em>3的fitler的卷积层来说，其参数数量仅有 $(3 \times 3 \times3+1) \times 2 =56 $个，且参数数量与上一层神经元个数无关。与全连接神经网络相比，其参数数量大大减少了。</p>
+<p>卷积层输出大小计算：<br>输入大小： $W 1 \times H 1 \times D 1$<br>超参数（filter信息 +是否填充）： filter 个数( K), filter 大小( F), 步长 (S )，边界填充( P)<br>输出：<br>$$<br>\begin{split}<br>W _ { 2 } &amp; = \left( W _ { 1 } - F + 2 P \right) / S + 1 \\<br>H _ { 2 } &amp;= \left( H _ { 1 } - F + 2 P \right) / S + 1 \\<br>D _ { 2 } &amp;= K<br>\end{split}<br>$$</p>
+<p>卷积层参数量计算：</p>
+<p>这里有一个重要的概念叫做权值共享，给定一张图片，用filter 去扫描这图片，filter 里面的数叫权重，这张图是被同样的filter 扫描的，权值是一样的，所以叫做权值共享。这个概念是和全连接层中的权值进行比较的，简单来说就是降低了权重的使用。权重共享即 filter 值的共享。<br>对于 三维图片来说，每个filter需要F<em>F</em>D1个权重值，总共K个filter，需要F<em>F</em>D1*K权重值。和一维一样，整个滑动过程中filter W0和W1值保持不变，可称作权值共享。而且，补充一句，对于三维的input，权值只是在input的每个depth slice上共享的。对于一层的 filter 只是有一个bias。</p>
+<p>for example:<br>Filter个数：32<br>原始图像shape：$224 \times 224 \times 3$<br>卷积核大小为：$2 \times 2$<br>一个卷积核的参数：<br>$ 2 \times 2 \times 3=12 $<br>16个卷积核的参数总额：<br>$ 16 \times 12 + 16 =192 + 16 = 208 $<br>$ weight \times x + bias $根据这个公式，即可算的最终的参数总额为：208</p>
+<h3 id="Pooling-层"><a href="#Pooling-层" class="headerlink" title="Pooling 层"></a>Pooling 层</h3><p>Pooling层主要的作用是下采样，主要有两点作用，一个是提取重要特征，一个是简化网络的计算。Pooling的方法很多，最常用的是Max Pooling。Max Pooling实际上就是在n*n的样本中取最大值，作为采样后的样本值。下图是 max pooling：</p>
+<p><img src="https://upload.cc/i1/2019/06/20/cMRW62.jpg" alt=""><br>除了Max Pooing之外，常用的还有Mean Pooling——取各样本的平均值。</p>
+<p>池化层往往在卷积层后面，通过池化来降低卷积层输出的特征向量，同时改善结果（不易出现过拟合）。</p>
+<p>池化层参数个数计算：</p>
+<p>这个很明显是没有参数的。</p>
+<h3 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h3><p>连接所有的特征，将输出值送给分类器（如softmax分类器）</p>
+<p>比如说上一层（池化层）的输出为：$(111 \times 111 \times 16) $，从第一层到第二层，只是图片大小发生了变化，深度没有发生变化，而Dense对应的神经元个数为133个，那么还是根据公式：$weight \times x + bias$，计算得：$133 \times16+133=2261$</p>
 
       
     </div>
@@ -441,16 +478,6 @@
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Loss-Function/" rel="tag"># Loss Function</a>
-          
-            <a href="/tags/Activation-Function/" rel="tag"># Activation Function</a>
-          
-            <a href="/tags/Optimizer/" rel="tag"># Optimizer</a>
-          
-        </div>
       
 
       
@@ -586,7 +613,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -635,7 +662,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.2.</span> <span class="nav-text">He Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization-ˈzeɪvjər-s"><span class="nav-number">1.3.</span> <span class="nav-text">Xavier initialization /ˈzeɪvjər/s</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization-ˈzeɪvjər-s"><span class="nav-number">1.2.</span> <span class="nav-text">Xavier initialization /ˈzeɪvjər/s</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.3.</span> <span class="nav-text">He Initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积网络"><span class="nav-number">4.</span> <span class="nav-text">卷积网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层"><span class="nav-number">4.1.</span> <span class="nav-text">卷积层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pooling-层"><span class="nav-number">4.2.</span> <span class="nav-text">Pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全连接层"><span class="nav-number">4.3.</span> <span class="nav-text">全连接层</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -833,7 +860,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/03/26/深度网络中的碎碎念/';
           this.page.identifier = '2019/03/26/深度网络中的碎碎念/';
-          this.page.title = 'Weights Initialization & Activation Function & Optimizer';
+          this.page.title = '深度网络中的小概念';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
