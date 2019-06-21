@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450wzrr2gj20df0830sl.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450y6qpe0j20df083745.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g452awgfddj20fg0b1t91.jpg">
-<meta property="og:updated_time" content="2019-06-18T02:49:18.760Z">
+<meta property="og:updated_time" content="2019-06-21T02:34:28.726Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Loss Activation and Optimisation Function">
 <meta name="twitter:description" content="主要介绍 activation function， loss function 等等概念和分类。">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-18T10:49:18+08:00">
-                2019-06-18
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-21T10:34:28+08:00">
+                2019-06-21
               </time>
             
           </span>
@@ -427,16 +427,13 @@
 <p>The graph above shows the range of possible loss values given a true observation (isDog = 1). As the predicted probability approaches 1, log loss slowly decreases. As the predicted probability decreases, however, the log loss increases rapidly. Log loss penalizes both types of errors, but especially those predictions that are confident and wrong!</p>
 <p>Cross-entropy and log loss are slightly different depending on context, but in machine learning when calculating error rates between 0 and 1 they resolve to the same thing.</p>
 <p>In binary classification, where the number of classes M equals 2, cross-entropy can be calculated as:</p>
-<p>$$<br>- ( y \log ( p ) + ( 1 - y ) \log ( 1 - p ) )<br>$$</p>
+<p>$$<br>- ( y \log ( y ) + ( 1 - y ) \log ( 1 - y ) )<br>$$</p>
 <p>If $ M&gt;$2 (i.e. multiclass classification), we calculate a separate loss for each class label per observation and sum the result.</p>
-<p>$$<br>- \sum _ { c = 1 } ^ { M } y _ { o , c } \log \left( p _ { o , c } \right)<br>$$</p>
+<p>$$<br>- \sum _ { c = 1 } ^ { M } y _ { o , c } \log \left( y _ { o , c } \right)<br>$$</p>
 <blockquote>
-<p>M - number of classes (dog, cat, fish)<br>log - the natural log<br>y - binary indicator (0 or 1) if class label c is the correct classification for observation o<br>p - predicted probability observation o is of class c</p>
+<p>M - number of classes (dog, cat, fish)<br>log - the natural log<br>y - binary indicator (0 or 1) if class label c is the correct classification for observation o</p>
 </blockquote>
-<p>想要表达的是 log loss 是从 Likelihood Loss，改进过来的，有没有发现最大似然的痕迹。</p>
-<p>$$P(Y | X) = P(X_1 | Y) <em> P(X_2 | Y) </em> \cdots <em> P(X_n | Y) </em> P(Y) = P(Y) \prod_{i}^{n} P(X_i | Y)$$</p>
-<p>$$log(P(Y | X)) = log(\prod_{i}^{n} P(X_i | Y) \Rightarrow \sum_{i}^{n} log(P(X_i | Y))$$</p>
-<p>$$CE(\hat{y}, y) = - \sum_{i=1}^{n} y_i log(\hat{y}) + (1 - y_i) log(1 - \hat{y})$$</p>
+<p>想要表达的是 log loss 是从 Likelihood Loss，改进过来的，有没有发现最大似然的痕迹。<br>log loss 表达式如下：<br>$$<br>\begin{split}<br>P(Y | X)  &amp;= P(X_1 | Y)  \times P(X_2 | Y)  \times  \dots \times P(X_n | Y)  \times P(Y) = P(Y) \prod_{i}^{n} P(X_i | Y) \\<br>&amp;\Rightarrow log(P(Y | X)) = log(\prod_{i}^{n} P(X_i | Y) \Rightarrow \sum_{i}^{n} log(P(X_i | Y))<br>\end{split}<br>$$<br>交叉熵表达式：<br>$$CE(\hat{y}, y) = - \sum_{i=1}^{n} y_i log(\hat{y}) + (1 - y_i) log(1 - \hat{y})$$</p>
 <p><strong> Mean Squared Error</strong></p>
 <p>在回归中使用</p>
 <blockquote>
@@ -452,8 +449,7 @@
 <p>这两个loss function 在<a href="https://jijeng.github.io/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">这里</a>介绍过，所以本博客中简单说一下。</p>
 <p>L2 loss function is the square of the L2 norm of the difference between actual value and predicted value. It is mathematically similar to MSE, only do not have division by<br>n, it is computed by</p>
 <p>$$<br> Loss = \sum _ { i = 1 } ^ { n } \left( y ^ { ( i ) } - \hat { y } ^ { ( i ) } \right) ^ { 2 }<br>$$</p>
-<p><strong>Kullback Leibler (KL) Divergence</strong></p>
-<p>KL Divergence, also known as relative entropy, information divergence/gain, is a measure of how one probability distribution diverges from a second expected probability distribution. KL divergence loss function is computed by<br>$$<br>D _ { K L } ( p | q ) = \sum _ { x } p ( x ) \log \frac { p ( x ) } { q ( x ) }<br>$$</p>
+<p><strong>Kullback Leibler (KL) Divergence</strong><br>（计算的是两个分布的问题）<br>KL Divergence, also known as relative entropy, information divergence/gain, is a measure of how one probability distribution diverges from a second expected probability distribution. KL divergence loss function is computed by<br>$$<br>D _ { K L } ( p | q ) = \sum _ { x } p ( x ) \log \frac { p ( x ) } { q ( x ) }<br>$$</p>
 <p>交叉熵的定义：<br>$$<br>H ( p , q ) = - \sum _ { x } p ( x ) \log q ( x )<br>$$<br>两者的关系推导，<br>$$<br>\begin{split}<br>D _ { K L } ( p | q ) &amp;= \sum _ { x } p ( x ) \log \frac { p ( x ) } { q ( x ) } \\<br>&amp;= \sum _ { x } ( p ( x ) \log p ( x ) - p ( x ) \log q ( x ) ) \\<br>&amp;= - H ( p ) - \sum _ { x } p ( x ) \log q ( x ) \\<br>&amp;= - H ( p ) + H ( p , q )<br>\end{split}<br>$$<br>所以说， cross entropy 也是可以写成这样：<br>$$<br>H ( p , q ) = D _ { K L } ( p | q ) + H ( p )<br>$$</p>
 <p><strong>logistic loss 和 cross entropy的关系</strong></p>
 <p>当 $ p \in { y , 1 - y }$,  $q \in { \hat { y } , 1 - \hat { y } }$ ，cross entropy 可以写成 logistic  loss:</p>
@@ -595,7 +591,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -617,7 +613,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

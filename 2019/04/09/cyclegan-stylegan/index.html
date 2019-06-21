@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfimzvg2g20ps0en4qq.gif">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfvtdeh3j20nn0b9gma.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wg3c5awfj20ca09q3z6.jpg">
-<meta property="og:updated_time" content="2019-05-27T08:39:13.701Z">
+<meta property="og:updated_time" content="2019-06-20T06:47:03.727Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CycleGAN &amp; StyleGAN">
 <meta name="twitter:description" content="In the past few yeas, GANs have been used in lots of different applications such as generating synthetic data, style transfer, super-resolution and text2image generation. But we donn’t aim to give a o">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-27T16:39:13+08:00">
-                2019-05-27
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-20T14:47:03+08:00">
+                2019-06-20
               </time>
             
           </span>
@@ -394,6 +394,7 @@
 <li>Main ideas of CycleGAN</li>
 <li>Keypoints in StyleGAN</li>
 </ul>
+<a id="more"></a>
 <h1 id="A-Gentle-Introduction-of-GANs"><a href="#A-Gentle-Introduction-of-GANs" class="headerlink" title="A Gentle Introduction of GANs"></a>A Gentle Introduction of GANs</h1><p>We assume the reader has some prior experience with neural networks. In addition, if you are familiar with GANs you can <a href="#jump">skip</a> this section.</p>
 <p>The famous minimax objective function can be formulated as following:<br>$$<br>\min _ { \theta _ { g } } \max _ { \theta _ { d } } \left[ \mathbb { E } _ { x \sim p _ { d a t a } } \log D _ { \theta _ { d } } ( x ) + \mathbb { E } _ { z \sim p ( z ) } \log \left( 1 - D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right) \right)<br>$$<br>But in practical, the loss function cannot work very well. So we have alternative objective function:</p>
 <ol>
@@ -412,10 +413,11 @@
 <ul>
 <li>A generator $F$ to convert image $y$ to image $ \hat{x}$</li>
 <li>A generator $G$ to convert image $\hat{x}$ to image $ \hat{y}$</li>
-<li>A discriminator $D$ to idenfify real image or generated picture<br>Simplified version of CycleGAN architecture can be showed in the following.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wbibdfe1j20i60c3wf0.jpg" alt=""><br>The function $F$ and $G$ are generator network, which consists of encoder, transformer and decoder. Encoder is extracting the features from an image which is done by convolution networks. Each convolution layer leads to extraction of progressively higher level features. We would like to transform the feature emebdding of an image from domain $X$ to that of domain $Y$. So for this, authors have used 6 layers of resnet blocks. Resnet block is a neural network layer which consists of two convolutiona layers when a residue of input ia added to the output. This is done to ensure peoperties of input of previous layers are available for later layers as well.Resnet block can be summarized in following image<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wet610p7j20km0ceabs.jpg" alt=""><br>The decoder transfer embedding from $y$ back to original embedding $x$.</li>
+<li>A discriminator $D$ to identify real image or generated picture</li>
 </ul>
-<h2 id="Loss-function"><a href="#Loss-function" class="headerlink" title="Loss function"></a>Loss function</h2><p>There are two types of losses in CycleGAN. Besides adversarial loss, we have another loss named reconstruction cost.<br>Adversarial loss is similary to original GAN.<br>$$<br>\operatorname { Loss } _ { a d v } \left( F , D _ { x } , Y \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { x } \left( F \left( y _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>$$<br>\operatorname { Loss } _ { a d v } \left( G , D _ { y } , X \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { y } \left( G \left( x _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>However, the adversarial loss alone is not sufficient to produce good looking images, which can not enfore that the input and output are recognizably the same. The cycle consistency loss addresses this issue. It relies on the expectation that if you convert an image to the other domain and back again, and then you should get back something similar to what you put in. It enforces that $F ( G ( x ) ) \approx x$ and $G ( F ( y ) ) \approx y$.<br>$$<br>\operatorname { Loss } _ { c y c } ( G , F , X , Y ) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left[ F \left( G \left( x _ { i } \right) \right) - x _ { i } \right] + \left[ G \left( F \left( y _ { i } \right) \right) - y _ { i } \right]<br>$$<br>We can get the full objective function by putting these two together.<br>$$<br>\mathcal { L } \left( G , F , D _ { x} , D _ { y } \right) = \mathcal { L } _ { \text { GAN } } \left( G , D _ { y } , X , Y \right) + \mathcal { L } _ { \text { GAN } } \left( F , D _ { x } , Y , X \right) + \lambda \mathcal { L } _ { \text { cyc } } ( G , F )<br>$$</p>
-<h1 id="Keypoints-of-StyleGAN"><a href="#Keypoints-of-StyleGAN" class="headerlink" title="Keypoints of StyleGAN"></a>Keypoints of StyleGAN</h1><p>The StyleGAN offeras an upgrade version of ProGAN’s image generator, with a focus on the generator. </p>
+<p>Simplified version of CycleGAN architecture can be showed in the following.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wbibdfe1j20i60c3wf0.jpg" alt=""><br>The function $F$ and $G$ are generator network, which consists of encoder, transformer and decoder. Encoder is extracting the features from an image which is done by convolution networks. Each convolution layer leads to extraction of progressively higher level features. We would like to transform the feature emebdding of an image from domain $X$ to that of domain $Y$. So for this, authors have used 6 layers of ResNet blocks. ResNet block is a neural network layer which consists of two convolutiona layers when a residue of input ia added to the output. This is done to ensure properties of input of previous layers are available for later layers as well. ResNet block can be summarized in following image<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wet610p7j20km0ceabs.jpg" alt=""><br>The decoder transfer embedding from $y$ back to original embedding $x$.</p>
+<h2 id="Loss-function"><a href="#Loss-function" class="headerlink" title="Loss function"></a>Loss function</h2><p>（对于loss 实际上只有两个，只不过在第一个loss 中 x 和y 分别使用了两次，所以变成了两个公式。）<br>There are two types of losses in CycleGAN. Besides adversarial loss, we have another loss named reconstruction cost.<br>Adversarial loss is similaity to original GAN.<br>$$<br>\operatorname { Loss } _ { a d v } \left( F , D _ { x } , Y \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { x } \left( F \left( y _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>$$<br>\operatorname { Loss } _ { a d v } \left( G , D _ { y } , X \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { y } \left( G \left( x _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>However, the adversarial loss alone is not sufficient to produce good looking images, which can not enfore that the input and output are recognizably the same. The cycle consistency loss addresses this issue. It relies on the expectation that if you convert an image to the other domain and back again, and then you should get back something similar to what you put in. It enforces that $F ( G ( x ) ) \approx x$ and $G ( F ( y ) ) \approx y$.<br>$$<br>\operatorname { Loss } _ { c y c } ( G , F , X , Y ) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left[ F \left( G \left( x _ { i } \right) \right) - x _ { i } \right] + \left[ G \left( F \left( y _ { i } \right) \right) - y _ { i } \right]<br>$$<br>We can get the full objective function by putting these two together.<br>$$<br>\mathcal { L } \left( G , F , D _ { x} , D _ { y } \right) = \mathcal { L } _ { \text { GAN } } \left( G , D _ { y } , X , Y \right) + \mathcal { L } _ { \text { GAN } } \left( F , D _ { x } , Y , X \right) + \lambda \mathcal { L } _ { \text { cyc } } ( G , F )<br>$$</p>
+<h1 id="Keypoints-of-StyleGAN"><a href="#Keypoints-of-StyleGAN" class="headerlink" title="Keypoints of StyleGAN"></a>Keypoints of StyleGAN</h1><p>(想要解决的问题，ProGAN 是训练过程中不是一个 fine-tune 的过程，而是从一种状态到另一种状态的过程，所以styleGAN 想要 control specific features during training)<br>The StyleGAN offers an upgrade version of ProGAN’s image generator, with a focus on the generator. </p>
 <p>ProGAN generates high-quality images but, in most models, its ability to control specific features of the generated image is very limited. In other word, the features are entangled and therefore attempting to tweak the input, even a bit, usually affects multiple features at the same time. A good illustrations would be following pictures.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfimzvg2g20ps0en4qq.gif" alt=""><br>Compared with first version (ProGAN), the new generator includes several additions to ProGAN’s generators.</p>
 <h2 id="Mapping-Network"><a href="#Mapping-Network" class="headerlink" title="Mapping Network"></a>Mapping Network</h2><p>The mapping network’s goal in to encode the input vector into an intermediate vector whose different elements control different visual features, which consists of 8 fully connected layers and its output $w$ is of the same size as the input.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfvtdeh3j20nn0b9gma.jpg" alt=""></p>
 <h2 id="Style-Modules-AdaIN"><a href="#Style-Modules-AdaIN" class="headerlink" title="Style Modules (AdaIN)"></a>Style Modules (AdaIN)</h2><p>The AdaIn (Adaptive Instance Normalization) module transfers the encoded information $w$, created by the mapping network, into the generated image.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wg3c5awfj20ca09q3z6.jpg" alt=""></p>
@@ -553,7 +555,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -575,7 +577,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

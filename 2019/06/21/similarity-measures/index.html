@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="similarity-measures," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="The similarity measure is the measure of how much alike two data objects are. Similarity measure in a data mining context is a distance with dimensions representing features of the objects. If this di">
+<meta name="keywords" content="similarity-measures">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Similarity Measures">
+<meta property="og:url" content="http://yoursite.com/2019/06/21/similarity-measures/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="The similarity measure is the measure of how much alike two data objects are. Similarity measure in a data mining context is a distance with dimensions representing features of the objects. If this di">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-21T14:38:24.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Similarity Measures">
+<meta name="twitter:description" content="The similarity measure is the measure of how much alike two data objects are. Similarity measure in a data mining context is a distance with dimensions representing features of the objects. If this di">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/21/similarity-measures/"/>
+
+
+
+
+
+  <title>Similarity Measures | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/21/similarity-measures/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Similarity Measures</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-21T21:58:30+08:00">
+                2019-06-21
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-21T22:38:24+08:00">
+                2019-06-21
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/21/similarity-measures/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/21/similarity-measures/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>The similarity measure is the measure of how much alike two data objects are. Similarity measure in a data mining context is a distance with dimensions representing features of the objects. If this distance is small, it will be the high degree of similarity where large distance will be the low degree of similarity.</p>
+<a id="more"></a>
+<p>The similarity is subjective and is highly dependent on the domain and application. For example, two fruits are similar because of color or size or taste. Care should be taken when calculating distance across dimensions/features that are unrelated. The relative values of each element must be normalized, or one feature could end up dominating the distance calculation. Similarity are measured in the range 0 to 1 [0,1].</p>
+<h3 id="Euclidean-distance"><a href="#Euclidean-distance" class="headerlink" title="Euclidean distance"></a>Euclidean distance</h3><p>Euclidean distance is the most common use of distance. In most cases when people said about distance, they will refer to Euclidean distance. Euclidean distance is also known as simply distance. When data is dense or continuous, this is the best proximity measure.</p>
+<p>Applications: Where data is continuous or numerical. Also knows as L2 Norm famously. In an n dimensional space between two vectors x and y the formula is simply the square root of the sum of the square distance:</p>
+<p>$$<br>d \left( \left[ x _ { 1 } , x _ { 2 } , \ldots , x _ { n } \right] , \left[ y _ { 1 } , y _ { 2 } , \ldots , y _ { n } \right] \right) = \sqrt { \sum _ { i = 1 } ^ { n } \left( x _ { i } - y _ { i } \right) ^ { 2 } }<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span>*</span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">euclidean_distance</span><span class="params">(x,y)</span>:</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> sqrt(sum(pow(a-b,<span class="number">2</span>) <span class="keyword">for</span> a, b <span class="keyword">in</span> zip(x, y)))</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> euclidean_distance([<span class="number">0</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">7</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="Manhattan-distance"><a href="#Manhattan-distance" class="headerlink" title="Manhattan distance"></a>Manhattan distance</h3><p>This Manhattan distance metric is also known as Manhattan length, rectilinear distance, L1 distance or L1 norm, city block distance, Minkowski’s L1 distance, taxi-cab metric, or city block distance.</p>
+<p>Can be used if the dimensions are continuous or numeric.</p>
+<p>This distance measure is very similar to Euclidean but it is a sum of the absolute difference of every dimension rather than the sum of squares.</p>
+<p>It is also known as L1 Norm.</p>
+<p>$$<br>d = \sum _ { i = 1 } ^ { n } \left| x _ { i } - y _ { i } \right|<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span>*</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">manhattan_distance</span><span class="params">(x,y)</span>:</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> sum(abs(a-b) <span class="keyword">for</span> a,b <span class="keyword">in</span> zip(x,y))</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> manhattan_distance([<span class="number">10</span>,<span class="number">20</span>,<span class="number">10</span>],[<span class="number">10</span>,<span class="number">20</span>,<span class="number">20</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="Minkowski-distance"><a href="#Minkowski-distance" class="headerlink" title="Minkowski distance"></a>Minkowski distance</h3><p>Minkowski distance is the generalized distance metric.</p>
+<p>$$<br>\left( \sum _ { i = 1 } ^ { n } \left| x _ { i } - y _ { i } \right| ^ { p } \right) ^ { 1 / p }<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span>*</span><br><span class="line"><span class="keyword">from</span> decimal <span class="keyword">import</span> Decimal</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nth_root</span><span class="params">(value, n_root)</span>:</span></span><br><span class="line"> </span><br><span class="line">    root_value = <span class="number">1</span>/float(n_root)</span><br><span class="line">    <span class="keyword">return</span> round (Decimal(value) ** Decimal(root_value),<span class="number">3</span>)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minkowski_distance</span><span class="params">(x,y,p_value)</span>:</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> nth_root(sum(pow(abs(a-b),p_value) <span class="keyword">for</span> a,b <span class="keyword">in</span> zip(x, y)),p_value)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> minkowski_distance([<span class="number">0</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">7</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">-1</span>],<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Cosine-similarity"><a href="#Cosine-similarity" class="headerlink" title="Cosine similarity"></a>Cosine similarity</h3><p>Cosine similarity is particularly used in positive space, where the outcome is neatly bounded in [0,1]. One of the reasons for the popularity of cosine similarity is that it is very efficient to evaluate, especially for sparse vectors.</p>
+<p>Used in identifying document similarity, product recommendations, Information retrieval and works efficiently with high-dimensional sparse data. It is an angle between two data points in the vector space. Given a vector A and B, the cosine distance is the dot product of x and y divided by Euclidean distance.</p>
+<p>$$<br>\text { similarity } = \cos ( \theta ) = \frac { \mathbf { A } \cdot \mathbf { B } } { | \mathbf { A } | | \mathbf { B } | } = \frac { \sum _ { i = 1 } ^ { n } A _ { i } B _ { i } } { \sqrt { \sum _ { i = 1 } ^ { n } A _ { i } ^ { 2 } } \sqrt { \sum _ { i = 1 } ^ { n } B _ { i } ^ { 2 } } }<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span>*</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square_rooted</span><span class="params">(x)</span>:</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> round(sqrt(sum([a*a <span class="keyword">for</span> a <span class="keyword">in</span> x])),<span class="number">3</span>)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cosine_similarity</span><span class="params">(x,y)</span>:</span></span><br><span class="line"> </span><br><span class="line">    numerator = sum(a*b <span class="keyword">for</span> a,b <span class="keyword">in</span> zip(x,y))</span><br><span class="line">   denominator = square_rooted(x)*square_rooted(y)</span><br><span class="line">   <span class="keyword">return</span> round(numerator/float(denominator),<span class="number">3</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> cosine_similarity([<span class="number">3</span>, <span class="number">45</span>, <span class="number">7</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">54</span>, <span class="number">13</span>, <span class="number">15</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="Jaccard-similarity"><a href="#Jaccard-similarity" class="headerlink" title="Jaccard similarity"></a>Jaccard similarity</h3><p>Jaccard Distance measures how close two sets are. It is simply a ratio of the intersection of the sets to the Union. Can be used when the datatypes are categorical. Example: Products purchased/viewed by customers. Typically used in Product recommendation, Clustering customers based on purchase/engagement patterns. Please note Jaccard distance is a dissimilarity metric and Jaccard coefficient, J(A,B) is a similarity metric.</p>
+<p>$$<br>d _ { J } ( A , B ) = 1 - J ( A , B ) = \frac { | A \cup B | - | A \cap B | } { | A \cup B | }<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span>*</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jaccard_similarity</span><span class="params">(x,y)</span>:</span></span><br><span class="line"> </span><br><span class="line">    intersection_cardinality = len(set.intersection(*[set(x), set(y)]))</span><br><span class="line">    union_cardinality = len(set.union(*[set(x), set(y)]))</span><br><span class="line">    <span class="keyword">return</span> intersection_cardinality/float(union_cardinality)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> jaccard_similarity([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">6</span>],[<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="Edit-Distance"><a href="#Edit-Distance" class="headerlink" title="Edit Distance"></a>Edit Distance</h3><p>Edit distance is used when the comparing strings. Ideal use cases would be auto spell check, meta data correction etc. The distance between two strings are smaller if the number of corrections ( insertions or deletions ) needed to perfectly match are smaller.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/similarity-measures/" rel="tag"># similarity-measures</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/21/resnet-understanding/" rel="next" title="ResNet Understanding">
+                <i class="fa fa-chevron-left"></i> ResNet Understanding
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Euclidean-distance"><span class="nav-number">1.</span> <span class="nav-text">Euclidean distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manhattan-distance"><span class="nav-number">2.</span> <span class="nav-text">Manhattan distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Minkowski-distance"><span class="nav-number">3.</span> <span class="nav-text">Minkowski distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cosine-similarity"><span class="nav-number">4.</span> <span class="nav-text">Cosine similarity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jaccard-similarity"><span class="nav-number">5.</span> <span class="nav-text">Jaccard similarity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Edit-Distance"><span class="nav-number">6.</span> <span class="nav-text">Edit Distance</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/06/21/similarity-measures/';
+          this.page.identifier = '2019/06/21/similarity-measures/';
+          this.page.title = 'Similarity Measures';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
