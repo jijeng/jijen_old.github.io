@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简单介绍一下 翻译系统的发展过程 然后附上两篇该方面论文的阅读笔记， 即Sequence to Sequence Learning with Neural Network 和 Effective Approaches to Attention-based Neural Machine Translation。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP Papers Reading-Machine Translation">
+<meta property="og:url" content="http://yoursite.com/2019/06/29/nlp-papers-reading-machine-translation/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="简单介绍一下 翻译系统的发展过程 然后附上两篇该方面论文的阅读笔记， 即Sequence to Sequence Learning with Neural Network 和 Effective Approaches to Attention-based Neural Machine Translation。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/2cf84d89fe5fc1a4.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/82e16ed9bc913351.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/9e79af473abb92ec.png">
+<meta property="og:updated_time" content="2019-06-29T07:19:05.451Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP Papers Reading-Machine Translation">
+<meta name="twitter:description" content="简单介绍一下 翻译系统的发展过程 然后附上两篇该方面论文的阅读笔记， 即Sequence to Sequence Learning with Neural Network 和 Effective Approaches to Attention-based Neural Machine Translation。">
+<meta name="twitter:image" content="https://i.bmp.ovh/imgs/2019/06/2cf84d89fe5fc1a4.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/29/nlp-papers-reading-machine-translation/"/>
+
+
+
+
+
+  <title>NLP Papers Reading-Machine Translation | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/29/nlp-papers-reading-machine-translation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NLP Papers Reading-Machine Translation</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-29T14:26:31+08:00">
+                2019-06-29
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-29T15:19:05+08:00">
+                2019-06-29
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/29/nlp-papers-reading-machine-translation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/29/nlp-papers-reading-machine-translation/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>简单介绍一下 翻译系统的发展过程 然后附上两篇该方面论文的阅读笔记， 即<a href="https://arxiv.org/abs/1409.3215" target="_blank" rel="noopener">Sequence to Sequence Learning with Neural Network</a> 和 <a href="https://arxiv.org/abs/1508.04025" target="_blank" rel="noopener">Effective Approaches to Attention-based Neural Machine Translation</a>。</p>
+<a id="more"></a>
+<h2 id="五个主要的发展过程"><a href="#五个主要的发展过程" class="headerlink" title="五个主要的发展过程"></a>五个主要的发展过程</h2><p>why difficult?</p>
+<ul>
+<li>Machine translation is challenging given the inherent ambiguity and flexibility of human language.</li>
+<li>Statistical machine translation replaces classical rule-based systems with models that learn to translate from examples.</li>
+<li>Neural machine translation models fit a single model rather than a pipeline of fine-tuned models and currently achieve state-of-the-art results.</li>
+</ul>
+<p><strong><em> Rule-based Machine Translation</em></strong></p>
+<p>Classical machine translation methods often involve rules for converting text in the source language to the target language. The rules are often developed by linguists and may operate at the lexical, syntactic, or semantic level. This focus on rules gives the name to this area of study: Rule-based Machine Translation, or RBMT.</p>
+<p>pros and cons: The key limitations of the classical machine translation approaches are both the expertise required to develop the rules, and the vast number of rules and exceptions required.</p>
+<p><strong><em> Statistical Machine Translation</em></strong></p>
+<p>What?</p>
+<p>Statistical machine translation, or SMT for short, is the use of statistical models that learn to translate text from a source language to a target language gives a large corpus of examples.</p>
+<p>Given a sentence T in the target language, we seek the sentence S from which the translator produced T. We know that our chance of error is minimized by choosing that sentence S that is most probable given T. Thus, we wish to choose S so as to maximize $P_r(S|T)$.</p>
+<p>Pros and Cons:<br>The approach is data-driven, requiring only a corpus of examples with both source and target language text. This means linguists are not longer required to specify the rules of translation. Although effective, statistical machine translation methods suffered from a narrow focus on the phrases being translated, losing the broader nature of the target text. The hard focus on data-driven approaches also meant that methods may have ignored important syntax distinctions known by linguists. Finally, the statistical approaches required careful tuning of each module in the translation pipeline.</p>
+<p><strong><em> Neural Machine Translation</em></strong></p>
+<p>The key benefit to the approach is that a single system can be trained directly on source and target text, no longer requiring the pipeline of specialized systems used in statistical machine learning.</p>
+<p>As such, neural machine translation systems are said to be end-to-end systems as only one model is required for the translation.</p>
+<p><strong><em> Encoder-Decoder Model</em></strong></p>
+<p>Multilayer Perceptron neural network models can be used for machine translation, although the models are limited by a fixed-length input sequence where the output must be the same length.</p>
+<p>These early models have been greatly improved upon recently through the use of recurrent neural networks organized into an encoder-decoder architecture that allow for variable length input and output sequences.</p>
+<p>Key to the encoder-decoder architecture is the ability of the model to encode the source text into an internal fixed-length representation called the context vector. Interestingly, once encoded, different decoding systems could be used, in principle, to translate the context into different languages.</p>
+<p>The power of this model lies in the fact that it can map sequences of different lengths to each other. </p>
+<p><strong><em> Encoder-Decoders with Attention</em></strong></p>
+<p>Although effective, the Encoder-Decoder architecture has problems with long sequences of text to be translated.</p>
+<p>The problem stems from the fixed-length internal representation that must be used to decode each word in the output sequence.<br>The solution is the use of an attention mechanism that allows the model to learn where to place attention on the input sequence as each word of the output sequence is decoded.</p>
+<p>The encoder-decoder recurrent neural network architecture with attention is currently the state-of-the-art on some benchmark problems for machine translation. And this architecture is used in the heart of the Google Neural Machine Translation system, or GNMT, used in their <a href="https://translate.google.com" target="_blank" rel="noopener">Google Translate service</a>. </p>
+<p>Although effective, the neural machine translation systems still suffer some issues, such as scaling to larger vocabularies of words and the slow speed of training the models. There are the current areas of focus for large production neural translation systems, such as the Google system.</p>
+<p><strong> 随手插上 Attention VS  LSTM </strong></p>
+<p>A limitation of the architecture is that it encodes the input sequence to a fixed length internal representation. This imposes limits on the length of input sequences that can be reasonably learned and results in worse performance for very long input sequences.</p>
+<p>After reading this, you will know:</p>
+<ul>
+<li>The limitation of the encode-decoder architecture and the fixed-length internal representation.</li>
+<li>The attention mechanism to overcome the limitation that allows the network to learn where to pay attention in the input sequence for each item in the output sequence.</li>
+</ul>
+<p>This (LSTM) is believed to limit the performance of these networks, especially when considering long input sequences, such as very long sentences in text translation problems. Put another way, each item in the output sequence is conditional on selective items in the input sequence.</p>
+<blockquote>
+<p>Each time the proposed model generates a word in a translation, it (soft-)searches for a set of positions in a source sentence where the most relevant information is concentrated. The model then predicts a target word based on the context vectors associated with these source positions and all the previous generated target words.… it encodes the input sentence into a sequence of vectors and chooses a subset of these vectors adaptively while decoding the translation. This frees a neural translation model from having to squash all the information of a source sentence, regardless of its length, into a fixed-length vector.</p>
+</blockquote>
+<p>And, This (Attention) increases the computational burden of the model, but results in a more targeted and better-performing model. </p>
+<p>同样，除了在 machine translation 中有应用， 在其他领域如image description, CNN 中同样有借鉴的意义。Convolutional neural networks applied to computer vision problems also suffer from similar limitations, where it can be difficult to learn models on very large images.</p>
+<p><strong>参考文献</strong></p>
+<p><a href="https://machinelearningmastery.com/introduction-neural-machine-translation/" target="_blank" rel="noopener">introduction-neural-machine-translation</a><br><a href="https://machinelearningmastery.com/attention-long-short-term-memory-recurrent-neural-networks/" target="_blank" rel="noopener">attention-long-short-term-memory-recurrent-neural-networks</a></p>
+<h2 id="两篇论文阅读笔记"><a href="#两篇论文阅读笔记" class="headerlink" title="两篇论文阅读笔记"></a>两篇论文阅读笔记</h2><p><strong> Sequence to Sequence Learning with Neural Network</strong></p>
+<p> 研究目的：DNNs需要输入、输出维度是已知和固定的。而语音识别、机器翻译、问答系统等序列到序列问题的序列长度是未知的。DNN有一个明显的缺陷：DNN只能处理输入、输出向量维度是定长的情形。对于输入、输出可变长的情况，使用RNN-Recurrent Neural Network更易求解。</p>
+<p>贡献之一在于网络结构上：通过学习编码一个可变长度的序列成一个固定长度的向量表示，解码一个给定的固定长度的向量成一个可变长度的序列。实现的时候首先將source sequence通過一個encode LSTM map成一個vector，然後再通過另一個decoder LSTM進行翻譯得出output，這也恰恰是image caption裏的思想呀（通過CNN將輸入圖像conv成一個vector或者feature map，然後再輸入LSTM），原來大體是這樣，接着看。</p>
+<p> 另外还有一个小的策略：LSTM在长句翻译中的表现也不俗。这归功于对源序列中词序的逆转。虽然LSTM能够基于长期的相关性处理问题，但我们发现在把原句序列逆转的情况下LSMT能学习得更加出色。逆转之后，LSTM测试的复杂度从5.8降至4.7，并且在BLEU上的得分从25.9提升至30.6。</p>
+<p> 不足之处：其他方面都比較普通，或者說很多論文中都有提到過，比如LSTM可以解決vanishing的問題但沒法解決gradient exploding的問題，因此採取gradient crop。模型採用了SGD without momentum。實用的LSTM結構式Grave的《Generating sequence from RNN》中的LSTM結構，等等。</p>
+<p> 总结：總體來說，這個模型還是採取了貪婪的算法，換句話說，後面的預測對前面的狀態有極強的依賴，一旦前面的預測出現問題，後面的預測就不可靠了，這也是一個值得思考和改進的地方。</p>
+<p> <strong> Effective Approaches to Attention-based Neural Machine Translation</strong></p>
+<p> 这篇文章的核心在于 attention。</p>
+<p>Attention 的作用可以看作是一个对齐模型，传统 SMT 我们用 EM 算法来求解对齐，这里做一个隐式的对齐，将 alignment model 用一个 feedforward neural network 参数化，和其他部分一起训练，神经网络会同时来学习 翻译模型(translation) 和 对齐模型(alignment)。<br> <img src="https://i.bmp.ovh/imgs/2019/06/2cf84d89fe5fc1a4.png" alt=""></p>
+<p>Attention 可以分成 hard and soft两种模型，简单理解 hard attention 就是从 source sentence 中找到一个能产生单词 $t^{th}$ 对齐的特定单词，把 $s_{t,i}$ 设为1，其他所有单词硬性的认为其概率为0; soft attention 对于source sentence中每个单词都给出一个对齐概率，得到一个概率分布，context vector 就是这些概率分布的一个加权和，整个模型是平滑的且处处可分。</p>
+<p>而在该篇论文中提出了一个新的 attention 机制 local attention，在得到 context vector 时，我们不想看所有的 source hidden state，而是每次只看一个 hidden state 的子集(subset)，这样的 attention 其实更集中，也会有更好的结果。Global attention 其实就是 soft attention， local model 实际相当于 hard 和 soft attention 的一个混合或者说折中，主要是用来降低 attention 的花费，简单来说就是每次计算先用预测函数得到 source 相关信息的窗口。</p>
+<p>soft or hard attention 还是 global or local attention是从不同的角度进行分类的，前者是在概率分布上，后者是在 context上。</p>
+<p>这个是global attention：<br><img src="https://i.bmp.ovh/imgs/2019/06/82e16ed9bc913351.png" alt=""></p>
+<p>这个是 local attention<br><img src="https://i.bmp.ovh/imgs/2019/06/9e79af473abb92ec.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/28/seq2seq-translation-codes/" rel="next" title="Seq2Seq Translation (English to Chinese)">
+                <i class="fa fa-chevron-left"></i> Seq2Seq Translation (English to Chinese)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#五个主要的发展过程"><span class="nav-number">1.</span> <span class="nav-text">五个主要的发展过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两篇论文阅读笔记"><span class="nav-number">2.</span> <span class="nav-text">两篇论文阅读笔记</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/06/29/nlp-papers-reading-machine-translation/';
+          this.page.identifier = '2019/06/29/nlp-papers-reading-machine-translation/';
+          this.page.title = 'NLP Papers Reading-Machine Translation';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
