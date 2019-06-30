@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="基于 tensorflow 的英文文本的预处理和基于 keras 的中英文本预处理。主要是代码，辅助注释。预处理比较详细的步骤：  unicode to ascii normalize string tokenization (choose one-hot or not) padding (find proper length of tokenization)  需要选择一个框架 tensorfl">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-29T07:26:51.874Z">
+<meta property="og:updated_time" content="2019-06-30T03:59:09.589Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Seq2Seq Translation (English to Chinese)">
 <meta name="twitter:description" content="基于 tensorflow 的英文文本的预处理和基于 keras 的中英文本预处理。主要是代码，辅助注释。预处理比较详细的步骤：  unicode to ascii normalize string tokenization (choose one-hot or not) padding (find proper length of tokenization)  需要选择一个框架 tensorfl">
@@ -308,8 +308,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-29T15:26:51+08:00">
-                2019-06-29
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-30T11:59:09+08:00">
+                2019-06-30
               </time>
             
           </span>
@@ -389,7 +389,16 @@
 </ul>
 <p>需要选择一个框架 tensorflow or keras 去实现。大量数据建议选择 tensorflow，小模型使用 keras 就行。</p>
 <a id="more"></a>
-<h3 id="热身"><a href="#热身" class="headerlink" title="热身"></a>热身</h3><p>将英文  punctuation characters 和字母以空格隔开。</p>
+<h3 id="热身"><a href="#热身" class="headerlink" title="热身"></a>热身</h3><p>Text data typically requires some cleanup before it can be embedded in vector space and fed to a machine learning model. </p>
+<ul>
+<li>Remove tags. For example, “<i>Hello</i> <b>World</b>!” is converted to “Hello World!”</li>
+<li>Remove repeating whitespace characters (spaces, tabs, line breaks). Convert tabs and line breaks to spaces.</li>
+<li>Remove stopwords. These include the most commonly occurring words in a language, like “the,” “on,” “is,” etc. NLP libraries like gensim provide a default list of stopwords.</li>
+<li>Convert all text to lowercase.</li>
+<li>Perform Porter stemming. Porter stemming reduces inflections like “fishing,” “fished,” and “fisher” to the root “fish.” This makes it easier for an ML model to learn how to glean meaning or intent form a sequence of words.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gensim.parsing.preprocessing <span class="keyword">import</span> preprocess_string, strip_tags, strip_multiple_whitespaces, remove_stopwords, stem_text</span><br><span class="line">custom_filters = [strip_tags, strip_multiple_whitespaces, remove_stopwords, stem_text]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_tokenized_questions</span><span class="params">(X)</span>:</span></span><br><span class="line">    series = pd.Series(pd.concat([X[<span class="string">'question1'</span>], X[<span class="string">'question2'</span>]]),dtype=str)</span><br><span class="line">    series.dropna()</span><br><span class="line">    <span class="keyword">for</span> question <span class="keyword">in</span> series:</span><br><span class="line">        <span class="keyword">yield</span> preprocess_string(question, custom_filters)</span><br></pre></td></tr></table></figure>
+<p>来一个小的 case： 将英文  punctuation characters 和字母以空格隔开。</p>
 <p>输入：</p>
 <blockquote>
 <p>s = ‘bla. bla? bla.bla! bla…’</p>
@@ -543,7 +552,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -565,7 +574,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
