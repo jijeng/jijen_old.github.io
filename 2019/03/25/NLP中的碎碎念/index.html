@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="keywords," />
+  <meta name="keywords" content="关键词提取,新词发现," />
 
 
 
@@ -80,17 +80,19 @@
 
 
 <meta name="description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
-<meta name="keywords" content="keywords">
+<meta name="keywords" content="关键词提取,新词发现">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NLP中的碎碎念">
 <meta property="og:url" content="http://yoursite.com/2019/03/25/NLP中的碎碎念/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-18T03:17:11.952Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/02/ZYVtrq.png">
+<meta property="og:updated_time" content="2019-07-02T15:09:01.130Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP中的碎碎念">
 <meta name="twitter:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/07/02/ZYVtrq.png">
 
 
 
@@ -308,8 +310,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-18T11:17:11+08:00">
-                2019-06-18
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-02T23:09:01+08:00">
+                2019-07-02
               </time>
             
           </span>
@@ -387,11 +389,109 @@
 <h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>有一个与之很像的概念 pageRanking，最开始是用来计算网页的重要性。Textrank 主要用来提取文章的关键词，然后比较适合长文本。</p>
 <h2 id="CBOW和skip-gram"><a href="#CBOW和skip-gram" class="headerlink" title="CBOW和skip-gram"></a>CBOW和skip-gram</h2><p>举一个简单的小例子说明 CBOW和skip-gram的区别：skip-gram 是根据中心词汇然后预测上下文词汇，这个不是一下子输入上下文词汇的，而是一个过程，中心词汇和上下文词汇1 ，中心词汇和上下文词汇2，这样的进行输入。 cbow 和其的区别，在于简单相加了上下文词汇作为一个整体，然后和中心词汇进行输入，所以最后是这样的结果。</p>
 <p>使用skip gram训练的时间更长，但是对于出现频率不高的词汇，效果比较好。但CBOW的训练速度是相对来说比较快一些。</p>
-<h2 id="分词软件的原理"><a href="#分词软件的原理" class="headerlink" title="分词软件的原理"></a>分词软件的原理</h2><p>下面是常见的分词方式，但是并没有说明哪个软件是什么分词方法。</p>
-<h3 id="基于规则的分词方法"><a href="#基于规则的分词方法" class="headerlink" title="基于规则的分词方法"></a>基于规则的分词方法</h3><pre><code>这种方法又叫作机械分词方法、基于字典的分词方法，它是按照一定的策略将待分析的汉字串与一个“充分大的”机器词典中的词条进行匹配
-</code></pre><h3 id="基于统计的分词方法"><a href="#基于统计的分词方法" class="headerlink" title="基于统计的分词方法"></a>基于统计的分词方法</h3><pre><code>该方法的主要思想：词是稳定的组合，因此在上下文中，相邻的字同时出现的次数越多，就越有可能构成一个词。因此字与字相邻出现的概率或频率能较好地反映成词的可信度。可以对训练文本中相邻出现的各个字的组合的频度进行统计，计算它们之间的互现信息。互现信息体现了汉字之间结合关系的紧密程度。当紧密程 度高于某一个阈值时，便可以认为此字组可能构成了一个词。该方法又称为无字典分词。
-</code></pre><h3 id="基于语义的分词方法"><a href="#基于语义的分词方法" class="headerlink" title="基于语义的分词方法"></a>基于语义的分词方法</h3><pre><code>语义分词法引入了语义分析，对自然语言自身的语言信息进行更多的处理，如扩充转移网络法、知识分词语义分析法、邻接约束法、综合匹配法、后缀分词法、特征词库法、矩阵约束法、语法分析法等。
-</code></pre>
+<h2 id="分词软件"><a href="#分词软件" class="headerlink" title="分词软件"></a>分词软件</h2><p>常见的中文分词服务</p>
+<table>
+<thead>
+<tr>
+<th>分词服务</th>
+<th style="text-align:center">开源/商业</th>
+<th style="text-align:right">支持语言</th>
+<th>词性标注</th>
+<th>命名实体识别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jieba</td>
+<td style="text-align:center">开源</td>
+<td style="text-align:right">Python, Java, C++</td>
+<td>无</td>
+<td>无</td>
+</tr>
+<tr>
+<td>HanLP</td>
+<td style="text-align:center">开源</td>
+<td style="text-align:right">Python，Java， C++</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>StandFord CoreNLP</td>
+<td style="text-align:center">开源</td>
+<td style="text-align:right">Java</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>百度NLP</td>
+<td style="text-align:center">商业</td>
+<td style="text-align:right"></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>阿里NLP</td>
+<td style="text-align:center">商业</td>
+<td style="text-align:right"></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="分词软件的原理"><a href="#分词软件的原理" class="headerlink" title="分词软件的原理"></a>分词软件的原理</h3><p><img src="https://s2.ax1x.com/2019/07/02/ZYVtrq.png" alt="ZYVtrq.png"></p>
+<p>下面是常见的分词方式，但是并没有说明哪个软件是什么分词方法。</p>
+<p><strong> 基于规则的分词方法</strong></p>
+<pre><code>这种方法又叫作机械分词方法、基于字典的分词方法，它是按照一定的策略将待分析的汉字串与一个“充分大的”机器词典中的词条进行匹配，比如说正向最大匹配法、逆向最大匹配法
+</code></pre><p><strong> 基于统计的分词方法</strong><br>    该方法的主要思想：词是稳定的组合，因此在上下文中，相邻的字同时出现的次数越多，就越有可能构成一个词。因此字与字相邻出现的概率或频率能较好地反映成词的可信度。可以对训练文本中相邻出现的各个字的组合的频度进行统计，计算它们之间的互现信息。互现信息体现了汉字之间结合关系的紧密程度。当紧密程 度高于某一个阈值时，便可以认为此字组可能构成了一个词。该方法又称为无字典分词。 比如说CRF 算法。</p>
+<p><strong> 基于语义的分词方法</strong><br>    语义分词法引入了语义分析，对自然语言自身的语言信息进行更多的处理，如扩充转移网络法、知识分词语义分析法、邻接约束法、综合匹配法、后缀分词法、特征词库法、矩阵约束法、语法分析法等。</p>
+<p> <strong> 逆向最大匹配</strong>分词是中文分词基本算法之一，因为是机械切分，所以它也有分词速度快的优点，且逆向最大匹配分词比起正向最大匹配分词更符合人们的语言习惯。逆向最大匹配分词需要在已有词典的基础上，从被处理文档的末端开始匹配扫描，每次取最末端的i个字符（分词所确定的阈值i）作为匹配字段，若匹配失败，则去掉匹配字段最前面的一个字，继续匹配。而且选择的阈值越大，分词越慢，但准确性越好。这种方法经常被用来解决歧义词的问题，所以单独说一下。</p>
+<p>算法：<br>事先设置一个k值，下面的程序k值设为5，然后从最后一个字开始向前截取k个字，先把这k个字和字典匹配，看能否找到匹配的词语，若不能，则剔除这k个字最左边的字，然后再把这k-1个字与字典匹配…一直到匹配成功，或者前k-1个字都没匹配成功，那就把第k个字当成一个独立的词，然后再向前移动分出来的词的长度，再截取k个字……一直到全部分好词为止。<br>“我爱北京天安门”</p>
+<p>先从后面开始截取k(这里是5)个字，然后把”北京天安门”五个字与字典匹配，字典中没有这个词，然后就去掉”北”字，把剩下的”京天安门”与字典匹配，字典中还是没有这个词，再去掉”京”，然后再把”天安门”与字典匹配，发现匹配到了这个词，于是就把”天安门”划为一个词语，然后指针向前移动三个字。再截取k个字，这里因为就剩下4个字了，所以就截取4个字，把”我爱北京”与字典匹配，没成功，去掉”我”，再把”爱北京”与字典匹配，还是没成功，再去掉”爱”，然后发现”北京”匹配成功，把”北京”划为一个词语，再把指针向前移动两个字，</p>
+<p><strong> CRF算法</strong><br>基本思路是对汉字进行标注训练，不仅考虑了词语出现的频率，还考虑上下文，具备较好的学习能力，因此其对歧义词和未登录词的识别都具有良好的效果。</p>
+<p>近年来，随着硬件计算能力的发展以及词的分布式表示（word embedding）的提出，神经网络可以有效处理许多NLP任务。这类方法对于序列标注任务（如CWS、POS、NER）的处理方式是类似的：将token从离散one-hot表示映射到低维空间中成为稠密的embedding，随后将句子的embedding序列输入到RNN中，用神经网络自动提取特征，Softmax来预测每个token的标签。这种方法使得模型的训练成为一个端到端的过程，而非传统的pipeline，不依赖于特征工程，是一种数据驱动的方法，但网络种类繁多、对参数设置依赖大，模型可解释性差。</p>
+<p>推荐博客讲解 CRF算法，反正我是没有看懂，哈哈哈。<a href="https://www.cnblogs.com/en-heng/p/6214023.html" target="_blank" rel="noopener">【中文分词】条件随机场CRF</a>, <a href="https://www.cnblogs.com/xlturing/p/10161840.html" target="_blank" rel="noopener">浅谈分词算法（4）基于字的分词方法（CRF）</a> 和 <a href="https://www.unclewang.info/learn/machine-learning/753/" target="_blank" rel="noopener">CRF算法学习——自己动手实现一个简单的CRF分词</a></p>
+<h3 id="分词粒度"><a href="#分词粒度" class="headerlink" title="分词粒度"></a>分词粒度</h3><p>目前，分词主要包含细粒度分词和粗粒度分词两种，在不同的应用场景需要用到不同的粒度。细粒度分词是指将原始语句切分成最基本的词语，而粗粒度分词是指将原始语句中的多个基本词组合起来切成一个词，进而组成语义相对明确的实体。</p>
+<ul>
+<li>原始串：浙江大学坐落在西湖旁边</li>
+<li>细粒度：浙江/大学/坐落/在/西湖/旁边</li>
+<li>粗粒度：浙江大学/坐落/在/西湖/旁边</li>
+</ul>
+<p>举例说明分词粒度和应用场景：<br>对于query为“耐克鞋”来说，词典中是包含这个实体词的，分词的切分结果就是“耐克鞋”。但是，考拉用来建索引的商品描述中，这三个字是没有连续出现的，自然就没有“耐克鞋”对应的文档，这个时候就无法召回结果。那么，这时候你会说那就使用最小粒度的分词就解决这个问题了。相反，某一款商品可能有“参数表”这三个字，如果有最小粒度的分词策略，分词的结果为“参数/表”。很不幸，当query为“表”时，你会发现会召回莫名其妙的结果。一般来说，是使用词频表来进行粒度控制，基本可以解决绝大多数问题。</p>
+<p>搜索引擎展现与粒度：<br>显而易见，粒度越小，展现就越多，建立倒排索引时，索引的长度就越长;粒度的层次越多，索引的数量就越多。一个多，一个长，就对搜索系统的性能构成了极大的考验。搜索引擎并不会对所有小粒度词都建索引，而是选择“更有可能展现相关结果”的小粒度词。所以在一般情况下，切分文本粒度越大，索引越多，相关性越好，但展现越少;切分文本粒度越小，索引越少，相关性越差，但展现越好。</p>
+<p>词频决定分词粒度：<br>具体算法是，当发现一个由多个短词组成的长词时，判断每个短词中最小的词频，如果这个词频还是大于长词的词频，则按该组合进行拆分。如果多种组合，按词频最大的组合拆分。<br>如上面例子，”中央饭店”，中央的词频为1000，饭店为900,饭为200,店为600，而中央饭店为500 。</p>
+<h2 id="新词发现"><a href="#新词发现" class="headerlink" title="新词发现"></a>新词发现</h2><p>在中文分词的世界里，最主要的挑战有两个：歧义词识别，未登录词（新词）识别。经常使用逆向最大匹配去处理歧义词。新词对最后结果的影响程度是大于歧义词（20倍左右吧）。</p>
+<p><strong>分词的重要性</strong></p>
+<p>在处理文本对象时，非常关键的问题在于“切词”这个环节，几乎所有的后续结果都依赖第一步的切词。因此切词的准确性在很大程度上影响着后续的处理，切词结果的不同，也就影响了特征的提取，跟数据挖掘一样，特征提取的好坏特别重要，不论用什么算法，特征好数据好结果才会好。</p>
+<p><strong>分词的目的</strong></p>
+<p>当模型的记忆和拟合能力足够强（或者简单点，足够智能）的时候，我们完全可以不用分词的，直接基于字的模型就可以做，比如基于字的文本分类、问答系统等，早已有人在研究。但是，即便这些模型能够成功，也会因为模型复杂而导致效率下降，因此，很多时候（尤其是生产环境中），我们会寻求更简单、更高效的方案。比如之前我们一直是word embedding，但是 sentence embedding 也是在学术界很流行的，最后没有大规模的采用，无非就是工业级要求更加高效的方式，有时候会牺牲一些精度。</p>
+<p>目前很多的切词模块可以处理大部分的通用语料，然而有两类文本集仍然处理的不是很好，就是：</p>
+<ol>
+<li>网络文档</li>
+<li>领域文档</li>
+</ol>
+<p>后者可以有对应的专家 handle，但涉及到商用这种人力成本也是比较高的了，所以一般使用基础词汇+ 各领域的常用词汇。即使这样的方案仍然是无法可持续的，所以需要一种算法去判断是否是新词。在当下的互联网时代，人们还会不断的创造出一些新词出来，比如：“神马”、“不明觉厉”等。未登录词辨别未登录词包括是种类繁多，形态组合各异，规模宏大的一个领域。对这些词语的自动辨识，是一件非常困难的事。比如，“美的”、“快的”、“英雄联盟”应该被作为一个词，却被切成了两个词，失去了原有的语义。未登录词（out-of-vocabulary, OOV）笼统地之未在词典中出现的词， 人工标注可以解决很好识别，比如最典型的未登录词就是人名，尤其是明星，然后最简单的是手动的维护，但是人力成本也是比较高昂的。</p>
+<p>从分词的角度来看，新词一般表现为细粒度切分后相邻词的组合。</p>
+<p><strong> 基于统计的新词发现</strong></p>
+<p>基于信息熵的新词发现算法，从左右信息熵和互信息入手，成词的标准有两个：</p>
+<ul>
+<li>内部凝固度</li>
+<li>自由运用程度</li>
+</ul>
+<p>先简单的介绍熵的概念，熵是一种表示信息量的指标，熵越高就意味着信息含量越大，不确定性越高，越难以预测，信息也就越丰富。<br>$$<br>H ( X ) = - \sum _ { x \in X } p ( x ) \log _ { 2 } p ( x )<br>$$</p>
+<p>所谓内部凝固度，用来衡量词搭配（collocation）是否合理。比如，对于“的电影”、“电影院”这两个搭配，直观上讲“电影院”更为合理，即“电影”和“院”凝固得更紧一些。在计算语言学中，PMI (Pointwise mutual information)被用来度量词搭配与关联性，定义如下：</p>
+<p>$$<br>p m i ( x , y ) = \log \frac { P ( x , y ) } { P ( x ) P ( y ) }<br>$$</p>
+<p>若PMI高，即两个词共现（co-occurrence）的频率远大于两个词自由拼接的乘积概率，则说明这两个词搭配更为合理一些。针对一个词有多种搭配组合，比如“电影院”可以由“电影”+“院”构成，也可以由“电”+“影院”构成，那么取其所有pmi最小值（去掉log）作为内部凝固度：<br>$$<br>\operatorname { solid } \left( c _ { 1 } ^ { m } \right) = \min \frac { P \left( c _ { 1 } ^ { m } \right) } { \prod P \left( c _ { i } ^ { j } \right) } = \frac { P \left( c _ { 1 } ^ { m } \right) } { \max \prod P \left( c _ { i } ^ { j } \right) }<br>$$</p>
+<p>其中， $c _ { 1 } ^ { m } = c _ { 1 } c _ { 2 } \cdots c _ { m }$表示长度为 $m$ 的字符串，$P \left( c _ { 1 } ^ { m } \right)$ 表示$c _ { 1 } ^ { m }$ 的频率。</p>
+<blockquote>
+<p>光看文本片段内部的凝合程度还不够，我们还需要从整体来看它在外部的表现。考虑“被子”和“辈子”这两个片段。我们可以说“买被子”、“盖被子”、“进被子”、“好被子”、“这被子”等，在“被子”前面加各种字；但“辈子”的用法却非常固定，除了“一辈子”、“这辈子”、“上辈子”、“下辈子”，基本上“辈子”前面不能加别的字了。“辈子”这个文本片段左边可以出现的字太有限，以至于直觉上我们可能会认为，“辈子”并不单独成词，真正成词的其实是“一辈子”、“这辈子”之类的整体。</p>
+</blockquote>
+<p>所以，提出了自由运用程度，用以衡量一个词的左邻字与右邻字的丰富程度。正好信息熵可以完美地诠释了这种丰富程度，熵越大则丰富程度越高。“被子”和“辈子”这两个片段的左邻字熵le与右邻字熵re分别如下</p>
+<blockquote>
+<p>le(被子) = 3.67453<br>re(被子) = 3.8740<br>le(辈子) = 1.25963<br>re(辈子) = 4.11644</p>
+</blockquote>
+<p>可以看出，“被子”的左邻字熵与右邻字熵都较高，而“辈子”的左邻字熵较小，即左邻字非常贫乏。因此，“被子”较“辈子”更有可能成词。自由运用程度的定义如下：<br><a href="https://upload.cc/i1/2019/07/02/dP2n86.png" target="_blank" rel="noopener">img</a></p>
+<p>给频数、内部凝固度与自由运用程度设定一个阈值，提取出来符合阈值的候选词，去掉词典中存在的词即为新词了。所以两者都高于某个对应的阈值，那么说明这个是一个新词。</p>
+
       
     </div>
     
@@ -408,7 +508,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/keywords/" rel="tag"># keywords</a>
+            <a href="/tags/关键词提取/" rel="tag"># 关键词提取</a>
+          
+            <a href="/tags/新词发现/" rel="tag"># 新词发现</a>
           
         </div>
       
@@ -546,7 +648,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -595,7 +697,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Textrank"><span class="nav-number">1.3.</span> <span class="nav-text">Textrank</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件的原理"><span class="nav-number">3.</span> <span class="nav-text">分词软件的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于规则的分词方法"><span class="nav-number">3.1.</span> <span class="nav-text">基于规则的分词方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于统计的分词方法"><span class="nav-number">3.2.</span> <span class="nav-text">基于统计的分词方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于语义的分词方法"><span class="nav-number">3.3.</span> <span class="nav-text">基于语义的分词方法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Textrank"><span class="nav-number">1.3.</span> <span class="nav-text">Textrank</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件"><span class="nav-number">3.</span> <span class="nav-text">分词软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分词软件的原理"><span class="nav-number">3.1.</span> <span class="nav-text">分词软件的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词粒度"><span class="nav-number">3.2.</span> <span class="nav-text">分词粒度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新词发现"><span class="nav-number">4.</span> <span class="nav-text">新词发现</span></a></li></ol></div>
             
 
           </div>

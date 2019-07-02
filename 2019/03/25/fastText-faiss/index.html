@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="k-means," />
 
 
 
@@ -80,6 +80,7 @@
 
 
 <meta name="description" content="fastTextfastText结合了自然语言处理和机器学习中最成功的理念。这些包括了使用词袋以及n-gram袋表征语句，还有使用子字(subword)信息，并通过隐藏表征在类别间共享信息。另外采用了一个softmax层级(利用了类别不均衡分布的优势)来加速运算过程。 fastText 主要是用来解决 word representations和 sentence classification. 有">
+<meta name="keywords" content="k-means">
 <meta property="og:type" content="article">
 <meta property="og:title" content="fastText &amp; faiss">
 <meta property="og:url" content="http://yoursite.com/2019/03/25/fastText-faiss/index.html">
@@ -92,7 +93,9 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fbkxph28j20ia0560sm.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fboz6w71j20n20bedh7.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg">
-<meta property="og:updated_time" content="2019-06-19T14:02:24.546Z">
+<meta property="og:image" content="https://i.loli.net/2019/07/02/5d1b275bd20aa40709.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/8b4f6493ed14471b.png">
+<meta property="og:updated_time" content="2019-07-02T11:35:58.245Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fastText &amp; faiss">
 <meta name="twitter:description" content="fastTextfastText结合了自然语言处理和机器学习中最成功的理念。这些包括了使用词袋以及n-gram袋表征语句，还有使用子字(subword)信息，并通过隐藏表征在类别间共享信息。另外采用了一个softmax层级(利用了类别不均衡分布的优势)来加速运算过程。 fastText 主要是用来解决 word representations和 sentence classification. 有">
@@ -314,8 +317,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-19T22:02:24+08:00">
-                2019-06-19
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-02T19:35:58+08:00">
+                2019-07-02
               </time>
             
           </span>
@@ -469,7 +472,84 @@
 <p>Similarity search can be made orders of magnitude faster if we’re willing to trade some accuracy; that is, deviate a bit from the reference result. For example, it may not matter much if the first and second results of an image similarity search are swapped, since they’re probably both correct results for a given query. Accelerating the search involves some pre-processing of the data set, an operation that we call indexing.</p>
 </blockquote>
 <p>向量的比较有两种metric：一种是L2 一种是基于consine (点乘)进行检索。前者是求解最小的值，后者是通过inner——product 求解maximum. 并且是支持GPU的，在原来CPU上建立的index，然后很好的迁移到 GPU上。</p>
+<h3 id="faiss-中的三种基本索引"><a href="#faiss-中的三种基本索引" class="headerlink" title="faiss 中的三种基本索引"></a>faiss 中的三种基本索引</h3><ol>
+<li>IndexFlatL2</li>
+</ol>
+<p>基于brute-force计算向量的L2距离，就是暴搜。检索速度慢，适用于小数据量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">d = <span class="number">64</span> <span class="comment"># 维度</span></span><br><span class="line">nb = <span class="number">100000</span> <span class="comment"># 数据库大小</span></span><br><span class="line">nq = <span class="number">10000</span> <span class="comment"># 要搜索的query</span></span><br><span class="line">np.random.seed(<span class="number">1234</span>) <span class="comment"># 确定种子，使随机数可重现</span></span><br><span class="line">xb = np.random.random((nb, d)).astype(<span class="string">'float32'</span>)</span><br><span class="line">xb[:, <span class="number">0</span>] += np.arange(nb) / <span class="number">1000.</span> <span class="comment"># 每一行的第一个列增加一个等差数列的对应项数</span></span><br><span class="line">xq = np.random.random((nq, d)).astype(<span class="string">'float32'</span>)</span><br><span class="line">xq[:, <span class="number">0</span>] += np.arange(nq) / <span class="number">1000.</span></span><br><span class="line">print(xq.shape) <span class="comment"># (10000, 64)</span></span><br><span class="line">print(xb.shape) <span class="comment"># (100000, 64)</span></span><br><span class="line"><span class="keyword">import</span> faiss <span class="comment"># make faiss available</span></span><br><span class="line">index = faiss.IndexFlatL2(d) <span class="comment"># 构建FlatL2索引</span></span><br><span class="line">print(index.is_trained)</span><br><span class="line">print(index.ntotal)</span><br><span class="line">index.add(xb) <span class="comment"># 向索引中添加向量。add操作如果没有提供id，则使用向量序号作为id。</span></span><br><span class="line">print(index.ntotal)</span><br><span class="line">k = <span class="number">4</span> <span class="comment"># 搜索多少个临近向量</span></span><br><span class="line">D, I = index.search(xb[:<span class="number">5</span>], k) <span class="comment"># 用xb的前五行本身自己搜索自己，完整性检查，用于测试</span></span><br><span class="line">print(<span class="string">"I="</span>)</span><br><span class="line">print(I)</span><br><span class="line"><span class="comment">#I=</span></span><br><span class="line"><span class="comment">#[[  0 393 363  78 924]</span></span><br><span class="line"><span class="comment"># [  1 555 277 364 617]</span></span><br><span class="line"><span class="comment"># [  2 304 101  13 801]</span></span><br><span class="line"><span class="comment"># [  3 173  18 182 484]</span></span><br><span class="line"><span class="comment"># [  4 288 370 531 178]]</span></span><br><span class="line"><span class="comment"># I输出类似于上面，每行对应着相应向量的搜索结果。k为多少就有多少列，distance低的排在前面。</span></span><br><span class="line"><span class="comment"># 可以看到前五行的第一列确实是0~4</span></span><br><span class="line">print(<span class="string">"D="</span>)</span><br><span class="line">print(D)</span><br><span class="line"><span class="comment">#[[0.        7.1751733 7.207629  7.2511625]</span></span><br><span class="line"><span class="comment"># [0.        6.3235645 6.684581  6.7999454]</span></span><br><span class="line"><span class="comment"># [0.        5.7964087 6.391736  7.2815123]</span></span><br><span class="line"><span class="comment"># [0.        7.2779055 7.5279865 7.6628466]</span></span><br><span class="line"><span class="comment"># [0.        6.7638035 7.2951202 7.3688145]]</span></span><br><span class="line"><span class="comment"># 可以看到第一行第一列都是0，意思是向量与自己本身的距离为0</span></span><br><span class="line">D, I = index.search(xq, k) <span class="comment"># 搜索</span></span><br><span class="line">print(I[:<span class="number">5</span>]) <span class="comment"># 最初五个向量查询的结果</span></span><br><span class="line">print(I[<span class="number">-5</span>:]) <span class="comment"># 最后五个向量查询的结果</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>IndexIVF (加速搜索)</li>
+</ol>
+<p>对于暴搜来说，海量数据搜索速度太慢，那么需要预训练把向量都聚类。这里使用IndexIVFFlat来加快搜索速度。IndexIVFFlat是faiss的倒排索引，把数据构成的向量空间切割为Voronoi细胞，每个向量落入其中一个Voronoi细胞中。在搜索时，只有查询x所在细胞中包含的数据库向量y与少数几个相邻查询向量进行比较。</p>
+<p>训练的时候还需要有一个量化器，用于决定以什么方式将向量分配给Voronoi细胞。每个细胞由一个质心定义，找到一个向量所在的Voronoi细胞包括在质心集中找到该向量的最近邻居。</p>
+<p>搜索方法有两个参数：</p>
+<ul>
+<li>nlist 划分Voronoi细胞的数量</li>
+<li>nprobe 执行搜索访问的单元格数(不包括nlist)，该参数调整结果速度和准确度之间折中的一种方式。如果设置nprobe=nlist则结果与暴搜一致。</li>
+</ul>
+<p>加快索引的方式之一，与暴搜对比就是需要train，把向量空间下的数据切割为Voronoi细胞，检索只对向量所在细胞和周围细胞进行检索。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">d = <span class="number">64</span>                           <span class="comment"># dimension</span></span><br><span class="line">nb = <span class="number">100000</span>                      <span class="comment"># database size</span></span><br><span class="line">nq = <span class="number">10000</span>                       <span class="comment"># nb of queries</span></span><br><span class="line">np.random.seed(<span class="number">1234</span>)             <span class="comment"># make reproducible</span></span><br><span class="line">xb = np.random.random((nb, d)).astype(<span class="string">'float32'</span>)</span><br><span class="line">xb[:, <span class="number">0</span>] += np.arange(nb) / <span class="number">1000.</span></span><br><span class="line">xq = np.random.random((nq, d)).astype(<span class="string">'float32'</span>)</span><br><span class="line">xq[:, <span class="number">0</span>] += np.arange(nq) / <span class="number">1000.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> faiss</span><br><span class="line">nlist = <span class="number">100</span></span><br><span class="line">k = <span class="number">4</span></span><br><span class="line">quantizer = faiss.IndexFlatL2(d)  <span class="comment"># 内部的索引方式</span></span><br><span class="line">index = faiss.IndexIVFFlat(quantizer, d, nlist, faiss.METRIC_L2)</span><br><span class="line"><span class="comment"># here we specify METRIC_L2, by default it performs inner-product search</span></span><br><span class="line">print(<span class="string">"before train"</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="keyword">not</span> index.is_trained</span><br><span class="line">index.train(xb)</span><br><span class="line"><span class="keyword">assert</span> index.is_trained</span><br><span class="line">print(<span class="string">"before add"</span>)</span><br><span class="line">index.add(xb)                  <span class="comment"># add may be a bit slower as well</span></span><br><span class="line">D, I = index.search(xq, k)     <span class="comment"># actual search</span></span><br><span class="line">print(I[<span class="number">-5</span>:])                  <span class="comment"># neighbors of the 5 last queries</span></span><br><span class="line">index.nprobe = <span class="number">10</span>              <span class="comment"># default nprobe is 1, try a few more</span></span><br><span class="line">D, I = index.search(xq, k)</span><br><span class="line">print(I[<span class="number">-5</span>:])                  <span class="comment"># neighbors of the 5 last queries</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>IndexIVFPQ (减少内存使用)</li>
+</ol>
+<p>基于Product Quantizer对高维向量进行压缩，降低内存占用。</p>
+<p>上面我们看到的索引IndexFlatL2和IndexIVFFlat都会全量存储所有的向量在内存中，为满足大的数据量的需求，faiss提供一种基于Product Quantizer(乘积量化)的压缩算法编码向量大小到指定的字节数。此时，存储的向量时压缩过的，查询的距离也是近似的。关于乘积量化的算法可自行搜索。</p>
+<p>上面两种索引都是存储的完整向量，下面介绍一种压缩向量的方法。IndexIVFPQ基于PQ算法压缩向量。在这种情况下，由于向量没有精确存储，搜索方法返回的距离也是近似值。</p>
+<p>原理：简单来说就是通过PCA将高纬空间转换成低维空间。 原来的数据 train 得到一个转换矩阵P，然后这个矩阵和原来的数据X得到新的降维之后的Y ($PX =Y$)。这样转换过程中信息损失的更少，在faiss 中使用 train() 函数进行实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">d = <span class="number">64</span> <span class="comment"># dimension</span></span><br><span class="line">nb = <span class="number">100000</span> <span class="comment"># database size</span></span><br><span class="line">nq = <span class="number">10000</span> <span class="comment"># nb of queries</span></span><br><span class="line">np.random.seed(<span class="number">1234</span>) <span class="comment"># make reproducible</span></span><br><span class="line">xb = np.random.random((nb, d)).astype(<span class="string">'float32'</span>)</span><br><span class="line">xb[:, <span class="number">0</span>] += np.arange(nb) / <span class="number">1000.</span></span><br><span class="line">xq = np.random.random((nq, d)).astype(<span class="string">'float32'</span>)</span><br><span class="line">xq[:, <span class="number">0</span>] += np.arange(nq) / <span class="number">1000.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> faiss</span><br><span class="line"></span><br><span class="line">nlist = <span class="number">100</span></span><br><span class="line">m = <span class="number">8</span></span><br><span class="line">k = <span class="number">4</span></span><br><span class="line">quantizer = faiss.IndexFlatL2(d) <span class="comment"># 内部的索引方式</span></span><br><span class="line">index = faiss.IndexIVFPQ(quantizer, d, nlist, m, <span class="number">8</span>)</span><br><span class="line"><span class="comment"># 每个向量都被编码为8个字节大小</span></span><br><span class="line">index.train(xb)</span><br><span class="line">index.add(xb)</span><br><span class="line">D, I = index.search(xb[:<span class="number">5</span>], k) <span class="comment"># sanity check</span></span><br><span class="line">print(I)</span><br><span class="line">print(D)</span><br><span class="line"><span class="comment">#[[   0   78  714  372]</span></span><br><span class="line"><span class="comment"># [   1 1063  555  277]</span></span><br><span class="line"><span class="comment"># [   2  304  134   46]</span></span><br><span class="line"><span class="comment"># [   3  773   64    8]</span></span><br><span class="line"><span class="comment"># [   4  288  531  827]]</span></span><br><span class="line"><span class="comment">#[[1.6675376 6.1988335 6.4136653 6.4228306]</span></span><br><span class="line"><span class="comment"># [1.4083313 6.023788  6.025648  6.284443 ]</span></span><br><span class="line"><span class="comment"># [1.6988016 5.592166  6.139589  6.6717234]</span></span><br><span class="line"><span class="comment"># [1.7987373 6.625978  6.7166452 6.865783 ]</span></span><br><span class="line"><span class="comment"># [1.5371588 5.7953157 6.38059   6.4141784]]</span></span><br><span class="line"><span class="comment"># 可以看到确实搜索到了正确的结果，但是第一行第一列的distance不为零，属于有损压缩。</span></span><br><span class="line"><span class="comment"># 虽然与接下来的几列（其他几个搜索结果）对比还是有几倍的优势。</span></span><br><span class="line">index.nprobe = <span class="number">10</span> <span class="comment"># 与以前的方法相比</span></span><br><span class="line">D, I = index.search(xq, k) <span class="comment"># search</span></span><br><span class="line">print(I[<span class="number">-5</span>:])</span><br></pre></td></tr></table></figure>
 <p>在涉及index使用考虑速度，acc和内存大小三个不同的维度。然后不同的index 是有不同的侧重的。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg" alt=""></p>
+<p><a href="http://yizhanggou.top/faiss%e7%b4%a2%e5%bc%95%e8%b0%83%e7%a0%94%ef%bc%88%e4%b8%89%ef%bc%89-faiss%e5%88%86%e6%9e%90/" target="_blank" rel="noopener">安装参考</a></p>
+<p><strong> Take Off</strong></p>
+<p>no build time, high query time, high storage, exact accuracy    –&gt;    Faiss IndexFlat<br>low build time, med query time, high storage, high accuracy   –&gt;     Faiss IndexIVFFlat<br>med build time, low query time, low-med storage, med-high accuracy   –&gt;     Faiss IndexIVFPQ<br>very high build time, low query time, low-high storage (whether stored as a k-NN graph or raw data), high accuracy    –&gt;  N-Descent by Dong et al. (e.g., nmslib)</p>
+<h3 id="product-quantization-算法"><a href="#product-quantization-算法" class="headerlink" title="product quantization 算法"></a>product quantization 算法</h3><p>这里的乘积是指笛卡尔积（Cartesian product），意思是指把原来的向量空间分解为若干个低维向量空间的笛卡尔积，并对分解得到的低维向量空间分别做量化（quantization）。这样每个向量就能由多个低维空间的量化code组合表示。</p>
+<blockquote>
+<p>The idea is to decomposes the space into a Cartesian product of low dimensional subspaces and to quantize each subspace separately. A vector is represented by a short code composed of its subspace quantization indices.</p>
+</blockquote>
+<p><img src="https://i.loli.net/2019/07/02/5d1b275bd20aa40709.png" alt="compression.png"></p>
+<p>Let’s say you have a collection of 50,000 images, and you’ve already performed some feature extraction with a convolutional neural network, and now you have a dataset of 50,000 feature vectors with 1,024 components each.</p>
+<p>Image Vector Dataset</p>
+<p>The first thing we’re going to do is compress our dataset. The number of vectors will stay the same, but we’ll reduce the amount of storage required for each vector. Note that what we’re going to do is not the same as “dimensionality reduction”! This is because the values in the compressed vectors are actually symbolic rather than numeric, so we can’t compare the compressed vectors to one another directly.</p>
+<p>Two important benefits to compressing the dataset are that (1) memory access times are generally the limiting factor on processing speed, and (2) sheer memory capacity can be a problem for big datasets.</p>
+<p>Here’s how the compression works. For our example we’re going to chop up the vectors into 8 sub-vectors, each of length 128 (8 sub vectors x 128 components = 1,024 components). This divides our dataset into 8 matrices that are [50K x 128] each.</p>
+<p>These centroids are like “prototypes”. They represent the most commonly occurring patterns in the dataset sub-vectors.</p>
+<p>We’re going to use these centroids to compress our 1 million vector dataset. Effectively, we’re going to replace each subregion of a vector with the closest matching centroid, giving us a vector that’s different from the original, but hopefully still close.</p>
+<p>Doing this allows us to store the vectors much more efficiently—instead of storing the original floating point values, we’re just going to store cluster ids. For each subvector, we find the closest centroid, and store the id of that centroid.</p>
+<p>Each vector is going to be replaced by a sequence of 8 centroid ids. I think you can guess how we pick the centroid ids–you take each subvector, find the closest centroid, and replace it with that centroid’s id.</p>
+<p>Note that we learn a different set of centroids for each subsection. And when we replace a subvector with the id of the closest centroid, we are only comparing against the 256 centroids for that subsection of the vector.</p>
+<p>Because there are only 256 centroids, we only need 8-bits to store a centroid id. Each vector, which initially was a vector of 1,024 32-bit floats (4,096 bytes) is now a sequence of eight 8-bit integers (8 bytes total per vector!).</p>
+<h3 id="K-means-算法"><a href="#K-means-算法" class="headerlink" title="K-means 算法"></a>K-means 算法</h3><p>k-Means算法是一种聚类算法，它是一种无监督学习算法，目的是将相似的对象归到同一个蔟中。蔟内的对象越相似，聚类的效果就越好。聚类和分类最大的不同在于，分类的目标事先已知，而聚类则不一样。其产生的结果和分类相同，而只是类别没有预先定义。</p>
+<p>K-means 是一种聚类算法，先说一下什么是聚类：聚类分析是在数据中发现数据对象之间的关系，将数据进行分组，组内的相似性越大，组间的差别越大，则聚类效果越好。</p>
+<p>K-Means算法思想：对给定的样本集，事先确定聚类簇数K，让簇内的样本尽可能紧密分布在一起，使簇间的距离尽可能大。该算法试图使集群数据分为n组独立数据样本，使n组集群间的方差相等，数学描述为最小化惯性或集群内的平方和。K-Means作为无监督的聚类算法，实现较简单，聚类效果好，因此被广泛使用。</p>
+<p><strong> 算法步骤</strong></p>
+<ol>
+<li>创建k个点作为k个簇的起始质心（经常随机选择）。</li>
+<li>分别计算剩下的元素到k个簇中心的相异度（距离），将这些元素分别划归到相异度最低的簇。</li>
+<li>根据聚类结果，重新计算k个簇各自的中心，计算方法是取簇中所有元素各自维度的算术平均值。</li>
+<li>将D中全部元素按照新的中心重新聚类。</li>
+<li>重复第4步，直到聚类结果不再变化。</li>
+<li>最后，输出聚类结果。</li>
+</ol>
+<p><strong> K-Means算法优缺点</strong></p>
+<p>优点</p>
+<ol>
+<li>原理易懂、易于实现；</li>
+<li>当簇间的区别较明显时，聚类效果较好；</li>
+<li>Trains quickly</li>
+</ol>
+<p>缺点</p>
+<ol>
+<li>当样本集规模大时，收敛速度会变慢；</li>
+<li>对孤立点数据敏感，少量噪声就会对平均值造成较大影响, 所以离群点的检测和删除对于最后的结果有很大的帮助。</li>
+<li>k的取值十分关键，对不同数据集，k选择没有参考性，需要大量实验</li>
+</ol>
+<p><strong>Choosing K</strong></p>
+<p>The algorithm explained above finds clusters for the number k that we chose. So, how do we decide on that number?</p>
+<p>尝试法： 计算每个点到最近的簇的距离的总和，如果增加 k 导致的总和下降不明显，那么就接近临界点了。</p>
+<p>To find the best k we need to measure the quality of the clusters. The most traditional and straightforward method is to start with a random k, create centroids, and run the algorithm as we explained above. A sum is given based on the distances between each point and its closest centroid. As an increase in clusters correlates with smaller groupings and distances, this sum will always decrease when k increases; as an extreme example, if we choose a k value that is equal to the number of data points that we have, the sum will be zero.</p>
+<p>The goal with this process is to find the point at which increasing k will cause a very small decrease in the error sum, while decreasing k will sharply increase the error sum. This sweet spot is called the “elbow point.”  In the image below, it is clear that the “elbow” point is at k-3.­</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/8b4f6493ed14471b.png" alt=""></p>
+<p>总的来说faiss 高效实现了<a href="">PCA 算法</a>, <a href="">k-means 算法</a> 和PQ 算法。</p>
+<p><a href="https://mccormickml.com/2017/10/13/product-quantizer-tutorial-part-1/" target="_blank" rel="noopener">ref 1</a><br><a href="http://mccormickml.com/2017/10/22/product-quantizer-tutorial-part-2/" target="_blank" rel="noopener">ref 2</a><br><a href="http://vividfree.github.io/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017/08/05/understanding-product-quantization" target="_blank" rel="noopener">ref 3</a><br><a href="https://blog.easysol.net/machine-learning-algorithms-3/" target="_blank" rel="noopener">ref 4</a></p>
 
       
     </div>
@@ -484,6 +564,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/k-means/" rel="tag"># k-means</a>
+          
+        </div>
       
 
       
@@ -619,7 +705,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -668,7 +754,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fastText"><span class="nav-number">1.</span> <span class="nav-text">fastText</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型架构"><span class="nav-number">1.1.</span> <span class="nav-text">模型架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hierarchical-Softmax"><span class="nav-number">1.2.</span> <span class="nav-text">Hierarchical Softmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-gram-特征"><span class="nav-number">1.3.</span> <span class="nav-text">N-gram 特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Negative-Sampling"><span class="nav-number">1.4.</span> <span class="nav-text">Negative Sampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Positive-samples-and-Negative-samples"><span class="nav-number">1.5.</span> <span class="nav-text">Positive samples and  Negative samples</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.6.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#faiss"><span class="nav-number">2.</span> <span class="nav-text">faiss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss的实现过程"><span class="nav-number">2.1.</span> <span class="nav-text">faiss的实现过程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fastText"><span class="nav-number">1.</span> <span class="nav-text">fastText</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型架构"><span class="nav-number">1.1.</span> <span class="nav-text">模型架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hierarchical-Softmax"><span class="nav-number">1.2.</span> <span class="nav-text">Hierarchical Softmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-gram-特征"><span class="nav-number">1.3.</span> <span class="nav-text">N-gram 特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Negative-Sampling"><span class="nav-number">1.4.</span> <span class="nav-text">Negative Sampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Positive-samples-and-Negative-samples"><span class="nav-number">1.5.</span> <span class="nav-text">Positive samples and  Negative samples</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.6.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#faiss"><span class="nav-number">2.</span> <span class="nav-text">faiss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss的实现过程"><span class="nav-number">2.1.</span> <span class="nav-text">faiss的实现过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss-中的三种基本索引"><span class="nav-number">2.2.</span> <span class="nav-text">faiss 中的三种基本索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#product-quantization-算法"><span class="nav-number">2.3.</span> <span class="nav-text">product quantization 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#K-means-算法"><span class="nav-number">2.4.</span> <span class="nav-text">K-means 算法</span></a></li></ol></li></ol></div>
             
 
           </div>

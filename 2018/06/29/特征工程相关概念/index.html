@@ -88,7 +88,7 @@
 <meta property="og:description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-29/38543547.jpg">
-<meta property="og:updated_time" content="2019-06-19T12:58:59.885Z">
+<meta property="og:updated_time" content="2019-07-02T11:35:56.444Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="特征工程">
 <meta name="twitter:description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
@@ -310,8 +310,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-19T20:58:59+08:00">
-                2019-06-19
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-02T19:35:56+08:00">
+                2019-07-02
               </time>
             
           </span>
@@ -416,7 +416,9 @@
 <li>根据数值型数据本身变化，如果variance 很小，则舍去。<br>因为网络本身就是学习的该特征的波动是如何影响最后的结果，所以如果数据本身没有波动性，那么是没有什么价值的。解决的是feature 个数的问题。</li>
 </ul>
 <p>插一句，如何 handle 单个特征本身表示长度的问题，思考一下 word2vec 是怎样进行操作的。</p>
-<h3 id="Principal-Component-Analysis-PCA"><a href="#Principal-Component-Analysis-PCA" class="headerlink" title="Principal Component Analysis (PCA)"></a>Principal Component Analysis (PCA)</h3><p>这个属于一句话的的思想：PCA的问题其实是一个基的变换，使得变换后的数据有着最大的方差。</p>
+<h3 id="Principal-Component-Analysis-PCA"><a href="#Principal-Component-Analysis-PCA" class="headerlink" title="Principal Component Analysis (PCA)"></a>Principal Component Analysis (PCA)</h3><p>为什么要进行降维数据的处理？</p>
+<p>(1) 在原始的高维空间中，包含有冗余信息以及噪音信息，在实际应用例如图像识别中造成了误差，降低了准确率；而通过降维,我们希望减少冗余信息所造成的误差,提高识别（或其他应用）的精度。<br>(2) 或者希望通过降维算法来寻找数据内部的本质结构特征。<br>(3) 通过降维来加速后续计算的速度<br>(4) 还有其他很多目的，如解决数据的sparse问题</p>
+<p>这个属于一句话的的思想：PCA的问题其实是一个基的变换，使得变换后的数据有着最大的方差。</p>
 <p>pca 的假设：<br>这个说得很清楚，higher dimensional space is mapped to lower dimension, 然后这种在lower dimensional 中数据的variance应该是保持max的。<br>It works on a condition that while the data in a higher dimensional space is mapped to data in a lower dimension space, the variance of the data in the lower dimensional space should be maximum.</p>
 <p>就是需要理解这个主成分是不断的生成的，在前者的基础之上生成的。<br>below are some of the key points you should know about PCA before proceeding further:</p>
 <ul>
@@ -593,7 +595,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
