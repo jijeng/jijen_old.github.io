@@ -90,7 +90,10 @@
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/1924eda833df4777.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/22c679cb23964d87.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/a273acb19e72e1c6.png">
-<meta property="og:updated_time" content="2019-06-30T04:04:55.353Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/01/Z8xG8S.png">
+<meta property="og:image" content="https://upload.cc/i1/2019/07/01/xFyTtn.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/48a971bacfd92ac0.png">
+<meta property="og:updated_time" content="2019-07-01T13:09:44.020Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Text Summarization">
 <meta name="twitter:description" content="Text Summarization   Text summarization is the process of distilling the most important information from a source (or sources) to produce an abridged version for a particular user (or users) and task">
@@ -312,8 +315,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-30T12:04:55+08:00">
-                2019-06-30
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-01T21:09:44+08:00">
+                2019-07-01
               </time>
             
           </span>
@@ -397,8 +400,7 @@
 </ul>
 <p>Text summarization methods can be classified into different types.</p>
 <p><img src="https://i.bmp.ovh/imgs/2019/06/1924eda833df4777.png" alt=""></p>
-<p>虽然是可以从不同的角度进行划分，但最常见的分类角度是 based on output type: extractive and abstractive.</p>
-<p>There are two types of text summarization algorithms: extractive and abstractive. All extractive summarization algorithms attempt to score the phrases or sentences in a document and return only the most highly informative blocks of text. Abstractive text summarization actually creates new text which doesn’t exist in that form in the document. Abstractive summarization is what you might do when explaining a book you read to your friend, and it is much more difficult for a computer to do than extractive summarization. </p>
+<p>虽然是可以从不同的角度进行划分，但最常见的分类角度是 based on output type: extractive and abstractive.  All extractive summarization algorithms attempt to score the phrases or sentences in a document and return only the most highly informative blocks of text. Abstractive text summarization actually creates new text which doesn’t exist in that form in the document. Abstractive summarization is what you might do when explaining a book you read to your friend, and it is much more difficult for a computer to do than extractive summarization. </p>
 <p>Computers just aren’t that great at the act of creation. To date, there aren’t any abstractive summarization techniques which work suitably well on long documents. The best performing ones merely create a sentence based upon a single paragraph, or cut the length of a sentence in half while maintaining as much information as possible. Often, grammar suffers horribly. They’re usually based upon neural network models. </p>
 <p><strong> What is ROUGE?</strong><br>To evaluate the goodness of the generated summary, the common metric in the Text Summarization space is called Rouge score.</p>
 <blockquote>
@@ -407,9 +409,8 @@
 <p>It works by comparing an automatically produced summary or translation against a set of reference summaries (typically human-produced). It works by matching overlap of n-grams of the generated and reference summary.</p>
 <h3 id="Extractive-Techniques"><a href="#Extractive-Techniques" class="headerlink" title="Extractive Techniques"></a>Extractive Techniques</h3><p><strong> LexRank Summarizer</strong><br>LexRank is an unsupervised approach that gets its inspiration from the same ideas behind Google’s PageRank algorithm. It finds the relative importance of all words in a document and selects the sentences which contain the most of those high-scoring words.</p>
 <p><strong>NLTK Summarizer</strong><br><img src="https://i.bmp.ovh/imgs/2019/06/22c679cb23964d87.png" alt=""></p>
-<p>Although the technique is basic, we found that it did a good job at creating large summaries. </p>
-<p><strong>Gensim Summarizer</strong><br>TextRank is based on PageRank algorithm that is used on Google Search Engine. In simple words, it prefers pages which has higher number of pages hitting it. Traditionally, the links between pages are expressed by matrix as shown in the image below. This matrix is then converted to a transition probability matrix by dividing the sum of links in each page which influences the path of the surfer.</p>
-<p>TextRank is a bit more simplistic than LexRank; although both algorithms are very similar, LexRank applies a heuristic post-processing step to remove sentences with highly duplicitous.</p>
+<p>Although the technique is basic, we found that it did a good job at <strong><em>creating large summaries.</em></strong> </p>
+<p><strong>Gensim Summarizer</strong><br>TextRank is based on PageRank algorithm that is used on Google Search Engine. <strong><em>In simple words, it prefers pages which has higher number of pages hitting it. </em></strong> TextRank is a bit more simplistic than LexRank; although both algorithms are very similar, LexRank applies a heuristic post-processing step to remove sentences with highly duplicitous.</p>
 <p>The gensim algorithm does a good job at creating both long and short summaries. Another cool feature of gensim is that we can get a list of top keywords chosen by the algorithm. This feature can come in handy for other NLP tasks, where we want to use “TextRank” to select words from a document instead of “Bag of Words” or “TF-IDF”. Gensim also has a well-maintained repository and has an active community which is an added asset to using this algorithm.</p>
 <p><strong>Sentence Embeddings</strong></p>
 <p>We wanted to evaluate how text summarization works on shorter documents like reviews, emails etc.  We used K-means clustering to summarize the types of documents following the aforementioned structure.</p>
@@ -457,8 +458,74 @@ United States
 <p>Step-4: Skip-Thought Encoder<br>We need a way to generate fixed length vector representations for each sentence in our emails.</p>
 <p>Step-5: Clustering<br>The number of clusters will be equal to desired number of sentences in the summary. I chose the numbers of sentences in the summary to be equal to the square root of the total number of sentence in the email. </p>
 <p>Step-6: Summarization<br>Each cluster of sentence embeddings can be interpreted as a set of semantically similar sentences whose meaning can be expressed by just one candidate sentence in the summary. The candidate sentence is chosen to be the sentence whose vector representation is closest to the cluster center. Candidate sentences corresponding to each cluster are then ordered to form a summary for an email.</p>
+<h3 id="PageRank-算法和TextRank-介绍"><a href="#PageRank-算法和TextRank-介绍" class="headerlink" title="PageRank 算法和TextRank 介绍"></a>PageRank 算法和TextRank 介绍</h3><p><strong> PageRank 算法</strong></p>
+<p>PageRank通过互联网中的超链接关系来确定一个网页的排名，其公式是通过一种投票的思想来设计的。整个互联网可以看作是一张有向图图，网页是图中的节点，网页之间的链接就是图中的边。如果网页 A 存在到网页 B 的链接，那么就有一条从网页 A 指向网页 B 的有向边。构造完图后，使用下面的公式来计算网页$ i$的重要性（PR值）：</p>
+<p>$$<br>S \left( V _ { i } \right) = ( 1 - d ) + d \cdot \sum _ { j \in I n \left( V _ { i } \right) } \frac { 1 } { \left| O u t \left( V _ { j } \right) \right| } S \left( V _ { j } \right)<br>$$</p>
+<p>$d$ 是阻尼系数，一般设置为0.85. $\operatorname { In } \left( V _ { i } \right)$ 是指向网页 $i$ 的链接的网页集合。 $\operatorname { Out } \left( V _ { j } \right)$ 是网页 $j$ 中的链接指向的网页的集合。 $\left| O u t \left( V _ { j } \right) \right|$ 是集合中元素的个数。 PageRank 需要多次迭代才能得到最后的结果。</p>
+<p><img src="https://s2.ax1x.com/2019/07/01/Z8xG8S.png" alt="Z8xG8S.png"><br>假设我们有4个网页——w1，w2，w3，w4。这些页面包含指向彼此的链接。有些页面可能没有链接，这些页面被称为悬空页面。</p>
+<table>
+<thead>
+<tr>
+<th>Webpage</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>w1</td>
+<td>[w4, 22]</td>
+</tr>
+<tr>
+<td>w2</td>
+<td>[w3, w1]</td>
+</tr>
+<tr>
+<td>w3</td>
+<td>[]</td>
+</tr>
+<tr>
+<td>w4</td>
+<td>[w1]</td>
+</tr>
+</tbody>
+</table>
+<p>在本例中初始化成这样：<br><img src="https://upload.cc/i1/2019/07/01/xFyTtn.png" alt=""></p>
+<p>最后，这个矩阵中的值将以迭代的方式更新，以获得网页排名。</p>
+<p><strong> TextRank 关键词提取</strong></p>
+<p>两者的相似之处：</p>
+<ul>
+<li>In place of web pages, we use sentences</li>
+<li>Similarity between any two sentences is used as an equivalent to the web page transition probability</li>
+<li>The similarity scores are stored in a square matrix, similar to the matrix M used for PageRank</li>
+</ul>
+<p>不同之处在于后者使用句子之间的相似度作为 weights.</p>
+<p>$W S \left( V _ { i } \right) = ( 1 - d ) + d \cdot \sum _ { V _ { j } \in \operatorname { In } ( V i ) } \frac { w _ { j i } } { \sum _ { V _ { k } \in O u t \left( V _ { j } \right) } w _ { j k } } W S \left( V _ { j } \right)$</p>
+<p>$w_{ij}$ 就是图中节点 $V_i$ 到$V_j$ 的边的权值， 就是两个句子 $S_i$ 和句子 $S_j$ 的相似程度。下面的代码中使用的是 cosine 函数来表示这种相似度。</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/48a971bacfd92ac0.png" alt=""></p>
+<p>步骤：</p>
+<ul>
+<li>The first step would be to concatenate all the text contained in the articles</li>
+<li>Then split the text into individual sentences</li>
+<li>In the next step, we will find vector representation (word embeddings) for each and every sentence</li>
+<li>Similarities between sentence vectors are then calculated and stored in a matrix</li>
+<li>The similarity matrix is then converted into a graph, with sentences as vertices and similarity scores as edges, for sentence rank calculation</li>
+<li>Finally, a certain number of top-ranked sentences form the final summary</li>
+</ul>
+<p>这里使用的 cosine similarity scores，计算句子之间的相似度，句子embedding 是通过 word embedding 相加而成。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(sentences)):</span><br><span class="line">  <span class="keyword">for</span> j <span class="keyword">in</span> range(len(sentences)):</span><br><span class="line">    <span class="keyword">if</span> i != j:</span><br><span class="line">      sim_mat[i][j] = cosine_similarity(sentence_vectors[i].reshape(<span class="number">1</span>,<span class="number">100</span>), sentence_vectors[j].reshape(<span class="number">1</span>,<span class="number">100</span>))[<span class="number">0</span>,<span class="number">0</span>]</span><br></pre></td></tr></table></figure></p>
+<p>Applying PageRank Algorithm<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> networkx <span class="keyword">as</span> nx</span><br><span class="line">nx_graph = nx.from_numpy_array(sim_mat)</span><br><span class="line">scores = nx.pagerank(nx_graph)</span><br></pre></td></tr></table></figure></p>
+<p><strong> TF-IDF 和 TextRank 对比总结：</strong></p>
+<ul>
+<li>TextRank与TFIDF均严重依赖于分词结果——如果某词在分词时被切分成了两个词，那么在做关键词提取时无法将两个词黏合在一起（TextRank有部分黏合效果，但需要这两个词均为关键词）。因此是否添加标注关键词进自定义词典，将会造成准确率、召回率大相径庭。</li>
+<li>TextRank的效果并不优于TFIDF。</li>
+<li>TextRank虽然考虑到了词之间的关系，但是仍然倾向于将频繁词作为关键词。</li>
+<li>由于TextRank涉及到构建词图及迭代计算，所以提取速度较慢。</li>
+</ul>
+<p>自然语言处理有两个切入点，一个是频率一个是语义。上述两种方法本质上还是基于词频的。</p>
 <h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p><a href="https://medium.com/jatana/unsupervised-text-summarization-using-sentence-embeddings-adb15ce83db1" target="_blank" rel="noopener">https://medium.com/jatana/unsupervised-text-summarization-using-sentence-embeddings-adb15ce83db1</a></p>
 <p><a href="https://towardsdatascience.com/data-scientists-guide-to-summarization-fc0db952e363" target="_blank" rel="noopener">https://towardsdatascience.com/data-scientists-guide-to-summarization-fc0db952e363</a></p>
+<p><a href="https://www.jiqizhixin.com/articles/2018-12-28-18" target="_blank" rel="noopener">https://www.jiqizhixin.com/articles/2018-12-28-18</a></p>
+<p><a href="https://www.analyticsvidhya.com/blog/2018/11/introduction-text-summarization-textrank-python/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2018/11/introduction-text-summarization-textrank-python/</a></p>
+<p><a href="https://xiaosheng.me/2017/04/08/article49/" target="_blank" rel="noopener">https://xiaosheng.me/2017/04/08/article49/</a></p>
 
       
     </div>
@@ -659,7 +726,7 @@ United States
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Extractive-Techniques"><span class="nav-number">1.</span> <span class="nav-text">Extractive Techniques</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Abstraction-techniques"><span class="nav-number">2.</span> <span class="nav-text">Abstraction techniques</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#To-Summarize"><span class="nav-number">3.</span> <span class="nav-text">To Summarize..</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Case-Study-Text-Summarization-on-Emails"><span class="nav-number">4.</span> <span class="nav-text">Case Study: Text Summarization on Emails</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Extractive-Techniques"><span class="nav-number">1.</span> <span class="nav-text">Extractive Techniques</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Abstraction-techniques"><span class="nav-number">2.</span> <span class="nav-text">Abstraction techniques</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#To-Summarize"><span class="nav-number">3.</span> <span class="nav-text">To Summarize..</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Case-Study-Text-Summarization-on-Emails"><span class="nav-number">4.</span> <span class="nav-text">Case Study: Text Summarization on Emails</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PageRank-算法和TextRank-介绍"><span class="nav-number">5.</span> <span class="nav-text">PageRank 算法和TextRank 介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#References"><span class="nav-number">6.</span> <span class="nav-text">References</span></a></li></ol></div>
             
 
           </div>
