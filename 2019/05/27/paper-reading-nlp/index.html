@@ -95,8 +95,8 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ftfz3uxij206e088aa2.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eobewbqoj20c50bhq4y.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eof674adj20ii0dfgoe.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dvg2o3wwj20qo0grdgp.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dw277xiyj20pi0c10ww.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dvg2o3wwj20qo0grdgp.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqwkv9tlj20kd097gm4.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqyoxmknj20ey0d640u.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3esxw2nilj20dh08ujth.jpg">
@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fuc693mrj211z0hbjur.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fuci4xodj213j0kitcq.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3flokoc0mj20ab07474a.jpg">
-<meta property="og:updated_time" content="2019-06-01T08:32:40.833Z">
+<meta property="og:updated_time" content="2019-07-05T00:51:08.378Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP Papers Reading- BERT">
 <meta name="twitter:description" content="nlp 论文阅读笔记, 随时 update… attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a repre">
@@ -327,8 +327,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-01T16:32:40+08:00">
-                2019-06-01
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-05T08:51:08+08:00">
+                2019-07-05
               </time>
             
           </span>
@@ -426,12 +426,31 @@
 <p>Residual connection和layer-normalization<br>（这两个操作主要是应对 深度网络而提出的）<br>对于学习CV的人估计对这个结构一点也不陌生，Residual connection是对于较为深层的神经网络有比较好的作用，比如网络层很深时，数值的传播随着weight不断的减弱，Residual connection是从输入的部分，就是图中虚线的部分，实际连到它输出层的部分，把输入的信息原封不动copy到输出的部分，减少信息的损失。</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eof674adj20ii0dfgoe.jpg" alt=""><br>layer-normalization这种归一化层是为了防止在某些层中由于某些位置过大或者过小导致数值过大或过小，对神经网络梯度回传时有训练的问题，保证训练的稳定性，这是神经网络设计比较常用的case。</p>
 <p>结论：<br>self-attention层的好处是能够一步到位捕捉到全局的联系，解决了长距离依赖，因为它直接把序列两两比较（代价是计算量变为 O(n2)，当然由于是纯矩阵运算，这个计算量相当也不是很严重），而且最重要的是可以进行并行计算。<br>相比之下，RNN 需要一步步递推才能捕捉到，并且对于长距离依赖很难捕捉。而 CNN 则需要通过层叠来扩大感受野，这是 Attention 层的明显优势。</p>
-<h2 id="A-simple-but-tough-to-beat-baseline-for-sentence-embeddings"><a href="#A-simple-but-tough-to-beat-baseline-for-sentence-embeddings" class="headerlink" title="A simple but tough-to-beat baseline for sentence embeddings"></a>A simple but tough-to-beat baseline for sentence embeddings</h2><p>这种motivation 还是很值得好好看的，验证论文的好坏是可以通过看最后的效果/ 结果是否按照 motivation 那样的。  “relative weights” 是针对 word2vec 中的效果改进的，从motivation 的角度没有考虑到 melo or BERT 中的 context . 当然论文的创新点在于 无监督学习方法，当别人都在转向有监督和多任务的时候，在缩短运行时间的同时，最后的效果和神经网络旗鼓相当。</p>
+<h2 id="A-simple-but-tough-to-beat-baseline-for-sentence-embeddings"><a href="#A-simple-but-tough-to-beat-baseline-for-sentence-embeddings" class="headerlink" title="A simple but tough-to-beat baseline for sentence embeddings"></a>A simple but tough-to-beat baseline for sentence embeddings</h2><p>这种motivation 还是很值得好好看的，验证论文的好坏是可以通过看最后的效果/ 结果是否按照 motivation 那样的。  “relative weights” 是针对 word2vec 中的效果改进的，从motivation 的角度没有考虑到 melo or BERT 中的 context . 当然论文的创新点在于 无监督学习方法（可以对大规模的语料加以应用，相比于有监督的优势），当别人都在转向有监督和多任务的时候，在缩短运行时间的同时，最后的效果和神经网络旗鼓相当。</p>
 <p>Taking the average of the word embeddings in a sentence tends to give too much weight to words that are quite irrelevant, semantically speaking. Smooth Inverse Frequency tries to solve this problem in two ways:</p>
 <ul>
-<li>Weighting: like our tf-idf baseline above, SIF takes the weighted average of the word embeddings in the sentence. Every word embedding is weighted by a/(a + p(w)), where a is a parameter that is typically set to 0.001 and p(w) is the estimated frequency of the word in a reference corpus.</li>
+<li>Weighting: like our tf-idf baseline above, SIF takes the weighted average of the word embeddings in the sentence. Every word embedding is weighted by a/(a + p(w)), where a is a parameter that is typically set to 0.001 and p(w) is the estimated frequency of the word in a reference corpus. (使用新的词权重计算方法，不是tf-idf, 频率越高，权重越低，抑制高频词)</li>
 <li>Common component removal: next, SIF computes the principal component of the resulting embeddings for a set of sentences. It then subtracts from these sentence embeddings their projections on their first principal component. This should remove variation related to frequency and syntax that is less relevant semantically.<br>As a result, SIF downgrades unimportant words such as but, just, etc., and keeps the information that contributes most to the semantics of the sentence.</li>
 </ul>
+<p>第一步中的$p(w) $ 是在语料中的词频，第二步中对整个句子集合进行一次PCA，然后对每个句子上面得到的向量减去它在第一奇异向量或者说主成分上的投影。<br>最后初步的句子向量减去对应句子向量的共性成分(起到平滑作用),得到最后的独有的句子向量(使得各个句子向量间的耦合度降低,增强句子的鲁棒性).耦合性越低（模块之间的关联性越小）</p>
+<p>如何体现了 smooth？</p>
+<p>使用了两项平滑项, 出于如下的考虑:</p>
+<ul>
+<li>有些单词在规定的上下文范围之外出现, 也可能对discourse vector产生影响 （开始得到词向量使用 word2vec）</li>
+<li>有限单词的出现(如常见的停止词)与discourse vector没有关系</li>
+</ul>
+<p>出于这两点考虑, 引入了两种平滑项, 首先是对数线性模型中的一个累加项(additive term) $ ( \alpha p(w)) $,其中$(p(w))$是单词 $(w) $在整个语料中出现的概率(词频角度), $ (\alpha) $是一个超参数. 这样, 即使和 $ (c_s) $的内积很小, 这个单词也有概率出现. 第二步骤中的减去 主成分，可以理解为让各个词向量更好的分开，减去公共的部分，减少耦合性，使得相似的句子聚类在一起。因为这个主成分是整个语料库中的主成分（句子最频繁的意义，可以认为是句子中最重要的成分）</p>
+<p>一种解读方式，来自<a href="https://www.eznewstoday.com/index.php/2018/12/10/a-simple-but-tough-to-beat-baseline-for-sentence-embeddings/" target="_blank" rel="noopener">文章</a></p>
+<blockquote>
+<p>由于有king-queue=man-woman这个属性，并且这个属性大概率是沿着主成分方向分布，当减去之后，我们可以发现不管是king、queue、man、women都会被泛化成类似people之类的向量，这样的话相似意思句子就会具有相似向量。（这里没有验证）</p>
+</blockquote>
+<p>另外论文中还提到了这种方法的鲁棒性:</p>
+<ul>
+<li>使用不同语料(多种领域)训练得到的不同的word embedding, 均取得了很好的效果, 说明了对各种语料的友好.</li>
+<li>使用不同语料得到的词频, 作为计算词权重的因素, 对最终的结果影响很小.</li>
+<li>对于方法中的超参数, 在很大范围内, 获得的结果都是区域一直的, 即超参数的选择没有太大的影响.</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dw277xiyj20pi0c10ww.jpg" alt=""></p>
 <p>本文是用无监督方法做句子级别的 embedding，用的是一个十分简单但却又很有效的传统方法，这在神经网络泛滥的年代算是一股清流了。<br>这张图上的信息还是很多的，所以好好归纳整理一下。<br>尽管长期以来句子的无监督表示学习是主流，最近几个月（2017年末/2018年初），我们看到了许多非常有趣的工作，显示了向监督学习和多任务学习转向的趋势。</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dvg2o3wwj20qo0grdgp.jpg" alt=""></p>
 <ul>
@@ -442,12 +461,16 @@
 <p>近五年来提出了大量词嵌入方法。其中最常用的模型是word2vec和GloVe，这两个模型都是基于分布假说（distributional hypothesis）的无监督方法。（根据分布假说，出现在相同上下文中的单词倾向于具有相似的含义）。<br>尽管有一些工作通过并入语义或语法知识等增强这些无监督方法，纯无监督方法在2017-2018年期间取得了有趣的进展，其中最重大的是FastText（word2vec的扩展）和ELMo（当前最先进的上下文词向量）。</p>
 <p>在ELMo中，嵌入基于一个双层的双向语言模型（biLM）的内部状态计算，ELMo也是因此得名的：Embeddings from Language Models（来自语言模型的嵌入）。<br>ELMo的特性：<br>ELMo的输入是字符而不是单词。这使得它可以利用子字（sub-word）单元为词汇表以外的单词计算有意义的表示（和FastText类似）。<br>ELMo是biLM的多层激活的连接（concatenation）。语言模型的不同层编码了单词的不同信息。连接所有层使得ELMo可以组合多种词表示，以提升下游任务的表现。</p>
 <p>普适句嵌入<br>词袋方法<br>这一领域的一般共识是，直接平均一个句子的词向量这一简单方法（所谓词袋方法），为许多下游任务提供了强力的基线。<br>Arora等去年在ICLR发表的论文A Simple but Tough-to-Beat Baseline for Sentence Embeddings提供了一个很好的算法：选择一种流行的词嵌入，编码句子为词向量的线性加权组合，然后进行相同成分移除（根据首要主成分移除向量投影）。这一通用方法具有深刻而强大的理论动机，基于在语篇向量上随机行走以生成文本的生成式模型。</p>
-<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dw277xiyj20pi0c10ww.jpg" alt=""></p>
 <p>（有人实践）这个方法在短文本上效果更好，在语料不足的时候效果不能保证。这种模型没有考虑词顺序（也可以说只能理解词意思，但是不能理解语义），而深度网络模型是可以考虑语义的。可能再相似度问题上可以取得比较好的效果，但是在文本分类，情感分类上效果一般。</p>
 <blockquote>
 <p>思考：从直觉上理解, 短文本上的 word2vec、SIF 这种没有 handle 语序的模型得到的效果就已经足够的好，对于中长文本（句子、段落等）elmo 和BERT 这种模型的效果是更加的。</p>
 </blockquote>
-<p>程序的运行只需要十几分钟，与神经网络的效果旗鼓相当。</p>
+<p>程序的运行只需要十几分钟，与神经网络的效果旗鼓相当。<br>优缺点：</p>
+<ul>
+<li>由于这是一种无监督学习，那么就可以对大规模的语料加以利用，这是该方法相比于一般有监督学习的一大优势。</li>
+<li>通过对实验的复现，发现运行一次程序只需要十几分钟，并且主要的运行耗时都在将词向量模型载入内存这个过程中，这比动不动就需要训练几周的神经网络模型确实要好很多，并且在这个词相似性任务中，与神经网络旗鼓相当。</li>
+<li>缺点就是没有考虑句子的语序,导致不能辨别(“我爱你”还是”你爱我”),优点就是速度快,无监督学习</li>
+</ul>
 <h2 id="Supervised-Learning-of-Universal-Sentence-Representations-from-Natural-Language-Inference-Data"><a href="#Supervised-Learning-of-Universal-Sentence-Representations-from-Natural-Language-Inference-Data" class="headerlink" title="Supervised Learning of Universal Sentence Representations from Natural Language Inference Data"></a>Supervised Learning of Universal Sentence Representations from Natural Language Inference Data</h2><p>文章成功的找到了NLP领域的ImageNet — SNLI (Stanford Natural Language Inference dataset), 并且试验了不同的深度学习模型，最终确定bi-LSTM max pooled 为最佳模型。</p>
 <table>
 <thead>

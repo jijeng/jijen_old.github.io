@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a478w59aj21hc0ixmzq.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a47iu166j20ck072t90.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a487h7rej2078079mx1.jpg">
-<meta property="og:updated_time" content="2019-06-20T00:49:45.372Z">
+<meta property="og:updated_time" content="2019-07-05T00:15:11.423Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Beyond  Word Embedding">
 <meta name="twitter:description" content="从one-hot 到 word2vec， 到elmo，简单介绍一下 NLP中词向量的过程。">
@@ -315,8 +315,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-20T08:49:45+08:00">
-                2019-06-20
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-05T08:15:11+08:00">
+                2019-07-05
               </time>
             
           </span>
@@ -398,12 +398,36 @@
 <p>但是对于 bag of words 中“没有体现语义” 的缺陷还是没有 deal with。<br>However even though tf-idf BoW representations provide weights to different words they are unable to capture the word meaning.</p>
 <p>这个名字只是因为有定义而存在的名字（网络模型 or 深度网络的出现就是为了 handle 语义信息）<br><strong>Distributional Embeddings</strong> enable word vectors to encapsulate contextual context. Each embedding vector is represented based on the mutual information it has with other words in a given corpus.<br>重点就是这种方式是要 predict a target word from context words，一定是要能够体现语境的。<br><strong>Predictive models</strong> learn their vectors in order to improve their predictive ability of a loss such as the loss of predicting the vector for a target word from the vectors of the surrounding context words.</p>
 <p><strong>word2vec 两种类型</strong></p>
-<p>word2vec 是一种思想，有两种CBOW 和skip-gram 两种实现。<br><strong>Word2Vec</strong> is a predictive embedding model. There are two main Word2Vec architectures that are used to produce a distributed representation of words:</p>
-<p>CBOW中的 context words 没有体现 words order，但是训练速度快。<br>Continuous bag-of-words (CBOW) — The order of context words does not influence prediction (bag-of-words assumption).</p>
-<p>skip-gram  weights nearby context words heavily 效果相对于 cbow 更加， 但训练速度相对比较慢。<br>Continuous skip-gram weighs nearby context words more heavily than more distant context words. While order still is not captured each of the context vectors are weighed and compared independently vs CBOW which weighs against the average context.</p>
-<p>CBOW is faster while skip-gram is slower but does a better job for infrequent words.</p>
+<p>word2vec 是一种思想，有两种CBOW 和skip-gram 两种实现。Word2Vec is a predictive embedding model. There are two main Word2Vec architectures that are used to produce a distributed representation of words:</p>
+<ul>
+<li>Continuous bag-of-words (CBOW) — The order of context words does not influence prediction (bag-of-words assumption).</li>
+<li>Continuous skip-gram weighs nearby context words more heavily than more distant context words. While order still is not captured each of the context vectors are weighed and compared independently vs CBOW which weighs against the average context.</li>
+</ul>
+<p>展示一下结构图：<br><img src="https://i.bmp.ovh/imgs/2019/06/978b55d5b4992e03.jpg" alt=""></p>
+<p>总的特点：使用 context words 去predict 中心词 or 相反的过程，最大化这种概率关系。CBOW is faster while skip-gram is slower but does a better job for infrequent words.那么为什么快呢？</p>
+<p>答： cbow只要 把窗口内的其他词相加一次作为输入来预测 一个单词。不管窗口多大，只需要一次运算。而skip-gram直接受窗口影响，窗口越大，需要预测的周围词越多。在训练中，通过调整窗口大小明显感觉到训练速度受到很大影响。前者是复杂度大概是O(V)，后者的时间的复杂度为O(KV）(假设K 是窗口的大小)</p>
+<p>为什么skip-gram 的准确率高一些，对于生僻词的效果更好一些？</p>
+<p>在skip-gram当中，每个词都要收到周围的词的影响，每个词在作为中心词的时候，都要进行K次的预测、调整。因此， 当数据量较少，或者词为生僻词出现次数较少时， 这种多次的调整会使得词向量相对的更加准确。因为尽管cbow从另外一个角度来说，某个词也是会受到多次周围词的影响（多次将其包含在内的窗口移动），进行词向量的跳帧，但是他的调整是跟周围的词一起调整的，grad的值会平均分到该词上， 相当于该生僻词没有收到专门的训练，它只是沾了周围词的光而已。</p>
+<p>算法参数总体上对于效果影响不大，最重要的是语料。相对来说，比较重要的常用的参数：</p>
+<p>窗口大小：</p>
+<p>窗口大小影响 词 和前后多少个词的关系，和语料中语句长度有关，建议可以统计一下语料中，句子长度的分布，再来设置window大小。一般设置成8。</p>
+<p>min-count：</p>
+<p>最小词频训练阀值，这个根据训练语料大小设置，只有词频超过这个阀值的词才能被训练。<br>根据经验，如果切词效果不好，会切错一些词，比如 “在深圳”，毕竟切错的是少数情况，使得这种错词词频不高，可以通过设置相对大一点的 min-count 过滤掉切错的词。</p>
+<p>向量维度：</p>
+<p>如果词量大，训练得到的词向量还要做语义层面的叠加，比如 句子 的向量表示 用 词的向量叠加，为了有区分度，语义空间应该要设置大一些，所以维度要偏大。一般 情况下200维够用。</p>
+<p>负采样：</p>
+<p>（这个是一种计算上的优化，通过选取一部分结点（词汇）更新权重）负采样越低，对高频词越不利，对低频词有利。可以这么理解，本来高频词 词被迭代50次，低频词迭代10次，如果采样频率降低一半，高频词失去了25次迭代，而低频词只失去了5次。一般设置成le-5</p>
+<p>如何评估 word2vec 训练的好坏？</p>
+<ul>
+<li>词聚类 （可以采用 kmeans 聚类，看聚类簇的分布）</li>
+<li>词cos 相关性（查找cos相近的词）</li>
+<li>Analogy对比 （man-king， woman-queen）</li>
+<li>使用tnse，pca等降维可视化展示</li>
+</ul>
+<p>更多的评价方法可以参见<a href="https://www.aclweb.org/anthology/D15-1036" target="_blank" rel="noopener">这里</a>.</p>
 <p><strong>glove</strong> （g lou v）<br>这个不属于 word2vec，其只是考虑了 local context，没有考虑 global context<br>Both CBOW and Skip-Grams are “predictive” models, in that they only take local contexts into account.  word2vec does not take advantage of global context.<br>(细节 能看懂就看)<br> GloVe embeddings by contrast leverage the same intuition behind the co-occurrence matrix (共生矩阵) used distributional embeddings, but uses neural methods to decompose the co-occurrence matrix into more expressive and dense word vectors.<br>效果：和word2vec 相比没有  definitively better results<br>While GloVe vectors are faster to train, neither GloVe or Word2Vec has been shown to provide definitively better results rather they should both be evaluated for a given dataset.</p>
-<p>说一下word2vec 和glove 的区别：<br>Predictive的模型，如Word2vec，根据context预测中间的词汇，要么根据中间的词汇预测context，分别对应了word2vec的两种训练方式cbow和skip-gram。<br><img src="https://i.bmp.ovh/imgs/2019/06/978b55d5b4992e03.jpg" alt=""><br>Count-based模型，如GloVe，本质上是对共现矩阵进行降维。首先，构建一个词汇的共现矩阵，每一行是一个word，每一列是context。共现矩阵就是计算每个word在每个context出现的频率。由于context是多种词汇的组合，其维度非常大，我们希望像network embedding一样，在context的维度上降维，学习word的低维表示。该向量表示属于 sparse vectors</p>
+<p>说一下word2vec 和glove 的区别：<br>Predictive的模型，如Word2vec，根据context预测中间的词汇，要么根据中间的词汇预测context，分别对应了word2vec的两种训练方式cbow和skip-gram。</p>
+<p>Count-based模型，如GloVe，本质上是对共现矩阵进行降维。首先，构建一个词汇的共现矩阵，每一行是一个word，每一列是context。共现矩阵就是计算每个word在每个context出现的频率。由于context是多种词汇的组合，其维度非常大，我们希望像network embedding一样，在context的维度上降维，学习word的低维表示。该向量表示属于 sparse vectors</p>
 <p>sparse vectors 词-文档矩阵(Term-document matrix) 和 词共现矩阵(Term-term matrix)。<br><strong>Term-document matrix</strong><br>表示每个单词在文档中出现的次数(词频)，每一行是一个 term，每一列是一个 document<br><img src="https://i.bmp.ovh/imgs/2019/06/fb074258cb52f52d.jpg" alt=""><br>两篇文档的向量相似 =&gt; 两篇文档相似，如上图 doc3 和 doc4，我们就认为它们是相似的。<br>两个单词的向量相似 =&gt; 两个单词相似，如上图的 fool 和 clown，就是相似的。</p>
 <p><strong>Term-term matrix</strong><br>然后我们可以考虑更小的粒度，更小的上下文，也就是不用整篇文档，而是用段落(paragraph)，或者小的窗口(window of ±4 words)，所以这个时候，向量就是对上下文单词的计数，大小不再是文档长度 |D|，而是窗口长度 |V| 了，所以现在 word-word matrix 是 |V|*|V|<br><img src="https://i.bmp.ovh/imgs/2019/06/50df1f31825803eb.jpg" alt=""></p>
 <p>而 word2vec 得到的向量 dense vectors。不使用 negative sampling 的Wordvec 非常快，但准确率不高（57.4\%）,毕竟模型没有告诉什么是无关的word，模型很难对无关词汇进行惩戒，提高准确率。对于 synonym 问题，word2vec 是好于 glove，但从最终的效果上看，两者是不分彼此的。glove 使用了整体的信息，word2vec 只是使用了局部信息（local context）。</p>

@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lprunwuyj212u0guq4v.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lq4allnfj20gk0ji0th.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3klfpv0g9j20k0083go0.jpg">
-<meta property="og:updated_time" content="2019-06-04T02:52:45.916Z">
+<meta property="og:updated_time" content="2019-07-05T00:15:09.969Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP  Papers Reading-Sentence Embedding">
 <meta name="twitter:description" content="Why Consider Sentence Embedding?One simple way you could do this is by generating a word embedding for each word in a sentence, adding up all the embeddings and divide by the number of words in the se">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-04T10:52:45+08:00">
-                2019-06-04
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-05T08:15:09+08:00">
+                2019-07-05
               </time>
             
           </span>
@@ -390,18 +390,20 @@
 
       
         <h2 id="Why-Consider-Sentence-Embedding"><a href="#Why-Consider-Sentence-Embedding" class="headerlink" title="Why Consider Sentence Embedding?"></a>Why Consider Sentence Embedding?</h2><p>One simple way you could do this is by generating a word embedding for each word in a sentence, adding up all the embeddings and divide by the number of words in the sentence to get an “average” embedding for the sentence.</p>
+<p>句子embedding的表示 = words emebdding，可能使用 TF-IDF or SIF 作为weights 进行优化。</p>
 <p>Alternatively, you could use a more advanced method which attempts to add a weighting function to word embeddings which down-weights common words. This latter approach is known as Smooth Inverse Frequency (SIF).</p>
 <p>These methods can be used as a successful proxy for sentence embeddings. However, this “success” depends on the dataset being used and the task you want to execute. So for some tasks these methods could be good enough</p>
+<p>上述方法的主要缺点：语序；文字在上下文中才有意义；阅读理解，不同的句子是相同的意思，却得到不同的embedding；依赖于前期处理，如分词。</p>
 <p>However, there are a number of issues with any of these types of approaches:</p>
 <ul>
-<li>They ignore word ordering. So your product is easy to use, I do not need any help is identical to I do need help, your product is not easy to use. This is obviously problematic.</li>
+<li>They ignore word ordering. This is obviously problematic.</li>
 <li>It’s difficult to capture the semantic meaning of a sentence. The word crash can be used in multiple contexts, e.g. I crashed a party, the stock market crashed, or I crashed my car. It’s difficult to capture this change of context in a word embedding.</li>
 <li>Sentence length becomes problematic. With sentences we can chain them together to create a long sentence without saying very much, The Philadelphia Eagles won the Super Bowl, The Washington Post reported that the Philadelphia Eagles won the Super Bowl, The politician claimed it was fake news when the Washington Post reported that the Philadelphia Eagles won the Super Bowl, and so on. All these sentences are essentially saying the same thing but if we just use word embeddings, it can be difficult to discover if they are similar.</li>
 <li>They introduce extra complexity. When using word embeddings as a proxy for sentence embeddings we often need to take extra steps in conjunction with the base model. For example, we need to remove stop words, get averages, measure sentence length and so on.</li>
 </ul>
-<p>sentence embedding的引用场景：<br>Similar approaches can be used to go beyond representations and semantic search, to document classification and understanding and eventually document summarizing or generation. </p>
-<h2 id="Words-Embed"><a href="#Words-Embed" class="headerlink" title="Words Embed"></a>Words Embed</h2><h3 id="平均词向量与TFIDF加权平均词向量"><a href="#平均词向量与TFIDF加权平均词向量" class="headerlink" title="平均词向量与TFIDF加权平均词向量"></a>平均词向量与TFIDF加权平均词向量</h3><h3 id="SIF加权平均词向量"><a href="#SIF加权平均词向量" class="headerlink" title="SIF加权平均词向量"></a>SIF加权平均词向量</h3><p>来自论文 A simple but tough-to-beat baseline for sentence embeddings，更多信息可以参考<a href="https://jijeng.github.io/2019/05/27/paper-reading-nlp/" target="_blank" rel="noopener">这里</a>。</p>
-<h3 id="利用n-grams-embedding"><a href="#利用n-grams-embedding" class="headerlink" title="利用n-grams embedding"></a>利用n-grams embedding</h3><p><a href="https://jijeng.github.io/2019/03/25/fastText-faiss/" target="_blank" rel="noopener">fasttext</a> 介绍。</p>
+<p>sentence embedding的应用场景：<br>Similar approaches can be used to go beyond representations and semantic search, to document classification and understanding and eventually document summarizing or generation. </p>
+<h2 id="Words-Embed"><a href="#Words-Embed" class="headerlink" title="Words Embed"></a>Words Embed</h2><h3 id="平均词向量与TFIDF加权平均词向量"><a href="#平均词向量与TFIDF加权平均词向量" class="headerlink" title="平均词向量与TFIDF加权平均词向量"></a>平均词向量与TFIDF加权平均词向量</h3><h3 id="SIF加权平均词向量"><a href="#SIF加权平均词向量" class="headerlink" title="SIF加权平均词向量"></a>SIF加权平均词向量</h3><p>来自论文 A simple but tough-to-beat baseline for sentence embeddings，更多信息可以参考<a href="https://jijeng.github.io/2019/05/27/paper-reading-nlp/" target="_blank" rel="noopener">这里</a>。在大家都从无监督学习走向有监督学习的时候，这个无监督的方法和神经网络的效果是旗鼓相当的。</p>
+<h3 id="利用n-grams-embedding"><a href="#利用n-grams-embedding" class="headerlink" title="利用n-grams embedding"></a>利用n-grams embedding</h3><p><a href="https://jijeng.github.io/2019/03/25/fastText-faiss/" target="_blank" rel="noopener">fasttext</a> 介绍。简单说 n-gram 是一种概念，可以细化成两部分：character-level 和word-level，前者是可以用来补充词汇，加强对于不常见词的表示能力，后者是对于词序的补充。</p>
 <h3 id="DAN"><a href="#DAN" class="headerlink" title="DAN"></a>DAN</h3><p>（Deep Unordered Composition Rivals Syntactic Methods for Text Classification）<br>其实DAN(Deep Averaging Networks)应该属于Bag of Words类的算法。因为比较特殊，单独列出来。 它是在对所有词语取平均后，在上面加上几层神经网络。特殊的地方在于它在sentiment analysis中表现也不错，这在BOW类方法中比较罕见。</p>
 <p>文中提出了DAN(Deep average network)，说白了就是对于一个句子或者一个段落，把每个单词的embedding进行平均求和，得到第一层固定维度的向量，然后在套几层全连接神经网络。<br>本质来讲，这个模型没有考虑单词之间的顺序，not在第一个位置和在最后一个位置对于DAN来讲输入都是一样的，所以自然conver不住这种情况。这是模型本身的问题，没有办法改进，除非换模型，比如textcnn就能很好的解决这种情况<br>对于否定词敏感，比如but,not等，常常判断为negative。<br>训练速度快，且结果较好，和Syntactic Composition性能差不多，但是消耗的计算资源少<br>作为有监督学习任务来讲，可以试一试。但是由于全连接层，无法进行无监督学习。相反，NBOW可以无监督学习，比如文本相似度计算等。当然。对于DAN而言，可以通过迁移学习，预训练好全连接参数，实现无监督学习</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lqb2p5otj20bg08djt6.jpg" alt=""></p>
