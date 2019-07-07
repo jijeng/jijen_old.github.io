@@ -89,10 +89,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afa1wa4qj20ka0cyt95.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afacg3bhj20j00ea42v.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/52502045.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/28700629.jpg">
-<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/29062439.jpg">
-<meta property="og:updated_time" content="2019-06-17T08:38:44.811Z">
+<meta property="og:updated_time" content="2019-07-07T12:27:15.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本相似度比较基本知识">
 <meta name="twitter:description" content="本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。 simhash对于文本去重而言，目前有很多NLP相关的算法可以在很高精度上来解决，但是我们现在处理的是大数据维度上的文本去重，这就对算法的效率有着很高的要求。但是在小的样本上这个是不一定有保证有效的。SimHash算法是Google公司进行海量网页去重的高效算法，它通过将原始的文本映射为64位的">
@@ -314,12 +311,34 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T16:38:44+08:00">
-                2019-06-17
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-07T20:27:15+08:00">
+                2019-07-07
               </time>
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -379,7 +398,15 @@
 <p>可以看到核心代码很简单，经过分词之后，就是seta 和setb 进行的操作。</p>
 <h3 id="cosine"><a href="#cosine" class="headerlink" title="cosine"></a>cosine</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def cos_sim(a, b):</span><br><span class="line">    a = np.array(a)</span><br><span class="line">    b = np.array(b)</span><br><span class="line">    # return &#123;&quot;文本的余弦相似度:&quot;:np.sum(a*b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))&#125;</span><br><span class="line">    return np.sum(a * b) / (np.sqrt(np.sum(a ** 2)) * np.sqrt(np.sum(b ** 2)))</span><br></pre></td></tr></table></figure>
 <p>将文本的关键词映射成某种高维函数，然后在高维空间中计算两者的相似度。</p>
-<h3 id="tf-idf"><a href="#tf-idf" class="headerlink" title="tf-idf"></a>tf-idf</h3><p>在simhash 中使用 tf-idf作为我们的比较函数。TF-IDF的主要思想就是：如果某个词在一篇文档中出现的频率高，也即TF高；并且在语料库中其他文档中很少出现，即DF的低，也即IDF高，则认为这个词具有很好的类别区分能力。<br>词频(term frequency)有两种计算方式,后者考虑了相对的情况。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/52502045.jpg" alt=""><br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/28700629.jpg" alt=""><br>计算idf(inverse document frequency):<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-8-23/29062439.jpg" alt=""><br>TF-IDF 优点是简单快速，比较符合实际。缺点，无法体现词的位置信息，所有的位置都是被认为重要性相同，但是开头结尾，段落的开头和段落的结尾，therefore，so，but这些词语都是没有体现的。</p>
+<h3 id="tf-idf"><a href="#tf-idf" class="headerlink" title="tf-idf"></a>tf-idf</h3><p>在simhash 中使用 tf-idf作为我们的比较函数。TF-IDF的主要思想就是：如果某个词在一篇文档中出现的频率高，也即TF高；并且在语料库中其他文档中很少出现，即DF的低，也即IDF高，则认为这个词具有很好的类别区分能力。<br>$$ TF-IDF = 词频(TF) x 逆文档频率(IDF) $$</p>
+<p>算法步骤：</p>
+<ul>
+<li><p>计算词频<br>$$ 词频(TF) = 某个词在文章中出现的次数( 频数) $$<br>“标准化”<br>$$ 词频( TF) = \frac{某次在文中出现的次数}{文章的总词语数} $$</p>
+</li>
+<li><p>逆文档频率<br>这个时候需要一个语料库 (corpus)，模拟语言环境<br>$$ 逆文档频率 (IDF) = log(\frac{语料中的文档总数}{ 包含该词的文档数 +1}) $$ </p>
+</li>
+</ul>
+<p>TF-IDF 优点是简单快速，比较符合实际。缺点，无法体现词的位置信息，所有的位置都是被认为重要性相同，但是开头结尾，段落的开头和段落的结尾，therefore，so，but这些词语都是没有体现的；还有一个缺点是，是基于统计的，没有表达出词语的语意信息 or context 上下文的信息。</p>
 <h3 id="Hamming-distance"><a href="#Hamming-distance" class="headerlink" title="Hamming distance"></a>Hamming distance</h3><p>hamming distance就是比较01串的不同，按照位进行比较。算法：异或时，只有在两个比较的位不同时其结果是1 ，否则结果为0，两个二进制“异或”后得到1的个数即为海明距离的大小。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hashbits =64 # 使用64位进行编码</span><br><span class="line">def simhash_function(tokens, weights_dict):</span><br><span class="line">    v = [0] * hashbits</span><br><span class="line">    # 这种 &#123;key: value&#125;.item() 的操作也是没有了谁了</span><br><span class="line">    for key, t in &#123;x: _string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">        for i in range(hashbits):</span><br><span class="line">            bitmask = 1 &lt;&lt; i</span><br><span class="line">            if t &amp; bitmask:</span><br><span class="line">                v[i] += weights_dict[key]</span><br><span class="line">            else:</span><br><span class="line">                v[i] -= weights_dict[key]</span><br><span class="line"></span><br><span class="line">    fingerprint = 0</span><br><span class="line">    for i in range(hashbits):</span><br><span class="line">        if v[i] &gt;= 0:</span><br><span class="line">            fingerprint += 1 &lt;&lt; i</span><br><span class="line">    return fingerprint</span><br><span class="line">fingerprint = simhash_function(tokens, weights)</span><br></pre></td></tr></table></figure></p>
 <h3 id="min-edit-distance"><a href="#min-edit-distance" class="headerlink" title="min edit distance"></a>min edit distance</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 最小编辑距离</span><br><span class="line">def min_edit_distance(str1, str2):</span><br><span class="line">    rows  =len(str2) +1</span><br><span class="line">    cols =len(str1) +1</span><br><span class="line">    arr =[[0 for _ in range(cols)] for _ in range(rows)]</span><br><span class="line">    # 这种简洁的代码也是牛逼</span><br><span class="line">    for j in range(cols):</span><br><span class="line">        arr[0][j] =j</span><br><span class="line">    for i in range(rows):</span><br><span class="line">        arr[i][0] =i</span><br><span class="line">    for i in range(1, rows):</span><br><span class="line">        for j in range(1, cols):</span><br><span class="line">            # 因为string 是从0 ，len(str) -1的</span><br><span class="line">            if str2[i-1] ==str1[j-1]:</span><br><span class="line">                arr[i][j] =arr[i-1][j-1]</span><br><span class="line">            else:</span><br><span class="line">                # 以后见到这样的式子，就要想到这个二维的数组，因为这个是可以帮助记忆的</span><br><span class="line">                arr[i][j] =1 +min(arr[i-1][j-1], arr[i-1][j], arr[i][j-1])</span><br><span class="line">    # 右下角就是距离</span><br><span class="line">    return arr[rows-1][cols-1]</span><br><span class="line">str_a =&quot;abcdef&quot;</span><br><span class="line">str_b =&quot;azced&quot;</span><br><span class="line">result =min_edit_distance(str_a, str_b)</span><br><span class="line">result</span><br></pre></td></tr></table></figure>
 <p>具体可以参看<a href="https://www.youtube.com/user/tusharroy2525/featured" target="_blank" rel="noopener">该视频</a>讲解。(ps. 如果刷leetcode,也可以参看该视频)</p>

@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="多线程和多进程问题是可以对应到 并发 （cncurrency）和并行(parallelism)上的。 并发，就是一个单核cpu同时开始了多个任务，但是这个任务并不是同时独立进行的，而是通过cpu的不断切换，保存现场，然后重启这样的快速的切换，给用户的感觉是并发，但是实际上是cpu的计算能力受到了限制，用户体验比较好一些。如果在多核cpu （比如我的mac 是一cpu 6核）这样的话完全是可以达到并">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-26T08:48:28.420Z">
+<meta property="og:updated_time" content="2019-07-07T14:07:26.607Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中的多线程和多进程">
 <meta name="twitter:description" content="多线程和多进程问题是可以对应到 并发 （cncurrency）和并行(parallelism)上的。 并发，就是一个单核cpu同时开始了多个任务，但是这个任务并不是同时独立进行的，而是通过cpu的不断切换，保存现场，然后重启这样的快速的切换，给用户的感觉是并发，但是实际上是cpu的计算能力受到了限制，用户体验比较好一些。如果在多核cpu （比如我的mac 是一cpu 6核）这样的话完全是可以达到并">
@@ -307,8 +307,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-03-26T16:48:28+08:00">
-                2019-03-26
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-07T22:07:26+08:00">
+                2019-07-07
               </time>
             
           </span>
@@ -384,54 +384,11 @@
 <blockquote>
 <p>So, before we go deeper into the multiprocessing module, it’s worthwhile ensuring you know the advantages of using multiprocessing over multithreading. The general rule of thumb is that, if you are trying to improve the performance of CPU-bound tasks, multiprocessing is what you want to use. However, if your particular task is Input/Output bound, then you’ll generally want to use multithreading to improve the performance of your applications.</p>
 </blockquote>
-<p>下面是多线程的demo。</p>
-<pre><code>import multiprocessing as mp
-def my_func(x):
-    print(mp.current_process())
-    return x ** x
+<p>这个是多线程的demo 响应的io 请求。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span><span class="params">(threading.Thread)</span>:</span></span><br><span class="line">    <span class="comment"># Our workers constructor, note the super() method which is vital if we want this</span></span><br><span class="line">    <span class="comment"># to function properly</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(Worker, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">            print(i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    thread1 = Worker()</span><br><span class="line">    thread1.start()</span><br><span class="line"></span><br><span class="line">    thread2 = Worker()</span><br><span class="line">    thread2.start()</span><br><span class="line"></span><br><span class="line">    thread3 = Worker()</span><br><span class="line">    thread3.start()</span><br><span class="line"></span><br><span class="line">    thread4 = Worker()</span><br><span class="line">    thread4.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>下面是多进程的demo响应的计算请求。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing <span class="keyword">as</span> mp</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_func</span><span class="params">(x)</span>:</span></span><br><span class="line">    print(mp.current_process())</span><br><span class="line">    <span class="keyword">return</span> x ** x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    pool = mp.Pool(mp.cpu_count())</span><br><span class="line">    <span class="comment"># 这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的</span></span><br><span class="line">    result = pool.map(my_func, [<span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">    result_set_2 = pool.map(my_func, [<span class="number">4</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">23</span>, <span class="number">4</span>, <span class="number">6</span>])</span><br><span class="line">    print(result)</span><br><span class="line">    print(result_set_2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
-
-def main():
-    pool = mp.Pool(mp.cpu_count())
-    # 这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的
-    result = pool.map(my_func, [4, 2, 3, 5, 3, 2, 1, 2])
-    result_set_2 = pool.map(my_func, [4, 6, 5, 4, 6, 3, 23, 4, 6])
-    print(result)
-    print(result_set_2)
-
-
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre><p>这个是多进程的demo。</p>
-<pre><code>import threading
-class Worker(threading.Thread):
-    # Our workers constructor, note the super() method which is vital if we want this
-    # to function properly
-    def __init__(self):
-        super(Worker, self).__init__()
-
-    def run(self):
-        for i in range(10):
-            print(i)
-
-
-def main():
-    thread1 = Worker()
-    thread1.start()
-
-    thread2 = Worker()
-    thread2.start()
-
-    thread3 = Worker()
-    thread3.start()
-
-    thread4 = Worker()
-    thread4.start()
-
-
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre>
       
     </div>
     
