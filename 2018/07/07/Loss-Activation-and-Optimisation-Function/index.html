@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="优化,Loss Function,Activation Function," />
+  <meta name="keywords" content="优化,loss function,Activation Function," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="主要介绍 activation function， loss function 等等概念和分类。">
-<meta name="keywords" content="优化,Loss Function,Activation Function">
+<meta name="keywords" content="优化,loss function,Activation Function">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Loss Activation and Optimisation Function">
 <meta property="og:url" content="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/index.html">
@@ -91,8 +91,14 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450uxt3ykj20df083a9y.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450wzrr2gj20df0830sl.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450y6qpe0j20df083745.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/07/15/5d2c371ec62f690070.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/15/5d2c371ee553533628.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/15/5d2c39ac3289176404.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/1b14b874a9323ede.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/b181fa529616d69a.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/1f6fc8f2b951d570.png">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g452awgfddj20fg0b1t91.jpg">
-<meta property="og:updated_time" content="2019-06-21T02:34:28.726Z">
+<meta property="og:updated_time" content="2019-07-15T09:37:46.005Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Loss Activation and Optimisation Function">
 <meta name="twitter:description" content="主要介绍 activation function， loss function 等等概念和分类。">
@@ -314,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-21T10:34:28+08:00">
-                2019-06-21
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-15T17:37:46+08:00">
+                2019-07-15
               </time>
             
           </span>
@@ -416,7 +422,82 @@
 <p>Softmax is an extension of the Sigmoid activation function. Softmax function adds non-linearity to the output, however it is mainly used for classification examples where multiple classes of results can be computed.</p>
 <p>$$<br>Output  = \frac { e ^ { x } } { \operatorname { sum } \left( e ^ { x } \right) }<br>$$</p>
 <p>这个一般使用在最后，作为多分类的结束。</p>
-<h2 id="Loss-Function-Error-Function"><a href="#Loss-Function-Error-Function" class="headerlink" title="Loss Function(Error Function)"></a>Loss Function(Error Function)</h2><p>what?</p>
+<h2 id="Loss-Function-Error-Function"><a href="#Loss-Function-Error-Function" class="headerlink" title="Loss Function(Error Function)"></a>Loss Function(Error Function)</h2><p>机器学习中所有的算法都需要最大化或最小化一个函数，这个函数被称为“目标函数”。其中，我们一般把最小化的一类函数，称为“损失函数”。它能根据预测结果，衡量出模型预测能力的好坏。</p>
+<p>损失函数 (Loss function) 是用来衡量模型的预测值 $f(x)$ 和真实值 $Y$ 的不一样的程度，通常使用 $L (Y, f(x))$ 来进行表示，损失函数越小，模型的鲁棒性越强。</p>
+<p>分类：分类问题的损失函数和回归问题的损失函数。</p>
+<table>
+<thead>
+<tr>
+<th>分类损失函数</th>
+<th>回归损失函数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>log loss (交叉熵)</td>
+<td>mean square error</td>
+</tr>
+<tr>
+<td>KL divergence / relative entropy</td>
+<td>Huber loss</td>
+</tr>
+<tr>
+<td>指数损失</td>
+<td></td>
+</tr>
+<tr>
+<td>合页损失</td>
+</tr>
+</tbody>
+</table>
+<p><strong> 平方损失函数</strong></p>
+<p>在线性回归中，它假设样本和噪声都服从高斯分布（为什么假设成高斯分布呢？其实这里隐藏了一个小知识点，就是中心极限定理），最后通过极大似然估计MLE可以推导出最小二乘式子，即平方损失函数可以通过线性回归在假设样本是高斯分布的条件下推导得到。</p>
+<p>$$<br>S E = \sum _ { i = 1 } ^ { n } \left( y _ { i } - y _ { i } ^ { p } \right) ^ { 2 }<br>$$</p>
+<p>为什么选择欧式距离作为误差的度量？</p>
+<ul>
+<li>简单，计算方便</li>
+<li>欧式距离是一种很好的相似度衡量标准</li>
+<li>在不同的表示域变换之后，特征的性质能够保持不变。</li>
+</ul>
+<p>在实际应用中，通常会使用 均方差作为一种衡量指标，就是在上面的公式中除以 N.</p>
+<p><strong> 交叉熵损失函数</strong></p>
+<p>二分类问题的交叉熵 loss 主要是有两种形式。第一种是输出的label 是 {0, 1}，也是最为常见的。<br>$$<br>Loss= - [ y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } ) ]<br>$$</p>
+<p>这个公式可以先从一个分段函数推导，然后从最大似然的角度出发，预测类别的概率是:<br>$$<br>P ( y | x ) = \hat { y } ^ { y } \cdot ( 1 - \hat { y } ) ^ { ( 1 - y ) }<br>$$<br>然后取对数：<br>$$<br>log(loss)= - [ y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } ) ]<br>$$</p>
+<p>当 $y =1$ 的时候，<br>$$<br>L = - \log \hat { y }<br>$$<br>因为，<br>$$<br>\hat { y } = \frac { 1 } { 1 + e ^ { - s } }<br>$$<br>所以得到<br>$$<br>L = \log \left( 1 + e ^ { - s } \right)<br>$$<br>loss 的曲线如下图所示：</p>
+<p><img src="https://i.loli.net/2019/07/15/5d2c371ec62f690070.png" alt="11-1.png"><br>从图中明显能够看出，s 越大于零，L 越小，函数的变化趋势也完全符合实际需要的情况。（y =1 是这个时候的目标）</p>
+<p>当 $y =0$ 的时候：<br>同理可以得到，<br>$$<br>log(loss)= \log \left( 1 + e ^ { s } \right)<br>$$</p>
+<p><img src="https://i.loli.net/2019/07/15/5d2c371ee553533628.png" alt="14.png"></p>
+<p>从图中明显能够看出，s 越小于零，L 越小，函数的变化趋势也完全符合实际需要的情况。</p>
+<p>第二种情况是基于输出label 表示方式 {-1, 1}，这个时候的loss  表达式为:</p>
+<p>$$<br>loss = \log \left( 1 + e ^ { - y s } \right)<br>$$</p>
+<p>这个时候只不过使用 $ys$ 代替上面的s ，实际上的分析还是一样的。其中 y 表示真实的标签，s 表示 sigmoid 中的s，见下面的公式。<br>$$<br>g ( s ) = \frac { 1 } { 1 + e ^ { - s } }<br>$$<br>当 ys &gt;0 的时候，表示的预测正确，否则是预测错误。</p>
+<p>交叉熵损失函数经常使用sigmoid 函数作为激活函数，因为这个可以完美解决平方损失函数中权重更新比较慢点的情况。</p>
+<p><strong> Hinge Loss</strong></p>
+<p>Hinge Loss，又称合页损失，其表达式如下：</p>
+<p>$$<br>Loss = \max ( 0,1 - y s )<br>$$<br>图像如下：</p>
+<p><img src="https://i.loli.net/2019/07/15/5d2c39ac3289176404.png" alt="20.png"></p>
+<p>如同合起来的书，所以称之为 合页损失。显然，只有当 ys &lt; 1 时，Loss 才大于零；对于 ys &gt; 1 的情况，Loss 始终为零。Hinge Loss 一般多用于支持向量机（SVM）中，体现了 SVM 距离最大化的思想。 而且，当 Loss 大于零时，是线性函数，便于梯度下降算法求导。Hinge Loss 的另一个优点是使得 ys &gt; 0 的样本损失皆为 0，由此带来了稀疏解，使得 SVM 仅通过少量的支持向量就能确定最终超平面。</p>
+<p><strong> log 对数损失函数 </strong></p>
+<p>在逻辑回归的推导中，它假设样本服从伯努利分布（0-1分布），然后求得满足该分布的似然函数，接着取对数求极值等等。</p>
+<p><strong> 指数损失函数 </strong></p>
+<p>公式如下：<br>$$<br>loss = e ^ { - y s }<br>$$</p>
+<p>曲线如下：<br><img src="https://i.bmp.ovh/imgs/2019/07/1b14b874a9323ede.png" alt=""></p>
+<p>Exponential Loss 与交叉熵 Loss 类似，但它是指数下降的，因此梯度较其它 Loss 来说，更大一些。 Exponential Loss 一般多用于AdaBoost 中。因为使用 Exponential Loss 能比较方便地利用加法模型推导出 AdaBoost算法。</p>
+<p>$$<br>L = - \log \frac { e ^ { s } } { \sum _ { j = 1 } ^ { C } e ^ { s _ { j } } } = - s + \log \sum _ { j = 1 } ^ { C } e ^ { s _ { j } }<br>$$</p>
+<p>softmax loss 的曲线如下图所示：</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/b181fa529616d69a.png" alt=""></p>
+<p>上图中，当 s &lt;&lt; 0 时，Softmax 近似线性；当 s&gt;&gt;0 时，Softmax 趋向于零。Softmax 同样受异常点的干扰较小，多用于神经网络多分类问题中。</p>
+<p>若我们把 ys 的坐标范围取得更大一些，上面 5 种 Loss 的差别会更大一些，如图：</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/1f6fc8f2b951d570.png" alt=""></p>
+<p>显然，这时候 Exponential Loss 会远远大于其它 Loss。从训练的角度来看，模型会更加偏向于惩罚较大的点，赋予其更大的权重。如果样本中存在离群点，Exponential Loss 会给离群点赋予更高的权重，但却可能是以牺牲其他正常数据点的预测效果为代价，可能会降低模型的整体性能，使得模型不够健壮（robust）。</p>
+<p>相比 Exponential Loss，其它四个 Loss，包括 Softmax Loss，都对离群点有较好的“容忍性”，受异常点的干扰较小，模型较为健壮。</p>
+<p><strong> Softmax loss </strong></p>
+<p>对于多分类问题，可以使用 softmax loss。</p>
+<p>其中，C 为类别个数，小写字母 s 是正确类别对应的 Softmax 输入，大写字母 S 是正确类别对应的 Softmax 输出。</p>
+<p>由于 log 运算符不会影响函数的单调性，我们对 S 进行 log 操作。另外，我们希望 log(S) 越大越好，即正确类别对应的相对概率越大越好，那么就可以对 log(S) 前面加个负号，来表示损失函数：</p>
+<p>如何选择损失函数？</p>
+<p>对于异常点的处理是一个维度，比如L1 损失函数处理异常点更加稳定，相对L2 损失函数。</p>
+<p>what?</p>
 <p>衡量模型好坏的 function，如果模型表现好，那么loss 应该是小；如果模型表现不好，那么loss 应该是大的。</p>
 <blockquote>
 <p>At its core, a loss function is incredibly simple: it’s a method of evaluating how well your algorithm models your dataset. If your predictions are totally off, your loss function will output a higher number. If they’re pretty good, it’ll output a lower number. As you change pieces of your algorithm to try and improve your model, your loss function will tell you if you’re getting anywhere.</p>
@@ -473,7 +554,7 @@
           
             <a href="/tags/优化/" rel="tag"># 优化</a>
           
-            <a href="/tags/Loss-Function/" rel="tag"># Loss Function</a>
+            <a href="/tags/loss-function/" rel="tag"># loss function</a>
           
             <a href="/tags/Activation-Function/" rel="tag"># Activation Function</a>
           
@@ -591,7 +672,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

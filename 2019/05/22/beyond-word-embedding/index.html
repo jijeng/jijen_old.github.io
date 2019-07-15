@@ -88,12 +88,14 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a0alr102j20l104jt9t.jpg">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/978b55d5b4992e03.jpg">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/84f0b9da6cb37a95.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/ac7c6a876903bb42.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/fb074258cb52f52d.jpg">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/50df1f31825803eb.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a478w59aj21hc0ixmzq.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a47iu166j20ck072t90.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a487h7rej2078079mx1.jpg">
-<meta property="og:updated_time" content="2019-07-05T00:15:11.423Z">
+<meta property="og:updated_time" content="2019-07-11T14:11:53.244Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Beyond  Word Embedding">
 <meta name="twitter:description" content="从one-hot 到 word2vec， 到elmo，简单介绍一下 NLP中词向量的过程。">
@@ -315,8 +317,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-05T08:15:11+08:00">
-                2019-07-05
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-11T22:11:53+08:00">
+                2019-07-11
               </time>
             
           </span>
@@ -389,7 +391,7 @@
       
         <p>从one-hot 到 word2vec， 到elmo，简单介绍一下 NLP中词向量的过程。</p>
 <a id="more"></a>
-<p>进入word2vec 之前有必要先说一下 one-hot 编码。word embedding 属于稠密向量，然后one-hot属于稀疏向量； 前者想要达到的目的是在某个映射空间中 相近的词语能够在该空间中距离比较近。这是在克服one-hot的缺点：向量不能表示相似度。并且这种word embedding的size 是不随着字典的增大而线性增大的，这在存储和计算上都有很大的优势。</p>
+<p>进入正题之前，思考为什么要将词用向量来表示呢？这样可以给词语一个数学上的表示，使之可以适用于某些算法或数学模型。通常将词语表示成向量有如下两种方法: one-hot and distributed 表示法。前者属于稀疏向量，后者属于稠密向量。前者的缺点向量是相互独立的，无法通过距离函数比如 cosine 进行相似度的比较，并且如果维度 N非常大，俺么这个高纬度的表示也可能引发维度灾难。于是接着往下看吧…</p>
 <h2 id="Traditional-Word-Vectors"><a href="#Traditional-Word-Vectors" class="headerlink" title="Traditional Word Vectors"></a>Traditional Word Vectors</h2><p>Before diving directly into Word2Vec it’s worth while to do a brief overview of some of the traditional methods that pre-date neural embeddings.</p>
 <p>这个是用来描述文章的，有一个大的dict，然后一片文章是如何进行表示、<br><strong>Bag of Words</strong> or BoW vector representations are the most common used traditional vector representation. Each word or n-gram is linked to a vector index and marked as 0 or 1 depending on whether it occurs in a given document.</p>
 <p>An example of a one hot bag of words representation for documents with one word.</p>
@@ -403,7 +405,25 @@
 <li>Continuous bag-of-words (CBOW) — The order of context words does not influence prediction (bag-of-words assumption).</li>
 <li>Continuous skip-gram weighs nearby context words more heavily than more distant context words. While order still is not captured each of the context vectors are weighed and compared independently vs CBOW which weighs against the average context.</li>
 </ul>
+<p>word2vec 就是2 种算法+ 2种模型，总共是四种实现。</p>
 <p>展示一下结构图：<br><img src="https://i.bmp.ovh/imgs/2019/06/978b55d5b4992e03.jpg" alt=""></p>
+<p>word2vec 的训练过程：</p>
+<ul>
+<li>中文分词，然后保存所有的语料到一个文件中，可以使用 换行符进行分开</li>
+<li>扫描语料库统计词频，取词频最高的V 个词，构成词汇表，然后建立Huffman 树，叶子节点表示的表示词，路径表示这个词的one-hot 编码（左为0 右为1）其余（出现频率很低）的词都用一个特殊符号代替掉。</li>
+<li>词向量是从输入层到隐藏层的weights，随着初始化而存在，然后之后是不断优化的产物</li>
+<li>训练的目标的，以skip-gram 为例，输入中心词然后最大化输出周围的词 (context )词汇。</li>
+</ul>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/84f0b9da6cb37a95.png" alt=""></p>
+<p>输入层的输入：每个词存在一个one-hot向量，向量的维度是V（词典大小），如果该词在词汇表中出现过，则向量中词汇表中对应的位置为1，其他位置全为0。如果词汇表中不出现，则向量为全0</p>
+<p>负采样（Negative Sample）和层次softmax（Hierarchical Softmax）则是两种加速训练的方法。都是优化最后的softmax 层（输出层），因为这个大小就是词典的大小，计算量太大了，如果知道softmax，是存在指数计算的。</p>
+<p><strong>loss function</strong></p>
+<p>在cbow模型中，所有的词被编码成ont-hot向量，V为总词语数。input层的one-hot vector经过W_{VXN}矩阵后，被压缩为只有N个元素的向量h，之后经过W′矩阵出来，得到u。于是根据公式，有  </p>
+<p>$$<br>p \left( w _ { t } | w _ { \text {input} } \right) = y _ { j } = \frac { \exp \left( u _ { j } \right) } { \sum \exp \left( u _ { j } \prime \right) }<br>$$</p>
+<p>最大化该条件概率，得到</p>
+<p>$$<br>\max p \left( w _ { t } | w _ { \text {input} } \right) = \max \log y _ { j } = u _ { j } - \operatorname { log } \sum \exp \left( u _ { j } \right)<br>$$<br>于是得到了 词袋模型的 loss function：<br>$$<br>E = - \log p \left( w _ { t } | w _ { \text {input} } \right) = \log \sum \exp \left( u _ { j } \right) - u _ { j }<br>$$<br>这里，$u _ { j }$ 表示第 $j$ 个词向量， 有了 loss function，就可以进行词向量的训练了。</p>
+<p><strong>层次softmax</strong><br>比如说一个二叉树结构，“我”肯定是第一层叶子节点，“涮羊肉”肯定是在最后一层的叶子节点。<br>Hierarchical Softmax是用输出值的霍夫曼编码代替原本的One-Hot向量，用霍夫曼树替代Softmax的计算过程。 （现在这one-hot 编码 和 huffman 编码都是存在的，只不过一个是输入层的输入，一个是输出层的输入）</p>
+<p>这个存储的目的是遍历的次数少了，因为是使用二分类去做多分类，如果词频高的编码少，那么最后的结果是比较少的。<br>word2vec训练的时候按照词频将每个词语Huffman编码，由于Huffman编码中词频越高的词语对应的编码越短。所以越高频的词语在    Hierarchical Softmax过程中经过的二分类节点就越少，整体计算量就更少了。</p>
 <p>总的特点：使用 context words 去predict 中心词 or 相反的过程，最大化这种概率关系。CBOW is faster while skip-gram is slower but does a better job for infrequent words.那么为什么快呢？</p>
 <p>答： cbow只要 把窗口内的其他词相加一次作为输入来预测 一个单词。不管窗口多大，只需要一次运算。而skip-gram直接受窗口影响，窗口越大，需要预测的周围词越多。在训练中，通过调整窗口大小明显感觉到训练速度受到很大影响。前者是复杂度大概是O(V)，后者的时间的复杂度为O(KV）(假设K 是窗口的大小)</p>
 <p>为什么skip-gram 的准确率高一些，对于生僻词的效果更好一些？</p>
@@ -412,11 +432,14 @@
 <p>窗口大小：</p>
 <p>窗口大小影响 词 和前后多少个词的关系，和语料中语句长度有关，建议可以统计一下语料中，句子长度的分布，再来设置window大小。一般设置成8。</p>
 <p>min-count：</p>
-<p>最小词频训练阀值，这个根据训练语料大小设置，只有词频超过这个阀值的词才能被训练。<br>根据经验，如果切词效果不好，会切错一些词，比如 “在深圳”，毕竟切错的是少数情况，使得这种错词词频不高，可以通过设置相对大一点的 min-count 过滤掉切错的词。</p>
+<p>最小词频训练阀值，这个根据训练语料大小设置，只有词频超过这个阀值的词才能被训练。根据经验，如果切词效果不好，会切错一些词，比如 “在深圳”，毕竟切错的是少数情况，使得这种错词词频不高，可以通过设置相对大一点的 min-count 过滤掉切错的词。（这种是对于新词处理的一种补救方法）</p>
 <p>向量维度：</p>
 <p>如果词量大，训练得到的词向量还要做语义层面的叠加，比如 句子 的向量表示 用 词的向量叠加，为了有区分度，语义空间应该要设置大一些，所以维度要偏大。一般 情况下200维够用。</p>
 <p>负采样：</p>
 <p>（这个是一种计算上的优化，通过选取一部分结点（词汇）更新权重）负采样越低，对高频词越不利，对低频词有利。可以这么理解，本来高频词 词被迭代50次，低频词迭代10次，如果采样频率降低一半，高频词失去了25次迭代，而低频词只失去了5次。一般设置成le-5</p>
+<p>任何采样算法都应该保证频次越高的样本越容易被采样出来。基本的思路是对于长度为1的线段，根据词语的词频将其公平地分配给每个词语：<br>$$<br>\operatorname { len } ( w ) = \frac { \operatorname { counter } ( w ) } { \sum _ { u \in \mathcal { D } } \operatorname { counter } ( u ) }<br>$$</p>
+<p>在word2vec中，该“刻度尺”对应着table数组。具体实现时，对词频取了0.75次幂：<br>$$<br>\operatorname { len } ( w ) = \frac { [ \operatorname { counter } ( w ) ] ^ { 0.75 } } { \sum _ { u \in \mathcal { D } } [ \operatorname { counter } ( u ) ] ^ { 0.75 } }<br>$$<br>这个幂实际上是一种“平滑”策略，能够让低频词多一些出场机会，高频词贡献一些出场机会，劫富济贫。</p>
+<p>比较详细的介绍可以查看<a href="http://www.hankcs.com/nlp/word2vec.html" target="_blank" rel="noopener">这里</a></p>
 <p>如何评估 word2vec 训练的好坏？</p>
 <ul>
 <li>词聚类 （可以采用 kmeans 聚类，看聚类簇的分布）</li>
@@ -425,12 +448,18 @@
 <li>使用tnse，pca等降维可视化展示</li>
 </ul>
 <p>更多的评价方法可以参见<a href="https://www.aclweb.org/anthology/D15-1036" target="_blank" rel="noopener">这里</a>.</p>
-<p><strong>glove</strong> （g lou v）<br>这个不属于 word2vec，其只是考虑了 local context，没有考虑 global context<br>Both CBOW and Skip-Grams are “predictive” models, in that they only take local contexts into account.  word2vec does not take advantage of global context.<br>(细节 能看懂就看)<br> GloVe embeddings by contrast leverage the same intuition behind the co-occurrence matrix (共生矩阵) used distributional embeddings, but uses neural methods to decompose the co-occurrence matrix into more expressive and dense word vectors.<br>效果：和word2vec 相比没有  definitively better results<br>While GloVe vectors are faster to train, neither GloVe or Word2Vec has been shown to provide definitively better results rather they should both be evaluated for a given dataset.</p>
-<p>说一下word2vec 和glove 的区别：<br>Predictive的模型，如Word2vec，根据context预测中间的词汇，要么根据中间的词汇预测context，分别对应了word2vec的两种训练方式cbow和skip-gram。</p>
-<p>Count-based模型，如GloVe，本质上是对共现矩阵进行降维。首先，构建一个词汇的共现矩阵，每一行是一个word，每一列是context。共现矩阵就是计算每个word在每个context出现的频率。由于context是多种词汇的组合，其维度非常大，我们希望像network embedding一样，在context的维度上降维，学习word的低维表示。该向量表示属于 sparse vectors</p>
+<p><strong>glove</strong> （g lou v）</p>
+<p>Intuition:</p>
+<p>Both CBOW and Skip-Grams are “predictive” models, in that they only take local contexts into account.  word2vec does not take advantage of global context.<br>(细节 能看懂就看)<br>GloVe embeddings by contrast leverage the same intuition behind the co-occurrence matrix (共生矩阵) used distributional embeddings, but uses neural methods to decompose the co-occurrence matrix into more expressive and dense word vectors.</p>
+<p>模型目标：进行词的向量化表示，使得向量之间尽可能多地蕴含语义和语法的信息。<br>输入：语料库<br>输出：词向量<br>方法概述：首先基于语料库构建词的共现矩阵，然后基于共现矩阵和GloVe模型学习词向量。</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/ac7c6a876903bb42.png" alt=""></p>
+<p>下面是一个例子：</p>
 <p>sparse vectors 词-文档矩阵(Term-document matrix) 和 词共现矩阵(Term-term matrix)。<br><strong>Term-document matrix</strong><br>表示每个单词在文档中出现的次数(词频)，每一行是一个 term，每一列是一个 document<br><img src="https://i.bmp.ovh/imgs/2019/06/fb074258cb52f52d.jpg" alt=""><br>两篇文档的向量相似 =&gt; 两篇文档相似，如上图 doc3 和 doc4，我们就认为它们是相似的。<br>两个单词的向量相似 =&gt; 两个单词相似，如上图的 fool 和 clown，就是相似的。</p>
 <p><strong>Term-term matrix</strong><br>然后我们可以考虑更小的粒度，更小的上下文，也就是不用整篇文档，而是用段落(paragraph)，或者小的窗口(window of ±4 words)，所以这个时候，向量就是对上下文单词的计数，大小不再是文档长度 |D|，而是窗口长度 |V| 了，所以现在 word-word matrix 是 |V|*|V|<br><img src="https://i.bmp.ovh/imgs/2019/06/50df1f31825803eb.jpg" alt=""></p>
 <p>而 word2vec 得到的向量 dense vectors。不使用 negative sampling 的Wordvec 非常快，但准确率不高（57.4\%）,毕竟模型没有告诉什么是无关的word，模型很难对无关词汇进行惩戒，提高准确率。对于 synonym 问题，word2vec 是好于 glove，但从最终的效果上看，两者是不分彼此的。glove 使用了整体的信息，word2vec 只是使用了局部信息（local context）。</p>
+<p>word2vec 和glove 的区别：<br>Predictive的模型，如Word2vec，根据context预测中间的词汇，要么根据中间的词汇预测context，分别对应了word2vec的两种训练方式cbow和skip-gram。</p>
+<p>Count-based模型，如GloVe，本质上是对共现矩阵进行降维。首先，构建一个词汇的共现矩阵，每一行是一个word，每一列是context。共现矩阵就是计算每个word在每个context出现的频率。由于context是多种词汇的组合，其维度非常大，我们希望像network embedding一样，在context的维度上降维，学习word的低维表示。该向量表示属于 sparse vectors</p>
+<p>和word2vec 的效果比较：<br>glove 和word2vec 相比没有  definitively better results，还是通过实验进行说话吧。<br>While GloVe vectors are faster to train, neither GloVe or Word2Vec has been shown to provide definitively better results rather they should both be evaluated for a given dataset.</p>
 <p><strong>fasttext</strong><br>这个主要是 each word + n-gram within each word， 最后的效果是好于 word2vec 的。<br>FastText, builds on Word2Vec by learning vector representations for each word and the n-grams found within each word. The values of the representations are then averaged into one vector at each training step. While this adds a lot of additional computation to training it enables word embeddings to encode sub-word information. FastText vectors have been shown to be more accurate than Word2Vec vectors by a number of different measures.</p>
 <p>简单说 fasttext 和word2vec 模型上的不同有两点：</p>
 <ul>
@@ -585,7 +614,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
