@@ -91,7 +91,9 @@
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/1580a69c2c0a91d8.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/02/ZYVtrq.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/02/dP2n86.png">
-<meta property="og:updated_time" content="2019-07-11T13:38:24.695Z">
+<meta property="og:image" content="https://i.postimg.cc/KYJB8Xxr/image.png">
+<meta property="og:image" content="https://i.postimg.cc/283DHMHb/2.jpg">
+<meta property="og:updated_time" content="2019-07-19T14:25:14.805Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP中的碎碎念">
 <meta name="twitter:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
@@ -313,8 +315,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-11T21:38:24+08:00">
-                2019-07-11
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-19T22:25:14+08:00">
+                2019-07-19
               </time>
             
           </span>
@@ -608,6 +610,43 @@
 <li>自由度</li>
 </ul>
 <p>基于上述分词进行挑选。</p>
+<h2 id="NLP-中的三类特征提取器"><a href="#NLP-中的三类特征提取器" class="headerlink" title="NLP 中的三类特征提取器"></a>NLP 中的三类特征提取器</h2><p><strong> NLP 和图像中数据的特征</strong></p>
+<p>NLP的输入往往是一句话或者一篇文章，所以它有几个特点：首先，输入是个一维线性序列，这个好理解；其次，输入是不定长的，有的长有的短，而这点其实对于模型处理起来也会增加一些小麻烦；再次，单词或者子句的相对位置关系很重要，两个单词位置互换可能导致完全不同的意思。</p>
+<p><strong> NLP 中的四大任务 </strong></p>
+<ul>
+<li>序列标注： 分词/ POS Tag /NER /语义标注</li>
+<li>分类任务： 文本分类/ 情感计算</li>
+<li>句子关系判断： Entailment /QA / 自然语言推理</li>
+<li>生成式任务： 机器翻译/ 文本摘录</li>
+</ul>
+<p>一类是序列标注，这是最典型的NLP任务，比如中文分词，词性标注，命名实体识别，语义角色标注等都可以归入这一类问题，它的特点是句子中每个单词要求模型根据上下文都要给出一个分类类别。第二类是分类任务，比如我们常见的文本分类，情感计算等都可以归入这一类。它的特点是不管文章有多长，总体给出一个分类类别即可。第三类任务是句子关系判断，比如Entailment，QA，语义改写，自然语言推理等任务都是这个模式，它的特点是给定两个句子，模型判断出两个句子是否具备某种语义关系；第四类是生成式任务，比如机器翻译，文本摘要，写诗造句，看图说话等都属于这一类。它的特点是输入文本内容后，需要自主生成另外一段文字。</p>
+<p>深度学习最大的优点是 “端到端”</p>
+<p>NLP中的任务很多，哪些任务是最具有代表性的呢？答案是机器翻译。</p>
+<p>回归主题，特征提取器</p>
+<h3 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h3><p>RNN模型结构参考上图，核心是每个输入对应隐层节点，而隐层节点之间形成了线性序列，信息由前向后在隐层之间逐步向后传递。</p>
+<p><a href="https://postimg.cc/KK3R0HKR" target="_blank" rel="noopener"><img src="https://i.postimg.cc/KYJB8Xxr/image.png" alt="image.png"></a></p>
+<p>RNN也存在问题，它采取线性序列结构不断从前往后收集输入信息，但这种线性序列结构在反向传播的时候存在优化困难问题，因为反向传播路径太长，容易导致严重的梯度消失或梯度爆炸问题。为了解决这个问题，后来引入了LSTM和GRU模型，通过增加中间状态信息直接向后传播，以此缓解梯度消失问题，获得了很好的效果，于是很快LSTM和GRU成为RNN的标准模型。</p>
+<p>（Attention机制最早是在视觉图像领域提出来的，但是真正火起来应该算是2014年google mind团队的论文《Recurrent Models of Visual Attention》，他们在RNN模型上使用了attention机制来进行图像分类）</p>
+<p>为什么RNN能够这么快在NLP流行并且占据了主导地位呢？主要原因还是因为RNN的结构天然适配解决NLP的问题，NLP的输入往往是个不定长的线性序列句子，而RNN本身结构就是个可以接纳不定长输入的由前向后进行信息线性传导的网络结构，而在LSTM引入三个门后，对于捕获长距离特征也是非常有效的。所以RNN特别适合NLP这种线形序列应用场景，这是RNN为何在NLP界如此流行的根本原因。</p>
+<p>那么为什么有衰弱了？<br>RNN本身的序列依赖结构对于大规模并行计算来说相当之不友好。通俗点说，就是RNN很难具备高效的并行计算能力。如果适合在学术界发论文，那么不太可能在工业界广泛的使用。</p>
+<h3 id="CNN-特征提取器"><a href="#CNN-特征提取器" class="headerlink" title="CNN 特征提取器"></a>CNN 特征提取器</h3><p>卷积层本质上是个特征抽取层，可以设定超参数F来指定卷积层包含多少个卷积核（Filter）。对于某个Filter来说，可以想象有一个d*k大小的移动窗口从输入矩阵的第一个字开始不断往后移动，其中k是Filter指定的窗口大小，d是Word Embedding长度。对于某个时刻的窗口，通过神经网络的非线性变换，将这个窗口内的输入值转换为某个特征值，随着窗口不断往后移动，这个Filter对应的特征值不断产生，形成这个Filter的特征向量。这就是卷积核抽取特征的过程。卷积层内每个Filter都如此操作，就形成了不同的特征序列。Pooling 层则对Filter的特征进行降维操作，形成最终的特征。一般在Pooling层之后连接全联接层神经网络，形成最后的分类过程。</p>
+<p>CNN 捕捉到的是什么信息？</p>
+<p>关键在于卷积核覆盖的那个滑动窗口，CNN能捕获到的特征基本都体现在这个滑动窗口里了。大小为k的滑动窗口轻轻的穿过句子的一个个单词，荡起阵阵涟漪，那么它捕获了什么?其实它捕获到的是单词的k-gram片段信息，这些k-gram片段就是CNN捕获到的特征，k的大小决定了能捕获多远距离的特征。</p>
+<p><a href="https://postimg.cc/1fx2XC1s" target="_blank" rel="noopener"><img src="https://i.postimg.cc/283DHMHb/2.jpg" alt="2.jpg"></a></p>
+<p>卷积操作是通过加深层数，然后获得远距离的特征的。所以有两种解题思路： 一种是增加窗口大小k 增大；一种是加深深度。</p>
+<p>简单谈一下CNN的位置编码问题和并行计算能力问题。CNN的卷积层其实是保留了相对位置信息的，只要你在设计模型的时候别手贱，中间层不要随手瞎插入Pooling层，问题就不大，不专门在输入部分对position进行编码也行。至于CNN的并行计算能力，那是非常强的，这其实很好理解。我们考虑单层卷积层，首先对于某个卷积核来说，每个滑动窗口位置之间没有依赖关系，所以完全可以并行计算；另外，不同的卷积核之间也没什么相互影响，所以也可以并行计算。CNN的并行度是非常自由也非常高的，这是CNN的一个非常好的优点。</p>
+<p>看看  Transformer 对于NLP 任务中的解决方案：</p>
+<ul>
+<li>不定长的输入：Transformer 一般设置最大的长度，不够了 就padding，然后多了就 去尾。</li>
+<li>单词之间的相对位置： Transformer是用位置函数来进行位置编码的，而Bert等模型则给每个单词一个Position embedding，将单词embedding和单词对应的position embedding加起来形成单词的输入embedding</li>
+<li>长依赖问题： self attention机制</li>
+</ul>
+<p>对于Transformer来说，Multi-head attention的head数量严重影响NLP任务中Long-range特征捕获能力：结论是head越多越有利于捕获long-range特征。（对标filter 的个数）</p>
+<blockquote>
+<p>我个人意见是：这说明Transformer之所以能够效果这么好，不仅仅multi-head attention在发生作用，而是几乎所有构件都在共同发挥作用，是一个小小的系统工程。</p>
+</blockquote>
+<p><strong> 参考文献</strong></p>
+<p><a href="https://www.52cs.com/archives/3011" target="_blank" rel="noopener">放弃幻想，全面拥抱Transformer</a></p>
 
       
     </div>
@@ -814,7 +853,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Textrank"><span class="nav-number">1.3.</span> <span class="nav-text">Textrank</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件"><span class="nav-number">3.</span> <span class="nav-text">分词软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分词软件的原理"><span class="nav-number">3.1.</span> <span class="nav-text">分词软件的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词粒度"><span class="nav-number">3.2.</span> <span class="nav-text">分词粒度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新词发现"><span class="nav-number">4.</span> <span class="nav-text">新词发现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Textrank"><span class="nav-number">1.3.</span> <span class="nav-text">Textrank</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件"><span class="nav-number">3.</span> <span class="nav-text">分词软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分词软件的原理"><span class="nav-number">3.1.</span> <span class="nav-text">分词软件的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词粒度"><span class="nav-number">3.2.</span> <span class="nav-text">分词粒度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新词发现"><span class="nav-number">4.</span> <span class="nav-text">新词发现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NLP-中的三类特征提取器"><span class="nav-number">5.</span> <span class="nav-text">NLP 中的三类特征提取器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN"><span class="nav-number">5.1.</span> <span class="nav-text">RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN-特征提取器"><span class="nav-number">5.2.</span> <span class="nav-text">CNN 特征提取器</span></a></li></ol></li></ol></div>
             
 
           </div>
