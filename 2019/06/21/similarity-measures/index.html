@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="The similarity measure is the measure of how much alike two data objects are. Similarity measure in a data mining context is a distance with dimensions representing features of the objects. If this di">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-01T08:09:27.933Z">
+<meta property="og:updated_time" content="2019-07-20T10:40:53.079Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Similarity Measures">
 <meta name="twitter:description" content="The similarity measure is the measure of how much alike two data objects are. Similarity measure in a data mining context is a distance with dimensions representing features of the objects. If this di">
@@ -125,6 +125,19 @@
 
 
 
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
 
   <title>Similarity Measures | Jijeng's blog</title>
   
@@ -308,8 +321,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-01T16:09:27+08:00">
-                2019-07-01
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-20T18:40:53+08:00">
+                2019-07-20
               </time>
             
           </span>
@@ -398,6 +411,13 @@
 <p>Applications:  <strong> Used in identifying document similarity, product recommendations, Information retrieval and works efficiently with high-dimensional sparse data.</strong> It is an angle between two data points in the vector space. Given a vector A and B, the cosine distance is the dot product of x and y divided by Euclidean distance.</p>
 <p>$$<br>\text { similarity } = \cos ( \theta ) = \frac { \mathbf { A } \cdot \mathbf { B } } { | \mathbf { A } | | \mathbf { B } | } = \frac { \sum _ { i = 1 } ^ { n } A _ { i } B _ { i } } { \sqrt { \sum _ { i = 1 } ^ { n } A _ { i } ^ { 2 } } \sqrt { \sum _ { i = 1 } ^ { n } B _ { i } ^ { 2 } } }<br>$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> *</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square_rooted</span><span class="params">(x)</span>:</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> round(sqrt(sum([a*a <span class="keyword">for</span> a <span class="keyword">in</span> x])),<span class="number">3</span>)  <span class="comment"># round(num, ndigits) 在python2 中是四舍五入</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cosine_similarity</span><span class="params">(x,y)</span>:</span></span><br><span class="line"> </span><br><span class="line">   numerator = sum(a*b <span class="keyword">for</span> a,b <span class="keyword">in</span> zip(x,y))</span><br><span class="line">   denominator = square_rooted(x)*square_rooted(y)</span><br><span class="line">   <span class="keyword">return</span> round(numerator/float(denominator),<span class="number">3</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> cosine_similarity([<span class="number">3</span>, <span class="number">45</span>, <span class="number">7</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">54</span>, <span class="number">13</span>, <span class="number">15</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="Cosine-similarity-vs-Euclidean-distance"><a href="#Cosine-similarity-vs-Euclidean-distance" class="headerlink" title="Cosine similarity vs Euclidean distance"></a>Cosine similarity vs Euclidean distance</h3><p>首先从公式上说， cosine similarity 考虑的是角度  (angle)而不是 magnitude，可以排除文章长度的干扰。</p>
+<blockquote>
+<p>Mathematically, it measures the cosine of the angle between two vectors projected in a multi-dimensional space. The cosine similarity is advantageous because even if the two similar documents are far apart by the Euclidean distance (due to the size of the document).</p>
+</blockquote>
+<p>如果涉及到（使用 tf or tf-idf）生成了向量表示，使用 cosine similarity 比 euclidean 更好。 如果使用 word2vec 生成的向量，那么 euclidean 是不是更好的选择。Cosine is mostly used on very sparse, discrete domains such as text. Here, most dimensions are 0 and do not matter at all.</p>
+<p>如果你想要 magnitude，那么使用 ED。Euclidean is commonly used on dense, continuous variables. There every dimension matters。</p>
+<p>这里有一个重要的观点， Cosine is essentially the same as Euclidean on normalized data. 在很高的维度，两者都是不行的，这就是 Curse of Dimensionality.</p>
 <h3 id="Jaccard-similarity"><a href="#Jaccard-similarity" class="headerlink" title="Jaccard similarity"></a>Jaccard similarity</h3><p>Jaccard Distance measures how close two sets are. It is simply a ratio of the intersection of the sets to the Union. <strong>Can be used when the datatypes are categorical </strong>. Example: Products purchased/viewed by customers. Typically used in Product recommendation, Clustering customers based on purchase/engagement patterns. Please note Jaccard distance is a dissimilarity metric and Jaccard coefficient, J(A,B) is a similarity metric.</p>
 <p>$$<br>d _ { J } ( A , B ) = 1 - J ( A , B ) = \frac { | A \cup B | - | A \cap B | } { | A \cup B | }<br>$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> *</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jaccard_similarity</span><span class="params">(x,y)</span>:</span></span><br><span class="line">  </span><br><span class="line">    intersection_cardinality = len(set.intersection(*[set(x), set(y)])) <span class="comment"># 参数前一个 *表示传入的是一个元祖 tuple</span></span><br><span class="line">    union_cardinality = len(set.union(*[set(x), set(y)]))</span><br><span class="line">    <span class="keyword">return</span> intersection_cardinality/float(union_cardinality)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> jaccard_similarity([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">6</span>],[<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>])</span><br></pre></td></tr></table></figure>
@@ -537,7 +557,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -559,7 +579,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -608,7 +628,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Euclidean-distance"><span class="nav-number">1.</span> <span class="nav-text">Euclidean distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manhattan-distance"><span class="nav-number">2.</span> <span class="nav-text">Manhattan distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Minkowski-distance"><span class="nav-number">3.</span> <span class="nav-text">Minkowski distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cosine-similarity"><span class="nav-number">4.</span> <span class="nav-text">Cosine similarity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jaccard-similarity"><span class="nav-number">5.</span> <span class="nav-text">Jaccard similarity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Edit-Distance"><span class="nav-number">6.</span> <span class="nav-text">Edit Distance</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Euclidean-distance"><span class="nav-number">1.</span> <span class="nav-text">Euclidean distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manhattan-distance"><span class="nav-number">2.</span> <span class="nav-text">Manhattan distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Minkowski-distance"><span class="nav-number">3.</span> <span class="nav-text">Minkowski distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cosine-similarity"><span class="nav-number">4.</span> <span class="nav-text">Cosine similarity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cosine-similarity-vs-Euclidean-distance"><span class="nav-number">5.</span> <span class="nav-text">Cosine similarity vs Euclidean distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jaccard-similarity"><span class="nav-number">6.</span> <span class="nav-text">Jaccard similarity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Edit-Distance"><span class="nav-number">7.</span> <span class="nav-text">Edit Distance</span></a></li></ol></div>
             
 
           </div>

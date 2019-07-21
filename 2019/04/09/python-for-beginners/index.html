@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g383oy3v7zj20l001lq2q.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g383s8zyjfj20ld01ht8i.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g383vngz5jj20ma01m742.jpg">
-<meta property="og:updated_time" content="2019-07-10T02:58:04.315Z">
+<meta property="og:updated_time" content="2019-07-21T02:10:19.129Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python from Beginner to Master">
 <meta name="twitter:description" content="Basic Skillsmodulepython 文件可以当做主文件进行运行或者当做函数的集合进行调用。如果是前者一般是需要包含”__name__ ==”__main__”。对于后者就是在其他的python文件中进行调用。12import my_module # python文件from my_module import my_object packagesfrom packageroot.pac">
@@ -129,6 +129,19 @@
 
 
 
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
 
   <title>Python from Beginner to Master | Jijeng's blog</title>
   
@@ -312,8 +325,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-10T10:58:04+08:00">
-                2019-07-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-21T10:10:19+08:00">
+                2019-07-21
               </time>
             
           </span>
@@ -495,6 +508,37 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read the data from file</span></span><br><span class="line"><span class="comment"># We now have a Python dictionary</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data.json'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data_listofdict = json.load(f)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># We can do the same thing with pandas</span></span><br><span class="line">data_df = pd.read_json(<span class="string">'data.json'</span>, orient=<span class="string">'records'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># We can write a dictionary to JSON like so</span></span><br><span class="line"><span class="comment"># Use 'indent' and 'sort_keys' to make the JSON</span></span><br><span class="line"><span class="comment"># file look nice</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'new_data.json'</span>, <span class="string">'w+'</span>) <span class="keyword">as</span> json_file:</span><br><span class="line">    json.dump(data_listofdict, json_file, indent=<span class="number">4</span>, sort_keys=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># And again the same thing with pandas</span></span><br><span class="line">export = data_df.to_json(<span class="string">'new_data.json'</span>, orient=<span class="string">'records'</span>)</span><br></pre></td></tr></table></figure>
 <p>text file<br>python 中 open( mode =’rt’) 的选项：<br>w,r,wt,rt都是python里面文件操作的模式。<br>w是写模式，r是读模式。<br>t是windows平台特有的所谓text mode(文本模式）,区别在于会自动识别windows平台的换行符。<br>类Unix平台的换行符是\n，而windows平台用的是\r\n两个ASCII字符来表示换行，python内部采用的是\n来表示换行符。<br>rt模式下，python在读取文本时会自动把\r\n转换成\n.<br>wt模式下，Python写文件时会用\r\n来表示换行。</p>
 <p>参考资料：<br><a href="https://towardsdatascience.com/the-easy-way-to-work-with-csv-json-and-xml-in-python-5056f9325ca9" target="_blank" rel="noopener">https://towardsdatascience.com/the-easy-way-to-work-with-csv-json-and-xml-in-python-5056f9325ca9</a></p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>python 中 in 操作 在不同的数据集合中的时间复杂度</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>列表  list</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>list 是由数组实现的</td>
+</tr>
+<tr>
+<td>字典  dict</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>集合 set</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>内部实现和 dict 很像</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -622,7 +666,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -644,7 +688,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -693,7 +737,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-Skills"><span class="nav-number">1.</span> <span class="nav-text">Basic Skills</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#module"><span class="nav-number">1.1.</span> <span class="nav-text">module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#packages"><span class="nav-number">1.2.</span> <span class="nav-text">packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-path"><span class="nav-number">1.3.</span> <span class="nav-text">python-path</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-or-for"><span class="nav-number">1.4.</span> <span class="nav-text">while or for</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#break-continue-or-pass"><span class="nav-number">1.5.</span> <span class="nav-text">break, continue, or pass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yield-or-return"><span class="nav-number">1.6.</span> <span class="nav-text">yield or return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#recursion"><span class="nav-number">1.7.</span> <span class="nav-text">recursion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list-tuples-or-dictionary"><span class="nav-number">1.8.</span> <span class="nav-text">list, tuples, or dictionary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shallow-vs-deep-copy"><span class="nav-number">1.9.</span> <span class="nav-text">shallow vs deep copy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#object-oriented-design"><span class="nav-number">1.10.</span> <span class="nav-text">object oriented design</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Advanced-Features"><span class="nav-number">2.</span> <span class="nav-text">Advanced Features</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Lambda-functions"><span class="nav-number">2.1.</span> <span class="nav-text">Lambda functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maps"><span class="nav-number">2.2.</span> <span class="nav-text">Maps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Filtering"><span class="nav-number">2.3.</span> <span class="nav-text">Filtering</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Itertools"><span class="nav-number">2.4.</span> <span class="nav-text">Itertools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generator"><span class="nav-number">2.5.</span> <span class="nav-text">Generator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decorator"><span class="nav-number">2.6.</span> <span class="nav-text">Decorator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-Comprehension"><span class="nav-number">3.</span> <span class="nav-text">List Comprehension</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-operators"><span class="nav-number">4.</span> <span class="nav-text">python operators</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Working-with-files"><span class="nav-number">5.</span> <span class="nav-text">Working with files</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-Skills"><span class="nav-number">1.</span> <span class="nav-text">Basic Skills</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#module"><span class="nav-number">1.1.</span> <span class="nav-text">module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#packages"><span class="nav-number">1.2.</span> <span class="nav-text">packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-path"><span class="nav-number">1.3.</span> <span class="nav-text">python-path</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-or-for"><span class="nav-number">1.4.</span> <span class="nav-text">while or for</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#break-continue-or-pass"><span class="nav-number">1.5.</span> <span class="nav-text">break, continue, or pass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yield-or-return"><span class="nav-number">1.6.</span> <span class="nav-text">yield or return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#recursion"><span class="nav-number">1.7.</span> <span class="nav-text">recursion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list-tuples-or-dictionary"><span class="nav-number">1.8.</span> <span class="nav-text">list, tuples, or dictionary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shallow-vs-deep-copy"><span class="nav-number">1.9.</span> <span class="nav-text">shallow vs deep copy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#object-oriented-design"><span class="nav-number">1.10.</span> <span class="nav-text">object oriented design</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Advanced-Features"><span class="nav-number">2.</span> <span class="nav-text">Advanced Features</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Lambda-functions"><span class="nav-number">2.1.</span> <span class="nav-text">Lambda functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maps"><span class="nav-number">2.2.</span> <span class="nav-text">Maps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Filtering"><span class="nav-number">2.3.</span> <span class="nav-text">Filtering</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Itertools"><span class="nav-number">2.4.</span> <span class="nav-text">Itertools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generator"><span class="nav-number">2.5.</span> <span class="nav-text">Generator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decorator"><span class="nav-number">2.6.</span> <span class="nav-text">Decorator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-Comprehension"><span class="nav-number">3.</span> <span class="nav-text">List Comprehension</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-operators"><span class="nav-number">4.</span> <span class="nav-text">python operators</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Working-with-files"><span class="nav-number">5.</span> <span class="nav-text">Working with files</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">5.1.</span> <span class="nav-text">其他</span></a></li></ol></li></ol></div>
             
 
           </div>
