@@ -88,7 +88,8 @@
 <meta property="og:description" content="分析机器学习 和深度学习中出现的过拟合现象，从不同的角度简述常用的处理手段。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/a345c92ae8db05eb.png">
-<meta property="og:updated_time" content="2019-07-21T13:50:51.187Z">
+<meta property="og:image" content="https://i.loli.net/2019/07/23/5d370b5ee206022821.png">
+<meta property="og:updated_time" content="2019-07-23T13:28:46.666Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="overfit">
 <meta name="twitter:description" content="分析机器学习 和深度学习中出现的过拟合现象，从不同的角度简述常用的处理手段。">
@@ -323,8 +324,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-21T21:50:51+08:00">
-                2019-07-21
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-23T21:28:46+08:00">
+                2019-07-23
               </time>
             
           </span>
@@ -397,22 +398,23 @@
       
         <p>分析机器学习 和深度学习中出现的过拟合现象，从不同的角度简述常用的处理手段。</p>
 <a id="more"></a>
-<h2 id="什么是过拟合"><a href="#什么是过拟合" class="headerlink" title="什么是过拟合?"></a>什么是过拟合?</h2><p>数据集的大小是导致过拟合的原因，网络足够的复杂（有能力）记住了所有的样本，然后再 train sets 表现要远远好于 test sets。 也可以说网络拟合了噪声数据。</p>
-<h2 id="如何处理过拟合"><a href="#如何处理过拟合" class="headerlink" title="如何处理过拟合"></a>如何处理过拟合</h2><h3 id="模型角度"><a href="#模型角度" class="headerlink" title="模型角度"></a>模型角度</h3><p>简化模型，通过不断降低模型的复杂度（比如随机森林中的估计量，神经网络中的参数），最终达到一个平衡状态：模型足够简单到不产生过拟合，又足够复杂到能从数据中学习。这样操作时一个比较方便的方法是根据模型的复杂程度查看模型在所有数据集上的误差。</p>
+<h2 id="什么是过拟合"><a href="#什么是过拟合" class="headerlink" title="什么是过拟合?"></a>什么是过拟合?</h2><p>训练数据集规模小是导致过拟合的原因，而网络足够的复杂（有能力）记住了所有的样本，然后在train sets 表现要远远好于 test sets。 还有一种说法是网络拟合了噪声数据。</p>
+<h2 id="如何处理过拟合"><a href="#如何处理过拟合" class="headerlink" title="如何处理过拟合"></a>如何处理过拟合</h2><p>处理该问题可以从数据和模型两个方面去考虑。</p>
+<h3 id="模型角度"><a href="#模型角度" class="headerlink" title="模型角度"></a>模型角度</h3><p>简化模型，通过不断降低模型的复杂度（比如随机森林中的估计量，神经网络中的参数），最终达到一个平衡状态：模型足够简单到不产生过拟合，又足够复杂到能从数据中学习。这样操作时一个比较方便的方法是根据模型的复杂程度查看模型在所有数据集上的误差。如 <span id="jump"> 图 1 </span> 所示。</p>
 <p><img src="https://b2.bmp.ovh/imgs/2019/07/a345c92ae8db05eb.png" alt=""></p>
-<center>  <span id="jump"> 图 1 </span></center>
+<center>  图 1</center>
 
 <p>简化模型的另一个好处在于训练速度更加快.</p>
 <h3 id="数据角度"><a href="#数据角度" class="headerlink" title="数据角度"></a>数据角度</h3><ul>
 <li>获取更多的数据 </li>
-<li><p>数据增强</p>
-<h3 id="训练过程角度"><a href="#训练过程角度" class="headerlink" title="训练过程角度"></a>训练过程角度</h3></li>
+<li>数据增强</li>
 </ul>
-<p>提前终止 (early stop)</p>
+<p>获取更多的数据侧重获取得到的原始的训练数据集；而数据增强在图像处理中更加常见，主要是图像的变形，噪声方面进行考虑。</p>
+<h3 id="训练过程角度"><a href="#训练过程角度" class="headerlink" title="训练过程角度"></a>训练过程角度</h3><p>提前终止 (early stop)</p>
 <p>如<a href="#jump">图 1</a> ，当 test error 增加的时候，那么模型就应该停止了。</p>
 <h3 id="正则化角度"><a href="#正则化角度" class="headerlink" title="正则化角度"></a>正则化角度</h3><p>使用L1 or L2 在 loss function (error function) 中添加正则项，对损失函数中的weights 进行限制其变大。</p>
-<p>BN (Batch Normalization) 也是一种正则化手段，加上BN 之后，学习率可以有很大的提高。</p>
-<h3 id="深度学习中的模型"><a href="#深度学习中的模型" class="headerlink" title="深度学习中的模型"></a>深度学习中的模型</h3><p>Dropout 或者Dropconnect. 其理念就是在训练中随机让神经元无效（即dropout）或让网络中的连接无效（即dropconnect）。这个有点类似集成学习，提高网络模型的泛化性能，减少过拟合的问题。（类似bagging 的思想，使用不同的网络结构在不同的训练集上进行训练）.</p>
+<p>BN (Batch Normalization) 也是一种正则化手段，加上BN 之后，学习率可以有很大的提高。BN 可以在激活函数之前也可以再激活函数之后，但是一般来说在激活函数之前比较好解释一些，效果好一些；输入激活函数之前进行了数据的归一化，防止进去到激活函数的饱和区。</p>
+<h3 id="深度学习中的模型"><a href="#深度学习中的模型" class="headerlink" title="深度学习中的模型"></a>深度学习中的模型</h3><p>Dropout 或者Dropconnect. 其理念就是在训练中随机让神经元无效（即dropout）或让网络中的连接无效（即dropconnect）。这个有点类似集成学习，提高网络模型的泛化性能，减少过拟合的问题。（类似bagging 的思想，使用不同的网络结构在不同的训练集上进行训练）.如果从集成学习角度理解dropout，那么resnet 网络是不是也有点集成学习的味道。</p>
 <p><strong> Dropout 的具体流程</strong></p>
 <ol>
 <li>首先随机（临时）删掉网络中一半的隐藏神经元，输入输出神经元保持不变（图3中虚线为部分临时被删除的神经元）</li>
@@ -424,6 +426,8 @@
 <li>从隐藏层神经元中随机选择一个一半大小的子集临时删除掉（备份被删除神经元的参数）。</li>
 <li>对一小批训练样本，先前向传播然后反向传播损失并根据随机梯度下降法更新参数（w，b） （没有被删除的那一部分参数得到更新，删除的神经元参数保持被删除前的结果）。</li>
 </ul>
+<p>Dropout vs Dropconnect：</p>
+<p><img src="https://i.loli.net/2019/07/23/5d370b5ee206022821.png" alt="1.png"><br>它们的区别大体在于，在训练过程中dropout是随机drop掉一些节点，而dropconnect则是随机drop掉一些边。</p>
 <h3 id="使用多种模型"><a href="#使用多种模型" class="headerlink" title="使用多种模型"></a>使用多种模型</h3><p>Bagging： 最典型的就是 随机森林( Random Forest)， 通过不相关的决策树在不同的数据集上进行训练，最后的每个模型使用相同的权重来“融合”。<br>Boosting: 在简单的网络上不断提升。</p>
 
       
@@ -466,6 +470,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/22/naive-bayes/" rel="prev" title="Naive Bayes Classifier">
+                Naive Bayes Classifier <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -556,7 +564,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -578,7 +586,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

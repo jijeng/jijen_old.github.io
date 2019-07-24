@@ -88,7 +88,7 @@
 <meta property="og:description" content="介绍GBDT 的定义、训练过程、优缺点和常见的问题。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/12/laVvjT.png">
-<meta property="og:updated_time" content="2019-07-15T12:33:55.266Z">
+<meta property="og:updated_time" content="2019-07-24T13:37:05.242Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="A Gentle Introduction of GBDT">
 <meta name="twitter:description" content="介绍GBDT 的定义、训练过程、优缺点和常见的问题。">
@@ -323,8 +323,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-15T20:33:55+08:00">
-                2019-07-15
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-24T21:37:05+08:00">
+                2019-07-24
               </time>
             
           </span>
@@ -397,7 +397,6 @@
       
         <p>介绍GBDT 的定义、训练过程、优缺点和常见的问题。</p>
 <a id="more"></a>
-<p>定义：</p>
 <p>Boosting、bagging和stacking是集成学习的三种主要方法。不同于bagging方法，boosting方法通过分步迭代（stage-wise）的方式来构建模型，在迭代的每一步构建的弱学习器都是为了弥补已有模型的不足，通过弱学习器提升为 强学习器的算法。Boosting族算法的著名代表是AdaBoost 和GBDT。</p>
 <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>由于GBDT的学习过程是通过多轮迭代，每次都在上一轮训练结果的残差（如果是回归问题，使用平方误差作为loss function）的基础上进行学习（基函数的线性组合），来对数据进行分类或者回归。训练的过程是通过不断降低偏差来提高最后分类器的精度。</p>
 <p>理解GBDT要分为两步，第一步是理解什么叫做用决策树去拟合当前模型的残差，第二步是理解为什么以及如何用损失函数的负梯度去替代当前模型的残差。</p>
@@ -406,7 +405,7 @@
 <p><img src="https://upload.cc/i1/2019/07/12/laVvjT.png" alt=""></p>
 <p>使用平方损失函数时候，GBDT算法的每一步在生成决策树只是拟合前面模型的残差，（y- y^）残差是梯度的一个特例。<br>而当损失函数是其他的形式时候，下一次迭代是使用的负梯度值。<br> 对于一般损失函数，为了使其取得最小值，通过梯度下降算法，每次朝着损失函数的负梯度方向逐步移动，最终使得损失函数极小的方法（此方法要求损失函数可导）。</p>
 <p>总的来说，第一颗树是由基尼系数决定? ，之后所有的树的决策全是由残差来决定。</p>
-<p>gbdt 的一个通俗的例子：<br>GBDT的思想可以用一个通俗的例子解释，假如有个人30岁，我们首先用20岁去拟合，发现损失有10岁，这时我们用6岁去拟合剩下的损失，发现差距还有4岁，第三轮我们用3岁拟合剩下的差距，差距就只有一岁了。如果我们的迭代轮数还没有完，可以继续迭代下面，每一轮迭代，拟合的岁数误差都会减小。</p>
+<p>GBDT的思想可以用一个通俗的例子解释，假如有个人30岁，我们首先用20岁去拟合，发现损失有10岁，这时我们用6岁去拟合剩下的损失，发现差距还有4岁，第三轮我们用3岁拟合剩下的差距，差距就只有一岁了。如果我们的迭代轮数还没有完，可以继续迭代下面，每一轮迭代，拟合的岁数误差都会减小。</p>
 <h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><p>How Gradient Boosting Works<br>Gradient boosting involves three elements:</p>
 <ul>
 <li>A loss function to be optimized.</li>
@@ -597,7 +596,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -619,7 +618,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

@@ -79,23 +79,23 @@
 
 
 
-<meta name="description" content="介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。主要是理论，代码demo 可以参考这里。">
+<meta name="description" content="介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。本篇主要是理论，代码demo 可以参考另一篇。">
 <meta name="keywords" content="seq2seq">
 <meta property="og:type" content="article">
 <meta property="og:title" content="All you need to know about seq2seq">
 <meta property="og:url" content="http://yoursite.com/2019/07/12/seq2seq-theory/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。主要是理论，代码demo 可以参考这里。">
+<meta property="og:description" content="介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。本篇主要是理论，代码demo 可以参考另一篇。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://i.loli.net/2019/07/12/5d2884d8b259814374.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/12/5d2884d879a1396446.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/12/5d2884d866d9f23744.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/21/g645t9.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/12/5d2884d89c4f355531.png">
-<meta property="og:updated_time" content="2019-07-21T08:26:20.500Z">
+<meta property="og:updated_time" content="2019-07-24T13:10:33.143Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="All you need to know about seq2seq">
-<meta name="twitter:description" content="介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。主要是理论，代码demo 可以参考这里。">
+<meta name="twitter:description" content="介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。本篇主要是理论，代码demo 可以参考另一篇。">
 <meta name="twitter:image" content="https://i.loli.net/2019/07/12/5d2884d8b259814374.png">
 
 
@@ -327,8 +327,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-21T16:26:20+08:00">
-                2019-07-21
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-24T21:10:33+08:00">
+                2019-07-24
               </time>
             
           </span>
@@ -399,21 +399,23 @@
       
 
       
-        <p>介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。主要是理论，代码demo 可以参考<a href="https://jijeng.github.io/2019/06/28/seq2seq-translation-codes/" target="_blank" rel="noopener">这里</a>。</p>
+        <p>介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。本篇主要是理论，代码demo 可以参考<a href="https://jijeng.github.io/2019/06/28/seq2seq-translation-codes/" target="_blank" rel="noopener">另一篇</a>。</p>
 <a id="more"></a>
 <h2 id="定义和结构"><a href="#定义和结构" class="headerlink" title="定义和结构"></a>定义和结构</h2><p><strong> 定义</strong></p>
+<p>语言模型是这样一个模型：对于任意的词序列，它能够计算出这个序列是一句话的概率。</p>
 <p>Sequence-to-sequence (seq2seq) 模型，顾名思义，其输入是一个序列，输出也是一个序列. 目前来说，对于Seq2Seq生成模型来说，主要的思路是将该问题作为条件语言模型，在已知输入序列和前序生成序列的条件下,最大化下一目标词的概率，而最终希望得到的是整个输出序列的生成出现的概率最大：<br>$$<br>P ( Y | X ) = \sum _ { t = 1 } ^ { T } \log P \left( y _ { t } | y _ { 1 : t - 1 } , X \right)<br>$$</p>
 <p>seq2seq 可以用在很多方面：机器翻译、QA 系统、文档摘要生成、Image Captioning (图片描述生成器)。</p>
 <p><a href="https://i.loli.net/2019/07/12/5d2884d8b259814374.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2019/07/12/5d2884d8b259814374.png" alt="image1.png"></a></p>
 <center><span id="fig1"> Figure 1 </span></center>
 
-<p>介绍了一个标准的seq2seq模型。 其中红色的是encoder RNN, 绿色的是decoder RNN. 他们之间 有一个连线， 也就是encoder states 传给decoder RNN，当做initial state.  这个翻译过程可以解释如下。</p>
+<p>介绍了一个标准的seq2seq模型。 其中红色的是encoder RNN, 绿色的是decoder RNN. 他们之间 有一个连线， 也就是encoder states 传给decoder RNN，当做initial state。</p>
 <p><strong> 两种不同的结构</strong> </p>
 <p>第一种， seq2seq 模型可简单理解为由三部分组成：Encoder、Decoder 和连接两者的 State Vector (中间状态向量) C 。</p>
 <p><a href="https://i.loli.net/2019/07/12/5d2884d879a1396446.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2019/07/12/5d2884d879a1396446.png" alt="image2.png"></a></p>
 <p>第二种结构是最简单的结构，和第一种结构相似，只是 Decoder 的第一个时刻只用到了 Encoder 最后输出的中间状态变量 ：</p>
 <p><a href="https://i.loli.net/2019/07/12/5d2884d866d9f23744.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2019/07/12/5d2884d866d9f23744.png" alt="img3.png"></a></p>
-<h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><p><strong>  encoder </strong> 就是一个语言模型</p>
+<p>在两种不同的结构时候，两者的区别在 C (context) 向量是否多次使用，前一种在生成每个word的时候，都使用到了 context，而后者则没有。</p>
+<h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><p><strong>  encoder </strong> </p>
 <p>激活函数: softmax()</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">crossent = tf.nn.spase_softmax_cross_entropy_with_logits(</span><br><span class="line">    labels=decoder_outputs, logits=logits)</span><br><span class="line">train_loss = (tf.reduce_sum(crossent * target_weights) /</span><br><span class="line">    batch_size)</span><br></pre></td></tr></table></figure>
 <p>loss 计算:</p>
@@ -437,7 +439,7 @@
 <p>一种解决思路：使用Beam Search的Encoder的方式也能一定程度上降低Exposure Bias问题，因为其考虑了全局解码概率，而不仅仅依赖与前一个词的输出，所以模型前一个预测错误而带来的误差传递的可能性就降低了</p>
 <p><strong> OOV 和低频词</strong></p>
 <p>问题描述：OOV表示的是词汇表外的未登录词，低频词则是词汇表中的出现次数较低的词。在Decoder阶段时预测的词来自于词汇表，这就造成了未登录词难以生成，低频词也比较小的概率被预测生成。</p>
-<p>一种解决思路：如果 focuse 在文本摘录领域，由于其任务的特点，很多OOV 或者不常见的的词其实可以从输入序列中找到，因此一个很自然的想法就是去预测一个开关（switch）的概率 $P(si=1)=f(hi,yi-1,ci) $，如果开关打开了，就是正常地预测词表；如果开关关上了，就需要去原文中指向一个位置作为输出。</p>
+<p>一种解决思路：如果 focus 在文本摘录领域，由于其任务的特点，很多OOV 或者不常见的的词其实可以从输入序列中找到，因此一个很自然的想法就是去预测一个开关（switch）的概率 $P(si=1)=f(hi,yi-1,ci) $，如果开关打开了，就是正常地预测词表；如果开关关上了，就需要去原文中指向一个位置作为输出。</p>
 <p><strong> 连续生成重复词的问题</strong></p>
 <p>判断，然后进行惩戒。</p>
 
@@ -573,7 +575,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -595,7 +597,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

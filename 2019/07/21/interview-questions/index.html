@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要总结一下在面试过程中遇到的非技术类的问题（自用，已加密）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-21T09:50:08.827Z">
+<meta property="og:updated_time" content="2019-07-24T05:34:03.266Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Interview Questions">
 <meta name="twitter:description" content="主要总结一下在面试过程中遇到的非技术类的问题（自用，已加密）">
@@ -321,8 +321,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-21T17:50:08+08:00">
-                2019-07-21
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-24T13:34:03+08:00">
+                2019-07-24
               </time>
             
           </span>
@@ -397,9 +397,9 @@
       
 
       
-        <p>主要总结一下非技术类的面试问题。比如说你喜不喜欢加班之类的、期待的薪资呀…</p>
+        <p>主要总结一下面试问题。包括一些非技术问题比如说你喜不喜欢加班之类的、期待的薪资呀… 和一些简历上的技术类小问题问题。</p>
 <a id="more"></a>
-<p>面试中最重要的是和面试官进行互动，互相了解的过程。如果一方说的过多，那么这个面试仍然是不成功的。在互动的过程中，也是可以学习到很多的。</p>
+<h2 id="非技术类问题"><a href="#非技术类问题" class="headerlink" title="非技术类问题"></a>非技术类问题</h2><p>面试中最重要的是和面试官进行互动，互相了解的过程。如果一方说的过多，那么这个面试仍然是不成功的。在互动的过程中，也是可以学习到很多的。</p>
 <ol>
 <li>“你有什么问题想要问我吗？”</li>
 </ol>
@@ -462,6 +462,25 @@
 </ol>
 <p>最好的方式是凭着工作能力说话，让别人觉得能力ok 不加班也是把工作做完做好的。</p>
 <p>目前团队工作氛围怎么样？ 加班情况如何？之类的是可以提前问一下的。如果自己急需工作，先拿下工作之后再说，等自己缓和一下再谋出路。</p>
+<ol start="9">
+<li>最后的发问？<br>你们小组是干什么，有什么产品？<br>实习内容主要干什么？（这两个问题是不一样的）</li>
+</ol>
+<h2 id="简历上的技术类问题"><a href="#简历上的技术类问题" class="headerlink" title="简历上的技术类问题"></a>简历上的技术类问题</h2><ol>
+<li>经常使用的框架 和模型？<br>中文 nltk (Natural Language Toolkit — NLTK 3.4.4 documentation), 中文分词 jieba hanlp stanford nlp bert<br>英文 nltk genism  bert<br>nltk 和 gensim 自然语言工具包 实现了很多nlp 中的算法，比如tfidf</li>
+</ol>
+<p>深度学习框架<br>keras  tensorflow pytorch</p>
+<ol start="2">
+<li>句子向量的训练过程？<br>word embedding 表示的句子的缺点：<br>没有词序；没有上下文；依赖前期的处理</li>
+</ol>
+<p>SIF 这种句子向量 （无监督，非网络结构）</p>
+<p>如何进行 sentence 训练?<br>无监督模型，通过skip-though 举例说明：<br>skip-gram  根据中心词汇预测上下文<br>skip-thought  根据中心句 预测上下句<br>encoder -decoder<br>encoder 就是一个 特征提取，然后又两个decoder， 是语言模型 ，分别对应着 上一句和下一句<br>统计语言模型是一个单词序列上的概率分布，对于一个给定长度为m的序列，它可以为整个序列产生一个概率 P(w_1,w_2,…,w_m) 。</p>
+<p>词汇扩展：<br>使用 word2vec 得到的词向量 来补充 encoder 过程中 该问题的词向量，要求前者的规模是远远大于后者的。<br>通过这种方法补充 encoder 过程中的词汇。</p>
+<p>该模型要求：<br>数据集中的句子是有衔接关系的，论文中的数据集是 google news dataset。要求有一定的逻辑的文章。</p>
+<p>有监督模型：<br>infersent</p>
+<p>综述类型，找到了 nlp 领域的imagenet 和 inception network。网络结构模型是 使用一个encoder 得到向量表示，然后记性 u 相加 和点乘 三种操作，得到 fully-connection 最后是softmax。encoder 是 bi-lstm 并且使用 max pooling 进行网络结构的优化。数据集是 句子对组成的数据集，标注信息是数据间的关系（蕴含，对立和中性）数据量 570k。</p>
+<p>具体实验对比的是 RNN lstm gru 然后搭配着 单向or 双向 max pooling or average pooling 进行做的实验。</p>
+<p>universal sentence encoder</p>
+<p>上面那个是 facebook 团队出的，然后这个是 google 出的，主要的区别在于使用 transformer 代替bi-lstm 作为encoder。 训练的时候，既进行了有监督的学习，又进行了无监督的训练。</p>
 
       
     </div>
@@ -566,8 +585,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -586,7 +614,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -608,7 +636,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -647,6 +675,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#非技术类问题"><span class="nav-number">1.</span> <span class="nav-text">非技术类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简历上的技术类问题"><span class="nav-number">2.</span> <span class="nav-text">简历上的技术类问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

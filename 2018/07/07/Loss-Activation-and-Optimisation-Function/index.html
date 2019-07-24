@@ -98,7 +98,9 @@
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/b181fa529616d69a.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/1f6fc8f2b951d570.png">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g452awgfddj20fg0b1t91.jpg">
-<meta property="og:updated_time" content="2019-07-21T07:35:00.387Z">
+<meta property="og:image" content="https://i.loli.net/2019/07/24/5d37d9e627d1146288.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/24/5d37d9e61e96676671.png">
+<meta property="og:updated_time" content="2019-07-24T04:23:32.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Loss Activation and Optimisation Function">
 <meta name="twitter:description" content="主要介绍 activation function， loss function 等等概念和分类。">
@@ -333,8 +335,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-21T15:35:00+08:00">
-                2019-07-21
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-24T12:23:32+08:00">
+                2019-07-24
               </time>
             
           </span>
@@ -589,6 +591,71 @@
 <p><strong>logistic loss 和 cross entropy的关系</strong></p>
 <p>当 $ p \in { y , 1 - y }$,  $q \in { \hat { y } , 1 - \hat { y } }$ ，cross entropy 可以写成 logistic  loss:</p>
 <p>$$<br>H ( p , q ) = - \sum _ { x } p ( x ) \log q ( x ) =  - y \log \hat { y } - ( 1 - y ) \log ( 1 - \hat { y } )<br>$$</p>
+<h3 id="交叉熵函数是怎么来的？"><a href="#交叉熵函数是怎么来的？" class="headerlink" title="交叉熵函数是怎么来的？"></a>交叉熵函数是怎么来的？</h3><p>从上面可以清楚的了解到，交叉熵函数在分类问题上是 default 的选择，那么我们有没有思考过 这个loss function 的数学基础 ？是怎么来的呢？</p>
+<p>真实的样本标签为 [0, 1], 分别表示负类和正类，模型最终会经过一个 sigmoid 函数，输出一个概率值。sigmoid 函数的表达式如下：<br>$$<br>g ( s ) = \frac { 1 } { 1 + e ^ { - s } }<br>$$</p>
+<p>所以sigmoid 的输出值表示 1的概率：<br>$$<br>\hat { y } = P ( y = 1 | x )<br>$$<br>表示 0的概率：<br>$$<br>1 - \hat { y } = P ( y = 0 | x )<br>$$</p>
+<p>进而，从最大似然的角度出发，将上面的两种情况整合起来：</p>
+<p>$$<br>P ( y | x ) = \hat { y } ^ { y } \cdot ( 1 - \hat { y } ) ^ { 1 - y }<br>$$</p>
+<p>从另一个角度也可以理解这个公式，分别令 y =0 和y =1， 发现两种情况正好对应着 $P ( y = 0 | x ) = 1 - \hat { y }$ 和 $P ( y = 1 | x ) = \hat { y }$。 我们做的就是把上面两种情况给整合起来了。</p>
+<p>接下来引入 log 函数<br>$$<br>\log P ( y | x ) = \log \left( \hat { y } ^ { y } \cdot ( 1 - \hat { y } ) ^ { 1 - y } \right) = y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } )<br>$$<br>我们希望公式越大越好，反过来，希望 $\log \mathrm { P } ( \mathrm { y } | \mathrm { x } )$ 越小越好，于是得到了最终的 损失函数：<br>$$<br>L = - [ y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } ) ]<br>$$</p>
+<p>上面是 单个样本的损失函数，计算N 个样本，只需要将上面的公式叠加起来。<br>$$<br>L = - \sum _ { i = 1 } ^ { N } y ^ { ( i ) } \log \hat { y } ^ { ( i ) } + \left( 1 - y ^ { ( i ) } \right) \log \left( 1 - \hat { y } ^ { ( i ) } \right)<br>$$</p>
+<p>ok，这个就是交叉熵损失函数完整的推导过程。</p>
+<h2 id="二分类、多分类和多标签问题的区别"><a href="#二分类、多分类和多标签问题的区别" class="headerlink" title="二分类、多分类和多标签问题的区别"></a>二分类、多分类和多标签问题的区别</h2><p>二分类、多分类与多标签分类问题使用不同的激活函数和损失函数。</p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>二分类：判别这个水果是苹果还是香蕉。<br>多分类：对于一堆水果，辨别是苹果、梨还是橘子。一个样本只能有一个标签。<br>多标签分类： 给每一个样本一系列的目标标签。比如一个文档有不同的相关话题，需要加上不同的tag 如宗教、政治和教育。</p>
+<p>多分类问题常常是可以转换成二分类问题进行处理的，常见有两种策略。</p>
+<p>一对一的策略<br>给定数据集D这里有N个类别，这种情况下就是将这些类别两两配对，从而产生 $\frac{N*(N-1)}{2}$个二分类任务，在测试的时候把样本交给这些分类器，然后进行投票。</p>
+<p><img src="https://i.loli.net/2019/07/24/5d37d9e627d1146288.png" alt="1.png"></p>
+<p>一对其余策略<br>将每一次的一个类作为正例，其余作为反例，总共训练N个分类器。测试的时候若仅有一个分类器预测为正的类别则对应的类别标记作为最终分类结果，若有多个分类器预测为正类，则选择置信度最大的类别作为最终分类结果。</p>
+<p><img src="https://i.loli.net/2019/07/24/5d37d9e61e96676671.png" alt="2.png"></p>
+<p>同样，多标签分类和二分类问题也是有关系的。</p>
+<p>面临的问题： 图片的标签数目不是固定的，有的有一个标签，有的有两个标签，但标签的种类总数是固定的，比如为5类。</p>
+<p>解决该问题： 采用了标签补齐的方法，即缺失的标签全部使用0标记，这意味着，不再使用one-hot编码。例如：标签为：-1,1,1,-1,1 ;-1表示该类标签没有，1表示该类标签存在。</p>
+<p>如何衡量损失？</p>
+<p>计算出一张图片各个标签的损失，然后取平均值。</p>
+<p>如何计算精度</p>
+<p>计算出一张图片各个标签的精度，然后取平均值。</p>
+<p>该处理方法的本质：把一个多标签问题，转化为了在每个标签上的二分类问题。</p>
+<h3 id="损失函数的选择"><a href="#损失函数的选择" class="headerlink" title="损失函数的选择"></a>损失函数的选择</h3><p><strong> 基于逻辑回归的二分类问题</strong>：<br>使用逻辑回归二分类loss function的推导，上面的一小节是有详细的介绍的。</p>
+<p><strong>基于 Softmax 的多分类问题</strong></p>
+<p>softmax层中的softmax 函数是logistic函数在多分类问题上的推广，它将一个N维的实数向量压缩成一个满足特定条件的N维实数向。压缩后的向量满足两个条件：</p>
+<ol>
+<li>向量中的每个元素的大小都在[0,1]</li>
+<li>向量所有元素的和为 1</li>
+</ol>
+<p>因此，softmax适用于多分类问题中对每一个类别的概率判断，softmax的函数公式如下：<br>$$<br>a _ { j } ^ { L } = \frac { e ^ { z _ { j } ^ { L } } } { \sum _ { k } e ^ { z _ { k } ^ { L } } }<br>$$</p>
+<p>基于 Softmax 的多分类问题采用的是 log似然代价函数（log-likelihood cost function）来解决。<br>单个样本的 log似然代价函数的公式为：<br>$$<br>C = - \sum _ { i } \left( y _ { i } \log a _ { i } \right)<br>$$<br>其中， $y_i $表示标签向量的第 i 个分量。因为往往只有一个分量为 1 其余的分量都为 0，所以可以去掉损失函数中的求和符号，化简为，</p>
+<p>$$<br>C = - \ln a _ { j }<br>$$<br>其中，$ a_j $是向量 y 中取值为 1 对应的第 j 个分量的值。</p>
+<p>$$<br>\begin{split}<br>$\operatorname { cost } \left( h _ { \theta } ( x ) , y \right) &amp;= - y _ { i } \log \left( h _ { \theta } ( x ) \right) - \left( 1 - y _ { i } \right) \log \left( 1 - h _ { \theta } ( x ) \right)$ \\<br>$C &amp;= - \sum _ { i } \left( y _ { i } \log a _ { i } \right)$\\<br>\end{split}<br>$$<br>因为这两个交叉熵损失函数对应不同的最后一层的输出。第一个对应的最后一层是 sigmoid，用于二分类问题，第二个对应的最后一层是 softmax，用于多分类问题。但是它们的本质是一样的，请看下面的分析。</p>
+<p>可以看一下交叉熵函数的定义：<br>$$</p>
+<ul>
+<li>\int p ( x ) \log g ( x ) d x<br>$$<br>交叉熵是用来描述两个分布的距离的，神经网络训练的目的就是使 $g(x)$ 逼近$ p(x)$。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th>分类问题名称</th>
+<th style="text-align:center">输出层使用激活函数</th>
+<th style="text-align:right">对应的损失函数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>二分类</td>
+<td style="text-align:center">sigmoid</td>
+<td style="text-align:right">二分类交叉熵损失函数（binary_crossentropy）</td>
+</tr>
+<tr>
+<td>多分类</td>
+<td style="text-align:center">softmax</td>
+<td style="text-align:right">多类别交叉熵损失函数（categorical_crossentropy）</td>
+</tr>
+<tr>
+<td>多标签分类</td>
+<td style="text-align:center">sigmoid函数</td>
+<td style="text-align:right">二分类交叉熵损失函数（binary_crossentropy）</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -724,7 +791,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -746,7 +813,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -795,7 +862,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-Function"><span class="nav-number">1.</span> <span class="nav-text">Activation Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What"><span class="nav-number">1.1.</span> <span class="nav-text">What?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Activation-Function-Types"><span class="nav-number">1.2.</span> <span class="nav-text">Activation Function Types</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loss-Function-Error-Function"><span class="nav-number">2.</span> <span class="nav-text">Loss Function(Error Function)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Regression-Loss-Function-回归"><span class="nav-number">2.1.</span> <span class="nav-text">Regression  Loss Function (回归)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Binary-Classification-Loss-Function-二分"><span class="nav-number">2.2.</span> <span class="nav-text">Binary Classification Loss Function (二分)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Class-Classification-Loss-Functions"><span class="nav-number">2.3.</span> <span class="nav-text">Multi-Class Classification Loss Functions</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-Function"><span class="nav-number">1.</span> <span class="nav-text">Activation Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What"><span class="nav-number">1.1.</span> <span class="nav-text">What?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Activation-Function-Types"><span class="nav-number">1.2.</span> <span class="nav-text">Activation Function Types</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loss-Function-Error-Function"><span class="nav-number">2.</span> <span class="nav-text">Loss Function(Error Function)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Regression-Loss-Function-回归"><span class="nav-number">2.1.</span> <span class="nav-text">Regression  Loss Function (回归)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Binary-Classification-Loss-Function-二分"><span class="nav-number">2.2.</span> <span class="nav-text">Binary Classification Loss Function (二分)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Class-Classification-Loss-Functions"><span class="nav-number">2.3.</span> <span class="nav-text">Multi-Class Classification Loss Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交叉熵函数是怎么来的？"><span class="nav-number">2.4.</span> <span class="nav-text">交叉熵函数是怎么来的？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二分类、多分类和多标签问题的区别"><span class="nav-number">3.</span> <span class="nav-text">二分类、多分类和多标签问题的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">3.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数的选择"><span class="nav-number">3.2.</span> <span class="nav-text">损失函数的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
 
           </div>

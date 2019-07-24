@@ -91,10 +91,11 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/ed14b5c14cb9fc02.gif">
 <meta property="og:image" content="https://upload.cc/i1/2019/06/20/cMRW62.jpg">
+<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/d95ac0845ef9211a.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/619bdec3f9b8bffb.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/2ce4806231a16edb.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/11/1yQFLb.png">
-<meta property="og:updated_time" content="2019-07-11T14:57:15.698Z">
+<meta property="og:updated_time" content="2019-07-24T05:33:59.487Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度网络中的碎碎念">
 <meta name="twitter:description" content="介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器 和常见的技术比如 dropout。">
@@ -329,8 +330,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-11T22:57:15+08:00">
-                2019-07-11
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-24T13:33:59+08:00">
+                2019-07-24
               </time>
             
           </span>
@@ -478,6 +479,10 @@
 <p>池化层往往在卷积层后面，通过池化来降低卷积层输出的特征向量，同时改善结果（不易出现过拟合）。</p>
 <p>池化层参数个数计算：</p>
 <p>这个很明显是没有参数的。</p>
+<h3 id="卷积层-vs-pooling-层"><a href="#卷积层-vs-pooling-层" class="headerlink" title="卷积层 vs pooling 层"></a>卷积层 vs pooling 层</h3><p>主要比较两者在降维、特征提取方面的差别。</p>
+<p>pooling 层常见的 max pooling 和 average (mean ) pooling两种。该层是没有参数的。 pooling 的作用主要体现在减少模型去拟合的难度，防止过拟合，节省计算力方面。<br>max pooling 相比于 mean pooling 更加有 提取特征的感觉。抓住比计较显著的特征，AVE pooling 可以带来一定意义上的平滑，可以减小图像尺寸变化的干扰。从效果上讲，前者一半是要好于后者的。</p>
+<p><img src="https://b2.bmp.ovh/imgs/2019/07/d95ac0845ef9211a.png" alt=""><br>从上面左图可以看到，使用了pool操作其实就是降低图片的空间尺寸。右图使用一个 2 × 2的 池化核（filter），以2为步长（stride），对图片进行max pooling，那么会图片就会尺寸就会减小一半。需要注意，这里是因为 stride = 2，所以图片尺寸才会减少一半的。</p>
+<p>不同点：<br>pooling 是没有 weights 或者 parameter 更新，仅仅是下采样<br>convolution layer 则不一样，提取了特征并且进行了下采样。</p>
 <h3 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h3><p>连接所有的特征，将输出值送给分类器（如softmax分类器）</p>
 <p>比如说上一层（池化层）的输出为：$(111 \times 111 \times 16) $，从第一层到第二层，只是图片大小发生了变化，深度没有发生变化，而Dense对应的神经元个数为133个，那么还是根据公式：$weight \times x + bias$，计算得：$133 \times16+133=2261$</p>
 <h3 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h3><p><strong> 概念</strong></p>
@@ -657,7 +662,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -679,7 +684,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -728,7 +733,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization-ˈzeɪvjər-s"><span class="nav-number">1.2.</span> <span class="nav-text">Xavier initialization /ˈzeɪvjər/s</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.3.</span> <span class="nav-text">He Initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积网络"><span class="nav-number">4.</span> <span class="nav-text">卷积网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层"><span class="nav-number">4.1.</span> <span class="nav-text">卷积层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pooling-层"><span class="nav-number">4.2.</span> <span class="nav-text">Pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全连接层"><span class="nav-number">4.3.</span> <span class="nav-text">全连接层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dropout"><span class="nav-number">4.4.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度消失-梯度爆炸"><span class="nav-number">4.5.</span> <span class="nav-text">梯度消失/ 梯度爆炸</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization-ˈzeɪvjər-s"><span class="nav-number">1.2.</span> <span class="nav-text">Xavier initialization /ˈzeɪvjər/s</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.3.</span> <span class="nav-text">He Initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积网络"><span class="nav-number">4.</span> <span class="nav-text">卷积网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层"><span class="nav-number">4.1.</span> <span class="nav-text">卷积层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pooling-层"><span class="nav-number">4.2.</span> <span class="nav-text">Pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层-vs-pooling-层"><span class="nav-number">4.3.</span> <span class="nav-text">卷积层 vs pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全连接层"><span class="nav-number">4.4.</span> <span class="nav-text">全连接层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dropout"><span class="nav-number">4.5.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度消失-梯度爆炸"><span class="nav-number">4.6.</span> <span class="nav-text">梯度消失/ 梯度爆炸</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/07/02/5d1b275bd20aa40709.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/8b4f6493ed14471b.png">
-<meta property="og:updated_time" content="2019-07-08T01:05:11.913Z">
+<meta property="og:updated_time" content="2019-07-22T14:25:47.396Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fastText &amp; faiss">
 <meta name="twitter:description" content="fastTextfastText结合了自然语言处理和机器学习中最成功的理念。这些包括了使用词袋以及n-gram袋表征语句，还有使用子字(subword)信息，效果上的提升。另外采用了一个softmax层级(利用了类别不均衡分布的优势)来加速运算过程。 fastText 主要是用来解决 word representations和 sentence classification. 有趣的是前者是无监督">
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-08T09:05:11+08:00">
-                2019-07-08
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-22T22:25:47+08:00">
+                2019-07-22
               </time>
             
           </span>
@@ -479,7 +479,19 @@
 ./fasttext predict model_kaggle.bin test.ft.txt
 # Predicting the top 3 labels
 ./fasttext predict model_kaggle.bin test.ft.txt 3
-</code></pre><h2 id="faiss"><a href="#faiss" class="headerlink" title="faiss"></a>faiss</h2><p>用途：相似度检测和稠密向量的聚类。</p>
+</code></pre><h3 id="fasttext-vs-cbow"><a href="#fasttext-vs-cbow" class="headerlink" title="fasttext vs cbow"></a>fasttext vs cbow</h3><p><strong>n-gram</strong></p>
+<p>BOW 是和词序无关的，实现 n-gram 作为额外的特征可以捕捉一些部分的词序。fastText是一种基于skip-gram模型的新扩展，它会使用subword的信息，将每个词被表示成一个字符级n-gram词袋(a bag of character n-grams)。每个向量表示与每个字符级n-gram相关联，而词(word)则可以看成是这些n-gram向量表示的求和(sum)。fastText在大语料上训练很快。</p>
+<p><strong> 网络结构方面</strong></p>
+<ul>
+<li>输入层：CBOW的输入是目标单词的上下文并进行one-hot编码，fastText的输入是多个单词embedding向量，并将单词的字符级别的n-gram向量作为额外的特征；</li>
+<li>从输入层到隐藏层，CBOW会将上下文单词向量叠加起来并经过一次矩阵乘法（线性变化）并应用激活函数，而fastText省略了这一过程，直接将embedding过的向量特征求和取平均；</li>
+<li>输出层，一般的CBOW模型会采用Softmax作为输出，而fastText则采用了Hierarchical Softmax，大大降低了模型训练时间；</li>
+</ul>
+<p>CBOW的输出是目标词汇，fastText的输出是文档对应的类标。</p>
+<p><strong> 层次softmax</strong></p>
+<p>softmax 是在 逻辑回归 （logistic regression） 在多分类任务上的推广，是网络中的最后一层。当 词汇数量V 较大时候，softmax 的计算代价是很大的， O(v) 量级。层次softmax 是将全局多分类转化成了若干个二分类问题，从而将时间复杂度从O(V) 转化成了 o(log V)。</p>
+<p>缺点：fastText适用与分类类别非常大而且数据集足够多的情况，当分类类别比较小或者数据集比较少的话，很容易过拟合。</p>
+<h2 id="faiss"><a href="#faiss" class="headerlink" title="faiss"></a>faiss</h2><p>用途：相似度检测和稠密向量的聚类。</p>
 <blockquote>
 <p>Faiss is a library for efficient similarity search and clustering of dense vectors.</p>
 </blockquote>
@@ -707,7 +719,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -729,7 +741,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -778,7 +790,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fastText"><span class="nav-number">1.</span> <span class="nav-text">fastText</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型架构"><span class="nav-number">1.1.</span> <span class="nav-text">模型架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hierarchical-Softmax"><span class="nav-number">1.2.</span> <span class="nav-text">Hierarchical Softmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-gram-特征"><span class="nav-number">1.3.</span> <span class="nav-text">N-gram 特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Negative-Sampling"><span class="nav-number">1.4.</span> <span class="nav-text">Negative Sampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Positive-samples-and-Negative-samples"><span class="nav-number">1.5.</span> <span class="nav-text">Positive samples and  Negative samples</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.6.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#faiss"><span class="nav-number">2.</span> <span class="nav-text">faiss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss的实现过程"><span class="nav-number">2.1.</span> <span class="nav-text">faiss的实现过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss-中的三种基本索引"><span class="nav-number">2.2.</span> <span class="nav-text">faiss 中的三种基本索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#product-quantization-算法"><span class="nav-number">2.3.</span> <span class="nav-text">product quantization 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#K-means-算法"><span class="nav-number">2.4.</span> <span class="nav-text">K-means 算法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fastText"><span class="nav-number">1.</span> <span class="nav-text">fastText</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型架构"><span class="nav-number">1.1.</span> <span class="nav-text">模型架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hierarchical-Softmax"><span class="nav-number">1.2.</span> <span class="nav-text">Hierarchical Softmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-gram-特征"><span class="nav-number">1.3.</span> <span class="nav-text">N-gram 特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Negative-Sampling"><span class="nav-number">1.4.</span> <span class="nav-text">Negative Sampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Positive-samples-and-Negative-samples"><span class="nav-number">1.5.</span> <span class="nav-text">Positive samples and  Negative samples</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.6.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fasttext-vs-cbow"><span class="nav-number">1.7.</span> <span class="nav-text">fasttext vs cbow</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#faiss"><span class="nav-number">2.</span> <span class="nav-text">faiss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss的实现过程"><span class="nav-number">2.1.</span> <span class="nav-text">faiss的实现过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss-中的三种基本索引"><span class="nav-number">2.2.</span> <span class="nav-text">faiss 中的三种基本索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#product-quantization-算法"><span class="nav-number">2.3.</span> <span class="nav-text">product quantization 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#K-means-算法"><span class="nav-number">2.4.</span> <span class="nav-text">K-means 算法</span></a></li></ol></li></ol></div>
             
 
           </div>
