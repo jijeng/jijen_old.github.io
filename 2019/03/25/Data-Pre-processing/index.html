@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。">
+<meta name="description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。  数据预处理的时候需要注意 missing values、noisy data (outlier) ，对于这种现象应该分成要不要">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Data Pre-processing 学习笔记">
 <meta property="og:url" content="http://yoursite.com/2019/03/25/Data-Pre-processing/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。">
+<meta property="og:description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。  数据预处理的时候需要注意 missing values、noisy data (outlier) ，对于这种现象应该分成要不要">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-17T23:50:40.303Z">
+<meta property="og:updated_time" content="2019-07-29T09:39:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Data Pre-processing 学习笔记">
-<meta name="twitter:description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。">
+<meta name="twitter:description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。  数据预处理的时候需要注意 missing values、noisy data (outlier) ，对于这种现象应该分成要不要">
 
 
 
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-18T07:50:40+08:00">
-                2019-06-18
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-29T17:39:14+08:00">
+                2019-07-29
               </time>
             
           </span>
@@ -392,9 +392,11 @@
       
 
       
-        <p>主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。</p>
-<a id="more"></a>
-<h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning:"></a>Data Cleaning:</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier).<br>对于<strong>missing values</strong> ，可以分成两个问题，要不要处理 和如何处理，具体说来有一下处理手段：</p>
+        <p>主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。</p>
+<!-- moe -->
+<p>数据预处理的时候需要注意 missing values、noisy data (outlier) ，对于这种现象应该分成要不要处理和如何处理两个问题。</p>
+<p>数据清洗 (缺省值、异常值的处理)、数据整合 (子表 合并到 or 成主表)、数据转换 (one-hot or label encoding， 连续数值离散化)、和数据降维 (可以单独的成一章)。这个几个步骤应该是熟记于心的。</p>
+<h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning"></a>Data Cleaning</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier).<br>对于<strong>missing values</strong> ，可以分成两个问题，要不要处理 和如何处理，具体说来有以下处理手段：</p>
 <ul>
 <li>ignore the tuple; </li>
 <li>fill in the missing value manually</li>
@@ -436,8 +438,7 @@
 <li>standardization</li>
 </ul>
 <p>$$<br>x ^ { \prime } = \frac { x - \overline { x } } { \sigma }<br>$$</p>
-<h2 id="data-imbalanced"><a href="#data-imbalanced" class="headerlink" title="data imbalanced"></a>data imbalanced</h2><p>这个举例子应该很好举，使用 auc 的理由也应该是会的。</p>
-<p>机器学习中的特征工程是有一定技巧可言，其中我觉得最为有趣的是: generation or you can call it abstraction. 对于特征的泛的提取才是对于问题本身或者特征的理解，这不仅需要积累，更需要对于该问题领域的专业知识， that’s all.举个栗子，在 “Home Credit Default Risk” (kaggle 竞赛)中，原始的训练数据有信贷金额和客户的年收入，这个时候 “credit_income_percent” 就是类似这种性质的提取特征。</p>
+<h2 id="data-imbalanced"><a href="#data-imbalanced" class="headerlink" title="data imbalanced"></a>data imbalanced</h2><p>机器学习中的特征工程是有一定技巧可言，其中我觉得最为有趣的是: generation or you can call it abstraction. 对于特征的泛的提取才是对于问题本身或者特征的理解，这不仅需要积累，更需要对于该问题领域的专业知识， that’s all.举个栗子，在 “Home Credit Default Risk” (kaggle 竞赛)中，原始的训练数据有信贷金额和客户的年收入，这个时候 “credit_income_percent” 就是类似这种性质的提取特征。</p>
 
       
     </div>
@@ -565,7 +566,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -587,7 +588,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -636,7 +637,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#why-normalization？"><span class="nav-number">5.</span> <span class="nav-text">why normalization？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data-imbalanced"><span class="nav-number"></span> <span class="nav-text">data imbalanced</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#why-normalization？"><span class="nav-number">5.</span> <span class="nav-text">why normalization？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data-imbalanced"><span class="nav-number"></span> <span class="nav-text">data imbalanced</span></a></div>
             
 
           </div>

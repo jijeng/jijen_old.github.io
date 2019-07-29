@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q4b2shb6j20at06vdfz.jpg">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*MrcJwiWD8z47AXe_GPgZkA.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*H4pRIFSGcExAlV5pE6ObNA.png">
-<meta property="og:updated_time" content="2019-06-19T14:52:39.649Z">
+<meta property="og:updated_time" content="2019-07-26T05:29:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction to Ensemble">
 <meta name="twitter:description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
@@ -327,8 +327,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-19T22:52:39+08:00">
-                2019-06-19
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-26T13:29:38+08:00">
+                2019-07-26
               </time>
             
           </span>
@@ -448,7 +448,9 @@
 <p><strong>ROC 曲线</strong>: ROC 曲线（接收者操作特征曲线）是一种显示分类模型在所有分类阈值下的效果的图表。该曲线绘制了以下两个参数：真正例率 和 假正例率。</p>
 <p>真正例率 (TPR) 是召回率的同义词，因此定义如下：<br>$$<br>T P R = \frac { T P } { T P + F N }<br>$$<br>假正例率 (FPR) 的定义如下：<br>$$<br>F P R = \frac { F P } { F P + T N }<br>$$</p>
 <p>ROC 中 TPR =(True positive / ( True positive +False negative)), 那个false negative 也是真实的类别，只不过是错误的当做了 negative（false negative）</p>
-<p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg" alt=""><br>2针对一个二分类问题，将实例分成正类(postive)或者负类(negative)。但是实际中分类时，会出现四种情况.</p>
+<p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg" alt=""></p>
+<p>precision是 在所有预测为真的样本中，真实的情况也是真的比例；recall 是在所有的真实的样本中，预测也是真的比例。陈述这个关键把握住预测结果和真实结果两个维度。</p>
+<p>2针对一个二分类问题，将实例分成正类(postive)或者负类(negative)。但是实际中分类时，会出现四种情况.</p>
 <ul>
 <li>若一个实例是正类并且被预测为正类，即为真正类(True Postive TP)</li>
 <li>若一个实例是正类，但是被预测成为负类，即为假负类(False Negative FN)</li>
@@ -474,7 +476,8 @@
 <p>The Receiver Operating Characteristic (ROC) curves plot FPR vs. TPR as shown below. Because TPR only depends on positives, ROC curves do not measure the effects of negatives. <strong>The area under the ROC curve (AUC) assesses overall classification performance </strong>. AUC does not place more emphasis on one class over the other, so it does not reflect the minority class well.</p>
 <p><img src="https://cdn-images-1.medium.com/max/1600/1*MrcJwiWD8z47AXe_GPgZkA.png" alt=""><br>Davis and Goadrich in this paper propose that Precision-Recall (PR) curves will be more informative than ROC when dealing with highly skewed datasets. The PR curves plot precision vs. recall (FPR). Because Precision is directly influenced by class imbalance so the Precision-recall curves are better to highlight differences between models for highly imbalanced data sets. When you compare different models with imbalanced settings, the area under the Precision-Recall curve will be more sensitive than the area under the ROC curve.<br><img src="https://cdn-images-1.medium.com/max/1600/1*H4pRIFSGcExAlV5pE6ObNA.png" alt=""></p>
 <p><a href="http://www.davidsbatista.net/blog/2018/08/19/NLP_Metrics/" target="_blank" rel="noopener">最强讲解</a></p>
-<h2 id="how-to-handle-unbalanced-data"><a href="#how-to-handle-unbalanced-data" class="headerlink" title="how to handle unbalanced data"></a>how to handle unbalanced data</h2><p>Imbalanced data typically refers to a problem with classification problems where the classes are not represented equally. The accuracy paradox is the name for the exact situation in the introduction to this post.</p>
+<h2 id="how-to-handle-unbalanced-data"><a href="#how-to-handle-unbalanced-data" class="headerlink" title="how to handle unbalanced data"></a>how to handle unbalanced data</h2><p>对于这类问题是可以从数据和模型来进行考虑的。</p>
+<p>Imbalanced data typically refers to a problem with classification problems where the classes are not represented equally. The accuracy paradox is the name for the exact situation in the introduction to this post.</p>
 <p><strong> Data approach</strong><br>Oversample minority class  and Undersample majority class</p>
 <ul>
 <li>Over-sampling increases the number of minority class members in the training set. The advantage of over-sampling is that no information from the original training set is lost, as all observations from the minority and majority classes are kept. On the other hand, it is prone to overfitting. (You can add copies of instances from the under-represented class called over-sampling or more formally sampling with replacement)</li>
@@ -635,7 +638,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -657,7 +660,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

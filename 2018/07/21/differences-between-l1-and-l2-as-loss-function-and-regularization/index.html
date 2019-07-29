@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="本文主要介绍 L1 和L2 分别作为 loss function 和 regularization，最后谈一下 overfitting的事情。">
+<meta name="description" content="L1 和L2 既可以作为 loss function 也可以作为 reguarization，分别介绍了一下两者，最后介绍 overfitting 的概念。">
 <meta name="keywords" content="l1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Differences Between l1 and l2 as Loss Function and Regularization">
 <meta property="og:url" content="http://yoursite.com/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="本文主要介绍 L1 和L2 分别作为 loss function 和 regularization，最后谈一下 overfitting的事情。">
+<meta property="og:description" content="L1 和L2 既可以作为 loss function 也可以作为 reguarization，分别介绍了一下两者，最后介绍 overfitting 的概念。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/15/Tb2BI3.png">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44de1ykfjj20aj039mwz.jpg">
@@ -95,10 +95,10 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dbhp8f4j20ee02274b.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dc1qt7gj20at03va9x.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dgr4ywvj206u06waaf.jpg">
-<meta property="og:updated_time" content="2019-07-15T02:40:10.343Z">
+<meta property="og:updated_time" content="2019-07-26T08:43:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Differences Between l1 and l2 as Loss Function and Regularization">
-<meta name="twitter:description" content="本文主要介绍 L1 和L2 分别作为 loss function 和 regularization，最后谈一下 overfitting的事情。">
+<meta name="twitter:description" content="L1 和L2 既可以作为 loss function 也可以作为 reguarization，分别介绍了一下两者，最后介绍 overfitting 的概念。">
 <meta name="twitter:image" content="https://upload.cc/i1/2019/07/15/Tb2BI3.png">
 
 
@@ -330,8 +330,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-15T10:40:10+08:00">
-                2019-07-15
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-26T16:43:44+08:00">
+                2019-07-26
               </time>
             
           </span>
@@ -402,10 +402,9 @@
       
 
       
-        <p>本文主要介绍 L1 和L2 分别作为 loss function 和 regularization，最后谈一下 overfitting的事情。</p>
+        <p>L1 和L2 既可以作为 loss function 也可以作为 reguarization，分别介绍了一下两者，最后介绍 overfitting 的概念。</p>
 <a id="more"></a>
-<p>L1 和L2 作为Loss function和 regularization，个人感觉是一个经常容易混淆的概念。但是如果读者觉得很清楚，那么就可以跳过了。<br>本文大量借鉴于<a href="http://www.chioka.in/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">该博客</a>，原文是英文，如果读者英文能够handle，建议读原文。</p>
-<h2 id="As-loss-function"><a href="#As-loss-function" class="headerlink" title="As loss function"></a>As loss function</h2><p>loss function or error function 是用来衡量真实y 和生成的f(x) 之间差距的函数。在模型训练中我们一般情况下不断训练模型使得loss function不断下降（如果task要求loss function是增大，这时候一般加上符号或者转换成 1- loss fucntion，最后实现的还是loss function下降）。好的回到L1 loss function和L2 loss function. </p>
+<h2 id="As-loss-function"><a href="#As-loss-function" class="headerlink" title="As loss function"></a>As loss function</h2><p>loss function or error function 是用来衡量真实$y$ 和生成的$ f(x)$ 之间差距的函数。在模型训练中我们一般情况下不断训练模型使得loss function不断下降（如果task要求loss function是增大，这时候一般加上符号或者转换成 1- loss fucntion，最后实现的还是loss function下降）。好的回到L1 loss function和L2 loss function. </p>
 <p>概括：从鲁棒性（对待异常值）的角度看，L1 是比L2 具有更好的性质，因为L2 是把误差进行了平方处理，误差回放大；从稳定性角度（数据集的一个小的移动），L2 是比L1 具有更好的性质，这个是可以从实验的角度进行总结。</p>
 <p><img src="https://upload.cc/i1/2019/07/15/Tb2BI3.png" alt="img"></p>
 <p>L1-norm loss function is also known as least absolute deviations(LAD), least absolute errors. It is basically minimizing the sum of the absolute differences between the target value Y and the estimated values (f(x)).</p>
@@ -415,6 +414,8 @@
 <p>比较L1-norm 和L2-norm在前两个评价指标中的表现：</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44de1ykfjj20aj039mwz.jpg" alt=""></p>
 <p>对于是否具有唯一解，可以从这个角度分析：L1是可以有多种解，而L2只有一种解。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44dgr4ywvj206u06waaf.jpg" alt=""></p>
+<p>使用范围：</p>
+<p>L1 适合在稀疏数据上使用，具有特征选择功能，得到的稀疏解；L2 适合在稠密数据上使用，得到的是唯一解，没有特征选择的功能。</p>
 <h2 id="As-regularization"><a href="#As-regularization" class="headerlink" title="As regularization"></a>As regularization</h2><p>从<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">XGBoost调参指南</a>中我们知道objective function = loss funcion + regularization. 而我们大多数情况下提及的都是loss function,常常忽略了regularization 的作用。</p>
 <p>The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>对于模型训练，一开始的想法是尽量的overfitting, 因为就现在不成熟的经验而言，对于overfitting这个问题有很多处理方法，比如卷积深度神经网络中的dropout, LightGBM中的early stop 和随机采样的思想。 这些方法都是可以缓解overfitting，所以可以出现overfitting。相反，如果你的模型是underfitting，那么你就微显尴尬了。好，收回到L1 and L2。</p>
 <p>总结： L1 在系数weights 中使用，L2 在非稀疏的情况下使用更好。可以从计算效率、是否稀疏输出和特征选择进行分析。</p>
@@ -445,10 +446,13 @@
 <p>首先理解为什么要正则化？</p>
 <p>如果网络足够的强大，数据量不是那么充足，那么网络完全是可以通过“记住” 这些样本，然后得到很高的 training acc，但是这个 test error 会比较大，这个时候就出现了过拟合。正则化就类似减轻了数据的复杂程度。关于过拟合是可以从两个维度进行解决：网络和数据。</p>
 <p>常常使用的 dropout 就是减弱网络复杂性的一种手段，随机减少了某些网络中的节点，那么网络就没有那么强的“记忆”功能，但是最后的loss（要求）还是不变的，所以只能去寻找数据更加“简单普遍”的规律；正则化是对数据和weights 两种类型的，前者是对于数据的操作，然后weights 更加倾向于对于网络结构的操作，使得系数更加“光滑”。</p>
-<p>为什么L1 相比于L2 产生了更加稀疏的解？<br><a href="https://vimsky.com/article/969.html" target="_blank" rel="noopener">这里</a>从数学角度和空间角度进行了解释。 但是从更加 tuition 的角度去理解，L1 没有一个连续的导数，能产生权值为0，所以类似剔除了某些特征，产生了稀疏的权值，而L2 是具有比较连续的导数，产生了比较平滑的权值。</p>
+<p>为什么L1 相比于L2 产生了更加稀疏的解？</p>
+<p>（这里从数据分布的角度进行解读，L2 的数据来源是高斯分布；L1 可以看成是来自laplace 分布）</p>
+<p><a href="https://vimsky.com/article/969.html" target="_blank" rel="noopener">这里</a>从数学角度和空间角度进行了解释。 但是从更加 tuition 的角度去理解，L1 没有一个连续的导数，能产生权值为0，所以类似剔除了某些特征，产生了稀疏的权值，而L2 是具有比较连续的导数，产生了比较平滑的权值。</p>
 <p>更加数学化的理解：</p>
 <p>$$<br>f ( x ) = \frac { 1 } { \sqrt { 2 \pi } \sigma } \exp \left( - \frac { ( x - \mu ) ^ { 2 } } { 2 \sigma ^ { 2 } } \right)<br>$$<br>如果把高斯密度函数取对数，那么就只会剩下一个平方项，这个就是L2正则项的来源，所以数据是比较稠密的。</p>
-<p>同样，如果是数据比较稀疏，不妨假设来自 laplace 分布，下面是<br><img src="https://i.loli.net/2019/07/15/5d2be624c660286724.jpg" alt="82ba0546d4713b242df43bfe2de96e22_hd.jpg"><br>其中的 $u$ 表示位置参数， $b$ 表示尺度参数。这两个都是可以对标正太分布的。可以看到图像的尾部都是比较平滑，然后大多数是接近于0的。<br>公式：<br>$$<br>f ( x | \mu , b ) = \frac { 1 } { 2 b } \exp \left( - \frac { | x - \mu | } { b } \right)<br>$$<br>同样取对数，那么得到是L1 正则项。</p>
+<p>同样，如果是数据比较稀疏，不妨假设来自 laplace 分布，下面是<br><img src="https://i.loli.net/2019/07/15/5d2be624c660286724.jpg" alt="82ba0546d4713b242df43bfe2de96e22_hd.jpg"><br>其中的 $u$ 表示位置参数， $ b $ 表示尺度参数, 当 $b$ 越大的时候，图像越低矮，数据越不集中，越类似均匀分布，所以有一种稀疏的感觉。这两个都是可以对标正太分布的。可以看到图像的尾部都是比较平滑，然后大多数是接近于0的。</p>
+<p>公式：<br>$$<br>f ( x | \mu , b ) = \frac { 1 } { 2 b } \exp \left( - \frac { | x - \mu | } { b } \right)<br>$$<br>同样取对数，那么得到是L1 正则项。</p>
 <p>所以L2 得到的是一个比较平滑的weights 适合处理稠密的向量，而L1 得到是一个稀疏的结果，因为有很大程度的被置为0.</p>
 <p>先上公式<br>L1 regularization on least squares:<br>$$<br>\mathbf { w } ^ { * } = \underset { \mathbf { w } } { \arg \min } \sum _ { j } \left( t \left( \mathbf { x } _ { j } \right) - \sum _ { i } w _ { i } h _ { i } \left( \mathbf { x } _ { j } \right) \right) ^ { 2 }<br>$$<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44db9p4toj20ee022aa2.jpg" alt=""></p>
 <p>L2 regularization on least squares:</p>
@@ -593,7 +597,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -615,7 +619,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
