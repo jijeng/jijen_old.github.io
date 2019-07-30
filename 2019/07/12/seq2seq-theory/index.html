@@ -92,7 +92,9 @@
 <meta property="og:image" content="https://i.loli.net/2019/07/12/5d2884d866d9f23744.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/21/g645t9.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/12/5d2884d89c4f355531.png">
-<meta property="og:updated_time" content="2019-07-24T13:10:33.143Z">
+<meta property="og:image" content="https://i.loli.net/2019/07/30/5d40530f9fdc224289.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/30/5d40530e2104e71958.png">
+<meta property="og:updated_time" content="2019-07-30T14:26:30.132Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="All you need to know about seq2seq">
 <meta name="twitter:description" content="介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。本篇主要是理论，代码demo 可以参考另一篇。">
@@ -327,8 +329,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-24T21:10:33+08:00">
-                2019-07-24
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-30T22:26:30+08:00">
+                2019-07-30
               </time>
             
           </span>
@@ -437,11 +439,20 @@
 <h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong> Exposure Bias：</strong></p>
 <p>问题描述：Seq2Seq模型训练的过程中，编码部分的下一个时刻的输出，是需要根据上一个时刻的输出和上一个时刻的隐藏状态和语义变量Ci.此时上一个时刻的输出使用的是真实的token。而在验证Seq2Seq模型的时候，由于不知道上一个时刻的真实token，上一个时刻的输出使用的是上上个时刻的预测的输出token。这将引发Exposure Bias(曝光偏差问题)。</p>
 <p>一种解决思路：使用Beam Search的Encoder的方式也能一定程度上降低Exposure Bias问题，因为其考虑了全局解码概率，而不仅仅依赖与前一个词的输出，所以模型前一个预测错误而带来的误差传递的可能性就降低了</p>
+<p>exposure bias 的定义：<br>RNN 在 training 时接受 ground truth input，但 testing 时却接受自己之前的 output，这两个 setting不一致会导致 error accumulate<br>解决思路：<br>为了解决 exposure bias 问题，提出了  scheduled sampling，即在先前的 GroundTrue 单词和先前产生的单词之间随机选择，已经成为适合基于RNN的模型的当前主要训练程序。 然而，它只能减轻  exposure bias，但不能很大程度上解决它。</p>
 <p><strong> OOV 和低频词</strong></p>
 <p>问题描述：OOV表示的是词汇表外的未登录词，低频词则是词汇表中的出现次数较低的词。在Decoder阶段时预测的词来自于词汇表，这就造成了未登录词难以生成，低频词也比较小的概率被预测生成。</p>
 <p>一种解决思路：如果 focus 在文本摘录领域，由于其任务的特点，很多OOV 或者不常见的的词其实可以从输入序列中找到，因此一个很自然的想法就是去预测一个开关（switch）的概率 $P(si=1)=f(hi,yi-1,ci) $，如果开关打开了，就是正常地预测词表；如果开关关上了，就需要去原文中指向一个位置作为输出。</p>
 <p><strong> 连续生成重复词的问题</strong></p>
 <p>判断，然后进行惩戒。</p>
+<h3 id="teaching-forcing"><a href="#teaching-forcing" class="headerlink" title="teaching forcing"></a>teaching forcing</h3><p>其实RNN存在着两种训练模式(mode):</p>
+<p>free-running mode: 就是大家常见的那种训练网络的方式: 上一个state的输出作为下一个state的输入。<br>问题： 如果一个unit 出现了garbage ，那么必定是会影响后面一片 unit 的学习效果；造成了不收敛</p>
+<p><img src="https://i.loli.net/2019/07/30/5d40530f9fdc224289.png" alt="1.png"></p>
+<p>teacher-forcing mode: 使用目标语言中的实际输出作为 decoder 的输入。<br>优点： 训练变得稳定，快速的收敛<br>缺点：效果并不是那么好，因为在 test 的时候，是没有ground true 的支持，所以模型就效果很差。</p>
+<p>常见的几种处理手段：<br>集束搜索（beam search）：产生多个候选词，优化输出序列。实际上是一种剪枝后的深度优先搜索算法。<br>计划学习（curriculum learning）：<br>总的思想，训练开始是 teacher forcing mode，然后随着训练的过程，慢慢降低 ground true的频率。<br>定期采样Scheduled Sampling：</p>
+<p><img src="https://i.loli.net/2019/07/30/5d40530e2104e71958.png" alt="2.png"></p>
+<p>随机的使用目标语言的输出和 decoder 预测的输出。</p>
+<p>相对于 beam search而言，每个时刻只是选择 top1的那种，类似一种求解局部最优解，实际上是一种贪心算法。</p>
 
       
     </div>
@@ -575,7 +586,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -646,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义和结构"><span class="nav-number">1.</span> <span class="nav-text">定义和结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练过程"><span class="nav-number">2.</span> <span class="nav-text">训练过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意力机制"><span class="nav-number">3.</span> <span class="nav-text">注意力机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">5.</span> <span class="nav-text">常见问题</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义和结构"><span class="nav-number">1.</span> <span class="nav-text">定义和结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练过程"><span class="nav-number">2.</span> <span class="nav-text">训练过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意力机制"><span class="nav-number">3.</span> <span class="nav-text">注意力机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">5.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#teaching-forcing"><span class="nav-number">5.1.</span> <span class="nav-text">teaching forcing</span></a></li></ol></li></ol></div>
             
 
           </div>
