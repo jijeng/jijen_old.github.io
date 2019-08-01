@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="从贝叶斯定理到 naive bayes 分类器，最后说明一下其应用和优缺点。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-22T14:11:09.575Z">
+<meta property="og:updated_time" content="2019-07-31T13:27:51.630Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Naive Bayes Classifier">
 <meta name="twitter:description" content="从贝叶斯定理到 naive bayes 分类器，最后说明一下其应用和优缺点。">
@@ -321,8 +321,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-22T22:11:09+08:00">
-                2019-07-22
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-31T21:27:51+08:00">
+                2019-07-31
               </time>
             
           </span>
@@ -403,15 +403,15 @@
 <p>因此bayes 定理打通了上述两个条件概率的关系。<br>$$<br>P ( B | A ) = \frac { P ( A | B ) P ( B ) } { P ( A ) }<br>$$</p>
 <h2 id="朴素贝叶斯分类的原理和流程"><a href="#朴素贝叶斯分类的原理和流程" class="headerlink" title="朴素贝叶斯分类的原理和流程"></a>朴素贝叶斯分类的原理和流程</h2><p>总体的公式：<br>$$ p(类别 | 特征) = \frac {p(类别) * p特征|类别）}{p(特征)}$$</p>
 <ol>
-<li>设特征  $x = \left{ a _ { 1 } , a _ { 2 } , \ldots , a _ { m } \right}$， 其中 x 是一条数据， $a_i$ 是一个特征属性。</li>
-<li>有类别信息 $C = \left{ y _ { 1 } , y _ { 2 } , \ldots , y _ { n } \right}$</li>
-<li>计算 $P \left( y _ { 1 } | x \right) , P \left( y _ { 2 } | x \right) , \ldots , P \left( y _ { n } | x \right)$</li>
-<li>如果 $P \left( y _ { k } | x \right) = \max \left{ P \left( y _ { 1 } | x \right) , P \left( y _ { 2 } | x \right) , \ldots , P \left( y _ { n } | x \right) \right}$， 那么 $x \in y _ { k }$.</li>
+<li>设特征  $x = { a _ { 1 } , a _ { 2 } , \ldots , a _ { m } }$， 其中 x 是一条数据， $a_i$ 是一个特征属性。</li>
+<li>有类别信息 $C = { y _ { 1 } , y _ { 2 } , \ldots , y _ { n } }$</li>
+<li>计算 $P ( y _ { 1 } | x ) , P ( y _ { 2 } | x ) , \ldots , P ( y _ { n } | x )$</li>
+<li>如果 $P ( y _ { k } | x ) = \max { P ( y _ { 1 } | x ) , P ( y _ { 2 } | x ) , \ldots , P ( y _ { n } | x ) }$， 那么 $x \in y _ { k }$.</li>
 </ol>
 <p>所以现在的关键步骤是如何计算第 3 步骤中的各个条件概率。可以这样做，</p>
 <ol>
 <li>找到一个已知分类的待分类项集合，这个集合叫做训练样本集。</li>
-<li>统计得到在各类别下各个特征属性的条件概率估计 $<br>P \left( a _ { 1 } | y _ { 1 } \right) , P \left( a _ { 2 } | y _ { 1 } \right) , \ldots , P \left( a _ { m } | y _ { 1 } \right) ; P \left( a _ { 1 } | y _ { 2 } \right) , P \left( a _ { 2 } | y _ { 2 } \right) , \ldots , P \left( a _ { m } | y _ { 2 } \right) ; \ldots ; P \left( a _ { 1 } | y _ { n } \right) , P \left( a _ { 2 } | y _ { n } \right) , \ldots , P \left( a _ { m } | y _ { n } \right)<br>$</li>
+<li>统计得到在各类别下各个特征属性的条件概率估计 $<br>P \left( a _ { 1 } | y _ { 1 } \right) , P \left( a _ { 2 } | y _ { 1 } \right) , \ldots , P \left( a _ { m } | y _ { 1 } \right) ;<br>P \left( a _ { 1 } | y _ { 2 } \right) , P \left( a _ { 2 } | y _ { 2 } \right) , \ldots , P \left( a _ { m } | y _ { 2 } \right) ;<br>\ldots ; P \left( a _ { 1 } | y _ { n } \right) , P \left( a _ { 2 } | y _ { n } \right) , \ldots , P \left( a _ { m } | y _ { n } \right)<br>$</li>
 <li>如果各个特征属性是条件独立的，则根据贝叶斯定理有如下推导</li>
 </ol>
 <p>$$<br>P \left( y _ { i } | x \right) = \frac { P \left( x | y _ { i } \right) P \left( y _ { i } \right) } { P ( x ) }<br>$$</p>

@@ -88,7 +88,8 @@
 <meta property="og:description" content="介绍GBDT 的定义、训练过程、优缺点和常见的问题。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/12/laVvjT.png">
-<meta property="og:updated_time" content="2019-07-24T14:01:42.406Z">
+<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/e9f310e2c0dc1ada.png">
+<meta property="og:updated_time" content="2019-07-31T12:32:16.844Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="A Gentle Introduction of GBDT">
 <meta name="twitter:description" content="介绍GBDT 的定义、训练过程、优缺点和常见的问题。">
@@ -323,8 +324,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-24T22:01:42+08:00">
-                2019-07-24
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-31T20:32:16+08:00">
+                2019-07-31
               </time>
             
           </span>
@@ -406,7 +407,7 @@
 <p>使用平方损失函数时候，GBDT算法的每一步在生成决策树只是拟合前面模型的残差，（y- y^）残差是梯度的一个特例。<br>而当损失函数是其他的形式时候，下一次迭代是使用的负梯度值。<br> 对于一般损失函数，为了使其取得最小值，通过梯度下降算法，每次朝着损失函数的负梯度方向逐步移动，最终使得损失函数极小的方法（此方法要求损失函数可导）。</p>
 <p>总的来说，第一颗树是由基尼系数决定? ，之后所有的树的决策全是由残差来决定。</p>
 <p>GBDT的思想可以用一个通俗的例子解释，假如有个人30岁，我们首先用20岁去拟合，发现损失有10岁，这时我们用6岁去拟合剩下的损失，发现差距还有4岁，第三轮我们用3岁拟合剩下的差距，差距就只有一岁了。如果我们的迭代轮数还没有完，可以继续迭代下面，每一轮迭代，拟合的岁数误差都会减小。</p>
-<h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><p>How Gradient Boosting Works<br>Gradient boosting involves three elements:</p>
+<h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><h2 id="How-Gradient-Boosting-Works"><a href="#How-Gradient-Boosting-Works" class="headerlink" title="How Gradient Boosting Works"></a>How Gradient Boosting Works</h2><p>Gradient boosting involves three elements:</p>
 <ul>
 <li>A loss function to be optimized.</li>
 <li>A weak learner to make predictions.</li>
@@ -420,9 +421,28 @@
 <p>It is common to constrain the weak learners in specific ways, such as a maximum number of layers, nodes, splits or leaf nodes.<br>This is to ensure that the learners remain weak, but can still be constructed in a greedy manner.</p>
 <h3 id="additive-model"><a href="#additive-model" class="headerlink" title="additive model"></a>additive model</h3><p>Trees are added one at a time, and existing trees in the model are not changed.<br>A gradient descent procedure is used to minimize the loss when adding trees.</p>
 <p>Traditionally, gradient descent is used to minimize a set of parameters, such as the coefficients in a regression equation or weights in a neural network. After calculating error or loss, the weights are updated to minimize that error.<br>Instead of parameters, we have weak learner sub-models or more specifically decision trees. After calculating the loss, to perform the gradient descent procedure, we must add a tree to the model that reduces the loss (i.e. follow the gradient). We do this by parameterizing the tree, then modify the parameters of the tree and move in the right direction by (reducing the residual loss.<br>Generally this approach is called functional gradient descent or gradient descent with functions.</p>
+<h2 id="GBDT"><a href="#GBDT" class="headerlink" title="GBDT"></a>GBDT</h2><p>学习过程：先使用一个初始值来学习一个决策树，叶子可以得到预测的值，以及残差，然后后面的决策树是基于前面的决策树的残差进行学习，直到残差为0.<br>对于测试样本的预测值，就是许多决策树预测值的累加。</p>
+<p>GBDT通过多轮迭代,每轮迭代产生一个弱分类器，每个分类器在上一轮分类器的残差基础上进行训练。对弱分类器的要求一般是足够简单，并且是低方差和高偏差的。因为训练的过程是通过降低偏差来不断提高最终分类器的精度。</p>
+<p><img src="https://b2.bmp.ovh/imgs/2019/07/e9f310e2c0dc1ada.png" alt=""></p>
+<p>损失函数：二分 log loss ，多分 交叉熵loss，回归 平方损失<br>弱学习器（weak learner）：<br>加法模型： 使用梯度下降的方式去减少loss， 当增加一个新的树<br>A gradient descent procedure is used to minimize the loss when adding trees.</p>
+<p>具体说这个弱学习器，<br>GBDT 选择特征的过程就是 CART (分类回归树)选择特征的过程。选择特征是：遍历每个特征和每个特征的所有切分点，找到最优的特征和最优的切分点。多个CART TREE 生成过程中，选择最优特征切分较多的特征就是重要的特征。</p>
+<p>目前GBDT 的算法比较好的库是 xgboost</p>
 <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点（相对于 LR or SVM）：</p>
-<p>GBDT基于树模型，继承了树模型的优点 [对异常点鲁棒、不相关的特征干扰性低（LR需要加正则）、可以很好地处理缺失值、受噪音的干扰小]<br>数据规模影响不大，因为我们对弱分类器的要求不高，作为弱分类器的决策树的深 度一般设的比较小，即使是大数据量，也可以方便处理。像 SVM 这种数据规模大的时候训练会比较麻烦。</p>
-<p>缺点：<br>通常在给定的不带噪音的问题上，他能达到的最佳分类效果还是不如 SVM，逻辑回归之类的。<br>但是，我们实际面对的问题中，往往有很大的噪音，使得 Decision Tree 这个弱势就不那么明显了。</p>
+<ul>
+<li><p>可以灵活的处理各种类型的数据，包括连续型和离散型，处理分类和回归问题</p>
+</li>
+<li><p>继承了树模型的优点： 对异常值鲁棒，处理缺省值</p>
+</li>
+<li><p>即使是大量数据，也可以方便的处理，相对比SVM 来说。</p>
+</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li><p>无法并行</p>
+</li>
+<li><p>在不带噪声的数据上，分类效果不如LR或者 SVM</p>
+</li>
+</ul>
 <h2 id="常见的问题"><a href="#常见的问题" class="headerlink" title="常见的问题"></a>常见的问题</h2><ul>
 <li>为什么GBDT要把CART回归树树分成m棵二叉树去求（每棵树只有两个叶子节点），而不是求一棵二叉树，这棵树有m+1（最多有2m个叶子节点）层呢？</li>
 </ul>
@@ -435,6 +455,10 @@
 <li>AdaBoost 算法和 GBDT 算法的区别</li>
 </ul>
 <p>Boosting族算法的著名代表是AdaBoost，AdaBoost算法通过给已有模型预测错误的样本更高的权重，使得先前的学习器做错的训练样本在后续受到更多的关注的方式来弥补已有模型的不足。与AdaBoost算法不同，梯度提升方法在迭代的每一步构建一个能够沿着梯度最陡的方向降低损失（steepest-descent）的学习器来弥补已有模型的不足。经典的AdaBoost算法只能处理采用指数损失函数的二分类学习任务2，而梯度提升方法通过设置不同的可微损失函数可以处理各类学习任务（多分类、回归、Ranking等），应用范围大大扩展。另一方面，AdaBoost算法对异常点（outlier）比较敏感，而梯度提升算法通过引入bagging思想、加入正则项等方法能够有效地抵御训练数据中的噪音，具有更好的健壮性。这也是为什么梯度提升算法（尤其是采用决策树作为弱学习器的GBDT算法）如此流行的原因，有种观点认为GBDT是性能最好的机器学习算法，这当然有点过于激进又固步自封的味道，但通常各类机器学习算法比赛的赢家们都非常青睐GBDT算法，由此可见该算法的实力不可小觑。</p>
+<ul>
+<li>损失函数：adaboost 使用的是指数损失函数的算法，而gbdt 可以使用不同的可微的损失函数进行分类和回归问题</li>
+<li></li>
+</ul>
 <p>adaboost 一般是用于分类，gbt 一般用于回归。</p>
 <ul>
 <li><p>为什么是低方差？<br>gbdt通过多轮迭代,每轮迭代产生一个弱分类器，每个分类器在上一轮分类器的残差基础上进行训练。对弱分类器的要求一般是足够简单，并且是低方差和高偏差的。因为训练的过程是通过降低偏差来不断提高最终分类器的精度，（此处是可以证明的）。通俗的理解，方差比较低就是模型表现的稳定与否。</p>
@@ -667,7 +691,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GDBT-处理分类问题"><span class="nav-number">2.</span> <span class="nav-text">GDBT 处理分类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练过程"><span class="nav-number">3.</span> <span class="nav-text">训练过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#loss-function"><span class="nav-number">3.1.</span> <span class="nav-text">loss function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weak-learner"><span class="nav-number">3.2.</span> <span class="nav-text">weak learner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#additive-model"><span class="nav-number">3.3.</span> <span class="nav-text">additive model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优缺点"><span class="nav-number">4.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的问题"><span class="nav-number">5.</span> <span class="nav-text">常见的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AdaBoost"><span class="nav-number">6.</span> <span class="nav-text">AdaBoost</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GDBT-处理分类问题"><span class="nav-number">2.</span> <span class="nav-text">GDBT 处理分类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练过程"><span class="nav-number">3.</span> <span class="nav-text">训练过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-Gradient-Boosting-Works"><span class="nav-number">4.</span> <span class="nav-text">How Gradient Boosting Works</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#loss-function"><span class="nav-number">4.1.</span> <span class="nav-text">loss function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weak-learner"><span class="nav-number">4.2.</span> <span class="nav-text">weak learner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#additive-model"><span class="nav-number">4.3.</span> <span class="nav-text">additive model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT"><span class="nav-number">5.</span> <span class="nav-text">GBDT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优缺点"><span class="nav-number">6.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的问题"><span class="nav-number">7.</span> <span class="nav-text">常见的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AdaBoost"><span class="nav-number">8.</span> <span class="nav-text">AdaBoost</span></a></li></ol></div>
             
 
           </div>

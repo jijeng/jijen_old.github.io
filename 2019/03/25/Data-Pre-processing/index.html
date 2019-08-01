@@ -86,10 +86,12 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。  数据预处理的时候需要注意 missing values、noisy data (outlier) ，对于这种现象应该分成要不要">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-29T09:39:14.000Z">
+<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/b34a196be64960bd.png">
+<meta property="og:updated_time" content="2019-07-31T12:45:06.859Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Data Pre-processing 学习笔记">
 <meta name="twitter:description" content="主要介绍机器学习中的数据预处理，包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。  数据预处理的时候需要注意 missing values、noisy data (outlier) ，对于这种现象应该分成要不要">
+<meta name="twitter:image" content="https://b2.bmp.ovh/imgs/2019/07/b34a196be64960bd.png">
 
 
 
@@ -320,8 +322,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-29T17:39:14+08:00">
-                2019-07-29
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-31T20:45:06+08:00">
+                2019-07-31
               </time>
             
           </span>
@@ -412,7 +414,30 @@
 <p>如果按照 data transformation的预设，那么 normalization 就也属于该模块的内容。 不论是在 machine learning 还是在 图像处理的时候，对于原始的数据经常采取 normalization. 一方面这个是可以预防梯度消失 或者 gradient exploding, 如果你采用了 Sigmoid的激活函数的话。另一方面我认为更加重要的原因是将 不同的数据放在了同一个尺度下，如果你采取了 normalization之后。</p>
 <h3 id="Data-Reduction"><a href="#Data-Reduction" class="headerlink" title="Data Reduction:"></a>Data Reduction:</h3><p>一般来说很少提及到到 data reduction的必要性，如果非要给出原因，那么可以从时间和空间的角度进行考虑。更加需要关注的是如何做的问题。 </p>
 <p>我的理解reduction 可以从两个维度进行考虑，假设一个 matrics A 是 m*n，这个是一个二维的矩阵，那么可以从 行列两方面入手。映射到机器学习中一般这样描述 从dimension 和 data两个角度去描述，分别称之为 dimension reduction 和 data compression. 前者指的是特征的选取，后者是数据size的减少。<br>dimension reduction: where irrelevant, weakly relevant, or redundant attributes or dimensions may be detected and removed.<br>data compression: PCA 线性降维 to reduce the data set size. 这个是针对某一个特征展开的。</p>
-<h3 id="why-normalization？"><a href="#why-normalization？" class="headerlink" title="why normalization？"></a>why normalization？</h3><p>映射到 N(0,1) 的这种行为，叫做归一化。Feature scaling is the method to limit the range of variables so that they can be compared on common grounds. 有三个主要的原因。</p>
+<h3 id="Data-Normalization"><a href="#Data-Normalization" class="headerlink" title="Data Normalization"></a>Data Normalization</h3><p><strong> 是什么？</strong></p>
+<p>中心化： 均值为0，对方差没有要求</p>
+<p>$$<br>x ^ { \prime } = x - \mu<br>$$</p>
+<p>标准化：服从正太分布 (0, 1) </p>
+<p>$$<br>x ^ { \prime } = \frac { x - \overline { x } } { \sigma }<br>$$</p>
+<p>归一化有两种： mean normalization 和 min-max normalization</p>
+<p>mean  normalization<br>$$<br>x ^ { \prime } = \frac { x - \operatorname { mean } ( x ) } { \max ( x ) - \min ( x ) }<br>$$</p>
+<p>min-max normalization</p>
+<p>$$<br>x ^ { \prime } = \frac { x - \operatorname { min } ( x ) } { \max ( x ) - \min ( x ) }<br>$$</p>
+<p><strong>为什么？</strong></p>
+<ul>
+<li><p>提高模型的准确率<br>比如说两个特征，一个特征的范围是0-100， 另一个是-2000 到2000， 这个使用 欧式距离进行计算的时候，两个特征的差值很大，特征并没有站在同一个维度上。</p>
+</li>
+<li><p>提高模型的速度<br>还是上面的例子，两个特征x1 x2的取值范围比较大，那么学习率上变得波动，所以学习时间会变长。</p>
+</li>
+</ul>
+<p><img src="https://b2.bmp.ovh/imgs/2019/07/b34a196be64960bd.png" alt=""></p>
+<ul>
+<li>深度学习中数据归一化可以防止模型梯度爆炸<br>以sigmoid 函数为例解释就行</li>
+</ul>
+<p><strong>怎么做？</strong><br>定义就是表示怎么做</p>
+<p><strong>适用范围</strong></p>
+<p>概率模型不需要归一化，因为它们不关心变量的值，而是关心变量的分布和变量之间的条件概率，如决策树、rf。而像adaboost、svm、lr、KNN、KMeans之类的最优化问题就需要归一化。</p>
+<p>映射到 N(0,1) 的这种行为，叫做归一化。Feature scaling is the method to limit the range of variables so that they can be compared on common grounds. 有三个主要的原因。</p>
 <ul>
 <li><p>Because most of the Machine Learning models are based on Euclidean Distance.</p>
 <blockquote>
@@ -637,7 +662,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#why-normalization？"><span class="nav-number">5.</span> <span class="nav-text">why normalization？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data-imbalanced"><span class="nav-number"></span> <span class="nav-text">data imbalanced</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Normalization"><span class="nav-number">5.</span> <span class="nav-text">Data Normalization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data-imbalanced"><span class="nav-number"></span> <span class="nav-text">data imbalanced</span></a></div>
             
 
           </div>

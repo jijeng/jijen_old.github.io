@@ -90,9 +90,11 @@
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg">
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q453345pj205c046glh.jpg">
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q4b2shb6j20at06vdfz.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/01/5d421f9678f9649303.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/01/5d422029970c282991.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*MrcJwiWD8z47AXe_GPgZkA.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*H4pRIFSGcExAlV5pE6ObNA.png">
-<meta property="og:updated_time" content="2019-07-26T05:29:38.000Z">
+<meta property="og:updated_time" content="2019-08-01T00:20:46.853Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction to Ensemble">
 <meta name="twitter:description" content="虽然在Titanic Challenge博客中介绍了模型融合(Ensemble)，但是其是以特征提取为主旋律，所以这篇博客将结合实战从最基本的Ensemble到比较复杂的Ensemble,最后安利一个用于模型融合的package. 在文中可能出现一些概念，如果不太熟悉，可以先去文末找找看，如果我没有补充，那么请自行Google吧。为了不影响阅读的流畅性，我可能在其中不会涉及很多概念解释，比如说RO">
@@ -327,8 +329,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-26T13:29:38+08:00">
-                2019-07-26
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-01T08:20:46+08:00">
+                2019-08-01
               </time>
             
           </span>
@@ -463,6 +465,29 @@
 <p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q4b2shb6j20at06vdfz.jpg" alt=""></p>
 <p>接着我们计算TRP(True Positive Radio)，FRP(False Positive Ratio)用于描述ROC曲线，分别表示该曲线的Y轴，X轴。<br>TPR=TP/(TP+FN)<br>FPR=FP/(FP+TN)<br>最后就形成了类似这样的图像(来源于上述的训练模型)</p>
 <p>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从图中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。</p>
+<p>ROC(<em>receiver operating characteristic curve</em>): ROC曲线的横坐标为<em>false positive rate</em>（FPR,假正率），纵坐标为<em>true positive rate</em>（TPR，真正率，召回率）<br>PRC(<em>precision recall curve</em>): PRC曲线的横坐标为召回率<em>Recall</em>，纵坐标为准确率<em>Precision</em>。</p>
+<p>用ROC curve来表示分类器的performance很直观好用。可是，人们总是希望能有一个数值来标志分类器的好坏。<br>通常，AUC的值介于0.5到1.0之间，较大的AUC代表了较好的Performance。<br>一般来说，如果ROC是光滑的，那么基本可以判断没有太大的overfitting（比如图中0.2到0.4可能就有问题，但是样本太少了），这个时候调模型可以只看AUC，面积越大一般认为模型越好。</p>
+<p><img src="https://i.loli.net/2019/08/01/5d421f9678f9649303.jpg" alt="1.jpg"></p>
+<p>一般情况，用不同的阀值，统计出一组不同阀值下的精确率和召回率，这就是PRC曲线。如下图：<br><img src="https://i.loli.net/2019/08/01/5d422029970c282991.png" alt="1.png"><br>如果是做搜索，那就是保证召回的情况下提升准确率；如果做疾病监测、反垃圾，则是保准确率的条件下，提升召回。</p>
+<p>两者的区别：<br>在正负样本分布得极不均匀(highly skewed datasets)的情况下，PRC比ROC能更有效地反应分类器的好坏。</p>
+<p>Recall：查全率，正样本中被预测出来是正的比例(越大越好)<br>Precision：查准率，预测的正样本中被正确预测的比例(越大越好)<br>True Positive Rate：跟 Recall 定义一样 （越大越好)<br>FPR : 负样本中被预测为正的比例(越小越好)</p>
+<p>对于一个二分类问题，往往要设定一个 threshold，当预测值大于这个 threshold 时预测为正样本，小于这个 threshold 时预测为负样本。如果以 Recall 为横轴，Precision 为纵轴，那么设定一个 threshold 时，便可在坐标轴上画出一个点，设定多个 threshold 则可以画出一条曲线，这条曲线便是 PR 曲线。</p>
+<p>PR 曲线是以 Recall 为横轴，Precision 为纵轴；而 ROC曲线则是以 FPR 为横轴，TPR 为纵轴。</p>
+<p>定理1：对于一个给定的的数据集，ROC空间和PR空间存在一一对应的关系，因为二者包含完全一致的混淆矩阵。我们可以将ROC曲线转化为PR曲线，反之亦然。</p>
+<p>定理 2 中 “曲线A优于曲线B” 是指曲线 B 的所有部分与曲线 A 重合或在曲线 A 之下。而在ROC空间，ROC曲线越凸向左上方向效果越好。与ROC曲线左上凸不同的是，PR曲线是右上凸效果越好。</p>
+<p>F1对于PRC就好象AUC对于ROC一样。一个数字比一条线更方便调模型。</p>
+<p>这个是得到 阈值的一种方式：</p>
+<p>接着来说ROC曲线（Receiver operating characteristic curve），ROC曲线其实是多个混淆矩阵的结果组合，如果在上述模型中我们没有定好阈值，而是将模型预测结果从高到低排序，将每个概率值依次作为阈值，那么就有多个混淆矩阵。</p>
+<p>如精准营销领域的商品推荐模型，模型目的是尽量将商品推荐给感兴趣的用户，若用户对推荐的商品不感兴趣，也不会有很大损失，因此此时TPR相对FPR更重要。再比如反欺诈领域的欺诈预测模型，由于模型结果会对识别的坏人进行一定的处置措施，FPR过高会对好人有一定干扰，造成误杀，影响客户体验，因此模型需保证在低于一定FPR的基础上尽量增加TPR。</p>
+<p>如果在我们所说的fraud detection 或者癌症检测这一类应用中，我们的倾向肯定是“宁可错杀一千，不可放过一个”呀。所以我们可以设定在合理的precision下，最高的recall作为最优点，找到这个对应的threshold点。</p>
+<p>召回率应用场景<br>召回率的应用场景：比如拿网贷违约率为例，相对好用户，我们更关心坏用户，不能错放过任何一个坏用户。因为如果我们过多的将坏用户当成好用户，这样后续可能发生的违约金额会远超过好用户偿还的借贷利息金额，造成严重偿失。召回率越高，代表实际坏用户被预测出来的概率越高，它的含义类似：宁可错杀一千，绝不放过一个。</p>
+<p>对于ROC 曲线，我们希望， TPR 越高，同时FPR 越低（ROC 曲线向着左上角扩展，越陡越好）</p>
+<p>先看二分类问题。指标的好坏主要取决于分类器的目标。比方说，电子邮件的垃圾过滤，你是希望它更全面（查出所有的垃圾，但是会有大量有用信息也被判为垃圾）呢，还是希望它尽量精准（不要老是将有用的邮件判为垃圾）呢？在这个例子里，显然，我们认为False Positive的伤害要大于False Negative：重要邮件要是被判成垃圾所造成的损失，远大于收件箱里还有一部分的垃圾邮件——前者可能会让你错过重要的工作，后者仅仅是让你在阅读的时候皱皱眉头。在这种情况下，我们会认为Precision的指标会比较重要，或者反应在ROC图上，FPR尽量的小——自然，在保证FPR的基础上，Recall依然还是重要的——毕竟用户购买的是垃圾过滤，如果只是过滤了1条垃圾但是Precision＝100%，这样的东西看起来也没什么用——那么综合起来，我们也可以通过ROC的AUC来进行比较，面积较大的代表同样的FPR下面，recall比较高。</p>
+<p>其次是搜索问题。搜索问题其实是一个排序问题，但我们往往会定义Precision@Top K这样的指标，即正确的答案有没有被排在Top K中，如果是的话，就相当于判断为“真”，反之则为“否”。这样搜索问题就转化为了一个二分类问题，唯一的问题是，这是一个典型的数据不均衡的case。很显然，所有的候选集的数量是非常巨大的，但是K的数量不会很大（比如Top 10, Top 20）。所以，在这个问题中，我们会主要看Precision-Recall curve。更重要的是，一般而言，人们看搜索结果都不会太有耐心，所以希望Top K中的有用信息尽量多，换言之，Precision@Top K的指标，是最核心的。</p>
+<p>然而如果我们的问题是多分类的问题，实际上这些指标就不适合了，我们需要看的是Confusion Matri:</p>
+<p>简单来讲,</p>
+<p>尽可能地找到正样例(最关心的类别)时,选recall(immediate from recall定义)<br>尽可能地避免把非正样例预测为正样例时，选precision(immediate from precision定义)</p>
+<p>拿楼上的『地震预测』举例子。我的理解是，对模型的要求是不能漏报（recall一定要高），但是不能老是误报（FPR不能太高）。混合的准确率其实没有太大的意义。所以，我会选择ROC。『犯罪检测』也是一样的。要求一样，数据分布也类似（正样本&lt;&lt;负样本）</p>
 <p><strong>TakeOff</strong></p>
 <p>If you have an imbalanced dataset accuracy can give you false assumptions regarding the classifier’s performance, it’s better to rely on precision and recall, in the same way a Precision-Recall curve is better to calibrate the probability threshold in an imbalanced class scenario as a ROC curve.</p>
 <ul>
