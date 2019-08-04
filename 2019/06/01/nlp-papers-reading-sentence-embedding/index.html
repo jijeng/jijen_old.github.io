@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lprunwuyj212u0guq4v.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lq4allnfj20gk0ji0th.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3klfpv0g9j20k0083go0.jpg">
-<meta property="og:updated_time" content="2019-08-04T03:11:43.144Z">
+<meta property="og:updated_time" content="2019-08-04T07:57:54.736Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP  Papers Reading-Sentence Embedding">
 <meta name="twitter:description" content="Why Consider Sentence Embedding?One simple way you could do this is by generating a word embedding for each word in a sentence, adding up all the embeddings and divide by the number of words in the se">
@@ -330,7 +330,7 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-04T11:11:43+08:00">
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-04T15:57:54+08:00">
                 2019-08-04
               </time>
             
@@ -425,7 +425,9 @@
 <p>Changing a single word has had almost no effect on the meaning of that sentence. To account for these word level changes, the skip-thought model needs to be able to handle a large variety of words, some of which were not present in the training sentences. The authors solve this by using a pre-trained continuous bag-of-words (CBOW) Word2Vec model and learning a translation from the Word2Vec vectors to the word vectors in their sentences. Below are shown the nearest neighbor words after the vocabulary expansion using query words that do not appear in the training vocabulary:</p>
 <p>论文描述了一种通用、分布式句子编码器的无监督学习方法。使用从书籍中提取的连续文本，训练了一个编码器-解码器模型，借鉴了word2vec中skip-gram模型，通过一句话来预测这句话的上一句和下一句。<br>语义和语法属性一致的句子被映射到相似的向量表示。接着引入一个简单的词汇扩展方法来编码不再训练集内的单词，令词汇量扩展到一百万词。<br>本文的模型被称为skip-thoughts，生成的向量称为skip-thought vector。模型采用了当下流行的端到端框架，通过搜集了大量的小说作为训练数据集，将得到的模型中encoder部分作为feature extractor，可以给任意句子生成vector。</p>
 <p>skip-thought模型结构借助了skip-gram的思想。在skip-gram中，是以中心词来预测上下文的词；在skip-thought同样是利用中心句子来预测上下文的句子。</p>
-<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3kgkdu4ivj20t7049glk.jpg" alt=""><br>论文采用了GRU-RNN作为encoder和decoder，encoder部分的最后一个词的hidden<br>state作为decoder的输入来生成词。这里用的是最简单的网络结构，并没有考虑复杂的多层网络、双向网络等提升效果。decoder部分也只是一个考虑了encoder last hidden state的语言模型，并无其他特殊之处，只是有两个decoder，是一个one maps two的情况，但计算方法一样。模型中的目标函数也是两个部分，一个来自于预测下一句，一个来自于预测上一句。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3khqremrtj20k001zwet.jpg" alt=""><br>我们将构造一个类似于自编码器的序列到序列结构，但是它与自编码器有两个主要的区别。第一，我们有两个 LSTM 输出层：一个用于之前的句子，一个用于下一个句子；第二，我们会在输出 LSTM 中使用教师强迫（teacher forcing）。这意味着我们不仅仅给输出 LSTM 提供了之前的隐藏状态，还提供了实际的前一个单词（可在上图和输出最后一行中查看输入）。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3kgkdu4ivj20t7049glk.jpg" alt=""><br>论文采用了GRU-RNN作为encoder和decoder，encoder部分的最后一个词的hidden<br>state作为decoder的输入来生成词。这里用的是最简单的网络结构，并没有考虑复杂的多层网络、双向网络等提升效果。decoder部分也只是一个考虑了encoder last hidden state的语言模型，并无其他特殊之处，只是有两个decoder，是一个one maps two的情况，但计算方法一样。模型中的目标函数也是两个部分，一个来自于预测下一句，一个来自于预测上一句。</p>
+<p>传说中的 objective function or loss function 是下面这个样子：</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3khqremrtj20k001zwet.jpg" alt=""><br>我们将构造一个类似于自编码器的序列到序列结构，但是它与自编码器有两个主要的区别。第一，我们有两个 LSTM 输出层：一个用于之前的句子，一个用于下一个句子；第二，我们会在输出 LSTM 中使用教师强迫（teacher forcing）。这意味着我们不仅仅给输出 LSTM 提供了之前的隐藏状态，还提供了实际的前一个单词。</p>
 <p>看上去，Skip-thought和Skip-gram挺象。唯一的遗憾是Skip-thought的decoder那部分，它是作为language modeling来处理的.</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3kjhda478j20hz09p3yp.jpg" alt=""></p>
 <p>从这里的讲解知道这个是不存在 ”正负“样本的， 这个的损失函数是 正确的上下句和生成的上下句之间的reconstruction error。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3kk2h1usnj218g0hvn0n.jpg" alt=""></p>
@@ -433,15 +435,17 @@
 <p>The encoder utilises a word embedding layer that serves as a look up table. This converts each word in the input sentence to its corresponding word embedding, effectively converting the input sentence into a sequence of word embeddings. This embedding layer is also shared with both of the decoders. The model is then trained to minimise the reconstruction error of the previous and next sentences using the resulting embedding h(i) generated from sentence s(i) after it is passed through the encoder. Back propagating the reconstruction error from the decoder allows the encoder to learn the best representation of the input sentence while capturing the relation between itself and the surrounding sentences.<br>Skip-Thoughts is designed to be a sentence encoder and the result is that the decoders are actually discarded after the training process. The encoder along with the word embedding layer is used as a feature extractor able to encode new sentences that are fed through it. Using cosine similarity on the resulting encoded sentence embeddings, provides a powerful semantic similarity mechanism, where you can measure how closely two sentences relate in terms of meaning as well as syntax.</p>
 <p><strong>Encoder Network:</strong> The encoder is typically a GRU-RNN which generates a fixed length vector representation h(i) for each sentence S(i) in the input. The encoded representation h(i) is obtained by passing final hidden state of the GRU cell (i.e. after it has seen the entire sentence) to multiple dense layers.</p>
 <p><strong>Decoder Network:</strong> The decoder network takes this vector representation h(i) as input and tries to generate two sentences — S(i-1) and S(i+1), which could occur before and after the input sentence respectively. Separate decoders are implemented for generation of previous and next sentences, both being GRU-RNNs. The vector representation h(i) acts as the initial hidden state for the GRUs of the decoder networks.</p>
-<p><strong>词汇扩展</strong></p>
+<p><strong>词汇扩展</strong> </p>
+<p>当初有个面试官问道的训练样本不足的问题，现在给出答案，一种是大量的数据集，因为这个是无监督的学习，不需要标签，所以使用了大量的小说作为训练集；对于相似句子的定义，不是 exact的相似，只要在语法或者语义上相似，那么这个就可以看做相同的样本；然后还使用了 预训练的 模型进行 vocabulary 中词汇的补充。</p>
 <p>作者在训练完过后用在Google News dataset上预训练的模型对Vocabulary进行了词汇扩展主要是为了弥补我们的 Decoder 模型中词汇不足的问题。具体的做法就是：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lpn0w28jj2184068wex.jpg" alt=""><br>(from <a href="https://www.cnblogs.com/jiangxinyang/p/9638991.html" target="_blank" rel="noopener">https://www.cnblogs.com/jiangxinyang/p/9638991.html</a>)</p>
 <p>该思路借鉴于Tomas Mikolov的一篇文章Exploiting Similarities among Languages for Machine Translation中解决机器翻译missing words问题的思路，对训练集产生的词汇表V(RNN)进行了扩展，具体的思路可参考Mikolov的文章，达到的效果是建立了大数据集下V(Word2Vec)和本文V(RNN)之间的映射，V(Word2Vec)的规模远远大于V(RNN)，论文中V(RNN)包括了20000个词，V(Word2Vec)包括了930000多个词，成功地解决了这一问题，使得本文提出的无监督模型有大的应用价值。</p>
 <p><strong>评价观点</strong><br>这个方法只是适用于长文本，要求是至少有两个衔接的句子，思想和skip-gram 比较相近。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lprunwuyj212u0guq4v.jpg" alt=""></p>
 <p><strong>源码</strong><br><a href="https://github.com/tensorflow/models/tree/master/research/skip_thoughts" target="_blank" rel="noopener">google 的实现</a><br><a href="https://github.com/ryankiros/skip-thoughts" target="_blank" rel="noopener">作者的实现</a><br><a href="https://papers.nips.cc/paper/5950-skip-thought-vectors.pdf" target="_blank" rel="noopener">论文</a></p>
 <h3 id="Quick-Thought-vectors"><a href="#Quick-Thought-vectors" class="headerlink" title="Quick-Thought vectors"></a>Quick-Thought vectors</h3><p>2018年发表的论文An efficient framework for learning sentence representations提出了一种简单且有效的框架用于学习句子表示。和常规的编码解码类模型（如skip-thoughts和SDAE）不同的是，本文采用一种分类器的方式学习句子表示。具体地，模型的输入为一个句子$s$以及一个候选句子集合$S_{cand}$，其中$S_{cand}$包含一个句子$s_{ctxt}$是$s$的上下文句子（也就是$s $)的前一个句子或后一个句子）以及其他不是$s$上下文的句子。模型通过对$s$以及$S_{cand}$中的每个句子进行编码，然后输入到一个分类器中，让分类器选出$S_{cand}$中的哪个句子是$s_{ctxt}$。实验设置候选句子集合大小为3，即$S_{cand}​$包含1个上下文句子和两个无关句子。模型结构如下：</p>
-<p>模型有如下两个细节需要注意：<br>模型使用的分类器（得分函数）$c$非常简单，是两个向量内积，即$c(u, v)=u^Tv$，计算$s$的embedding与所有$S_{cand}$中的句子向量内积得分后，输入到softmax层进行分类。使用简单分类器是为了引导模型着重训练句子编码器，因为我们的目的是为了得到好的句子向量表示而不是好的分类器。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lq4allnfj20gk0ji0th.jpg" alt=""><br>虽然某些监督任务模型如文本蕴含模型是参数共享的，$s$的编码器参数和候选句子编码器参数是不同的（不共享），因为句子表示学习往往是在大规模语料上进行训练，不必担心参数学习不充分的问题。测试时，给定待编码句子$s$，通过该模型得到的句子表示是两种编码器的连结 $[ f ( s ) ;g ( s ) ]$。</p>
-<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3klfpv0g9j20k0083go0.jpg" alt=""><br>看上去，Skip-thought和Skip-gram挺象。唯一的遗憾是Skip-thought的decoder那部分，它是作为language modeling来处理的。而Skip-gram则是利用一个classifier预测周围的词(通过hierarchical softmax 或者negative sampling）。QT针对这个问题，对decoder部分做了大的调整，它直接把decoder拿掉，取而代之的是一个classifier。这个classifier负责预测哪些句子才是context sentences。</p>
-<p>QT的classifier取代了Skip-thought的Decoder。这样做的好处是运行的速度大大提升了，用判别问题取代了生成式问题。有趣的是，虽然QT出现的比Skip-thought更晚，但是方法更简单，也更加接近Word2Vec算法。<br>QT是一种新的state-of-art的算法。它不光效果好，而且训练时间要远小于其他算法。在算法方法上和效果上，都可称为是句子表征界的Word2Vec一般的存在。和前面几篇介绍的不同算法放在一起比较，同样都是为了找到好的句子表征，它们采取了不同的路径：InferSent在寻找NLP领域的ImageNet, 它的成功更像是在寻找数据集和任务上的成功，当然它成功的找到了SNLI; Concatenated p-means在寻找NLP领域的convolutional filter, 即怎样才能更好的提炼出句子级别的特征，它找到了p-means操作，以及利用了不同的embeddings; QT则是直接在算法层面上，寻找句子级别的Word2Vec, 算法上的改进让它受益。我们看到不同的方法在不同的方向上都作出了努力和取得了成效，很难讲哪种努力会更有效或者更有潜力。唯一唯一可以肯定的是，从应用层面上来讲，合适的才是最好的。</p>
+<p>模型有如下两个细节需要注意：<br>模型使用的分类器（得分函数）$c$非常简单，是两个向量内积，即$c(u, v)=u^Tv$，计算$s$的embedding与所有$S_{cand}$中的句子向量内积得分后，输入到softmax层进行分类。使用简单分类器是为了引导模型着重训练句子编码器，因为我们的目的是为了得到好的句子向量表示而不是好的分类器。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lq4allnfj20gk0ji0th.jpg" alt=""><br>虽然某些监督任务模型如文本蕴含模型是参数共享的，$s$的编码器参数和候选句子编码器参数是不同的（不共享），<strong>因为句子表示学习往往是在大规模语料上进行训练，不必担心参数学习不充分的问题 </strong>。测试时，给定待编码句子$s$，通过该模型得到的句子表示是两种编码器的连结 $[ f ( s ) ;g ( s ) ]$。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3klfpv0g9j20k0083go0.jpg" alt=""><br>看上去，Skip-thought和Skip-gram挺象。唯一的遗憾是Skip-thought的decoder那部分，它是作为language modeling来处理的。QT针对这个问题，对decoder部分做了大的调整，它直接把decoder拿掉，取而代之的是一个classifier。这个classifier负责预测哪些句子才是context sentences。</p>
+<p>QT的classifier取代了Skip-thought的Decoder。这样做的好处是运行的速度大大提升了，<strong>用判别问题取代了生成式问题</strong>（这个是才是速度提升的原因）。有趣的是，虽然QT出现的比Skip-thought更晚，但是方法更简单，也更加接近Word2Vec算法。</p>
+<p>QT是一种新的state-of-art的算法。它不光效果好，而且训练时间要远小于其他算法。在算法方法上和效果上，都可称为是句子表征界的Word2Vec一般的存在。和前面几篇介绍的不同算法放在一起比较，同样都是为了找到好的句子表征，它们采取了不同的路径：InferSent在寻找NLP领域的ImageNet, 它的成功更像是在寻找数据集和任务上的成功，当然它成功的找到了SNLI; Concatenated p-means在寻找NLP领域的convolutional filter; QT则是直接在算法层面上，寻找句子级别的Word2Vec, 算法上的改进让它受益。我们看到不同的方法在不同的方向上都作出了努力和取得了成效，很难讲哪种努力会更有效或者更有潜力。</p>
 <h2 id="Supervised-Sentence-Embed"><a href="#Supervised-Sentence-Embed" class="headerlink" title="Supervised Sentence Embed"></a>Supervised Sentence Embed</h2><h3 id="InferSent"><a href="#InferSent" class="headerlink" title="InferSent"></a>InferSent</h3><p>来自论文Supervised Learning of Universal Sentence Representations from Natural Language Inference Data，更多信息参考 <a href="https://jijeng.github.io/2019/05/27/paper-reading-nlp/" target="_blank" rel="noopener">这里</a></p>
 <h2 id="Multi-task-learning-Sentence-Embed"><a href="#Multi-task-learning-Sentence-Embed" class="headerlink" title="Multi-task learning Sentence Embed"></a>Multi-task learning Sentence Embed</h2><h3 id="Universal-Sentence-Encoder"><a href="#Universal-Sentence-Encoder" class="headerlink" title="Universal Sentence Encoder"></a>Universal Sentence Encoder</h3><p>来自论文 Universal Sentence Encoder，更多信息参考 <a href="https://jijeng.github.io/2019/05/27/paper-reading-nlp/" target="_blank" rel="noopener">Universal Sentence Encoder</a></p>
 
@@ -571,7 +575,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -593,7 +597,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
