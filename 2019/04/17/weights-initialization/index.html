@@ -86,13 +86,10 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="weights initialization 知识点 和分享两个图像领域的架构（resnet 和 inception v3）。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://upload.cc/i1/2019/06/20/aZBTlH.png">
-<meta property="og:image" content="https://upload.cc/i1/2019/06/20/vUdocn.png">
-<meta property="og:updated_time" content="2019-06-20T06:20:37.739Z">
+<meta property="og:updated_time" content="2019-08-02T07:55:20.234Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Weights Initialization">
 <meta name="twitter:description" content="weights initialization 知识点 和分享两个图像领域的架构（resnet 和 inception v3）。">
-<meta name="twitter:image" content="https://upload.cc/i1/2019/06/20/aZBTlH.png">
 
 
 
@@ -323,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-20T14:20:37+08:00">
-                2019-06-20
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-02T15:55:20+08:00">
+                2019-08-02
               </time>
             
           </span>
@@ -450,19 +447,7 @@
 </ul>
 <h2 id="Referrence"><a href="#Referrence" class="headerlink" title="Referrence:"></a>Referrence:</h2><p><a href="https://arxiv.org/abs/1502.01852" target="_blank" rel="noopener">He initialization</a></p>
 <p><a href="http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf" target="_blank" rel="noopener">Xavier initialization</a></p>
-<h2 id="ResNet"><a href="#ResNet" class="headerlink" title="ResNet"></a>ResNet</h2><p>ResNet 诞生于一个美丽而简单的观察：为什么非常深度的网络在增加更多层时会表现得更差？<br>ResNet 的作者将这些问题归结成了一个单一的假设：直接映射是难以学习的。而且他们提出了一种修正方法：不再学习从 x 到 H(x) 的基本映射关系，而是学习这两者之间的差异，也就是「残差（residual）」。然后，为了计算 H(x)，我们只需要将这个残差加到输入上即可。<br>假设残差为$F(x)=H(x)-x $，那么现在我们的网络不会直接学习$ H(x)$ 了，而是学习 $F(x)+x$。</p>
-<p><img src="https://upload.cc/i1/2019/06/20/aZBTlH.png" alt="img"><br>ResNet 的每一个「模块（block）」都由一系列层和一个「捷径（shortcut）」连接组成，这个「捷径」将该模块的输入和输出连接到了一起。然后在元素层面上执行「加法（add）」运算，如果输入和输出的大小不同，那就可以使用零填充或投射（通过 1×1 卷积）来得到匹配的大小。</p>
-<h2 id="Inception-V3"><a href="#Inception-V3" class="headerlink" title="Inception V3"></a>Inception V3</h2><p>如果 ResNet 是为了更深，那么 Inception 家族就是为了更宽。第一个见解与对层的操作有关。在传统的卷积网络中，每一层都会从之前的层提取信息，以便将输入数据转换成更有用的表征。</p>
-<p>见解 1：为什么不让模型选择？<br><img src="https://upload.cc/i1/2019/06/20/vUdocn.png" alt=""><br>这种模型架构的信息密度更大了，这就带来了一个突出的问题：计算成本大大增加。不仅大型（比如 5×5）卷积过滤器的固有计算成本高，并排堆叠多个不同的过滤器更会极大增加每一层的特征映射的数量。而这种计算成本增长就成为了我们模型的致命瓶颈。</p>
-<p>这就涉及到了见解 2：使用 1×1 卷积来执行降维。为了解决上述计算瓶颈，Inception 的作者使用了 1×1 卷积来「过滤」输出的深度。一个 1×1 卷积一次仅查看一个值，但在多个通道上，它可以提取空间信息并将其压缩到更低的维度。比如，使用 20 个 1×1 过滤器，一个大小为 64×64×100（具有 100 个特征映射）的输入可以被压缩到 64×64×20。通过减少输入映射的数量，Inception 可以将不同的层变换并行地堆叠到一起，从而得到既深又宽（很多并行操作）的网络。</p>
-<p>Inception Net v3 incorporated all of the above upgrades stated for Inception v2, and in addition used the following:</p>
-<ul>
-<li>RMSProp Optimizer.</li>
-<li>Factorized 7x7 convolutions.</li>
-<li>BatchNorm in the Auxillary Classifiers.</li>
-<li>Label Smoothing (A type of regularizing component added to the loss formula that prevents the network from becoming too confident about a class. Prevents over fitting).</li>
-</ul>
-<h2 id="GANs-网络结构"><a href="#GANs-网络结构" class="headerlink" title="GANs 网络结构"></a>GANs 网络结构</h2>
+
       
     </div>
     
@@ -611,7 +596,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -660,7 +645,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Types-of-Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Types of Weights Initialization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeoff"><span class="nav-number">2.</span> <span class="nav-text">Takeoff</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Referrence"><span class="nav-number">3.</span> <span class="nav-text">Referrence:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ResNet"><span class="nav-number">4.</span> <span class="nav-text">ResNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inception-V3"><span class="nav-number">5.</span> <span class="nav-text">Inception V3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GANs-网络结构"><span class="nav-number">6.</span> <span class="nav-text">GANs 网络结构</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Types-of-Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Types of Weights Initialization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeoff"><span class="nav-number">2.</span> <span class="nav-text">Takeoff</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Referrence"><span class="nav-number">3.</span> <span class="nav-text">Referrence:</span></a></li></ol></div>
             
 
           </div>

@@ -88,7 +88,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g25wjj6cu9j20p80gcwh4.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g25x29cb1dj20y00iogs2.jpg">
-<meta property="og:updated_time" content="2019-05-27T11:07:13.709Z">
+<meta property="og:updated_time" content="2019-08-02T08:20:57.207Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="A Not-So-Gentle Introduction to Hyper-parameters Tuning">
 <meta name="twitter:description" content="Setting the hyper-parameters seems like a black art that requires years of experience to acquire. Currently, there are no simple and easy ways to set hyper-parameters, especifically, batch size, learn">
@@ -323,8 +323,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-27T19:07:13+08:00">
-                2019-05-27
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-02T16:20:57+08:00">
+                2019-08-02
               </time>
             
           </span>
@@ -397,7 +397,7 @@
       
         <p>Setting the hyper-parameters seems like a black art that requires years of experience to acquire. Currently, there are no simple and easy ways to set hyper-parameters, especifically, batch size, learning rate, momentum, and weight decay. A grid search or random search maybe sounds like a good idea. In this blog, I’d like to share you my idea from reading papers and my projects.</p>
 <h2 id="Hyper-parameters"><a href="#Hyper-parameters" class="headerlink" title="Hyper-parameters"></a>Hyper-parameters</h2><h3 id="Batch-Size"><a href="#Batch-Size" class="headerlink" title="Batch Size"></a>Batch Size</h3><p>Learning rate is maybe the most important hyper-parameters, but we choose batch size firstly because large batch size needs a large learning rate in most circumstances.</p>
-<p>A general principle is: use as a large batch size as possible to fit your CPU memory or/both GPU memory. There are several reasons:</p>
+<p><strong> A general principle is: use as a large batch size as possible to fit your CPU memory or/both GPU memory.  </strong>There are several reasons:</p>
 <ul>
 <li>larger batch sizes permit the use of larger learning rates</li>
 <li>A constant number of iterations favors larger batch sizes</li>
@@ -406,7 +406,7 @@
 <h3 id="Learning-Rate"><a href="#Learning-Rate" class="headerlink" title="Learning Rate"></a>Learning Rate</h3><p>We will introduce the idea from [Cyclical Learning Rates for Training Neural Networks][1]: Cyclical Learning Rates.</p>
 <p>Instead of monotonically decreasing the learning rate, this method lets the learning rate cyclically vary between reasonable boundary values. <strong>The essence of this learning rate policy comes from the observation that increasing the learning rate might have a short term negative effect and yet achieve a longer term beneficial effect</strong>. This observation leads to the idea of letting the learning rate vary within a range of values rather than adopting a stepwise fixed or exponentially decreasing value. That is, one sets minimum and maximum boundaries and the learning rate cyclically varies between these bounds.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g25wjj6cu9j20p80gcwh4.jpg" alt=""><br>%<small>From Cyclical Learning Rates for Training Neural Networks </small></p>
 <p>An intuitive understanding of why CLR methods work comes from considering the loss function topology. Dauphin et al. argue that the difficulty in minimizing the loss arises from <strong> saddle points rather than poor local minima.</strong> Saddle points have small gradients that slow the learning process. However, increasing the learning rate allows for more rapid traversal of saddle point plateaus.</p>
-<p>But the question is that how can we find the Minimum bound and Maximum bound. There is a simple way to estimate the reasonable minimum and maximum boundary values with one training run of the network for a few epochs. It is a “LR range test”; run your model for several epochs while letting the learning rate increase linearly between low and high LR values. For example, set both the step size and maxiter to the same number of iterations. In this case, the learning rate will increase linearly from the minimum value to the maximum value during this short run. Next, plot the accuracy versus learning rate. Note the learning rate value when the accuracy starts to increase and when the accuracy slows, becomes ragged, or starts to fall. These two learning rates are good choices for bounds; that is, set $base-<em>{lr}$ to the first value and set $max-</em>{lr}$ to the latter value.</p>
+<p>But the question is that how can we find the Minimum bound and Maximum bound. There is a simple way to estimate the reasonable minimum and maximum boundary values with one training run of the network for a few epochs. It is a “LR range test”; run your model for several epochs while letting the learning rate increase linearly between low and high LR values. For example, set both the step size and maxiter to the same number of iterations. In this case, the learning rate will increase linearly from the minimum value to the maximum value during this short run. Next, plot the accuracy versus learning rate. Note the learning rate value when the accuracy starts to increase and when the accuracy slows, becomes ragged, or starts to fall. These two learning rates are good choices for bounds; that is, set  $ lr_{base}$  to the first value and set  $ lr_{max} $  to the latter value.</p>
 <h3 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h3><p>Since learning rate is regarded as the most important hyper-parameter to tune then momentum is also important. Like learning rates, it is valuable to set momentum as large as possible without causing instabilities during training.</p>
 <p>The large learning rate can deal with local minimum but works fail when it comes to saddle point where momentum comes to rescue.</p>
 <p>The local minimum is like the following picture.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g25x29cb1dj20y00iogs2.jpg" alt=""><br>In mathematics, a saddle point or minimax point is a point on the surface of the graph of a function <strong>where the slopes (derivatives) in orthogonal directions are all zero</strong> (a critical point), but which is not a local extremum of the function.</p>
@@ -585,7 +585,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

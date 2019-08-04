@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Simhash," />
+  <meta name="keywords" content="simhash," />
 
 
 
@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。 simhash对于文本去重而言，目前有很多NLP相关的算法可以在很高精度上来解决，但是我们现在处理的是大数据维度上的文本去重，这就对算法的效率有着很高的要求。但是在小的样本上这个是不一定有保证有效的。SimHash算法是Google公司进行海量网页去重的高效算法，它通过将原始的文本映射为64位的">
-<meta name="keywords" content="Simhash">
+<meta name="description" content="本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。">
+<meta name="keywords" content="simhash">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文本相似度比较基本知识">
 <meta property="og:url" content="http://yoursite.com/2018/08/23/文本相似度比较基本知识/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。 simhash对于文本去重而言，目前有很多NLP相关的算法可以在很高精度上来解决，但是我们现在处理的是大数据维度上的文本去重，这就对算法的效率有着很高的要求。但是在小的样本上这个是不一定有保证有效的。SimHash算法是Google公司进行海量网页去重的高效算法，它通过将原始的文本映射为64位的">
+<meta property="og:description" content="本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afa1wa4qj20ka0cyt95.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afacg3bhj20j00ea42v.jpg">
-<meta property="og:updated_time" content="2019-07-07T12:27:15.544Z">
+<meta property="og:updated_time" content="2019-08-03T00:52:58.007Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本相似度比较基本知识">
-<meta name="twitter:description" content="本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。 simhash对于文本去重而言，目前有很多NLP相关的算法可以在很高精度上来解决，但是我们现在处理的是大数据维度上的文本去重，这就对算法的效率有着很高的要求。但是在小的样本上这个是不一定有保证有效的。SimHash算法是Google公司进行海量网页去重的高效算法，它通过将原始的文本映射为64位的">
+<meta name="twitter:description" content="本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afa1wa4qj20ka0cyt95.jpg">
 
 
@@ -324,8 +324,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-07T20:27:15+08:00">
-                2019-07-07
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-03T08:52:58+08:00">
+                2019-08-03
               </time>
             
           </span>
@@ -396,13 +396,20 @@
       
 
       
-        <p>本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。</p>
+        <p>本文介绍的SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。<br><a id="more"></a></p>
 <h2 id="simhash"><a href="#simhash" class="headerlink" title="simhash"></a>simhash</h2><p>对于文本去重而言，目前有很多NLP相关的算法可以在很高精度上来解决，但是我们现在处理的是大数据维度上的文本去重，这就对算法的效率有着很高的要求。但是在小的样本上这个是不一定有保证有效的。SimHash算法是Google公司进行海量网页去重的高效算法，它通过将原始的文本映射为64位的二进制数字串，然后通过比较二进制数字串的差异进而来表示原始文本内容的差异。本文服务于<a href="https://jijeng.github.io/2018/08/23/基于simhash的文本相似度比较/" target="_blank" rel="noopener">该篇博客</a>,主要进行名词解释。</p>
 <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>simhash 也是一种hash，一般的hash 函数映射规则只需要满足以下两个条件：</p>
 <ul>
 <li>对很多不同的特征来说，它们对所对应的向量是均匀随机分布的</li>
-<li>相同的特征来说对应的向量是唯一<br>简单来说普通的hash映射需要满足随机分布和唯一性两个条件。simhash想要实现的是，如果原来的文本的特征是相似，那么映射之后的编码也是相似。这里使用 hamming distance 进行比较simhash映射之后的距离。根据经验值，对64位的 SimHash值，海明距离在3以内的可认为相似度比较高。编码之后的表示在英文中是 fingerprint(指纹)。<br>simhash最初被google 用于网页去重，当时使用的fingerprint 是64,所以这里沿用了这个传统。64位的签名可以表示多达264个象限，因此只保存所在象限的信息也足够表征一个文档了。<br>更进一步，表示的文档的数字最多是多少？这个应该可以准确计算特征的个数应为如果用三位(01) 表示，那么有8种，那么2^64 这么多种特征，所以16*10^18 这么多。<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3>第一步：文本预处理得到分词（去重，去除的了stop words）,然后weight权重可以使用分词的frequency 或者tfidf 进行得到<br>第二步：进行hash 映射（可以使用md5这种传统的映射方式，基本的要求就是均匀映射到一个空间，这种映射并不能反映原始样本的相关性）<br>第三步：hash 映射值和weight 进行相乘，如果原来是1 则乘以1，如果是0 则乘以-1，<br>第四步： 列向相加，得到summing weights,进行降维如果是正数那么为1，如果是负数那么为-1<br>然后这个simhash就出来了.<br>有图有真相<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afa1wa4qj20ka0cyt95.jpg" alt=""><br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afacg3bhj20j00ea42v.jpg" alt=""></li>
+<li>相同的特征来说对应的向量是唯一</li>
 </ul>
+<p>simhash 和传统的 hash 不同点在于前者的01 串是可以表征文本之间的相似度，而后者是不可以的。</p>
+<p>简单来说普通的hash映射需要满足随机分布和唯一性两个条件。simhash想要实现的是，如果原来的文本的特征是相似，那么映射之后的编码也是相似。这里使用 hamming distance 进行比较simhash映射之后的距离。根据经验值，对64位的 SimHash值，海明距离在3以内的可认为相似度比较高。编码之后的表示在英文中是 fingerprint(指纹)。<br>simhash最初被google 用于网页去重，当时使用的fingerprint 是64,所以这里沿用了这个传统。64位的签名可以表示多达264个象限，因此只保存所在象限的信息也足够表征一个文档了。<br>更进一步，表示的文档的数字最多是多少？这个应该可以准确计算特征的个数应为如果用三位(01) 表示，那么有8种，那么2^64 这么多种特征，所以16*10^18 这么多。</p>
+<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3><p>Simhash 分为5个步骤：分词、hash（md5 要求均匀映射到某空间就行，不要求反应原始样本的相关性）、加权、合并（列项相加）、降维（正数为1 负数为0），得到每篇文章的simhash 之后，计算两个文章的海明距离（两个字符串对应位置的不同字符的个数）。对于64 位的simhash 值，在3以内就可以认为是比较相似的。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afa1wa4qj20ka0cyt95.jpg" alt=""></p>
+<p>第一步：文本预处理得到分词（去重，去除的了stop words）,然后weight权重可以使用分词的frequency 或者tfidf 进行得到<br>第二步：进行hash 映射（可以使用md5这种传统的映射方式，基本的要求就是均匀映射到一个空间，这种映射并不能反映原始样本的相关性）<br>第三步：hash 映射值和weight 进行相乘，如果原来是1 则乘以1，如果是0 则乘以-1，<br>第四步： 列向相加，得到summing weights,进行降维如果是正数那么为1，如果是负数那么为-1<br>第五步： 计算不同文本之间的 hamming  distance。</p>
+<p>然后这个simhash就出来了.<br>有图有真相</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afacg3bhj20j00ea42v.jpg" alt=""></p>
 <h3 id="simhash的局限性："><a href="#simhash的局限性：" class="headerlink" title="simhash的局限性："></a>simhash的局限性：</h3><p>只考虑到文章存在哪些词，没有考虑到词的顺序。不过相应的优点是，可以实现海量文章相似度计算。文章相似度计算忽略词的顺序之后效果更好。所以在处理大文本时候，simhash是有效的，但是在处理小文本，这种效果往往不能被保证。直观上理解，在一片段文章或者段落中，词语出现的顺序还是比较重要的。</p>
 <h2 id="minhash"><a href="#minhash" class="headerlink" title="minhash"></a>minhash</h2><p>可以参考<a href="https://www.youtube.com/watch?v=96WOGPUgMfw" target="_blank" rel="noopener">该视频</a>和<a href="http://www.cnblogs.com/maybe2030/p/4953039.html" target="_blank" rel="noopener">这篇文章</a>。</p>
 <h2 id="Locality-Sensitive-Hashing"><a href="#Locality-Sensitive-Hashing" class="headerlink" title="Locality Sensitive Hashing"></a>Locality Sensitive Hashing</h2><p>Locality Sensitive Hashing(局部敏感哈希)作用就是从海量的数据中挖掘出相似的数据，可以具体应用到文本相似度检测、网页搜索等领域。上面的simhah和minhash 就是该思想的实现。</p>
@@ -414,7 +421,7 @@
 <h3 id="tf-idf"><a href="#tf-idf" class="headerlink" title="tf-idf"></a>tf-idf</h3><p>在simhash 中使用 tf-idf作为我们的比较函数。TF-IDF的主要思想就是：如果某个词在一篇文档中出现的频率高，也即TF高；并且在语料库中其他文档中很少出现，即DF的低，也即IDF高，则认为这个词具有很好的类别区分能力。<br>$$ TF-IDF = 词频(TF) x 逆文档频率(IDF) $$</p>
 <p>算法步骤：</p>
 <ul>
-<li><p>计算词频<br>$$ 词频(TF) = 某个词在文章中出现的次数( 频数) $$<br>“标准化”<br>$$ 词频( TF) = \frac{某次在文中出现的次数}{文章的总词语数} $$</p>
+<li><p>计算词频<br>$$ 词频(TF) = 某个词在文章中出现的次数( 频数) $$<br>或者可以进一步进行“标准化”<br>$$ 词频( TF) = \frac{某次在文中出现的次数}{文章的总词语数} $$</p>
 </li>
 <li><p>逆文档频率<br>这个时候需要一个语料库 (corpus)，模拟语言环境<br>$$ 逆文档频率 (IDF) = log(\frac{语料中的文档总数}{ 包含该词的文档数 +1}) $$ </p>
 </li>
@@ -425,6 +432,7 @@
 <p>具体可以参看<a href="https://www.youtube.com/user/tusharroy2525/featured" target="_blank" rel="noopener">该视频</a>讲解。(ps. 如果刷leetcode,也可以参看该视频)</p>
 <h2 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h2><p>在英文中存在天然的空格可以进行分词操作，但是中文的分词就比较复杂了。常用的中文分词开源工具有 jieba和<a href="https://github.com/hankcs/HanLP" target="_blank" rel="noopener">HanLP</a><br>前者简单易行，容易上手；后者在自然语言处理作为汉语言处理包，可以用于词性标注，命名实体识别等一系列功能。常用的英文分词 <a href="https://stanfordnlp.github.io/CoreNLP/" target="_blank" rel="noopener">corenlp</a></p>
 <h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>倒排索引使用python在实现上就是一个dictionary 嵌套一个 set(). 一般的索引都是数字或者英文字母映射内容，具体在放到simhash的情景下就是使用文章的序列号对应提取出来的关键词。但是倒排索引就是关键词对应文章的序列号，类似与原来的”值”对应这”键”，所以称之为倒排索引。一般使用在召回的场景下，使用关键词然后出现了该关键词下的index 的集合。可以参考<a href="https://blog.csdn.net/u011239443/article/details/60604017" target="_blank" rel="noopener">这篇文章</a>。</p>
+<p>一般的情况是key 是索引，value 对应的是关键词之列的内容； 但是倒排索引正好相反，关键字作为key，然后索引作为value，所以称之为倒排索引。</p>
 
       
     </div>
@@ -442,7 +450,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Simhash/" rel="tag"># Simhash</a>
+            <a href="/tags/simhash/" rel="tag"># simhash</a>
           
         </div>
       
@@ -580,7 +588,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

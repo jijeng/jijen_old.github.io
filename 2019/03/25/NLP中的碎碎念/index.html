@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://i.postimg.cc/KYJB8Xxr/image.png">
 <meta property="og:image" content="https://i.postimg.cc/283DHMHb/2.jpg">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/f679cd0e83891f4e.png">
-<meta property="og:updated_time" content="2019-07-24T05:24:18.163Z">
+<meta property="og:updated_time" content="2019-08-03T02:51:05.728Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP中的碎碎念">
 <meta name="twitter:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-24T13:24:18+08:00">
-                2019-07-24
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-03T10:51:05+08:00">
+                2019-08-03
               </time>
             
           </span>
@@ -409,7 +409,7 @@
 <p>若k 个随机变量$Z_1$、……、$Z_k $相互独立，且数学期望为0、方差为 1(即服从标准正态分布)，则随机变量X<br>$$<br>X = \sum _ { n = 1 } ^ { k } Z _ { n } ^ { 2 }<br>$$<br>被称为服从自由度为 k 的卡方分布，记作<br>$$<br>X \sim \chi ^ { 2 } ( k )<br>$$</p>
 <p>从直观的角度感受一下自由度k 和图像形状的关系，自由度越大卡方分布越接近正太分布。<br><a href="https://imgchr.com/i/ZttIoD" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/03/ZttIoD.png" alt="ZttIoD.png"></a></p>
 <p><strong> 用于特征选择</strong></p>
-<p>如果文章是否包含“篮球“与文章是否属于体育类别是独立无关的。且一个新闻文章属于体育类别的概率是0.609，那么可以得到下面的表格。因为文章是否包含“篮球“与文章是否属于体育类别是独立无关的，所以不管文章中是不是包含”篮球“，其属于体育类别的概率都是0.609。</p>
+<p>如果文章是否包含“篮球“与文章是否属于体育类别是独立无关的。且一个新闻文章属于体育类别的概率是0.609，那么可以得到下面的表格。假设文章是否包含“篮球“与文章是否属于体育类别是独立无关的，所以不管文章中是不是包含”篮球“，其属于体育类别的概率都是0.609。</p>
 <p>  <strong><em>列联表</em></strong></p>
 <table>
 <thead>
@@ -436,10 +436,8 @@
 <p><strong><em>步骤</em></strong></p>
 <ul>
 <li>统计每个词的正文档出现频率（A）、负文档出现频率（B）、正文档不出现频率）、负文档不出现频率。<br>-计算每个词的卡方值</li>
-<li>将每个词按卡方值从大到小排序，选取前k个词作为特征，k即特征维数。</li>
+<li>将每个词按卡方值从大到小排序，选取前k个词作为特征，k即特征维数。<br>$$<br>\operatorname { CHI } ( \mathrm { x } , \mathrm { y } ) = \chi ^ { 2 } ( x , y ) = \sum \frac { ( A - T ) ^ { 2 } } { T }<br>$$<br>该公式可以进一步简化成 （其中 x 表示一个特征，y 表示的target）<br>$$<br>\mathrm { CHI } ( \mathrm { x } , \mathrm { y } ) = \chi ^ { 2 } ( x , y ) = \frac { N ( A D - B C ) } { ( A + B ) ( A + C ) ( B + D ) ( C + D ) }<br>$$</li>
 </ul>
-<p> $$<br>\operatorname { CHI } ( \mathrm { x } , \mathrm { y } ) = \chi ^ { 2 } ( x , y ) = \sum \frac { ( A - T ) ^ { 2 } } { T }<br>$$</p>
-<p>该公式可以进一步简化成<br>$$<br>\mathrm { CHI } ( \mathrm { x } , \mathrm { y } ) = \chi ^ { 2 } ( x , y ) = \frac { N ( A D - B C ) } { ( A + B ) ( A + C ) ( B + D ) ( C + D ) }<br>$$</p>
 <table>
 <thead>
 <tr>
@@ -497,7 +495,6 @@
 </blockquote>
 <p>而实际应用到特征选择中的时候，我们不需要知道自由度，不要知道卡方分布，我们只需要根据算出来的χ2 进行排序就好了，越大我们就越喜欢！挑选最大的一堆，于是就完成了利用卡方检验来进行特征提取。<br>卡方分布的缺点：<br>没有考虑词频，它只统计文档是否出现词，而不管出现了几次。这会使得他对低频词有所偏袒（因为它夸大了低频词的作用）。</p>
 <p><a href="https://my.oschina.net/u/1779843/blog/889694" target="_blank" rel="noopener">参考一</a><br><a href="https://machinelearningmastery.com/chi-squared-test-for-machine-learning/" target="_blank" rel="noopener">参考二</a></p>
-<h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>有一个与之很像的概念 pageRanking，最开始是用来计算网页的重要性。Textrank 主要用来提取文章的关键词，然后比较适合长文本。</p>
 <h2 id="CBOW和skip-gram"><a href="#CBOW和skip-gram" class="headerlink" title="CBOW和skip-gram"></a>CBOW和skip-gram</h2><p>举一个简单的小例子说明 CBOW和skip-gram的区别：skip-gram 是根据中心词汇然后预测上下文词汇，这个不是一下子输入上下文词汇的，而是一个过程，中心词汇和上下文词汇1 ，中心词汇和上下文词汇2，这样的进行输入。 cbow 和其的区别，在于简单相加了上下文词汇作为一个整体，然后和中心词汇进行输入，所以最后是这样的结果。</p>
 <p>使用skip gram训练的时间更长，但是对于出现频率不高的词汇，效果比较好。但CBOW的训练速度是相对来说比较快一些。</p>
 <h2 id="分词软件"><a href="#分词软件" class="headerlink" title="分词软件"></a>分词软件</h2><p>常见的中文分词服务</p>
@@ -558,18 +555,21 @@
 <li>对于未登录词，采用了基于汉字成词能力的 HMM 模型，使用了 Viterbi 算法</li>
 </ul>
 <p>如果想更加详细的了解这种策略，可以参考<a href="https://bainingchao.github.io/2019/02/13/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E4%B9%8B%E4%B8%AD%E6%96%87%E8%87%AA%E5%8A%A8%E5%88%86%E8%AF%8D/" target="_blank" rel="noopener">这里</a>.</p>
-<h3 id="中文分词"><a href="#中文分词" class="headerlink" title="中文分词"></a>中文分词</h3><p>中文分词的困难主要体现在：歧义词的切分和未登录词识别。其中后者的影响要远远大于前者的影响。</p>
+<h3 id="中文分词"><a href="#中文分词" class="headerlink" title="中文分词"></a>中文分词</h3><p>主要掌握规则的分词方法（逆向最大匹配法（该方法是优于正向的）、有个词频-内连-外 的分词算法， 总共两种算法就可以了）</p>
+<p>中文分词的困难主要体现在：歧义词的切分和未登录词识别。其中后者的影响要远远大于前者的影响。</p>
 <p><img src="https://s2.ax1x.com/2019/07/02/ZYVtrq.png" alt="ZYVtrq.png"></p>
-<p>下面是常见的分词方式，但是并没有说明哪个软件是什么分词方法。</p>
+<p>下面是常见的分词方式，但是并没有说明哪个软件是什么分词方法。<br>（需要掌握两种分词的方式，一种是基于词典的逆向最大匹配，一种是后面新词发现中的基于统计的信息熵算法）</p>
 <p><strong> 基于规则的分词方法</strong></p>
-<pre><code>这种方法又叫作机械分词方法、基于字典的分词方法，它是按照一定的策略将待分析的汉字串与一个“充分大的”机器词典中的词条进行匹配，比如说正向最大匹配法、逆向最大匹配法
-</code></pre><p><strong> 基于统计的分词方法</strong><br>    该方法的主要思想：词是稳定的组合，因此在上下文中，相邻的字同时出现的次数越多，就越有可能构成一个词。因此字与字相邻出现的概率或频率能较好地反映成词的可信度。可以对训练文本中相邻出现的各个字的组合的频度进行统计，计算它们之间的互现信息。互现信息体现了汉字之间结合关系的紧密程度。当紧密程 度高于某一个阈值时，便可以认为此字组可能构成了一个词。该方法又称为无字典分词。 比如说CRF 算法。</p>
-<p><strong> 基于语义的分词方法</strong><br>    语义分词法引入了语义分析，对自然语言自身的语言信息进行更多的处理，如扩充转移网络法、知识分词语义分析法、邻接约束法、综合匹配法、后缀分词法、特征词库法、矩阵约束法、语法分析法等。</p>
+<p>这种方法又叫作机械分词方法、基于字典的分词方法，它是按照一定的策略将待分析的汉字串与一个“充分大的”机器词典中的词条进行匹配，比如说正向最大匹配法、逆向最大匹配法</p>
+<p><strong> 基于统计的分词方法</strong></p>
+<p>该方法的主要思想：词是稳定的组合，因此在上下文中，相邻的字同时出现的次数越多，就越有可能构成一个词。因此字与字相邻出现的概率或频率能较好地反映成词的可信度。可以对训练文本中相邻出现的各个字的组合的频度进行统计，计算它们之间的互现信息。互现信息体现了汉字之间结合关系的紧密程度。当紧密程 度高于某一个阈值时，便可以认为此字组可能构成了一个词。该方法又称为无字典分词。 比如说CRF 算法。</p>
+<p><strong> 基于语义的分词方法</strong></p>
+<p>语义分词法引入了语义分析，对自然语言自身的语言信息进行更多的处理，如扩充转移网络法、知识分词语义分析法、邻接约束法、综合匹配法、后缀分词法、特征词库法、矩阵约束法、语法分析法等。</p>
 <p> <strong> 逆向最大匹配</strong>分词是中文分词基本算法之一，因为是机械切分，所以它也有分词速度快的优点，且逆向最大匹配分词比起正向最大匹配分词更符合人们的语言习惯。逆向最大匹配分词需要在已有词典的基础上，从被处理文档的末端开始匹配扫描，每次取最末端的i个字符（分词所确定的阈值i）作为匹配字段，若匹配失败，则去掉匹配字段最前面的一个字，继续匹配。而且选择的阈值越大，分词越慢，但准确性越好。这种方法经常被用来解决歧义词的问题，所以单独说一下。</p>
 <p>算法：<br>事先设置一个k值，下面的程序k值设为5，然后从最后一个字开始向前截取k个字，先把这k个字和字典匹配，看能否找到匹配的词语，若不能，则剔除这k个字最左边的字，然后再把这k-1个字与字典匹配…一直到匹配成功，或者前k-1个字都没匹配成功，那就把第k个字当成一个独立的词，然后再向前移动分出来的词的长度，再截取k个字……一直到全部分好词为止。<br>“我爱北京天安门”</p>
 <p>先从后面开始截取k(这里是5)个字，然后把”北京天安门”五个字与字典匹配，字典中没有这个词，然后就去掉”北”字，把剩下的”京天安门”与字典匹配，字典中还是没有这个词，再去掉”京”，然后再把”天安门”与字典匹配，发现匹配到了这个词，于是就把”天安门”划为一个词语，然后指针向前移动三个字。再截取k个字，这里因为就剩下4个字了，所以就截取4个字，把”我爱北京”与字典匹配，没成功，去掉”我”，再把”爱北京”与字典匹配，还是没成功，再去掉”爱”，然后发现”北京”匹配成功，把”北京”划为一个词语，再把指针向前移动两个字，</p>
 <p><strong> CRF算法</strong><br>基本思路是对汉字进行标注训练，不仅考虑了词语出现的频率，还考虑上下文，具备较好的学习能力，因此其对歧义词和未登录词的识别都具有良好的效果。</p>
-<p>近年来，随着硬件计算能力的发展以及词的分布式表示（word embedding）的提出，神经网络可以有效处理许多NLP任务。这类方法对于序列标注任务（如CWS、POS、NER）的处理方式是类似的：将token从离散one-hot表示映射到低维空间中成为稠密的embedding，随后将句子的embedding序列输入到RNN中，用神经网络自动提取特征，Softmax来预测每个token的标签。这种方法使得模型的训练成为一个端到端的过程，而非传统的pipeline，不依赖于特征工程，是一种数据驱动的方法，但网络种类繁多、对参数设置依赖大，模型可解释性差。</p>
+<p>近年来，随着硬件计算能力的发展以及词的分布式表示（word embedding）的提出，神经网络可以有效处理许多NLP任务。这类方法对于序列标注任务（如CWS、POS、NER）的处理方式是类似的：将token从离散one-hot表示映射到低维空间中成为稠密的embedding，随后将句子的embedding序列输入到RNN中，用神经网络自动提取特征，Softmax来预测每个token的标签。这种方法使得模型的训练成为一个端到端的过程，而非传统的pipeline （管道，指的是一个包含多步骤的流水式的工作），不依赖于特征工程，是一种数据驱动的方法，但网络种类繁多、对参数设置依赖大，模型可解释性差。</p>
 <p>推荐博客讲解 CRF算法，反正我是没有看懂，哈哈哈。<a href="https://www.cnblogs.com/en-heng/p/6214023.html" target="_blank" rel="noopener">【中文分词】条件随机场CRF</a>, <a href="https://www.cnblogs.com/xlturing/p/10161840.html" target="_blank" rel="noopener">浅谈分词算法（4）基于字的分词方法（CRF）</a> 和 <a href="https://www.unclewang.info/learn/machine-learning/753/" target="_blank" rel="noopener">CRF算法学习——自己动手实现一个简单的CRF分词</a></p>
 <h3 id="分词粒度"><a href="#分词粒度" class="headerlink" title="分词粒度"></a>分词粒度</h3><p>目前，分词主要包含细粒度分词和粗粒度分词两种，在不同的应用场景需要用到不同的粒度。细粒度分词是指将原始语句切分成最基本的词语，而粗粒度分词是指将原始语句中的多个基本词组合起来切成一个词，进而组成语义相对明确的实体。</p>
 <ul>
@@ -594,7 +594,7 @@
 <p>so，这里主要讲的是新词的发现 而非处理歧义词的识别。</p>
 <p><strong> 中英文分词的区别 </strong></p>
 <ul>
-<li>分词 / 词干提取和词形还原。 中文和英文的nlp各有各的难点，中文的难点在于需要进行分词，将一个个句子分解成一个单词数组。而英文虽然不需要分词，但是要处理各种各样的时态，所以要进行词干提取和词形还原。 </li>
+<li>分词 / 词干提取和词形还原。 中文和英文的nlp各有各的难点，中文的难点在于需要进行分词，将一个个句子分解成一个单词数组。而英文虽然不需要分词，但是要处理各种各样的时态，所以要进行词干提取和词形还原。比如 词干提取主要采取“缩减”的方式，“cats” 处理为 “cat”， 将“effective” 处理为“effect”； 词性还原主要采取转变的方式，“drove” 处理成“drive”， 将“driving” 处理成“drive”。</li>
 <li>对于中文，一个Word可以是一个单词，也可以是一个词。</li>
 </ul>
 <p><strong>分词的重要性</strong></p>
@@ -614,7 +614,7 @@
 <li>内部凝固度</li>
 <li>自由运用程度</li>
 </ul>
-<p>所谓内部凝固度，用来衡量词搭配（collocation）是否合理。比如，对于“的电影”、“电影院”这两个搭配，直观上讲“电影院”更为合理，即“电影”和“院”凝固得更紧一些。在计算语言学中，PMI (Pointwise mutual information)被用来度量词搭配与关联性，定义如下：</p>
+<p>内部凝固度和自由运用程度分别考虑是词语内部的紧密程度和外部搭配的丰富性。<br>所谓内部凝固度，用来衡量词搭配（collocation）是否合理。比如，对于“的电影”、“电影院”这两个搭配，直观上讲“电影院”更为合理，即“电影”和“院”凝固得更紧一些。在计算语言学中，PMI (Pointwise mutual information)被用来度量词搭配与关联性，定义如下：</p>
 <p>$$<br>p m i ( x , y ) = \log \frac { P ( x , y ) } { P ( x ) P ( y ) }<br>$$</p>
 <p>若PMI高，即两个词共现（co-occurrence）的频率远大于两个词自由拼接的乘积概率，则说明这两个词搭配更为合理一些。针对一个词有多种搭配组合，比如“电影院”可以由“电影”+“院”构成，也可以由“电”+“影院”构成，那么取其所有pmi最小值（去掉log）作为内部凝固度：<br>$$<br>\operatorname { solid } \left( c _ { 1 } ^ { m } \right) = \min \frac { P \left( c _ { 1 } ^ { m } \right) } { \prod P \left( c _ { i } ^ { j } \right) } = \frac { P \left( c _ { 1 } ^ { m } \right) } { \max \prod P \left( c _ { i } ^ { j } \right) }<br>$$</p>
 <p>其中， $c _ { 1 } ^ { m } = c _ { 1 } c _ { 2 } \cdots c _ { m }$表示长度为 $m$ 的字符串，$P \left( c _ { 1 } ^ { m } \right)$ 表示$c _ { 1 } ^ { m }$ 的频率。</p>
@@ -884,7 +884,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -933,7 +933,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Textrank"><span class="nav-number">1.3.</span> <span class="nav-text">Textrank</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件"><span class="nav-number">3.</span> <span class="nav-text">分词软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#中文分词"><span class="nav-number">3.1.</span> <span class="nav-text">中文分词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词粒度"><span class="nav-number">3.2.</span> <span class="nav-text">分词粒度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OOV"><span class="nav-number">4.</span> <span class="nav-text">OOV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新词发现"><span class="nav-number">5.</span> <span class="nav-text">新词发现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NLP-中的三类特征提取器"><span class="nav-number">6.</span> <span class="nav-text">NLP 中的三类特征提取器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN"><span class="nav-number">6.1.</span> <span class="nav-text">RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN-特征提取器"><span class="nav-number">6.2.</span> <span class="nav-text">CNN 特征提取器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transformer"><span class="nav-number">6.3.</span> <span class="nav-text">Transformer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BLEU"><span class="nav-number">7.</span> <span class="nav-text">BLEU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">7.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优缺点"><span class="nav-number">7.2.</span> <span class="nav-text">优缺点</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件"><span class="nav-number">3.</span> <span class="nav-text">分词软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#中文分词"><span class="nav-number">3.1.</span> <span class="nav-text">中文分词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词粒度"><span class="nav-number">3.2.</span> <span class="nav-text">分词粒度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OOV"><span class="nav-number">4.</span> <span class="nav-text">OOV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新词发现"><span class="nav-number">5.</span> <span class="nav-text">新词发现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NLP-中的三类特征提取器"><span class="nav-number">6.</span> <span class="nav-text">NLP 中的三类特征提取器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN"><span class="nav-number">6.1.</span> <span class="nav-text">RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN-特征提取器"><span class="nav-number">6.2.</span> <span class="nav-text">CNN 特征提取器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transformer"><span class="nav-number">6.3.</span> <span class="nav-text">Transformer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BLEU"><span class="nav-number">7.</span> <span class="nav-text">BLEU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">7.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优缺点"><span class="nav-number">7.2.</span> <span class="nav-text">优缺点</span></a></li></ol></li></ol></div>
             
 
           </div>

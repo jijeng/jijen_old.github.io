@@ -82,7 +82,7 @@
 <meta name="description" content="主要介绍 activation function， loss function 等等概念和分类。">
 <meta name="keywords" content="loss function,Activation Function">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Loss Activation and Optimisation Function">
+<meta property="og:title" content="Activation Function and Loss Function">
 <meta property="og:url" content="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要介绍 activation function， loss function 等等概念和分类。">
@@ -100,9 +100,9 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g452awgfddj20fg0b1t91.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/07/24/5d37d9e627d1146288.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/24/5d37d9e61e96676671.png">
-<meta property="og:updated_time" content="2019-07-24T04:23:32.556Z">
+<meta property="og:updated_time" content="2019-08-02T05:39:49.524Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Loss Activation and Optimisation Function">
+<meta name="twitter:title" content="Activation Function and Loss Function">
 <meta name="twitter:description" content="主要介绍 activation function， loss function 等等概念和分类。">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450tpr64tj20df083wee.jpg">
 
@@ -153,7 +153,7 @@
 	})();
 </script>
 
-  <title>Loss Activation and Optimisation Function | Jijeng's blog</title>
+  <title>Activation Function and Loss Function | Jijeng's blog</title>
   
 
 
@@ -307,7 +307,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Loss Activation and Optimisation Function</h1>
+          <h1 class="post-title" itemprop="name headline">Activation Function and Loss Function</h1>
         
 
         <div class="post-meta">
@@ -335,8 +335,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-24T12:23:32+08:00">
-                2019-07-24
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-02T13:39:49+08:00">
+                2019-08-02
               </time>
             
           </span>
@@ -452,7 +452,9 @@
 <li><p>Multi-Class Classification Loss Functions<br>a. Multi-Class Cross-Entropy Loss<br>b. Sparse Multiclass Cross-Entropy Loss<br>c. Kullback Leibler Divergence Loss</p>
 </li>
 </ol>
-<h3 id="Regression-Loss-Function-回归"><a href="#Regression-Loss-Function-回归" class="headerlink" title="Regression  Loss Function (回归)"></a>Regression  Loss Function (回归)</h3><p><strong> 平方损失函数</strong></p>
+<h3 id="Regression-Loss-Function-回归"><a href="#Regression-Loss-Function-回归" class="headerlink" title="Regression  Loss Function (回归)"></a>Regression  Loss Function (回归)</h3><p> 如何进行选择？</p>
+<p>对于回归问题，一个baseline 的loss function 是可以选择平方损失函数。从数据的角度进行分析，如果数据服从正太分布，那么平方损失函数没有问题，如果数据有一些 outlier，可以使用 mean squared logarithmic error loss， 先进行   $\hat { y } $然后再计算平方和。如果 outlier 比较多的话，那么使用 mean absolute error loss，计算差值的时候换成绝对值函数。</p>
+<p><strong> 平方损失函数</strong></p>
 <p>定义：</p>
 <blockquote>
 <p>Mean Squared Error (MSE), or quadratic, loss function is widely used in linear regression as the performance measure, and the method of minimizing MSE is called Ordinary Least Squares (OSL)。</p>
@@ -510,7 +512,7 @@
 <p><strong> Hinge Loss</strong></p>
 <p>An alternative to cross-entropy for binary classification problems is the hinge loss function, primarily developed for use with Support Vector Machine (SVM) models.</p>
 <p>Hinge Loss，又称合页损失，其表达式如下：</p>
-<p>$$<br>Loss = \max ( 0,1 - y s )<br>$$<br>图像如下：</p>
+<p>$$<br>Loss = \max ( 0,1 - y s )<br>$$<br>其中 y 和 s 的取值范围都是 [-1, 1]. 想想 SVM 中最大化间隔的内容就理解了。图像如下：</p>
 <p><img src="https://i.loli.net/2019/07/15/5d2c39ac3289176404.png" alt="20.png"></p>
 <p>如同合起来的书，所以称之为 合页损失。显然，只有当 ys &lt; 1 时，Loss 才大于零；对于 ys &gt; 1 的情况，Loss 始终为零。Hinge Loss 一般多用于支持向量机（SVM）中，体现了 SVM 距离最大化的思想。 而且，当 Loss 大于零时，是线性函数，便于梯度下降算法求导。Hinge Loss 的另一个优点是使得 ys &gt; 0 的样本损失皆为 0，由此带来了稀疏解，使得 SVM 仅通过少量的支持向量就能确定最终超平面。</p>
 <p>使用说明：<br>要求 target 转换成 {-1, 1} ，效果有时候比 cross-binary 要好。</p>
@@ -625,11 +627,12 @@
 <p>因此，softmax适用于多分类问题中对每一个类别的概率判断，softmax的函数公式如下：<br>$$<br>a _ { j } ^ { L } = \frac { e ^ { z _ { j } ^ { L } } } { \sum _ { k } e ^ { z _ { k } ^ { L } } }<br>$$</p>
 <p>基于 Softmax 的多分类问题采用的是 log似然代价函数（log-likelihood cost function）来解决。<br>单个样本的 log似然代价函数的公式为：<br>$$<br>C = - \sum _ { i } \left( y _ { i } \log a _ { i } \right)<br>$$<br>其中， $y_i $表示标签向量的第 i 个分量。因为往往只有一个分量为 1 其余的分量都为 0，所以可以去掉损失函数中的求和符号，化简为，</p>
 <p>$$<br>C = - \ln a _ { j }<br>$$<br>其中，$ a_j $是向量 y 中取值为 1 对应的第 j 个分量的值。</p>
-<p>$$<br>\begin{split}<br>$\operatorname { cost } \left( h _ { \theta } ( x ) , y \right) &amp;= - y _ { i } \log \left( h _ { \theta } ( x ) \right) - \left( 1 - y _ { i } \right) \log \left( 1 - h _ { \theta } ( x ) \right)$ \\<br>$C &amp;= - \sum _ { i } \left( y _ { i } \log a _ { i } \right)$\\<br>\end{split}<br>$$<br>因为这两个交叉熵损失函数对应不同的最后一层的输出。第一个对应的最后一层是 sigmoid，用于二分类问题，第二个对应的最后一层是 softmax，用于多分类问题。但是它们的本质是一样的，请看下面的分析。</p>
-<p>可以看一下交叉熵函数的定义：<br>$$</p>
-<ul>
-<li>\int p ( x ) \log g ( x ) d x<br>$$<br>交叉熵是用来描述两个分布的距离的，神经网络训练的目的就是使 $g(x)$ 逼近$ p(x)$。</li>
-</ul>
+<p>$$<br>\begin{split}<br>\operatorname { cost } \left( h _ { \theta } ( x ) , y \right) &amp;= - y _ { i } \log \left( h _ { \theta } ( x ) \right) - \left( 1 - y _ { i } \right) \log \left( 1 - h _ { \theta } ( x ) \right)$ \\<br>C &amp;= - \sum _ { i } \left( y _ { i } \log a _ { i } \right)$\\<br>\end{split}<br>$$</p>
+<p>理论上都是使用多类交叉熵函数，但是在实现的时候，深度学习工具keras 是支持两种形式，针对于标签y 的形式，一种是 sparse 一种是 dense分别对应的是 one-hot 形式和 label 的形式。</p>
+<p>因为这两个交叉熵损失函数对应不同的最后一层的输出。第一个对应的最后一层是 sigmoid，用于二分类问题，第二个对应的最后一层是 softmax，用于多分类问题。但是它们的本质是一样的，请看下面的分析。</p>
+<p>可以看一下交叉熵函数的定义：</p>
+<p>$$<br>-\int p ( x ) \log g ( x ) d x<br>$$</p>
+<p>交叉熵是用来描述两个分布的距离的，神经网络训练的目的就是使 $g(x)$ 逼近$ p(x)$。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
 <thead>
 <tr>
@@ -813,7 +816,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -1060,7 +1063,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/';
           this.page.identifier = '2018/07/07/Loss-Activation-and-Optimisation-Function/';
-          this.page.title = 'Loss Activation and Optimisation Function';
+          this.page.title = 'Activation Function and Loss Function';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

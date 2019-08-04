@@ -89,7 +89,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g38517f1imj20du0e4aa4.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g38p4a4jq9j20va08it8z.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g38p4hhhltj20o607uq3f.jpg">
-<meta property="og:updated_time" content="2019-05-27T12:18:26.418Z">
+<meta property="og:updated_time" content="2019-08-03T07:12:51.122Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction to Natural Language Processing for Text">
 <meta name="twitter:description" content="Natural Language Processing is used to apply machine learning algorithms to text and speech. For example, we can use it to create systems like speech recognition, document summarization, machine trans">
@@ -324,8 +324,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-27T20:18:26+08:00">
-                2019-05-27
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-03T15:12:51+08:00">
+                2019-08-03
               </time>
             
           </span>
@@ -399,9 +399,12 @@
         <p>Natural Language Processing is used to apply machine learning algorithms to text and speech. For example, we can use it to create systems like speech recognition, document summarization, machine translation, spam detection, named entity recognition, question answering, autocomplete, predictive typing and so on.</p>
 <p>NLTK (Natural Language Toolkit) is a leading platform for building Python programs to work with human language data. It provides easy-to-use interfaces to many corpora and lexical resources. Also, it contains a suite of text processing libraries for classification, tokenization, stemming, tagging, parsing, and semantic reasoning. Best of all, NLTK is a free, open source, community-driven project.</p>
 <p>In this article, we’ll cover the following topics.<br>这些功能都是可以使用nltk 进行实现的。<br><strong>text Lemmatization</strong> 比如，单词“cars”词形还原后的单词为“car”，单词“ate”词形还原后的单词为“eat”。</p>
-<p><strong>Sentence Tokenization</strong><br>段落成句。<br>Sentence tokenization (also called sentence segmentation) is the problem of dividing a string of written language into its component sentences. The idea here looks very simple. In English and some other languages, we can split apart the sentences whenever we see a punctuation mark.（标点符号）</p>
-<p><strong>Word Tokenization</strong><br>句子成词，颗粒度变得更小。<br>Word tokenization (also called word segmentation) is the problem of dividing a string of written language into its component words. In English and many other languages using some form of Latin alphabet, space is a good approximation of a word divider.</p>
-<p><strong>Text Lemmatization and Stemming</strong><br>这种操作如果被认为是一种 normalization，那么一个优点就是加快了运行的速度。从不同的形式到统一的形式，这可以认为减少了变量。感觉这个更加涉及语法，语法树之类的东西。<br>For grammatical reasons, documents can contain different forms of a word such as drive, drives, driving. Also, sometimes we have related words with a similar meaning, such as nation, national, nationality.</p>
+<p><strong>Sentence Tokenization</strong></p>
+<p>段落成句。<br>Sentence tokenization (also called sentence segmentation) is the problem of dividing a string of written language into its component sentences. The idea here looks very simple. In English and some other languages, we can split apart the sentences whenever we see a punctuation mark.（标点符号）</p>
+<p><strong>Word Tokenization</strong></p>
+<p>句子成词，颗粒度变得更小。<br>Word tokenization (also called word segmentation) is the problem of dividing a string of written language into its component words. In English and many other languages using some form of Latin alphabet, space is a good approximation of a word divider.</p>
+<p><strong>Text Lemmatization  词性还原 and Stemming 词干提取</strong></p>
+<p>这种操作如果被认为是一种 normalization，那么一个优点就是加快了运行的速度。从不同的形式到统一的形式，这可以认为减少了变量。感觉这个更加涉及语法，语法树之类的东西。<br>For grammatical reasons, documents can contain different forms of a word such as drive, drives, driving. Also, sometimes we have related words with a similar meaning, such as nation, national, nationality.</p>
 <p>Stemming and lemmatization are special cases of normalization. However, they are different from each other.</p>
 <blockquote>
 <p>Stemming usually refers to a crude heuristic process that chops off the ends of words in the hope of achieving this goal correctly most of the time, and often includes the removal of derivational affixes.<br>Lemmatization usually refers to doing things properly with the use of a vocabulary and morphological analysis of words, normally aiming to remove inflectional endings only and to return the base or dictionary form of a word, which is known as the lemma.</p>
@@ -409,7 +412,8 @@
 <p><strong>Stop Words</strong><br>因为 stop words往往是带了 noise rather than useful information，所以这个是要去掉的。<br>Stop words are words which are filtered out before or after processing of text. When applying machine learning to text, these words can add a lot of noise. That’s why we want to remove these irrelevant words.</p>
 <p>stop words dictionary 可以理解成一种过滤词表，是可以根据应用的不同，然后 change的。<br>Stop words usually refer to the most common words such as “and”, “the”, “a” in a language, but there is no single universal list of stopwords. The list of the stop words can change depending on your application.</p>
 <p>在存储 stopword 的时候使用 set rather than list 主要原因是  much faster than search operations in a set.<br>You might wonder why we convert our list into a set. Set is an abstract data type that can store unique values, without any particular order. The search operation in a set is much faster than the search operation in a list. For a small number of words, there is no big difference, but if you have a large number of words it’s highly recommended to use the set type.</p>
-<p><strong>Regex</strong><br>A kind of search pattern. A regular expression, regex, or regexp is a sequence of characters that define a search pattern. Let’s see some basics.</p>
+<p><strong>Regex</strong></p>
+<p>A kind of search pattern. A regular expression, regex, or regexp is a sequence of characters that define a search pattern. Let’s see some basics.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">. - match any character <span class="keyword">except</span> newline</span><br><span class="line">\w - match word</span><br><span class="line">\d - match digit</span><br><span class="line">\s - match whitespace</span><br><span class="line">\W - match <span class="keyword">not</span> word</span><br><span class="line">\D - match <span class="keyword">not</span> digit</span><br><span class="line">\S - match <span class="keyword">not</span> whitespace</span><br><span class="line">[abc] - match any of a, b, <span class="keyword">or</span> c</span><br><span class="line">[^abc] - <span class="keyword">not</span> match a, b, <span class="keyword">or</span> c</span><br><span class="line">[a-g] - match a character between a &amp; g</span><br></pre></td></tr></table></figure>
 <p>这个解释说明了为什么在正则表达式 中使用 r”” 作为一种前缀。因为正则表达是中 ”\“ 的使用和 python 中的”\” 使用有冲突。简而言之，如果加上了 r”” 那么这个就是一种完全的 正则表达式的语法了。</p>
 <blockquote>
@@ -580,7 +584,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

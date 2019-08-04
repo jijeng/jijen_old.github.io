@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/07/02/5d1b275bd20aa40709.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/8b4f6493ed14471b.png">
-<meta property="og:updated_time" content="2019-07-22T14:25:47.396Z">
+<meta property="og:updated_time" content="2019-08-03T06:15:01.260Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fastText &amp; faiss">
 <meta name="twitter:description" content="fastTextfastText结合了自然语言处理和机器学习中最成功的理念。这些包括了使用词袋以及n-gram袋表征语句，还有使用子字(subword)信息，效果上的提升。另外采用了一个softmax层级(利用了类别不均衡分布的优势)来加速运算过程。 fastText 主要是用来解决 word representations和 sentence classification. 有趣的是前者是无监督">
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-22T22:25:47+08:00">
-                2019-07-22
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-03T14:15:01+08:00">
+                2019-08-03
               </time>
             
           </span>
@@ -432,7 +432,9 @@
 <blockquote>
 <p>Training a neural network means taking a training example and adjusting all of the neuron weights slightly so that it predicts that training sample more accurately. In other words, each training sample will tweak all of the weights in the neural network.<br>As we discussed above, the size of our word vocabulary means that our skip-gram neural network has a tremendous number of weights, all of which would be updated slightly by every one of our billions of training samples!<br>Negative sampling addresses this by having each training sample only modify a small percentage of the weights, rather than all of them. Here’s how it works.<br>When training the network on the word pair (“fox”, “quick”), recall that the “label” or “correct output” of the network is a one-hot vector. That is, for the output neuron corresponding to “quick” to output a 1, and for all of the other thousands of output neurons to output a 0.<br>With negative sampling, we are instead going to randomly select just a small number of “negative” words (let’s say 5) to update the weights for. (In this context, a “negative” word is one for which we want the network to output a 0 for). We will also still update the weights for our “positive” word (which is the word “quick” in our current example).<br>The paper says that selecting 5-20 words works well for smaller datasets, and you can get away with only 2-5 words for large datasets.<br>Recall that the output layer of our model has a weight matrix that’s 300 x 10,000. So we will just be updating the weights for our positive word (“quick”), plus the weights for 5 other words that we want to output 0. That’s a total of 6 output neurons, and 1,800 weight values total. That’s only 0.06% of the 3M weights in the output layer!<br>In the hidden layer, only the weights for the input word are updated (this is true whether you’re using Negative Sampling or not).</p>
 </blockquote>
-<h3 id="Positive-samples-and-Negative-samples"><a href="#Positive-samples-and-Negative-samples" class="headerlink" title="Positive samples and  Negative samples"></a>Positive samples and  Negative samples</h3><p>One little detail that’s missing from the description above is how do we select the negative samples.<br>（下面说的是如何进行选择negative sample的问题：基本思路是根据出现频率进行选择）<br>The negative samples are chosen using the unigram distribution. Essentially, the probability of selecting a word as a negative sample is related to its frequency, with more frequent words being more likely to be selected as negative samples. Instead of using the raw frequency in the original word2vec paper, each word is given a weight that’s equal to it’s frequency (word count) raised to the 3/4 power. The probability for selecting a word is just it’s weight divided by the sum of weights for all words.<br>$$P \left( w _ { i } \right) = \frac { f \left( w _ { i } \right) ^ { 3 / 4 } } { \sum _ { i = 0 } ^ { n } \left( f \left( w _ { j } \right) ^ { 3 / 4 } \right) }$$<br>This decision to raise the frequency to the 3/4 power appears to be empirical; as the author claims it outperformed other functions (e.g. just using unigram distribution).<br>Side note: The way this selection is implemented in the original word2vec C code is interesting. They have a large array with 100M elements (which they refer to as the unigram table). They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word’s index appears in the table is given by </p>
+<h3 id="Positive-samples-and-Negative-samples"><a href="#Positive-samples-and-Negative-samples" class="headerlink" title="Positive samples and  Negative samples"></a>Positive samples and  Negative samples</h3><p>One little detail that’s missing from the description above is how do we select the negative samples.<br>（下面说的是如何进行选择negative sample的问题：基本思路是根据出现频率进行选择）<br>The negative samples are chosen using the unigram distribution. Essentially, the probability of selecting a word as a negative sample is related to its frequency, with more frequent words being more likely to be selected as negative samples. Instead of using the raw frequency in the original word2vec paper, each word is given a weight that’s equal to it’s frequency (word count) raised to the 3/4 power. The probability for selecting a word is just it’s weight divided by the sum of weights for all words.<br>$$P \left( w _ { i } \right) = \frac { f \left( w _ { i } \right) ^ { 3 / 4 } } { \sum _ { i = 0 } ^ { n } \left( f \left( w _ { j } \right) ^ { 3 / 4 } \right) }$$</p>
+<p>上述中的函数是幂函数，图像的形状和log 函数差不多，都是从 $y =x$ 进行了一下约束，函数变得更加的平缓。</p>
+<p>This decision to raise the frequency to the 3/4 power appears to be empirical; as the author claims it outperformed other functions (e.g. just using unigram distribution).<br>Side note: The way this selection is implemented in the original word2vec C code is interesting. They have a large array with 100M elements (which they refer to as the unigram table). They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word’s index appears in the table is given by </p>
 <p>Then, to actually select a negative sample, we just generate a random integer between 0 and 100M, and use the word at that index in the table. Since the higher probability words occur more times in the table, we’re more likely to pick those.</p>
 <p>这个也是有讲 任何进行negative sample的选择<br><a href="http://jalammar.github.io/illustrated-word2vec/" target="_blank" rel="noopener">http://jalammar.github.io/illustrated-word2vec/</a><br>一般来说在 word2vec 中context 是会选择到 5，然后这个 positive / negative sample 会是(1/6), 然后 nagative sample 是随机在 dictionary里面选的（所以有可能选到 positive sample）， 这个是这个dictionary 是根据频率，出现次数越多的，被选中的可能性也越大。<br>The number of negative samples is another factor of the training process. The original paper prescribes 5-20 as being a good number of negative samples. It also states that 2-5 seems to be enough when you have a large enough dataset. The Gensim default is 5 negative samples.</p>
 <p>To address this, we need to introduce negative samples to our dataset – samples of words that are not neighbors. Our model needs to return 0 for those samples. Now that’s a challenge that the model has to work hard to solve – but still at blazing fast speed.<br>This idea is inspired by Noise-contrastive estimation. We are contrasting the actual signal (positive examples of neighboring words) with noise (randomly selected words that are not neighbors). This leads to a great tradeoff of computational and statistical efficiency.</p>
@@ -479,15 +481,27 @@
 ./fasttext predict model_kaggle.bin test.ft.txt
 # Predicting the top 3 labels
 ./fasttext predict model_kaggle.bin test.ft.txt 3
-</code></pre><h3 id="fasttext-vs-cbow"><a href="#fasttext-vs-cbow" class="headerlink" title="fasttext vs cbow"></a>fasttext vs cbow</h3><p><strong>n-gram</strong></p>
-<p>BOW 是和词序无关的，实现 n-gram 作为额外的特征可以捕捉一些部分的词序。fastText是一种基于skip-gram模型的新扩展，它会使用subword的信息，将每个词被表示成一个字符级n-gram词袋(a bag of character n-grams)。每个向量表示与每个字符级n-gram相关联，而词(word)则可以看成是这些n-gram向量表示的求和(sum)。fastText在大语料上训练很快。</p>
+</code></pre><h3 id="fasttext-vs-cbow"><a href="#fasttext-vs-cbow" class="headerlink" title="fasttext vs cbow"></a>fasttext vs cbow</h3><p>在标准的多核CPU上， 能够训练10亿词级别语料库的词向量在10分钟之内，能够分类有着30万多类别的50多万句子在1分钟之内。</p>
+<p><strong>n-gram</strong></p>
+<p>n-gram 是一种基于语言模型的算法，基本思想是将文本内容按照字节顺序进行大小为N的滑动窗口操作，最终形成长度为N的字节片段序列。</p>
+<p>CBOW 是和词序无关的，实现 n-gram 作为额外的特征可以捕捉一些部分的词序。fastText是一种基于skip-gram模型的新扩展，它会使用subword的信息，将每个词被表示成一个字符级n-gram词袋(a bag of character n-grams)。每个向量表示与每个字符级n-gram相关联，而词(word)则可以看成是这些n-gram向量表示的求和(sum)。fastText在大语料上训练很快。</p>
 <p><strong> 网络结构方面</strong></p>
+<ol>
+<li>输入层：CBOW 的输入层是由目标词汇 $y$ 的上下文单词 ${ x _ { 1 } , \ldots , x _ { c } }$ 组成， $\boldsymbol { x } _ { i }$ 是被 onehot 编码过的 V 维向量，其中 V 是词汇量。而fasttext 的输入是多个单词及其n-gram特征。比如说，对于单词“apple”，假设n的取值为3，则它的trigram有:<blockquote>
+<p>“&lt;ap”,  “app”,  “ppl”,  “ple”, “le&gt;”<br>其中，&lt;表示前缀，&gt;表示后缀。于是，我们可以用这些trigram来表示“apple”这个单词，进一步，我们可以用这5个trigram的向量叠加来表示“apple”的词向量。<br>这样做有两点好处：</p>
+</blockquote>
+</li>
+</ol>
 <ul>
-<li>输入层：CBOW的输入是目标单词的上下文并进行one-hot编码，fastText的输入是多个单词embedding向量，并将单词的字符级别的n-gram向量作为额外的特征；</li>
-<li>从输入层到隐藏层，CBOW会将上下文单词向量叠加起来并经过一次矩阵乘法（线性变化）并应用激活函数，而fastText省略了这一过程，直接将embedding过的向量特征求和取平均；</li>
-<li>输出层，一般的CBOW模型会采用Softmax作为输出，而fastText则采用了Hierarchical Softmax，大大降低了模型训练时间；</li>
+<li>对于低频词生成的词向量效果会更好。因为它们的n-gram可以和其它词共享。</li>
+<li>对于训练词库之外的单词，仍然可以构建它们的词向量。我们可以叠加它们的字符级n-gram向量。</li>
 </ul>
+<ol start="2">
+<li>从输入层到隐藏层，CBOW会将上下文单词向量叠加起来并经过一次矩阵乘法（线性变化）并应用激活函数，而fastText省略了这一过程，直接将embedding过的向量特征求和取平均；</li>
+<li>输出层，一般的CBOW模型会采用Softmax作为输出，而fastText则采用了Hierarchical Softmax，大大降低了模型训练时间；<br>CBOW 的输出层是被onehot编码过的目标词y</li>
+</ol>
 <p>CBOW的输出是目标词汇，fastText的输出是文档对应的类标。</p>
+<p>使用 fasttext 进行文本分类的时候，其核心思想是 将整篇文档的词及n-gram向量叠加平均得到文档向量，然后使用文档向量做softmax多分类。</p>
 <p><strong> 层次softmax</strong></p>
 <p>softmax 是在 逻辑回归 （logistic regression） 在多分类任务上的推广，是网络中的最后一层。当 词汇数量V 较大时候，softmax 的计算代价是很大的， O(v) 量级。层次softmax 是将全局多分类转化成了若干个二分类问题，从而将时间复杂度从O(V) 转化成了 o(log V)。</p>
 <p>缺点：fastText适用与分类类别非常大而且数据集足够多的情况，当分类类别比较小或者数据集比较少的话，很容易过拟合。</p>
@@ -499,7 +513,7 @@
 <blockquote>
 <p>Once the vectors are extracted by learning machinery (from images, videos, text documents, and elsewhere), they’re ready to feed into the similarity search library.</p>
 </blockquote>
-<h3 id="faiss的实现过程"><a href="#faiss的实现过程" class="headerlink" title="faiss的实现过程"></a>faiss的实现过程</h3><p>首先使用 index对于向量进行预处理，然后选择不同的模式。</p>
+<h3 id="faiss的实现过程"><a href="#faiss的实现过程" class="headerlink" title="faiss的实现过程"></a>faiss的实现过程</h3><p>首先使用 index对于向量进行预处理，然后选择不同的模式. 主要讲的是三种模式，一个维度是简单模式，适合在小数据上进行计算 欧氏距离；一个维度是加快检索速度，这种模式下是需要提前的train，其基本的思路对向量进行聚类，当然文中说的是 “细胞”，建立倒排索引，然后检索的时候，搜索这个“细胞”内 和周围的“细胞” 的id 的集合，就可以返回前 K 个最相近的结果；最后一个维度是减少内存的使用，上面两种都是使用的完整的向量，这个模式下是使用的压缩向量，可以使用PCA 进行实现，当然这个模式下得到的结果也是近似解。还有两种计算的上的优化，对于向量进行分段计算，这种可以实现并行，并且支持任务在GPU 上进行运算。</p>
 <p>牺牲了一些精确性来使得运行速度更快。</p>
 <blockquote>
 <p>Similarity search can be made orders of magnitude faster if we’re willing to trade some accuracy; that is, deviate a bit from the reference result. For example, it may not matter much if the first and second results of an image similarity search are swapped, since they’re probably both correct results for a given query. Accelerating the search involves some pre-processing of the data set, an operation that we call indexing.</p>
@@ -741,7 +755,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

@@ -79,23 +79,24 @@
 
 
 
-<meta name="description" content="本文介绍 ResNet 的背景，想要解决的问题，基本思路和框架 和对于其的一种解读方式。">
+<meta name="description" content="本文介绍 ResNet的背景，想要解决的问题，基本思路和框架 和对于其的一种解读方式。另外，和 Resnet 思路相反的是 Inception 系列。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ResNet Understanding">
+<meta property="og:title" content="ResNet and Inception V3 Understanding">
 <meta property="og:url" content="http://yoursite.com/2019/06/21/resnet-understanding/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="本文介绍 ResNet 的背景，想要解决的问题，基本思路和框架 和对于其的一种解读方式。">
+<meta property="og:description" content="本文介绍 ResNet的背景，想要解决的问题，基本思路和框架 和对于其的一种解读方式。另外，和 Resnet 思路相反的是 Inception 系列。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/961d556504c2fb00.png">
-<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/eeac0e77e55859d9.png">
-<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/b82acc2bfd10ac52.png">
-<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/e72590a987e5c618.png">
-<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/18e6e5378f70af31.png">
-<meta property="og:updated_time" content="2019-06-21T09:38:14.253Z">
+<meta property="og:image" content="https://upload.cc/i1/2019/08/02/laH41A.jpg">
+<meta property="og:image" content="https://upload.cc/i1/2019/08/02/fhBM05.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/02/5d43ea85bf14975363.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/02/5d43ea85b503b65896.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/08/02/ewck4I.png">
+<meta property="og:image" content="https://i.postimg.cc/XvTD7bcd/1.jpg">
+<meta property="og:updated_time" content="2019-08-02T08:05:36.460Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ResNet Understanding">
-<meta name="twitter:description" content="本文介绍 ResNet 的背景，想要解决的问题，基本思路和框架 和对于其的一种解读方式。">
-<meta name="twitter:image" content="https://i.bmp.ovh/imgs/2019/06/961d556504c2fb00.png">
+<meta name="twitter:title" content="ResNet and Inception V3 Understanding">
+<meta name="twitter:description" content="本文介绍 ResNet的背景，想要解决的问题，基本思路和框架 和对于其的一种解读方式。另外，和 Resnet 思路相反的是 Inception 系列。">
+<meta name="twitter:image" content="https://upload.cc/i1/2019/08/02/laH41A.jpg">
 
 
 
@@ -144,7 +145,7 @@
 	})();
 </script>
 
-  <title>ResNet Understanding | Jijeng's blog</title>
+  <title>ResNet and Inception V3 Understanding | Jijeng's blog</title>
   
 
 
@@ -298,7 +299,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ResNet Understanding</h1>
+          <h1 class="post-title" itemprop="name headline">ResNet and Inception V3 Understanding</h1>
         
 
         <div class="post-meta">
@@ -326,8 +327,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-21T17:38:14+08:00">
-                2019-06-21
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-02T16:05:36+08:00">
+                2019-08-02
               </time>
             
           </span>
@@ -398,23 +399,35 @@
       
 
       
-        <p>本文介绍 ResNet 的背景，想要解决的问题，基本思路和框架 和对于其的一种解读方式。</p>
+        <p>本文介绍 ResNet的背景，想要解决的问题，基本思路和框架 和对于其的一种解读方式。另外，和 Resnet 思路相反的是 Inception 系列。</p>
 <a id="more"></a>
 <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>网络的深度是容易出现梯度爆炸和梯度消失，造成网络的不收敛。一些方法已经在很大程度上可以缓解这个问题，比如使用 ReLU激活函数、 良好的权值初始化方法 、还有 intermediate normalization layers(即网络中间的batch normalization)。并且对于网络过程中的过拟合问题，也提出了一些办法如，使用 regularization、权值衰减和dropout方法。</p>
 <p>但解决了深度网络收敛问题之后，又出现了另外一个问题。</p>
 <h3 id="残差网络要解决的问题"><a href="#残差网络要解决的问题" class="headerlink" title="残差网络要解决的问题"></a>残差网络要解决的问题</h3><p>一般来说在没有过拟合的情况下，可以逐步增加网络的深度。但在实验中发现了这样的问题。网络退化： 网络越深，训练误差越大。（accuracy开始饱和，原文中这样说的）这种退化并不是由于过拟合造成的，并且在适当深度模型中增加更多的层会导致更多的训练误差</p>
-<p><img src="https://i.bmp.ovh/imgs/2019/06/961d556504c2fb00.png" alt=""></p>
-<h3 id="基本思路和结构"><a href="#基本思路和结构" class="headerlink" title="基本思路和结构"></a>基本思路和结构</h3><p>作者基于增加层如果为恒等映射那么更深层网络不应该比浅层网络产生更高错误率的思想<br><img src="https://i.bmp.ovh/imgs/2019/06/eeac0e77e55859d9.png" alt=""></p>
+<p><img src="https://upload.cc/i1/2019/08/02/laH41A.jpg" alt=""></p>
+<h3 id="基本思路和结构"><a href="#基本思路和结构" class="headerlink" title="基本思路和结构"></a>基本思路和结构</h3><p>作者基于增加层如果为恒等映射那么更深层网络不应该比浅层网络产生更高错误率的思想</p>
+<p><img src="https://upload.cc/i1/2019/08/02/fhBM05.jpg" alt=""></p>
 <p>如图所示左边的是传统的plain networks的结构，右边的是修改为ResNet的结构。<br>改变前目标： 训练 F(x) 逼近 H(x)<br>改变后目标：训练 F(x) 逼近 H(x) -x</p>
 <p>即增加一个identity mapping（恒等映射），将原始所需要学的函数H(x)转换成F(x)+x，而作者认为这两种表达的效果相同，但是优化的难度却并不相同，作者假设F(x)的优化 会比H(x)简单的多。这一想法也是源于图像处理中的残差向量编码，通过一个reformulation，将一个问题分解成多个尺度直接的残差问题，能够很好的起到优化训练的效果</p>
 <p>在论文中尝试了 skip 2层或者 3层</p>
-<p><img src="https://i.bmp.ovh/imgs/2019/06/b82acc2bfd10ac52.png" alt=""></p>
-<h3 id="一种解读方式"><a href="#一种解读方式" class="headerlink" title="一种解读方式"></a>一种解读方式</h3><p><img src="https://i.bmp.ovh/imgs/2019/06/e72590a987e5c618.png" alt=""></p>
-<p>残差网络单元其中可以分解成右图的形式，从图中可以看出，残差网络其实是由多种路径组合的一个网络，直白了说，残差网络其实是很多并行子网络的组合，整个残差网络其实相当于一个多人投票系统（Ensembling）</p>
-<p>从这可以看出其实ResNet是由大多数中度网络和一小部分浅度网络和深度网络组成的，</p>
-<p><img src="https://i.bmp.ovh/imgs/2019/06/18e6e5378f70af31.png" alt=""></p>
+<p><img src="https://i.loli.net/2019/08/02/5d43ea85bf14975363.jpg" alt="5.jpg"></p>
+<h3 id="一种解读方式"><a href="#一种解读方式" class="headerlink" title="一种解读方式"></a>一种解读方式</h3><p>残差网络单元其中可以分解成右图的形式，从图中可以看出，残差网络其实是由多种路径组合的一个网络，直白了说，残差网络其实是很多并行子网络的组合，整个残差网络其实相当于一个多人投票系统（Ensembling）</p>
+<p><img src="https://i.loli.net/2019/08/02/5d43ea85b503b65896.png" alt="4.png"><br>从这可以看出其实ResNet是由大多数中度网络和一小部分浅度网络和深度网络组成的，</p>
+<p><a href="https://imgchr.com/i/ewck4I" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/08/02/ewck4I.png" alt="ewck4I.png"></a></p>
 <p>说明虽然表面上ResNet网络很深，但是其实起实际作用的网络层数并没有很深我们可以看出大多数的梯度其实都集中在中间的路径上，论文里称为effective path。 (网络越深，也是容易出现梯度消失或者梯度爆炸，这个是没有问题的)ResNet其实就是一个多人投票系统。</p>
-<p>ps, 现在深度网络基本上分成两个方向，一个像 resnet 向着”深度“发展，一个向着”宽度“的inception network </p>
+<p>现在深度网络基本上分成两个方向，一个像 resnet 向着”深度“发展，一个向着”宽度“的inception network </p>
+<h3 id="Inception-V3"><a href="#Inception-V3" class="headerlink" title="Inception V3"></a>Inception V3</h3><p>如果 ResNet 是为了更深，那么 Inception 家族就是为了更宽。第一个见解与对层的操作有关。在传统的卷积网络中，每一层都会从之前的层提取信息，以便将输入数据转换成更有用的表征。</p>
+<p>见解 1：为什么不让模型选择？</p>
+<p><img src="https://i.postimg.cc/XvTD7bcd/1.jpg" alt=""></p>
+<p>这种模型架构的信息密度更大了，这就带来了一个突出的问题：计算成本大大增加。不仅大型（比如 5×5）卷积过滤器的固有计算成本高，并排堆叠多个不同的过滤器更会极大增加每一层的特征映射的数量。而这种计算成本增长就成为了我们模型的致命瓶颈。</p>
+<p>这就涉及到了见解 2：使用 1×1 卷积来执行降维。为了解决上述计算瓶颈，Inception 的作者使用了 1×1 卷积来「过滤」输出的深度。一个 1×1 卷积一次仅查看一个值，但在多个通道上，它可以提取空间信息并将其压缩到更低的维度。比如，使用 20 个 1×1 过滤器，一个大小为 64×64×100（具有 100 个特征映射）的输入可以被压缩到 64×64×20。通过减少输入映射的数量，Inception 可以将不同的层变换并行地堆叠到一起，从而得到既深又宽（很多并行操作）的网络。</p>
+<p>Inception Net v3 incorporated all of the above upgrades stated for Inception v2, and in addition used the following:</p>
+<ul>
+<li>RMSProp Optimizer.</li>
+<li>Factorized 7x7 convolutions.</li>
+<li>BatchNorm in the Auxillary Classifiers.</li>
+<li>Label Smoothing (A type of regularizing component added to the loss formula that prevents the network from becoming too confident about a class. Prevents over fitting).</li>
+</ul>
 
       
     </div>
@@ -564,7 +577,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -613,7 +626,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#残差网络要解决的问题"><span class="nav-number">2.</span> <span class="nav-text">残差网络要解决的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本思路和结构"><span class="nav-number">3.</span> <span class="nav-text">基本思路和结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一种解读方式"><span class="nav-number">4.</span> <span class="nav-text">一种解读方式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#残差网络要解决的问题"><span class="nav-number">2.</span> <span class="nav-text">残差网络要解决的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本思路和结构"><span class="nav-number">3.</span> <span class="nav-text">基本思路和结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一种解读方式"><span class="nav-number">4.</span> <span class="nav-text">一种解读方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inception-V3"><span class="nav-number">5.</span> <span class="nav-text">Inception V3</span></a></li></ol></div>
             
 
           </div>
@@ -811,7 +824,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/06/21/resnet-understanding/';
           this.page.identifier = '2019/06/21/resnet-understanding/';
-          this.page.title = 'ResNet Understanding';
+          this.page.title = 'ResNet and Inception V3 Understanding';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
