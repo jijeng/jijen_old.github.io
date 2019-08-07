@@ -112,7 +112,8 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqwkv9tlj20kd097gm4.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqyoxmknj20ey0d640u.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3esxw2nilj20dh08ujth.jpg">
-<meta property="og:updated_time" content="2019-08-04T02:29:48.894Z">
+<meta property="og:image" content="https://upload.cc/i1/2019/08/04/2VsB5g.png">
+<meta property="og:updated_time" content="2019-08-04T13:34:17.354Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP Papers Reading- BERT (***)">
 <meta name="twitter:description" content="attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequen">
@@ -230,16 +231,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            About
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
@@ -347,7 +338,7 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-04T10:29:48+08:00">
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-04T21:34:17+08:00">
                 2019-08-04
               </time>
             
@@ -712,6 +703,16 @@
 </tbody>
 </table>
 <p>文章共提出两种基于不同网络架构的Universal Sentence Encoder：Transformer and Deep Averaging Network (DAN).<br>Our two encoders have different design goals. One based on the transformer architecture targets high accuracy at the cost of greater model complexity and resource consumption. The other targets efficient inference with slightly reduced accuracy.</p>
+<p>NLP 是如何体现了多任务训练的？</p>
+<p>该篇论文在前人的研究基础上，综合利用无监督训练数据和有监督训练数据，进行多任务训练，从而学习一个通用的句子编码器。无监督训练数据包括问答(QA)型网页和论坛，Wikipedia, web news，有监督训练数据为SNLI。多任务模型设计如下图所示，其中灰色的encoder为共享参数的句子编码器。</p>
+<p><img src="https://upload.cc/i1/2019/08/04/2VsB5g.png" alt="img"></p>
+<p>论文对比了DAN和Transfomer这两种编码器。得出如下结论：</p>
+<ul>
+<li>Transformer 模型在各种任务上的表现都优于简单的 DAN 模型，且在处理短句子时只稍慢一些。（更高的精度）</li>
+<li>DAN模型也能具有很不错的表现，并且相较于Transformer模型，训练时间和内存的开销都更小，尤其是当句子较长时。（更快的速度）</li>
+</ul>
+<p>总结：</p>
+<p>Sentence Embedding的质量往往由训练数据和Encoder共同决定。Encoder不一定是越复杂越好，需要依据下游任务、计算资源、时间开销等多方面因素综合考虑。</p>
 
       
     </div>
@@ -839,7 +840,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -861,7 +862,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
