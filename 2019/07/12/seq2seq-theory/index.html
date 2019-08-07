@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/07/12/5d2884d89c4f355531.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/30/5d40530f9fdc224289.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/30/5d40530e2104e71958.png">
-<meta property="og:updated_time" content="2019-08-04T07:11:50.174Z">
+<meta property="og:updated_time" content="2019-08-07T08:49:32.467Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="All you need to know about seq2seq">
 <meta name="twitter:description" content="介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。本篇主要是理论，代码demo 可以参考另一篇。">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-04T15:11:50+08:00">
-                2019-08-04
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-07T16:49:32+08:00">
+                2019-08-07
               </time>
             
           </span>
@@ -394,7 +394,7 @@
         <p>介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。本篇主要是理论，代码demo 可以参考<a href="https://jijeng.github.io/2019/06/28/seq2seq-translation-codes/" target="_blank" rel="noopener">另一篇</a>。</p>
 <a id="more"></a>
 <h2 id="定义和结构"><a href="#定义和结构" class="headerlink" title="定义和结构"></a>定义和结构</h2><p><strong> 定义</strong></p>
-<p>语言模型是这样一个模型：对于任意的词序列，它能够计算出这个序列是一句话的概率。</p>
+<p>语言模型：对于任意的词序列，它能够计算出这个序列是一句话的概率。</p>
 <p>Sequence-to-sequence (seq2seq) 模型，顾名思义，其输入是一个序列，输出也是一个序列. 目前来说，对于Seq2Seq生成模型来说，主要的思路是将该问题作为条件语言模型，在已知输入序列和前序生成序列的条件下,最大化下一目标词的概率，而最终希望得到的是整个输出序列的生成出现的概率最大：<br>$$<br>P ( Y | X ) = \sum _ { t = 1 } ^ { T } \log P \left( y _ { t } | y _ { 1 : t - 1 } , X \right)<br>$$</p>
 <p>seq2seq 可以用在很多方面：机器翻译、QA 系统、文档摘要生成、Image Captioning (图片描述生成器)。</p>
 <p><a href="https://i.loli.net/2019/07/12/5d2884d8b259814374.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2019/07/12/5d2884d8b259814374.png" alt="image1.png"></a></p>
@@ -411,7 +411,7 @@
 <p>激活函数: softmax()</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">crossent = tf.nn.spase_softmax_cross_entropy_with_logits(</span><br><span class="line">    labels=decoder_outputs, logits=logits)</span><br><span class="line">train_loss = (tf.reduce_sum(crossent * target_weights) /</span><br><span class="line">    batch_size)</span><br></pre></td></tr></table></figure>
 <p>loss 计算:</p>
-<p>神经网络的Loss计算，把每个翻译出来的单词和目标单词对应， loss 上面写的很清楚 就是 多分类的cross entropy 函数。 </p>
+<p>（现在有时候分不清 loss 函数，也目标函数。在语言模型中目标是 最大化语言模型，给定生成一个句子的可能性越高越好。但是这个和交叉熵有什么关系呢，交叉熵说的是两个分布之间的差异，这个是一个 有趣的话题 ）<br>神经网络的Loss计算，把每个翻译出来的单词和目标单词对应， loss 上面写的很清楚 就是 多分类的cross entropy 函数。 </p>
 <p><strong> decoder</strong></p>
 <p>当你训练你的 NMT 模型时（并且一旦你已经训练了模型），可以在给定之前不可见的源语句的情况下获得翻译。这一过程被称作推理。训练与推理之间有一个明确的区分（测试）：在推理时，我们只访问源语句，即 encoder_inputs。解码的方式有很多种，常见的有greedy 解码和束搜索解码（beam-search）。</p>
 <p>我们知道在Seq2Seq模型的最终目的是希望生成的序列发生的概率最大，也就是生成序列的联合概率最大。 实际做的时候有两种算法进行 decoder。</p>
@@ -428,18 +428,21 @@
 <h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>在英文翻译中，将英文输入到 Encoder 中，Decoder 输出中文。<br>在图像标注中，将图像特征输入到 Encoder 中，Decoder 输出一段文字对图像的描述。<br>在 QA 系统中，将提出的问题输入 Encoder 中，Decoder 输出对于问题的回答。</p>
 <h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong> Exposure Bias：</strong></p>
 <p>问题描述：Seq2Seq模型训练的过程中，编码部分的下一个时刻的输出，是需要根据上一个时刻的输出和上一个时刻的隐藏状态和语义变量Ci.此时上一个时刻的输出使用的是真实的token。而在验证Seq2Seq模型的时候，由于不知道上一个时刻的真实token，上一个时刻的输出使用的是上上个时刻的预测的输出token。这将引发Exposure Bias(曝光偏差问题)。</p>
-<p>一种解决思路：使用Beam Search的Encoder的方式也能一定程度上降低Exposure Bias问题，因为其考虑了全局解码概率，而不仅仅依赖与前一个词的输出，所以模型前一个预测错误而带来的误差传递的可能性就降低了</p>
+<p>使用真实 token 本身的行为叫做 teacher forcing。</p>
+<p>一种解决思路：使用Beam Search的Encoder的方式也能一定程度上降低Exposure Bias问题 （该问题可以理解为过分的依赖上一个真实的 token 或者说标签），因为其考虑了全局解码概率，而不仅仅依赖与前一个词的输出，所以模型前一个预测错误而带来的误差传递的可能性就降低了</p>
 <p>exposure bias 的定义：<br>RNN 在 training 时接受 ground truth input，但 testing 时却接受自己之前的 output，这两个 setting不一致会导致 error accumulate<br>解决思路：<br>为了解决 exposure bias 问题，提出了  scheduled sampling，即在先前的 GroundTrue 单词和先前产生的单词之间随机选择，已经成为适合基于RNN的模型的当前主要训练程序。 然而，它只能减轻  exposure bias，但不能很大程度上解决它。</p>
 <p><strong> OOV 和低频词</strong></p>
 <p>问题描述：OOV表示的是词汇表外的未登录词，低频词则是词汇表中的出现次数较低的词。在Decoder阶段时预测的词来自于词汇表，这就造成了未登录词难以生成，低频词也比较小的概率被预测生成。</p>
 <p>一种解决思路：如果 focus 在文本摘录领域，由于其任务的特点，很多OOV 或者不常见的的词其实可以从输入序列中找到，因此一个很自然的想法就是去预测一个开关（switch）的概率 $P(si=1)=f(hi,yi-1,ci) $，如果开关打开了，就是正常地预测词表；如果开关关上了，就需要去原文中指向一个位置作为输出。</p>
 <p><strong> 连续生成重复词的问题</strong></p>
-<p>判断，然后进行惩戒。</p>
+<p>问题需要从本质上进行理解，为什么生成了重复复的词语，就是在目前生成的词语上，下一个词语发现某个词一直是概率最大的。所以一种方式是通过 beam search，给出了多种不同的候选词汇，然后计算整体的句子的概率。</p>
+<p>一种方式是判断然后惩戒，发现生成了和上一个词语相同的词语，那么拒绝这个词语。</p>
 <h3 id="teaching-forcing"><a href="#teaching-forcing" class="headerlink" title="teaching forcing"></a>teaching forcing</h3><p>其实RNN存在着两种训练模式(mode):</p>
 <p>free-running mode: 就是大家常见的那种训练网络的方式: 上一个state的输出作为下一个state的输入。<br>问题： 如果一个unit 出现了garbage ，那么必定是会影响后面一片 unit 的学习效果；造成了不收敛</p>
 <p><img src="https://i.loli.net/2019/07/30/5d40530f9fdc224289.png" alt="1.png"></p>
 <p>teacher-forcing mode: 使用目标语言中的实际输出作为 decoder 的输入。<br>优点： 训练变得稳定，快速的收敛<br>缺点：效果并不是那么好，因为在 test 的时候，是没有ground true 的支持，所以模型就效果很差。</p>
-<p>常见的几种处理手段：<br>集束搜索（beam search）：产生多个候选词，优化输出序列。实际上是一种剪枝后的深度优先搜索算法。<br>计划学习（curriculum learning）：<br>总的思想，训练开始是 teacher forcing mode，然后随着训练的过程，慢慢降低 ground true的频率。<br>定期采样Scheduled Sampling：</p>
+<p>常见的几种处理手段：<br>集束搜索（beam search）：产生多个候选词，优化输出序列。实际上是一种剪枝后的深度优先搜索算法。<br>计划学习（curriculum learning）：<br>总的思想，训练开始是 teacher forcing mode，然后随着训练的过程，慢慢降低 ground true的频率。</p>
+<p><strong>定期采样Scheduled Sampling：</strong>（这个又是一种中和策略，需要调参）</p>
 <p><img src="https://i.loli.net/2019/07/30/5d40530e2104e71958.png" alt="2.png"></p>
 <p>随机的使用目标语言的输出和 decoder 预测的输出。</p>
 <p>相对于 beam search而言，每个时刻只是选择 top1的那种，类似一种求解局部最优解，实际上是一种贪心算法。</p>

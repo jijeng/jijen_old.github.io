@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://upload.cc/i1/2019/08/04/U3acVl.jpg">
 <meta property="og:image" content="https://upload.cc/i1/2019/08/04/GKfPiI.jpg">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/c8c7e53e5ed4489e.jpg">
-<meta property="og:updated_time" content="2019-08-04T06:33:34.596Z">
+<meta property="og:updated_time" content="2019-08-07T09:04:52.296Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LSTM">
 <meta name="twitter:description" content="主要介绍 LSTM 的概念和网络结构。">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-04T14:33:34+08:00">
-                2019-08-04
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-07T17:04:52+08:00">
+                2019-08-07
               </time>
             
           </span>
@@ -402,18 +402,18 @@
 </ul>
 <h3 id="长期依赖-Long-Term-Dependencies-的问题"><a href="#长期依赖-Long-Term-Dependencies-的问题" class="headerlink" title="长期依赖(Long Term Dependencies)的问题"></a>长期依赖(Long Term Dependencies)的问题</h3><p>有时候，我们只需要看最近的信息，就可以完成当前的任务。比如，考虑一个语言模型，通过前面的单词来预测接下来的单词。如果我们想预测句子“the clouds are in the sky”中的最后一个单词，我们不需要更多的上下文信息——很明显下一个单词应该是sky。 RNN 是可以被用来进行这样问题的训练学习。</p>
 <p>然而，有时候我们需要更多的上下文信息。比如，我们想预测句子“I grew up in France… I speak fluent French”中的最后一个单词。不幸的是，随着距离的增大，RNN对于如何将这样的信息连接起来无能为力。</p>
-<h3 id="LSTM-中的基本概念"><a href="#LSTM-中的基本概念" class="headerlink" title="LSTM 中的基本概念"></a>LSTM 中的基本概念</h3><p>LSTM 是用来解决RNN 中的梯度消失/ 梯度爆炸问题的，可以处理 long-term sequence了</p>
+<h3 id="LSTM-中的基本概念"><a href="#LSTM-中的基本概念" class="headerlink" title="LSTM 中的基本概念"></a>LSTM 中的基本概念</h3><p>LSTM 是用来解决RNN 中的梯度消失/ 梯度爆炸问题的，可以处理 long-term sequence了。</p>
 <p>门（gate ）定义： gate 实际上就是一层全连接层，输入是一个向量，输出是一个 0到1 之间的实数向量。公式如下：<br>$$<br>g ( \mathbf { x } ) = \sigma ( W \mathbf { x } + \mathbf { b } )<br>$$</p>
 <p>遗忘门（forget gate）<br>它决定了上一时刻的单元状态 $c_{t-1} $有多少保留到当前时刻$ c_t$<br>输入门（input gate）<br>它决定了当前时刻网络的输入 $x_t$ 有多少保存到单元状态 $c_t$<br>输出门（output gate）<br>控制单元状态$ c_t $有多少输出到 LSTM 的当前输出值 $h_t$</p>
 <h3 id="LSTM网络"><a href="#LSTM网络" class="headerlink" title="LSTM网络"></a>LSTM网络</h3><p>在普通的RNN中，重复模块结构非常简单，例如只有一个tanh层。</p>
 <p><img src="https://s2.ax1x.com/2019/08/04/eyYqm9.jpg" alt="eyYqm9.jpg"></p>
 <p>LSTM也有这种链状结构，不过其重复模块的结构不同。LSTM的重复模块中有4个神经网络层，并且他们之间的交互非常特别。</p>
 <p><img src="https://s2.ax1x.com/2019/08/04/eyYLwR.png" alt="eyYLwR.png"></p>
-<h3 id="LSTM分步详解"><a href="#LSTM分步详解" class="headerlink" title="LSTM分步详解"></a>LSTM分步详解</h3><p>LSTM的第一步是决定我们将要从元胞状态中扔掉哪些信息。遗忘门观察$h_{t−1}$和x_t，对于元胞状态C_{t−1}中的每一个元素，输出一个0-1之间的数。1表示“完全保留该信息”，0表示“完全丢弃该信息”。</p>
-<p><img src="https://i.postimg.cc/Fs0yV2hX/4.jpg" alt=""></p>
+<h3 id="LSTM分步详解"><a href="#LSTM分步详解" class="headerlink" title="LSTM分步详解"></a>LSTM分步详解</h3><p>LSTM的第一步是决定我们将要从元胞状态中扔掉哪些信息。遗忘门观察$h_{t−1}$和 $x_t$，对于元胞状态 $C_{t−1} $中的每一个元素，输出一个0-1之间的数。1表示“完全保留该信息”，0表示“完全丢弃该信息”。</p>
+<p><img src="https://i.postimg.cc/Fs0yV2hX/4.jpg" alt="4.jpg"></p>
 <p>下一步是决定我们将会把哪些新信息存储到元胞状态中。这步分为两部分。首先，有一个叫做“输入门(Input Gate)”的Sigmoid层决定我们要更新哪些信息。接下来，一个tanh层创造了一个新的候选值，$\tilde { C } _ { t }$，该值可能被加入到元胞状态中。在下一步中，我们将会把这两个值组合起来用于更新元胞状态。</p>
 <p><img src="https://i.postimg.cc/FHmjWDKd/5.jpg" alt=""></p>
-<p>现在我们该更新旧元胞状态C_{t−1}到新状态C_t了。上面的步骤中已经决定了该怎么做，这一步我们只需要实际执行即可。</p>
+<p>现在我们该更新旧元胞状态 $C_{t−1} $到新状态 $C_t$了。上面的步骤中已经决定了该怎么做，这一步我们只需要实际执行即可。</p>
 <p><img src="https://upload.cc/i1/2019/08/04/U3acVl.jpg" alt="img"><br>最后，我们需要决定最终的输出。输出将会基于目前的元胞状态，并且会加入一些过滤。首先我们建立一个Sigmoid层的输出门(Output Gate)，来决定我们将输出元胞的哪些部分。然后我们将元胞状态通过tanh之后（使得输出值在-1到1之间），与输出门相乘，这样我们只会输出我们想输出的部分。</p>
 <p><img src="https://upload.cc/i1/2019/08/04/GKfPiI.jpg" alt="img"></p>
 <p>优点：</p>
