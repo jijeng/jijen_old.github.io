@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="The similarity measure is the measure of how much alike two data objects are. Similarity measure in a data mining context is a distance with dimensions representing features of the objects. If this di">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-29T10:49:48.000Z">
+<meta property="og:updated_time" content="2019-08-08T12:04:17.888Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Similarity Measures">
 <meta name="twitter:description" content="The similarity measure is the measure of how much alike two data objects are. Similarity measure in a data mining context is a distance with dimensions representing features of the objects. If this di">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-29T18:49:48+08:00">
-                2019-07-29
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-08T20:04:17+08:00">
+                2019-08-08
               </time>
             
           </span>
@@ -390,7 +390,7 @@
 <p>Applications: <strong> Where data is continuous or numerical </strong>. Also knows as L2 Norm famously. In an n dimensional space between two vectors x and y the formula is simply the square root of the sum of the square distance:</p>
 <p>$$<br>d \left( \left[ x _ { 1 } , x _ { 2 } , \ldots , x _ { n } \right] , \left[ y _ { 1 } , y _ { 2 } , \ldots , y _ { n } \right] \right) = \sqrt { \sum _ { i = 1 } ^ { n } \left( x _ { i } - y _ { i } \right) ^ { 2 } }<br>$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> *</span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">euclidean_distance</span><span class="params">(x,y)</span>:</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> sqrt(sum(pow(a-b,<span class="number">2</span>) <span class="keyword">for</span> a, b <span class="keyword">in</span> zip(x, y)))</span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> euclidean_distance([<span class="number">0</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">7</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
-<p>适用范围：通用型，在连续稠密的向量计算中相比更好。</p>
+<p>适用范围：通用型，在连续稠密的向量计算中相比更好。使用这个 matrix 的时候，最好是将数据规范化，一种原因在于 这个是乘方的运算，规范化之后误差是不至于太大。</p>
 <h3 id="Manhattan-distance"><a href="#Manhattan-distance" class="headerlink" title="Manhattan distance"></a>Manhattan distance</h3><p>This Manhattan distance metric is also known as Manhattan length, rectilinear distance, L1 distance or L1 norm, city block distance, Minkowski’s L1 distance, taxi-cab metric, or city block distance.</p>
 <p>Applications:  <strong> can be used if the dimensions are continuous or numeric.</strong> This distance measure is very similar to Euclidean but it is a sum of the absolute difference of every dimension rather than the sum of squares.</p>
 <p>$$<br>d = \sum _ { i = 1 } ^ { n } \left| x _ { i } - y _ { i } \right|<br>$$</p>
