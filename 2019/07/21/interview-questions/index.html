@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要总结一下在面试过程中遇到的非技术类的问题（自用，已加密）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-04T06:55:20.609Z">
+<meta property="og:updated_time" content="2019-08-10T13:45:33.519Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Interview Questions">
 <meta name="twitter:description" content="主要总结一下在面试过程中遇到的非技术类的问题（自用，已加密）">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-04T14:55:20+08:00">
-                2019-08-04
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-10T21:45:33+08:00">
+                2019-08-10
               </time>
             
           </span>
@@ -455,7 +455,10 @@
 <ol start="9">
 <li>最后的发问？<br>你们小组是干什么，有什么产品？<br>实习内容主要干什么？（这两个问题是不一样的）</li>
 </ol>
-<h2 id="简历上的技术类问题"><a href="#简历上的技术类问题" class="headerlink" title="简历上的技术类问题"></a>简历上的技术类问题</h2><ol>
+<h2 id="小抄（简历上的面试问题）"><a href="#小抄（简历上的面试问题）" class="headerlink" title="小抄（简历上的面试问题）"></a>小抄（简历上的面试问题）</h2><p><strong>腾讯新闻的实习经历</strong></p>
+<p>绝对提高和相对提高：假如之前的水平是a，然后之后的水平是b，那么绝对提高就是 (b -a); 相对提高 (b -a) /a *100% </p>
+<p>faiss 的介绍<br>首先使用 index对于向量进行预处理，然后选择不同的模式. 主要讲的是三种模式，一个维度是简单模式，适合在小数据上进行计算 欧氏距离；一个维度是加快检索速度，这种模式下是需要提前的train，其基本的思路对向量进行聚类，当然文中说的是 “细胞”，建立倒排索引，然后检索的时候，搜索这个“细胞”内 和周围的“细胞” 的id 的集合，就可以返回前 K 个最相近的结果；最后一个维度是减少内存的使用，上面两种都是使用的完整的向量，这个模式下是使用的压缩向量，可以使用PCA 进行实现，当然这个模式下得到的结果也是近似解。还有两种计算的上的优化，对于向量进行分段计算，这种可以实现并行，并且支持任务在GPU 上进行运算。</p>
+<ol>
 <li>经常使用的框架 和模型？<br>中文 nltk (Natural Language Toolkit — NLTK 3.4.4 documentation), 中文分词 jieba hanlp stanford nlp bert<br>英文 nltk genism  bert<br>nltk 和 gensim 自然语言工具包 实现了很多nlp 中的算法，比如tfidf</li>
 </ol>
 <p>深度学习框架<br>keras  tensorflow pytorch</p>
@@ -472,7 +475,27 @@
 <p>universal sentence encoder</p>
 <p>上面那个是 facebook 团队出的，然后这个是 google 出的，主要的区别在于使用 transformer 代替bi-lstm 作为encoder。 训练的时候，既进行了有监督的学习，又进行了无监督的训练。</p>
 <p>图像处理和nlp 的差别：<br>图像是连续实数空间，而nlp 处理的是离散的数据。图像中的pixel 是连续的，而文本是离散的token 表示。</p>
-<p>图像领域中的数据增强?</p>
+<p><strong>文章去重</strong></p>
+<p>参加的一个课题项目，针对某个特定的行业，比如房地产、互联网，基于大数据，对网页或者文章进行分析，使用数据挖掘的手段，捕捉热点，然后为企业或者个人提供事件或者品牌的情感分析、品牌分析。这个是大的项目背景。</p>
+<p>我参与的是在于对网页或者网页的去重工作，因为之后的文章分析的指标计算，比如流行度，都是比较依赖于数据的准确性。数据的来源：新闻（搜狐网、新浪网）电子报纸，app 新闻，分成不同类别的新闻，比如科技、教育、金融和体育。每条数据由标题、站点、url、发布时间、内容、阅读量、评论量等组成，数据量是百万级别的。其中内容部分是由500 到2000不等的字数组成。步骤的话，先是文本的预处理，提取关键词，然后使用simhash 或者minhash 进行计算，重复文章的集合，最后去掉重复的文章。</p>
+<p>优化：多线程，字典（有一些品牌类的，人名类，需要进行人工的添加、新词发现，网络词汇）</p>
+<p>如何去考察最后去重的效果，一般来说，simhash 中的距离函数是汉明距离，这个在3 以内，都是可以认为是相似的文章。当然对于定量的评价的话，有一个标注的小的测试集，然后可以在上面进行 baseline的验证。</p>
+<p><strong>Home credit default risk</strong></p>
+<p>尽可能的从业务本身，提取更多可解释、稳定的特征。比如在 6张子表中，是用户的行为数据，如果对于最后的违约概率来说，时间就显得比较重要，用户的最近几个月的消费水平和长期的消费水平分别对应的是近期行为和长期行为，这个对于 违约概率的影响也是不同的。所以需要尽可能地懂数据，然后从这些维度提取可解释的特征。<br>当然最原始的数据中有一些未标明的数据，进行一下交叉和组合也是统计学中经常使用到的手段。</p>
+<p>调参也是技术活，常常使用Grid search 和Random search</p>
+<p>这个也是可以展开的：<br>domain： 所有的超参数及其值 的dictionary（键值对）<br>Optimization algorithm:  如何去选择下一组 超参数。<br>目标函数：这个是模型中的目标函数<br>results history： 目标函数和 一组超参数的对应关系</p>
+<p>关于 results history 的使用就是 random search 和基于贝叶斯方式搜索的区别，前者没有使用这种对应的关系，后者有利用这种关系。 贝叶斯，p(目标函数 | 一组超参数)。</p>
+<p><strong>pygen 项目</strong></p>
+<p>faker 中生成的信息是单列的，个人信息之间是没有联系的，所以想要用在机器学习训练的时候比较难。<br>关键技术：<br>中文名字有很强的性别属性。例如名字中带有“杰”“志”“宏”等字的一般为男性，带有“琬”“佩”“梅”等字的一般为女性。当然也有一些比较中性的字，例如“文”“安”“清”等，比较难猜测性别，关于这点会在另一个博客中展开，请期待。</p>
+<p><strong> gan 论文</strong></p>
+<p>D 网络在判别的时候，是从逼真程度上进行判别的，并不是从生成图像多样性上进行判别的，并且是无法从多样性上进行判别的，因为输入到D 网络中的是一个样本或者说是一个 batch的样本，是很难得到生成图像的多样性这个角度的。</p>
+<p>同理 G 网络也只是考虑单个的生成图像，对于G 网络图像的多样性是没有考虑在内的。</p>
+<p>有时候也会在训练过程中也会利用这种性质，比如说只是为了得到一张或者几张非常逼真好看的图像，而不会很在乎最后是否生成了多样性的图像。</p>
+<p>孪生网络最初是用来做指纹的验证，然后扩展到 cv 和nlp 中都有用来做相似度方面的计算。在论文中的是用来作为生成图像之间相似度的计算，该网络中两个 CNN 用于提取特征，然后基于 欧式距离进行计算，输出label 是0-1 之间的数字， 0表示最相近，1表示不想近。<br>损失函数使用的是 对比损失函数，有点类似交叉熵的感觉，分段函数， y =0 的时候是平方损失函数，y =1 的时候，是合页损失函数。</p>
+<p>主要的是做了以下的优化：<br>label 浮点化，Label Smoothing :这种距离的计算是通过聚类实现的，在同一个簇中或者相邻簇中的距离小，向着0 靠近；在不同的簇之间的相距大，不超过1.</p>
+<p>网络结构上有两点优化：<br>对于对抗生成网络的D 网路的权重进行正则化，具体来说是 谱归一化，使其符合lipschitz 约束，其中超参数 K 取1.即 D(x) -D(y) 的欧式距离是不大于 x-y 的欧式距离的。</p>
+<p>加入了 self -attention机制。</p>
+<h2 id="大疆笔试题"><a href="#大疆笔试题" class="headerlink" title="大疆笔试题"></a>大疆笔试题</h2><p>图像领域中的数据增强?</p>
 <p>一种是收集更多的数据，一种是根据现有的数据进行增强。<br>数据增强，常用的方式，就是旋转图像，剪切图像，改变图像色差,扭曲图像特征，改变图像尺寸大小，增强图像噪音（一般使用高斯噪音，盐椒噪音）等.</p>
 <p>逻辑回归的目标函数：log 似然函数<br>$ p(y)$， 先验概率：一个事件发生的概率<br>$ p(y|x) $，后验概率：一个事件在另一个事件发生条件下的条件概率</p>
 <p>计算三个稠密矩阵 A、B、C 的乘积 ABC，假定三个矩阵的尺寸分别为 $m \times n $, $n \times p $, $p \times q$，且 $m&lt;n&lt;p&lt;q $,以下计算效率最高的是<br>解释：<br>$a \times b$ 矩阵和$ b \times c $矩阵相乘，每次行乘列运算需要 b 次乘法和 b-1 次加法，即总共需要 $(2b-1) \times a \times c $ 次运算，时间复杂度为$ O(a \times b \times c) $<br>1.AB 的时间复杂度为 $O(m \times n \times p)$ ，此时形成 $m \times p$ 的新矩阵<br>2.(AB)C 的时间复杂度为 $O(m \times p \times q) $</p>
@@ -627,7 +650,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -649,7 +672,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -698,7 +721,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#非技术类问题"><span class="nav-number">1.</span> <span class="nav-text">非技术类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简历上的技术类问题"><span class="nav-number">2.</span> <span class="nav-text">简历上的技术类问题</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#非技术类问题"><span class="nav-number">1.</span> <span class="nav-text">非技术类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小抄（简历上的面试问题）"><span class="nav-number">2.</span> <span class="nav-text">小抄（简历上的面试问题）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大疆笔试题"><span class="nav-number">3.</span> <span class="nav-text">大疆笔试题</span></a></li></ol></div>
             
 
           </div>

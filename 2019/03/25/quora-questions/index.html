@@ -89,7 +89,9 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/08/AG4Y8NfgnPwsZJO.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/08/e7n3EF.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/08/e7nUjx.png">
-<meta property="og:updated_time" content="2019-08-08T12:37:23.714Z">
+<meta property="og:image" content="https://i.loli.net/2019/08/10/IBuWOkUMyHAnt3K.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/10/6YJtTZdLI9cb8vj.jpg">
+<meta property="og:updated_time" content="2019-08-10T10:44:53.698Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Finding Similar Quora Questions">
 <meta name="twitter:description" content="介绍 kaggle 上 finding similar quora quesitons 竞赛，作为一次总结。">
@@ -314,8 +316,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-08T20:37:23+08:00">
-                2019-08-08
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-10T18:44:53+08:00">
+                2019-08-10
               </time>
             
           </span>
@@ -404,7 +406,19 @@
 <p><img src="https://i.loli.net/2019/08/08/AG4Y8NfgnPwsZJO.png" alt="1.png"></p>
 <p>In terms of questions, everything looks as I would expect here. Most questions only appear a few times, with very few questions appearing several times (and a few questions appearing many times). One question appears more than 160 times, but this is an outlier.</p>
 <p>训练数据集中句子word 的个数 的分布，可以看出一般是在20 左右的长度 word 的句子是最多的。<br><img src="https://s2.ax1x.com/2019/08/08/e7n3EF.png" alt="e7n3EF.png"></p>
-<p>训练数据集中 character 个数的分布<br><img src="https://s2.ax1x.com/2019/08/08/e7nUjx.png" alt="e7nUjx.png"><br>注意到两个分布都是右偏态分布（正偏态），从数学的角度理解 mean &gt; median. 同理也有左偏态分布。偏态分布又是相对于正太分布而言的。这种偏态的定义，是以尾部命名，右偏态或者正偏态的尾部，集中在右侧。</p>
+<p>训练数据集中 character 个数的分布<br><img src="https://s2.ax1x.com/2019/08/08/e7nUjx.png" alt="e7nUjx.png"></p>
+<p>注意到两个分布都是右偏态分布（正偏态），从数学的角度理解 mean &gt; median. 同理也有左偏态分布。偏态分布又是相对于正太分布而言的。这种偏态的定义，是以尾部命名，右偏态或者正偏态的尾部，集中在右侧。</p>
+<p>由上面的例子可以看出，不管是正偏态分布还是负偏态分布，由于受偏态分布的影响，众数与均值值发生变化，而均值的影响更大。</p>
+<p><img src="https://i.loli.net/2019/08/10/IBuWOkUMyHAnt3K.jpg" alt="1.jpg"></p>
+<p>中位数仅与样本总数有关，即在整个样本的中间位置，而在正偏态分布，大部分值在峰值（众数）的右边，故中位数在众数的右边（众数＜中位数）</p>
+<p>中位数与均值的比较了？由于均值受极大值的影响变大而中位数不受影响，故均值大于中位数（中位数＜均值）</p>
+<p>所以 众数 &lt; 中位数 &lt; 均值</p>
+<p><img src="https://i.loli.net/2019/08/10/6YJtTZdLI9cb8vj.jpg" alt="2.jpg"></p>
+<p>首先众数与中位数的比较</p>
+<p>这个分布是左偏的，大部分值是在峰值（众数）的左边，故众数大于中位数</p>
+<p>均值与中位数的比较</p>
+<p>由于是负偏态分布，极小值对均值的影响大（极小值对均值拉低），故均值小于中位数</p>
+<p>所以 均值＜中位数＜众数</p>
 <p><strong> training data 和 test data 中的正负样本有很大的差别</strong></p>
 <p>However, before I do this, I would like to rebalance the data that XGBoost receives, since we have 37% positive class in our training data, and only 17% in the test data. 采取的措施 Rebalancing the Data (这里所谓的 rebalance data 就是将原始的一部分数据集去掉，减少 正样例的个数)。</p>
 <p>原因有两点：</p>
@@ -594,7 +608,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -616,7 +630,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
