@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/2cf84d89fe5fc1a4.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/82e16ed9bc913351.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/9e79af473abb92ec.png">
-<meta property="og:updated_time" content="2019-08-07T06:43:36.757Z">
+<meta property="og:updated_time" content="2019-08-14T02:22:02.111Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP Papers Reading-Machine Translation">
 <meta name="twitter:description" content="简单介绍一下 翻译系统的发展过程 然后附上两篇该方面论文的阅读笔记， 即Sequence to Sequence Learning with Neural Network 和 Effective Approaches to Attention-based Neural Machine Translation。">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-07T14:43:36+08:00">
-                2019-08-07
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-14T10:22:02+08:00">
+                2019-08-14
               </time>
             
           </span>
@@ -426,7 +426,7 @@
 <p><strong>参考文献</strong></p>
 <p><a href="https://machinelearningmastery.com/introduction-neural-machine-translation/" target="_blank" rel="noopener">introduction-neural-machine-translation</a><br><a href="https://machinelearningmastery.com/attention-long-short-term-memory-recurrent-neural-networks/" target="_blank" rel="noopener">attention-long-short-term-memory-recurrent-neural-networks</a></p>
 <h2 id="两篇machine-translation-论文"><a href="#两篇machine-translation-论文" class="headerlink" title="两篇machine translation 论文"></a>两篇machine translation 论文</h2><p><strong> Sequence to Sequence Learning with Neural Network</strong></p>
-<p> 研究目的：DNNs需要输入、输出维度是已知和固定的。而语音识别、机器翻译、问答系统等序列到序列问题的序列长度是未知的。DNN有一个明显的缺陷：DNN只能处理输入、输出向量维度是定长的情形。对于输入、输出可变长的情况，使用RNN-Recurrent Neural Network更易求解。</p>
+<p> 研究目的：CNNs需要输入、输出维度是已知和固定的。而语音识别、机器翻译、问答系统等序列到序列问题的序列长度是未知的。CNN有一个明显的缺陷：CNN只能处理输入、输出向量维度是定长的情形。对于输入、输出可变长的情况，使用RNN-Recurrent Neural Network更易求解。</p>
 <p>论文贡献之一在于网络结构上：通过学习编码一个可变长度的序列成一个固定长度的向量表示，解码一个给定的固定长度的向量成一个可变长度的序列。实现的时候首先将source sequence通过一个encode LSTM map成一个vector，然后再通过另一个decoder LSTM进行翻译得出output，这也恰恰是image caption里的思想呀（通过CNN将输入图像conv成一个vector或者feature map，然后再输入LSTM），原来大体是这样，接着看。</p>
 <p>另外还有一个小的策略：LSTM在长句翻译中的表现也不俗。这归功于对源序列中词序的逆转。虽然LSTM能够基于长期的相关性处理问题，但我们发现在把原句序列逆转的情况下LSMT能学习得更加出色。逆转之后，LSTM测试的复杂度从5.8降至4.7，并且在BLEU上的得分从25.9提升至30.6。</p>
 <p> 不足之处：其他方面都比较普通，或者说很多论文中都有提到过，比如LSTM可以解决vanishing的问题但没法解决gradient exploding的问题，因此採取gradient crop。模型採用了SGD without momentum。实用的LSTM结构式Grave的《Generating sequence from RNN》中的LSTM结构，等等。</p>

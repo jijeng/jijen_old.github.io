@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要总结一下在面试过程中遇到的非技术类的问题（自用，已加密）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-10T13:45:33.519Z">
+<meta property="og:updated_time" content="2019-08-13T14:53:02.260Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Interview Questions">
 <meta name="twitter:description" content="主要总结一下在面试过程中遇到的非技术类的问题（自用，已加密）">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-10T21:45:33+08:00">
-                2019-08-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-13T22:53:02+08:00">
+                2019-08-13
               </time>
             
           </span>
@@ -458,6 +458,8 @@
 <h2 id="小抄（简历上的面试问题）"><a href="#小抄（简历上的面试问题）" class="headerlink" title="小抄（简历上的面试问题）"></a>小抄（简历上的面试问题）</h2><p><strong>腾讯新闻的实习经历</strong></p>
 <p>绝对提高和相对提高：假如之前的水平是a，然后之后的水平是b，那么绝对提高就是 (b -a); 相对提高 (b -a) /a *100% </p>
 <p>faiss 的介绍<br>首先使用 index对于向量进行预处理，然后选择不同的模式. 主要讲的是三种模式，一个维度是简单模式，适合在小数据上进行计算 欧氏距离；一个维度是加快检索速度，这种模式下是需要提前的train，其基本的思路对向量进行聚类，当然文中说的是 “细胞”，建立倒排索引，然后检索的时候，搜索这个“细胞”内 和周围的“细胞” 的id 的集合，就可以返回前 K 个最相近的结果；最后一个维度是减少内存的使用，上面两种都是使用的完整的向量，这个模式下是使用的压缩向量，可以使用PCA 进行实现，当然这个模式下得到的结果也是近似解。还有两种计算的上的优化，对于向量进行分段计算，这种可以实现并行，并且支持任务在GPU 上进行运算。</p>
+<p>什么是 AB test?<br>在对产品进行A/B测试时，我们可以为同一个优化目标（例如优化购买转化率）制定两个方案（比如两个页面），让一部分用户使用A 方案，同时另一部分用户使用 B 方案，统计并对比不同方案的转化率、点击量、留存率等指标，以判断不同方案的优劣并进行决策，从而提升转化率。</p>
+<p>过渡到我这个项目，就是一部分用户使用原来的版本的 topK  的模型，另外一部分用户使用我这个版本 topk 的模型。</p>
 <ol>
 <li>经常使用的框架 和模型？<br>中文 nltk (Natural Language Toolkit — NLTK 3.4.4 documentation), 中文分词 jieba hanlp stanford nlp bert<br>英文 nltk genism  bert<br>nltk 和 gensim 自然语言工具包 实现了很多nlp 中的算法，比如tfidf</li>
 </ol>
@@ -475,6 +477,10 @@
 <p>universal sentence encoder</p>
 <p>上面那个是 facebook 团队出的，然后这个是 google 出的，主要的区别在于使用 transformer 代替bi-lstm 作为encoder。 训练的时候，既进行了有监督的学习，又进行了无监督的训练。</p>
 <p>图像处理和nlp 的差别：<br>图像是连续实数空间，而nlp 处理的是离散的数据。图像中的pixel 是连续的，而文本是离散的token 表示。</p>
+<p><strong>对于 bert transformer 的介绍？</strong></p>
+<p>如果想要讲解 bert，那么就得讲解 transformer，如果想要讲解 transformer，那么就得讲解 self-attention，如果想要讲解 self-attention，那么就得说下 attention机制。 直接从 transformer 说起，大的结构还是 encoder、decoder 的结构。encoder 是6 个两层结构， decoder 也是 6个三层结构。 </p>
+<p>bert 中有几个技术点是需要讲解： layer normalization （主要 vs batch normalization）、position embedding （在encoder 中是结合了 word embedding 一块作为输入的）、masked attention（当predict t 时刻的word的时候，只能看到  t 之前的情况，将 t 之后的word 进行了 mask）、multi-head attention（类似 图像中的多个 filter ）、self-attention 就不多说了</p>
+<p>从 transformer 到 bert 又是一个比较复杂的模型组合的工作。</p>
 <p><strong>文章去重</strong></p>
 <p>参加的一个课题项目，针对某个特定的行业，比如房地产、互联网，基于大数据，对网页或者文章进行分析，使用数据挖掘的手段，捕捉热点，然后为企业或者个人提供事件或者品牌的情感分析、品牌分析。这个是大的项目背景。</p>
 <p>我参与的是在于对网页或者网页的去重工作，因为之后的文章分析的指标计算，比如流行度，都是比较依赖于数据的准确性。数据的来源：新闻（搜狐网、新浪网）电子报纸，app 新闻，分成不同类别的新闻，比如科技、教育、金融和体育。每条数据由标题、站点、url、发布时间、内容、阅读量、评论量等组成，数据量是百万级别的。其中内容部分是由500 到2000不等的字数组成。步骤的话，先是文本的预处理，提取关键词，然后使用simhash 或者minhash 进行计算，重复文章的集合，最后去掉重复的文章。</p>
