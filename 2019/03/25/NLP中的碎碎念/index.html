@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="关键词提取,oov,中文分词," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
+<meta name="keywords" content="关键词提取,oov,中文分词">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP中的碎碎念">
+<meta property="og:url" content="http://yoursite.com/2019/03/25/NLP中的碎碎念/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/03/ZttIoD.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/1580a69c2c0a91d8.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/02/ZYVtrq.png">
+<meta property="og:image" content="https://upload.cc/i1/2019/07/02/dP2n86.png">
+<meta property="og:image" content="https://i.postimg.cc/KYJB8Xxr/image.png">
+<meta property="og:image" content="https://i.postimg.cc/283DHMHb/2.jpg">
+<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/f679cd0e83891f4e.png">
+<meta property="og:updated_time" content="2019-08-03T02:51:05.728Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP中的碎碎念">
+<meta name="twitter:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/07/03/ZttIoD.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/25/NLP中的碎碎念/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>NLP中的碎碎念 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/NLP中的碎碎念/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NLP中的碎碎念</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T21:11:40+08:00">
+                2019-03-25
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-03T10:51:05+08:00">
+                2019-08-03
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/25/NLP中的碎碎念/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/25/NLP中的碎碎念/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。</p>
+<a id="more"></a>
+<h2 id="关键词提取"><a href="#关键词提取" class="headerlink" title="关键词提取"></a>关键词提取</h2><h3 id="TF-IDF"><a href="#TF-IDF" class="headerlink" title="TF-IDF"></a>TF-IDF</h3><p>这个是可以参看之前自己写的一个<a href="https://jijeng.github.io/2018/08/23/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%AF%94%E8%BE%83%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" target="_blank" rel="noopener">博客</a></p>
+<h3 id="卡方分布"><a href="#卡方分布" class="headerlink" title="卡方分布"></a>卡方分布</h3><p>卡方检验是以χ2分布为基础的一种常用假设检验方法。该检验的基本思想是：首先假设H0成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。</p>
+<p>官方定义：</p>
+<p>若k 个随机变量$Z_1$、……、$Z_k $相互独立，且数学期望为0、方差为 1(即服从标准正态分布)，则随机变量X<br>$$<br>X = \sum _ { n = 1 } ^ { k } Z _ { n } ^ { 2 }<br>$$<br>被称为服从自由度为 k 的卡方分布，记作<br>$$<br>X \sim \chi ^ { 2 } ( k )<br>$$</p>
+<p>从直观的角度感受一下自由度k 和图像形状的关系，自由度越大卡方分布越接近正太分布。<br><a href="https://imgchr.com/i/ZttIoD" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/03/ZttIoD.png" alt="ZttIoD.png"></a></p>
+<p><strong> 用于特征选择</strong></p>
+<p>如果文章是否包含“篮球“与文章是否属于体育类别是独立无关的。且一个新闻文章属于体育类别的概率是0.609，那么可以得到下面的表格。假设文章是否包含“篮球“与文章是否属于体育类别是独立无关的，所以不管文章中是不是包含”篮球“，其属于体育类别的概率都是0.609。</p>
+<p>  <strong><em>列联表</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>组别</th>
+<th style="text-align:center">体育</th>
+<th style="text-align:right">非体育</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>包含”篮球“</td>
+<td style="text-align:center">44 * 0.609 = 26.8</td>
+<td style="text-align:right">44 * 0.391 = 17.2</td>
+</tr>
+<tr>
+<td>不包含”篮球“</td>
+<td style="text-align:center">43 * 0.609 = 26.2</td>
+<td style="text-align:right">43 * 0.391 = 16.8</td>
+</tr>
+</tbody>
+</table>
+<p>如果两个分类变量真的是独立无关的，那么四格表的实际值与理论值得差值应该非常小（有差值的原因是因为抽样误差）。那么如何衡量实际值与理论值得差值呢？</p>
+<p><strong><em>步骤</em></strong></p>
+<ul>
+<li>统计每个词的正文档出现频率（A）、负文档出现频率（B）、正文档不出现频率）、负文档不出现频率。<br>-计算每个词的卡方值</li>
+<li>将每个词按卡方值从大到小排序，选取前k个词作为特征，k即特征维数。<br>$$<br>\operatorname { CHI } ( \mathrm { x } , \mathrm { y } ) = \chi ^ { 2 } ( x , y ) = \sum \frac { ( A - T ) ^ { 2 } } { T }<br>$$<br>该公式可以进一步简化成 （其中 x 表示一个特征，y 表示的target）<br>$$<br>\mathrm { CHI } ( \mathrm { x } , \mathrm { y } ) = \chi ^ { 2 } ( x , y ) = \frac { N ( A D - B C ) } { ( A + B ) ( A + C ) ( B + D ) ( C + D ) }<br>$$</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>组别</th>
+<th style="text-align:center">体育</th>
+<th style="text-align:right">非体育</th>
+<th>合计</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>包含”篮球“</td>
+<td style="text-align:center">34  (A)</td>
+<td style="text-align:right">10 (B)</td>
+<td>44 (A+B)</td>
+</tr>
+<tr>
+<td>不包含”篮球“</td>
+<td style="text-align:center">19 (C)</td>
+<td style="text-align:right">24 (D)</td>
+<td>43 (C+D)</td>
+</tr>
+<tr>
+<td>合计</td>
+<td style="text-align:center">53(A +C)</td>
+<td style="text-align:right">34 (B+D)</td>
+<td>87 (N)</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em> 卡方分布的临界值</em></strong></p>
+<p>自由度F = （行数 - 1） * （列数 - 1） = 1，对于四格表，F = 1。</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/1580a69c2c0a91d8.png" alt=""></p>
+<p> 由于自由度F = 1，所以只需要看分布表的第一行。可以看到，随着CHI的增大，原假设成立的概率就越小。因为10.10 &gt; 6.64，所以原假设成立是概率是小于1%。反之，也就是说，原假设不成立（即两个分类变量不是独立无关）的概率大于99%</p>
+<p> <strong><em> 如何应用于特征选择</em></strong><br> CHI值越大，说明两个变量越不可能是独立无关的，也就是说X2越大，两个变量的相关程序也就越高。对于特征变量x1,x2,…,xn，以及分类变量y。只需要计算CHI(x1, y)、CHI(x2, y)、…、CHI(xn, y)，并按照CHI的值从大到小将特征排序，然后选择阈值，大于阈值的特征留下，小于阈值的特征删除。这样就筛选出一组特征子集了，接着使用这组特征子集去训练分类器，然后评估分类器的性能。</p>
+<p>因为只要比较CHI值得相对大小，所以上述的分布表就没用了。</p>
+<p>使用范围：一般是在离散变量上进行使用。</p>
+<p><strong> 另外一个例子</strong></p>
+<p>In the case of classification problems where input variables are also categorical, we can use statistical tests to determine whether the output variable is dependent or independent of the input variables. If independent, then the input variable is a candidate for a feature that may be irrelevant to the problem and removed from the dataset.</p>
+<p>The Pearson’s chi-squared statistical hypothesis is an example of a test for independence between categorical variables.</p>
+<p>Contingency Table<br>For example, the Sex=rows and Interest=columns table with contrived counts might look as follows:<br>下面是一个列联表<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">        Science,	Math,	Art</span><br><span class="line">Male         <span class="number">20</span>,      <span class="number">30</span>,    <span class="number">15</span></span><br><span class="line">Female       <span class="number">20</span>,      <span class="number">15</span>,    <span class="number">30</span></span><br></pre></td></tr></table></figure></p>
+<p>The Pearson’s Chi-Squared test, or just Chi-Squared test for short, is named for Karl Pearson, although there are variations on the test.</p>
+<p>如何去解读这种信息？</p>
+<p>We can interpret the test statistic in the context of the chi-squared distribution with the requisite number of degress of freedom as follows:</p>
+<p>If Statistic &gt;= Critical Value: significant result, reject null hypothesis (H0), dependent.<br>If Statistic &lt; Critical Value: not significant result, fail to reject null hypothesis (H0), independent.<br>The degrees of freedom for the chi-squared distribution is calculated based on the size of the contingency table as:</p>
+<p>degrees of freedom: (rows - 1) * (cols - 1)</p>
+<p>In terms of a p-value and a chosen significance level (alpha), the test can be interpreted as follows:</p>
+<p>If p-value &lt;= alpha: significant result, reject null hypothesis (H0), dependent.<br>If p-value &gt; alpha: not significant result, fail to reject null hypothesis (H0), independent.<br>For the test to be effective, at least five observations are required in each cell of the contingency table.</p>
+<p>case study：</p>
+<p>Chi-square Test for feature selection</p>
+<p>$$<br>X ^ { 2 } = \frac{  {(Observed frequency - Expected frequency)} ^  2  } {  Expected frequency }<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Load libraries </span></span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris </span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectKBest </span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> chi2 </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Load iris data </span></span><br><span class="line">iris_dataset = load_iris() </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Create features and target </span></span><br><span class="line">X = iris_dataset.data </span><br><span class="line">y = iris_dataset.target </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Convert to categorical data by converting data to integers </span></span><br><span class="line">X = X.astype(int) </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Two features with highest chi-squared statistics are selected </span></span><br><span class="line">chi2_features = SelectKBest(chi2, k = <span class="number">2</span>) </span><br><span class="line">X_kbest_features = chi2_features.fit_transform(X, y) </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Reduced features </span></span><br><span class="line">print(<span class="string">'Original feature number:'</span>, X.shape[<span class="number">1</span>]) </span><br><span class="line">print(<span class="string">'Reduced feature number:'</span>, X_kbest.shape[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Original feature number: 4<br>Reduced feature number : 2</p>
+</blockquote>
+<p>而实际应用到特征选择中的时候，我们不需要知道自由度，不要知道卡方分布，我们只需要根据算出来的χ2 进行排序就好了，越大我们就越喜欢！挑选最大的一堆，于是就完成了利用卡方检验来进行特征提取。<br>卡方分布的缺点：<br>没有考虑词频，它只统计文档是否出现词，而不管出现了几次。这会使得他对低频词有所偏袒（因为它夸大了低频词的作用）。</p>
+<p><a href="https://my.oschina.net/u/1779843/blog/889694" target="_blank" rel="noopener">参考一</a><br><a href="https://machinelearningmastery.com/chi-squared-test-for-machine-learning/" target="_blank" rel="noopener">参考二</a></p>
+<h2 id="CBOW和skip-gram"><a href="#CBOW和skip-gram" class="headerlink" title="CBOW和skip-gram"></a>CBOW和skip-gram</h2><p>举一个简单的小例子说明 CBOW和skip-gram的区别：skip-gram 是根据中心词汇然后预测上下文词汇，这个不是一下子输入上下文词汇的，而是一个过程，中心词汇和上下文词汇1 ，中心词汇和上下文词汇2，这样的进行输入。 cbow 和其的区别，在于简单相加了上下文词汇作为一个整体，然后和中心词汇进行输入，所以最后是这样的结果。</p>
+<p>使用skip gram训练的时间更长，但是对于出现频率不高的词汇，效果比较好。但CBOW的训练速度是相对来说比较快一些。</p>
+<h2 id="分词软件"><a href="#分词软件" class="headerlink" title="分词软件"></a>分词软件</h2><p>常见的中文分词服务</p>
+<table>
+<thead>
+<tr>
+<th>分词服务</th>
+<th style="text-align:center">开源/商业</th>
+<th style="text-align:right">支持语言</th>
+<th>词性标注</th>
+<th>命名实体识别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jieba</td>
+<td style="text-align:center">开源</td>
+<td style="text-align:right">Python, Java, C++</td>
+<td>无</td>
+<td>无</td>
+</tr>
+<tr>
+<td>HanLP</td>
+<td style="text-align:center">开源</td>
+<td style="text-align:right">Python，Java， C++</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>StandFord CoreNLP</td>
+<td style="text-align:center">开源</td>
+<td style="text-align:right">Java</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>百度NLP</td>
+<td style="text-align:center">商业</td>
+<td style="text-align:right"></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>阿里NLP</td>
+<td style="text-align:center">商业</td>
+<td style="text-align:right"></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Stanford NLP是由斯坦福大学的 NLP 小组开源的 Java 实现的 NLP 工具包。可以使用python 调用 Stanford NLP 进行中文分词</p>
+<p>HanLP是由一系列模型与算法组成的Java工具包。也可以使用Python调用HanLP进行中文分词。</p>
+<p>结巴分词的算法策略</p>
+<ul>
+<li>基于前缀词典实现高效的词图扫描，生成句子中汉字所有可能成词情况所构成的有向无环图 (DAG)</li>
+<li>采用了动态规划查找最大概率路径, 找出基于词频的最大切分组合</li>
+<li>对于未登录词，采用了基于汉字成词能力的 HMM 模型，使用了 Viterbi 算法</li>
+</ul>
+<p>如果想更加详细的了解这种策略，可以参考<a href="https://bainingchao.github.io/2019/02/13/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E4%B9%8B%E4%B8%AD%E6%96%87%E8%87%AA%E5%8A%A8%E5%88%86%E8%AF%8D/" target="_blank" rel="noopener">这里</a>.</p>
+<h3 id="中文分词"><a href="#中文分词" class="headerlink" title="中文分词"></a>中文分词</h3><p>主要掌握规则的分词方法（逆向最大匹配法（该方法是优于正向的）、有个词频-内连-外 的分词算法， 总共两种算法就可以了）</p>
+<p>中文分词的困难主要体现在：歧义词的切分和未登录词识别。其中后者的影响要远远大于前者的影响。</p>
+<p><img src="https://s2.ax1x.com/2019/07/02/ZYVtrq.png" alt="ZYVtrq.png"></p>
+<p>下面是常见的分词方式，但是并没有说明哪个软件是什么分词方法。<br>（需要掌握两种分词的方式，一种是基于词典的逆向最大匹配，一种是后面新词发现中的基于统计的信息熵算法）</p>
+<p><strong> 基于规则的分词方法</strong></p>
+<p>这种方法又叫作机械分词方法、基于字典的分词方法，它是按照一定的策略将待分析的汉字串与一个“充分大的”机器词典中的词条进行匹配，比如说正向最大匹配法、逆向最大匹配法</p>
+<p><strong> 基于统计的分词方法</strong></p>
+<p>该方法的主要思想：词是稳定的组合，因此在上下文中，相邻的字同时出现的次数越多，就越有可能构成一个词。因此字与字相邻出现的概率或频率能较好地反映成词的可信度。可以对训练文本中相邻出现的各个字的组合的频度进行统计，计算它们之间的互现信息。互现信息体现了汉字之间结合关系的紧密程度。当紧密程 度高于某一个阈值时，便可以认为此字组可能构成了一个词。该方法又称为无字典分词。 比如说CRF 算法。</p>
+<p><strong> 基于语义的分词方法</strong></p>
+<p>语义分词法引入了语义分析，对自然语言自身的语言信息进行更多的处理，如扩充转移网络法、知识分词语义分析法、邻接约束法、综合匹配法、后缀分词法、特征词库法、矩阵约束法、语法分析法等。</p>
+<p> <strong> 逆向最大匹配</strong>分词是中文分词基本算法之一，因为是机械切分，所以它也有分词速度快的优点，且逆向最大匹配分词比起正向最大匹配分词更符合人们的语言习惯。逆向最大匹配分词需要在已有词典的基础上，从被处理文档的末端开始匹配扫描，每次取最末端的i个字符（分词所确定的阈值i）作为匹配字段，若匹配失败，则去掉匹配字段最前面的一个字，继续匹配。而且选择的阈值越大，分词越慢，但准确性越好。这种方法经常被用来解决歧义词的问题，所以单独说一下。</p>
+<p>算法：<br>事先设置一个k值，下面的程序k值设为5，然后从最后一个字开始向前截取k个字，先把这k个字和字典匹配，看能否找到匹配的词语，若不能，则剔除这k个字最左边的字，然后再把这k-1个字与字典匹配…一直到匹配成功，或者前k-1个字都没匹配成功，那就把第k个字当成一个独立的词，然后再向前移动分出来的词的长度，再截取k个字……一直到全部分好词为止。<br>“我爱北京天安门”</p>
+<p>先从后面开始截取k(这里是5)个字，然后把”北京天安门”五个字与字典匹配，字典中没有这个词，然后就去掉”北”字，把剩下的”京天安门”与字典匹配，字典中还是没有这个词，再去掉”京”，然后再把”天安门”与字典匹配，发现匹配到了这个词，于是就把”天安门”划为一个词语，然后指针向前移动三个字。再截取k个字，这里因为就剩下4个字了，所以就截取4个字，把”我爱北京”与字典匹配，没成功，去掉”我”，再把”爱北京”与字典匹配，还是没成功，再去掉”爱”，然后发现”北京”匹配成功，把”北京”划为一个词语，再把指针向前移动两个字，</p>
+<p><strong> CRF算法</strong><br>基本思路是对汉字进行标注训练，不仅考虑了词语出现的频率，还考虑上下文，具备较好的学习能力，因此其对歧义词和未登录词的识别都具有良好的效果。</p>
+<p>近年来，随着硬件计算能力的发展以及词的分布式表示（word embedding）的提出，神经网络可以有效处理许多NLP任务。这类方法对于序列标注任务（如CWS、POS、NER）的处理方式是类似的：将token从离散one-hot表示映射到低维空间中成为稠密的embedding，随后将句子的embedding序列输入到RNN中，用神经网络自动提取特征，Softmax来预测每个token的标签。这种方法使得模型的训练成为一个端到端的过程，而非传统的pipeline （管道，指的是一个包含多步骤的流水式的工作），不依赖于特征工程，是一种数据驱动的方法，但网络种类繁多、对参数设置依赖大，模型可解释性差。</p>
+<p>推荐博客讲解 CRF算法，反正我是没有看懂，哈哈哈。<a href="https://www.cnblogs.com/en-heng/p/6214023.html" target="_blank" rel="noopener">【中文分词】条件随机场CRF</a>, <a href="https://www.cnblogs.com/xlturing/p/10161840.html" target="_blank" rel="noopener">浅谈分词算法（4）基于字的分词方法（CRF）</a> 和 <a href="https://www.unclewang.info/learn/machine-learning/753/" target="_blank" rel="noopener">CRF算法学习——自己动手实现一个简单的CRF分词</a></p>
+<h3 id="分词粒度"><a href="#分词粒度" class="headerlink" title="分词粒度"></a>分词粒度</h3><p>目前，分词主要包含细粒度分词和粗粒度分词两种，在不同的应用场景需要用到不同的粒度。细粒度分词是指将原始语句切分成最基本的词语，而粗粒度分词是指将原始语句中的多个基本词组合起来切成一个词，进而组成语义相对明确的实体。</p>
+<ul>
+<li>原始串：浙江大学坐落在西湖旁边</li>
+<li>细粒度：浙江/大学/坐落/在/西湖/旁边</li>
+<li>粗粒度：浙江大学/坐落/在/西湖/旁边</li>
+</ul>
+<p>举例说明分词粒度和应用场景：<br>对于query为“耐克鞋”来说，词典中是包含这个实体词的，分词的切分结果就是“耐克鞋”。但是，考拉用来建索引的商品描述中，这三个字是没有连续出现的，自然就没有“耐克鞋”对应的文档，这个时候就无法召回结果。那么，这时候你会说那就使用最小粒度的分词就解决这个问题了。相反，某一款商品可能有“参数表”这三个字，如果有最小粒度的分词策略，分词的结果为“参数/表”。很不幸，当query为“表”时，你会发现会召回莫名其妙的结果。一般来说，是使用词频表来进行粒度控制，基本可以解决绝大多数问题。</p>
+<p>搜索引擎展现与粒度：<br>显而易见，粒度越小，展现就越多，建立倒排索引时，索引的长度就越长;粒度的层次越多，索引的数量就越多。一个多，一个长，就对搜索系统的性能构成了极大的考验。搜索引擎并不会对所有小粒度词都建索引，而是选择“更有可能展现相关结果”的小粒度词。所以在一般情况下，切分文本粒度越大，索引越多，相关性越好，但展现越少;切分文本粒度越小，索引越少，相关性越差，但展现越好。</p>
+<p>词频决定分词粒度：<br>具体算法是，当发现一个由多个短词组成的长词时，判断每个短词中最小的词频，如果这个词频还是大于长词的词频，则按该组合进行拆分。如果多种组合，按词频最大的组合拆分。<br>如上面例子，”中央饭店”，中央的词频为1000，饭店为900,饭为200,店为600，而中央饭店为500 。</p>
+<h2 id="OOV"><a href="#OOV" class="headerlink" title="OOV"></a>OOV</h2><p>问题由来：由于词频过小北替换成了 UNK token 或者是在原始的训练数据集中没有出现。</p>
+<p>常见的解决方案：</p>
+<ul>
+<li>subword (n-gram 信息， 这个在英文 西欧语系中比较常见，在中文中不能直接使用，必须先有分词)<br>对于西欧语系的词汇，是可以通过 n-gram；如果推广到中文，那么更加合适使用分词之后的结果作为一个 word，然后每个字作为一个gram<br>在训练过程中，每个n-gram都会对应训练一个向量，而原来完整单词的词向量就由它对应的所有n-gram的向量求和得到。所有的单词向量以及字符级别的n-gram向量会同时相加求平均作为训练模型的输入。<br>优点：解决了 低频词 oov 问题<br>缺点：需要估计的参数量变多</li>
+<li>transfer learning (fine tune)</li>
+<li>使用 context embedding 去表示缺省的 中心词（oov） <a href="https://aclweb.org/anthology/D17-1030" target="_blank" rel="noopener">文献</a></li>
+</ul>
+<h2 id="新词发现"><a href="#新词发现" class="headerlink" title="新词发现"></a>新词发现</h2><p>在中文分词的世界里，最主要的挑战有两个：歧义词识别，未登录词（新词）识别。对于歧义词简单说一下，比如“乒乓球拍卖完了”，切分为以下两种情况都是合理的，“乒乓球拍/卖/完了”，“乒乓球/拍卖/完了”。这个就是典型的歧义词。而处理这种问题常用的一种手段是使用逆向最大匹配法去处理歧义词，由于汉语中偏正结构较多，若从后向前匹配，可以适当提高精确度。比如取出“南京市长江大桥”的后四个字“长江大桥”，发现词典中有匹配，切割下来；对剩余的“南京市”进行分词，整体结果为：“南京市/长江大桥”。</p>
+<blockquote>
+<p>新词对最后结果的影响程度是大于歧义词（20倍左右吧）。</p>
+</blockquote>
+<p>so，这里主要讲的是新词的发现 而非处理歧义词的识别。</p>
+<p><strong> 中英文分词的区别 </strong></p>
+<ul>
+<li>分词 / 词干提取和词形还原。 中文和英文的nlp各有各的难点，中文的难点在于需要进行分词，将一个个句子分解成一个单词数组。而英文虽然不需要分词，但是要处理各种各样的时态，所以要进行词干提取和词形还原。比如 词干提取主要采取“缩减”的方式，“cats” 处理为 “cat”， 将“effective” 处理为“effect”； 词性还原主要采取转变的方式，“drove” 处理成“drive”， 将“driving” 处理成“drive”。</li>
+<li>对于中文，一个Word可以是一个单词，也可以是一个词。</li>
+</ul>
+<p><strong>分词的重要性</strong></p>
+<p>在处理文本对象时，非常关键的问题在于“切词”这个环节，几乎所有的后续结果都依赖第一步的切词。因此切词的准确性在很大程度上影响着后续的处理，切词结果的不同，也就影响了特征的提取，跟数据挖掘一样，特征提取的好坏特别重要，不论用什么算法，特征好数据好结果才会好。</p>
+<p><strong>分词的目的</strong></p>
+<p>当模型的记忆和拟合能力足够强（或者简单点，足够智能）的时候，我们完全可以不用分词的，直接基于字的模型就可以做，比如基于字的文本分类、问答系统等，早已有人在研究。但是，即便这些模型能够成功，也会因为模型复杂而导致效率下降，因此，很多时候（尤其是生产环境中），我们会寻求更简单、更高效的方案。比如之前我们一直是word embedding，但是 sentence embedding 也是在学术界很流行的，最后没有大规模的采用，无非就是工业级要求更加高效的方式，有时候会牺牲一些精度。</p>
+<p>目前很多的切词模块可以处理大部分的通用语料，然而有两类文本集仍然处理的不是很好，就是：</p>
+<ol>
+<li>网络文档</li>
+<li>领域文档</li>
+</ol>
+<p>后者可以有对应的专家 handle，但涉及到商用这种人力成本也是比较高的了，所以一般使用基础词汇+ 各领域的常用词汇。即使这样的方案仍然是无法可持续的，所以需要一种算法去判断是否是新词。在当下的互联网时代，人们还会不断的创造出一些新词出来，比如：“神马”、“不明觉厉”等。未登录词辨别未登录词包括是种类繁多，形态组合各异，规模宏大的一个领域。对这些词语的自动辨识，是一件非常困难的事。比如，“美的”、“快的”、“英雄联盟”应该被作为一个词，却被切成了两个词，失去了原有的语义。未登录词（out-of-vocabulary, OOV）笼统地之未在词典中出现的词， 人工标注可以解决很好识别，比如最典型的未登录词就是人名，尤其是明星，然后最简单的是手动的维护，但是人力成本也是比较高昂的。</p>
+<p>从分词的角度来看，新词一般表现为细粒度切分后相邻词的组合。</p>
+<p><strong> 基于统计的新词发现</strong></p>
+<p>基于信息熵的新词发现算法，从左右信息熵和互信息入手，成词的标准有两个：</p>
+<ul>
+<li>内部凝固度</li>
+<li>自由运用程度</li>
+</ul>
+<p>内部凝固度和自由运用程度分别考虑是词语内部的紧密程度和外部搭配的丰富性。<br>所谓内部凝固度，用来衡量词搭配（collocation）是否合理。比如，对于“的电影”、“电影院”这两个搭配，直观上讲“电影院”更为合理，即“电影”和“院”凝固得更紧一些。在计算语言学中，PMI (Pointwise mutual information)被用来度量词搭配与关联性，定义如下：</p>
+<p>$$<br>p m i ( x , y ) = \log \frac { P ( x , y ) } { P ( x ) P ( y ) }<br>$$</p>
+<p>若PMI高，即两个词共现（co-occurrence）的频率远大于两个词自由拼接的乘积概率，则说明这两个词搭配更为合理一些。针对一个词有多种搭配组合，比如“电影院”可以由“电影”+“院”构成，也可以由“电”+“影院”构成，那么取其所有pmi最小值（去掉log）作为内部凝固度：<br>$$<br>\operatorname { solid } \left( c _ { 1 } ^ { m } \right) = \min \frac { P \left( c _ { 1 } ^ { m } \right) } { \prod P \left( c _ { i } ^ { j } \right) } = \frac { P \left( c _ { 1 } ^ { m } \right) } { \max \prod P \left( c _ { i } ^ { j } \right) }<br>$$</p>
+<p>其中， $c _ { 1 } ^ { m } = c _ { 1 } c _ { 2 } \cdots c _ { m }$表示长度为 $m$ 的字符串，$P \left( c _ { 1 } ^ { m } \right)$ 表示$c _ { 1 } ^ { m }$ 的频率。</p>
+<blockquote>
+<p>光看文本片段内部的凝合程度还不够，我们还需要从整体来看它在外部的表现。考虑“被子”和“辈子”这两个片段。我们可以说“买被子”、“盖被子”、“进被子”、“好被子”、“这被子”等，在“被子”前面加各种字；但“辈子”的用法却非常固定，除了“一辈子”、“这辈子”、“上辈子”、“下辈子”，基本上“辈子”前面不能加别的字了。“辈子”这个文本片段左边可以出现的字太有限，以至于直觉上我们可能会认为，“辈子”并不单独成词，真正成词的其实是“一辈子”、“这辈子”之类的整体。</p>
+</blockquote>
+<p>先简单的介绍熵的概念，熵是一种表示信息量的指标，熵越高就意味着信息含量越大，不确定性越高，越难以预测，信息也就越丰富。<br>$$<br>H ( X ) = - \sum _ { x \in X } p ( x ) \log _ { 2 } p ( x )<br>$$</p>
+<p>所以，提出了自由运用程度，用以衡量一个词的左邻字与右邻字的丰富程度。正好信息熵可以完美地诠释了这种丰富程度，熵越大则丰富程度越高。“被子”和“辈子”这两个片段的左邻字熵le与右邻字熵re分别如下</p>
+<blockquote>
+<p>le(被子) = 3.67453<br>re(被子) = 3.8740<br>le(辈子) = 1.25963<br>re(辈子) = 4.11644</p>
+</blockquote>
+<p>可以看出，“被子”的左邻字熵与右邻字熵都较高，而“辈子”的左邻字熵较小，即左邻字非常贫乏。因此，“被子”较“辈子”更有可能成词。自由运用程度的定义如下：<br><img src="https://upload.cc/i1/2019/07/02/dP2n86.png" alt="img"></p>
+<p>给频数、内部凝固度与自由运用程度设定一个阈值，提取出来符合阈值的候选词，去掉词典中存在的词即为新词了。所以两者都高于某个对应的阈值，那么说明这个是一个新词。</p>
+<p>实现：</p>
+<p>使用射雕英雄传txt 作为文本，然后词频、内部凝固度 和自由程度进行新词识别。<a href="https://drivingc.com/p/5c1389f64b0f2b570b350eb4" target="_blank" rel="noopener">代码</a>。</p>
+<ul>
+<li><p>词频<br>这点很好理解,因为不是词的话出现的频率一般比较低,词的出现频率会比较高.所以可以设置一个词频阀值,高于这个阀值的判断为词,否则判定为不是词.</p>
+</li>
+<li><p>凝固度</p>
+</li>
+</ul>
+<p>基于上一步词频的挑选。</p>
+<ul>
+<li>自由度</li>
+</ul>
+<p>基于上述分词进行挑选。</p>
+<h2 id="NLP-中的三类特征提取器"><a href="#NLP-中的三类特征提取器" class="headerlink" title="NLP 中的三类特征提取器"></a>NLP 中的三类特征提取器</h2><p><strong> NLP 和图像中数据的特征</strong></p>
+<p>NLP的输入往往是一句话或者一篇文章，所以它有几个特点：首先，输入是个一维线性序列，这个好理解；其次，输入是不定长的，有的长有的短，而这点其实对于模型处理起来也会增加一些小麻烦；再次，单词或者子句的相对位置关系很重要，两个单词位置互换可能导致完全不同的意思。</p>
+<p><strong> NLP 中的四大任务 </strong></p>
+<ul>
+<li>序列标注： 分词/ POS Tag /NER /语义标注</li>
+<li>分类任务： 文本分类/ 情感计算</li>
+<li>句子关系判断： Entailment /QA / 自然语言推理</li>
+<li>生成式任务： 机器翻译/ 文本摘录</li>
+</ul>
+<p>一类是序列标注，这是最典型的NLP任务，比如中文分词，词性标注，命名实体识别，语义角色标注等都可以归入这一类问题，它的特点是句子中每个单词要求模型根据上下文都要给出一个分类类别。第二类是分类任务，比如我们常见的文本分类，情感计算等都可以归入这一类。它的特点是不管文章有多长，总体给出一个分类类别即可。第三类任务是句子关系判断，比如Entailment，QA，语义改写，自然语言推理等任务都是这个模式，它的特点是给定两个句子，模型判断出两个句子是否具备某种语义关系；第四类是生成式任务，比如机器翻译，文本摘要，写诗造句，看图说话等都属于这一类。它的特点是输入文本内容后，需要自主生成另外一段文字。</p>
+<p>深度学习最大的优点是 “端到端”</p>
+<p>NLP中的任务很多，哪些任务是最具有代表性的呢？答案是机器翻译。</p>
+<p>回归主题，特征提取器</p>
+<h3 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h3><p>RNN模型结构参考上图，核心是每个输入对应隐层节点，而隐层节点之间形成了线性序列，信息由前向后在隐层之间逐步向后传递。</p>
+<p><a href="https://postimg.cc/KK3R0HKR" target="_blank" rel="noopener"><img src="https://i.postimg.cc/KYJB8Xxr/image.png" alt="image.png"></a></p>
+<p>RNN也存在问题，它采取线性序列结构不断从前往后收集输入信息，但这种线性序列结构在反向传播的时候存在优化困难问题，因为反向传播路径太长，容易导致严重的梯度消失或梯度爆炸问题。为了解决这个问题，后来引入了LSTM和GRU模型，通过增加中间状态信息直接向后传播，以此缓解梯度消失问题，获得了很好的效果，于是很快LSTM和GRU成为RNN的标准模型。</p>
+<p>（Attention机制最早是在视觉图像领域提出来的，但是真正火起来应该算是2014年google mind团队的论文《Recurrent Models of Visual Attention》，他们在RNN模型上使用了attention机制来进行图像分类）</p>
+<p>为什么RNN能够这么快在NLP流行并且占据了主导地位呢？主要原因还是因为RNN的结构天然适配解决NLP的问题，NLP的输入往往是个不定长的线性序列句子，而RNN本身结构就是个可以接纳不定长输入的由前向后进行信息线性传导的网络结构，而在LSTM引入三个门后，对于捕获长距离特征也是非常有效的。所以RNN特别适合NLP这种线形序列应用场景，这是RNN为何在NLP界如此流行的根本原因。</p>
+<p>那么为什么有衰弱了？<br>RNN本身的序列依赖结构对于大规模并行计算来说相当之不友好。通俗点说，就是RNN很难具备高效的并行计算能力。如果适合在学术界发论文，那么不太可能在工业界广泛的使用。</p>
+<h3 id="CNN-特征提取器"><a href="#CNN-特征提取器" class="headerlink" title="CNN 特征提取器"></a>CNN 特征提取器</h3><p>卷积层本质上是个特征抽取层，可以设定超参数F来指定卷积层包含多少个卷积核（Filter）。对于某个Filter来说，可以想象有一个d*k大小的移动窗口从输入矩阵的第一个字开始不断往后移动，其中k是Filter指定的窗口大小，d是Word Embedding长度。对于某个时刻的窗口，通过神经网络的非线性变换，将这个窗口内的输入值转换为某个特征值，随着窗口不断往后移动，这个Filter对应的特征值不断产生，形成这个Filter的特征向量。这就是卷积核抽取特征的过程。卷积层内每个Filter都如此操作，就形成了不同的特征序列。Pooling 层则对Filter的特征进行降维操作，形成最终的特征。一般在Pooling层之后连接全联接层神经网络，形成最后的分类过程。</p>
+<p>CNN 捕捉到的是什么信息？</p>
+<p>关键在于卷积核覆盖的那个滑动窗口，CNN能捕获到的特征基本都体现在这个滑动窗口里了。大小为k的滑动窗口轻轻的穿过句子的一个个单词，荡起阵阵涟漪，那么它捕获了什么?其实它捕获到的是单词的k-gram片段信息，这些k-gram片段就是CNN捕获到的特征，k的大小决定了能捕获多远距离的特征。</p>
+<p><a href="https://postimg.cc/1fx2XC1s" target="_blank" rel="noopener"><img src="https://i.postimg.cc/283DHMHb/2.jpg" alt="2.jpg"></a></p>
+<p>卷积操作是通过加深层数，然后获得远距离的特征的。所以有两种解题思路： 一种是增加窗口大小k 增大；一种是加深深度。</p>
+<p>简单谈一下CNN的位置编码问题和并行计算能力问题。CNN的卷积层其实是保留了相对位置信息的，只要你在设计模型的时候别手贱，中间层不要随手瞎插入Pooling层，问题就不大，不专门在输入部分对position进行编码也行。至于CNN的并行计算能力，那是非常强的，这其实很好理解。我们考虑单层卷积层，首先对于某个卷积核来说，每个滑动窗口位置之间没有依赖关系，所以完全可以并行计算；另外，不同的卷积核之间也没什么相互影响，所以也可以并行计算。CNN的并行度是非常自由也非常高的，这是CNN的一个非常好的优点。</p>
+<h3 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h3><p>看看  Transformer 对于NLP 任务中的解决方案：</p>
+<ul>
+<li>不定长的输入：Transformer 一般设置最大的长度，不够了 就padding，然后多了就 去尾。</li>
+<li>单词之间的相对位置： Transformer是用位置函数来进行位置编码的，而Bert等模型则给每个单词一个Position embedding，将单词embedding和单词对应的position embedding加起来形成单词的输入embedding</li>
+<li>长依赖问题： self attention机制</li>
+</ul>
+<p>对于Transformer来说，Multi-head attention的head数量严重影响NLP任务中Long-range特征捕获能力：结论是head越多越有利于捕获long-range特征。（对标filter 的个数）</p>
+<blockquote>
+<p>我个人意见是：这说明Transformer之所以能够效果这么好，不仅仅multi-head attention在发生作用，而是几乎所有构件都在共同发挥作用，是一个小小的系统工程。</p>
+</blockquote>
+<p><strong> 参考文献</strong></p>
+<p><a href="https://www.52cs.com/archives/3011" target="_blank" rel="noopener">放弃幻想，全面拥抱Transformer</a></p>
+<h2 id="BLEU"><a href="#BLEU" class="headerlink" title="BLEU"></a>BLEU</h2><p>BLEU   (bilingual evaluation understudy) 读音:波勒 not blue. 完美匹配的得分为1.0，而完全不匹配则得分为0.0。 虽然是为机器翻译提出，但后来也广泛用于NLP其他领域。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>介绍下面三个概念： N-gram， 惩罚因子和Bleu 算法。</p>
+<p><strong> N-gram</strong></p>
+<blockquote>
+<p>N-gram是一种统计语言模型，该模型可以将一句话表示n个连续的单词序列，利用上下文中相邻词间的搭配信息，计算出句子的概率，从而判断一句话是否通顺。</p>
+</blockquote>
+<p>(和 fasttext 中的使用是不太一样的)</p>
+<p>通过例子学习</p>
+<blockquote>
+<p>原文： 猫坐在垫子上<br>机器翻译：The cat sat on the mat.<br>人工翻译：The cat is on the mat.</p>
+</blockquote>
+<p>1 gram</p>
+<p><img src="https://b2.bmp.ovh/imgs/2019/07/f679cd0e83891f4e.png" alt=""></p>
+<p>匹配度是 5/6</p>
+<p>同理可以得到 2 gram, 3 gram, 4 gram 分别是 3/5, 1/4 和 0.</p>
+<p>处理一些特殊的情况：</p>
+<blockquote>
+<p>原文：猫坐在垫子上<br>机器译文： the the the the the the the.<br>参考译文：The cat is on the mat.</p>
+</blockquote>
+<p>所以当 1 gram 的时候，匹配度是 7/7，不合理的。</p>
+<p>BLEU修正了这个算法，提出取机器翻译译文N-gram的出现次数和参考译文中N-gram最大出现次数中的最小值的算法，具体如下：</p>
+<p>$$<br>Count_{clip} =min(Count, Max_Ref_Count)<br>$$</p>
+<p>那么修正之后的 1 gram 的匹配度就是 2/7</p>
+<p>论文中 N-gram 的计算公式：</p>
+<p> $$P_n =\frac{ \sum_{C \in {Candidates} } \sum_{n-gram \in C} Count_{clip}(n-gram)}{\sum_{C \in {Candidates} } \sum_{n-gram \in C^{‘}} Count_{clip}(n-gram^{‘})} $$</p>
+<p>分子表示翻译译文（机器翻译），然后分母表示参考译文（人工翻译）</p>
+<p><strong> 惩罚因子</strong></p>
+<p>如果出现了这样的情况：</p>
+<blockquote>
+<p>机器译文：The cat<br>参考译文：The cat is on the mat.</p>
+</blockquote>
+<p>如果出现这种短句子，你会发现计算n-gram的精度会得很高分，很显然这次的得分为1，但实际上它的得分应该是比较低的。针对翻译译文长度比参考译文要短的情况，就需要一个惩罚的机制去控制。BP 主要是处理句子长度的问题。</p>
+<p>$$ BP = \begin{cases}<br>1 &amp; c &gt;r \\<br>e ^ { ( 1 - r / c ) } &amp; c &lt;= r<br>\end{cases}$$</p>
+<p>这里的c是机器译文的词数，r是参考译文的词数</p>
+<p>所以计算得：<br>$ BP = e^(1- 6 / 2) = 7.38905609893065 $</p>
+<p><strong>BLEU 算法</strong></p>
+<p>$$<br>\mathrm { B } \mathrm { LEU } = \mathrm { BP } \cdot \exp \left( \sum _ { n = 1 } ^ { N } w _ { n } \log p _ { n } \right)<br>$$</p>
+<p>对于BP 已经知道，后面的其实就是一些数学运算，它的作用就是让各阶n-gram取权重服从均匀分布，就是说不管是1-gram、2-gram、3-gram还是4-gram它们的作用都是同等重要的。由于随着n-gram的增大，总体的精度得分是呈指数下降的，所以一般N-gram最多取到4-gram.</p>
+<p>计算</p>
+<p>第一步：计算各阶n-gram的精度<br>第二步：加权求和 (一般就是平均)<br>第三步：求BP<br>最后求BLEU.</p>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>优点： 计算速度快；容易理解；已经被广泛使用</p>
+<p>缺点：</p>
+<ul>
+<li>短译句的测评精度有时会较高</li>
+<li>它没有考虑句子意义</li>
+</ul>
+<p><strong> 参考文献</strong><br><a href="https://cloud.tencent.com/developer/article/1159767" target="_blank" rel="noopener">机器翻译质量评测算法-BLEU</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/关键词提取/" rel="tag"># 关键词提取</a>
+          
+            <a href="/tags/oov/" rel="tag"># oov</a>
+          
+            <a href="/tags/中文分词/" rel="tag"># 中文分词</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/25/Python中的多线程和多进程/" rel="next" title="Python中的多线程和多进程">
+                <i class="fa fa-chevron-left"></i> Python中的多线程和多进程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/25/fastText-faiss/" rel="prev" title="fastText & faiss">
+                fastText & faiss <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件"><span class="nav-number">3.</span> <span class="nav-text">分词软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#中文分词"><span class="nav-number">3.1.</span> <span class="nav-text">中文分词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词粒度"><span class="nav-number">3.2.</span> <span class="nav-text">分词粒度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OOV"><span class="nav-number">4.</span> <span class="nav-text">OOV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新词发现"><span class="nav-number">5.</span> <span class="nav-text">新词发现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NLP-中的三类特征提取器"><span class="nav-number">6.</span> <span class="nav-text">NLP 中的三类特征提取器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN"><span class="nav-number">6.1.</span> <span class="nav-text">RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN-特征提取器"><span class="nav-number">6.2.</span> <span class="nav-text">CNN 特征提取器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transformer"><span class="nav-number">6.3.</span> <span class="nav-text">Transformer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BLEU"><span class="nav-number">7.</span> <span class="nav-text">BLEU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">7.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优缺点"><span class="nav-number">7.2.</span> <span class="nav-text">优缺点</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/03/25/NLP中的碎碎念/';
+          this.page.identifier = '2019/03/25/NLP中的碎碎念/';
+          this.page.title = 'NLP中的碎碎念';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '8c6403951ee3eab4e420',
+          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          repo: 'comments_blog',
+          owner: 'jia1509309698@163.com',
+          admin: ['jia1509309698@163.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

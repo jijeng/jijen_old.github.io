@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="loss function,Activation Function," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="主要介绍 activation function， loss function 等等概念和分类。">
+<meta name="keywords" content="loss function,Activation Function">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Activation Function and Loss Function">
+<meta property="og:url" content="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="主要介绍 activation function， loss function 等等概念和分类。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450tpr64tj20df083wee.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450uxt3ykj20df083a9y.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450wzrr2gj20df0830sl.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450y6qpe0j20df083745.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/07/15/5d2c371ec62f690070.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/15/5d2c371ee553533628.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/15/5d2c39ac3289176404.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/1b14b874a9323ede.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/b181fa529616d69a.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/1f6fc8f2b951d570.png">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g452awgfddj20fg0b1t91.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/07/24/5d37d9e627d1146288.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/24/5d37d9e61e96676671.png">
+<meta property="og:updated_time" content="2019-08-02T05:39:49.524Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Activation Function and Loss Function">
+<meta name="twitter:description" content="主要介绍 activation function， loss function 等等概念和分类。">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450tpr64tj20df083wee.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>Activation Function and Loss Function | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Activation Function and Loss Function</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-07T13:37:05+08:00">
+                2018-07-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-02T13:39:49+08:00">
+                2019-08-02
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/07/Loss-Activation-and-Optimisation-Function/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/07/Loss-Activation-and-Optimisation-Function/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要介绍 activation function， loss function 等等概念和分类。</p>
+<a id="more"></a>
+<h2 id="Activation-Function"><a href="#Activation-Function" class="headerlink" title="Activation Function"></a>Activation Function</h2><h3 id="What"><a href="#What" class="headerlink" title="What?"></a>What?</h3><blockquote>
+<p>It’s just a thing (node) that you add to the output end of any neural network. It is also known as <strong>Transfer Function</strong>. It can also be attached in between two Neural Networks.</p>
+</blockquote>
+<p>$$<br>Output  =  activation function  \left( x _ { 1 } w _ { 1 } + x _ { 2 } w _ { 2 } + \cdots + x _ { n } w _ { n } + b i a s \right)<br>$$</p>
+<p>A weighted sum is computed as:<br>$$<br>x _ { 1 } w _ { 1 } + x _ { 2 } w _ { 2 } + \cdots + x _ { n } w _ { n }<br>$$<br>Then,  the computed value is fed into the activation function, which then prepares an output.<br>$$<br>activation function \left( x _ { 1 } w _ { 1 } + x _ { 2 } w _ { 2 } + \cdots + x _ { n } w _ { n } + b i a s \right)<br>$$</p>
+<blockquote>
+<p>Think of the activation function as a mathematical operation that normalises the input and produces an output. The output is then passed forward onto the neurons on the subsequent layer.</p>
+</blockquote>
+<p>作用：增加非线性</p>
+<p>The thresholds are pre-defined numerical values in the function. This very nature of the activation functions can add non-linearity to the output. </p>
+<h3 id="Activation-Function-Types"><a href="#Activation-Function-Types" class="headerlink" title="Activation Function Types"></a>Activation Function Types</h3><p><strong> Linear Activation Function:</strong></p>
+<p>$$<br> output  = k * x<br>$$<br>where $k$ is a scalar value, as an instance 2, and $x$ is the input.</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g450tpr64tj20df083wee.jpg" alt=""></p>
+<p><strong>Sigmoid or Logistic Activation Function </strong></p>
+<p>The sigmoid activation function is “S” shaped. It can add non-linearity to the output and returns a binary value of 0 or 1.</p>
+<p>$$<br>Output  = \frac { 1 } { 1 + e ^ { - x } }<br>$$</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g450uxt3ykj20df083a9y.jpg" alt=""><br>这个函数有一个很好的导数形式，在反向传播的时候，效果比较明显。</p>
+<p><strong>Tanh Activation Function</strong></p>
+<p>Tanh is an extension of the sigmoid activation function. Hence Tanh can be used to add non-linearity to the output. The output is within the range of -1 to 1. Tanh function shifts the result of the sigmoid activation function:</p>
+<p>$$<br>\text { Output } = \frac { 2 } { 1 + e ^ { - 2 x } } - 1<br>$$</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g450wzrr2gj20df0830sl.jpg" alt=""></p>
+<p><strong>Rectified Linear Unit Activation Function (RELU)</strong></p>
+<p>RELU is one of the most used activation functions. It is preferred to use RELU in the hidden layer. The concept is very straight forward. It also adds non-linearity to the output. However the result can range from 0 to infinity.</p>
+<p>$$<br> Output  = \max ( 0 , x )<br>$$<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g450y6qpe0j20df083745.jpg" alt=""><br>这个是很高的评价了。<br>If you are unsure of which activation function you want to use then use RELU.</p>
+<p><strong>Softmax Activation Function </strong></p>
+<p>Softmax is an extension of the Sigmoid activation function. Softmax function adds non-linearity to the output, however it is mainly used for classification examples where multiple classes of results can be computed.</p>
+<p>$$<br>Output  = \frac { e ^ { x } } { \operatorname { sum } \left( e ^ { x } \right) }<br>$$</p>
+<p>这个一般使用在最后，作为多分类的结束。</p>
+<h2 id="Loss-Function-Error-Function"><a href="#Loss-Function-Error-Function" class="headerlink" title="Loss Function(Error Function)"></a>Loss Function(Error Function)</h2><p>机器学习中所有的算法都需要最大化或最小化一个函数，这个函数被称为“目标函数”。其中，我们一般把最小化的一类函数，称为“损失函数”。它能根据预测结果，衡量出模型预测能力的好坏。</p>
+<p>损失函数 (Loss function) 是用来衡量模型的预测值 $f(x)$ 和真实值 $Y$ 的不一样的程度，通常使用 $L (Y, f(x))$ 来进行表示，损失函数越小，模型的鲁棒性越强。</p>
+<p>选择loss 的时候需要考虑两点：分类or 回归问题  和结果的输出情况。</p>
+<blockquote>
+<p>the choice of loss function must match the framing of the specific predictive modeling problem, such as classification or regression. Further, the configuration of the output layer must also be appropriate for the chosen loss function.</p>
+</blockquote>
+<p>总的来说是可以分成三类：回归模型，二分类模型和多分类模型</p>
+<ol>
+<li><p>Regression Loss Functions<br>a. Mean Squared Error Loss<br>b. Mean Squared Logarithmic Error Loss<br>c. Mean Absolute Error Loss</p>
+</li>
+<li><p>Binary Classification Loss Functions<br>a. Binary Cross-Entropy<br>b. Hinge Loss<br>c. Squared Hinge Loss</p>
+</li>
+<li><p>Multi-Class Classification Loss Functions<br>a. Multi-Class Cross-Entropy Loss<br>b. Sparse Multiclass Cross-Entropy Loss<br>c. Kullback Leibler Divergence Loss</p>
+</li>
+</ol>
+<h3 id="Regression-Loss-Function-回归"><a href="#Regression-Loss-Function-回归" class="headerlink" title="Regression  Loss Function (回归)"></a>Regression  Loss Function (回归)</h3><p> 如何进行选择？</p>
+<p>对于回归问题，一个baseline 的loss function 是可以选择平方损失函数。从数据的角度进行分析，如果数据服从正太分布，那么平方损失函数没有问题，如果数据有一些 outlier，可以使用 mean squared logarithmic error loss， 先进行   $\hat { y } $然后再计算平方和。如果 outlier 比较多的话，那么使用 mean absolute error loss，计算差值的时候换成绝对值函数。</p>
+<p><strong> 平方损失函数</strong></p>
+<p>定义：</p>
+<blockquote>
+<p>Mean Squared Error (MSE), or quadratic, loss function is widely used in linear regression as the performance measure, and the method of minimizing MSE is called Ordinary Least Squares (OSL)。</p>
+</blockquote>
+<p>To calculate MSE, you take the difference between your predictions and the ground truth, square it, and average it out across the whole dataset.</p>
+<p>$$<br>Loss  = \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \left( y ^ { ( i ) } - \hat { y } ^ { ( i ) } \right) ^ { 2 }<br>$$</p>
+<p>在线性回归中，它假设样本和噪声都服从高斯分布（为什么假设成高斯分布呢？其实这里隐藏了一个小知识点，就是中心极限定理），最后通过极大似然估计MLE可以推导出最小二乘式子，即平方损失函数可以通过线性回归在假设样本是高斯分布的条件下推导得到。</p>
+<p>$$<br>S E = \sum _ { i = 1 } ^ { n } \left( y _ { i } - y _ { i } ^ { p } \right) ^ { 2 }<br>$$</p>
+<p>为什么选择欧式距离作为误差的度量？</p>
+<ul>
+<li>简单，计算方便</li>
+<li>欧式距离是一种很好的相似度衡量标准</li>
+<li>在不同的表示域变换之后，特征的性质能够保持不变。</li>
+</ul>
+<p>在实际应用中，通常会使用 均方差作为一种衡量指标，就是在上面的公式中除以 N.</p>
+<p>使用说明：</p>
+<p>如果 target 是服从高斯分布，那么使用  mean squared error 是没有问题；并且没有很好的理由进行替换的话，那么就是他了。</p>
+<blockquote>
+<p>Mathematically, it is the preferred loss function under the inference framework of maximum likelihood if the distribution of the target variable is Gaussian. It is the loss function to be evaluated first and only changed if you have a good reason.</p>
+</blockquote>
+<p><strong>Mean Squared Logarithmic Error Loss</strong></p>
+<p>和上面的的mse 有一点差别。这个是先记性log 求结果，然后再计算 mse.</p>
+<blockquote>
+<p>you can first calculate the natural logarithm of each of the predicted values, then calculate the mean squared error. This is called the Mean Squared Logarithmic Error loss, or MSLE for short.</p>
+</blockquote>
+<p>好处:<br>It has the effect of relaxing the punishing effect of large differences in large predicted values.</p>
+<p>使用说明：<br>如果最后的结果的数值有大值，那么可以尝试一下。不是那么符合高斯分布，就可以尝试一下。</p>
+<p><strong>Mean Absolute Error Loss</strong></p>
+<p>定义：<br>Mean Absolute Error (MAE) is a quantity used to measure how close forecasts or predictions are to the eventual outcomes, which is computed by</p>
+<p>$$<br>Loss = \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \left| y ^ { ( i ) } - \hat { y } ^ { ( i ) } \right|<br>$$</p>
+<p>where $| .|$ denotes the absolute value. Albeit, both MSE and MAE are used in predictive modeling, there are several differences between them. MSE has nice mathematical properties which makes it easier to compute the gradient. However, MAE requires more complicated tools such as linear programming to compute the gradient. Because of the square, large errors have relatively greater influence on MSE than do the smaller error. Therefore, MAE is more robust to outliers since it does not make use of square. On the other hand, MSE is more useful if concerning about large errors whose consequences are much bigger than equivalent smaller ones. MSE also corresponds to maximizing the likelihood of Gaussian random variables.</p>
+<p>使用说明：</p>
+<p>当有很多的点偏离 mean and variance 的时候，可以尝试使用 mae loss function，这个显著的特点在于 对outlier 是有抵抗作用的。</p>
+<blockquote>
+<p>The Mean Absolute Error, or MAE, loss is an appropriate loss function in this case as it is more robust to outliers. It is calculated as the average of the absolute difference between the actual and predicted values.</p>
+</blockquote>
+<h3 id="Binary-Classification-Loss-Function-二分"><a href="#Binary-Classification-Loss-Function-二分" class="headerlink" title="Binary Classification Loss Function (二分)"></a>Binary Classification Loss Function (二分)</h3><p>在二分类的网络结构中经常 出现 Dense() 网络层( 如果使用 keras 进行实现的话), 因为最后想要得到的是一个结点。</p>
+<p><strong>Binary Cross-Entropy Loss</strong></p>
+<p>Cross-entropy loss is often simply referred to as “cross-entropy,” “logarithmic loss,” “logistic loss,” or “log loss” for short.</p>
+<p>Cross-entropy is the default loss function to use for binary classification problems. 如果没有更好的二分类的选择（理由），那么这个就是首选。</p>
+<p>数学定义：</p>
+<p>Cross-entropy will calculate a score that summarizes the average difference between the actual and predicted probability distributions for predicting class 1. The score is minimized and a perfect cross-entropy value is 0.</p>
+<p>二分类问题的交叉熵 loss 主要是有两种形式。第一种是输出的label 是 {0, 1}，也是最为常见的。<br>$$<br>Loss= - [ y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } ) ]<br>$$</p>
+<p>这个公式可以先从一个分段函数推导，然后从最大似然的角度出发，预测类别的概率是:<br>$$<br>P ( y | x ) = \hat { y } ^ { y } \cdot ( 1 - \hat { y } ) ^ { ( 1 - y ) }<br>$$<br>然后取对数：<br>$$<br>log(loss)= - [ y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } ) ]<br>$$</p>
+<p>当 $y =1$ 的时候，<br>$$<br>L = - \log \hat { y }<br>$$<br>因为，<br>$$<br>\hat { y } = \frac { 1 } { 1 + e ^ { - s } }<br>$$<br>所以得到<br>$$<br>L = \log \left( 1 + e ^ { - s } \right)<br>$$<br>loss 的曲线如下图所示：</p>
+<p><img src="https://i.loli.net/2019/07/15/5d2c371ec62f690070.png" alt="11-1.png"><br>从图中明显能够看出，s 越大于零，L 越小，函数的变化趋势也完全符合实际需要的情况。（y =1 是这个时候的目标）</p>
+<p>当 $y =0$ 的时候：<br>同理可以得到，<br>$$<br>log(loss)= \log \left( 1 + e ^ { s } \right)<br>$$</p>
+<p><img src="https://i.loli.net/2019/07/15/5d2c371ee553533628.png" alt="14.png"></p>
+<p>从图中明显能够看出，s 越小于零，L 越小，函数的变化趋势也完全符合实际需要的情况。</p>
+<p>第二种情况是基于输出label 表示方式 {-1, 1}，这个时候的loss  表达式为:</p>
+<p>$$<br>loss = \log \left( 1 + e ^ { - y s } \right)<br>$$</p>
+<p>这个时候只不过使用 $ys$ 代替上面的s ，实际上的分析还是一样的。其中 y 表示真实的标签，s 表示 sigmoid 中的s，见下面的公式。<br>$$<br>g ( s ) = \frac { 1 } { 1 + e ^ { - s } }<br>$$<br>当 ys &gt;0 的时候，表示的预测正确，否则是预测错误。</p>
+<p>交叉熵损失函数经常使用sigmoid 函数作为激活函数，因为这个可以完美解决平方损失函数中权重更新比较慢点的情况。</p>
+<p>使用说明：<br>Mathematically, it is the preferred loss function under the inference framework of maximum likelihood. It is the loss function to be evaluated first and only changed if you have a good reason.<br>It is intended for use with binary classification where the target values are in the set {0, 1}.</p>
+<p><strong> Hinge Loss</strong></p>
+<p>An alternative to cross-entropy for binary classification problems is the hinge loss function, primarily developed for use with Support Vector Machine (SVM) models.</p>
+<p>Hinge Loss，又称合页损失，其表达式如下：</p>
+<p>$$<br>Loss = \max ( 0,1 - y s )<br>$$<br>其中 y 和 s 的取值范围都是 [-1, 1]. 想想 SVM 中最大化间隔的内容就理解了。图像如下：</p>
+<p><img src="https://i.loli.net/2019/07/15/5d2c39ac3289176404.png" alt="20.png"></p>
+<p>如同合起来的书，所以称之为 合页损失。显然，只有当 ys &lt; 1 时，Loss 才大于零；对于 ys &gt; 1 的情况，Loss 始终为零。Hinge Loss 一般多用于支持向量机（SVM）中，体现了 SVM 距离最大化的思想。 而且，当 Loss 大于零时，是线性函数，便于梯度下降算法求导。Hinge Loss 的另一个优点是使得 ys &gt; 0 的样本损失皆为 0，由此带来了稀疏解，使得 SVM 仅通过少量的支持向量就能确定最终超平面。</p>
+<p>使用说明：<br>要求 target 转换成 {-1, 1} ，效果有时候比 cross-binary 要好。</p>
+<blockquote>
+<p>It is intended for use with binary classification where the target values are in the set {-1, 1}.<br>Reports of performance with the hinge loss are mixed, sometimes resulting in better performance than cross-entropy on binary classification problems.</p>
+</blockquote>
+<p>( 这句话比较迷离呀)</p>
+<blockquote>
+<p>The hinge loss function encourages examples to have the correct sign, assigning more error when there is a difference in the sign between the actual and predicted class values.</p>
+</blockquote>
+<p><strong>Squared Hinge Loss </strong></p>
+<p>(通常上讲，最后的结果更加光滑是没有什么劣势的)<br>A popular extension is called the squared hinge loss that simply calculates the square of the score hinge loss. It has the effect of smoothing the surface of the error function and making it numerically easier to work with.</p>
+<p>需要从 {0, 1} -&gt; {-1, 1} 这样target 的转换, 非常容易实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># change y from &#123;0,1&#125; to &#123;-1,1&#125;</span></span><br><span class="line">y[where(y == <span class="number">0</span>)] = <span class="number">-1</span></span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+<p>使用说明：</p>
+<p>（很强的相关性了）<br>If using a hinge loss does result in better performance on a given binary classification problem, is likely that a squared hinge loss may be appropriate.</p>
+<h3 id="Multi-Class-Classification-Loss-Functions"><a href="#Multi-Class-Classification-Loss-Functions" class="headerlink" title="Multi-Class Classification Loss Functions"></a>Multi-Class Classification Loss Functions</h3><p>对于多类问题的定义：</p>
+<p>The problem is often framed as predicting an integer value, where each class is assigned a unique integer value from 0 to (num_classes – 1). The problem is often implemented as predicting the probability of the example belonging to each known class.</p>
+<p><strong>Multi-Class Cross-Entropy Loss </strong></p>
+<p>Cross-entropy is the default loss function to use for multi-class classification problems. （可见 交叉熵对于分类问题的重要性）</p>
+<p>同理，如果是最大似然，概率模型，donot hesitate.( 数学基础就是在这里)<br>Mathematically, it is the preferred loss function under the inference framework of maximum likelihood. It is the loss function to be evaluated first and only changed if you have a good reason.</p>
+<p>Cross-entropy will calculate a score that summarizes the average difference between the actual and predicted probability distributions for all classes in the problem. The score is minimized and a perfect cross-entropy value is 0.</p>
+<p>基于 keras实现的时候需要先把 target (label) 转成 one-hot 类型的，当然这个可能造成 loss 曲线的波动（后话）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># one hot encode output variable</span></span><br><span class="line">y = to_categorical(y)</span><br></pre></td></tr></table></figure></p>
+<p><strong>Sparse Multiclass Cross-Entropy Loss</strong></p>
+<p>和上面的区别主要在于 label 是不需要转成 one-hot 类型的，保持这原来的 number 形式。<br>Sparse cross-entropy addresses this by performing the same cross-entropy calculation of error, without requiring that the target variable be one hot encoded prior to training.</p>
+<p><strong> Kullback Leibler Divergence Loss</strong></p>
+<p>Kullback Leibler Divergence, or KL Divergence for short, is a measure of how one probability distribution differs from a baseline distribution.</p>
+<p>数学原理：(以 bit 为单位的 信息熵)</p>
+<p>A KL divergence loss of 0 suggests the distributions are identical. In practice, the behavior of KL Divergence is very similar to cross-entropy. It calculates how much information is lost (in terms of bits) if the predicted probability distribution is used to approximate the desired target probability distribution.</p>
+<p>使用说明：更常使用 在复杂的模型上，比如 dense representation 之列。当然也是可以使用在多分类的情况下，这个时候如同 multi-class cross-entropy.</p>
+<p>As such, the KL divergence loss function is more commonly used when using models that learn to approximate a more complex function than simply multi-class classification, such as in the case of an autoencoder used for learning a dense feature representation under a model that must reconstruct the original input. In this case, KL divergence loss would be preferred. Nevertheless, it can be used for multi-class classification, in which case it is functionally equivalent to multi-class cross-entropy.</p>
+<p>参考文献：</p>
+<p><a href="https://machinelearningmastery.com/how-to-choose-loss-functions-when-training-deep-learning-neural-networks/" target="_blank" rel="noopener">How to Choose Loss Functions When Training Deep Learning Neural Networks</a></p>
+<p><strong> log 对数损失函数 </strong></p>
+<p>在逻辑回归的推导中，它假设样本服从伯努利分布（0-1分布），然后求得满足该分布的似然函数，接着取对数求极值等等。</p>
+<p><strong> 指数损失函数 </strong></p>
+<p>公式如下：<br>$$<br>loss = e ^ { - y s }<br>$$</p>
+<p>曲线如下：<br><img src="https://i.bmp.ovh/imgs/2019/07/1b14b874a9323ede.png" alt=""></p>
+<p>Exponential Loss 与交叉熵 Loss 类似，但它是指数下降的，因此梯度较其它 Loss 来说，更大一些。 Exponential Loss 一般多用于AdaBoost 中。因为使用 Exponential Loss 能比较方便地利用加法模型推导出 AdaBoost算法。</p>
+<p>$$<br>L = - \log \frac { e ^ { s } } { \sum _ { j = 1 } ^ { C } e ^ { s _ { j } } } = - s + \log \sum _ { j = 1 } ^ { C } e ^ { s _ { j } }<br>$$</p>
+<p>softmax loss 的曲线如下图所示：</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/b181fa529616d69a.png" alt=""></p>
+<p>上图中，当 s &lt;&lt; 0 时，Softmax 近似线性；当 s&gt;&gt;0 时，Softmax 趋向于零。Softmax 同样受异常点的干扰较小，多用于神经网络多分类问题中。</p>
+<p>若我们把 ys 的坐标范围取得更大一些，上面 5 种 Loss 的差别会更大一些，如图：</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/1f6fc8f2b951d570.png" alt=""></p>
+<p>显然，这时候 Exponential Loss 会远远大于其它 Loss。从训练的角度来看，模型会更加偏向于惩罚较大的点，赋予其更大的权重。如果样本中存在离群点，Exponential Loss 会给离群点赋予更高的权重，但却可能是以牺牲其他正常数据点的预测效果为代价，可能会降低模型的整体性能，使得模型不够健壮（robust）。</p>
+<p>相比 Exponential Loss，其它四个 Loss，包括 Softmax Loss，都对离群点有较好的“容忍性”，受异常点的干扰较小，模型较为健壮。</p>
+<p><strong> Softmax loss </strong></p>
+<p>对于多分类问题，可以使用 softmax loss。</p>
+<p>其中，C 为类别个数，小写字母 s 是正确类别对应的 Softmax 输入，大写字母 S 是正确类别对应的 Softmax 输出。</p>
+<p>由于 log 运算符不会影响函数的单调性，我们对 S 进行 log 操作。另外，我们希望 log(S) 越大越好，即正确类别对应的相对概率越大越好，那么就可以对 log(S) 前面加个负号，来表示损失函数：</p>
+<p>如何选择损失函数？</p>
+<p>对于异常点的处理是一个维度，比如L1 损失函数处理异常点更加稳定，相对L2 损失函数。</p>
+<p>what?</p>
+<p>衡量模型好坏的 function，如果模型表现好，那么loss 应该是小；如果模型表现不好，那么loss 应该是大的。</p>
+<blockquote>
+<p>At its core, a loss function is incredibly simple: it’s a method of evaluating how well your algorithm models your dataset. If your predictions are totally off, your loss function will output a higher number. If they’re pretty good, it’ll output a lower number. As you change pieces of your algorithm to try and improve your model, your loss function will tell you if you’re getting anywhere.</p>
+</blockquote>
+<p><strong> Log Loss (Cross Entropy Loss)</strong></p>
+<p>Cross-entropy loss, or log loss, measures the performance of a classification model whose output is a probability value between 0 and 1. Cross-entropy loss increases as the predicted probability diverges from the actual label. So predicting a probability of .012 when the actual observation label is 1 would be bad and result in a high loss value. A perfect model would have a log loss of 0.</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g452awgfddj20fg0b1t91.jpg" alt=""></p>
+<p>The graph above shows the range of possible loss values given a true observation (isDog = 1). As the predicted probability approaches 1, log loss slowly decreases. As the predicted probability decreases, however, the log loss increases rapidly. Log loss penalizes both types of errors, but especially those predictions that are confident and wrong!</p>
+<p>Cross-entropy and log loss are slightly different depending on context, but in machine learning when calculating error rates between 0 and 1 they resolve to the same thing.</p>
+<p>In binary classification, where the number of classes M equals 2, cross-entropy can be calculated as:</p>
+<p>$$<br>- ( y \log ( y ) + ( 1 - y ) \log ( 1 - y ) )<br>$$</p>
+<p>If $ M&gt;$2 (i.e. multiclass classification), we calculate a separate loss for each class label per observation and sum the result.</p>
+<p>$$<br>- \sum _ { c = 1 } ^ { M } y _ { o , c } \log \left( y _ { o , c } \right)<br>$$</p>
+<blockquote>
+<p>M - number of classes (dog, cat, fish)<br>log - the natural log<br>y - binary indicator (0 or 1) if class label c is the correct classification for observation o</p>
+</blockquote>
+<p>想要表达的是 log loss 是从 Likelihood Loss，改进过来的，有没有发现最大似然的痕迹。<br>log loss 表达式如下：<br>$$<br>\begin{split}<br>P(Y | X)  &amp;= P(X_1 | Y)  \times P(X_2 | Y)  \times  \dots \times P(X_n | Y)  \times P(Y) = P(Y) \prod_{i}^{n} P(X_i | Y) \\<br>&amp;\Rightarrow log(P(Y | X)) = log(\prod_{i}^{n} P(X_i | Y) \Rightarrow \sum_{i}^{n} log(P(X_i | Y))<br>\end{split}<br>$$<br>交叉熵表达式：<br>$$CE(\hat{y}, y) = - \sum_{i=1}^{n} y_i log(\hat{y}) + (1 - y_i) log(1 - \hat{y})$$</p>
+<p><strong> L2</strong></p>
+<p>这两个loss function 在<a href="https://jijeng.github.io/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">这里</a>介绍过，所以本博客中简单说一下。</p>
+<p>L2 loss function is the square of the L2 norm of the difference between actual value and predicted value. It is mathematically similar to MSE, only do not have division by<br>n, it is computed by</p>
+<p>$$<br> Loss = \sum _ { i = 1 } ^ { n } \left( y ^ { ( i ) } - \hat { y } ^ { ( i ) } \right) ^ { 2 }<br>$$</p>
+<p><strong>Kullback Leibler (KL) Divergence</strong><br>（计算的是两个分布的问题）<br>KL Divergence, also known as relative entropy, information divergence/gain, is a measure of how one probability distribution diverges from a second expected probability distribution. KL divergence loss function is computed by<br>$$<br>D _ { K L } ( p | q ) = \sum _ { x } p ( x ) \log \frac { p ( x ) } { q ( x ) }<br>$$</p>
+<p>交叉熵的定义：<br>$$<br>H ( p , q ) = - \sum _ { x } p ( x ) \log q ( x )<br>$$<br>两者的关系推导，<br>$$<br>\begin{split}<br>D _ { K L } ( p | q ) &amp;= \sum _ { x } p ( x ) \log \frac { p ( x ) } { q ( x ) } \\<br>&amp;= \sum _ { x } ( p ( x ) \log p ( x ) - p ( x ) \log q ( x ) ) \\<br>&amp;= - H ( p ) - \sum _ { x } p ( x ) \log q ( x ) \\<br>&amp;= - H ( p ) + H ( p , q )<br>\end{split}<br>$$<br>所以说， cross entropy 也是可以写成这样：<br>$$<br>H ( p , q ) = D _ { K L } ( p | q ) + H ( p )<br>$$</p>
+<p><strong>logistic loss 和 cross entropy的关系</strong></p>
+<p>当 $ p \in { y , 1 - y }$,  $q \in { \hat { y } , 1 - \hat { y } }$ ，cross entropy 可以写成 logistic  loss:</p>
+<p>$$<br>H ( p , q ) = - \sum _ { x } p ( x ) \log q ( x ) =  - y \log \hat { y } - ( 1 - y ) \log ( 1 - \hat { y } )<br>$$</p>
+<h3 id="交叉熵函数是怎么来的？"><a href="#交叉熵函数是怎么来的？" class="headerlink" title="交叉熵函数是怎么来的？"></a>交叉熵函数是怎么来的？</h3><p>从上面可以清楚的了解到，交叉熵函数在分类问题上是 default 的选择，那么我们有没有思考过 这个loss function 的数学基础 ？是怎么来的呢？</p>
+<p>真实的样本标签为 [0, 1], 分别表示负类和正类，模型最终会经过一个 sigmoid 函数，输出一个概率值。sigmoid 函数的表达式如下：<br>$$<br>g ( s ) = \frac { 1 } { 1 + e ^ { - s } }<br>$$</p>
+<p>所以sigmoid 的输出值表示 1的概率：<br>$$<br>\hat { y } = P ( y = 1 | x )<br>$$<br>表示 0的概率：<br>$$<br>1 - \hat { y } = P ( y = 0 | x )<br>$$</p>
+<p>进而，从最大似然的角度出发，将上面的两种情况整合起来：</p>
+<p>$$<br>P ( y | x ) = \hat { y } ^ { y } \cdot ( 1 - \hat { y } ) ^ { 1 - y }<br>$$</p>
+<p>从另一个角度也可以理解这个公式，分别令 y =0 和y =1， 发现两种情况正好对应着 $P ( y = 0 | x ) = 1 - \hat { y }$ 和 $P ( y = 1 | x ) = \hat { y }$。 我们做的就是把上面两种情况给整合起来了。</p>
+<p>接下来引入 log 函数<br>$$<br>\log P ( y | x ) = \log \left( \hat { y } ^ { y } \cdot ( 1 - \hat { y } ) ^ { 1 - y } \right) = y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } )<br>$$<br>我们希望公式越大越好，反过来，希望 $\log \mathrm { P } ( \mathrm { y } | \mathrm { x } )$ 越小越好，于是得到了最终的 损失函数：<br>$$<br>L = - [ y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } ) ]<br>$$</p>
+<p>上面是 单个样本的损失函数，计算N 个样本，只需要将上面的公式叠加起来。<br>$$<br>L = - \sum _ { i = 1 } ^ { N } y ^ { ( i ) } \log \hat { y } ^ { ( i ) } + \left( 1 - y ^ { ( i ) } \right) \log \left( 1 - \hat { y } ^ { ( i ) } \right)<br>$$</p>
+<p>ok，这个就是交叉熵损失函数完整的推导过程。</p>
+<h2 id="二分类、多分类和多标签问题的区别"><a href="#二分类、多分类和多标签问题的区别" class="headerlink" title="二分类、多分类和多标签问题的区别"></a>二分类、多分类和多标签问题的区别</h2><p>二分类、多分类与多标签分类问题使用不同的激活函数和损失函数。</p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>二分类：判别这个水果是苹果还是香蕉。<br>多分类：对于一堆水果，辨别是苹果、梨还是橘子。一个样本只能有一个标签。<br>多标签分类： 给每一个样本一系列的目标标签。比如一个文档有不同的相关话题，需要加上不同的tag 如宗教、政治和教育。</p>
+<p>多分类问题常常是可以转换成二分类问题进行处理的，常见有两种策略。</p>
+<p>一对一的策略<br>给定数据集D这里有N个类别，这种情况下就是将这些类别两两配对，从而产生 $\frac{N*(N-1)}{2}$个二分类任务，在测试的时候把样本交给这些分类器，然后进行投票。</p>
+<p><img src="https://i.loli.net/2019/07/24/5d37d9e627d1146288.png" alt="1.png"></p>
+<p>一对其余策略<br>将每一次的一个类作为正例，其余作为反例，总共训练N个分类器。测试的时候若仅有一个分类器预测为正的类别则对应的类别标记作为最终分类结果，若有多个分类器预测为正类，则选择置信度最大的类别作为最终分类结果。</p>
+<p><img src="https://i.loli.net/2019/07/24/5d37d9e61e96676671.png" alt="2.png"></p>
+<p>同样，多标签分类和二分类问题也是有关系的。</p>
+<p>面临的问题： 图片的标签数目不是固定的，有的有一个标签，有的有两个标签，但标签的种类总数是固定的，比如为5类。</p>
+<p>解决该问题： 采用了标签补齐的方法，即缺失的标签全部使用0标记，这意味着，不再使用one-hot编码。例如：标签为：-1,1,1,-1,1 ;-1表示该类标签没有，1表示该类标签存在。</p>
+<p>如何衡量损失？</p>
+<p>计算出一张图片各个标签的损失，然后取平均值。</p>
+<p>如何计算精度</p>
+<p>计算出一张图片各个标签的精度，然后取平均值。</p>
+<p>该处理方法的本质：把一个多标签问题，转化为了在每个标签上的二分类问题。</p>
+<h3 id="损失函数的选择"><a href="#损失函数的选择" class="headerlink" title="损失函数的选择"></a>损失函数的选择</h3><p><strong> 基于逻辑回归的二分类问题</strong>：<br>使用逻辑回归二分类loss function的推导，上面的一小节是有详细的介绍的。</p>
+<p><strong>基于 Softmax 的多分类问题</strong></p>
+<p>softmax层中的softmax 函数是logistic函数在多分类问题上的推广，它将一个N维的实数向量压缩成一个满足特定条件的N维实数向。压缩后的向量满足两个条件：</p>
+<ol>
+<li>向量中的每个元素的大小都在[0,1]</li>
+<li>向量所有元素的和为 1</li>
+</ol>
+<p>因此，softmax适用于多分类问题中对每一个类别的概率判断，softmax的函数公式如下：<br>$$<br>a _ { j } ^ { L } = \frac { e ^ { z _ { j } ^ { L } } } { \sum _ { k } e ^ { z _ { k } ^ { L } } }<br>$$</p>
+<p>基于 Softmax 的多分类问题采用的是 log似然代价函数（log-likelihood cost function）来解决。<br>单个样本的 log似然代价函数的公式为：<br>$$<br>C = - \sum _ { i } \left( y _ { i } \log a _ { i } \right)<br>$$<br>其中， $y_i $表示标签向量的第 i 个分量。因为往往只有一个分量为 1 其余的分量都为 0，所以可以去掉损失函数中的求和符号，化简为，</p>
+<p>$$<br>C = - \ln a _ { j }<br>$$<br>其中，$ a_j $是向量 y 中取值为 1 对应的第 j 个分量的值。</p>
+<p>$$<br>\begin{split}<br>\operatorname { cost } \left( h _ { \theta } ( x ) , y \right) &amp;= - y _ { i } \log \left( h _ { \theta } ( x ) \right) - \left( 1 - y _ { i } \right) \log \left( 1 - h _ { \theta } ( x ) \right)$ \\<br>C &amp;= - \sum _ { i } \left( y _ { i } \log a _ { i } \right)$\\<br>\end{split}<br>$$</p>
+<p>理论上都是使用多类交叉熵函数，但是在实现的时候，深度学习工具keras 是支持两种形式，针对于标签y 的形式，一种是 sparse 一种是 dense分别对应的是 one-hot 形式和 label 的形式。</p>
+<p>因为这两个交叉熵损失函数对应不同的最后一层的输出。第一个对应的最后一层是 sigmoid，用于二分类问题，第二个对应的最后一层是 softmax，用于多分类问题。但是它们的本质是一样的，请看下面的分析。</p>
+<p>可以看一下交叉熵函数的定义：</p>
+<p>$$<br>-\int p ( x ) \log g ( x ) d x<br>$$</p>
+<p>交叉熵是用来描述两个分布的距离的，神经网络训练的目的就是使 $g(x)$ 逼近$ p(x)$。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th>分类问题名称</th>
+<th style="text-align:center">输出层使用激活函数</th>
+<th style="text-align:right">对应的损失函数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>二分类</td>
+<td style="text-align:center">sigmoid</td>
+<td style="text-align:right">二分类交叉熵损失函数（binary_crossentropy）</td>
+</tr>
+<tr>
+<td>多分类</td>
+<td style="text-align:center">softmax</td>
+<td style="text-align:right">多类别交叉熵损失函数（categorical_crossentropy）</td>
+</tr>
+<tr>
+<td>多标签分类</td>
+<td style="text-align:center">sigmoid函数</td>
+<td style="text-align:right">二分类交叉熵损失函数（binary_crossentropy）</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/loss-function/" rel="tag"># loss function</a>
+          
+            <a href="/tags/Activation-Function/" rel="tag"># Activation Function</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/29/特征工程相关概念/" rel="next" title="特征工程">
+                <i class="fa fa-chevron-left"></i> 特征工程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/21/那些年的算法题目（二）/" rel="prev" title="那些年的算法题目（二）">
+                那些年的算法题目（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-Function"><span class="nav-number">1.</span> <span class="nav-text">Activation Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What"><span class="nav-number">1.1.</span> <span class="nav-text">What?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Activation-Function-Types"><span class="nav-number">1.2.</span> <span class="nav-text">Activation Function Types</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loss-Function-Error-Function"><span class="nav-number">2.</span> <span class="nav-text">Loss Function(Error Function)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Regression-Loss-Function-回归"><span class="nav-number">2.1.</span> <span class="nav-text">Regression  Loss Function (回归)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Binary-Classification-Loss-Function-二分"><span class="nav-number">2.2.</span> <span class="nav-text">Binary Classification Loss Function (二分)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Class-Classification-Loss-Functions"><span class="nav-number">2.3.</span> <span class="nav-text">Multi-Class Classification Loss Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交叉熵函数是怎么来的？"><span class="nav-number">2.4.</span> <span class="nav-text">交叉熵函数是怎么来的？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二分类、多分类和多标签问题的区别"><span class="nav-number">3.</span> <span class="nav-text">二分类、多分类和多标签问题的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">3.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数的选择"><span class="nav-number">3.2.</span> <span class="nav-text">损失函数的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/';
+          this.page.identifier = '2018/07/07/Loss-Activation-and-Optimisation-Function/';
+          this.page.title = 'Activation Function and Loss Function';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '8c6403951ee3eab4e420',
+          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          repo: 'comments_blog',
+          owner: 'jia1509309698@163.com',
+          admin: ['jia1509309698@163.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

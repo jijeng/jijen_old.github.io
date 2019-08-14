@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="gbdt," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍GBDT 的定义、训练过程、优缺点和常见的问题。">
+<meta name="keywords" content="gbdt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Gentle Introduction of GBDT">
+<meta property="og:url" content="http://yoursite.com/2019/07/12/gbdt/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍GBDT 的定义、训练过程、优缺点和常见的问题。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload.cc/i1/2019/07/12/laVvjT.png">
+<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/e9f310e2c0dc1ada.png">
+<meta property="og:updated_time" content="2019-07-31T12:32:16.844Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A Gentle Introduction of GBDT">
+<meta name="twitter:description" content="介绍GBDT 的定义、训练过程、优缺点和常见的问题。">
+<meta name="twitter:image" content="https://upload.cc/i1/2019/07/12/laVvjT.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/12/gbdt/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>A Gentle Introduction of GBDT | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/12/gbdt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">A Gentle Introduction of GBDT</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-12T20:51:51+08:00">
+                2019-07-12
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-31T20:32:16+08:00">
+                2019-07-31
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/12/gbdt/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/07/12/gbdt/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍GBDT 的定义、训练过程、优缺点和常见的问题。</p>
+<a id="more"></a>
+<p>Boosting、bagging和stacking是集成学习的三种主要方法。不同于bagging方法，boosting方法通过分步迭代（stage-wise）的方式来构建模型，在迭代的每一步构建的弱学习器都是为了弥补已有模型的不足，通过弱学习器提升为 强学习器的算法。Boosting族算法的著名代表是AdaBoost 和GBDT。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>由于GBDT的学习过程是通过多轮迭代，每次都在上一轮训练结果的残差（如果是回归问题，使用平方误差作为loss function）的基础上进行学习（基函数的线性组合），来对数据进行分类或者回归。训练的过程是通过不断降低偏差来提高最后分类器的精度。</p>
+<p>理解GBDT要分为两步，第一步是理解什么叫做用决策树去拟合当前模型的残差，第二步是理解为什么以及如何用损失函数的负梯度去替代当前模型的残差。</p>
+<h2 id="GDBT-处理分类问题"><a href="#GDBT-处理分类问题" class="headerlink" title="GDBT 处理分类问题"></a>GDBT 处理分类问题</h2><p>GBDT在解决分类问题时有两种办法，一个是选择指数损失函数作为损失函数，此时GBDT退化为AdaBoost算法，另一个是选择类似于逻辑回归的对数似然损失函数。（逻辑回归使用的是对数似然函数）</p>
+<p>当损失函数取平方误差损失函数和指数损失函数时，每一步的优化还算简单，可是如果损失函数是其他一般损失函数时，那可就难了。类似逻辑回归中的求解过程，使用梯度下降的方式简化了优化过程，学者使用梯度上升的方式近似求解提升树的优化过程。GBDT这个算法中最关键的一点就是用损失函数在当前模型中的负梯度值，即：</p>
+<p><img src="https://upload.cc/i1/2019/07/12/laVvjT.png" alt=""></p>
+<p>使用平方损失函数时候，GBDT算法的每一步在生成决策树只是拟合前面模型的残差，（y- y^）残差是梯度的一个特例。<br>而当损失函数是其他的形式时候，下一次迭代是使用的负梯度值。<br> 对于一般损失函数，为了使其取得最小值，通过梯度下降算法，每次朝着损失函数的负梯度方向逐步移动，最终使得损失函数极小的方法（此方法要求损失函数可导）。</p>
+<p>总的来说，第一颗树是由基尼系数决定? ，之后所有的树的决策全是由残差来决定。</p>
+<p>GBDT的思想可以用一个通俗的例子解释，假如有个人30岁，我们首先用20岁去拟合，发现损失有10岁，这时我们用6岁去拟合剩下的损失，发现差距还有4岁，第三轮我们用3岁拟合剩下的差距，差距就只有一岁了。如果我们的迭代轮数还没有完，可以继续迭代下面，每一轮迭代，拟合的岁数误差都会减小。</p>
+<h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><h2 id="How-Gradient-Boosting-Works"><a href="#How-Gradient-Boosting-Works" class="headerlink" title="How Gradient Boosting Works"></a>How Gradient Boosting Works</h2><p>Gradient boosting involves three elements:</p>
+<ul>
+<li>A loss function to be optimized.</li>
+<li>A weak learner to make predictions.</li>
+<li>An additive model to add weak learners to minimize the loss function.</li>
+</ul>
+<h3 id="loss-function"><a href="#loss-function" class="headerlink" title="loss function"></a>loss function</h3><p>The loss function used depends on the type of problem being solved.<br>It must be differentiable, but many standard loss functions are supported and you can define your own.<br>For example, regression may use a squared error and classification may use logarithmic loss.<br>A benefit of the gradient boosting framework is that a new boosting algorithm does not have to be derived for each loss function that may want to be used, instead, it is a generic enough framework that any differentiable loss function can be used.</p>
+<p>log loss主要用来衡量二分类，cross entroy主要用来衡量多分类，前者是后者在二分类下的特例<br>交叉熵公式 (cross entroy)  $- \sum _ { i = 1 } ^ { K } p _ { i } \log q _ { i }$ 其中 $p_i$ 表示真实的分布， $q_i$ 表示预测分布, $K$ 表示分类数; 当 $K =2$ 交叉熵退化成 log loss: $- [ y \log \hat { y } + (1-y)log(1 -\hat{y}) ]$</p>
+<p>cross entroy与logloss主要用来衡量分类算法性能，因为cross entroy意义是衡量真实分布p和预测分布q的分布差异程度；mse主要用来衡量回归算法性能；</p>
+<h3 id="weak-learner"><a href="#weak-learner" class="headerlink" title="weak learner"></a>weak learner</h3><p>弱分类器一般选择 CART （分类回归树） Classification And Regression Tree(CART)是决策树的一种，并且是非常重要的决策树，</p>
+<p>Decision trees are used as the weak learner in gradient boosting.<br>Specifically regression trees are used that output real values for splits and whose output can be added together, allowing subsequent models outputs to be added and “correct” the residuals in the predictions.</p>
+<p>It is common to constrain the weak learners in specific ways, such as a maximum number of layers, nodes, splits or leaf nodes.<br>This is to ensure that the learners remain weak, but can still be constructed in a greedy manner.</p>
+<h3 id="additive-model"><a href="#additive-model" class="headerlink" title="additive model"></a>additive model</h3><p>Trees are added one at a time, and existing trees in the model are not changed.<br>A gradient descent procedure is used to minimize the loss when adding trees.</p>
+<p>Traditionally, gradient descent is used to minimize a set of parameters, such as the coefficients in a regression equation or weights in a neural network. After calculating error or loss, the weights are updated to minimize that error.<br>Instead of parameters, we have weak learner sub-models or more specifically decision trees. After calculating the loss, to perform the gradient descent procedure, we must add a tree to the model that reduces the loss (i.e. follow the gradient). We do this by parameterizing the tree, then modify the parameters of the tree and move in the right direction by (reducing the residual loss.<br>Generally this approach is called functional gradient descent or gradient descent with functions.</p>
+<h2 id="GBDT"><a href="#GBDT" class="headerlink" title="GBDT"></a>GBDT</h2><p>学习过程：先使用一个初始值来学习一个决策树，叶子可以得到预测的值，以及残差，然后后面的决策树是基于前面的决策树的残差进行学习，直到残差为0.<br>对于测试样本的预测值，就是许多决策树预测值的累加。</p>
+<p>GBDT通过多轮迭代,每轮迭代产生一个弱分类器，每个分类器在上一轮分类器的残差基础上进行训练。对弱分类器的要求一般是足够简单，并且是低方差和高偏差的。因为训练的过程是通过降低偏差来不断提高最终分类器的精度。</p>
+<p><img src="https://b2.bmp.ovh/imgs/2019/07/e9f310e2c0dc1ada.png" alt=""></p>
+<p>损失函数：二分 log loss ，多分 交叉熵loss，回归 平方损失<br>弱学习器（weak learner）：<br>加法模型： 使用梯度下降的方式去减少loss， 当增加一个新的树<br>A gradient descent procedure is used to minimize the loss when adding trees.</p>
+<p>具体说这个弱学习器，<br>GBDT 选择特征的过程就是 CART (分类回归树)选择特征的过程。选择特征是：遍历每个特征和每个特征的所有切分点，找到最优的特征和最优的切分点。多个CART TREE 生成过程中，选择最优特征切分较多的特征就是重要的特征。</p>
+<p>目前GBDT 的算法比较好的库是 xgboost</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点（相对于 LR or SVM）：</p>
+<ul>
+<li><p>可以灵活的处理各种类型的数据，包括连续型和离散型，处理分类和回归问题</p>
+</li>
+<li><p>继承了树模型的优点： 对异常值鲁棒，处理缺省值</p>
+</li>
+<li><p>即使是大量数据，也可以方便的处理，相对比SVM 来说。</p>
+</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li><p>无法并行</p>
+</li>
+<li><p>在不带噪声的数据上，分类效果不如LR或者 SVM</p>
+</li>
+</ul>
+<h2 id="常见的问题"><a href="#常见的问题" class="headerlink" title="常见的问题"></a>常见的问题</h2><ul>
+<li>为什么GBDT要把CART回归树树分成m棵二叉树去求（每棵树只有两个叶子节点），而不是求一棵二叉树，这棵树有m+1（最多有2m个叶子节点）层呢？</li>
+</ul>
+<p>这是为了解决过拟合问题，基学习器要具有简单、高偏差和低方差的特点，因此每棵CART回归树的深度不会很深。</p>
+<ul>
+<li>为什么第m次学习的目标，是前m-1棵树预测值的累加和的残差？</li>
+</ul>
+<p>一方面通过分步求解，一步步逼近目标值，比一步到位要简单；另一方面每一步的残差计算其实变相地增大了被分错的实例的权重，因为被分错的实例其残差较大，而已经分对的实例的残差趋近于0。这样后面的树就能越来越专注于前面被分错的实例了。<br>提升树是迭代多棵回归树来共同决策。当采用平方误差损失函数时，每一棵回归树学习的是之前所有树的结论和残差，拟合得到一个当前的残差回归树，残差的意义如公式：残差 = 真实值 - 预测值 。提升树即是整个迭代过程生成的回归树的累加。</p>
+<ul>
+<li>AdaBoost 算法和 GBDT 算法的区别</li>
+</ul>
+<p>Boosting族算法的著名代表是AdaBoost，AdaBoost算法通过给已有模型预测错误的样本更高的权重，使得先前的学习器做错的训练样本在后续受到更多的关注的方式来弥补已有模型的不足。与AdaBoost算法不同，梯度提升方法在迭代的每一步构建一个能够沿着梯度最陡的方向降低损失（steepest-descent）的学习器来弥补已有模型的不足。经典的AdaBoost算法只能处理采用指数损失函数的二分类学习任务2，而梯度提升方法通过设置不同的可微损失函数可以处理各类学习任务（多分类、回归、Ranking等），应用范围大大扩展。另一方面，AdaBoost算法对异常点（outlier）比较敏感，而梯度提升算法通过引入bagging思想、加入正则项等方法能够有效地抵御训练数据中的噪音，具有更好的健壮性。这也是为什么梯度提升算法（尤其是采用决策树作为弱学习器的GBDT算法）如此流行的原因，有种观点认为GBDT是性能最好的机器学习算法，这当然有点过于激进又固步自封的味道，但通常各类机器学习算法比赛的赢家们都非常青睐GBDT算法，由此可见该算法的实力不可小觑。</p>
+<ul>
+<li>损失函数：adaboost 使用的是指数损失函数的算法，而gbdt 可以使用不同的可微的损失函数进行分类和回归问题</li>
+<li></li>
+</ul>
+<p>adaboost 一般是用于分类，gbt 一般用于回归。</p>
+<ul>
+<li><p>为什么是低方差？<br>gbdt通过多轮迭代,每轮迭代产生一个弱分类器，每个分类器在上一轮分类器的残差基础上进行训练。对弱分类器的要求一般是足够简单，并且是低方差和高偏差的。因为训练的过程是通过降低偏差来不断提高最终分类器的精度，（此处是可以证明的）。通俗的理解，方差比较低就是模型表现的稳定与否。</p>
+</li>
+<li><p>什么是NP 问题?<br>NP问题是指可以在多项式的时间里验证一个解的问题。NP问题的另一个定义是，可以在多项式的时间里猜出一个解的问题。</p>
+</li>
+<li><p>Bagging 算法?</p>
+</li>
+</ul>
+<p>Bagging算法是这样做的：每个分类器都随机从原样本中做有放回的采样，然后分别在这些采样后的样本上训练分类器，然后再把这些分类器组合起来。简单的多数投票一般就可以。其代表算法是随机森林</p>
+<h2 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h2><p>AdaBoost，是英文”Adaptive Boosting”（自适应增强）的缩写。它的自适应在于：前一个基本分类器分错的样本会得到加强，加权后的全体样本再次被用来训练下一个基本分类器。同时，在每一轮中加入一个新的弱分类器，直到达到某个预定的足够小的错误率或达到预先指定的最大迭代次数。</p>
+<p>具体说来，整个Adaboost 迭代算法就3步：</p>
+<ul>
+<li>初始化训练数据的权值分布。如果有N个样本，则每一个训练样本最开始时都被赋予相同的权值：1/N。</li>
+<li>训练弱分类器。具体训练过程中，如果某个样本点已经被准确地分类，那么在构造下一个训练集中，它的权值就被降低；相反，如果某个样本点没有被准确地分类，那么它的权值就得到提高。然后，权值更新过的样本集被用于训练下一个分类器，整个训练过程如此迭代地进行下去。</li>
+<li>将各个训练得到的弱分类器组合成强分类器。各个弱分类器的训练过程结束后，加大分类误差率小的弱分类器的权重，使其在最终的分类函数中起着较大的决定作用，而降低分类误差率大的弱分类器的权重，使其在最终的分类函数中起着较小的决定作用。换言之，误差率低的弱分类器在最终分类器中占的权重较大，否则较小。</li>
+</ul>
+<p>对于决策树，Adaboost分类用了CART分类树，而Adaboost回归用了CART回归树。</p>
+<p>AdaBoost 的优点：</p>
+<ul>
+<li>作为分类器，分类精度比较高</li>
+<li>简单的二元分类器，构造简单，结果可理解</li>
+<li>不容易发生过拟合</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>对异常样本敏感，异常样本在迭代过程中可能获得较高的权重，影响最终的强学习器的预测准确率。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gbdt/" rel="tag"># gbdt</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/30/text-summarization/" rel="next" title="Text Summarization">
+                <i class="fa fa-chevron-left"></i> Text Summarization
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/12/seq2seq-theory/" rel="prev" title="All you need to know about seq2seq">
+                All you need to know about seq2seq <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GDBT-处理分类问题"><span class="nav-number">2.</span> <span class="nav-text">GDBT 处理分类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练过程"><span class="nav-number">3.</span> <span class="nav-text">训练过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-Gradient-Boosting-Works"><span class="nav-number">4.</span> <span class="nav-text">How Gradient Boosting Works</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#loss-function"><span class="nav-number">4.1.</span> <span class="nav-text">loss function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weak-learner"><span class="nav-number">4.2.</span> <span class="nav-text">weak learner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#additive-model"><span class="nav-number">4.3.</span> <span class="nav-text">additive model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT"><span class="nav-number">5.</span> <span class="nav-text">GBDT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优缺点"><span class="nav-number">6.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的问题"><span class="nav-number">7.</span> <span class="nav-text">常见的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AdaBoost"><span class="nav-number">8.</span> <span class="nav-text">AdaBoost</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/07/12/gbdt/';
+          this.page.identifier = '2019/07/12/gbdt/';
+          this.page.title = 'A Gentle Introduction of GBDT';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '8c6403951ee3eab4e420',
+          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          repo: 'comments_blog',
+          owner: 'jia1509309698@163.com',
+          admin: ['jia1509309698@163.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

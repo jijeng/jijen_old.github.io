@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="leetcode," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="LeetCode 刷题总结（二）， 使用Python 实现。该篇题目类型主要是： list, linkedList 还有简单的 tree。">
+<meta name="keywords" content="leetcode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode-List">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/leetcode-list/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="LeetCode 刷题总结（二）， 使用Python 实现。该篇题目类型主要是： list, linkedList 还有简单的 tree。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g43vow96obj20bg04hmx3.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g43wjzbspaj20b4053gll.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g43zcghppmj20af03laa0.jpg">
+<meta property="og:image" content="https://upload.cc/i1/2019/07/06/APQ9wf.jpg">
+<meta property="og:updated_time" content="2019-07-06T05:08:04.173Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode-List">
+<meta name="twitter:description" content="LeetCode 刷题总结（二）， 使用Python 实现。该篇题目类型主要是： list, linkedList 还有简单的 tree。">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g43vow96obj20bg04hmx3.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/16/leetcode-list/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>LeetCode-List | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/16/leetcode-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">LeetCode-List</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-16T23:17:15+08:00">
+                2019-06-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-06T13:08:04+08:00">
+                2019-07-06
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/16/leetcode-list/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/16/leetcode-list/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>LeetCode 刷题总结（二）， 使用Python 实现。该篇题目类型主要是： list, linkedList 还有简单的 tree。 </p>
+<a id="more"></a>
+<h3 id="Add-Two-Numbers"><a href="#Add-Two-Numbers" class="headerlink" title="Add Two Numbers"></a>Add Two Numbers</h3><blockquote>
+<p>You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
+</blockquote>
+<blockquote>
+<p>Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br>Output: 7 -&gt; 0 -&gt; 8<br>Explanation: 342 + 465 = 807.</p>
+</blockquote>
+<p>Tips: 加法的过程，使用 \% 和 整除进行求解，使用linkedList 进行存储。<br><a href="https://leetcode.com/problems/add-two-numbers/" target="_blank" rel="noopener">https://leetcode.com/problems/add-two-numbers/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addTwoNumbers</span><span class="params">(self, l1, l2)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type l1: ListNode</span></span><br><span class="line"><span class="string">        :type l2: ListNode</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        dummy = cur = ListNode(<span class="number">0</span>)</span><br><span class="line">        carry = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> l1 <span class="keyword">or</span> l2 <span class="keyword">or</span> carry:</span><br><span class="line">            <span class="keyword">if</span> l1:</span><br><span class="line">                carry += l1.val</span><br><span class="line">                l1 = l1.next</span><br><span class="line">            <span class="keyword">if</span> l2:</span><br><span class="line">                carry += l2.val</span><br><span class="line">                l2 = l2.next</span><br><span class="line">            cur.next = ListNode(carry%<span class="number">10</span>)</span><br><span class="line">            cur = cur.next</span><br><span class="line">            carry //= <span class="number">10</span></span><br><span class="line">        <span class="keyword">return</span> dummy.next</span><br></pre></td></tr></table></figure>
+<h3 id="Remove-Nth-Node-From-End-of-List"><a href="#Remove-Nth-Node-From-End-of-List" class="headerlink" title="Remove Nth Node From End of List"></a>Remove Nth Node From End of List</h3><blockquote>
+<p>Given a linked list, remove the n-th node from the end of list and return its head.</p>
+</blockquote>
+<p>Tips: 可以使用”两指针“ 方法进行求解，前后两指针相差 N步数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">removeNthFromEnd</span><span class="params">(self, head, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head <span class="keyword">or</span> <span class="keyword">not</span> head.next:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line">        new_head =ListNode(<span class="number">-1</span>)</span><br><span class="line">        new_head.next =head</span><br><span class="line"></span><br><span class="line">        fast =new_head</span><br><span class="line">        <span class="comment"># 先走n 步</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="comment"># 这里很好的处理了 n &gt; 链表长度 情况</span></span><br><span class="line">            <span class="keyword">if</span> fast.next:</span><br><span class="line">                fast =fast.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> head</span><br><span class="line">        slow =new_head</span><br><span class="line">        <span class="comment"># 一块走</span></span><br><span class="line">        <span class="comment"># 因为是 fast 先走到none，所以这个判断条件</span></span><br><span class="line">        <span class="keyword">while</span> fast.next:</span><br><span class="line">            fast =fast.next</span><br><span class="line">            slow =slow.next</span><br><span class="line">        slow.next =slow.next.next</span><br><span class="line">        <span class="comment"># 这个指向是经验性，还是超级nice的</span></span><br><span class="line">        <span class="keyword">return</span> new_head.next</span><br></pre></td></tr></table></figure>
+<h3 id="Merge-Two-Sorted-Lists"><a href="#Merge-Two-Sorted-Lists" class="headerlink" title="Merge Two Sorted Lists"></a>Merge Two Sorted Lists</h3><blockquote>
+<p>Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.</p>
+</blockquote>
+<p>Tips: 归并操作中的”并“ 操作。</p>
+<p><a href="https://leetcode.com/problems/merge-two-sorted-lists/" target="_blank" rel="noopener">https://leetcode.com/problems/merge-two-sorted-lists/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mergeTwoLists</span><span class="params">(self, l1, l2)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type l1: ListNode</span></span><br><span class="line"><span class="string">        :type l2: ListNode</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> l1 <span class="keyword">and</span> <span class="keyword">not</span> l2:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">elif</span> <span class="keyword">not</span> l1 <span class="keyword">or</span> <span class="keyword">not</span> l2:</span><br><span class="line">            <span class="keyword">return</span> l1 <span class="keyword">or</span> l2</span><br><span class="line">        <span class="comment"># 这里新建了 node，作为最后返回list 中的head，因为使用哪个子list 都是不确定的</span></span><br><span class="line">        </span><br><span class="line">        new_node =ListNode(<span class="number">-1</span>)</span><br><span class="line">        cur =new_node</span><br><span class="line">        </span><br><span class="line">        head1 =l1</span><br><span class="line">        head2 =l2</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> head1 <span class="keyword">and</span> head2:</span><br><span class="line">            <span class="keyword">if</span> head1.val &lt; head2.val:</span><br><span class="line">                cur.next =head1</span><br><span class="line">                head1 =head1.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur.next =head2</span><br><span class="line">                head2 =head2.next</span><br><span class="line">            cur =cur.next</span><br><span class="line">        <span class="comment"># 对于这种 if else 需要是相当的清楚</span></span><br><span class="line">        <span class="keyword">if</span> head1:</span><br><span class="line">            cur.next =head1</span><br><span class="line">        <span class="keyword">elif</span> head2:</span><br><span class="line">            cur.next =head2</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> new_node.next</span><br></pre></td></tr></table></figure>
+<h3 id="Swap-Nodes-in-Pairs"><a href="#Swap-Nodes-in-Pairs" class="headerlink" title="Swap Nodes in Pairs"></a>Swap Nodes in Pairs</h3><blockquote>
+<p>Given a linked list, swap every two adjacent nodes and return its head.<br>You may not modify the values in the list’s nodes, only nodes itself may be changed.</p>
+</blockquote>
+<pre><code>Given 1-&gt;2-&gt;3-&gt;4, you should return the list as 2-&gt;1-&gt;4-&gt;3.
+</code></pre><p>Tips:  常见的类型，使用三个指针修改指向。经常创建 dummy指针，如果head 可能被改变的话。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    三个指针的修改，应该是没有问题的</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swapPairs</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        </span><br><span class="line">        dummy=pre =ListNode(<span class="number">-1</span>)</span><br><span class="line">        dummy.next =head</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line"></span><br><span class="line">            cur =pre.next</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> cur:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            nex =cur.next</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> nex:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            pre.next, cur.next, nex.next, pre =nex, nex.next, cur, cur</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> dummy.next</span><br></pre></td></tr></table></figure>
+<h3 id="Count-and-Say"><a href="#Count-and-Say" class="headerlink" title="Count and Say"></a>Count and Say</h3><blockquote>
+<p>The count-and-say sequence is the sequence of integers with the first five terms as following:</p>
+</blockquote>
+<pre><code>1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+1 is read off as &quot;one 1&quot; or 11.
+11 is read off as &quot;two 1s&quot; or 21.
+21 is read off as &quot;one 2, then one 1&quot; or 1211.
+</code></pre><p>Tips:  这个是属于循环，字符串处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">doCountAndSay</span><span class="params">(self, string)</span>:</span></span><br><span class="line">        char =string[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        num =<span class="number">0</span></span><br><span class="line">        result =<span class="string">""</span></span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> string:</span><br><span class="line">            <span class="keyword">if</span> char ==c:</span><br><span class="line">                num +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result += (str(num)+ char)</span><br><span class="line">                char =c</span><br><span class="line">                num =<span class="number">1</span></span><br><span class="line">        result += (str(num) +char)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countAndSay</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="number">0</span> ==n:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">        <span class="keyword">elif</span> <span class="number">1</span>== n:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"1"</span></span><br><span class="line">        </span><br><span class="line">        result =<span class="string">'1'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n):</span><br><span class="line">            result =self.doCountAndSay(result)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h3 id="Trapping-Rain-Water"><a href="#Trapping-Rain-Water" class="headerlink" title="Trapping Rain Water"></a>Trapping Rain Water</h3><blockquote>
+<p>Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.</p>
+</blockquote>
+<p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g43vow96obj20bg04hmx3.jpg"></p>
+<p>Tips: 算法比较巧妙，左右两边进行遍历找出”累计“最高点，在O(N) 时间内完成。能装的水，取决于左右两边( neighbor) 的小值- height[i]。</p>
+<p><a href="https://leetcode.com/problems/trapping-rain-water/" target="_blank" rel="noopener">https://leetcode.com/problems/trapping-rain-water/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">trap</span><span class="params">(self, height)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> height:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        len_h =len(height)</span><br><span class="line"></span><br><span class="line">        leftmax=[<span class="number">0</span>]* len_h</span><br><span class="line">        max_h=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len_h):</span><br><span class="line">            <span class="keyword">if</span> height[i] &gt;max_h:</span><br><span class="line">                max_h =height[i]</span><br><span class="line">            leftmax[i] =max_h</span><br><span class="line">        </span><br><span class="line">        rightmax =[<span class="number">0</span>] *len_h</span><br><span class="line">        max_h =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len_h<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> height[i]&gt; max_h:</span><br><span class="line">                max_h =height[i]</span><br><span class="line">            rightmax[i] =max_h</span><br><span class="line">        </span><br><span class="line">        result =<span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len_h):</span><br><span class="line">            result += (min(leftmax[i], rightmax[i])- height[i])</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h3 id="Maximum-Subarray"><a href="#Maximum-Subarray" class="headerlink" title="Maximum Subarray"></a>Maximum Subarray</h3><blockquote>
+<p>Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.</p>
+</blockquote>
+<pre><code>Input: [-2,1,-3,4,-1,2,1,-5,4],
+Output: 6
+Explanation: [4,-1,2,1] has the largest sum = 6.
+</code></pre><p>Tips:  一维数组返回最大的子数组，字符串处理。<br><a href="https://leetcode.com/problems/maximum-subarray/" target="_blank" rel="noopener">https://leetcode.com/problems/maximum-subarray/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxSubArray</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        len_n =len(nums)</span><br><span class="line">        <span class="keyword">if</span> len_n ==<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> nums[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        max_n =nums[<span class="number">0</span>] <span class="comment"># 如果提前初始化，那么之后在更新max_n 时候就不用进行 None 的判断了</span></span><br><span class="line">        sum_n =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            </span><br><span class="line">            sum_n += num</span><br><span class="line">            <span class="keyword">if</span> sum_n&gt; max_n:</span><br><span class="line">                max_n =sum_n</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> sum_n &lt;<span class="number">0</span>:</span><br><span class="line">                sum_n =<span class="number">0</span></span><br><span class="line">                <span class="comment"># continue</span></span><br><span class="line">        <span class="keyword">return</span> max_n</span><br></pre></td></tr></table></figure>
+<h3 id="Insert-Interval"><a href="#Insert-Interval" class="headerlink" title="Insert Interval"></a>Insert Interval</h3><blockquote>
+<p>Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).<br>You may assume that the intervals were initially sorted according to their start times.</p>
+</blockquote>
+<pre><code>Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+Output: [[1,5],[6,9]]
+</code></pre><p>Tips: 使用( 0, 1) 去区分 start, end 这种点，类似一种数据结构的样子, 排序之后结果的start index 和end index 分别出现在首段和尾段，使用栈进行存储 start index 就行了。<br><a href="https://leetcode.com/problems/insert-interval/" target="_blank" rel="noopener">https://leetcode.com/problems/insert-interval/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insert</span><span class="params">(self, intervals, newinterval)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        这个每个都是有 数据类型的，这个就是 LeetCode 的优点</span></span><br><span class="line"><span class="string">        :type intervals: List[List[int]]</span></span><br><span class="line"><span class="string">        :type newInterval: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[List[int]]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> intervals:</span><br><span class="line">            <span class="keyword">return</span> [newinterval]</span><br><span class="line"></span><br><span class="line">        datas =[]</span><br><span class="line">        <span class="keyword">if</span> intervals:</span><br><span class="line">            datas.append((newinterval[<span class="number">0</span>], <span class="number">0</span>))</span><br><span class="line">            datas.append((newinterval[<span class="number">1</span>], <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> interval <span class="keyword">in</span> intervals:</span><br><span class="line">            datas.append((interval[<span class="number">0</span>], <span class="number">0</span>))</span><br><span class="line">            datas.append((interval[<span class="number">1</span>], <span class="number">1</span>))</span><br><span class="line">        datas.sort()</span><br><span class="line">        <span class="comment"># sort() 是一个骚操作, 默认的排序显示根据 tuple[0] 进行排序，如果相同，那么根据 tuple[1] 进行排序</span></span><br><span class="line">        <span class="comment"># 所以排在前面的一定是 start index。</span></span><br><span class="line">        merged =[]</span><br><span class="line">        stack =[datas[<span class="number">0</span>]]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(datas)):</span><br><span class="line">            data =datas[i]</span><br><span class="line">            <span class="keyword">if</span> data[<span class="number">1</span>] ==<span class="number">0</span>:</span><br><span class="line">                stack.append(data)</span><br><span class="line">            <span class="keyword">elif</span> data[<span class="number">1</span>] ==<span class="number">1</span>:</span><br><span class="line">                <span class="keyword">if</span> stack:</span><br><span class="line">                    start =stack.pop()</span><br><span class="line">                <span class="keyword">if</span> len(stack) ==<span class="number">0</span>:</span><br><span class="line">                    <span class="comment"># 这个时候 data 是 end point</span></span><br><span class="line">                    merged.append((start[<span class="number">0</span>], data[<span class="number">0</span>]))</span><br><span class="line">        <span class="keyword">return</span> merged</span><br></pre></td></tr></table></figure>
+<h3 id="Rotate-List"><a href="#Rotate-List" class="headerlink" title="Rotate List"></a>Rotate List</h3><blockquote>
+<p>Given a linked list, rotate the list to the right by k places, where k is non-negative.</p>
+</blockquote>
+<p>Tips： 细节在于k 可能大于 list 的长度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rotateRight</span><span class="params">(self, head, k)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> k ==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span>  head</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 头指针</span></span><br><span class="line">        dummy =ListNode(<span class="number">-1</span>)</span><br><span class="line">        dummy.next =head</span><br><span class="line">        p =dummy</span><br><span class="line">        </span><br><span class="line">        count =<span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> p.next:</span><br><span class="line">            p =p.next</span><br><span class="line">            count +=<span class="number">1</span></span><br><span class="line">        <span class="comment"># 指向了头指针，连成了一个环，下一步开始找头指针</span></span><br><span class="line">        p.next =dummy.next</span><br><span class="line">        step =count -(k% count)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(step):</span><br><span class="line">            p =p.next</span><br><span class="line">        <span class="comment"># 找到了头指针，那么下一个就是尾指针</span></span><br><span class="line">        head =p.next</span><br><span class="line">        p.next =<span class="keyword">None</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> head</span><br></pre></td></tr></table></figure>
+<h3 id="Unique-Paths"><a href="#Unique-Paths" class="headerlink" title="Unique Paths"></a>Unique Paths</h3><blockquote>
+<p>A robot is located at the top-left corner of a m x n grid (marked ‘Start’ in the diagram below).<br>The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked ‘Finish’ in the diagram below).<br>How many possible unique paths are there?</p>
+</blockquote>
+<p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g43wjzbspaj20b4053gll.jpg" alt=""></p>
+<p>Tips： 最后求解的是unique paths 的数量，而不是具体的路径，所以可以不使用 dp，成了一道模拟排列组合的数学题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 这个总的步数是一定的 m+n -1 ，然后下行和右行也是一定的，</span></span><br><span class="line">    <span class="comment"># 所以这个是模拟的“排列组合” 的思想</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type m: int</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> m ==<span class="number">0</span> <span class="keyword">or</span> n ==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        up =<span class="number">1</span></span><br><span class="line">        <span class="comment"># 这个是分子</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(m+n<span class="number">-2</span>, n <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            up *=i</span><br><span class="line">        </span><br><span class="line">        down =<span class="number">1</span></span><br><span class="line">        <span class="comment"># 这个是分母</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, m):</span><br><span class="line">            down *= j</span><br><span class="line">        <span class="keyword">return</span> up/down</span><br></pre></td></tr></table></figure>
+<h3 id="Sort-Colors"><a href="#Sort-Colors" class="headerlink" title="Sort Colors"></a>Sort Colors</h3><blockquote>
+<p>Given an array with n objects colored red, white or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white and blue.<br>Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.</p>
+</blockquote>
+<p>Tips: 快排思想， 中间数字1 当做key index，左右两边分别是left，right index。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    0, 1, 2 (red, white, blue)</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sortColors</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="comment"># zero and r record the position of "0" and "2" respectively</span></span><br><span class="line">        index, two, zero = <span class="number">0</span>, len(nums) - <span class="number">1</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> index &lt;= two:</span><br><span class="line">            <span class="keyword">if</span> nums[index] == <span class="number">0</span>:</span><br><span class="line">                nums[index], nums[zero] = nums[zero], nums[index]</span><br><span class="line">                index += <span class="number">1</span>;</span><br><span class="line">                zero += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> nums[index] == <span class="number">2</span>:</span><br><span class="line">                nums[index], nums[two] = nums[two], nums[index]</span><br><span class="line">                two -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h3 id="Remove-Duplicates-from-Sorted-List-II"><a href="#Remove-Duplicates-from-Sorted-List-II" class="headerlink" title="Remove Duplicates from Sorted List II"></a>Remove Duplicates from Sorted List II</h3><blockquote>
+<p>Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.</p>
+</blockquote>
+<p>Tips: 常规题，经常出现这样的逻辑， if… while ，如果发现有重复的，那么一直就找到不重复为止。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    就是在删除节点的时候，如果head 节点也得删除，这个时候</span></span><br><span class="line"><span class="string">    常常创建一个 dummy 结点</span></span><br><span class="line"><span class="string">    求解的是distinct 的list</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deleteDuplicates</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        dummy =pre =ListNode(<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        dummy.next =head</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> head <span class="keyword">and</span> head.next:</span><br><span class="line">            <span class="keyword">if</span> head.val ==head.next.val:</span><br><span class="line">                <span class="keyword">while</span> head <span class="keyword">and</span> head.next <span class="keyword">and</span> head.val ==head.next.val:</span><br><span class="line">                    head =head.next</span><br><span class="line">                head =head.next</span><br><span class="line">                pre.next =head</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 这个更新很有意思， head =head.next, pre.next =head</span></span><br><span class="line">                pre =pre.next</span><br><span class="line">                head =head.next</span><br><span class="line">        <span class="keyword">return</span> dummy.next</span><br></pre></td></tr></table></figure>
+<h3 id="Partition-List"><a href="#Partition-List" class="headerlink" title="Partition List"></a>Partition List</h3><blockquote>
+<p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.<br>You should preserve the original relative order of the nodes in each of the two partitions.</p>
+</blockquote>
+<p>Tips: 新建了两个结点，分别连接小于 x 和不小于 x 的结点，最后两个结点相连。 list 是直接进行交换位置，但是linkedList 不是这样的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 局部排序，不是全局排序</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(self, head, x)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :type x: int</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        small =l1 =ListNode(<span class="number">0</span>)</span><br><span class="line">        great =l2 =ListNode(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">while</span> head:</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> head.val &lt;x :</span><br><span class="line">                l1.next =head</span><br><span class="line">                l1 =l1.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                l2.next =head</span><br><span class="line">                l2 =l2.next</span><br><span class="line">            head =head.next</span><br><span class="line">        <span class="comment"># 这个是一个细节， 最后l2 是需要一个none 进行结束标记</span></span><br><span class="line">        l2.next =<span class="keyword">None</span></span><br><span class="line">        l1.next =great.next</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> small.next</span><br></pre></td></tr></table></figure>
+<h3 id="Reverse-Linked-List-II"><a href="#Reverse-Linked-List-II" class="headerlink" title="Reverse Linked List II"></a>Reverse Linked List II</h3><blockquote>
+<p>Reverse a linked list from position m to n. Do it in one-pass.<br>Note: 1 ≤ m ≤ n ≤ length of list.</p>
+</blockquote>
+<p>Tips:  局部进行reverse，找到该节点，然后迭代进行就可以了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># The idea is simple and intuitive: find linkedlist [m, n], reverse it, then connect m with n+1, connect n with m-1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseBetween</span><span class="params">(self, head, m, n)</span>:</span></span><br><span class="line">        </span><br><span class="line">        pre =dummy =ListNode(<span class="number">0</span>)</span><br><span class="line">        dummy.next =head</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#cur, pre =head, dummy</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(m<span class="number">-1</span>):</span><br><span class="line">            <span class="comment">#cur =cur.next</span></span><br><span class="line">            pre =pre.next</span><br><span class="line">        cur =pre.next    </span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(n-m):</span><br><span class="line">            tmp =cur.next</span><br><span class="line">            cur.next =tmp.next</span><br><span class="line">            tmp.next =pre.next</span><br><span class="line">            pre.next =tmp</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dummy.next</span><br></pre></td></tr></table></figure>
+<h3 id="Unique-Binary-Search-Trees"><a href="#Unique-Binary-Search-Trees" class="headerlink" title="Unique Binary Search Trees"></a>Unique Binary Search Trees</h3><blockquote>
+<p>Given n, how many structurally unique BST’s (binary search trees) that store values 1 … n?</p>
+</blockquote>
+<p>Tips: 从处理子问题的角度来看，选取一个结点为根，就把结点切成左右子树，以这个结点为根的可行二叉树数量就是左右子树可行二叉树数量的乘积，所以总的数量是将以所有结点为根的可行结果累加起来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 二叉搜索树，当且仅当中序遍历的时候是单调非减的时候。</span></span><br><span class="line">    <span class="comment"># 数学问题</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numTrees</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        arr =[<span class="number">0</span>]*(n+<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        arr[<span class="number">0</span>] =<span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, i+<span class="number">1</span>):</span><br><span class="line">                <span class="comment"># 处理的是左右子树的乘积</span></span><br><span class="line">                arr[i]  += arr[j<span class="number">-1</span>] *arr[i-j]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> arr[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="Best-Time-to-Buy-and-Sell-Stock"><a href="#Best-Time-to-Buy-and-Sell-Stock" class="headerlink" title="Best Time to Buy and Sell Stock"></a>Best Time to Buy and Sell Stock</h3><blockquote>
+<p>Say you have an array for which the ith element is the price of a given stock on day i.<br>If you were only permitted to complete at most one transaction (i.e., buy one and sell one share of the stock), design an algorithm to find the maximum profit.<br>Note that you cannot sell a stock before you buy one.</p>
+</blockquote>
+<p>Tips: 虽然这个说是最多一次买入卖出，但是这个价格变化是”连续“的，所以只要是下一个大于上一个就是可以 += profit 中的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 从代码上来看，毫无算法可言</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span><span class="params">(self, prices)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type prices: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> prices <span class="keyword">or</span> len(prices) ==<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        profit =<span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(prices)):</span><br><span class="line">            <span class="keyword">if</span> prices[i] &gt; prices[i<span class="number">-1</span>]:</span><br><span class="line">                profit += prices[i]-prices[i<span class="number">-1</span>]</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> profit</span><br></pre></td></tr></table></figure>
+<h3 id="Best-Time-to-Buy-and-Sell-Stock-II"><a href="#Best-Time-to-Buy-and-Sell-Stock-II" class="headerlink" title="Best Time to Buy and Sell Stock II"></a>Best Time to Buy and Sell Stock II</h3><blockquote>
+<p>Say you have an array for which the ith element is the price of a given stock on day i.<br>Design an algorithm to find the maximum profit. You may complete as many transactions as you like (i.e., buy one and sell one share of the stock multiple times).<br>Note: You may not engage in multiple transactions at the same time (i.e., you must sell the stock before you buy again).</p>
+</blockquote>
+<p>Tips: 可以进行多次买卖。和上面的区别在于 下一个只要不小于上一个就是可以累加的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 可以多次买卖， 买一次然后卖一次。不能多次买入</span></span><br><span class="line">    <span class="comment"># 这种就如同寻找的是 增序列。</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span><span class="params">(self, prices)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type prices: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        total =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(prices)):</span><br><span class="line">            <span class="keyword">if</span> prices[i]&gt;= prices[i<span class="number">-1</span>]:</span><br><span class="line">                total += prices[i]-prices[i<span class="number">-1</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> total</span><br></pre></td></tr></table></figure>
+<h3 id="Longest-Consecutive-Sequence"><a href="#Longest-Consecutive-Sequence" class="headerlink" title="Longest Consecutive Sequence"></a>Longest Consecutive Sequence</h3><blockquote>
+<p>Given an unsorted array of integers, find the length of the longest consecutive elements sequence.<br>Your algorithm should run in O(n) complexity.</p>
+</blockquote>
+<p>Tips： 这种方法很巧妙，如果x-1 not in，那么去 try x+1，然后计数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 第一印象是 先进行排序， 然后选择的过程， 但是限制条件是 O(n) 的复杂度</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestConsecutive</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        nums =set(nums)</span><br><span class="line">        </span><br><span class="line">        best =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> x<span class="number">-1</span> <span class="keyword">not</span> <span class="keyword">in</span> nums:</span><br><span class="line">                y =x+<span class="number">1</span></span><br><span class="line">                <span class="keyword">while</span> y <span class="keyword">in</span> nums:</span><br><span class="line">                    y +=<span class="number">1</span></span><br><span class="line">                best =max(best, y-x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> best</span><br></pre></td></tr></table></figure>
+<h3 id="Candy"><a href="#Candy" class="headerlink" title="Candy"></a>Candy</h3><blockquote>
+<p>There are N children standing in a line. Each child is assigned a rating value.<br>You are giving candies to these children subjected to the following requirements:</p>
+<ul>
+<li>Each child must have at least one candy.</li>
+<li>Children with a higher rating get more candies than their neighbors.<br>What is the minimum candies you must give?</li>
+</ul>
+</blockquote>
+<p>Tips: 因为涉及到 neighbors，所以左右两边进行遍历，因为如果ratings 大的话，那么结果一定得大，所以返回的是较大者。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">candy</span><span class="params">(self, ratings)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type ratings: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 满足第一个条件，at least one candy</span></span><br><span class="line">        res =len(ratings) *[<span class="number">1</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># left to right, higher then more candies</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(ratings)):</span><br><span class="line">            <span class="keyword">if</span> ratings[i] &gt; ratings[i<span class="number">-1</span>]:</span><br><span class="line">                <span class="comment"># 这个是严格的 &gt;</span></span><br><span class="line">                res[i] = res[i<span class="number">-1</span>] +<span class="number">1</span></span><br><span class="line">        <span class="comment"># right to left, higher then more candy, neighbors</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(ratings)<span class="number">-1</span>, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> ratings[i<span class="number">-1</span>] &gt; ratings[i]:</span><br><span class="line">                res[i<span class="number">-1</span>] =max(res[i<span class="number">-1</span>], res[i] +<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> sum(res)</span><br></pre></td></tr></table></figure>
+<h3 id="Single-Number"><a href="#Single-Number" class="headerlink" title="Single Number"></a>Single Number</h3><blockquote>
+<p>Given a non-empty array of integers, every element appears twice except for one. Find that single one.</p>
+</blockquote>
+<p>Tips: 异或的性质</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 分分钟 异或就出来了</span></span><br><span class="line">    <span class="comment"># integers, -2 -1 0 1 2 这样的数字</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">singleNumber</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        standard =<span class="number">0</span></span><br><span class="line">        <span class="comment"># 如果正好是其中的 0 出现一次，也是没有关系的， 因为初始化的 0 和 list 中的单数 0 正好匹配，异或操作之后相同为 0</span></span><br><span class="line">        <span class="comment"># 结果上是没有什么问题的</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            standard = num^ standard</span><br><span class="line">        <span class="keyword">return</span> standard</span><br></pre></td></tr></table></figure>
+<h3 id="Single-Number-II"><a href="#Single-Number-II" class="headerlink" title="Single Number II"></a>Single Number II</h3><blockquote>
+<p>Given a non-empty array of integers, every element appears three times except for one, which appears exactly once. Find that single one.</p>
+</blockquote>
+<p>Tips：这个 three times不能使用 异或，从二进制的角度进行考虑，以二进制的形式，将数字存储起来，如果是出现了 3次，那么 %3 结果就是0，最后只是剩下了 那个出现一次的数字</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 只是出现的一个的single one， 其他的出现三次</span></span><br><span class="line">    <span class="comment"># var |= value is short for var = var | value</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">singleNumber</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        bit = [<span class="number">0</span>] * <span class="number">32</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">32</span>):</span><br><span class="line">                bit[i] += num &gt;&gt; i &amp; <span class="number">1</span> <span class="comment"># 这个就是从左往右的顺序，先是进行 &gt;&gt; 运算，然后是 &amp; 运算</span></span><br><span class="line">                <span class="comment"># 可以想象这个重复计算比较多，因为每次都需要 num &gt;&gt; i  进行位运算</span></span><br><span class="line"></span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i, val <span class="keyword">in</span> enumerate(bit):</span><br><span class="line">            <span class="comment"># if the single numble is negative,</span></span><br><span class="line">            <span class="comment"># this case should be considered separately , 补码 和原码的转换关系</span></span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">31</span> <span class="keyword">and</span> val % <span class="number">3</span>:</span><br><span class="line">                res = -((<span class="number">1</span> &lt;&lt; <span class="number">31</span>) - res)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                res |= (val % <span class="number">3</span>) * (<span class="number">1</span> &lt;&lt; i) <span class="comment"># | 这个是位操作，更加类似不断的取 1 的过程， 然后和该位置的权重相乘</span></span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h3 id="Copy-List-with-Random-Pointer"><a href="#Copy-List-with-Random-Pointer" class="headerlink" title="Copy List with Random Pointer"></a>Copy List with Random Pointer</h3><blockquote>
+<p>A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.<br>Return a deep copy of the list.</p>
+</blockquote>
+<p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g43zcghppmj20af03laa0.jpg" alt=""></p>
+<p>Tips：在剑指offer 上是通过 指针操作进行做题，但是使用 defaultdict 基本上就不用出，使用dict 来处理这种关系，最后返回的是根节点、</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># Definition for a Node.</span></span><br><span class="line"><span class="string">class Node(object):</span></span><br><span class="line"><span class="string">    def __init__(self, val, next, random):</span></span><br><span class="line"><span class="string">        self.val = val</span></span><br><span class="line"><span class="string">        self.next = next</span></span><br><span class="line"><span class="string">        self.random = random</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="comment"># 使用dict 有没有感觉在作弊</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 做过这个</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">copyRandomList</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: Node</span></span><br><span class="line"><span class="string">        :rtype: Node</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">import</span> ipdb</span><br><span class="line">        dic = collections.defaultdict(<span class="keyword">lambda</span>: Node(<span class="number">0</span>, <span class="keyword">None</span>, <span class="keyword">None</span>)) <span class="comment"># 这个就是给定了一个默认的值, 直接初始化dict 中的value 为这个node</span></span><br><span class="line">        <span class="comment"># dict 的本身就是存储一种node 的关系，所以dict[n].val , next, random 可以这样进行操作</span></span><br><span class="line">        </span><br><span class="line">        dic[<span class="keyword">None</span>] = <span class="keyword">None</span></span><br><span class="line">        n = head</span><br><span class="line">        <span class="keyword">while</span> n:</span><br><span class="line">            dic[n].val = n.val</span><br><span class="line">            dic[n].next = dic[n.next]</span><br><span class="line">            dic[n].random = dic[n.random]</span><br><span class="line">            n = n.next</span><br><span class="line">        <span class="comment">#ipdb.set_trace()    </span></span><br><span class="line">        <span class="keyword">return</span> dic[head]</span><br></pre></td></tr></table></figure>
+<h3 id="Linked-List-Cycle"><a href="#Linked-List-Cycle" class="headerlink" title="Linked List Cycle"></a>Linked List Cycle</h3><blockquote>
+<p>Given a linked list, determine if it has a cycle in it.<br>To represent a cycle in the given linked list, we use an integer pos which represents the position (0-indexed) in the linked list where tail connects to. If pos is -1, then there is no cycle in the linked list.</p>
+</blockquote>
+<p>Tips：快慢两个指针的问题，给了两种方法来实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># O(1) == constant memory, </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasCycle</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        </span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        # 这种不用进行判断 fast 是否可以访问的原因在于 try except 的使用</span></span><br><span class="line"><span class="string">        try:</span></span><br><span class="line"><span class="string">            slow = head</span></span><br><span class="line"><span class="string">            fast = head.next</span></span><br><span class="line"><span class="string">            while slow is not fast:</span></span><br><span class="line"><span class="string">                slow = slow.next</span></span><br><span class="line"><span class="string">                fast = fast.next.next</span></span><br><span class="line"><span class="string">            return True</span></span><br><span class="line"><span class="string">        except:</span></span><br><span class="line"><span class="string">            return False   </span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="comment"># 这个是比较中规中矩的写法</span></span><br><span class="line">        slow = fast = head</span><br><span class="line">        <span class="comment"># 注意使用的是 fast进行判断，因为这个走的快</span></span><br><span class="line">        <span class="keyword">while</span> fast <span class="keyword">and</span> fast.next:</span><br><span class="line">            fast = fast.next.next</span><br><span class="line">            slow = slow.next</span><br><span class="line">            <span class="keyword">if</span> slow == fast:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="Reorder-List"><a href="#Reorder-List" class="headerlink" title="Reorder List"></a>Reorder List</h3><blockquote>
+<p>Given a singly linked list L: L0→L1→…→Ln-1→Ln,<br>reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…<br>You may not modify the values in the list’s nodes, only nodes itself may be changed.</p>
+</blockquote>
+<p>Tips： 从中间断开，后半部分翻转，然后和前半部分轮流连接</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.next = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reorderList</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: None Do not return anything, modify head in-place instead.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        fast, slow = head.next, head</span><br><span class="line"></span><br><span class="line">        <span class="comment"># first part has the same or one more node</span></span><br><span class="line">        <span class="keyword">while</span> fast <span class="keyword">and</span> fast.next:</span><br><span class="line">            fast = fast.next.next</span><br><span class="line">            slow = slow.next</span><br><span class="line"></span><br><span class="line">        <span class="comment"># reverse the send half</span></span><br><span class="line">        p = slow.next</span><br><span class="line">        slow.next = <span class="keyword">None</span></span><br><span class="line">        node = <span class="keyword">None</span>  <span class="comment"># 类似上一个结点， p 是cur 的结点</span></span><br><span class="line">        <span class="keyword">while</span> p:</span><br><span class="line">            nex = p.next</span><br><span class="line">            p.next = node</span><br><span class="line">            node = p</span><br><span class="line">            p = nex</span><br><span class="line"></span><br><span class="line">        <span class="comment"># combine head part and node part</span></span><br><span class="line">        p = head</span><br><span class="line">        <span class="keyword">while</span> node:</span><br><span class="line">            tmp = node.next</span><br><span class="line">            node.next = p.next  <span class="comment"># 两个 next 指向操作, 需要next 两次</span></span><br><span class="line">            p.next = node</span><br><span class="line">            p =p.next.next</span><br><span class="line">            </span><br><span class="line">            node = tmp</span><br></pre></td></tr></table></figure>
+<p>** Majority Element</p>
+<blockquote>
+<p>Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.</p>
+</blockquote>
+<blockquote>
+<p>Output: 2<br>Input: K = 1, N = 2<br>Explanation:<br>Drop the egg from floor 1.  If it breaks, we know with certainty that F = 0.<br>Otherwise, drop the egg from floor 2.  If it breaks, we know with certainty that F = 1.<br>If it didn’t break, then we know with certainty F = 2.<br>Hence, we needed 2 moves in the worst case to know what F is with certainty.</p>
+</blockquote>
+<p>Tips: 可以查看 solution 中的(讲解)[<a href="https://leetcode.com/problems/super-egg-drop/]" target="_blank" rel="noopener">https://leetcode.com/problems/super-egg-drop/]</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">majorityElement</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 初始化</span></span><br><span class="line">        counts =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> counts ==<span class="number">0</span>:</span><br><span class="line">                majority =num</span><br><span class="line">                counts =<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> majority ==num:</span><br><span class="line">                counts +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                counts -=<span class="number">1</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> majority</span><br></pre></td></tr></table></figure>
+<p><strong> Maximum Product Subarray</strong></p>
+<blockquote>
+<p>Given an integer array nums, find the contiguous subarray within an array (containing at least one number) which has the largest product.</p>
+</blockquote>
+<p>Tips: 在于左右两遍遍历，分别得到 prefix和 suffix 的乘积。这个速度上比较快在于存储了之前的结果。实现的时候利用了 1 or prefix[i-1] 这种技巧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProduct</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        prefix =nums</span><br><span class="line">        suffix =prefix[::<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(prefix)):</span><br><span class="line">            prefix[i] *= <span class="number">1</span> <span class="keyword">or</span> prefix[i<span class="number">-1</span>]</span><br><span class="line">            suffix[i] *= <span class="number">1</span> <span class="keyword">or</span> suffix[i<span class="number">-1</span>] </span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> max(prefix+ suffix)</span><br></pre></td></tr></table></figure>
+<p><strong> Majority Element</strong></p>
+<blockquote>
+<p>Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times. You may assume that the array is non-empty and the majority element always exist in the array.</p>
+</blockquote>
+<p>Tips: majority 的counts 的总数是大于其他所有counts相加之和的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">majorityElement</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        majority =<span class="keyword">None</span></span><br><span class="line">        counts =<span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> majority <span class="keyword">or</span> counts ==<span class="number">0</span>:</span><br><span class="line">                majority =num</span><br><span class="line">                counts =<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> num ==majority:</span><br><span class="line">                counts +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                counts -=<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> majority</span><br></pre></td></tr></table></figure>
+<p><strong>Rotate Array</strong></p>
+<blockquote>
+<p>Given an array, rotate the array to the right by k steps, where k is non-negative.</p>
+</blockquote>
+<p>Tips： 对于python 而言，是不存在切分字符串算法的，一步操作。小的细节是 k %len(array) 更加合理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rotate</span><span class="params">(self, nums, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: None Do not return anything, modify nums in-place instead.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 这个in-place 操作是不需要 return</span></span><br><span class="line">        k =k%len(nums) <span class="comment"># 这个是一个细节吧</span></span><br><span class="line">        <span class="comment">#nums[:] =nums[-k:] +nums[:k+1] </span></span><br><span class="line">        nums[:] =nums[-k:] +nums[:-k] </span><br><span class="line">        <span class="comment"># 左边有时候是nums 就行，有时候必须nums[:] 表示index的操作，因为环境的问题</span></span><br><span class="line">        <span class="comment"># 这种 对称的切分真的是比较好看</span></span><br></pre></td></tr></table></figure>
+<p><strong> Contains Duplicate</strong></p>
+<blockquote>
+<p>Given an array of integers, find if the array contains any duplicates.<br>Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.</p>
+</blockquote>
+<p>Tips: 有很多种方法，比如 dictionary or set，这个简单之处最后返回的是 true or false，不是要找出来。</p>
+<p>方法一：使用set，根据length判断。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">containsDuplicate</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 想法一，排序之后判断，</span></span><br><span class="line">        <span class="comment"># 想法二：使用dictionary, 在建立的过程中就可以判断，没有必要建立完之后遍历，from collections import Counter</span></span><br><span class="line">        <span class="comment"># 想法三： 使用set，道理和dictionary 基本上是相同的</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> len(nums) !=len(set(nums))</span><br></pre></td></tr></table></figure>
+<p>方法二：使用dictionary，不需要建完之后再判断。</p>
+<p>···python<br>class Solution(object):<br>    def containsDuplicate(self, nums):<br>        “””<br>        :type nums: List[int]<br>        :rtype: bool<br>        “””</p>
+<pre><code>dic ={}
+for num in nums:
+    if num in dic:
+        return True
+    else:
+        dic[num] =1
+return False
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">** Move Zeroes **</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt; Given an array nums, write a function to move all 0&apos;s to the end of it while maintaining the relative order of the non-zero elements.</span><br><span class="line"></span><br><span class="line">&gt; Input: [0,1,0,3,12]</span><br><span class="line">Output: [1,3,12,0,0]</span><br><span class="line"></span><br><span class="line">Tips: 双指针问题，pre 指向的是0 ，index是遍历的发现如果不是0，那么进行操作</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">class Solution(object):</span><br><span class="line">    def moveZeroes(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: None Do not return anything, modify nums in-place instead.</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        # in-place 操作</span><br><span class="line">        pre = 0 </span><br><span class="line">        for index in range(0, len(nums)):</span><br><span class="line">            if nums[index]:</span><br><span class="line">                if not nums[pre]:</span><br><span class="line">                    nums[index], nums[pre] =nums[pre], nums[index] </span><br><span class="line">                pre +=1</span><br></pre></td></tr></table></figure>
+<p><strong> Shuffle an Array</strong></p>
+<blockquote>
+<p>Shuffle a set of numbers without duplicates.</p>
+</blockquote>
+<p>Tips: 使用库函数randomint， 有 shuffle 和reset 两种操作，前者使用randomint 可以得到一个number，后者使用 list 备份。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        self.original =nums[:]</span><br><span class="line">        self.nums =nums</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reset</span><span class="params">(self)</span>:</span></span><br><span class="line">        </span><br><span class="line">        self.nums =self.original[:] <span class="comment"># 这个应该 id() 是不同的</span></span><br><span class="line">        <span class="keyword">return</span> self.nums</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">shuffle</span><span class="params">(self)</span>:</span></span><br><span class="line">        tmp =self.nums[:]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(self.nums)):</span><br><span class="line">            rand =random.randint(<span class="number">0</span>, len(tmp)<span class="number">-1</span>)</span><br><span class="line">            self.nums[i] =tmp[rand]</span><br><span class="line">            <span class="keyword">del</span> tmp[rand]</span><br><span class="line">        <span class="keyword">return</span> self.nums</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"><span class="comment"># Your Solution object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"># obj = Solution(nums)</span></span><br><span class="line"><span class="comment"># param_1 = obj.reset()</span></span><br><span class="line"><span class="comment"># param_2 = obj.shuffle()</span></span><br></pre></td></tr></table></figure>
+<p><strong> Intersection of Two Arrays II </strong></p>
+<blockquote>
+<p>Given two arrays, write a function to compute their intersection.</p>
+</blockquote>
+<p><a href="https://leetcode.com/problems/intersection-of-two-arrays-ii/" target="_blank" rel="noopener">https://leetcode.com/problems/intersection-of-two-arrays-ii/</a></p>
+<p>Tips: 多看看题意，如果想要映射成dictionary，那么result 就是 min(dict1[i], dict1[j]), 两个dictionary 中values 的最小值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">intersect</span><span class="params">(self, nums1, nums2)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums1: List[int]</span></span><br><span class="line"><span class="string">        :type nums2: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 存储dict 然后如果都存在，那么选择values 较小者 为好</span></span><br><span class="line">        <span class="comment"># 说一下几种不同的思路</span></span><br><span class="line"></span><br><span class="line">        dic1 =collections.Counter(nums1)</span><br><span class="line">        res =[]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums2:</span><br><span class="line">            <span class="keyword">if</span> dic1[num] &gt;<span class="number">0</span>:</span><br><span class="line">                res += [num]</span><br><span class="line">                dic1[num] -=<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p><strong> Increasing Triplet Subsequence </strong></p>
+<blockquote>
+<p>Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.</p>
+</blockquote>
+<blockquote>
+<p>Input: [1,2,3,4,5]<br>Output: true</p>
+</blockquote>
+<p>Tips: 首先学会在python 中表示最大数字(float(‘inf’)), 然后这个技巧相当于选择排序中一次遍历选择最小的那个。代码比较简洁哈</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">increasingTriplet</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        </span><br><span class="line">        first = second = float(<span class="string">'inf'</span>)</span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> n &lt;= first:</span><br><span class="line">                first = n</span><br><span class="line">            <span class="keyword">elif</span> n &lt;= second:</span><br><span class="line">                second = n</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p><strong> Product of Array Except Self</strong></p>
+<blockquote>
+<p>Given an array nums of n integers where n &gt; 1,  return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].</p>
+</blockquote>
+<p>Tips:左右两遍，这个是一维的还是比较nice，换成 m*n 也是基本的思路吧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">productExceptSelf</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 我记得使用一个数组存储起来中间的结果，然后进行操作的</span></span><br><span class="line">        </span><br><span class="line">        len_n =len(nums)</span><br><span class="line">        res =[<span class="number">1</span>] *len_n</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># from left to right</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len_n):</span><br><span class="line">            res[i] =res[i<span class="number">-1</span>] * nums[i<span class="number">-1</span>]</span><br><span class="line">        </span><br><span class="line">        tmp =<span class="number">1</span></span><br><span class="line">        <span class="comment"># from right to left</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len_n<span class="number">-2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            tmp *= nums[i+<span class="number">1</span>]</span><br><span class="line">            res[i] *= tmp</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p><strong> Min Stack</strong></p>
+<blockquote>
+<p>Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.</p>
+</blockquote>
+<ul>
+<li>push(x) – Push element x onto stack.</li>
+<li>pop() – Removes the element on top of the stack.</li>
+<li>top() – Get the top element.</li>
+<li>getMin() – Retrieve the minimum element in the stack.</li>
+</ul>
+<p>Tips: 使用两个list，在push 和pop 的时候要维护栈，始终保持这stack[-1] 是最小值。getMin() 就直接调用结果就行。</p>
+<p><a href="https://leetcode.com/problems/min-stack/" target="_blank" rel="noopener">https://leetcode.com/problems/min-stack/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinStack</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.stack =[]</span><br><span class="line">        self.min =[]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.min:</span><br><span class="line">            self.min.append(x)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x &lt;= self.min[<span class="number">-1</span>]:</span><br><span class="line">                self.min.append(x)</span><br><span class="line">        </span><br><span class="line">        self.stack.append(x)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span>:</span></span><br><span class="line">        tmp =self.stack.pop()</span><br><span class="line">        <span class="comment"># 这个是合理的，因为只有pop 掉了最小值，然后 min list 才需要改变，之前min list 也只是存储的最小值序列</span></span><br><span class="line">        <span class="keyword">if</span> tmp ==self.min[<span class="number">-1</span>]:</span><br><span class="line">            self.min.pop()</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">top</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.stack[<span class="number">-1</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getMin</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.min[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<p><strong> Kth Largest Element in an Array</strong></p>
+<blockquote>
+<p>Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.</p>
+</blockquote>
+<p>Tips: 这个很巧妙，是快排的思想，每一次的pivot 是不是第 K大。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self, nums, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        </span><br><span class="line">        left, right =<span class="number">0</span>, len(nums)<span class="number">-1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            index = self.partition(nums, left, right)</span><br><span class="line">            <span class="keyword">if</span> index ==k<span class="number">-1</span>:</span><br><span class="line">                <span class="keyword">return</span> nums[index]</span><br><span class="line">            <span class="keyword">elif</span> index &lt; k<span class="number">-1</span>:</span><br><span class="line">                left =index+<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                right =index <span class="number">-1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(self, nums, left, right)</span>:</span></span><br><span class="line">        </span><br><span class="line">        pivot =nums[left]</span><br><span class="line">        p1, p2 =left+<span class="number">1</span>, right</span><br><span class="line">        <span class="comment">#找出 pivot 这个number 的位置</span></span><br><span class="line">        <span class="keyword">while</span> p1 &lt;=p2:</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> nums[p1] &lt; pivot <span class="keyword">and</span> nums[p2]&gt; pivot:</span><br><span class="line">                nums[p1], nums[p2] =nums[p2], nums[p1]</span><br><span class="line">                p1 +=<span class="number">1</span></span><br><span class="line">                p2 -=<span class="number">1</span></span><br><span class="line">                </span><br><span class="line">            <span class="keyword">elif</span> nums[p1] &gt;= pivot:</span><br><span class="line">                p1 +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> nums[p2] &lt;=pivot:</span><br><span class="line">                p2 -=<span class="number">1</span></span><br><span class="line">        nums[left], nums[p2] =nums[p2] , nums[left]</span><br><span class="line">        <span class="keyword">return</span> p2</span><br></pre></td></tr></table></figure>
+<p><strong> Min Stack </strong></p>
+<blockquote>
+<p>Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.</p>
+<ul>
+<li>push(x) – Push element x onto stack.</li>
+<li>pop() – Removes the element on top of the stack.</li>
+<li>top() – Get the top element.</li>
+<li>getMin() – Retrieve the minimum element in the stack.</li>
+</ul>
+</blockquote>
+<p>Tips: 需要维持两个stack， 一个是日常的，一个是min_stakc, 在push or pop 的过程中需要日常性维护 min_stack .</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinStack</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.stack =[]</span><br><span class="line">        self.min =[]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.min:</span><br><span class="line">            self.min.append(x)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x &lt;= self.min[<span class="number">-1</span>]:</span><br><span class="line">                self.min.append(x)</span><br><span class="line">        </span><br><span class="line">        self.stack.append(x)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span>:</span></span><br><span class="line">        tmp =self.stack.pop()</span><br><span class="line">        <span class="comment"># 这个是合理的，因为只有pop 掉了最小值，然后 min list 才需要改变，之前min list 也只是存储的最小值序列</span></span><br><span class="line">        <span class="keyword">if</span> tmp ==self.min[<span class="number">-1</span>]:</span><br><span class="line">            self.min.pop()</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">top</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.stack[<span class="number">-1</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getMin</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.min[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<p><strong> Kth Largest Element in an Array</strong></p>
+<blockquote>
+<p>Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.</p>
+</blockquote>
+<p>Tips： 快排中的 pivot 如果恰好是 这个 kth，那么就成了。因为快排以 pivot 为分界点，左边是大于，右边是小于（假设是递减排序的话）；使用二分的方法，去寻找这个 pivot。属于一道比较好的题目。</p>
+<p>···python<br>class Solution(object):</p>
+<pre><code># 实际上是在试探 快排中pivot 这个点是否是第k 大值 
+def findKthLargest(self, nums, k):
+    &quot;&quot;&quot;
+    :type nums: List[int]
+    :type k: int
+    :rtype: int
+    &quot;&quot;&quot;
+
+    left, right =0, len(nums)-1
+
+    while True:
+        index = self.partition(nums, left, right)
+        if index ==k-1:
+            return nums[index]
+        elif index &lt; k-1:
+            left =index+1
+        else:
+            right =index -1
+def partition(self, nums, left, right):
+
+    pivot =nums[left]
+    p1, p2 =left+1, right
+    #找出 pivot 这个number 的位置
+    while p1 &lt;=p2:
+
+        if nums[p1] &lt; pivot and nums[p2]&gt; pivot:
+            nums[p1], nums[p2] =nums[p2], nums[p1]
+            p1 +=1
+            p2 -=1
+
+        elif nums[p1] &gt;= pivot:
+            p1 +=1
+        elif nums[p2] &lt;=pivot:
+            p2 -=1
+    nums[left], nums[p2] =nums[p2] , nums[left]
+    return p2
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">** Top K Frequent Elements**</span><br><span class="line"></span><br><span class="line">&gt; Given a non-empty array of integers, return the k most frequent elements.</span><br><span class="line"></span><br><span class="line">	Input: nums = [1,1,1,2,2,3], k = 2</span><br><span class="line">	Output: [1,2]</span><br><span class="line"></span><br><span class="line">Tips: 如果是使用 dictionary 进行计数，那么直接调用 counter 是一个不错的选择； 下面是超级nice的代码。</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">class Solution(object):</span><br><span class="line">    # 一种很简单的方法，就是放到dictionary 中，然后根据values从大到小排序，然后返回相应的keys</span><br><span class="line">    # python 中的 sort() 函数默认是从小到大进行排序的</span><br><span class="line">    def topKFrequent(self, nums, k):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :type k: int</span><br><span class="line">        :rtype: List[int]</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        from collections import Counter # 本质上就是一个dictionary</span><br><span class="line">        freq =Counter(nums) # 这个dictionary， 然后访问的时候freq 操作的是键，然后freq[x] 是值</span><br><span class="line">        </span><br><span class="line">        #counters =sorted(counters, key =counters[1], reverse =True)</span><br><span class="line">        uniques=sorted(freq,key=lambda x:freq[x],reverse=True)  # 最后返回是一个list，只是按照value 进行排序，返回的是key的列表</span><br><span class="line">        </span><br><span class="line">        return uniques[:k]</span><br></pre></td></tr></table></figure>
+<p><strong>4Sum II</strong></p>
+<blockquote>
+<p>Given four lists A, B, C, D of integer values, compute how many tuples (i, j, k, l) there are such that A[i] + B[j] + C[k] + D[l] is zero.<br>To make problem a bit easier, all A, B, C, D have same length of N where 0 ≤ N ≤ 500. All integers are in the range of $-2^{28} $ to$ 2^{28} - 1 $ and the result is guaranteed to be at most $2^{31} - 1$.</p>
+</blockquote>
+<p>Tips:  思路和 2 sum 是一样，放到dictionary 中去。defaultdict 和dict 的唯一差别在于前者不用记性 key in dict 的判断。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fourSumCount</span><span class="params">(self, A, B, C, D)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line">        </span><br><span class="line">        length, dic, res =len(A), defaultdict(int), <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> a <span class="keyword">in</span> A:</span><br><span class="line">            <span class="keyword">for</span> b <span class="keyword">in</span> B:</span><br><span class="line">                dic[a+b] +=<span class="number">1</span></span><br><span class="line">                <span class="string">"""</span></span><br><span class="line"><span class="string">                if a+b not in dic:</span></span><br><span class="line"><span class="string">                    dic[a+b] =1</span></span><br><span class="line"><span class="string">                else:</span></span><br><span class="line"><span class="string">                    dic[a+b] +=1</span></span><br><span class="line"><span class="string">                """</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> C:</span><br><span class="line">            <span class="keyword">for</span> d <span class="keyword">in</span> D:</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> -(c+d) <span class="keyword">in</span> dic:</span><br><span class="line">                    res += dic[-(c+d)]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p><strong> Sliding Window Maximum </strong></p>
+<blockquote>
+<p>Given an array nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.</p>
+</blockquote>
+<p>Tips: 滑动窗口，然后窗口中的max(). 谁能想得到 python 是擅长处理 list，然后max() 函数就解决了呢</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxSlidingWindow</span><span class="params">(self, nums, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> nums ==[]:</span><br><span class="line">            <span class="keyword">return</span> ()</span><br><span class="line">        res =[]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)-k +<span class="number">1</span>):</span><br><span class="line">            res.append(max(nums[i:i+k]))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p><strong> The Skyline Problem</strong></p>
+<p>A city’s skyline is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance. Now suppose you are given the locations and height of all the buildings as shown on a cityscape photo (Figure A), write a program to output the skyline formed by these buildings collectively (Figure B).</p>
+<p><img src="https://upload.cc/i1/2019/07/06/APQ9wf.jpg" alt=""></p>
+<p>Tips:  关键点就是记录： 轮廓上升和轮廓下降的点，分别对应着 left 的上升和 right 的下降。<a href="https://leetcode.com/problems/the-skyline-problem/discuss/61261/10-line-Python-solution-104-ms" target="_blank" rel="noopener">评论区讲解</a>，虽然比较难看懂</p>
+<p><a href="https://leetcode.com/problems/the-skyline-problem/" target="_blank" rel="noopener">https://leetcode.com/problems/the-skyline-problem/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> heapq <span class="keyword">import</span> heappush, heappop</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getSkyline</span><span class="params">(self, buildings)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type buildings: List[List[int]]</span></span><br><span class="line"><span class="string">        :rtype: List[List[int]]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        events =[ (left, -height, right) <span class="keyword">for</span> left, right, height <span class="keyword">in</span> buildings]</span><br><span class="line"></span><br><span class="line">        events += list((right, <span class="number">0</span>, <span class="number">0</span>) <span class="keyword">for</span> _, right, _ <span class="keyword">in</span> buildings)</span><br><span class="line"></span><br><span class="line">        events.sort()</span><br><span class="line">        <span class="comment"># 先是按照left 升序排序，然后是 right 降序排序( 这个就是为什么时候 -right)</span></span><br><span class="line">        res =[[<span class="number">0</span>, <span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 最小堆，保存当前最高的轮廓 (-Height, right)， 使用-H 转换成最大堆，R 的作用是记录轮廓的有效长度</span></span><br><span class="line">        heap =[(<span class="number">0</span>, float(<span class="string">'inf'</span>))]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>  left, height, right <span class="keyword">in</span> events:</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 如果轮廓上升</span></span><br><span class="line">            <span class="keyword">if</span> height: </span><br><span class="line">                heappush(heap, (height, right))</span><br><span class="line">                </span><br><span class="line">            <span class="keyword">while</span> heap[<span class="number">0</span>][<span class="number">1</span>] &lt;=left:</span><br><span class="line">                heappop(heap)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> res[<span class="number">-1</span>][<span class="number">1</span>] != -heap[<span class="number">0</span>][<span class="number">0</span>]:</span><br><span class="line">                res += [[left, -heap[<span class="number">0</span>][<span class="number">0</span>]]]</span><br><span class="line">        <span class="keyword">return</span> res[<span class="number">1</span>:]</span><br></pre></td></tr></table></figure>
+<p><strong> Wiggle Sort II </strong></p>
+<blockquote>
+<p>Given an unsorted array nums, reorder it such that nums[0] &lt; nums[1] &gt; nums[2] &lt; nums[3]….</p>
+</blockquote>
+<p>Tips: 算法题目被 python 中的lsit 操作给毁了,  可以学习以下 list[::-1], list[::2], 这种是模式化的操作，不是偶然。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wiggleSort</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: None Do not return anything, modify nums in-place instead.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">#nums.sort()</span></span><br><span class="line">        <span class="comment">#half =len(nums)/2</span></span><br><span class="line">        <span class="comment">#nums[::2], nums[1::2] =nums[:half][::-1], nums[half:][::-1]</span></span><br><span class="line">        </span><br><span class="line">        nums.sort()</span><br><span class="line">        </span><br><span class="line">        half = len(nums[::<span class="number">2</span>]) <span class="comment"># 注意这个是 half 必须是这样写的</span></span><br><span class="line">        <span class="comment"># 这里面倒过来的原因， 前半个永远不大于后半个，所以这样能保证 波动</span></span><br><span class="line">        nums[::<span class="number">2</span>], nums[<span class="number">1</span>::<span class="number">2</span>] = nums[:half][::<span class="number">-1</span>], nums[half:][::<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>Find Peak Element</strong></p>
+<blockquote>
+<p>A peak element is an element that is greater than its neighbors.<br>Given an input array nums, where nums[i] ≠ nums[i+1], find a peak element and return its index.</p>
+</blockquote>
+<blockquote>
+<p>Input: nums = [1,2,3,1]<br>Output: 2<br>Explanation: 3 is a peak element and your function should return the index number 2.</p>
+</blockquote>
+<p>Tips: 二分查找， 如果是两个 if 那么就是两个步骤，如果 if else 那么就是一种选择。给定的条件中相邻的元素是不相同的。找到一个解进行了。。</p>
+<p><a href="https://leetcode.com/problems/find-peak-element/" target="_blank" rel="noopener">https://leetcode.com/problems/find-peak-element/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findPeakElement</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> nums:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">        <span class="keyword">if</span> len(nums) ==<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        left, right =<span class="number">0</span>, len(nums)<span class="number">-1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> left &lt; right:</span><br><span class="line">            </span><br><span class="line">            mid =(left +right) /<span class="number">2</span></span><br><span class="line">            <span class="keyword">if</span> nums[mid] &gt; nums[mid+<span class="number">1</span>]:</span><br><span class="line">                right =mid</span><br><span class="line">            <span class="keyword">elif</span> nums[mid] &lt; nums[mid+<span class="number">1</span>]:</span><br><span class="line">                left =mid +<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> left</span><br></pre></td></tr></table></figure>
+<p><strong>  Find the Duplicate Number</strong></p>
+<blockquote>
+<p>Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive), prove that at least one duplicate number must exist. Assume that there is only one duplicate number, find the duplicate one.</p>
+</blockquote>
+<p>Tips: 有两种思路。一种是二分法，一种是两个 pointer 的方法。后者类似linked list 中的操作。好好看看代码， fast =nums[nums[fast]] 这个操作就是 fast =fast.next.next 有木有很神奇的样子。</p>
+<p>···python<br>class Solution(object):</p>
+<pre><code># 感觉这个从时间和空间复杂度上限制的好多呀，如果满足这两个维度的，一般是先进行排序，O（nlgn） 时间，然后遍历找出重复的数字
+# 基本上有两种思路，一种是 index(faster, slower point)， 一种是二分法
+# 根据 indics 是有序的，然后使用二分查找
+# The array is not sorted - but the indices of the array are sorted - #Insight
+&apos;&apos;&apos;
+
+def findDuplicate(self, nums):
+    &quot;&quot;&quot;
+    :type nums: List[int]
+    :rtype: int
+    &quot;&quot;&quot;
+
+    if len(nums) == 0:
+        return 0
+    low = 0
+    high = len(nums)-1
+    # 需要访问两个指针
+    while low &lt; high:
+        mid = low + int((high-low)&gt;&gt;1)
+        count = 0
+        for x in nums:
+            if x &lt;= mid:
+                count = count + 1
+        if count &gt; mid:
+            high = mid
+        else:
+            low = mid+1
+    return low
+&apos;&apos;&apos;
+# 这两种方法的根本依据是  长度为n 包含n+1 个整数，并且只有一个 duplicate
+def findDuplicate(self, nums):
+    slow = fast = finder = 0
+    while True:
+        slow = nums[slow]
+        fast = nums[nums[fast]]
+        if slow == fast:
+            while finder != slow:
+                finder = nums[finder]
+                slow = nums[slow]
+            return finder
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">** Count of Smaller Numbers After Self**</span><br><span class="line"></span><br><span class="line">&gt; You are given an integer array nums and you have to return a new counts array. The counts array has the property where counts[i] is the number of smaller elements to the right of nums[i].</span><br><span class="line"></span><br><span class="line">&gt; Input: [5,2,6,1]</span><br><span class="line">Output: [2,1,1,0] </span><br><span class="line">Explanation:</span><br><span class="line">To the right of 5 there are 2 smaller elements (2 and 1).</span><br><span class="line">To the right of 2 there is only 1 smaller element (1).</span><br><span class="line">To the right of 6 there is 1 smaller element (1).</span><br><span class="line">To the right of 1 there is 0 smaller element.</span><br><span class="line"></span><br><span class="line">Tips: 这个本身的应用还是挺有意思的。python 中的库函数bisort (binary sort) 了解一下。逆序遍历，找到合适的位置，插进去，然后index 计数。</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">class Solution(object):</span><br><span class="line">    # The problem is equal to find each number&apos;s inversion count. Actually there are three kinds of solutions: BST, mergeSort, and BITree. While the first two answer&apos;s time complexity is O(nlogn), and BITree time comlexity is O( nlog(maximumNum) ).</span><br><span class="line">    # 太难了</span><br><span class="line">    # 两种解法</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line"></span><br><span class="line">    def merge(self,left,right,res):</span><br><span class="line">        i,j=0,0</span><br><span class="line">        new_array=[]</span><br><span class="line">        while i&lt;len(left) and j&lt;len(right):</span><br><span class="line">            if left[i][1]&gt;right[j][1]:</span><br><span class="line">                new_array+=[left[i]]</span><br><span class="line">                res[left[i][0]]+=len(right)-j</span><br><span class="line">                i+=1</span><br><span class="line">            else:</span><br><span class="line">                new_array+=[right[j]]</span><br><span class="line">                j+=1</span><br><span class="line">        new_array+=left[i:]</span><br><span class="line">        new_array+=right[j:]</span><br><span class="line">        return new_array</span><br><span class="line"></span><br><span class="line">    def merge_sort(self,nums,res):</span><br><span class="line">        if len(nums)&lt;2:</span><br><span class="line">            return nums</span><br><span class="line">        mid=len(nums)//2</span><br><span class="line">        left=self.merge_sort(nums[:mid],res)</span><br><span class="line">        right=self.merge_sort(nums[mid:],res)</span><br><span class="line">        return self.merge(left,right,res)</span><br><span class="line"></span><br><span class="line">    def countSmaller(self, nums):</span><br><span class="line">        res=[0]*len(nums)</span><br><span class="line">        self.merge_sort([(i,num) for i,num in enumerate(nums)],res)</span><br><span class="line">        </span><br><span class="line">        return res</span><br><span class="line">    </span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    def countSmaller(self, nums):</span><br><span class="line"></span><br><span class="line">        count,sorted=[],[]</span><br><span class="line">        for num in nums[::-1]:</span><br><span class="line">            index=bisect.bisect_left(sorted,num)</span><br><span class="line">            sorted.insert(index,num)</span><br><span class="line">            count+=[index]</span><br><span class="line">        return count[::-1]</span><br></pre></td></tr></table></figure>
+<p><strong> Longest Consecutive Sequence </strong></p>
+<blockquote>
+<p>Given an unsorted array of integers, find the length of the longest consecutive elements sequence.<br>Your algorithm should run in O(n) complexity.</p>
+</blockquote>
+<p>Tips:  这种解题的方式，是比较新颖的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 第一印象是 先进行排序， 然后选择的过程， 但是限制条件是 O(n) 的复杂度</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestConsecutive</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        nums =set(nums)</span><br><span class="line">        </span><br><span class="line">        best =<span class="number">0</span></span><br><span class="line">        <span class="comment"># 这种方式真的很简洁</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> x<span class="number">-1</span> <span class="keyword">not</span> <span class="keyword">in</span> nums:</span><br><span class="line">                y =x+<span class="number">1</span></span><br><span class="line">                <span class="keyword">while</span> y <span class="keyword">in</span> nums:</span><br><span class="line">                    y +=<span class="number">1</span></span><br><span class="line">                best =max(best, y-x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> best</span><br></pre></td></tr></table></figure>
+<p><strong> House Robber</strong></p>
+<p>Tips: dp 的思想运用到极致就是这个样子。使用两个变量句可以搞定。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    f(0) = nums[0]</span></span><br><span class="line"><span class="string">    f(1) = max(num[0], num[1])</span></span><br><span class="line"><span class="string">    f(k) = max( f(k-2) + nums[k], f(k-1) )</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># dp 有时候就能这样优化到使用两个变量</span></span><br><span class="line">        last, now =<span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            last, now =now, max(last +num, now)</span><br><span class="line">        <span class="keyword">return</span> now</span><br></pre></td></tr></table></figure>
+<p><strong> Longest Increasing Subsequence</strong></p>
+<blockquote>
+<p>Given an unsorted array of integers, find the length of longest increasing subsequence.</p>
+</blockquote>
+<p>Tips:  f(i) 表示以 nums[i]为结尾的 longest  encreasing subsequence( 第二个for 对比的对象是 f[:i] 使用j 进行遍历 )</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 求解最值 唯一解都是可以使用这样的方式的哦</span></span><br><span class="line">    <span class="comment"># 不能使用 in 那种骚操作了， 只能踏踏实实的 dp</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 这个版本的dp 没有优化好</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLIS</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> nums: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        dp = [<span class="number">1</span>] * len(nums)</span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(i):</span><br><span class="line">                <span class="keyword">if</span> nums[i] &gt; nums[j]:</span><br><span class="line">                    dp[i] = max(dp[i], dp[j] + <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> max(dp)</span><br></pre></td></tr></table></figure>
+<p><strong> Coin Change </strong></p>
+<blockquote>
+<p>You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.</p>
+</blockquote>
+<p>Tips: dp问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> maxint</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span>    </span><br><span class="line"></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type coins: List[int]</span></span><br><span class="line"><span class="string">        :type amount: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        # 这种方法不行</span></span><br><span class="line"><span class="string">        if len(coins) ==1:</span></span><br><span class="line"><span class="string">            if amount % coins[0] ==0:</span></span><br><span class="line"><span class="string">                return amount /coins[0]</span></span><br><span class="line"><span class="string">            else:</span></span><br><span class="line"><span class="string">                return -1</span></span><br><span class="line"><span class="string">        coins.sort(reverse =True)</span></span><br><span class="line"><span class="string">        res =0</span></span><br><span class="line"><span class="string">        for i in range(len(coins)):</span></span><br><span class="line"><span class="string">            res += amount /coins[i]</span></span><br><span class="line"><span class="string">            amount %= coins[i]</span></span><br><span class="line"><span class="string">        return res </span></span><br><span class="line"><span class="string">   </span></span><br><span class="line"><span class="string">    # table 作为dp， table[i] 表示前i 个数字使用数量最少的硬币能够 表示</span></span><br><span class="line"><span class="string">    # 多看几遍就能理解了</span></span><br><span class="line"><span class="string">    def coinChange(self, coins, amount):</span></span><br><span class="line"><span class="string">        table = [0]*(amount + 1)</span></span><br><span class="line"><span class="string">        for i in range(1, amount+1):</span></span><br><span class="line"><span class="string">            minimum = maxint # 有好几种对于最小值和最大的初始化了</span></span><br><span class="line"><span class="string">            for j in coins:</span></span><br><span class="line"><span class="string">                if i &gt;= j and table[i-j] != -1:</span></span><br><span class="line"><span class="string">                    minimum = min(minimum, table[i-j] + 1)</span></span><br><span class="line"><span class="string">                table[i] = -1 if minimum == maxint else minimum</span></span><br><span class="line"><span class="string">        return table[amount]</span></span><br><span class="line"><span class="string">        '''</span>   </span><br><span class="line">    <span class="comment"># python3 不能使用python2,python2 能使用 python3? </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">coinChange</span><span class="params">(self, coins, amount)</span>:</span></span><br><span class="line">        table = [<span class="number">0</span> ] *(amount + <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, amount +<span class="number">1</span>):</span><br><span class="line">            <span class="comment">#minimum =maxint</span></span><br><span class="line">            minimum =float(<span class="string">'inf'</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> coins:</span><br><span class="line">                <span class="keyword">if</span> i &gt;= j <span class="keyword">and</span> table[ i -j] != <span class="number">-1</span>:</span><br><span class="line">                    minimum = min(minimum, table[ i -j] + <span class="number">1</span>)</span><br><span class="line">                table[i] = <span class="number">-1</span> <span class="keyword">if</span> minimum == float(<span class="string">'inf'</span>) <span class="keyword">else</span> minimum</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> table[amount]</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/16/leetcode-array/" rel="next" title="LeetCode- Array">
+                <i class="fa fa-chevron-left"></i> LeetCode- Array
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/16/leetcode-recursion/" rel="prev" title="LeetCode-Recursion">
+                LeetCode-Recursion <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-Two-Numbers"><span class="nav-number">1.</span> <span class="nav-text">Add Two Numbers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remove-Nth-Node-From-End-of-List"><span class="nav-number">2.</span> <span class="nav-text">Remove Nth Node From End of List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Merge-Two-Sorted-Lists"><span class="nav-number">3.</span> <span class="nav-text">Merge Two Sorted Lists</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Swap-Nodes-in-Pairs"><span class="nav-number">4.</span> <span class="nav-text">Swap Nodes in Pairs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Count-and-Say"><span class="nav-number">5.</span> <span class="nav-text">Count and Say</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Trapping-Rain-Water"><span class="nav-number">6.</span> <span class="nav-text">Trapping Rain Water</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maximum-Subarray"><span class="nav-number">7.</span> <span class="nav-text">Maximum Subarray</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Insert-Interval"><span class="nav-number">8.</span> <span class="nav-text">Insert Interval</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rotate-List"><span class="nav-number">9.</span> <span class="nav-text">Rotate List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unique-Paths"><span class="nav-number">10.</span> <span class="nav-text">Unique Paths</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sort-Colors"><span class="nav-number">11.</span> <span class="nav-text">Sort Colors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remove-Duplicates-from-Sorted-List-II"><span class="nav-number">12.</span> <span class="nav-text">Remove Duplicates from Sorted List II</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Partition-List"><span class="nav-number">13.</span> <span class="nav-text">Partition List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reverse-Linked-List-II"><span class="nav-number">14.</span> <span class="nav-text">Reverse Linked List II</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unique-Binary-Search-Trees"><span class="nav-number">15.</span> <span class="nav-text">Unique Binary Search Trees</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Best-Time-to-Buy-and-Sell-Stock"><span class="nav-number">16.</span> <span class="nav-text">Best Time to Buy and Sell Stock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Best-Time-to-Buy-and-Sell-Stock-II"><span class="nav-number">17.</span> <span class="nav-text">Best Time to Buy and Sell Stock II</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Longest-Consecutive-Sequence"><span class="nav-number">18.</span> <span class="nav-text">Longest Consecutive Sequence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Candy"><span class="nav-number">19.</span> <span class="nav-text">Candy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Single-Number"><span class="nav-number">20.</span> <span class="nav-text">Single Number</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Single-Number-II"><span class="nav-number">21.</span> <span class="nav-text">Single Number II</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Copy-List-with-Random-Pointer"><span class="nav-number">22.</span> <span class="nav-text">Copy List with Random Pointer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linked-List-Cycle"><span class="nav-number">23.</span> <span class="nav-text">Linked List Cycle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reorder-List"><span class="nav-number">24.</span> <span class="nav-text">Reorder List</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/06/16/leetcode-list/';
+          this.page.identifier = '2019/06/16/leetcode-list/';
+          this.page.title = 'LeetCode-List';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '8c6403951ee3eab4e420',
+          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          repo: 'comments_blog',
+          owner: 'jia1509309698@163.com',
+          admin: ['jia1509309698@163.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="GANs," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="GAN模型是典型的隐式无监督生成模型，建模过程中没有利用到数据的语义标签。但在实际应用中生成模型的可控性至关重要，根据标签生成对可控有样本更具实际应用价值。图像生成模型被广泛应用于数据增强、风格转换和数据补全领域，需要可控且语义完备的生成模型。条件GAN模型在GAN模型建模思路的基础上，将语义标签加入了建模过程，将无监督生成模型转变为有监督的条件生成模型。条件GAN模型具体包括Conditiona">
+<meta name="keywords" content="GANs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对抗生成网络实验对比">
+<meta property="og:url" content="http://yoursite.com/2018/06/05/对抗性生成网络/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="GAN模型是典型的隐式无监督生成模型，建模过程中没有利用到数据的语义标签。但在实际应用中生成模型的可控性至关重要，根据标签生成对可控有样本更具实际应用价值。图像生成模型被广泛应用于数据增强、风格转换和数据补全领域，需要可控且语义完备的生成模型。条件GAN模型在GAN模型建模思路的基础上，将语义标签加入了建模过程，将无监督生成模型转变为有监督的条件生成模型。条件GAN模型具体包括Conditiona">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/89027900.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/89762825.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/23586830.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/55901553.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/90451211.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/78212709.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/84966180.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/48822906.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/70807095.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/73164393.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/48822906.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/60239019.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/25827392.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/12463336.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/62008706.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/12335202.jpg">
+<meta property="og:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/34168567.jpg">
+<meta property="og:updated_time" content="2019-06-17T14:05:20.193Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="对抗生成网络实验对比">
+<meta name="twitter:description" content="GAN模型是典型的隐式无监督生成模型，建模过程中没有利用到数据的语义标签。但在实际应用中生成模型的可控性至关重要，根据标签生成对可控有样本更具实际应用价值。图像生成模型被广泛应用于数据增强、风格转换和数据补全领域，需要可控且语义完备的生成模型。条件GAN模型在GAN模型建模思路的基础上，将语义标签加入了建模过程，将无监督生成模型转变为有监督的条件生成模型。条件GAN模型具体包括Conditiona">
+<meta name="twitter:image" content="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/89027900.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/05/对抗性生成网络/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>对抗生成网络实验对比 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/对抗性生成网络/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">对抗生成网络实验对比</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-05T22:27:25+08:00">
+                2018-06-05
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-06-17T22:05:20+08:00">
+                2019-06-17
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/05/对抗性生成网络/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/05/对抗性生成网络/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>GAN模型是典型的隐式无监督生成模型，建模过程中没有利用到数据的语义标签。但在实际应用中生成模型的可控性至关重要，根据标签生成对可控有样本更具实际应用价值。图像生成模型被广泛应用于数据增强、风格转换和数据补全领域，需要可控且语义完备的生成模型。<br>条件GAN模型在GAN模型建模思路的基础上，将语义标签加入了建模过程，将无监督生成模型转变为有监督的条件生成模型。条件GAN模型具体包括Conditional GAN模型、Semi-GAN模型和AC-GAN模型。</p>
+<h3 id="实验模型介绍"><a href="#实验模型介绍" class="headerlink" title="实验模型介绍"></a>实验模型介绍</h3><p>（1）Conditional GAN模型<br>GAN模型中判别器D对输入的数据样本的来源进行判别，是典型的判别模型流程。如果在GAN框架中加入有监督信息来辅助训练，如图像的类别信息来辅助判别器D进行判别，则会帮助生成更加真实的样本。其中最初的尝试方式是Conditional GAN模型，结构如图所示。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/89027900.jpg" alt="avatar"><br>Conditional GAN模型在生成器G和判别器D输入中都加入了标签信息，试图让生成器G学习到从数据标签y到样本x的映射，让判别器D学习对样本x和标签y的组合进行判别。<br>与GAN模型相比，Conditional GAN模型增加了标签信息的输入将模型转变为条件生成模型，在一定程度上提高了模型的稳定性。Conditional GAN模型训练过程中，判别器D对样本x和标签y的类别组合进行训练，并没有输入样本x和标签y的类别错误组合进行训练，因此模型并没有学习样本x和标签y的联合分布。<br>（2）Semi-GAN模型<br>Conditional GAN模型利用了标签信息进行建模，但没有对标签语义的信息进行表征，导致模型能够学到的信息有限。在生成模型过程中，如果判别器D能够明确指出生成样本的类别错误，则可为生成器G提供更加精确的梯度信息，最终能生成更加真实的样本。<br>Semi-GAN基于此思路进行改进，具体结构如图9所示。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/89762825.jpg" alt="avatar"><br>Semi-GAN模型在Conditional GAN模型的基础上，对判别器D的分类输出进行细化加入了半监督学习过程。<br>（3）AC-GAN模型<br>与Conditional GAN模型相比，Semi-GAN模型中判别器D能够判别真实样本的来源，增强了判别器D的判别能力。但研究表明过强的判别信息会影响生产样本的质量，具体原因为Semi-GAN模型的建模过程为半监督分类过程，目标优化函数为无监督分类和有监督分类目标函数之和。若判别器D的监督分类信息过强，则会削弱判别器D对样本来源的判别能力。<br>Conditional GAN模型能够生成指定类别的样本，Semi-GAN模型能够判别样本的类别信息。AC-GAN模型将以上两个模型思路进行整合，得到够进行条件生成的生成器G，和能够判别样本类别和来源信息的判别器D。AC-GAN模型的结构如图10所示。<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/23586830.jpg" alt="avatar"><br>AC-GAN模型在Conditional GAN的基础上，让判别器D在判别样本来源的同时，让样本进行分类。此时的判别器D的输出分为样本来源信息LS和样本分类LC信息。</p>
+<h3 id="不同模型比较"><a href="#不同模型比较" class="headerlink" title="不同模型比较"></a>不同模型比较</h3><p>下面用表格的方式对比在实验中使用的模型的目标函数(ps,图画比较丑，之后再修改)</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><em>Name</em></th>
+<th style="text-align:center"><em>Paper Link</em></th>
+<th style="text-align:left"><em>Value Function</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>GAN</strong></td>
+<td style="text-align:center"><a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">Arxiv</a></td>
+<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/55901553.jpg" alt="avatar"></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>DCGAN</strong></td>
+<td style="text-align:center"><a href="https://arxiv.org/abs/1511.06434" target="_blank" rel="noopener">Arxiv</a></td>
+<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/90451211.jpg" alt="avatar"></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Semi-GAN</strong></td>
+<td style="text-align:center"><a href="https://arxiv.org/abs/1606.01583" target="_blank" rel="noopener">Arxiv</a></td>
+<td style="text-align:left">和GAN 模型相同</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>CGAN</strong></td>
+<td style="text-align:center"><a href="https://arxiv.org/abs/1411.1784" target="_blank" rel="noopener">Arxiv</a></td>
+<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/78212709.jpg" alt="avatar"></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ACGAN</strong></td>
+<td style="text-align:center"><a href="https://arxiv.org/abs/1610.09585" target="_blank" rel="noopener">Arxiv</a></td>
+<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/84966180.jpg" alt="avatar"></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>our model</strong></td>
+<td style="text-align:center"><a href="https://arxiv.org/abs/1705.07215" target="_blank" rel="noopener">Arxiv</a></td>
+<td style="text-align:left"><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/48822906.jpg" alt="avatar"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="数据集介绍"><a href="#数据集介绍" class="headerlink" title="数据集介绍"></a>数据集介绍</h3><p><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/70807095.jpg" alt="avatar"><br>在常用于图像生成的图像数据集中，大部分数据的标签类型为离散类型。其中MNIST和Fashion-MNIST为常用的灰度图像数据，每类样本分布较为独立，常用于进行图像分类和样本生成的实验；SVHN和CIFAR10为彩色数据集图像像素分布较为复杂，其中CIFAR10常用来检验分类网络性能的评价数据集；CelebA为大规模的人脸识别和属性分类数据集，每幅人脸图像包括40个属性标签；ImageNet为图像分类和识别数据集，数据集类别分布比较复杂具体包括自然图像和人为图像。UnityEyes为人眼视觉合成数据集，数据集标签包括瞳孔标签和视觉方向标签，其中视觉方向标签为连续的语言标签。<br>常见的离散标签图像数据集的样例:<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/73164393.jpg" alt="avatar"></p>
+<h3 id="我们的模型"><a href="#我们的模型" class="headerlink" title="我们的模型"></a>我们的模型</h3><p>在原始GAN模型中，目标函数定义为生成器G和判别器D的博弈过程，定义V(G;D)为模型的目标函数，由生成器G和判别器D组成。语义匹配目标函数FMloss。基于语义匹配的条件生成网络模型的生成器G和判别器D的目标函数分别为：<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/48822906.jpg" alt="avatar"><br>如上式，LS为样本来源，LC为分类结果。判别器D目标为最大化LC+ LS + FMloss，其试图对输入样本进行分类，并通过来源和语义匹配区分生成样本和原始样本。生成器G的目的是最大化LC − LS −FMloss，其试图通过样本分类结果、样本来源和语义匹配结果来欺骗判别器D。LS来源损失与原始GAN模型相同，LC为语义标签分类损失，在类别分类中使用交叉信息熵，在数值回归中则使用均方差回归。</p>
+<h3 id="生成结果对比"><a href="#生成结果对比" class="headerlink" title="生成结果对比"></a>生成结果对比</h3><p>MNIST数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/60239019.jpg" alt="avatar"><br>Fashion-MNIST数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/25827392.jpg" alt="avatar"><br>SVHN数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/12463336.jpg" alt="avatar"><br>CIFAR10数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/62008706.jpg" alt="avatar"><br>CelebA数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/12335202.jpg" alt="avatar"><br>UnityEyes数据集生成结果<br><img src="http://p9fyz2xe9.bkt.clouddn.com/18-6-1/34168567.jpg" alt="avatar"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GANs/" rel="tag"># GANs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/05/Titanic-Challenge/" rel="next" title="Titanic Challenge">
+                <i class="fa fa-chevron-left"></i> Titanic Challenge
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/13/Introduction-to-Ensemble/" rel="prev" title="Introduction to Ensemble">
+                Introduction to Ensemble <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#实验模型介绍"><span class="nav-number">1.</span> <span class="nav-text">实验模型介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同模型比较"><span class="nav-number">2.</span> <span class="nav-text">不同模型比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集介绍"><span class="nav-number">3.</span> <span class="nav-text">数据集介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我们的模型"><span class="nav-number">4.</span> <span class="nav-text">我们的模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成结果对比"><span class="nav-number">5.</span> <span class="nav-text">生成结果对比</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/06/05/对抗性生成网络/';
+          this.page.identifier = '2018/06/05/对抗性生成网络/';
+          this.page.title = '对抗生成网络实验对比';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '8c6403951ee3eab4e420',
+          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          repo: 'comments_blog',
+          owner: 'jia1509309698@163.com',
+          admin: ['jia1509309698@163.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

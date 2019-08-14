@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP Papers Reading- BERT (***)">
+<meta property="og:url" content="http://yoursite.com/2019/05/27/paper-reading-bert/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequen">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3env74i1dj20rs0f8dge.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3enz4w1tmj21bu0r0q6v.jpg">
+<meta property="og:image" content="https://upload.cc/i1/2019/07/19/w5lozQ.png">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eo6o8obxj20l00d6wee.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eo7eiu73j20rs0i342d.jpg">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/cc9c0e4d7401f315.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/19/5d31a365bd27877659.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/19/5d31a58f26ba185562.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/19/5d31b16df013d57040.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/19/5d31b16de13f475380.png">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3enq6lqouj20uq0eoq4u.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ep38emyqj20bl03o3zj.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ftfz3uxij206e088aa2.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eobewbqoj20c50bhq4y.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eof674adj20ii0dfgoe.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fub67ulaj20u20h3wfx.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fubpu9ibj20li0m1q5b.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fuc693mrj211z0hbjur.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fuci4xodj213j0kitcq.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3flokoc0mj20ab07474a.jpg">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/6c304cd1ba04192c.png">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dw277xiyj20pi0c10ww.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dvg2o3wwj20qo0grdgp.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqwkv9tlj20kd097gm4.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqyoxmknj20ey0d640u.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3esxw2nilj20dh08ujth.jpg">
+<meta property="og:image" content="https://upload.cc/i1/2019/08/04/2VsB5g.png">
+<meta property="og:updated_time" content="2019-08-04T13:34:17.354Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP Papers Reading- BERT (***)">
+<meta name="twitter:description" content="attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequen">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3env74i1dj20rs0f8dge.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/27/paper-reading-bert/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>NLP Papers Reading- BERT (***) | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/27/paper-reading-bert/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NLP Papers Reading- BERT (***)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-27T14:13:14+08:00">
+                2019-05-27
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-04T21:34:17+08:00">
+                2019-08-04
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/27/paper-reading-bert/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/05/27/paper-reading-bert/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="attention-is-all-you-need"><a href="#attention-is-all-you-need" class="headerlink" title="attention is all you need"></a>attention is all you need</h2><p>Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence.</p>
+<p>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed cy a compatibility function of the query with the corresponding key.</p>
+<p>中文的理解：<br>深度学习里的Attention model其实模拟的是人脑的注意力模型，举个例子来说，当我们观赏一幅画时，虽然我们可以看到整幅画的全貌，但是在我们深入仔细地观察时，其实眼睛聚焦的就只有很小的一块，这个时候人的大脑主要关注在这一小块图案上，也就是说这个时候人脑对整幅图的关注并不是均衡的，是有一定的权重区分的。这就是深度学习里的AttentionModel的核心思想。所谓注意力机制，就是说在生成每个词的时候，对不同的输入词给予不同的关注权重。通过注意力机制，我们将输入句子编码为一个向量序列，并自适应地选择这些向量的一个子集，同时对译文进行译码，例如where are you——&gt;你在哪？现在我们在翻译“你”的时候给”you”更多的权重，那么就可以有效的解决对齐问题。</p>
+<p>Background:</p>
+<p>主要是面临的三个问题。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3env74i1dj20rs0f8dge.jpg" alt=""></p>
+<p>Transformer 的结构示意图:<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3enz4w1tmj21bu0r0q6v.jpg" alt=""><br>(transformer 就是讨论了如何实现上述的 self-attention 结构)</p>
+<p>Encoder: encoder由6个相同的层堆叠而成，每个层有两个子层。第一个子层是多头自我注意力机制(multi-head self-attention mechanism)，第二层是简单的位置的全连接前馈网络(position-wise fully connected feed-forward network)。在两个子层中会使用一个残差连接，接着进行层标准化(layer normalization)。也就是说每一个子层的输出都是LayerNorm(x + sublayer(x))。网络输入是三个相同的向量q, k和v，是word embedding和position embedding相加得到的结果。为了方便进行残差连接，我们需要子层的输出和输入都是相同的维度。</p>
+<p>Decoder: decoder也是由N（N=6）个完全相同的Layer组成，decoder中的Layer由encoder的Layer中插入一个Multi-Head Attention + Add&amp;Norm组成。输出的embedding与输出的position embedding求和做为decoder的输入，经过一个Multi-HeadAttention + Add&amp;Norm（（MA-1）层，MA-1层的输出做为下一Multi-Head Attention + Add&amp;Norm（MA-2）的query（Q）输入，MA-2层的Key和Value输入（从图中看，应该是encoder中第i（i = 1,2,3,4,5,6）层的输出对于decoder中第i（i = 1,2,3,4，5,6）层的输入）。MA-2层的输出输入到一个前馈层（FF），经过AN操作后，经过一个线性+softmax变换得到最后目标输出的概率。<br> 对于decoder中的第一个多头注意力子层，需要添加masking，确保预测位置i的时候仅仅依赖于位置小于i的输出。<br> 层与层之间使用的Position-wise feed forward network。</p>
+<p> <strong>这里应该有一个小问题： masked attention 和 attention 有什么区别？</strong></p>
+<h3 id="transformer-的结构"><a href="#transformer-的结构" class="headerlink" title="transformer 的结构"></a>transformer 的结构</h3><p>谈及 transformer，首先应该提到是 计算效率的大大提高，从原先的RNN 的线性O(N)提升的很多，这个的实现是基于多线程的。而后者是因为是有顺序的线性模型，所以是无法使用并行运算的。</p>
+<p><img src="https://upload.cc/i1/2019/07/19/w5lozQ.png" alt=""><br>对于 RNN 来说，句首的信息要传递到句尾，需要经过 n 次 RNN 的计算；而 Self-Attention 可以直接连接任意两个节点.</p>
+<p>从整体上来看，Transformer依旧是一个“Sequence to Sequence”框架，拥有Encoder和Decoder两部分：</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eo6o8obxj20l00d6wee.jpg" alt=""></p>
+<p><strong>transformer 的结构</strong></p>
+<p>论文中encoder层由6个encoder堆叠在一起，decoder层也一样。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eo7eiu73j20rs0i342d.jpg" alt=""></p>
+<p>每一个 encoder 和 decoder 的内部简图如下：<br><img src="https://i.bmp.ovh/imgs/2019/07/cc9c0e4d7401f315.png" alt=""></p>
+<p><strong> encoder 部分</strong></p>
+<p>对于encoder，包含两层，一个self-attention层和一个前馈神经网络，self-attention能帮助当前节点不仅仅只关注当前的词，从而能获取到上下文的语义。decoder也包含encoder提到的两层网络，但是在这两层中间还有一层attention层，帮助当前节点获取到当前需要关注的重点内容。</p>
+<p><strong> self-attention</strong></p>
+<p>先说一下 attention 机制的实现：</p>
+<p><img src="https://i.loli.net/2019/07/19/5d31a365bd27877659.png" alt="20190322151729943.png"></p>
+<p>当使用 self的时候，query, key and value 这三个就都是相同的。经过softmax() 得到就是一个权重，用于标记和 当前处理的词语的关系。self-attention是Transformer用来将其他相关单词的“理解”转换成我们正在处理的单词的一种思路，</p>
+<p><strong>Multi-Headed Attention</strong></p>
+<p>我的理解就是 在CNN中使用多个filter 的类似产物。该机制理解起来很简单，就是说不仅仅只初始化一组Q、K、V的矩阵，而是初始化多组，tranformer是使用了8组，所以最后得到的结果是8个矩阵。</p>
+<p><strong> 这样做的主要目的是从不同的语义空间投射原文本，能够从更多的角度表征，并且能够拓展模型对不同位置的关注能力。</strong></p>
+<p>这给我们留下了一个小的挑战，前馈神经网络没法输入8个矩阵呀，这该怎么办呢？所以我们需要一种方式，把8个矩阵降为1个，首先，我们把8个矩阵连在一起，这样会得到一个大的矩阵，再随机初始化一个矩阵和这个组合好的矩阵相乘，最后得到一个最终的矩阵。这个就是 multi-head attention 机制的全部的流程了。<br><img src="https://i.loli.net/2019/07/19/5d31a58f26ba185562.png" alt="2019032215173034.png"></p>
+<p><strong>Positional Encoding </strong></p>
+<p>transformer给encoder层和decoder层的输入添加了一个额外的向量Positional Encoding，维度和embedding的维度一样，这个向量采用了一种很独特的方法来让模型学习到这个值，这个向量能决定当前词的位置，或者说在一个句子中不同的词之间的距离。这个位置向量的具体计算方法有很多种，论文中的计算方法如下：</p>
+<p>$$<br>P E ( p o s , 2 i ) = \sin \left( p o s / 10000 ^ { 2 i } / d _ { m } \text {odel} \right)<br>$$</p>
+<p>$$<br>P E ( p o s , 2 i + 1 ) = \cos \left( p o s / 10000 ^ { 2 i } / d _ { m } o d e l \right)<br>$$<br>其中pos是指当前词在句子中的位置，i是指向量中每个值的index，可以看出，在偶数位置，使用正弦编码，在奇数位置，使用余弦编码.</p>
+<p>最后把这个Positional Encoding与embedding的值相加，作为输入送到下一层。</p>
+<p><strong>layer normalization</strong></p>
+<p>Normalization有很多种，但是它们都有一个共同的目的，那就是把输入转化成均值为0方差为1的数据。我们在把数据送入激活函数之前进行normalization（归一化），因为我们不希望输入数据落在激活函数的饱和区。</p>
+<p>batch normalization 和layer normalization 的区别，简单来说前者依赖于 batch size，是在不同的样本的同一个特征上进行归一化，在CNN 上的效果更好，后者在一个样本上进行归一化， 在 RNN的网络结果中效果更好。更多详细的内容可以参考<a href="https://jijeng.github.io/2019/07/21/overfit/" target="_blank" rel="noopener">这篇博客</a>.</p>
+<p>BN的主要思想就是：在每一层的每一批数据上进行归一化。我们可能会对输入数据进行归一化，但是经过该网络层的作用后，我们的数据已经不再是归一化的了。随着这种情况的发展，数据的偏差越来越大，我的反向传播需要考虑到这些大的偏差，这就迫使我们只能使用较小的学习率来防止梯度消失或者梯度爆炸。<br><img src="https://i.loli.net/2019/07/19/5d31b16df013d57040.png" alt="1.png"><br>可以看到，右半边求均值是沿着数据 batch_size的方向进行的</p>
+<p><img src="https://i.loli.net/2019/07/19/5d31b16de13f475380.png" alt=""><br>不过 LN 是在每一个样本上计算均值和方差，而不是BN那种在批方向计算均值和方差！</p>
+<p><strong> decoder  部分</strong></p>
+<p>decoder部分其实和encoder部分大同小异，不过在最下面额外多了一个masked mutil-head attetion，这里的mask也是transformer一个很关键的技术。</p>
+<p>Transformer 模型里面涉及两种 mask，分别是 padding mask 和 sequence mask。其中 padding mask 在所有的 scaled dot-product attention 里面都需要用到，而 sequence mask 只有在 decoder 的 self-attention 里面用到。前者就是一种填充技术，使得 不定长的sequence 变成定长的sequence之后做出的一些处理。</p>
+<p><strong> Padding Mask </strong></p>
+<p>什么是 padding mask 呢？因为每个批次输入序列长度是不一样的也就是说，我们要对输入序列进行对齐。具体来说，就是给在较短的序列后面填充 0。但是如果输入的序列太长，则是截取左边的内容，把多余的直接舍弃。因为这些填充的位置，其实是没什么意义的，所以我们的attention机制不应该把注意力放在这些位置上，所以我们需要进行一些处理。<br>具体的做法是，把这些位置的值加上一个非常大的负数(负无穷)，这样的话，经过 softmax，这些位置的概率就会接近0！</p>
+<p><strong> Sequence mask</strong><br>sequence mask 是为了使得 decoder 不能看见未来的信息。也就是对于一个序列，在 time_step 为 t 的时刻，我们的解码输出应该只能依赖于 t 时刻之前的输出，而不能依赖 t 之后的输出。因此我们需要想一个办法，把 t 之后的信息给隐藏起来。那么具体怎么做呢？也很简单：产生一个上三角矩阵，上三角的值全为0。把这个矩阵作用在每一个序列上，就可以达到我们的目的。</p>
+<p><strong> 缺点：</strong></p>
+<p>问题一： 长输入</p>
+<p>在文本只要等篇章级别的任务重， transformer 因为计算量的复杂性，所以速度回急速变慢。所以短期内，这些方面仍然是RNN 或者CNN的应用场景（虽然两者做的也不是很好）。</p>
+<p>transformer 的改进思路：</p>
+<p>比如可以把长输入切断分成K份，强制把长输入切短，再套上Transformer作为特征抽取器，高层可以用RNN或者另外一层Transformer来接力，形成Transformer的层级结构，这样可以把n平方的计算量极大减少。（分而治之的思路是真的比较常见呀）</p>
+<p>问题二： 网络结构过于复杂</p>
+<p>如何更深刻认识它的作用机理，然后进一步简化它，这也是一个好的探索方向。 上面在做语义特征抽取能力比较时，结论是对于距离远与13的长距离特征，Transformer性能弱于RNN</p>
+<p>分界线 - -  - - - – - - - - - -  - - - - -  分 界线（另外的解读方式）</p>
+<p>Encoder和Decoder的内部结构：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3enq6lqouj20uq0eoq4u.jpg" alt=""></p>
+<p>模型的特点：<br>Positional embedding；（位置嵌入向量——其实类似word2vec，处理的语序的信息）。<br>multi-head attention; (多头注意力机制——点乘注意力的升级版本， 这个就类似ensemble的思想，不同的子空间的attention 进行融合）<br>Position-wise Feed-Forward Networks（位置全链接前馈网络——MLP变形）</p>
+<p>有两种常用的注意力函数，一种是加法注意力(additive attention)，另外一种是点乘注意力(dot-productattention)，论文所采用的就是点乘注意力，这种注意力机制对于加法注意力而言，更快，同时更节省空间。</p>
+<p>加法注意力<br>还是以传统的RNN的seq2seq问题为例子，加性注意力是最经典的注意力机制，它使用了有一个隐藏层的前馈网络（全连接）来计算注意力分配：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ep38emyqj20bl03o3zj.jpg" alt=""></p>
+<p>公式:<br>$$<br>\alpha _ { i j } = \frac { \exp \left( e _ { i j } \right) } { \sum _ { k = 1 } ^ { L } e _ { i k } }<br>$$</p>
+<p>Scaled Dot-Product<br>这篇论文计算query和key相似度使用了dot-product attention，即query和key进行点乘（内积）来计算相似度。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3ftfz3uxij206e088aa2.jpg" alt=""></p>
+<p>Multi-Head Attention:<br>（将单个计算组成矩阵运算，有利于并行运算）<br>在实际中为了并行计算，可以在一组queries上计算注意力函数，将多个query堆叠成Q，同理keys和values也被堆叠成K和V，通过下面的公式来计算矩阵输出:<br>self-attention 模型就是自己对自己求attention，即𝑄=𝐾=𝑉<br>$$<br>\text { Attention } ( Q , K , V ) = \operatorname { softmax } \left( \frac { Q K ^ { T } } { \sqrt { d _ { k } } } \right) V<br>$$<br>之所以用内积除以维度的开方，论文给出的解释是：假设Q和K都是独立的随机变量，满足均值为0，方差为1，则点乘后结果均值为0，方差为dk。也即方差会随维度dk的增大而增大，而大的方差导致极小的梯度(我认为大方差导致有的输出单元a（a是softmax的一个输出）很小，softmax反向传播梯度就很小（梯度和a有关））。为了避免这种大方差带来的训练问题，论文中用内积除以维度的开方，使之变为均值为0，方差为1。</p>
+<p>除了计算一个单独的注意力函数，论文提出对queries，keys和values做h次不同的投影, 然后都经过Scaled Dot-Product Attention，将结果拼接在一起，最后通过一个线性映射输出，通过多头注意力，模型能够获得不同子空间下的位置信息。如下图所示，公式如下:<br>$$<br>\text {MultiHead} ( Q , K , V ) =Concat(head_1, head_2, …, head_h)  W ^ { o }$$</p>
+<p>Self-Attention<br>那么首先要明白什么是Attention。从语言学的角度，它是表示词与词之间的关联关系（这种关系是通过反向传播学习到的）。而 self-attention 表示句子内部词于词之间的关联关系，如下图中的it 和其他位置词的关系，颜色越深表示关系越紧密， 从图中可以看到 it 正确的关联到了 animal 它所指代的一个词。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eobewbqoj20c50bhq4y.jpg" alt=""></p>
+<p>Positional Encoding<br>transformer是使用 positional encoding 加入了位置信息，保持了词语之间的上下文关系。实现的的时候，在偶数位置，使用正弦编码，在奇数位置，使用余弦编码.</p>
+<p>Residual connection和layer-normalization</p>
+<p>对于学习CV的人估计对这个结构一点也不陌生，Residual connection是对于较为深层的神经网络有比较好的作用，比如网络层很深时，数值的传播随着weight不断的减弱，Residual connection是从输入的部分，就是图中虚线的部分，实际连到它输出层的部分，把输入的信息原封不动copy到输出的部分，减少信息的损失。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eof674adj20ii0dfgoe.jpg" alt=""><br>layer-normalization这种归一化层是为了防止在某些层中由于某些位置过大或者过小导致数值过大或过小，对神经网络梯度回传时有训练的问题，保证训练的稳定性，这是神经网络设计比较常用的case。</p>
+<p>结论：<br>self-attention层的好处是能够一步到位捕捉到全局的联系，解决了长距离依赖，因为它直接把序列两两比较（代价是计算量变为 O(n2)，当然由于是纯矩阵运算，这个计算量相当也不是很严重），而且最重要的是可以进行并行计算，因为这个操作是可以使用矩阵运算的。<br>相比之下，RNN 需要一步步递推才能捕捉到，并且对于长距离依赖很难捕捉。而 CNN 则需要通过层叠来扩大感受野（感受野的概念，更像是 最后经过CNN 的一个点在原始的图像中是多大的面积，这种管中窥豹的感觉），这是 Attention 层的明显优势。</p>
+<h2 id="Deep-Contextualized-Word-Representations"><a href="#Deep-Contextualized-Word-Representations" class="headerlink" title="Deep Contextualized Word Representations"></a>Deep Contextualized Word Representations</h2><p>主要贡献：</p>
+<ul>
+<li>提出了一个双向训练的 language model，使用前K-1 个词语训练 第K 个词语，然后使用后 N-K+1 个词语训练第K 个词语，所以第 K 个词语是combine 了上下文的信息的。</li>
+<li>word embedding 的表示是不同layer 累加的结果，weights 的设定是学习而得。</li>
+</ul>
+<p>Why do we need contextualized representations?</p>
+<p>词语的意思是由上下文所决定的。所以一个固定的 word embedding 不能准确的表示不同场景下 word 的含义。</p>
+<p>As an illustrative example, take the following two sentences:</p>
+<blockquote>
+<p>“The bank on the other end of the street was robbed”<br>“We had a picnic on the bank of the river”</p>
+</blockquote>
+<p>Both sentences use the word “bank”, but the meaning of the word differs completely between them. This phenomenon where two identical words change meaning depending on the context is known as “polysemy“, and has been an issue in the NLP deep learning community ever since word embeddings really took off. Most current neural networks are bad at handling polysemy because they use a single vector to represent the meaning of the word “bank”, regardless of the context. In reality, the vector representing any word should change depending on the words around it.</p>
+<p>之前的做法的缺点是对于每一个单词都有唯一的一个embedding表示, 而对于多义词显然这种做法不符合直觉, 而单词的意思又和上下文相关, ELMo的做法是我们只预训练language model, 而word embedding是通过输入的句子实时输出的, 这样单词的意思就是上下文相关的了, 这样就很大程度上缓解了歧义的发生.</p>
+<p>这种算法的特点是：每一个word representation都是整个输入语句的函数。具体做法就是先在大语料上以language model为目标训练出bidirectional LSTM模型，然后利用LSTM产生词语的表征。ELMo故而得名(Embeddings from Language Models)。为了应用在下游的NLP任务中，一般先利用下游任务的语料库(注意这里忽略掉label)进行language model的微调,这种微调相当于一种domain transfer; 然后才利用label的信息进行supervised learning。</p>
+<p>ELMo表征是“深”的，就是说它们是biLM的所有层的内部表征的函数。这样做的好处是能够产生丰富的词语表征。高层的LSTM的状态可以捕捉词语意义中和语境相关的那方面的特征(比如可以用来做语义的消歧)，而低层的LSTM可以找到语法方面的特征(比如可以做词性标注)。如果把它们结合在一起，在下游的NLP任务中会体现优势。</p>
+<p>所以，最后的 embedding 使用不同层进行weights 的累加，这种理论上是站得住脚的。上面的描述和 CV 是惊人的相似。</p>
+<p>Salient features<br>ELMo representations are:</p>
+<ul>
+<li>Contextual: The representation for each word depends on the entire context in which it is used.</li>
+<li>Deep: The word representations combine all layers of a deep pre-trained neural network.</li>
+<li>Character based: ELMo representations are purely character based, allowing the network to use morphological clues to form robust representations for out-of-vocabulary tokens unseen in training.</li>
+</ul>
+<p>related work:</p>
+<p>针对传统词向量是固定的，与上下文语境无关的缺点，先前的工作多通过两种方式来解决：<br> (1) 通过引入字符级(subword)信息丰富词向量表达；<br> (2) 学习每个单词不同含义的独立向量；<br> ELMo也利用了字符卷积（Character-Convolutions）引入字符级信息，并同时结合了深度双向语言模型的各层隐状态来丰富词向量表达。</p>
+<p>P.s.：基于字符的模型不仅能够通过引入字符级信息丰富词向量表达，也能够在很大程度上解决NLP领域的OOV（Out-Of-Vocabulary）问题。</p>
+<p>ELMo用到上文提到的双向的language model, 给定N个tokens (t1, t2,…,tN), language model通过给定前面的k-1个位置的token序列计算第k个token的出现的概率:<br>$$<br>p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { 1 } , t _ { 2 } , \ldots , t _ { k - 1 } \right)<br>$$<br>后向的计算方法与前向相似:</p>
+<p>$$<br>p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { k + 1 } , t _ { k + 2 } , \ldots , t _ { N } \right)<br>$$<br>biLM训练过程中的目标就是最大化:<br>$$<br>\sum _ { k = 1 } ^ { N } \left( \log p \left( t _ { k } | t _ { 1 } , \ldots , t _ { k - 1 } ; \Theta _ { x } , \vec { \Theta } _ { L S T M } , \Theta _ { s } \right) + \log p \left( t _ { k } | t _ { k + 1 } , \ldots , t _ { N } ; \Theta _ { x } , \overline { \Theta } _ { L S T M } , \Theta _ { s } \right) \right)<br>$$</p>
+<p>ELMo对于每个token $t_k$, 通过一个L层的biLM计算出2L+1个表示:</p>
+<p>$$<br>R_{ k } = { x _ { k } ^ { L M } , \vec { h } _ { k , j } ^ { L M } , h _ { k , j } ^ { L M } | j = 1 , \ldots , L } = { h _ { k , j } ^ { L M } | j = 0 , \ldots , L }<br>$$</p>
+<p>其中$h _ { k , 0 } ^ { L M }$是对token进行直接编码的结果(这里是字符通过CNN编码), $h _ { k , j } ^ { L M } = \left[ \vec { h } _ { k , j } ^ { L M } ; \overline { h } _ { k , j } \right]$ 是每个biLSTM层输出的结果. 在实验中还发现不同层的biLM的输出的token表示对于不同的任务效果不同.</p>
+<p>应用中将ELMo中所有层的输出R压缩为单个向量, ELMok=E(Rk;Θϵ), 最简单的压缩方法是取最上层的结果做为token的表示:$E \left( R _ { k } \right) = h _ { k , L } ^ { L M }$ 更通用的做法是通过一些参数来联合所有层的信息:<br>$$E L M o _ { k } ^ { t a s k } = E \left( R _ { k } ; \Theta ^ { t a s k } \right) = \gamma ^ { t a s k } \sum _ { j = 0 } ^ { L } s _ { j } ^ { t a s k } h _ { k , j } ^ { L M }$$</p>
+<p>其中$s_j$是一个softmax出来的结果, $γ$是一个任务相关的scale参数, 我试了平均每个层的信息和学出来$s_j$发现学习出来的效果会好很多. 文中提到$γ$在不同任务中取不同的值效果会有较大的差异, 需要注意, 在SQuAD中设置为0.01取得的效果要好于设置为1时.</p>
+<p>ELMo: Context Matters</p>
+<p>Instead of using a fixed embedding for each word, ELMo looks at the entire sentence before assigning each word in it an embedding. It uses a bi-directional LSTM trained on a specific task to be able to create those embeddings.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fub67ulaj20u20h3wfx.jpg" alt=""></p>
+<p>ELMo provided a significant step towards pre-training in the context of NLP. The ELMo LSTM would be trained on a massive dataset in the language of our dataset, and then we can use it as a component in other models that need to handle language.</p>
+<p>What’s ELMo’s secret?</p>
+<p>ELMo gained its language understanding from being trained to predict the next word in a sequence of words - a task called Language Modeling. This is convenient because we have vast amounts of text data that such a model can learn from without needing labels.</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fubpu9ibj20li0m1q5b.jpg" alt=""></p>
+<p>We can see the hidden state of each unrolled-LSTM step peaking out from behind ELMo’s head. Those come in handy in the embedding proecss after this pre-training is done.</p>
+<p>ELMo actually goes a step further and trains a bi-directional LSTM – so that its language model doesn’t only have a sense of the next word, but also the previous word.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fuc693mrj211z0hbjur.jpg" alt=""><br>ELMo comes up with the contextualized embedding through grouping together the hidden states (and initial embedding) in a certain way (concatenation followed by weighted summation).<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3fuci4xodj213j0kitcq.jpg" alt=""></p>
+<p>lstm-based language model<br>In case you are unfamiliar with language models, a language model is simply a model that can predict how “likely” a certain sequence of words is to be a real piece of text. This is generally done by training a model to take a part of sentence (say, the first n words) and predict the next word – or more precisely, output the probability of each word in the vocabulary being the next word (In this blog post, we’ll focus on LSTM-based language models which are the focus of this paper). </p>
+<p>One trick that this paper uses is to train a language model with reversed sentences that the authors call the “backward” language model.<br>这种模型：上一个模型的输出到下一个模型输入<br>Furthermore, instead of using a single-layer LSTM, this paper uses a stacked, multi-layer LSTM. Whereas a single-layer LSTM would take the sequence of words as input, a multi-layer LSTM trains multiple LSTMs to take the output sequence of the LSTM in the previous layer as input (of course, the first layer takes the sequence of words as input). This is best illustrated in the following illustration:<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3flokoc0mj20ab07474a.jpg" alt=""></p>
+<p>最后的embedding 是是将不同的层 combination起来，这个系数是通过学习出来的。<br>In ELMo, the part that is task specific is the combination of the task-agnostic representations. The weight is learned for each task and normalized using the softmax function. The parameter $\gamma$ is a task-dependent value that allows for scaling the entire vector, which is important during optimization.</p>
+<p>优缺点：</p>
+<p>在ELMo中，嵌入基于一个双层的双向语言模型（biLM）的内部状态计算，ELMo也是因此得名的：Embeddings from Language Models（来自语言模型的嵌入）。<br>ELMo的特性：<br>ELMo的输入是字符而不是单词。这使得它可以利用子字（sub-word）单元为词汇表以外的单词计算有意义的表示（和FastText类似）。<br>ELMo是biLM的多层激活的连接（concatenation）。语言模型的不同层编码了单词的不同信息。连接所有层使得ELMo可以组合多种词表示，以提升下游任务的表现。</p>
+<h2 id="BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding"><a href="#BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding" class="headerlink" title="BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"></a>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</h2><p>嵌入（Embedding）的新时代<br>到目前为止，词嵌入一直是影响NLP模型处理语言的主要力量。但是我们使用GloVe，那么“stick”这个词将由一个向量表示，无论上下文是什么。所以词嵌入的方式并没有解决上下文的问题。ELMo 解决了这个问题：捕捉单词的上下文信息。ELMo不是对每个单词使用固定嵌入，而是在为其中的每个单词分配嵌入之前查看整个句子，它使用在特定任务上训练的双向LSTM来创建这些嵌入。</p>
+<p>BERT全称是Bidirectional Encoder Representations from Transformers，取了核心单词的首字母而得名，从名字我们能看出该模型两个核心特质：依赖于Transformer以及双向。</p>
+<p>首先介绍BERT的两种型号：</p>
+<ul>
+<li>BERT BASE：与OpenAI Transformer的尺寸相当，性价比很高；</li>
+<li>BERT LARGE：一个非常庞大的模型，它的性能最好；</li>
+</ul>
+<p>一般来说使用BASE 版本就足以。</p>
+<h3 id="预训练过程"><a href="#预训练过程" class="headerlink" title="预训练过程"></a>预训练过程</h3><p>BERT为了能够在大规模语料上进行无监督学习，非常巧妙的设计了两个预训练任务：一个是随机遮蔽（mask）掉一个句子中的词，利用上下文进行预测 （换句话说，为了训练深度双向Transformer表示）；另一个是预测下一个句子（类似QA场景）</p>
+<p>BERT 的目标是生成语言模型，所以只需要 encoder 机制。Transformer 的 encoder 是一次性读取整个文本序列，而不是从左到右或从右到左地按顺序读取，这个特征使得模型能够基於单词的两侧学习，相当于是一个双向的功能。这个是解决了 word embedding的问题，但是在其他的任务中 word2vec 的作用是有限的。所以BERT 提供了两种策略：</p>
+<p>蒙面语言模型（NLM：Masked Language Model）和 两个句子的任务（Two-sentence Tasks）。</p>
+<p>比较 ELMO 和BERT:</p>
+<ul>
+<li>从结构上我们可以看出ELMo的基础是使用了LSTM，而BERT使用了Transformer作为基本模型</li>
+<li>核心的是两者的目标函数是不一致的</li>
+</ul>
+<p>ELMO:</p>
+<p>$P \left( w _ { i } | w _ { 1 } , \ldots , w _ { i - 1 } \right) $ 和 $P \left( w _ { i } | w _ { i + 1 } , \ldots , w _ { n } \right)$</p>
+<p>BERT：<br>$$<br>P \left( w _ { i } | w _ { 1 } , \ldots , w _ { i - 1 } , w _ { i + 1 } , \ldots , w _ { n } \right)<br>$$</p>
+<p>所以BERT 在训练的时候和 ELMO 是不太一样的，前者使用了 masked LM tricks.</p>
+<p><strong> Masked LM (MLM) </strong></p>
+<blockquote>
+<p>Input:<br>the man [MASK1] to [MASK2] store<br>Label:<br>[MASK1] = went; [MASK2] = store</p>
+</blockquote>
+<p>该任务就是BERT为了做到双向深度上下文表示设计的预训练trick任务，而在mask单词的时候，作者也采用了一些技巧，随机mask掉15%的token，最终的损失函数只计算mask掉的token。而对于被mask掉的词也并非简单粗暴的将全部替换成[MASK]标签完事，会遵循如下步骤：</p>
+<ul>
+<li>80%即大部分情况下，被mask掉的词会被[MASK]标签代替；</li>
+<li>10%的情况下，将该词用一个随机的词替换掉；</li>
+<li>10%的情况下，保留该词在原位置。</li>
+</ul>
+<p>这样做的目的是偏向代表实际观察到的词。另外模型在预训练时，Transformer编码器并不知道哪些词被mask掉了，所以模型对每个词都会关注。同时，因为随机替换仅发生在所有词的1.5％（即15％*10％），对模型的语言理解能力影响很小。<br>Transformer编码器不知道它将被要求预测哪些单词，或者哪些已经被随机单词替换，因此它必须对每个输入词保持分布式的上下文表示。此外，由于随机替换在所有词中只发生1.5%，所以并不会影响模型对于语言的理解。</p>
+<p><strong> Next Sentence Prediction (NSP) </strong></p>
+<blockquote>
+<p>Input:<br>the man went to the store [SEP] he bought a gallon of milk<br>Label:<br>IsNext<br>Input:<br>the man went to the store [SEP] penguins are flightless birds<br>Label:<br>NotNext</p>
+</blockquote>
+<p>由于在LM的下游任务还会涉及到问答（Question Answering (QA) ）和推理（ Natural Language Inference (NLI)）的任务，这需要LM有理解句子间关系的能力，所以作者新增了一个预训练任务，输入句子A和B，预测B是否为A的下一个句子，以50%的概率配对A和B，即50%B是真的，50%B是随机选取的一个句子。</p>
+<p>所以作者提示在选取预训练语料时，要尽可能选取document-level的语料而非segment-level混合在一起的语料</p>
+<p>在 BERT 的训练过程中，模型接收成对的句子作为输入，并且预测其中第二个句子是否在原始文档中也是后续句子。在训练期间，50％ 的输入对在原始文档中是前后关系，另外 50％ 中是从语料库中随机组成的，并且是与第一句断开的。</p>
+<p>在训练 BERT 模型时，Masked LM 和 Next Sentence Prediction 是一起训练的，目标就是要最小化两种策略的组合损失函数。</p>
+<p><strong>BERT 模型的输入</strong></p>
+<p>输入表示可以在一个词序列中表示单个文本句或一对文本(例如，[问题，答案])。对于给定的词，其输入表示是可以通过三部分Embedding求和组成。Embedding的可视化表示如下图所示：</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/07/6c304cd1ba04192c.png" alt=""></p>
+<ul>
+<li>token Embeddings表示的是词向量，第一个单词是CLS标志，可以用于之后的分类任务，对于非分类任务，可以忽略词向量；</li>
+<li>Segment Embeddings用来区别两种句子，因为预训练不只做语言模型还要做以两个句子为输入的分类任务；</li>
+<li>Position Embeddings是通过模型学习得到的。</li>
+</ul>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>BERT 可以使用在各种NLP 任务中，只需要在核心模型中添加一个层，比如：</p>
+<ul>
+<li>在分类任务中，例如情感分析等，只需要在 Transformer 的输出之上加一个分类层</li>
+<li>在问答任务（例如SQUAD v1.1）中，问答系统需要接收有关文本序列的 question，并且需要在序列中标记 answer。 可以使用 BERT 学习两个标记 answer 开始和结尾的向量来训练Q＆A模型。</li>
+<li>在命名实体识别（NER）中，系统需要接收文本序列，标记文本中的各种类型的实体（人员，组织，日期等）。 可以用 BERT 将每个 token 的输出向量送到预测 NER 标签的分类层。</li>
+</ul>
+<p><strong> 句子分类</strong><br>如果使用B    ERT 模型进行句子分类，那么在训练阶段模型发生的变化很小，这个过程称为微调。</p>
+<p><strong> 机器翻译</strong></p>
+<p>事实上Transformer比LSTM更好地处理长期依赖性，使其非常适合机器翻译。从一种语言到另一种语言的转换。</p>
+<p><strong> 参考文献</strong></p>
+<p><a href="https://www.twblogs.net/a/5c95e586bd9eee491b621775/zh-cn" target="_blank" rel="noopener">Transformer &amp; BERT</a><br><a href="https://www.cnblogs.com/xlturing/p/10824400.html" target="_blank" rel="noopener">BERT解析及文本分类应用</a></p>
+<h2 id="A-simple-but-tough-to-beat-baseline-for-sentence-embeddings"><a href="#A-simple-but-tough-to-beat-baseline-for-sentence-embeddings" class="headerlink" title="A simple but tough-to-beat baseline for sentence embeddings"></a>A simple but tough-to-beat baseline for sentence embeddings</h2><p>Taking the average of the word embeddings in a sentence tends to give too much weight to words that are quite irrelevant, semantically speaking. Smooth Inverse Frequency tries to solve this problem in two ways:</p>
+<ul>
+<li>Weighting: like our tf-idf baseline above, SIF takes the weighted average of the word embeddings in the sentence. Every word embedding is weighted by a/(a + p(w)), where a is a parameter that is typically set to 0.001 and p(w) is the estimated frequency of the word in a reference corpus. (使用新的词权重计算方法，不是tf-idf, 频率越高，权重越低，抑制高频词)</li>
+<li>Common component removal: next, SIF computes the principal component of the resulting embeddings for a set of sentences. It then subtracts from these sentence embeddings their projections on their first principal component. This should remove variation related to frequency and syntax that is less relevant semantically.<br>As a result, SIF downgrades unimportant words such as but, just, etc., and keeps the information that contributes most to the semantics of the sentence.</li>
+</ul>
+<p>第一步中的$p(w) $ 是在语料中的词频，第二步中对整个句子集合进行一次PCA，然后对每个句子上面得到的向量减去它在第一奇异向量或者说主成分上的投影。<br>最后初步的句子向量减去对应句子向量的共性成分(起到平滑作用),得到最后的独有的句子向量(使得各个句子向量间的耦合度降低,增强句子的鲁棒性).耦合性越低（模块之间的关联性越小）</p>
+<p>作用：</p>
+<p>第一步骤中的超参数 $a $ 是一种平滑项，对于低频词的支持，即使出现的次数少，也还是权重的。$ ( \alpha p(w)) $,其中$(p(w))$是单词 $(w) $在整个语料中出现的概率(词频角度), $ (\alpha) $是一个超参数. 这样, 即使和 $ (c_s) $的内积很小, 这个单词也有概率出现. 第二步骤中的减去 主成分，可以理解为让各个词向量更好的分开，减去公共的部分，减少耦合性，使得相似的句子聚类在一起。因为这个主成分是整个语料库中的主成分.</p>
+<p>另外论文中还提到了这种方法的鲁棒性:</p>
+<ul>
+<li>使用不同语料(多种领域)训练得到的不同的word embedding, 均取得了很好的效果, 说明了对各种语料的友好.</li>
+<li>使用不同语料得到的词频, 作为计算词权重的因素, 对最终的结果影响很小.</li>
+<li>对于方法中的超参数, 在很大范围内, 获得的结果都是区域一直的, 即超参数的选择没有太大的影响.</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dw277xiyj20pi0c10ww.jpg" alt=""></p>
+<p>尽管长期以来句子的无监督表示学习是主流，最近几个月（2017年末/2018年初），我们看到了许多非常有趣的工作，显示了向监督学习和多任务学习（不同的任务学习到不同的维度，然后组合）转向的趋势。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3dvg2o3wwj20qo0grdgp.jpg" alt=""></p>
+<ul>
+<li>强力/迅速的基线：FastText、词袋（Bag-of-Words）</li>
+<li>当前最先进模型：ELMo、Skip-Thoughts、Quick-Thoughts、 InferSent、MILA/MSR的General Purpose Sentence Representations、Google的Universal Sentence Encoder</li>
+</ul>
+<p>关于nlp 中的word embedding 是可以有 phrases, sentences, and paragraphs 三个不同类别的 embedding，所以还是挺好的。</p>
+<p>优点：</p>
+<ul>
+<li>程序的运行只需要十几分钟，效果和神经网络是相当的</li>
+<li>属于无监督的学习，可以对大规模的语料进行利用，相对于有监督的学习方式，这个是优势</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>缺点就是没有考虑句子的语序,导致不能辨别(“我爱你”还是”你爱我”), 只是字意的表达，并没有体现了句意</li>
+<li>对于短文本上的word2vec， SIF 效果很好，但是涉及到语意理解的时候，这种方式效果就一般了，而这个时候就应该使用 elmo，transformer or bert 等模型了</li>
+</ul>
+<h2 id="Supervised-Learning-of-Universal-Sentence-Representations-from-Natural-Language-Inference-Data"><a href="#Supervised-Learning-of-Universal-Sentence-Representations-from-Natural-Language-Inference-Data" class="headerlink" title="Supervised Learning of Universal Sentence Representations from Natural Language Inference Data"></a>Supervised Learning of Universal Sentence Representations from Natural Language Inference Data</h2><p>文章成功的找到了NLP领域的ImageNet — SNLI (Stanford Natural Language Inference dataset), 并且试验了不同的深度学习模型，最终确定bi-LSTM max pooled 为最佳模型。</p>
+<table>
+<thead>
+<tr>
+<th>域</th>
+<th>数据</th>
+<th>任务</th>
+<th>模型(编码器)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CV</td>
+<td>ImageNet</td>
+<td>image classification</td>
+<td>Le-Net, VGG-Net, Google-Net, ResNet, DenseNet</td>
+</tr>
+<tr>
+<td>NLP</td>
+<td>SNLI</td>
+<td>NLI</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+<p>基于监督学习方法学习sentence embeddings可以归纳为两个步骤：<br>第一步选择监督训练数据，设计相应的包含句子编码器Encoder的模型框架；<br>第二步选择（设计）具体的句子编码器，包括DAN、基于LSTM、基于CNN和Transformer等。</p>
+<p>数据集：</p>
+<p>本文采用的是Stanford Natural Language Inference Datasets，简称SNLI （NLP领域的ImageNet ）。SNLI包含570K个人类产生的句子对，每个句子对都已经做好了标签，标签总共分为三类：蕴含、矛盾和中立（Entailment、contradiction and neutral）。下面是这些数据集的一个例子：</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqwkv9tlj20kd097gm4.jpg" alt=""><br>从上图可以看出，每个句子对为（text, hypothesis）,中间的judgments为它们的标签。可以看到标签是综合了5个专家的意见，根据少数服从多数的原则得到的。</p>
+<p>7种不同的architectures： </p>
+<ol>
+<li>standard recurrent encoders with LSTM ，取最后一个隐状态</li>
+<li>standard recurrent encoders with GRU ，取最后一个隐状态<br>上述两种是基础的recurrent encoder，在句子建模中通常将网络中的最后一个隐藏状态作为sentence representation； </li>
+<li>conncatenation of last hidden states of forward and backward GRU<br>这种方法是将单向的网络变成了双向的网络，然后用将前向和后向的最后一个状态进行连接，得到句子向量； </li>
+<li>Bi-directional LSTMs (BiLSTM) with mean pooling </li>
+<li>Bi-directional LSTMs (BiLSTM) with max pooling<br>这两种方法使用了双向LSTM结合一个pooling层的方法来获取句子表示，具体公式如下： </li>
+<li>self-attentive network<br>这个网络在双向LSTM的基础上加入了attention机制，具体网络结构如下： </li>
+<li>hierarchical convolutional networks </li>
+</ol>
+<p>Now that we have discussed the various sentence encoding architectures used in the paper, let’s go through the part of the network which takes these sentence embeddings and predicts the output label.</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqyoxmknj20ey0d640u.jpg" alt=""><br>After the sentence vectors are fed as input to this model, 3 matching methods are applied to extract relations between the text, u and hypothesis, v –</p>
+<ul>
+<li>concatenation of the two representations (u, v)</li>
+<li>element-wise product u * v</li>
+<li>and, absolute element-wise difference |u – v |</li>
+</ul>
+<p>The resulting vector captures information from both the text, u and the hypothesis, v, and is fed into a 3-class classifier consisting of multiple fully connected layers followed by a softmax layer.</p>
+<h2 id="Universal-Sentence-Encoder"><a href="#Universal-Sentence-Encoder" class="headerlink" title="Universal Sentence Encoder"></a>Universal Sentence Encoder</h2><p>这篇文章基于InferSent， 也是想找到一个universal encoder。不同之处在于文章把InferSent的bi-lstm换成了DAN（或者Transformer)，而使用DAN这样“简单”的encoder的效果竟然相当好（尤其是时间和内存消耗和其他算法比小很多。）</p>
+<p>The Google Sentence Encoder is Google’s answer to Facebook’s InferSent. It comes in two forms:</p>
+<ul>
+<li>an advanced model that takes the element-wise sum of the context-aware word representations produced by the encoding subgraph of a Transformer model.</li>
+<li>a simpler Deep Averaging Network (DAN) where input embeddings for words and bigrams are averaged together and passed through a feed-forward deep neural network.<br>The Transformer-based model tends to give better results, but at the time of writing, only the DAN-based encoder was available. In contrast to InferSent, the Google Sentence Encoder was trained on a combination of unsupervised data (in a skip-thought-like task) and supervised data (the SNLI corpus).</li>
+</ul>
+<p>DAN<br>其实DAN(Deep Averaging Networks)应该属于Bag of Words类的算法。因为比较特殊，单独列出来。 它是在对所有词语取平均后，在上面加上几层神经网络。特殊的地方在于它在sentiment analysis中表现也不错，这在BOW类方法中比较罕见。</p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3esxw2nilj20dh08ujth.jpg" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>新方法</th>
+<th>类型</th>
+<th>基于的旧算法</th>
+<th>贡献</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIF</td>
+<td>无监督</td>
+<td>BOW</td>
+<td>一个简单而有效的baseline算法</td>
+</tr>
+<tr>
+<td>InferSent</td>
+<td>监督</td>
+<td>NA</td>
+<td>找到了NLP领域的ImageNet – SNLI， 并给出了一个state-of-art 算法</td>
+</tr>
+<tr>
+<td>P-mean</td>
+<td>无监督</td>
+<td>BOW</td>
+<td>比SIF更简单且有效的一个算法且适用于cross-lingual</td>
+</tr>
+<tr>
+<td>Universal-sentence-encoder</td>
+<td>监督</td>
+<td>InferSent</td>
+<td>更加简单的encoder</td>
+</tr>
+</tbody>
+</table>
+<p>文章共提出两种基于不同网络架构的Universal Sentence Encoder：Transformer and Deep Averaging Network (DAN).<br>Our two encoders have different design goals. One based on the transformer architecture targets high accuracy at the cost of greater model complexity and resource consumption. The other targets efficient inference with slightly reduced accuracy.</p>
+<p>NLP 是如何体现了多任务训练的？</p>
+<p>该篇论文在前人的研究基础上，综合利用无监督训练数据和有监督训练数据，进行多任务训练，从而学习一个通用的句子编码器。无监督训练数据包括问答(QA)型网页和论坛，Wikipedia, web news，有监督训练数据为SNLI。多任务模型设计如下图所示，其中灰色的encoder为共享参数的句子编码器。</p>
+<p><img src="https://upload.cc/i1/2019/08/04/2VsB5g.png" alt="img"></p>
+<p>论文对比了DAN和Transfomer这两种编码器。得出如下结论：</p>
+<ul>
+<li>Transformer 模型在各种任务上的表现都优于简单的 DAN 模型，且在处理短句子时只稍慢一些。（更高的精度）</li>
+<li>DAN模型也能具有很不错的表现，并且相较于Transformer模型，训练时间和内存的开销都更小，尤其是当句子较长时。（更快的速度）</li>
+</ul>
+<p>总结：</p>
+<p>Sentence Embedding的质量往往由训练数据和Encoder共同决定。Encoder不一定是越复杂越好，需要依据下游任务、计算资源、时间开销等多方面因素综合考虑。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/27/Dynamic-Programming-Examples/" rel="next" title="Dynamic Programming Examples">
+                <i class="fa fa-chevron-left"></i> Dynamic Programming Examples
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/01/nlp-papers-reading-sentence-embedding/" rel="prev" title="NLP  Papers Reading-Sentence Embedding">
+                NLP  Papers Reading-Sentence Embedding <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#attention-is-all-you-need"><span class="nav-number">1.</span> <span class="nav-text">attention is all you need</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#transformer-的结构"><span class="nav-number">1.1.</span> <span class="nav-text">transformer 的结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deep-Contextualized-Word-Representations"><span class="nav-number">2.</span> <span class="nav-text">Deep Contextualized Word Representations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding"><span class="nav-number">3.</span> <span class="nav-text">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预训练过程"><span class="nav-number">3.1.</span> <span class="nav-text">预训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">3.2.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-simple-but-tough-to-beat-baseline-for-sentence-embeddings"><span class="nav-number">4.</span> <span class="nav-text">A simple but tough-to-beat baseline for sentence embeddings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Supervised-Learning-of-Universal-Sentence-Representations-from-Natural-Language-Inference-Data"><span class="nav-number">5.</span> <span class="nav-text">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Universal-Sentence-Encoder"><span class="nav-number">6.</span> <span class="nav-text">Universal Sentence Encoder</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/05/27/paper-reading-bert/';
+          this.page.identifier = '2019/05/27/paper-reading-bert/';
+          this.page.title = 'NLP Papers Reading- BERT (***)';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '8c6403951ee3eab4e420',
+          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          repo: 'comments_blog',
+          owner: 'jia1509309698@163.com',
+          admin: ['jia1509309698@163.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

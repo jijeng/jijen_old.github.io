@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="optimizer," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器 和常见的技术比如 dropout。">
+<meta name="keywords" content="optimizer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度网络中的碎碎念">
+<meta property="og:url" content="http://yoursite.com/2019/03/26/深度网络中的碎碎念/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器 和常见的技术比如 dropout。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fz79596rj20fu0boaad.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg">
+<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/62d1aaa2d8701f35.jpg">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/ed14b5c14cb9fc02.gif">
+<meta property="og:image" content="https://upload.cc/i1/2019/06/20/cMRW62.jpg">
+<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/d95ac0845ef9211a.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/619bdec3f9b8bffb.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/2ce4806231a16edb.png">
+<meta property="og:image" content="https://upload.cc/i1/2019/07/11/1yQFLb.png">
+<meta property="og:image" content="https://upload.cc/i1/2019/07/31/srRb1v.png">
+<meta property="og:updated_time" content="2019-08-10T13:47:47.204Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度网络中的碎碎念">
+<meta name="twitter:description" content="介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器 和常见的技术比如 dropout。">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/26/深度网络中的碎碎念/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>深度网络中的碎碎念 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/深度网络中的碎碎念/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深度网络中的碎碎念</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-26T10:28:14+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-10T21:47:47+08:00">
+                2019-08-10
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/26/深度网络中的碎碎念/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/26/深度网络中的碎碎念/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器 和常见的技术比如 dropout。</p>
+<a id="more"></a>
+<h2 id="Weights-Initialization"><a href="#Weights-Initialization" class="headerlink" title="Weights Initialization"></a>Weights Initialization</h2><p>weights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 表示偏差，噪声，作用在于企图去描述真实的分布（高斯分布），通过引入随机性来表示这个是具有推广性的。主要介绍常见的三种初始化方法和选择方法。</p>
+<blockquote>
+<p>Here’s another trick — before squishing our scalar value (called an activation) into the sigmoid function, we can add a little number called the bias, b. There will be two biases, one for each user and one for each movie.</p>
+</blockquote>
+<h3 id="Random-Initialization"><a href="#Random-Initialization" class="headerlink" title="Random Initialization"></a>Random Initialization</h3><p>总结来说就是容易出现梯度消失和梯度爆炸，尤其是在layer_size（特征数量） 比较大的时候。从均值方差的角度进行分析。</p>
+<blockquote>
+<p>a) If weights are initialized with very high values the term np.dot(W,X)+becomes significantly higher and if an activation function like sigmoid() is applied, the function maps its value near to 1 where slope of gradient changes slowly and learning takes a lot of time.<br>b) If weights are initialized with low values it gets mapped to 0, where the case is same as above.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w =np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+<p>另外的表述方式：</p>
+<blockquote>
+<p>If the weights start too small, then the signal shrinks as it passes through each layer until it’s too small to be useful.<br>If the weights start too large, then the signal grows as it passes through each layer until it’s too massive to be useful (big value in sigmoid function).</p>
+</blockquote>
+<h3 id="Xavier-initialization-ˈzeɪvjər-s"><a href="#Xavier-initialization-ˈzeɪvjər-s" class="headerlink" title="Xavier initialization /ˈzeɪvjər/s"></a>Xavier initialization /ˈzeɪvjər/s</h3><p>For deep networks, we can use a heuristic to initialize the weights depending on the non-linear activation function. This applies to Xavier and He initialization. Xavier/Glorot Initialization initializes the weights in your network by drawing them from a distribution with zero mean and a specific variance.<br>$$ { var } ( w _ { i } ) = \frac { 1 } { layer_{l-1}}$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">1</span>/layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+<p>In practice, it works better for layers with sigmoid or tanh function. </p>
+<p>总的思想原则：<br>They set the weights neither too much bigger that 1, nor too much less than 1.<br>就是本来就是在 (0,1) 标准正太分布出来，然后进行了进一步的约束条件。思想当特征数量越大的时候，weights 的波动情况是成反比的，最后的weights 数值越接近于均值附近。</p>
+<h3 id="He-Initialization"><a href="#He-Initialization" class="headerlink" title="He Initialization"></a>He Initialization</h3><p>Using RELU or Leaky RELU is relatively robust to the vanishing/ exploding gradient issues compared with sigmoid function especially for networks that are not too deep. And it the case of Leaky RELU, it never has zero gradients. For RELU, we multiply the randomly generated values of $w$ by:</p>
+<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } } }$$<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">2</span>/layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></p>
+<p>Sometimes, we combine the idea of Xavier initialization and He initializaiton so the variance becomes the following:</p>
+<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } + \operatorname { layer } _ { [ l ] } } }$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">2</span>/(layer_size[l<span class="number">-1</span>]+layer_size[l]))</span><br><span class="line"><span class="comment"># 代码中 random() 中的两个参数是 shape，最后的np.sqrt 标准差</span></span><br></pre></td></tr></table></figure>
+<p>The idea behind this is that we set the weights neither too much bigger than 1 nor too much less than 1 so the gradients do not vanish or explode too quickly.</p>
+<p>所以上述的初始化从数学的角度去理解： 从(0,1) 标准正太分布 转换成了 (0, np.sqrt(2/ size_l -1)) 这样的分布，就是你网络结构是越宽，那么这个方差就是越小的，最后的结果是越集中的，就越集中的 均值 u 左右。从图像的角度看，方差越大，图像越矮胖；方差越小，图像越瘦高。</p>
+<p><strong> Takeoff</strong></p>
+<p>In summary, the main difference in machine learning is the following:</p>
+<ul>
+<li>He initialization works better for layers with ReLu(s) activation.</li>
+<li>Xavier initialization works better for layers with sigmoid activation.</li>
+</ul>
+<h2 id="Activation-function"><a href="#Activation-function" class="headerlink" title="Activation function"></a>Activation function</h2><p>总的说可以分为线性和非线性的激活函数， activation function 的作用 就是对于网络的输出 说yes or no. It maps the resulting values in between 0 to 1 or -1 to 1 etc.</p>
+<h3 id="Sigmoid-function-Logistic-Activation"><a href="#Sigmoid-function-Logistic-Activation" class="headerlink" title="Sigmoid function (Logistic Activation)"></a>Sigmoid function (Logistic Activation)</h3><p>the only reason why we use sigmoid is because it exists between 0 to 1. 这个非常有利于 predict probability. 因为自然映射到 0 是不存在 然后1 是存在。而当多分类的时候，使用softmax。</p>
+<h3 id="Tanh-function"><a href="#Tanh-function" class="headerlink" title="Tanh function"></a>Tanh function</h3><blockquote>
+<p>The advantage is that the negative inputs will be mapped strongly negative and the zero inputs will be mapped near zero in the tanh graph.</p>
+</blockquote>
+<h3 id="Relu-Rectified-Linear-Unit-Activation"><a href="#Relu-Rectified-Linear-Unit-Activation" class="headerlink" title="Relu (Rectified Linear Unit) Activation"></a>Relu (Rectified Linear Unit) Activation</h3><p>本质上是分段函数。 range: [0, infinity]. The function and its derivative both are monotonic.</p>
+<h3 id="Leaky-Relu"><a href="#Leaky-Relu" class="headerlink" title="Leaky Relu"></a>Leaky Relu</h3><p>每当一个伟大的东西产出，总会伴随着比较明显的错误，然后紧跟着就是有一个  rectified(improved) 这种版本。这个相比之前就是修正了 当输入是负数的时候，怎么办的问题。</p>
+<h3 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h3><p>这个需要从数学的角度去理解，数学公式就是下面。有一个真实的例子： 如果一张”4” 的图片，输出一个网络，最后是softmax 激活函数，那么最后得到的 “4” 的概率是最大的，但是也是有其他的可能性存在的，这个就是softmax 的效果。 最主要的功能是 convert number into probabilities. 这种效果，不像sigmoid 那样有很明确的数学公式。</p>
+<p>$$\sigma ( z ) _ { j } = \frac { e ^ { z _ { j } } } { \sum _ { k = 1 } ^ { K } e ^ { z _ { k } } }$$</p>
+<blockquote>
+<p>Softmax function, a wonderfulactivation function that turns numbers aka logits into probabilities that sum to one.<br>Remember the takeaway is: the essential goal of softmax is to turn numbers into probabilities.</p>
+</blockquote>
+<h2 id="Optimizer"><a href="#Optimizer" class="headerlink" title="Optimizer"></a>Optimizer</h2><h3 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h3><p>最基本的应该是 gradient descent，这个算是开山鼻祖。给出了每次梯度变化的方向</p>
+<h3 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h3><p>作用：Momentum是为了对冲mini-batch带来的抖动。</p>
+<p>个人更喜欢将其翻译成动量，这个gradient 考虑之前的gradient 的方向和大小，有点像动量的的含义。不仅考虑了current step, 而且accumulates gradient of the past steps.</p>
+<blockquote>
+<p> A very popular technique that is used along with SGD is called Momentum. Instead of using only the gradient of the current step to guide the search, momentum also accumulates the gradient of the past steps to determine the direction to go. </p>
+</blockquote>
+<p>好处在于:</p>
+<blockquote>
+<p>most recent is weighted than the less recent ones<br>the weightage of the most recent previous gradients is more than the less recent ones.<br>for example:</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fyli4wtkj20nk04ldfr.jpg" alt=""></p>
+<h3 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h3><p>作用： RMSprop是为了对hyper-parameter进行归一。</p>
+<p>RMSprop, or Root Mean Square Propogation has an interesting history. RMSProp also tries to dampen the oscillations, but in a different way than momentum. </p>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fz79596rj20fu0boaad.jpg" alt=""></p>
+<h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><p>这种套路总是一样的，总是有一个中和者，关键是如何整合到一起。</p>
+<blockquote>
+<p>Adam or Adaptive Moment Optimization  algorithms combines the heuristics of both Momentum and RMSProp.</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg" alt=""></p>
+<p>The hyperparameter beta1 is generally kept around 0.9 while beta_2 is kept at 0.99. Epsilon is chosen to be 1e-10 generally.</p>
+<p>对于公式的解释，Eq 1 and Eq 2是come from RMSprop,  Eq 3 comes from Adam。最后一步是 update 操作，条理清楚，没有问题。(公式中的v 表示导数，g 表示导数e 不太清楚)<br>Here, we compute the exponential average of the gradient as well as the squares of the gradient for each parameters (Eq 1, and Eq 2). To decide our learning step, we multiply our learning rate by average of the gradient (as was the case with momentum) and divide it by the root mean square of the exponential average of square of gradients (as was the case with momentum) in equation 3. Then, we add the update.)</p>
+<p>在目前各种主流的深度学习工具中也都内置了各种常见的优化算法</p>
+<p>因此，CNN 中的各种优化算法还是在梯度下降算法上面做手脚。</p>
+<p><strong> Batch Gradient Descent</strong></p>
+<p>使用我们拿到的所有的数据计算梯度，然后使用这个梯度对参数进行更新。在凸函数中，只要学习率足够小，肯定能够找到全局最优点，在非凸函数中也可以保证找到局部最优.</p>
+<p>$$<br>\theta = \theta - \eta \cdot \nabla _ { \theta } J ( \theta )<br>$$</p>
+<p>缺点:</p>
+<ul>
+<li>训练数据太多的时候无法全部放入内存</li>
+<li>训练数据多的时候计算梯度的时间非常久</li>
+</ul>
+<p>优点:</p>
+<ul>
+<li>方法简单</li>
+<li>能够保证收敛到全局最优值 (凸函数)/ 局部最优值 (非凸函数)</li>
+</ul>
+<p><strong> Stochastic Gradient Descent </strong></p>
+<p>和 Batch Gradient Descent 相反，SGD 又走入了另外一个极端，SGD 拿到一个数据之后，马上计算梯度，然后对参数进行更新.</p>
+<p>$$<br>\theta = \theta - \eta \cdot J \left( \theta ; x ^ { ( i ) } , y ^ { ( i ) } \right)<br>$$</p>
+<p>缺点:</p>
+<ul>
+<li>无法利用矩阵操作加速计算过程</li>
+</ul>
+<p>优点:</p>
+<ul>
+<li>收敛速度快 (因为在 Batch 的方法中，每次计算梯度会计算很多相似的样本得到的梯度，这部分是冗余的)</li>
+<li>有可能逃出一个比较差的局部最优而收敛到一个更好的局部最优甚至是全局最优</li>
+</ul>
+<p><strong> Mini-batch Gradient Descent </strong></p>
+<p>Mini-batch 的方法是在上述两个方法中取了个折衷，每次从全部的熟练数据中取一个 mini-batch 的数据计算。 </p>
+<p>$$<br>\theta = \theta - \eta \cdot J \left( \theta ; x ^ { ( i : i + n ) } , y ^ { ( i : i + n ) } \right)<br>$$</p>
+<p>batch size 的选择 n： 一般取值在 50～256</p>
+<p>目前，mini-batch 的方法是深度学习中主流方法，各种深度学习工具默认也是这种方法。也可以把上述两种方法看成是 mini-batch 的特例，Batch 的方法，就是 mini-batch size 是整个数据集，SGD 方法就是 min-batch=1 的情况.</p>
+<p>目前遇到的问题：</p>
+<ul>
+<li><p>目前有一些通过 schedule 的方式来设置 learning rate 的方法，即预先设计好计算了一定数量的迭代之后减小 learning rate, 但是，由于是在训练之前就要设置好，因此，无法根据训练时的时间情况进行调整。实践中也证明这种 schedule 的方法非常不可靠.</p>
+</li>
+<li><p>上述方法中，对于每一个参数的 learning rate 都是相同的，这种做法是不合理的。试想，如果训练数据是稀疏的，而且，特征数据出现的频率变化很大，那么，比较合理的做法是，对于出现频率低的特征设置较大的学习速率，对于出现频率较大的特征数据设置较小的学习速率. （这种case 的经验是值得学习的）</p>
+</li>
+<li><p>近期的的研究表明，深层神经网络之所以比较难训练，并不是因为容易进入 local minimum, 相反，由于网络结构非常复杂，在绝大多数情况下，即使是 local minimum 也可以得到非常好的结果。而之所以难训练是因为学习过程容易陷入到马鞍面中，即在坡面上，一部分点是上升的，一部分点是下降的。而这种情况比较容易出现在平坦区域，在这种区域中，所有方向的梯度值都几乎是 0.</p>
+</li>
+</ul>
+<p><strong> Momentum</strong></p>
+<p>mu 就是我们在各种深度学习框架中 / 论文中见到的 momentum. 一般设置为 0.9, 0.99 等。然而，把 mu 理解为摩擦 (或者加上其它的因素) 更好. mu 的作用是在小球在山坡上滚动的过程中来降低小球的动能。否则，如果没有这个因素，那么，小球永远不会停下来，优化过程也永远不会停止.</p>
+<p>作用：可以使得梯度方向不变的维度上速度变快，梯度方向有所改变的维度上的更新速度变慢，这样就可以加快收敛并减小震荡。</p>
+<p>$$<br>\begin{split}<br>W : &amp;= W - \alpha d W \\<br>b : &amp;= b - \alpha d b  \\<br>\end{split}<br>$$</p>
+<p>超参数设定值:  一般 beta 取值 0.9 左右。beta和1-beta分别代表之前的dW权重和现在的权重。</p>
+<p>缺点：<br>这种情况相当于小球从山上滚下来时是在盲目地沿着坡滚，如果它能具备一些先知，例如快要上坡时，就知道需要减速了的话，适应性会更好。</p>
+<p><strong> Nesterov Accelerated Gradient</strong></p>
+<p>NAG 可以使 RNN 在很多任务上有更好的表现。</p>
+<p>目前为止，我们可以做到，在更新梯度时顺应 loss function 的梯度来调整速度，并且对 SGD 进行加速。</p>
+<p>momentum 和 nesterov accelerated gradient 区别：考虑之前的向量和当前的向量的顺序是不一样的。</p>
+<p><img src="https://b2.bmp.ovh/imgs/2019/08/62d1aaa2d8701f35.jpg" alt=""><br>momentum首先计算一个梯度(短的蓝色向量)，然后在加速更新梯度的方向进行一个大的跳跃(长的蓝色向量)，nesterov项首先在之前加速的梯度方向进行一个大的跳跃(棕色向量)，计算梯度然后进行校正(绿色梯向量)</p>
+<p><strong><strong><strong>***</strong></strong></strong> 这里是分界线<strong><strong><strong>*</strong></strong></strong>‘</p>
+<p>上面中的学习率是需要手动调整，但是这种调整的代价是比较高的，多大的学习率可能出现震荡，过小的学习率学习时间是比较长的，因此需要有一种能够自动调节学习率的手段。</p>
+<p><strong> AdaGrad （Adaptive gradient algorithm）</strong></p>
+<p> 这个算法就可以对低频的参数做较大的更新，对高频的做较小的更新，也因此，对于稀疏的数据它的表现很好，很好地提高了 SGD 的鲁棒性，例如识别 Youtube 视频里面的猫，训练 GloVe word embeddings，因为它们都是需要在低频的特征上有更大的更新。</p>
+<p>一般来说，在稀疏的数据上，对于频率低的特征使用较大的learning rate，对于频率高的特征使用较小的 learing rate</p>
+<p>优点：<br>这种方法对于训练数据比较稀疏的情况比较适用. </p>
+<p>缺点：<br>在深度学习中，这种方法导致学习率的调整太激进，因此常常过早结束了学习过程.</p>
+<p><strong> RMSProp</strong></p>
+<p>另一种加速下降的一个算法RMSprop，全称root mean square prop。</p>
+<p>$$<br>\begin{split}<br>S _ { d W } &amp; = \beta S _ { d W } + ( 1 - \beta ) d W ^ { 2 } \\<br>S _ { d b } &amp; = \beta S _ { d b } + ( 1 - \beta ) d b ^ { 2 } \\<br>W : &amp; = W - \alpha \frac { d W } { \sqrt { S } _ { d W } } \\<br>b : &amp; = b - \alpha \frac { d b } { \sqrt { S _ { d b } } } \\<br>\end{split}<br>$$</p>
+<p>其中dW的平方是(dW)^2，db的平方是(db)^2。如果严谨些，防止分母为0，在分数下加上个特别小的一个值epsilon，通常取10^-8。</p>
+<p>这个更加有规范化的意思，适合处理非平稳目标 - 对于RNN效果很好</p>
+<p><strong>Adam</strong></p>
+<p>全称 Adaptive Moment Estimation， 结合了 Momentum 和 RMSprop 两种算法的优点。算法中通常beta_1=0.9,beta_2=0.999。 前者是 Momentum 中的参数，后者是 RMSprop 的参数。</p>
+<p>Adam 就是在 RMSprop 的基础上加了 bias-correction 和 momentum，随着梯度变的稀疏，Adam 比 RMSprop 效果会好。<br>该方法和 RMSProp 唯一的区别是 “smooth” 过程，这里使用的是 m 来做 smooth 操作。在实践中，推荐使用 Adam 方法.  Adam 算法通常会比 RMSProp 算法效果好。</p>
+<p>Adam(Adaptive Moment Estimation)本质上是带有动量项的RMSprop，它利用梯度的一阶矩估计和二阶矩估计动态调整每个参数的学习率。Adam的优点主要在于经过偏置校正后，每一次迭代学习率都有个确定范围，使得参数比较平稳。</p>
+<p>特点：</p>
+<p>结合了Adagrad善于处理稀疏梯度和RMSprop善于处理非平稳目标的优点<br>对内存需求较小<br>为不同的参数计算不同的自适应学习率<br>也适用于大多非凸优化 - 适用于大数据集和高维空间</p>
+<p>如何选择？</p>
+<p>如果数据是稀疏的，就用自适用方法，即 Adagrad, Adadelta, RMSprop, Adam。RMSprop, Adadelta, Adam 在很多情况下的效果是相似的。</p>
+<p>很多论文里都会用 SGD，没有 momentum 等。SGD 虽然能达到极小值，但是比其它算法用的时间长，而且可能会被困在鞍点。如果需要更快的收敛，或者是训练更深更复杂的神经网络，需要用一种自适应的算法。</p>
+<p>参考文献：<br><a href="https://zhuanlan.zhihu.com/p/22252270" target="_blank" rel="noopener">深度学习最全优化方法总结比较（SGD，Adagrad，Adadelta，Adam，Adamax，Nadam）</a></p>
+<h2 id="卷积网络"><a href="#卷积网络" class="headerlink" title="卷积网络"></a>卷积网络</h2><p>一个卷积神经网络由若干卷积层、Pooling层、全连接层组成。</p>
+<h3 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h3><p>$Input \rightarrow [Conv] \times N \rightarrow [Pool] \times M \rightarrow [FK] \times K$</p>
+<p>下面的动画显示了包含两个filter的卷积层的计算。我们可以看到 $7 \times 7 \times 3$ 输入，经过两个$3 \times 3 \times 3 $filter的卷积(步幅为2)，得到了$ 3 \times 3 \times 2 $的输出。另外我们也会看到下图的Zero padding是1，也就是在输入元素的周围补了一圈0。Zero padding对于图像边缘部分的特征提取是很有帮助的。</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/06/ed14b5c14cb9fc02.gif" alt=""></p>
+<blockquote>
+<p>100×100×3，3×3 卷积核，输出是 50×50×10，算进行了多少次乘-加操作？<br>输出的每个像素点都要经过 3×3×3 = 27 次乘-加操作，因此总共需要进行 50×50×10×27 次乘-加操作。</p>
+</blockquote>
+<p>对于包含两个 $3<em>3</em>3 $的fitler的卷积层来说，其参数数量仅有 $(3 \times 3 \times3+1) \times 2 =56 $个，且参数数量与上一层神经元个数无关。与全连接神经网络相比，其参数数量大大减少了。</p>
+<p>卷积层输出大小计算：<br>输入大小： $W 1 \times H 1 \times D 1$<br>超参数（filter信息 +是否填充）： filter 个数( K), filter 大小( F), 步长 (S )，边界填充( P)<br>输出：<br>$$<br>\begin{split}<br>W _ { 2 } &amp; = \left( W _ { 1 } - F + 2 P \right) / S + 1 \\<br>H _ { 2 } &amp;= \left( H _ { 1 } - F + 2 P \right) / S + 1 \\<br>D _ { 2 } &amp;= K<br>\end{split}<br>$$</p>
+<p>注意计算的是宽和高的两个维度。</p>
+<p>$$<br>\begin{split}<br>\text {output} _ { w } &amp;= \left\lfloor \frac { i m a g e _ { w } + 2 p a d d i n g - k e r n e l _ { s i z e } } { s t r i d e } \right\rfloor + 1 \\<br>\text {output} _ { h } &amp;= \left\lfloor \frac { i m a g e _ { h } + 2 p a d d i n g - k e r n e l _ { s i z e } } { s t r i d e } \right\rfloor + 1 \\<br>\end{split}<br>$$<br>卷积层参数量计算：</p>
+<p>权值共享： 给定一张图，用一个 filter 去扫描这张图， filter 里面的数字叫做权重，这张图么个位置是被同样的filter 扫描的，所以权重是一样的，也就是共享。（从减少参数量的角度去理解）这个概念是和全连接层中的权值进行比较的，简单来说就是降低了权重的使用。权重共享即 filter 值的共享。<br>对于 三维图片来说，每个filter需要F<em>F</em>D1个权重值，总共K个filter，需要F<em>F</em>D1*K权重值。和一维一样，整个滑动过程中filter W0和W1值保持不变，可称作权值共享。而且，补充一句，对于三维的input，权值只是在input的每个depth slice上共享的。对于一层的 filter 只是有一个bias。</p>
+<p>for example:<br>Filter个数：32<br>原始图像shape：$224 \times 224 \times 3$<br>卷积核大小为：$2 \times 2$<br>一个卷积核的参数：<br>$ 2 \times 2 \times 3=12 $<br>16个卷积核的参数总额：<br>$ 16 \times 12 + 16 =192 + 16 = 208 $<br>$ weight \times x + bias $根据这个公式，即可算的最终的参数总额为：208</p>
+<h3 id="Pooling-层"><a href="#Pooling-层" class="headerlink" title="Pooling 层"></a>Pooling 层</h3><p>Pooling层主要的作用是下采样，主要有两点作用，一个是提取重要特征，一个是简化网络的计算。Pooling的方法很多，最常用的是Max Pooling。Max Pooling实际上就是在n*n的样本中取最大值，作为采样后的样本值。下图是 max pooling：</p>
+<p><img src="https://upload.cc/i1/2019/06/20/cMRW62.jpg" alt=""><br>除了Max Pooing之外，常用的还有Mean Pooling——取各样本的平均值。</p>
+<p>池化层往往在卷积层后面，通过池化来降低卷积层输出的特征向量，同时改善结果（不易出现过拟合）。</p>
+<p>池化层参数个数计算：</p>
+<p>这个很明显是没有参数的。</p>
+<h3 id="卷积层-vs-pooling-层"><a href="#卷积层-vs-pooling-层" class="headerlink" title="卷积层 vs pooling 层"></a>卷积层 vs pooling 层</h3><p>主要比较两者在降维、特征提取方面的差别。</p>
+<p>pooling 层常见的 max pooling 和 average (mean ) pooling两种。该层是没有参数的。 pooling 的作用主要体现在减少模型去拟合的难度，防止过拟合，节省计算力方面。<br>max pooling 相比于 mean pooling 更加有 提取特征的感觉。抓住比计较显著的特征，AVE pooling 可以带来一定意义上的平滑，可以减小图像尺寸变化的干扰。从效果上讲，前者一半是要好于后者的。</p>
+<p><img src="https://b2.bmp.ovh/imgs/2019/07/d95ac0845ef9211a.png" alt=""><br>从上面左图可以看到，使用了pool操作其实就是降低图片的空间尺寸。右图使用一个 2 × 2的 池化核（filter），以2为步长（stride），对图片进行max pooling，那么会图片就会尺寸就会减小一半。需要注意，这里是因为 stride = 2，所以图片尺寸才会减少一半的。</p>
+<p>不同点：<br>pooling 是没有 weights 或者 parameter 更新，仅仅是下采样<br>convolution layer 则不一样，提取了特征并且进行了下采样。</p>
+<h3 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h3><p>连接所有的特征，将输出值送给分类器（如softmax分类器）</p>
+<p>比如说上一层（池化层）的输出为：$(111 \times 111 \times 16) $，从第一层到第二层，只是图片大小发生了变化，深度没有发生变化，而Dense对应的神经元个数为133个，那么还是根据公式：$weight \times x + bias$，计算得：$133 \times16+133=2261$</p>
+<h3 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h3><p><strong> 概念</strong></p>
+<p>dropout 是指在深度学习网络的训练过程中，按照一定的概率将一部分神经网络单元暂时从网络中丢弃，相当于从原始的网络中找到一个更瘦的网络。</p>
+<p><strong> why</strong></p>
+<p>我们在训练神经网络的时候，会遇到两大缺点：</p>
+<ul>
+<li>容易过拟合</li>
+<li>费时</li>
+</ul>
+<p>dropout 主要是为了在一定程度上减少过拟合。</p>
+<p><strong> 工作原理</strong></p>
+<ul>
+<li>首先随机（临时）删掉网络中一半的隐藏神经元，输入输出神经元保持不变（图中虚线为部分临时被删除的神经元）</li>
+<li>然后把输入x通过修改后的网络前向传播，然后把得到的损失结果通过修改的网络反向传播。一小批训练样本执行完这个过程后，在没有被删除的神经元上按照随机梯度下降法更新对应的参数（w，b）</li>
+<li>继续重复这一过程：恢复被删掉的神经元（此时被删除的神经元保持原样，而没有被删除的神经元已经有所更新）。从隐藏层神经元中随机选择一个一半大小的子集临时删除掉（备份被删除神经元的参数）。</li>
+<li>不断的重复着一过程</li>
+</ul>
+<p><strong>怎么理解测试时权重参数w要乘以概率p？ </strong></p>
+<p> 假设总共有100个神经元，训练的时候我们加上dropout，p=0.5，那么我们就有50个神经元参与训练，那么我们每次50个神经元训练出来的模型参数w是要比直接100个神经元要小的，因为它更新的次数会更少。我们测试的时候100个神经元是都会参与计算的，这就跟训练的时候我们使用50个神经元产生差异了，如果要保证测试的时候每个神经元的关联计算不能少，只能从通过改变w来达到跟训练时一样输出，所以才会有权重参数w乘以p。</p>
+<p><strong> 为什么 dropout 可以有效的减少过拟合？</strong><br>（类似取平均的活动）<br>因为不同的网络可能产生不同的过拟合，取平均则有可能让一些“相反的”拟合互相抵消。dropout掉不同的隐藏神经元就类似在训练不同的网络，随机删掉一半隐藏神经元导致网络结构已经不同，整个dropout过程就相当于对很多个不同的神经网络取平均。</p>
+<h3 id="梯度消失-梯度爆炸"><a href="#梯度消失-梯度爆炸" class="headerlink" title="梯度消失/ 梯度爆炸"></a>梯度消失/ 梯度爆炸</h3><p> 首先一个观点，梯度消失和梯度爆炸本质上一回事。</p>
+<p> 理由：sigmoid 导数的最大值为0.25，通常 abs(w) &lt; 1,则上述分析中的激活函数的导数与权重的积小于0.25，前面的层比后面的层梯度变化更小，故变化更慢，从而引起了梯度消失问题。当权值过大，前面层比后面层梯度变化更快，则引起梯度爆炸问题。所以后面的梯度消失和梯度爆炸只是前面初始化值的一种蝴蝶效应，只是数值问题。</p>
+<p> <strong> 解决方法</strong></p>
+<ol>
+<li>重新设计网络结构</li>
+</ol>
+<ul>
+<li>使用比较浅的网络结构</li>
+<li>使用残差结构, 这种方式在图像处理中更加常见</li>
+</ul>
+<ol start="2">
+<li><p>激活函数<br>使用 relu or leaky relu 而不是 sigmoid or tanh</p>
+</li>
+<li><p>关于weights 方面</p>
+</li>
+</ol>
+<ul>
+<li>使用梯度截断（Gradient Clipping），检查误差梯度的值是否超过阈值，如果超过，则截断梯度，将梯度设置为阈值。</li>
+<li>使用权重正则化（Weight Regularization），常用的是 ，通常使用的是 L1 惩罚项（权重绝对值）或 L2 惩罚项（权重平方）这个是在损失函数上的操作</li>
+<li>batch normalization  （关于BN 的位置是可以再查一下的，现在有两个位置，一个是在激活函数之前一个是 激活函数之后，个人倾向于激活函数之前，因为这样才有可以减少梯度消失和梯度爆炸的发生呀）  dropout一定在激活函数之后</li>
+</ul>
+<p>ps:</p>
+<p>CONV / FC - &gt; BatchNorm - &gt; ReLu（或其他激活） - &gt; Dropout - &gt; CONV / FC<br>对于 cnn 还有一种常见的结构：<br>先卷积，再batchnorm, 然后激活函数，最后pooling<br>在fully connection中的应用，用在全连接层之后激活函数之前</p>
+<p> <strong> 理解 正则化如何减少模型过拟合程度</strong></p>
+<p> High Bias（高偏差）就是欠拟合，High Variance（高方差）就是过拟合。<br> <img src="https://i.bmp.ovh/imgs/2019/07/619bdec3f9b8bffb.png" alt=""></p>
+<p> 简单来说，正则化就是在原来的 cost function 中添加 正则项。</p>
+<p> 正则化项能减少模型的非线性程度，从而降低模型的过拟合。从图中来看，正则化项能将过拟合的模型（蓝色）变为Just Right的模型（粉红色）。</p>
+<p> 为什么正则化是有效的？</p>
+<p> 对于线性模型，其添加了正则化项的Cost Function如下图。<br> <img src="https://i.bmp.ovh/imgs/2019/07/2ce4806231a16edb.png" alt=""></p>
+<p>现在目标函数有两个目标，第一个是我们想要训练的，使假设更好地去拟合训练数据，第二个目标是我们想要保持参数较小。 $ \lambda$ 用来调节两者之间的平衡，这样理解如果 该值设置的很大，那么前面的参数 $\theta 1 \theta 2 \theta 3 \theta 4$ 就会被非常大的惩罚，这些值就会接近0。如果假设第一个目标是多项式组成的，那么当 $\theta $ 数值变小的时候，这个式子就没有了，就减少了模型的复杂度。</p>
+<p> 对于神经网络，其激活函数（以tanh为例）如下图<br> <img src="https://upload.cc/i1/2019/07/11/1yQFLb.png" alt=""></p>
+<p>直观的理解，如果我们的正则化系数（lambda）无穷大，则权重w就会趋近于0。权重变小，激活函数输出z变小。z变小，就到了激活函数的线性区域，从而降低了模型的非线性化程度。</p>
+<h3 id="感受野的计算"><a href="#感受野的计算" class="headerlink" title="感受野的计算"></a>感受野的计算</h3><p>在卷积神经网络中，感受野（Receptive Field）的定义是卷积神经网络每一层输出的特征图（feature map）上的像素点在输入图片上映射的区域大小。</p>
+<p>这个是一个反向的过程。这个和 CNN 的 不同在于，如果是2  两层，那么这个是连续（持续）的对同一个图像进行采样。接着上一个的结果进行操作。</p>
+<p>使用例子说明：两层$3 \times 3$ 卷积操作的有效区域(感受野)是 $5  \times 5 $ (所有filter的stride=1,pad=0)。</p>
+<p><img src="https://upload.cc/i1/2019/07/31/srRb1v.png" alt=""></p>
+<h3 id="卷积和池化操作的计算（例题）"><a href="#卷积和池化操作的计算（例题）" class="headerlink" title="卷积和池化操作的计算（例题）"></a>卷积和池化操作的计算（例题）</h3><p>卷积和池化的计算方式是一样的，具体可以参考上面小结关于卷积操作的公式。</p>
+<blockquote>
+<p>输入图片大小为200×200，依次经过一层卷积（kernel size 5×5，padding 1，stride 2），pooling（kernel size 3×3，padding 0，stride 1），又一层卷积（kernel size 3×3，padding 1，stride 1）之后，输出特征图大小为：<br>A. 95<br>B. 96<br>C. 97<br>D. 98<br>E. 99<br>F. 100</p>
+</blockquote>
+<p>解答：</p>
+<p>第一次卷积后大小：<br>$$<br>\frac { 200 + 2 - 5 } { 2 } + 1 = 99<br>$$</p>
+<p>第一次池化后大小：</p>
+<p>$$<br>\frac { 99 + 0 - 3 } { 1 } + 1 = 97<br>$$</p>
+<p>第二次卷积后大小：</p>
+<p>$$<br>\frac { 97 + 2 - 3 } { 1 } + 1 = 97<br>$$</p>
+<p>所以最后的结果是 97</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/optimizer/" rel="tag"># optimizer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/26/siamese-network/" rel="next" title="siamese network">
+                <i class="fa fa-chevron-left"></i> siamese network
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/06/The-evaluation-of-sentence-similarity/" rel="prev" title="The Evaluation of Sentence Similarity">
+                The Evaluation of Sentence Similarity <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization-ˈzeɪvjər-s"><span class="nav-number">1.2.</span> <span class="nav-text">Xavier initialization /ˈzeɪvjər/s</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.3.</span> <span class="nav-text">He Initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积网络"><span class="nav-number">4.</span> <span class="nav-text">卷积网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层"><span class="nav-number">4.1.</span> <span class="nav-text">卷积层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pooling-层"><span class="nav-number">4.2.</span> <span class="nav-text">Pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层-vs-pooling-层"><span class="nav-number">4.3.</span> <span class="nav-text">卷积层 vs pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全连接层"><span class="nav-number">4.4.</span> <span class="nav-text">全连接层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dropout"><span class="nav-number">4.5.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度消失-梯度爆炸"><span class="nav-number">4.6.</span> <span class="nav-text">梯度消失/ 梯度爆炸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感受野的计算"><span class="nav-number">4.7.</span> <span class="nav-text">感受野的计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积和池化操作的计算（例题）"><span class="nav-number">4.8.</span> <span class="nav-text">卷积和池化操作的计算（例题）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/03/26/深度网络中的碎碎念/';
+          this.page.identifier = '2019/03/26/深度网络中的碎碎念/';
+          this.page.title = '深度网络中的碎碎念';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '8c6403951ee3eab4e420',
+          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          repo: 'comments_blog',
+          owner: 'jia1509309698@163.com',
+          admin: ['jia1509309698@163.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

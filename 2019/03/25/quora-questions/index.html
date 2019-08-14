@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍 kaggle 上 finding similar quora quesitons 竞赛，作为一次总结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Finding Similar Quora Questions">
+<meta property="og:url" content="http://yoursite.com/2019/03/25/quora-questions/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍 kaggle 上 finding similar quora quesitons 竞赛，作为一次总结。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.loli.net/2019/08/08/AG4Y8NfgnPwsZJO.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/08/08/e7n3EF.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/08/08/e7nUjx.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/10/IBuWOkUMyHAnt3K.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/10/6YJtTZdLI9cb8vj.jpg">
+<meta property="og:updated_time" content="2019-08-10T10:44:53.698Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Finding Similar Quora Questions">
+<meta name="twitter:description" content="介绍 kaggle 上 finding similar quora quesitons 竞赛，作为一次总结。">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/08/AG4Y8NfgnPwsZJO.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/25/quora-questions/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>Finding Similar Quora Questions | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/quora-questions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Finding Similar Quora Questions</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-25T11:23:56+08:00">
+                2019-03-25
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-10T18:44:53+08:00">
+                2019-08-10
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/25/quora-questions/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/25/quora-questions/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍 kaggle 上 <a href="https://www.kaggle.com/c/quora-question-pairs/overview" target="_blank" rel="noopener">finding similar quora quesitons</a> 竞赛，作为一次总结。</p>
+<a id="more"></a>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>判断一对问题是否重复。这种问题的研究是非常有价值，如果发现用户提出了一个重复的已经回答过的问题，那么可以直接返回给用户答案，提高了用户体验。</p>
+<p>简要说明一下 kaggle 上总的评分机制：在计算得分的时候，Public Leaderboard (LB)和 Private LB 之分。具体而言，参赛选手提交整个测试集的预测结果，Kaggle 使用测试集的一部分计算得分和排名，实时显示在 Public LB上，用于给选手提供及时的反馈和动态展示比赛的进行情况；测试集的剩余部分用于计算参赛选手的最终得分和排名，此即为 Private LB，在比赛结束后会揭晓。</p>
+<p>针对于该问题，使用的log loss 作为评分依据，提交的文件中每一对问题并不是给出 {0, 1} 这样的二值，而是给出区间 [0,,1] 的浮点数，然后predict 的结果和真实的结果，计算 log loss。作为最后的得分，该loss 的取值范围是 [0, 1] ，如果结果越小，说明预测越准确。</p>
+<p>我的情况： 总共是3000多个队伍吧，最后的排名是在 5% （在150名之内）</p>
+<h2 id="数据特点"><a href="#数据特点" class="headerlink" title="数据特点"></a>数据特点</h2><p><strong> 数据规模</strong></p>
+<p>总体：</p>
+<p>training  data: 40 万， 400,000 , 63M</p>
+<p>test data: 其中有机器生成的虚假的数据，不作为最后的评分，但是存在, 314 M</p>
+<p>这个从数量上充分说明了冗余的数据，防止人工作弊的。</p>
+<p>training data 的字段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id: Looks like a simple rowID</span><br><span class="line">qid&#123;1, 2&#125;: The unique ID of each question in the pair</span><br><span class="line">question&#123;1, 2&#125;: The actual textual contents of the questions.</span><br><span class="line">is_duplicate: The label that we are trying to predict - whether the two questions are duplicates of each other.</span><br></pre></td></tr></table></figure>
+<p><strong> 句子的频数</strong> ：使用 qid 统计在训练集中出现的次数。 发现大多数句子的重复率比较低。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'Total number of question pairs for training: &#123;&#125;'</span>.format(len(df_train)))</span><br><span class="line">print(<span class="string">'Duplicate pairs: &#123;&#125;%'</span>.format(round(df_train[<span class="string">'is_duplicate'</span>].mean()*<span class="number">100</span>, <span class="number">2</span>)))</span><br><span class="line">qids = pd.Series(df_train[<span class="string">'qid1'</span>].tolist() + df_train[<span class="string">'qid2'</span>].tolist())</span><br><span class="line">print(<span class="string">'Total number of questions in the training data: &#123;&#125;'</span>.format(len(</span><br><span class="line">    np.unique(qids))))</span><br><span class="line">print(<span class="string">'Number of questions that appear multiple times: &#123;&#125;'</span>.format(np.sum(qids.value_counts() &gt; <span class="number">1</span>)))</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">12</span>, <span class="number">5</span>))</span><br><span class="line">plt.hist(qids.value_counts(), bins=<span class="number">50</span>)</span><br><span class="line">plt.yscale(<span class="string">'log'</span>, nonposy=<span class="string">'clip'</span>)</span><br><span class="line">plt.title(<span class="string">'Log-Histogram of question appearance counts'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Number of occurences of question'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Number of questions'</span>)</span><br><span class="line">print()</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2019/08/08/AG4Y8NfgnPwsZJO.png" alt="1.png"></p>
+<p>In terms of questions, everything looks as I would expect here. Most questions only appear a few times, with very few questions appearing several times (and a few questions appearing many times). One question appears more than 160 times, but this is an outlier.</p>
+<p>训练数据集中句子word 的个数 的分布，可以看出一般是在20 左右的长度 word 的句子是最多的。<br><img src="https://s2.ax1x.com/2019/08/08/e7n3EF.png" alt="e7n3EF.png"></p>
+<p>训练数据集中 character 个数的分布<br><img src="https://s2.ax1x.com/2019/08/08/e7nUjx.png" alt="e7nUjx.png"></p>
+<p>注意到两个分布都是右偏态分布（正偏态），从数学的角度理解 mean &gt; median. 同理也有左偏态分布。偏态分布又是相对于正太分布而言的。这种偏态的定义，是以尾部命名，右偏态或者正偏态的尾部，集中在右侧。</p>
+<p>由上面的例子可以看出，不管是正偏态分布还是负偏态分布，由于受偏态分布的影响，众数与均值值发生变化，而均值的影响更大。</p>
+<p><img src="https://i.loli.net/2019/08/10/IBuWOkUMyHAnt3K.jpg" alt="1.jpg"></p>
+<p>中位数仅与样本总数有关，即在整个样本的中间位置，而在正偏态分布，大部分值在峰值（众数）的右边，故中位数在众数的右边（众数＜中位数）</p>
+<p>中位数与均值的比较了？由于均值受极大值的影响变大而中位数不受影响，故均值大于中位数（中位数＜均值）</p>
+<p>所以 众数 &lt; 中位数 &lt; 均值</p>
+<p><img src="https://i.loli.net/2019/08/10/6YJtTZdLI9cb8vj.jpg" alt="2.jpg"></p>
+<p>首先众数与中位数的比较</p>
+<p>这个分布是左偏的，大部分值是在峰值（众数）的左边，故众数大于中位数</p>
+<p>均值与中位数的比较</p>
+<p>由于是负偏态分布，极小值对均值的影响大（极小值对均值拉低），故均值小于中位数</p>
+<p>所以 均值＜中位数＜众数</p>
+<p><strong> training data 和 test data 中的正负样本有很大的差别</strong></p>
+<p>However, before I do this, I would like to rebalance the data that XGBoost receives, since we have 37% positive class in our training data, and only 17% in the test data. 采取的措施 Rebalancing the Data (这里所谓的 rebalance data 就是将原始的一部分数据集去掉，减少 正样例的个数)。</p>
+<p>原因有两点：</p>
+<ul>
+<li>机器学习算法的基本假设就是独立同分布，如果 train data 和test data 不能保持同分布，那么泛化性能不能要求很高</li>
+<li>因为对于 log loss 的计算保持正负样例的比例，对于最后的结果是重要的。</li>
+</ul>
+<h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><p>主要分成两类：传统的数据挖掘的特征+ NLP embedding 向量特征</p>
+<p><strong> 传统数据挖掘特征</strong></p>
+<ul>
+<li>character of length of questions 1 and 2</li>
+<li>number of words in question 1 and 2</li>
+<li>number of character in question 1 and question 2</li>
+<li>difference of length</li>
+<li>字符串的精确匹配和部分匹配（fuzzywuzzy 工具）</li>
+<li>numbers of capital letters, questions marks,  数字</li>
+<li>normalized word share count (非常具有 prediction 的特征)<br>计算实现：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">word_match_share</span><span class="params">(row)</span>:</span></span><br><span class="line">    q1words = &#123;&#125;</span><br><span class="line">    q2words = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> str(row[<span class="string">'question1'</span>]).lower().split():</span><br><span class="line">        <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> stops:</span><br><span class="line">            q1words[word] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> str(row[<span class="string">'question2'</span>]).lower().split():</span><br><span class="line">        <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> stops:</span><br><span class="line">            q2words[word] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> len(q1words) == <span class="number">0</span> <span class="keyword">or</span> len(q2words) == <span class="number">0</span>:</span><br><span class="line">        <span class="comment"># The computer-generated chaff includes a few questions that are nothing but stopwords</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    shared_words_in_q1 = [w <span class="keyword">for</span> w <span class="keyword">in</span> q1words.keys() <span class="keyword">if</span> w <span class="keyword">in</span> q2words]</span><br><span class="line">    shared_words_in_q2 = [w <span class="keyword">for</span> w <span class="keyword">in</span> q2words.keys() <span class="keyword">if</span> w <span class="keyword">in</span> q1words]</span><br><span class="line">    R = (len(shared_words_in_q1) + len(shared_words_in_q2))/(len(q1words) + len(q2words))</span><br><span class="line">    <span class="keyword">return</span> R</span><br></pre></td></tr></table></figure>
+<p>我认为这个定义应该是两个句子的交集/ 两个句子的并集。 和上面的实现不知道有什么区别？反正这个特征是非常 preditable 的</p>
+<p><strong>NLP 方面的处理</strong></p>
+<ol>
+<li>基于词向量得到得到的句子向量的相关距离函数的计算</li>
+</ol>
+<ul>
+<li>cosine distance</li>
+<li>cityblock distance</li>
+<li>jaccard distance</li>
+<li>euclidean distance</li>
+</ul>
+<ol start="2">
+<li>直接是句子向量的上述距离的计算</li>
+</ol>
+<p>可以做到的是对比试验，在只是使用 词向量得到的特征最后的test acc 是87%， 而加上了句子向量没有提升，应该是86.3% 之类的。</p>
+<p>最好的模型是acc 是 0.88， 当然一切模型都是需要提到线上的public 进行计算的，对应的 log loss 是0.14658。排名是 5% （150~ /3000~）</p>
+<h2 id="好的代码"><a href="#好的代码" class="headerlink" title="好的代码"></a>好的代码</h2><p><strong>pandas 对于数据的常用操作</strong></p>
+<ol>
+<li>实用的数据预分析</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Check for any null values</span></span><br><span class="line">print(train.isnull().sum())</span><br><span class="line">print(test.isnull().sum())</span><br><span class="line"></span><br><span class="line"><span class="comment"># Add the string 'empty' to empty strings</span></span><br><span class="line">train = train.fillna(<span class="string">'empty'</span>)</span><br><span class="line">test = test.fillna(<span class="string">'empty'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据的分类统计</span></span><br><span class="line">temp = df.column.value_counts() </span><br><span class="line"><span class="comment"># 显示整体的df 的信息</span></span><br><span class="line">df.info()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接就产生了一个图像，不敢想象， 使用groupby()，然后选择 column 可以学习</span></span><br><span class="line">df.groupby(<span class="string">"is_duplicate"</span>)[<span class="string">'id'</span>].count().plot.bar()</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>常见的表格的操作</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">test_cp.rename(columns=&#123;<span class="string">'test_id'</span>:<span class="string">'id'</span>&#125;,inplace=<span class="keyword">True</span>)</span><br><span class="line">comb = pd.concat([train_cp,test_cp])</span><br><span class="line"></span><br><span class="line">ques = pd.concat([train_orig[[<span class="string">'question1'</span>, <span class="string">'question2'</span>]], \</span><br><span class="line">        test_orig[[<span class="string">'question1'</span>, <span class="string">'question2'</span>]]], axis=<span class="number">0</span>).reset_index(drop=<span class="string">'index'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="comment"># 筛选操作</span></span><br><span class="line">train_comb = comb[comb[<span class="string">'is_duplicate'</span>] &gt;= <span class="number">0</span>][[<span class="string">'id'</span>,<span class="string">'q1_hash'</span>,<span class="string">'q2_hash'</span>,<span class="string">'q1_freq'</span>,<span class="string">'q2_freq'</span>,<span class="string">'is_duplicate'</span>]]</span><br><span class="line">test_comb = comb[comb[<span class="string">'is_duplicate'</span>] &lt; <span class="number">0</span>][[<span class="string">'id'</span>,<span class="string">'q1_hash'</span>,<span class="string">'q2_hash'</span>,<span class="string">'q1_freq'</span>,<span class="string">'q2_freq'</span>]]</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>小心使用</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train_questions.drop_duplicates(subset = [<span class="string">'question1'</span>],inplace=<span class="keyword">True</span>)</span><br><span class="line">train_questions.reset_index(inplace=<span class="keyword">True</span>,drop=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>其他</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">eng_stopwords = set(stopwords.words(<span class="string">'english'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主要掌握set.intersection() 交集的使用</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">q1_q2_intersect</span><span class="params">(row)</span>:</span></span><br><span class="line"> <span class="keyword">return</span>(len(set(q_dict[row[<span class="string">'question1'</span>]]).intersection(set(q_dict[row[<span class="string">'question2'</span>]]))))</span><br><span class="line"></span><br><span class="line"><span class="comment"># series 是可以直接 tolist() 的</span></span><br><span class="line">qids = pd.Series(df_train[<span class="string">'qid1'</span>].tolist() + df_train[<span class="string">'qid2'</span>].tolist())</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> nltk <span class="keyword">import</span> word_tokenize, ngrams</span><br><span class="line"><span class="comment"># word_tokenize 就是将句子打散，成为一个个单词</span></span><br></pre></td></tr></table></figure>
+<p><strong>手写 TF-IDF</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="comment"># If a word appears only once, we ignore it completely (likely a typo)</span></span><br><span class="line"><span class="comment"># Epsilon defines a smoothing constant, which makes the effect of extremely rare words smaller</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_weight</span><span class="params">(count, eps=<span class="number">10000</span>, min_count=<span class="number">2</span>)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> count &lt; min_count:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> / (count + eps)</span><br><span class="line"></span><br><span class="line">eps = <span class="number">5000</span> </span><br><span class="line">words = (<span class="string">" "</span>.join(train_qs)).lower().split()</span><br><span class="line">counts = Counter(words)</span><br><span class="line">weights = &#123;word: get_weight(count) <span class="keyword">for</span> word, count <span class="keyword">in</span> counts.items()&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tfidf_word_match_share</span><span class="params">(row)</span>:</span></span><br><span class="line">    q1words = &#123;&#125;</span><br><span class="line">    q2words = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> str(row[<span class="string">'question1'</span>]).lower().split():</span><br><span class="line">        <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> stops:</span><br><span class="line">            q1words[word] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> str(row[<span class="string">'question2'</span>]).lower().split():</span><br><span class="line">        <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> stops:</span><br><span class="line">            q2words[word] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> len(q1words) == <span class="number">0</span> <span class="keyword">or</span> len(q2words) == <span class="number">0</span>:</span><br><span class="line">        <span class="comment"># The computer-generated chaff includes a few questions that are nothing but stopwords</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    shared_weights = [weights.get(w, <span class="number">0</span>) <span class="keyword">for</span> w <span class="keyword">in</span> q1words.keys() <span class="keyword">if</span> w <span class="keyword">in</span> q2words] + [weights.get(w, <span class="number">0</span>) <span class="keyword">for</span> w <span class="keyword">in</span> q2words.keys() <span class="keyword">if</span> w <span class="keyword">in</span> q1words]</span><br><span class="line">    total_weights = [weights.get(w, <span class="number">0</span>) <span class="keyword">for</span> w <span class="keyword">in</span> q1words] + [weights.get(w, <span class="number">0</span>) <span class="keyword">for</span> w <span class="keyword">in</span> q2words]</span><br><span class="line">    </span><br><span class="line">    R = np.sum(shared_weights) / np.sum(total_weights)</span><br><span class="line">    <span class="keyword">return</span> R</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 在代码中使用 ls 的操作，也是比较 666 的</span><br><span class="line">from subprocess import check_output</span><br><span class="line">print(check_output([&quot;ls&quot;, &quot;../input&quot;]).decode(&quot;utf8&quot;))</span><br></pre></td></tr></table></figure>
+<p>在验证 word2vec 时候，</p>
+<ul>
+<li>可以使用t-sne 进行可视化</li>
+<li>训练得到的model 可以 most_similar() ,定住一个变量，去验证好坏就行</li>
+</ul>
+<p>参考资料</p>
+<p><a href="https://www.kaggle.com/sudalairajkumar/simple-leaky-exploration-notebook-quora" target="_blank" rel="noopener">kaggle kernel 1</a><br><a href="https://www.kaggle.com/anokas/data-analysis-xgboost-starter-0-35460-lb" target="_blank" rel="noopener">kaggle kernel 2</a><br><a href="https://colab.research.google.com/github/susanli2016/NLP-with-Python/blob/master/Word2vec_xgboost.ipynb#scrollTo=JvMxWAWhYLel" target="_blank" rel="noopener">代码 </a><br><a href="https://towardsdatascience.com/finding-similar-quora-questions-with-word2vec-and-xgboost-1a19ad272c0d" target="_blank" rel="noopener">https://towardsdatascience.com/finding-similar-quora-questions-with-word2vec-and-xgboost-1a19ad272c0d</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/25/Linear-Algebra-in-ML/" rel="next" title="Linear Algebra in ML">
+                <i class="fa fa-chevron-left"></i> Linear Algebra in ML
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/25/Data-Pre-processing/" rel="prev" title="Data Pre-processing 学习笔记">
+                Data Pre-processing 学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据特点"><span class="nav-number">2.</span> <span class="nav-text">数据特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征"><span class="nav-number">3.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#好的代码"><span class="nav-number">4.</span> <span class="nav-text">好的代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/03/25/quora-questions/';
+          this.page.identifier = '2019/03/25/quora-questions/';
+          this.page.title = 'Finding Similar Quora Questions';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '8c6403951ee3eab4e420',
+          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          repo: 'comments_blog',
+          owner: 'jia1509309698@163.com',
+          admin: ['jia1509309698@163.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

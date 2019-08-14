@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Following are four common methods of hyper-parameter optimization for machine learning in order of increasing efficiency:  Manual Grid search Random search Bayesian model-based optimization">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hyper-parameter Optimization for Machine Learning">
+<meta property="og:url" content="http://yoursite.com/2019/05/22/Hyperparameter-optimization-for-machine-learning/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="Following are four common methods of hyper-parameter optimization for machine learning in order of increasing efficiency:  Manual Grid search Random search Bayesian model-based optimization">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-29T10:34:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hyper-parameter Optimization for Machine Learning">
+<meta name="twitter:description" content="Following are four common methods of hyper-parameter optimization for machine learning in order of increasing efficiency:  Manual Grid search Random search Bayesian model-based optimization">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/22/Hyperparameter-optimization-for-machine-learning/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>Hyper-parameter Optimization for Machine Learning | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/22/Hyperparameter-optimization-for-machine-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hyper-parameter Optimization for Machine Learning</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-22T15:18:44+08:00">
+                2019-05-22
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-29T18:34:08+08:00">
+                2019-07-29
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/22/Hyperparameter-optimization-for-machine-learning/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/05/22/Hyperparameter-optimization-for-machine-learning/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Following are four common methods of hyper-parameter optimization for machine learning in order of increasing efficiency:</p>
+<ul>
+<li>Manual</li>
+<li>Grid search</li>
+<li>Random search</li>
+<li>Bayesian model-based optimization</li>
+</ul>
+<a id="more"></a>
+<p>简单说一下前两种， manual 适合比较有经验的人进行调参，整一个模型好久了，对参数的设置比较熟悉；Grid Search 最好的理解方式就是 枚举，如果时间充足那么可以找到 search space 中的最优解。但如果是 limited time and space， 那么请使用 random search 或者基于贝叶斯的开源包。</p>
+<h2 id="Random-Search"><a href="#Random-Search" class="headerlink" title="Random Search"></a>Random Search</h2><p>First we will implement a common technique for hyper-parameter optimization: random search. Each iteration, we choose a random set of model hyper-parameters from a search space. </p>
+<p>Random search uses the following four parts:</p>
+<ul>
+<li>Domain: values over which to search</li>
+<li>Optimization algorithm: pick the next values at random! (yes this qualifies as an algorithm)</li>
+<li>Objective function to minimize: in this case our metric is cross validation ROC AUC</li>
+<li>Results history that tracks the hyper-parameters tried and the cross validation metric</li>
+</ul>
+<p>Random search can be implemented in the Scikit-Learn library using RandomizedSearchCV, however, because we are using Early Stopping (to determine the optimal number of estimators), we will have to implement the method ourselves (more practice!). This is pretty straightforward, and many of the ideas in random search will transfer over to Bayesian hyper-parameter optimization.</p>
+<p>Empirically, random search is very effective, returning nearly as good results as grid search with a significant reduction in time spent searching. However, it is still an uninformed method in the sense that it does not use past evaluations of the objective function to inform the choices it makes for the next evaluation.</p>
+<p><strong>Case Study of random search</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Load libraries</span></span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> uniform</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model, datasets</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RandomizedSearchCV</span><br><span class="line"></span><br><span class="line"><span class="comment"># data and model</span></span><br><span class="line"><span class="comment"># Load data</span></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris.data</span><br><span class="line">y = iris.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create logistic regression</span></span><br><span class="line">logistic = linear_model.LogisticRegression()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create hyper-parameter Search Space</span></span><br><span class="line"><span class="comment"># Create regularization penalty space</span></span><br><span class="line"><span class="comment"># 如果比较少，那么久枚举出来</span></span><br><span class="line">penalty = [<span class="string">'l1'</span>, <span class="string">'l2'</span>]</span><br><span class="line"><span class="comment"># 如果是有规律的连续的，就使用这种方式列举出来</span></span><br><span class="line"><span class="comment"># Create regularization hyper-parameter distribution using uniform distribution</span></span><br><span class="line">C = uniform(loc=<span class="number">0</span>, scale=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create hyper-parameter options</span></span><br><span class="line">hyper-parameters = dict(C=C, penalty=penalty)</span><br><span class="line"></span><br><span class="line"><span class="comment"># cv: cross validation, This approach involves randomly dividing the set of observations into k groups, or folds, of approximately equal size. The first fold is treated as a validation set, and the method is fit on the remaining k − 1 folds.</span></span><br><span class="line"><span class="comment"># Create randomized search 5-fold cross validation and 100 iterations</span></span><br><span class="line">clf = RandomizedSearchCV(logistic, hyper-parameters, random_state=<span class="number">1</span>, n_iter=<span class="number">100</span>, cv=<span class="number">5</span>, verbose=<span class="number">0</span>, n_jobs=<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit randomized search</span></span><br><span class="line">best_model = clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># View best hyper-parameters</span></span><br><span class="line"><span class="comment"># 注意这种获取best params 的方式</span></span><br><span class="line">print(<span class="string">'Best Penalty:'</span>, best_model.best_estimator_.get_params()[<span class="string">'penalty'</span>])</span><br><span class="line">print(<span class="string">'Best C:'</span>, best_model.best_estimator_.get_params()[<span class="string">'C'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Predict target vector</span></span><br><span class="line">best_model.predict(X)</span><br></pre></td></tr></table></figure>
+<p><strong> Comparison between Grid Search and Random Search</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> randint <span class="keyword">as</span> sp_randint</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RandomizedSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_digits</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># get some data</span></span><br><span class="line">digits = load_digits()</span><br><span class="line">X, y = digits.data, digits.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># build a classifier</span></span><br><span class="line">clf = RandomForestClassifier(n_estimators=<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Utility function to report best scores</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">report</span><span class="params">(results, n_top=<span class="number">3</span>)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n_top + <span class="number">1</span>):</span><br><span class="line">        candidates = np.flatnonzero(results[<span class="string">'rank_test_score'</span>] == i)</span><br><span class="line">        <span class="keyword">for</span> candidate <span class="keyword">in</span> candidates:</span><br><span class="line">            print(<span class="string">"Model with rank: &#123;0&#125;"</span>.format(i))</span><br><span class="line">            print(<span class="string">"Mean validation score: &#123;0:.3f&#125; (std: &#123;1:.3f&#125;)"</span>.format(</span><br><span class="line">                  results[<span class="string">'mean_test_score'</span>][candidate],</span><br><span class="line">                  results[<span class="string">'std_test_score'</span>][candidate]))</span><br><span class="line">            print(<span class="string">"Parameters: &#123;0&#125;"</span>.format(results[<span class="string">'params'</span>][candidate]))</span><br><span class="line">            print(<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># specify parameters and distributions to sample from</span></span><br><span class="line">param_dist = &#123;<span class="string">"max_depth"</span>: [<span class="number">3</span>, <span class="keyword">None</span>],</span><br><span class="line">              <span class="string">"max_features"</span>: sp_randint(<span class="number">1</span>, <span class="number">11</span>),</span><br><span class="line">              <span class="string">"min_samples_split"</span>: sp_randint(<span class="number">2</span>, <span class="number">11</span>),</span><br><span class="line">              <span class="string">"bootstrap"</span>: [<span class="keyword">True</span>, <span class="keyword">False</span>],</span><br><span class="line">              <span class="string">"criterion"</span>: [<span class="string">"gini"</span>, <span class="string">"entropy"</span>]&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># run randomized search</span></span><br><span class="line">n_iter_search = <span class="number">20</span></span><br><span class="line">random_search = RandomizedSearchCV(clf, param_distributions=param_dist,</span><br><span class="line">                                   n_iter=n_iter_search, cv=<span class="number">5</span>, iid=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">start = time()</span><br><span class="line">random_search.fit(X, y)</span><br><span class="line">print(<span class="string">"RandomizedSearchCV took %.2f seconds for %d candidates"</span></span><br><span class="line">      <span class="string">" parameter settings."</span> % ((time() - start), n_iter_search))</span><br><span class="line">report(random_search.cv_results_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># use a full grid over all parameters</span></span><br><span class="line">param_grid = &#123;<span class="string">"max_depth"</span>: [<span class="number">3</span>, <span class="keyword">None</span>],</span><br><span class="line">              <span class="string">"max_features"</span>: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">10</span>],</span><br><span class="line">              <span class="string">"min_samples_split"</span>: [<span class="number">2</span>, <span class="number">3</span>, <span class="number">10</span>],</span><br><span class="line">              <span class="string">"bootstrap"</span>: [<span class="keyword">True</span>, <span class="keyword">False</span>],</span><br><span class="line">              <span class="string">"criterion"</span>: [<span class="string">"gini"</span>, <span class="string">"entropy"</span>]&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># run grid search</span></span><br><span class="line">grid_search = GridSearchCV(clf, param_grid=param_grid, cv=<span class="number">5</span>, iid=<span class="keyword">False</span>)</span><br><span class="line">start = time()</span><br><span class="line">grid_search.fit(X, y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"GridSearchCV took %.2f seconds for %d candidate parameter settings."</span></span><br><span class="line">      % (time() - start, len(grid_search.cv_results_[<span class="string">'params'</span>])))</span><br><span class="line">report(grid_search.cv_results_)</span><br></pre></td></tr></table></figure>
+<p><strong>Random search without in-built function:</strong></p>
+<p><a href="https://github.com/WillKoehrsen/hyper-parameter-optimization/blob/master/Bayesian%20hyper-parameter%20Optimization%20of%20Gradient%20Boosting%20Machine.ipynb" target="_blank" rel="noopener">An example of Random Search all by yourself</a></p>
+<h2 id="Bayesian-hyper-parameter-Optimization"><a href="#Bayesian-hyper-parameter-Optimization" class="headerlink" title="Bayesian hyper-parameter Optimization"></a>Bayesian hyper-parameter Optimization</h2><p>The one-sentence summary of Bayesian hyper-parameter optimization is: build a probability model of the objective function and use it to select the most promising hyper-parameters to evaluate in the true objective function.</p>
+<p>The basic idea is: spend a little more time selecting the next hyper-parameters in order to make fewer calls to the objective function. </p>
+<p>In the case of hyper-parameter optimization, the objective function is the validation error of a machine learning model using a set of hyper-parameters. The aim is to find the hyper-parameters that yield the lowest error on the validation set in the hope that these results generalize to the testing set. Evaluating the objective function is expensive because it requires training the machine learning model with a specific set of hyper-parameters. Ideally, we want a method that can explore the search space while also limiting evaluations of poor hyper-parameter choices. Bayesian hyper-parameter tuning uses a continually updated probability model to “concentrate” on promising hyper-parameters by reasoning from past results.</p>
+<p>有很多基于这种思想的实现，hyperopt 只是其中一种<br>There are several Bayesian optimization libraries in Python which differ in the algorithm for the surrogate of the objective function. In this article, we will work with Hyperopt, which uses the Tree Parzen Estimator (TPE) Other Python libraries include Spearmint (Gaussian Process surrogate) and SMAC (Random Forest Regression). </p>
+<p>There are four parts to a Bayesian Optimization problem:</p>
+<ul>
+<li>Objective Function: what we want to minimize, in this case the validation error of a machine learning model with respect to the hyper-parameters （原来model 中的 objective function）</li>
+<li>Domain Space: hyper-parameter values to search over （调参空间）</li>
+<li>Optimization algorithm: method for constructing the surrogate model and choosing the next hyper-parameter values to evaluate （loss 和调参空间的 新的关系）</li>
+<li>Result history: stored outcomes from evaluations of the objective function consisting of the hyper-parameters and validation loss （result 没有什么好说的）</li>
+</ul>
+<p>其中的 Bayesian hyper-parameter Optimization using Hyperopt是可以好好学习的。 data scientists  这种东西更加贴近于 data scientist 真的。</p>
+<p>给出两个参考代码:<br><a href="https://github.com/WillKoehrsen/hyper-parameter-optimization/blob/master/Bayesian%20hyper-parameter%20Optimization%20of%20Gradient%20Boosting%20Machine.ipynb" target="_blank" rel="noopener">链接一</a><br><a href="https://github.com/WillKoehrsen/hyper-parameter-optimization/blob/master/Introduction%20to%20Bayesian%20Optimization%20with%20Hyperopt.ipynb" target="_blank" rel="noopener">链接二</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/21/Introduction-to-Natural-Language-Processing-for-Text/" rel="next" title="Introduction to Natural Language Processing for Text">
+                <i class="fa fa-chevron-left"></i> Introduction to Natural Language Processing for Text
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/22/beyond-word-embedding/" rel="prev" title="Beyond  Word Embedding">
+                Beyond  Word Embedding <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Random-Search"><span class="nav-number">1.</span> <span class="nav-text">Random Search</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bayesian-hyper-parameter-Optimization"><span class="nav-number">2.</span> <span class="nav-text">Bayesian hyper-parameter Optimization</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/05/22/Hyperparameter-optimization-for-machine-learning/';
+          this.page.identifier = '2019/05/22/Hyperparameter-optimization-for-machine-learning/';
+          this.page.title = 'Hyper-parameter Optimization for Machine Learning';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '8c6403951ee3eab4e420',
+          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          repo: 'comments_blog',
+          owner: 'jia1509309698@163.com',
+          admin: ['jia1509309698@163.com'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
