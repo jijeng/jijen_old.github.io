@@ -582,6 +582,31 @@
 
           <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
 
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
         </div>
       </section>
 
@@ -816,13 +841,13 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
   <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
    <script type="text/javascript">
         var gitalk = new Gitalk({
-          clientID: '8c6403951ee3eab4e420',
-          clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+          clientID: '',
+          clientSecret: '',
           repo: 'jijeng.github.io',
-          owner: 'jia1509309698@163.com',
-          admin: ['jia1509309698@163.com'],
+          owner: '',
+          admin: [''],
           id: location.pathname,
-          distractionFreeMode: 'true'
+          distractionFreeMode: ''
         })
         gitalk.render('gitalk-container')           
        </script>
