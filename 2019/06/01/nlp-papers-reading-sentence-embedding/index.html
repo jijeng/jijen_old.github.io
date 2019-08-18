@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lprunwuyj212u0guq4v.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lq4allnfj20gk0ji0th.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3klfpv0g9j20k0083go0.jpg">
-<meta property="og:updated_time" content="2019-08-07T05:55:05.825Z">
+<meta property="og:updated_time" content="2019-08-16T02:16:47.562Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP  Papers Reading-Sentence Embedding">
 <meta name="twitter:description" content="Why Consider Sentence Embedding?One simple way you could do this is by generating a word embedding for each word in a sentence, adding up all the embeddings and divide by the number of words in the se">
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-07T13:55:05+08:00">
-                2019-08-07
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-16T10:16:47+08:00">
+                2019-08-16
               </time>
             
           </span>
@@ -411,7 +411,11 @@
 <p>文中提出了DAN(Deep average network)，说白了就是对于一个句子或者一个段落，把每个单词的embedding进行平均求和，得到第一层固定维度的向量，然后在套几层全连接神经网络。<br>本质来讲，这个模型没有考虑单词之间的顺序，not在第一个位置和在最后一个位置对于DAN来讲输入都是一样的，所以自然conver不住这种情况。这是模型本身的问题，没有办法改进，除非换模型，比如textcnn就能很好的解决这种情况<br>对于否定词敏感，比如but,not等，常常判断为negative。<br>训练速度快，且结果较好，和Syntactic Composition性能差不多，但是消耗的计算资源少<br>作为有监督学习任务来讲，可以试一试。但是由于全连接层，无法进行无监督学习。相反，NBOW可以无监督学习，比如文本相似度计算等。当然。对于DAN而言，可以通过迁移学习，预训练好全连接参数，实现无监督学习</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lqb2p5otj20bg08djt6.jpg" alt=""></p>
 <p>总结一下：对简单的任务来说，用简单的网络结构进行处理基本就够了，但是对比较复杂的任务，还是依然需要更复杂的网络结构来学习sentence representation的。</p>
-<h2 id="Unsupervised-Sentence-Embed"><a href="#Unsupervised-Sentence-Embed" class="headerlink" title="Unsupervised Sentence Embed"></a>Unsupervised Sentence Embed</h2><h3 id="基于Encoder-decoder的Skip-Thought-Vectors"><a href="#基于Encoder-decoder的Skip-Thought-Vectors" class="headerlink" title="基于Encoder-decoder的Skip-Thought Vectors"></a>基于Encoder-decoder的Skip-Thought Vectors</h3><p>这篇论文中的要点</p>
+<h2 id="Unsupervised-Sentence-Embed"><a href="#Unsupervised-Sentence-Embed" class="headerlink" title="Unsupervised Sentence Embed"></a>Unsupervised Sentence Embed</h2><h3 id="基于Encoder-decoder的Skip-Thought-Vectors"><a href="#基于Encoder-decoder的Skip-Thought-Vectors" class="headerlink" title="基于Encoder-decoder的Skip-Thought Vectors"></a>基于Encoder-decoder的Skip-Thought Vectors</h3><p>skip-thoughts 中提及一个重要的方法是 词汇扩展。<br>具体来说我们可以先用海量的语料训练一个Word2Vec，这样可以把一个词映射到一个语义空间，我们把这个向量叫做 $ V_{w 2 v} $。而我们之前训练的得到的输入向量也是把一个词映射到另外一个语义空间，我们记作$V_{r n n}$.</p>
+<p>我们假设它们之间存在一个线性变换$ f:  V_{w 2 v}  \rightarrow V_{r n n}$。这个线性变换的参数是矩阵W，使得$V_{r n n}$= $W V_{w 2 v} $。那怎么求这个变换矩阵W呢？因为两个训练语料会有公共的词(通常训练word2vec的语料比skip vector大得多，从而词也多得多)。因此我们可以用这些公共的词来寻找 $W$。寻找的依据是：遍历所有可能的W，使得$ W V_{w 2 v} $和$V_{rnn}$尽量接近。</p>
+<p>对于双向训练<br>（不是使用了两个模型，而是使用正反两种不同顺序不同的训练数据集）<br>此外还训练了bi-skip向量，它是这样得到的：首先训练1200维的uni-skip，然后句子倒过来，比如原来是”aa bb”、”cc dd”和”ee ff”，我们是用”cc dd”来预测”aa bb”以及”ee ff”，现在反过来变成”ff ee”、”dd cc”和”bb aa”。这样也可以训练一个模型，当然也就得到一个encoder(两个decoder不需要了)，给定一个句子我们把它倒过来然后也编码成1200为的向量，最后把这个两个1200维的向量拼接成2400维的向量。</p>
+<p>模型训练完成之后还需要进行词汇扩展。通过BookCorpus学习到了20,000个词，而word2vec共选择了930,911词，通过它们共同的词学习出变换矩阵W，从而使得我们的Skip Thought Vector可以处理930,911个词。<br>（最终得到还是语言模型）</p>
+<p>这篇论文中的要点</p>
 <ul>
 <li>训练的时候在远大于 word2vec 的训练集上展开。如 skip-thought 中使用的 BookCorpus 数据集中是千万级别的 words(984,846,357)，在word2vec 中英文的 wikicorpus 是百万 (120 million words)， 所以相差一个数量级。</li>
 <li>objective function 是语言模型（类似 machine translation), 给定上下一个句子，然后预测中心句子的概率，不断的最大化的过程。</li>
@@ -579,7 +583,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -601,7 +605,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

@@ -113,7 +113,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqyoxmknj20ey0d640u.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3esxw2nilj20dh08ujth.jpg">
 <meta property="og:image" content="https://upload.cc/i1/2019/08/04/2VsB5g.png">
-<meta property="og:updated_time" content="2019-08-04T13:34:17.354Z">
+<meta property="og:updated_time" content="2019-08-16T09:28:32.826Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP Papers Reading- BERT (***)">
 <meta name="twitter:description" content="attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequen">
@@ -338,8 +338,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-04T21:34:17+08:00">
-                2019-08-04
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-16T17:28:32+08:00">
+                2019-08-16
               </time>
             
           </span>
@@ -476,7 +476,9 @@
 <p>对于学习CV的人估计对这个结构一点也不陌生，Residual connection是对于较为深层的神经网络有比较好的作用，比如网络层很深时，数值的传播随着weight不断的减弱，Residual connection是从输入的部分，就是图中虚线的部分，实际连到它输出层的部分，把输入的信息原封不动copy到输出的部分，减少信息的损失。</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eof674adj20ii0dfgoe.jpg" alt=""><br>layer-normalization这种归一化层是为了防止在某些层中由于某些位置过大或者过小导致数值过大或过小，对神经网络梯度回传时有训练的问题，保证训练的稳定性，这是神经网络设计比较常用的case。</p>
 <p>结论：<br>self-attention层的好处是能够一步到位捕捉到全局的联系，解决了长距离依赖，因为它直接把序列两两比较（代价是计算量变为 O(n2)，当然由于是纯矩阵运算，这个计算量相当也不是很严重），而且最重要的是可以进行并行计算，因为这个操作是可以使用矩阵运算的。<br>相比之下，RNN 需要一步步递推才能捕捉到，并且对于长距离依赖很难捕捉。而 CNN 则需要通过层叠来扩大感受野（感受野的概念，更像是 最后经过CNN 的一个点在原始的图像中是多大的面积，这种管中窥豹的感觉），这是 Attention 层的明显优势。</p>
-<h2 id="Deep-Contextualized-Word-Representations"><a href="#Deep-Contextualized-Word-Representations" class="headerlink" title="Deep Contextualized Word Representations"></a>Deep Contextualized Word Representations</h2><p>主要贡献：</p>
+<h2 id="Deep-Contextualized-Word-Representations"><a href="#Deep-Contextualized-Word-Representations" class="headerlink" title="Deep Contextualized Word Representations"></a>Deep Contextualized Word Representations</h2><p>（可以得到有上下文关系的词向量， 这个特点是相对于 word2vec 或者 glove 的）<br>这篇论文的想法其实非常非常简单，但是取得了非常好的效果。它的思路是用深度的双向RNN(LSTM)在大量未标注数据上训练语言模型，如下图所示。然后在实际的任务中，对于输入的句子，我们使用这个语言模型来对它处理，得到输出的向量，因此这可以看成是一种特征提取。但是和普通的Word2Vec或者GloVe的pretraining不同，ELMo得到的Embedding是有上下文的。比如我们使用Word2Vec也可以得到词”bank”的Embedding，我们可以认为这个Embedding包含了bank的语义。但是bank有很多意思，可以是银行也可以是水边，使用普通的Word2Vec作为Pretraining的Embedding，只能同时把这两种语义都编码进向量里，然后靠后面的模型比如RNN来根据上下文选择合适的语义——比如上下文有money，那么它更可能是银行；而如果上下文是river，那么更可能是水边的意思。但是RNN要学到这种上下文的关系，需要这个任务有大量相关的标注数据，这在很多时候是没有的。而ELMo的特征提取可以看成是上下文相关的，如果输入句子有money，那么它就(或者我们期望)应该能知道bank更可能的语义，从而帮我们选择更加合适的编码。</p>
+<p>我们把这两个方向的RNN合并起来就得到Bi-LSTM。我们优化的损失函数是两个LSTM的交叉熵加起来是最小的：</p>
+<p>主要贡献：</p>
 <ul>
 <li>提出了一个双向训练的 language model，使用前K-1 个词语训练 第K 个词语，然后使用后 N-K+1 个词语训练第K 个词语，所以第 K 个词语是combine 了上下文的信息的。</li>
 <li>word embedding 的表示是不同layer 累加的结果，weights 的设定是学习而得。</li>
@@ -521,6 +523,9 @@
 <p>最后的embedding 是是将不同的层 combination起来，这个系数是通过学习出来的。<br>In ELMo, the part that is task specific is the combination of the task-agnostic representations. The weight is learned for each task and normalized using the softmax function. The parameter $\gamma$ is a task-dependent value that allows for scaling the entire vector, which is important during optimization.</p>
 <p>优缺点：</p>
 <p>在ELMo中，嵌入基于一个双层的双向语言模型（biLM）的内部状态计算，ELMo也是因此得名的：Embeddings from Language Models（来自语言模型的嵌入）。<br>ELMo的特性：<br>ELMo的输入是字符而不是单词。这使得它可以利用子字（sub-word）单元为词汇表以外的单词计算有意义的表示（和FastText类似）。<br>ELMo是biLM的多层激活的连接（concatenation）。语言模型的不同层编码了单词的不同信息。连接所有层使得ELMo可以组合多种词表示，以提升下游任务的表现。</p>
+<h2 id="OpenAI-GPT"><a href="#OpenAI-GPT" class="headerlink" title="OpenAI GPT"></a>OpenAI GPT</h2><p>它的思想其实也很简单，使用Transformer来学习一个语言模型，对句子进行无监督的Embedding，然后根据具体任务对Transformer的参数进行微调。</p>
+<p>这篇论文中的 多任务学习是如何体现的呢？<br>首先是无监督的pretraining 中有一个语言模型，需要优化一个最大似然估计 L1，然后再监督的fine-tuning 中有一个交叉熵损失函数，这里也是有一个loss ，记为L2。正常情况下，我们应该调整参数最大化L2， 但是我们使用的是多任务学习，同时让它最大似然L1 和L2。</p>
+<p>$$<br>L_{3}(\mathcal{C})=L_{2}(\mathcal{C})+\lambda \times L_{1}(\mathcal{C})<br>$$</p>
 <h2 id="BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding"><a href="#BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding" class="headerlink" title="BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"></a>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</h2><p>嵌入（Embedding）的新时代<br>到目前为止，词嵌入一直是影响NLP模型处理语言的主要力量。但是我们使用GloVe，那么“stick”这个词将由一个向量表示，无论上下文是什么。所以词嵌入的方式并没有解决上下文的问题。ELMo 解决了这个问题：捕捉单词的上下文信息。ELMo不是对每个单词使用固定嵌入，而是在为其中的每个单词分配嵌入之前查看整个句子，它使用在特定任务上训练的双向LSTM来创建这些嵌入。</p>
 <p>BERT全称是Bidirectional Encoder Representations from Transformers，取了核心单词的首字母而得名，从名字我们能看出该模型两个核心特质：依赖于Transformer以及双向。</p>
 <p>首先介绍BERT的两种型号：</p>
@@ -840,7 +845,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -862,7 +867,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -936,7 +941,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#attention-is-all-you-need"><span class="nav-number">1.</span> <span class="nav-text">attention is all you need</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#transformer-的结构"><span class="nav-number">1.1.</span> <span class="nav-text">transformer 的结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deep-Contextualized-Word-Representations"><span class="nav-number">2.</span> <span class="nav-text">Deep Contextualized Word Representations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding"><span class="nav-number">3.</span> <span class="nav-text">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预训练过程"><span class="nav-number">3.1.</span> <span class="nav-text">预训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">3.2.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-simple-but-tough-to-beat-baseline-for-sentence-embeddings"><span class="nav-number">4.</span> <span class="nav-text">A simple but tough-to-beat baseline for sentence embeddings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Supervised-Learning-of-Universal-Sentence-Representations-from-Natural-Language-Inference-Data"><span class="nav-number">5.</span> <span class="nav-text">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Universal-Sentence-Encoder"><span class="nav-number">6.</span> <span class="nav-text">Universal Sentence Encoder</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#attention-is-all-you-need"><span class="nav-number">1.</span> <span class="nav-text">attention is all you need</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#transformer-的结构"><span class="nav-number">1.1.</span> <span class="nav-text">transformer 的结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deep-Contextualized-Word-Representations"><span class="nav-number">2.</span> <span class="nav-text">Deep Contextualized Word Representations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenAI-GPT"><span class="nav-number">3.</span> <span class="nav-text">OpenAI GPT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding"><span class="nav-number">4.</span> <span class="nav-text">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预训练过程"><span class="nav-number">4.1.</span> <span class="nav-text">预训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">4.2.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-simple-but-tough-to-beat-baseline-for-sentence-embeddings"><span class="nav-number">5.</span> <span class="nav-text">A simple but tough-to-beat baseline for sentence embeddings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Supervised-Learning-of-Universal-Sentence-Representations-from-Natural-Language-Inference-Data"><span class="nav-number">6.</span> <span class="nav-text">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Universal-Sentence-Encoder"><span class="nav-number">7.</span> <span class="nav-text">Universal Sentence Encoder</span></a></li></ol></div>
             
 
           </div>
