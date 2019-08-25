@@ -87,7 +87,7 @@
 <meta property="og:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://i.loli.net/2019/08/16/E8lZBTc7JAfWVvC.png">
-<meta property="og:updated_time" content="2019-08-16T07:22:17.584Z">
+<meta property="og:updated_time" content="2019-08-19T00:40:31.531Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tmp">
 <meta name="twitter:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-16T15:22:17+08:00">
-                2019-08-16
+              <time title="Post modified" itemprop="dateModified" datetime="2019-08-19T08:40:31+08:00">
+                2019-08-19
               </time>
             
           </span>
@@ -423,6 +423,13 @@
 <blockquote>
 <p>[CLS] the man [MASK] to the store [SEP] penguin [MASK] are flight ##less birds [SEP]</p>
 </blockquote>
+<p>ELMO 和OpenAI GPT 的区别：</p>
+<p>UMLFiT比较复杂，而且效果也不是特别好，我们暂且不提。ELMo和OpenAI GPT的思想其实非常非常简单，就是用海量的无标注数据学习语言模型，在学习语言模型的过程中自然而然的就学到了上下文的语义关系。它们都是来学习一个语言模型，前者使用的是LSTM而后者使用Transformer，在进行下游任务处理的时候也有所不同，ELMo是把它当成特征。拿分类任务来说，输入一个句子，ELMo用LSTM把它扫一次，这样就可以得到每个词的表示，这个表示是考虑上下文的，因此”He deposited his money in this bank”和”His soldiers were arrayed along the river bank”中的两个bank的向量是不同的。下游任务用这些向量来做分类，它会增加一些网络层，但是ELMo语言模型的参数是固定的。而OpenAI GPT不同，它直接用特定任务来Fine-Tuning Transformer的参数。因为用特定任务的数据来调整Transformer的参数，这样它更可能学习到与这个任务特定的上下文语义关系，因此效果也更好。</p>
+<p><strong>Skip Thought Vector 在训练语料上的区别</strong></p>
+<p>和训练Word2Vec不同，Word2Vec只需要提供句子，而Skip Thought Vector需要文章(至少是段落)。论文使用的数据集是BookCorpus(<a href="http://yknzhu.wixsite.com/mbweb)，目前网站已经不提供下载了。BookCorpus的统计信息如下图所示，有一万多本书，七千多万个句子。" target="_blank" rel="noopener">http://yknzhu.wixsite.com/mbweb)，目前网站已经不提供下载了。BookCorpus的统计信息如下图所示，有一万多本书，七千多万个句子。</a></p>
+<p>词汇扩展： 使用一个word2vec 的词向量去映射在训练句子向量中得到的向量，其中的映射关系是 $w$, 这个参数可以通过共现词进行学习。</p>
+<p>ELMo</p>
+<p>这篇论文的想法其实非常非常简单，但是取得了非常好的效果。它的思路是用深度的双向RNN(LSTM)在大量未标注数据上训练语言模型。然后在实际的任务中，对于输入的句子，我们使用这个语言模型来对它处理，得到输出的向量，因此这可以看成是一种特征提取。</p>
 
       
     </div>
