@@ -82,7 +82,7 @@
 <meta name="description" content="互联网网页存在大量的重复内容网页，无论对于搜索引擎的网页去重和过滤、新闻小说等内容网站的内容反盗版和追踪，还是社交媒体等文本去重和聚类，都需要对网页或者文本进行去重和过滤。本文介绍的  Locality Sensitive Hashing 是常见的一类hash 函数用于去重。 SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。">
 <meta name="keywords" content="simhash">
 <meta property="og:type" content="article">
-<meta property="og:title" content="文本相似度比较基本知识">
+<meta property="og:title" content="文本相似度比较基本知识(1)">
 <meta property="og:url" content="http://yoursite.com/2018/08/23/文本相似度比较基本知识/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="互联网网页存在大量的重复内容网页，无论对于搜索引擎的网页去重和过滤、新闻小说等内容网站的内容反盗版和追踪，还是社交媒体等文本去重和聚类，都需要对网页或者文本进行去重和过滤。本文介绍的  Locality Sensitive Hashing 是常见的一类hash 函数用于去重。 SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。">
@@ -91,9 +91,9 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afacg3bhj20j00ea42v.jpg">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/874dac5668f0bf28.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/05/BUJwIYKnQWgVFmT.png">
-<meta property="og:updated_time" content="2019-08-05T12:51:35.732Z">
+<meta property="og:updated_time" content="2019-09-01T00:56:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="文本相似度比较基本知识">
+<meta name="twitter:title" content="文本相似度比较基本知识(1)">
 <meta name="twitter:description" content="互联网网页存在大量的重复内容网页，无论对于搜索引擎的网页去重和过滤、新闻小说等内容网站的内容反盗版和追踪，还是社交媒体等文本去重和聚类，都需要对网页或者文本进行去重和过滤。本文介绍的  Locality Sensitive Hashing 是常见的一类hash 函数用于去重。 SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afa1wa4qj20ka0cyt95.jpg">
 
@@ -144,7 +144,7 @@
 	})();
 </script>
 
-  <title>文本相似度比较基本知识 | Jijeng's blog</title>
+  <title>文本相似度比较基本知识(1) | Jijeng's blog</title>
   
 
 
@@ -288,7 +288,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">文本相似度比较基本知识</h1>
+          <h1 class="post-title" itemprop="name headline">文本相似度比较基本知识(1)</h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-05T20:51:35+08:00">
-                2019-08-05
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-01T08:56:48+08:00">
+                2019-09-01
               </time>
             
           </span>
@@ -390,7 +390,9 @@
       
         <p>互联网网页存在大量的重复内容网页，无论对于搜索引擎的网页去重和过滤、新闻小说等内容网站的内容反盗版和追踪，还是社交媒体等文本去重和聚类，都需要对网页或者文本进行去重和过滤。本文介绍的  Locality Sensitive Hashing 是常见的一类hash 函数用于去重。 SimHash是一种局部敏感hash，它也是Google公司进行海量网页去重使用的主要算法。</p>
 <a id="more"></a>
-<h2 id="Locality-Sensitive-Hashing"><a href="#Locality-Sensitive-Hashing" class="headerlink" title="Locality Sensitive Hashing"></a>Locality Sensitive Hashing</h2><p>Hash 函数能够保证最后的映射空间唯一性和均匀分布，但是不能保证原来相似向量，映射之后也是相似的。但是局部敏感hash（比如 simhash  or minhash ）是能够保证这一点的。也可以从降维的角度进行理解，降维之前和降维之后，相似的文档（这里就具体化一个东西）hash 之后也是相似的。Locality Sensitive Hashing(局部敏感哈希)作用就是从海量的数据中挖掘出相似的数据，可以具体应用到文本相似度检测、网页搜索等领域。</p>
+<h2 id="Locality-Sensitive-Hashing"><a href="#Locality-Sensitive-Hashing" class="headerlink" title="Locality Sensitive Hashing"></a>Locality Sensitive Hashing</h2><p>Hash 函数能够保证最后的映射空间唯一性和均匀分布，但是不能保证原来相似向量，映射之后也是相似的。但是局部敏感hash（比如 simhash  or minhash ）是能够保证这一点的。也可以从降维的角度进行理解，降维之前和降维之后，相似的文档（这里就具体化一个东西）hash 之后也是相似的。</p>
+<p>局部敏感哈希的基本思想：在高维数据空间中的两个相邻的数据被映射到低维数据空间中后，将会有很大的概率任然相邻；而原本不相邻的两个数据，在低维空间中也将有很大的概率不相邻。通过这样一映射，我们可以在低维数据空间来寻找相邻的数据点，避免在高维数据空间中寻找，因为在高维空间中会很耗时。有这样性质的哈希映射称为是局部敏感的。simhash 或者minhash是局部敏感hash的一种具体实现。局部敏感哈希是一种思想。</p>
+<p>应用：对于高维数据的海量数据近邻查找，局部敏感哈希是一个很好的解决方法。在很多问题中，从海量数据库中寻找到与查询数据相似的数据是一个很关键的问题。可以具体应用到文本相似度检测、网页搜索等领域。</p>
 <h2 id="Simhash"><a href="#Simhash" class="headerlink" title="Simhash"></a>Simhash</h2><p>我们现在处理的是大数据维度上的文本去重，这就对算法的效率有着很高的要求。但是在小的样本上这个是不一定有保证有效的，小文本使用 NLP 相关知识可能得到更好的精度。SimHash算法是Google公司进行海量网页去重的高效算法，它通过将原始的文本映射为64位的二进制数字串，然后通过比较二进制数字串的差异进而来表示原始文本内容的差异。本文服务于<a href="https://jijeng.github.io/2018/08/23/基于simhash的文本相似度比较/" target="_blank" rel="noopener">该篇博客</a>,主要进行名词解释。</p>
 <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>simhash 也是一种hash，一般的hash 函数映射规则只需要满足以下两个条件：</p>
 <ul>
@@ -399,16 +401,24 @@
 </ul>
 <p>simhash 和传统的 hash 不同点在于前者的01 串是可以表征文本之间的相似度，而后者是不可以的。</p>
 <p>简单来说普通的hash映射需要满足随机分布和唯一性两个条件。simhash想要实现的是，如果原来的文本的特征是相似，那么映射之后的编码也是相似。这里使用 hamming distance 进行比较simhash映射之后的距离。根据经验值，对64位的 SimHash值，海明距离在3以内的可认为相似度比较高。编码之后的表示在英文中是 fingerprint(指纹)。</p>
-<p>simhash最初被google 用于网页去重，当时使用的fingerprint 是64,所以这里沿用了这个传统。64位的签名可以表示多达264个象限，因此只保存所在象限的信息也足够表征一个文档了。<br>更进一步，表示的文档的数字最多是多少？这个应该可以准确计算特征的个数应为如果用三位(01) 表示，那么有8种，那么2^64 这么多种特征，所以16*10^18 这么多。</p>
+<p>simhash最初被google 用于网页去重，当时使用的fingerprint 是64,所以这里沿用了这个传统。64位的签名可以表示多达$2^64$个象限，因此只保存所在象限的信息也足够表征一个文档了。<br>更进一步，表示的文档的数字最多是多少？这个应该可以准确计算特征的个数应为如果用三位(01) 表示，那么有8种，那么2^64 这么多种特征，所以16*10^18 这么多。</p>
 <h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3><p>Simhash 分为5个步骤：分词、hash（md5 要求均匀映射到某空间就行，不要求反应原始样本的相关性）、加权、合并（列项相加）、降维（正数为1 负数为0），得到每篇文章的simhash 之后，计算两个文章的海明距离（两个字符串对应位置的不同字符的个数）。对于64 位的simhash 值，在3以内就可以认为是比较相似的。</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afa1wa4qj20ka0cyt95.jpg" alt=""></p>
 <p>第一步：文本预处理得到分词（去重，去除的了stop words）,然后weight权重可以使用分词的frequency 或者tfidf 进行得到<br>第二步：进行hash 映射（可以使用md5这种传统的映射方式，基本的要求就是均匀映射到一个空间，这种映射并不能反映原始样本的相关性）<br>第三步：hash 映射值和weight 进行相乘，如果原来是1 则乘以1，如果是0 则乘以-1，<br>第四步： 列向相加，得到summing weights,进行降维如果是正数那么为1，如果是负数那么为-1<br>第五步： 计算不同文本之间的 hamming  distance。</p>
 <p>然后这个simhash就出来了.<br>有图有真相</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3afacg3bhj20j00ea42v.jpg" alt=""></p>
-<h3 id="simhash的局限性："><a href="#simhash的局限性：" class="headerlink" title="simhash的局限性："></a>simhash的局限性：</h3><p>只考虑到文章存在哪些词，没有考虑到词的顺序。不过相应的优点是，可以实现海量文章相似度计算。文章相似度计算忽略词的顺序之后效果更好。所以在处理大文本时候，simhash是有效的，但是在处理小文本，这种效果往往不能被保证。直观上理解，在一片段文章或者段落中，词语出现的顺序还是比较重要的。</p>
+<h3 id="simhash的局限性："><a href="#simhash的局限性：" class="headerlink" title="simhash的局限性："></a>simhash的局限性：</h3><p>只考虑到文章存在哪些词，没有考虑到词的顺序。不过相应的优点是，可以实现海量文章相似度计算。文章相似度计算忽略词的顺序之后效果更好。所以在处理大文本时候，simhash是有效的，但是在处理小文本，这种效果往往不能被保证。直观上理解，在一片段文章或者段落中，词语出现的顺序还是比较重要的。更加准确的说，这个是用来进行判重的算法，而不是计算相似度的算法。</p>
+<h3 id="开源实现："><a href="#开源实现：" class="headerlink" title="开源实现："></a>开源实现：</h3><p>simhash 的实现，调用一个库 <a href="https://www.twblogs.net/a/5c178f2cbd9eee5e40bbc9e9/zh-cn" target="_blank" rel="noopener">https://www.twblogs.net/a/5c178f2cbd9eee5e40bbc9e9/zh-cn</a></p>
+<p>simhash 的一个github <a href="https://github.com/yanyiwu/simhash" target="_blank" rel="noopener">https://github.com/yanyiwu/simhash</a></p>
+<p>百度去重： top k 最长的语句，作为源数据</p>
 <h2 id="minhash"><a href="#minhash" class="headerlink" title="minhash"></a>minhash</h2><p>总的操作步骤如下：</p>
 <p><img src="https://b2.bmp.ovh/imgs/2019/08/874dac5668f0bf28.png" alt=""></p>
-<p>第一步就是对一个文档转化为关键词的集合，用这个集合来表示这个文档，叫Shingling。<br>第二步就是用MinHashing函数来构造哈希表。<br>第三步就是使用LSH来寻找相似的文档。</p>
+<ol>
+<li>对一个文档转化为关键词的集合，用这个集合来表示这个文档，叫Shingling。 </li>
+<li>用MinHashing函数来构造哈希表。 </li>
+<li>使用LSH来寻找相似的文档。</li>
+</ol>
+<p>对于第一点中的Shingling，这个k 是一个关键参数，可以体现上下文的那种。<br>例如：k=2，doc=adcab，这个集合的2-shingles={ab,ba,ca} 。我们对这个字符串进行划分，得到的是ad dc ca ab，由于集合是唯一性的所以不可能有重复的元素。k=2 其实是一个比较糟糕的选择，我们一般选择K在实际情况中一般会选择9或者10，我们要求这个k一般要大于我们文章中出现的单词的长度。这样的选择会比较合理一些。</p>
 <p>使用一个具体的例子讲解 minhash 的操作步骤：</p>
 <p>第一步：</p>
 <p>文档的Shingling：对于中文首先进行分词，得到每篇文章的词语的集合（集合是去重之后的结果），这里是可以做n-gram 的思想的，这个n 的取值越大，越能找到真正相似的文档，代价是dictionary 很大，存储上的</p>
@@ -533,34 +543,23 @@
 <p>（3）C类：两列的值都为0.</p>
 <p>特征矩阵相当稀疏，导致大部分的行都属于C类，但只有A、B类行的决定sim(Si,Sj)，假定A类行有a个，B类行有b个，那么sim(si,sj)=a/(a+b)。现在我们只需要证明对矩阵行进行随机排列，两个的最小hash值相等的概率P(h(Si)=h(Sj))=a/(a+b)，如果我们把C类行都删掉，那么第一行不是A类行就是B类行，如果第一行是A类行那么h(Si)=h(Sj)，因此P(h(Si)=h(Sj))=P(删掉C类行后，第一行为A类)=A类行的数目/所有行的数目=a/(a+b)，这就是最小hash的神奇之处。</p>
 <p>第四步：</p>
-<p>这个只是一次随机采样，根据中心极限定理，只有多次随机重复采样，才能得到比较稳定的结果。那么现在出现另一个问题，将随机排列去排序，这耗费很长的时间。于是这里使用了另一种方式，选择n 个hash 函数 h1, h2, h3 .. h_n 得到不同的签名矩阵，而不是将矩阵进行重新排序。</p>
+<p>这个只是一次随机采样，根据中心极限定理，只有多次随机重复采样，才能得到比较稳定的结果。那么现在出现另一个问题，将随机排列去排序，这耗费很长的时间。于是这里使用了另一种方式，选择n 个hash 函数 $h_1$, $h_2$, $h_3$ .. $h_n$ 得到不同的签名矩阵，而不是将矩阵进行重新排序。</p>
 <p>对于两个document，在Min-Hashing方法中，它们hash值相等的概率等于它们降维前的Jaccard相似度。</p>
-<p>就是说，对于两个document，**在Min-Hashing方法中，它们hash值相等的概率等于它们降维前的Jaccard相似度。</p>
-<p>simhash与Minhash的区别：</p>
-<p>simhash和minhash可以做到两个文档Hash之后仍然相似，但是simhash计算相似的方法是海明距离；而minhash计算距离的方式是Jaccard距离。</p>
-<p>局部敏感哈希与simhash、minhash的区别。</p>
-<p>simhash 或者minhash是局部敏感hash的一种特例</p>
-<p>对于高维数据的海量数据近邻查找，局部敏感哈希是一个很好的解决方法。</p>
-<p>在很多问题中，从海量数据库中寻找到与查询数据相似的数据是一个很关键的问题。</p>
-<p>局部敏感哈希的基本思想：在高维数据空间中的两个相邻的数据被映射到低维数据空间中后，将会有很大的概率任然相邻；而原本不相邻的两个数据，在低维空间中也将有很大的概率不相邻。通过这样一映射，我们可以在低维数据空间来寻找相邻的数据点，避免在高维数据空间中寻找，因为在高维空间中会很耗时。有这样性质的哈希映射称为是局部敏感的。</p>
-<p>minhash 的缺点</p>
-<p>在工程中，不容易找到一系列的hash 函数，不同的hash 函数之间可能相关</p>
-<p>这种hash 也是使用降维之后的数据，能够保持降维之前的性质的特性，那么就可以用来进行相似度的计算等操作。</p>
-<p>到局部敏感哈希是相对的，而且我们所说的保持数据的相似度不是说保持100%的相似度，而是保持最大可能的相似度。<br>　对于局部敏感哈希“保持最大可能的相似度”的这一点，我们也可以从数据降维的角度去考虑。数据对应的维度越高，信息量也就越大，相反，如果数据进行了降维，那么毫无疑问数据所反映的信息必然会有损失。哈希函数从本质上来看就是一直在扮演数据降维的角色。</p>
+<p>就是说，对于两个document，<strong>在Min-Hashing方法中，它们hash值相等的概率等于它们降维前的Jaccard相似度。</strong></p>
+<p><strong>minhash 的缺点</strong></p>
+<ul>
+<li>在工程中，不容易找到一系列的hash 函数，不同的hash 函数之间可能相关</li>
+<li>局部敏感哈希是相对的，而且我们所说的保持数据的相似度不是说保持100%的相似度，而是保持最大可能的相似度。对于局部敏感哈希“保持最大可能的相似度”的这一点，我们也可以从数据降维的角度去考虑。数据对应的维度越高，信息量也就越大，相反，如果数据进行了降维，那么毫无疑问数据所反映的信息必然会有损失。哈希函数从本质上来看就是一直在扮演数据降维的角色。</li>
+</ul>
 <p>simhash 有两个比较典型的应用：一个是网页抓取的排重，一个是检索时相似doc 的排重</p>
-<p>两者的相同点：</p>
-<p>都是敏感hash，具有降维的作用，将高纬向量转换成低纬01 向量表示</p>
-<p>不同点</p>
-<p>理论上讲，simhash 的准确率低于minhash。</p>
-<p>原因1： simhash 对文本进行分词并统计词频，可以认为是一个词袋模型，没有统计词汇的先后顺序。而minhash 使用滑动窗口的方式，加入了词汇的词序信息。</p>
-<p>原因2： simhash 对词汇特征向量按列求和符号映射，丢失了文本特征信息。</p>
-<p>实现：</p>
-<p>simhash 的实现，调用一个库 <a href="https://www.twblogs.net/a/5c178f2cbd9eee5e40bbc9e9/zh-cn" target="_blank" rel="noopener">https://www.twblogs.net/a/5c178f2cbd9eee5e40bbc9e9/zh-cn</a></p>
-<p>simhash 的一个github <a href="https://github.com/yanyiwu/simhash" target="_blank" rel="noopener">https://github.com/yanyiwu/simhash</a></p>
-<p>百度去重： top k 最长的语句，作为源数据</p>
+<p><strong>simhash与Minhash的联系和区别：</strong></p>
+<p>相同点：simhash和minhash可以做到两个文档Hash之后仍然相似，但是simhash计算相似的方法是海明距离；而minhash计算距离的方式是Jaccard距离。<br>不同点：理论上讲，simhash 的准确率低于minhash。原因有二：</p>
+<ol>
+<li>simhash 对文本进行分词并统计词频，可以认为是一个词袋模型，没有统计词汇的先后顺序。而minhash 使用滑动窗口的方式，加入了词汇的词序信息。</li>
+<li>simhash 对词汇特征向量按列求和符号映射，丢失了文本特征信息。</li>
+</ol>
 <p>参考资料：</p>
-<p><a href="https://blog.csdn.net/yc461515457/article/details/48845775这点讲解" target="_blank" rel="noopener">https://blog.csdn.net/yc461515457/article/details/48845775这点讲解</a> minhash 讲解的比较好</p>
-<p>这个也是讲解的比较好：<br><a href="http://blog.rexking6.top/2018/10/09/%E5%B1%80%E9%83%A8%E6%95%8F%E6%84%9F%E5%93%88%E5%B8%8C-Locality-Sensitive-Hashing-LSH/" target="_blank" rel="noopener">http://blog.rexking6.top/2018/10/09/%E5%B1%80%E9%83%A8%E6%95%8F%E6%84%9F%E5%93%88%E5%B8%8C-Locality-Sensitive-Hashing-LSH/</a></p>
+<p><a href="http://blog.rexking6.top/2018/10/09/%E5%B1%80%E9%83%A8%E6%95%8F%E6%84%9F%E5%93%88%E5%B8%8C-Locality-Sensitive-Hashing-LSH/" target="_blank" rel="noopener">讲解minhas</a></p>
 <p><a href="https://www.cnblogs.com/maybe2030/p/4953039.html" target="_blank" rel="noopener">https://www.cnblogs.com/maybe2030/p/4953039.html</a></p>
 <p>这个也是比较好的：<br><a href="https://www.cnblogs.com/fengfenggirl/p/lsh.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengfenggirl/p/lsh.html</a></p>
 <h2 id="距离函数"><a href="#距离函数" class="headerlink" title="距离函数"></a>距离函数</h2><p>这里的距离函数都是用来文本相似度。</p>
@@ -577,13 +576,12 @@
 <ul>
 <li><p>计算词频<br>$$ 词频(TF) = 某个词在文章中出现的次数( 频数) $$<br>或者可以进一步进行“标准化”<br>$$ 词频( TF) = \frac{某次在文中出现的次数}{文章的总词语数} $$</p>
 </li>
-<li><p>逆文档频率<br>这个时候需要一个语料库 (corpus)，模拟语言环境<br>$$ 逆文档频率 (IDF) = log(\frac{语料中的文档总数}{ 包含该词的文档数 +1}) $$ </p>
+<li><p>逆文档频率(这对这个术语的还是好好记忆)<br>这个时候需要一个语料库 (corpus)，模拟语言环境<br>$$ 逆文档频率 (IDF) = log(\frac{语料中的文档总数}{ 包含该词的文档数 +1}) $$ </p>
 </li>
 </ul>
 <p>TF-IDF 优点是简单快速，比较符合实际。缺点，无法体现词的位置信息，所有的位置都是被认为重要性相同，但是开头结尾，段落的开头和段落的结尾，therefore，so，but这些词语都是没有体现的；还有一个缺点是，是基于统计的，没有表达出词语的语意信息 or context 上下文的信息。</p>
-<h3 id="Hamming-distance"><a href="#Hamming-distance" class="headerlink" title="Hamming distance"></a>Hamming distance</h3><p>hamming distance就是比较01串的不同，按照位进行比较。算法：异或时，只有在两个比较的位不同时其结果是1 ，否则结果为0，两个二进制“异或”后得到1的个数即为海明距离的大小。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hashbits =64 # 使用64位进行编码</span><br><span class="line">def simhash_function(tokens, weights_dict):</span><br><span class="line">    v = [0] * hashbits</span><br><span class="line">    # 这种 &#123;key: value&#125;.item() 的操作也是没有了谁了</span><br><span class="line">    for key, t in &#123;x: _string_hash(x) for x in tokens&#125;.items():</span><br><span class="line">        for i in range(hashbits):</span><br><span class="line">            bitmask = 1 &lt;&lt; i</span><br><span class="line">            if t &amp; bitmask:</span><br><span class="line">                v[i] += weights_dict[key]</span><br><span class="line">            else:</span><br><span class="line">                v[i] -= weights_dict[key]</span><br><span class="line"></span><br><span class="line">    fingerprint = 0</span><br><span class="line">    for i in range(hashbits):</span><br><span class="line">        if v[i] &gt;= 0:</span><br><span class="line">            fingerprint += 1 &lt;&lt; i</span><br><span class="line">    return fingerprint</span><br><span class="line">fingerprint = simhash_function(tokens, weights)</span><br></pre></td></tr></table></figure></p>
-<h3 id="min-edit-distance"><a href="#min-edit-distance" class="headerlink" title="min edit distance"></a>min edit distance</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 最小编辑距离</span><br><span class="line">def min_edit_distance(str1, str2):</span><br><span class="line">    rows  =len(str2) +1</span><br><span class="line">    cols =len(str1) +1</span><br><span class="line">    arr =[[0 for _ in range(cols)] for _ in range(rows)]</span><br><span class="line">    # 这种简洁的代码也是牛逼</span><br><span class="line">    for j in range(cols):</span><br><span class="line">        arr[0][j] =j</span><br><span class="line">    for i in range(rows):</span><br><span class="line">        arr[i][0] =i</span><br><span class="line">    for i in range(1, rows):</span><br><span class="line">        for j in range(1, cols):</span><br><span class="line">            # 因为string 是从0 ，len(str) -1的</span><br><span class="line">            if str2[i-1] ==str1[j-1]:</span><br><span class="line">                arr[i][j] =arr[i-1][j-1]</span><br><span class="line">            else:</span><br><span class="line">                # 以后见到这样的式子，就要想到这个二维的数组，因为这个是可以帮助记忆的</span><br><span class="line">                arr[i][j] =1 +min(arr[i-1][j-1], arr[i-1][j], arr[i][j-1])</span><br><span class="line">    # 右下角就是距离</span><br><span class="line">    return arr[rows-1][cols-1]</span><br><span class="line">str_a =&quot;abcdef&quot;</span><br><span class="line">str_b =&quot;azced&quot;</span><br><span class="line">result =min_edit_distance(str_a, str_b)</span><br><span class="line">result</span><br></pre></td></tr></table></figure>
-<p>具体可以参看<a href="https://www.youtube.com/user/tusharroy2525/featured" target="_blank" rel="noopener">该视频</a>讲解。(ps. 如果刷leetcode,也可以参看该视频)</p>
+<h3 id="Hamming-distance"><a href="#Hamming-distance" class="headerlink" title="Hamming distance"></a>Hamming distance</h3><p>hamming distance就是比较01串的不同，按照位进行比较。算法：异或时，只有在两个比较的位不同时其结果是1 ，否则结果为0，两个二进制“异或”后得到1的个数即为海明距离的大小。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">hashbits =<span class="number">64</span> <span class="comment"># 使用64位进行编码</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simhash_function</span><span class="params">(tokens, weights_dict)</span>:</span></span><br><span class="line">    v = [<span class="number">0</span>] * hashbits</span><br><span class="line">    <span class="comment"># 这种 &#123;key: value&#125;.item() 的操作也是没有了谁了</span></span><br><span class="line">    <span class="keyword">for</span> key, t <span class="keyword">in</span> &#123;x: _string_hash(x) <span class="keyword">for</span> x <span class="keyword">in</span> tokens&#125;.items():</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(hashbits):</span><br><span class="line">            bitmask = <span class="number">1</span> &lt;&lt; i</span><br><span class="line">            <span class="keyword">if</span> t &amp; bitmask:</span><br><span class="line">                v[i] += weights_dict[key]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                v[i] -= weights_dict[key]</span><br><span class="line"></span><br><span class="line">    fingerprint = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(hashbits):</span><br><span class="line">        <span class="keyword">if</span> v[i] &gt;= <span class="number">0</span>:</span><br><span class="line">            fingerprint += <span class="number">1</span> &lt;&lt; i</span><br><span class="line">    <span class="keyword">return</span> fingerprint</span><br><span class="line">fingerprint = simhash_function(tokens, weights)</span><br></pre></td></tr></table></figure>
 <h2 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h2><p>在英文中存在天然的空格可以进行分词操作，但是中文的分词就比较复杂了。常用的中文分词开源工具有 jieba和<a href="https://github.com/hankcs/HanLP" target="_blank" rel="noopener">HanLP</a><br>前者简单易行，容易上手；后者在自然语言处理作为汉语言处理包，可以用于词性标注，命名实体识别等一系列功能。常用的英文分词 <a href="https://stanfordnlp.github.io/CoreNLP/" target="_blank" rel="noopener">corenlp</a></p>
 <h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>倒排索引使用python在实现上就是一个dictionary 嵌套一个 set(). 一般的索引都是数字或者英文字母映射内容，具体在放到simhash的情景下就是使用文章的序列号对应提取出来的关键词。但是倒排索引就是关键词对应文章的序列号，类似与原来的”值”对应这”键”，所以称之为倒排索引。一般使用在召回的场景下，使用关键词然后出现了该关键词下的index 的集合。可以参考<a href="https://blog.csdn.net/u011239443/article/details/60604017" target="_blank" rel="noopener">这篇文章</a>。</p>
 <p>一般的情况是key 是索引，value 对应的是关键词之列的内容； 但是倒排索引正好相反，关键字作为key，然后索引作为value，所以称之为倒排索引。</p>
@@ -720,7 +718,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -731,7 +729,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -816,7 +814,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Locality-Sensitive-Hashing"><span class="nav-number">1.</span> <span class="nav-text">Locality Sensitive Hashing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Simhash"><span class="nav-number">2.</span> <span class="nav-text">Simhash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法步骤"><span class="nav-number">2.2.</span> <span class="nav-text">算法步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simhash的局限性："><span class="nav-number">2.3.</span> <span class="nav-text">simhash的局限性：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#minhash"><span class="nav-number">3.</span> <span class="nav-text">minhash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#距离函数"><span class="nav-number">4.</span> <span class="nav-text">距离函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Jaccard相似度"><span class="nav-number">4.1.</span> <span class="nav-text">Jaccard相似度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cosine"><span class="nav-number">4.2.</span> <span class="nav-text">cosine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tf-idf"><span class="nav-number">4.3.</span> <span class="nav-text">tf-idf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hamming-distance"><span class="nav-number">4.4.</span> <span class="nav-text">Hamming distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#min-edit-distance"><span class="nav-number">4.5.</span> <span class="nav-text">min edit distance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词"><span class="nav-number">5.</span> <span class="nav-text">分词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#倒排索引"><span class="nav-number">6.</span> <span class="nav-text">倒排索引</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Locality-Sensitive-Hashing"><span class="nav-number">1.</span> <span class="nav-text">Locality Sensitive Hashing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Simhash"><span class="nav-number">2.</span> <span class="nav-text">Simhash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法步骤"><span class="nav-number">2.2.</span> <span class="nav-text">算法步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simhash的局限性："><span class="nav-number">2.3.</span> <span class="nav-text">simhash的局限性：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开源实现："><span class="nav-number">2.4.</span> <span class="nav-text">开源实现：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#minhash"><span class="nav-number">3.</span> <span class="nav-text">minhash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#距离函数"><span class="nav-number">4.</span> <span class="nav-text">距离函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Jaccard相似度"><span class="nav-number">4.1.</span> <span class="nav-text">Jaccard相似度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cosine"><span class="nav-number">4.2.</span> <span class="nav-text">cosine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tf-idf"><span class="nav-number">4.3.</span> <span class="nav-text">tf-idf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hamming-distance"><span class="nav-number">4.4.</span> <span class="nav-text">Hamming distance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词"><span class="nav-number">5.</span> <span class="nav-text">分词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#倒排索引"><span class="nav-number">6.</span> <span class="nav-text">倒排索引</span></a></li></ol></div>
             
 
           </div>
@@ -1014,7 +1012,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2018/08/23/文本相似度比较基本知识/';
           this.page.identifier = '2018/08/23/文本相似度比较基本知识/';
-          this.page.title = '文本相似度比较基本知识';
+          this.page.title = '文本相似度比较基本知识(1)';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

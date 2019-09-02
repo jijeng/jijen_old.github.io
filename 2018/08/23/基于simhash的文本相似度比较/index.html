@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="本文主要记录使用simhash比较中文大文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：  基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”. 根据关键字计算simhash编码，然后使用hamming distance进行比">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-05T12:29:52.317Z">
+<meta property="og:updated_time" content="2019-09-01T00:58:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于simhash的大文本相似度比较">
 <meta name="twitter:description" content="本文主要记录使用simhash比较中文大文本的相似度问题。先说一下文本特征，数据属于中文文本，每篇文章的字数大于500,小于2000,基本上属于大文本。步骤如下：  基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”. 根据关键字计算simhash编码，然后使用hamming distance进行比">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-05T20:29:52+08:00">
-                2019-08-05
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-01T08:58:26+08:00">
+                2019-09-01
               </time>
             
           </span>
@@ -388,7 +388,8 @@
 <li>基于tf-idf提取文本的关键词。如果这些关键词在之后的比较中是相同的，那么认为对应的文章也是相同。简而言之，这些提取的关键词可以看做原文章的”代表”.</li>
 <li>根据关键字计算simhash编码，然后使用hamming distance进行比较两者的不同。<br>如果对于上述概念比较模糊，建议首先阅读<a href="https://jijeng.github.io/2018/08/23/文本相似度比较基本知识/" target="_blank" rel="noopener">该篇博客</a>。</li>
 </ul>
-<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>顺滑过渡到代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 常规导包</span><br><span class="line">import sys,codecs</span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import jieba.posseg</span><br><span class="line">import jieba.analyse</span><br><span class="line">from sklearn import feature_extraction</span><br><span class="line">from sklearn.feature_extraction.text import TfidfTransformer</span><br><span class="line">from sklearn.feature_extraction.text import CountVectorizer</span><br><span class="line"># 数据集的路径</span><br><span class="line">path =&quot;../tianmao2.csv&quot;</span><br><span class="line">names =[&apos;where&apos;, &apos;time&apos;, &apos;title&apos;, &apos;url&apos;, &apos;contents&apos;]</span><br><span class="line">data =pd.read_csv(path, delimiter=&apos;\t&apos;, names= names, nrows=200)</span><br><span class="line">data[&apos;id&apos;] =data.index+1</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure></p>
+<p><strong> 实战</strong></p>
+<p>顺滑过渡到代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 常规导包</span><br><span class="line">import sys,codecs</span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import jieba.posseg</span><br><span class="line">import jieba.analyse</span><br><span class="line">from sklearn import feature_extraction</span><br><span class="line">from sklearn.feature_extraction.text import TfidfTransformer</span><br><span class="line">from sklearn.feature_extraction.text import CountVectorizer</span><br><span class="line"># 数据集的路径</span><br><span class="line">path =&quot;../tianmao2.csv&quot;</span><br><span class="line">names =[&apos;where&apos;, &apos;time&apos;, &apos;title&apos;, &apos;url&apos;, &apos;contents&apos;]</span><br><span class="line">data =pd.read_csv(path, delimiter=&apos;\t&apos;, names= names, nrows=200)</span><br><span class="line">data[&apos;id&apos;] =data.index+1</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure></p>
 <p>我们使用title和contents 组合作为原始处理的数据，我们认为该数据能够就是文章的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stopkey = [w.strip() for w in codecs.open(&apos;../keyword_extraction/data/stopWord.txt&apos;, &apos;r&apos;).readlines()]</span><br></pre></td></tr></table></figure></p>
 <p>该stop words是中文停用词，就是常见的”的 了”。常见的有百度停用词表、哈尔滨工业大学停用词表以及中科院的停用词表。这里使用的是中科院的停用词。对于停用词的存储，可以使用set ，因为set 要比 list的检索要快。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def dataPrepos(text, stopkey):</span><br><span class="line">    l = []</span><br><span class="line">    pos = [&apos;n&apos;, &apos;nz&apos;, &apos;v&apos;, &apos;vd&apos;, &apos;vn&apos;, &apos;l&apos;, &apos;a&apos;, &apos;d&apos;]  # 定义选取的词性</span><br><span class="line">    seg = jieba.posseg.cut(text)  # 分词</span><br><span class="line">    for i in seg:</span><br><span class="line">        if i.word not in stopkey and i.flag in pos:  # 去停用词 + 词性筛选</span><br><span class="line">            l.append(i.word)</span><br><span class="line">    return l</span><br></pre></td></tr></table></figure></p>
 <p>我们选择名词作为主要的分析对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">idList, titleList, abstractList = data[&apos;id&apos;], data[&apos;title&apos;], data[&apos;contents&apos;]</span><br><span class="line">corpus = []  # 将所有文档输出到一个list中，一行就是一个文档</span><br><span class="line"># 这个 虽然使用 &quot; &quot; 进行分割 但是实际上还是一个打的list</span><br><span class="line">for index in range(len(idList)):</span><br><span class="line">    text = &apos;%s。%s&apos; % (titleList[index], abstractList[index])  # 拼接标题和摘要</span><br><span class="line">    text = dataPrepos(text, stopkey)  # 文本预处理</span><br><span class="line">    text = &quot; &quot;.join(text)  # 连接成字符串，空格分隔</span><br><span class="line">    corpus.append(text)</span><br></pre></td></tr></table></figure></p>
@@ -433,8 +434,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/23/文本相似度比较基本知识/" rel="next" title="文本相似度比较基本知识">
-                <i class="fa fa-chevron-left"></i> 文本相似度比较基本知识
+              <a href="/2018/08/23/文本相似度比较基本知识/" rel="next" title="文本相似度比较基本知识(1)">
+                <i class="fa fa-chevron-left"></i> 文本相似度比较基本知识(1)
               </a>
             
           </div>
@@ -507,17 +508,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -536,7 +528,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -547,7 +539,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -622,22 +614,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实战"><span class="nav-number">1.</span> <span class="nav-text">实战</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

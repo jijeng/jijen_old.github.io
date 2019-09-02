@@ -82,7 +82,7 @@
 <meta name="description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
 <meta name="keywords" content="关键词提取,oov,中文分词">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NLP中的碎碎念">
+<meta property="og:title" content="NLP中的碎碎念(1)">
 <meta property="og:url" content="http://yoursite.com/2019/03/25/NLP中的碎碎念/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
@@ -94,9 +94,9 @@
 <meta property="og:image" content="https://i.postimg.cc/KYJB8Xxr/image.png">
 <meta property="og:image" content="https://i.postimg.cc/283DHMHb/2.jpg">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/f679cd0e83891f4e.png">
-<meta property="og:updated_time" content="2019-08-03T02:51:05.728Z">
+<meta property="og:updated_time" content="2019-09-01T02:26:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NLP中的碎碎念">
+<meta name="twitter:title" content="NLP中的碎碎念(1)">
 <meta name="twitter:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/07/03/ZttIoD.png">
 
@@ -147,7 +147,7 @@
 	})();
 </script>
 
-  <title>NLP中的碎碎念 | Jijeng's blog</title>
+  <title>NLP中的碎碎念(1) | Jijeng's blog</title>
   
 
 
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">NLP中的碎碎念</h1>
+          <h1 class="post-title" itemprop="name headline">NLP中的碎碎念(1)</h1>
         
 
         <div class="post-meta">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-03T10:51:05+08:00">
-                2019-08-03
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-01T10:26:52+08:00">
+                2019-09-01
               </time>
             
           </span>
@@ -570,10 +570,10 @@
 <p>举例说明分词粒度和应用场景：<br>对于query为“耐克鞋”来说，词典中是包含这个实体词的，分词的切分结果就是“耐克鞋”。但是，考拉用来建索引的商品描述中，这三个字是没有连续出现的，自然就没有“耐克鞋”对应的文档，这个时候就无法召回结果。那么，这时候你会说那就使用最小粒度的分词就解决这个问题了。相反，某一款商品可能有“参数表”这三个字，如果有最小粒度的分词策略，分词的结果为“参数/表”。很不幸，当query为“表”时，你会发现会召回莫名其妙的结果。一般来说，是使用词频表来进行粒度控制，基本可以解决绝大多数问题。</p>
 <p>搜索引擎展现与粒度：<br>显而易见，粒度越小，展现就越多，建立倒排索引时，索引的长度就越长;粒度的层次越多，索引的数量就越多。一个多，一个长，就对搜索系统的性能构成了极大的考验。搜索引擎并不会对所有小粒度词都建索引，而是选择“更有可能展现相关结果”的小粒度词。所以在一般情况下，切分文本粒度越大，索引越多，相关性越好，但展现越少;切分文本粒度越小，索引越少，相关性越差，但展现越好。</p>
 <p>词频决定分词粒度：<br>具体算法是，当发现一个由多个短词组成的长词时，判断每个短词中最小的词频，如果这个词频还是大于长词的词频，则按该组合进行拆分。如果多种组合，按词频最大的组合拆分。<br>如上面例子，”中央饭店”，中央的词频为1000，饭店为900,饭为200,店为600，而中央饭店为500 。</p>
-<h2 id="OOV"><a href="#OOV" class="headerlink" title="OOV"></a>OOV</h2><p>问题由来：由于词频过小北替换成了 UNK token 或者是在原始的训练数据集中没有出现。</p>
+<h2 id="OOV"><a href="#OOV" class="headerlink" title="OOV"></a>OOV</h2><p>问题由来：由于词频过小被替换成了 UNK token 或者是在原始的训练数据集中没有出现而在测试集中出现了。</p>
 <p>常见的解决方案：</p>
 <ul>
-<li>subword (n-gram 信息， 这个在英文 西欧语系中比较常见，在中文中不能直接使用，必须先有分词)<br>对于西欧语系的词汇，是可以通过 n-gram；如果推广到中文，那么更加合适使用分词之后的结果作为一个 word，然后每个字作为一个gram<br>在训练过程中，每个n-gram都会对应训练一个向量，而原来完整单词的词向量就由它对应的所有n-gram的向量求和得到。所有的单词向量以及字符级别的n-gram向量会同时相加求平均作为训练模型的输入。<br>优点：解决了 低频词 oov 问题<br>缺点：需要估计的参数量变多</li>
+<li>subword (n-gram ) 分字和词语两个维度。西欧语系中是有字维度，在中文中没有。对于西欧语系的词汇，是可以通过 n-gram；如果推广到中文，那么更加合适使用分词之后的结果作为一个 word，然后每个字作为一个gram在训练过程中，每个n-gram都会对应训练一个向量，而原来完整单词的词向量就由它对应的所有n-gram的向量求和得到。所有的单词向量以及字符级别的n-gram向量会同时相加求平均作为训练模型的输入。优点：解决了 低频词 oov 问题；缺点：需要估计的参数量变多</li>
 <li>transfer learning (fine tune)</li>
 <li>使用 context embedding 去表示缺省的 中心词（oov） <a href="https://aclweb.org/anthology/D17-1030" target="_blank" rel="noopener">文献</a></li>
 </ul>
@@ -669,12 +669,12 @@
 <p><strong> 参考文献</strong></p>
 <p><a href="https://www.52cs.com/archives/3011" target="_blank" rel="noopener">放弃幻想，全面拥抱Transformer</a></p>
 <h2 id="BLEU"><a href="#BLEU" class="headerlink" title="BLEU"></a>BLEU</h2><p>BLEU   (bilingual evaluation understudy) 读音:波勒 not blue. 完美匹配的得分为1.0，而完全不匹配则得分为0.0。 虽然是为机器翻译提出，但后来也广泛用于NLP其他领域。</p>
+<p>可以根据一个数值指标来衡量其与一个或多个人工参考翻译的接近程度。</p>
 <h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>介绍下面三个概念： N-gram， 惩罚因子和Bleu 算法。</p>
 <p><strong> N-gram</strong></p>
 <blockquote>
 <p>N-gram是一种统计语言模型，该模型可以将一句话表示n个连续的单词序列，利用上下文中相邻词间的搭配信息，计算出句子的概率，从而判断一句话是否通顺。</p>
 </blockquote>
-<p>(和 fasttext 中的使用是不太一样的)</p>
 <p>通过例子学习</p>
 <blockquote>
 <p>原文： 猫坐在垫子上<br>机器翻译：The cat sat on the mat.<br>人工翻译：The cat is on the mat.</p>
@@ -708,13 +708,24 @@
 <p>对于BP 已经知道，后面的其实就是一些数学运算，它的作用就是让各阶n-gram取权重服从均匀分布，就是说不管是1-gram、2-gram、3-gram还是4-gram它们的作用都是同等重要的。由于随着n-gram的增大，总体的精度得分是呈指数下降的，所以一般N-gram最多取到4-gram.</p>
 <p>计算</p>
 <p>第一步：计算各阶n-gram的精度<br>第二步：加权求和 (一般就是平均)<br>第三步：求BP<br>最后求BLEU.</p>
-<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>优点： 计算速度快；容易理解；已经被广泛使用</p>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>BLEU原理其实并不是很复杂，BLEU容易陷入常用词和短译句的陷阱中， 所以更多的是基于n-gram 基础上的优化。BLEU本身就不追求百分之百的准确性，也不可能做到百分之百，它的目标只是给出一个快且不差的自动评估解决方案。</p>
+<p>优点： 计算速度快；容易理解；已经被广泛使用</p>
 <p>缺点：</p>
 <ul>
 <li>短译句的测评精度有时会较高</li>
 <li>它没有考虑句子意义</li>
 </ul>
 <p><strong> 参考文献</strong><br><a href="https://cloud.tencent.com/developer/article/1159767" target="_blank" rel="noopener">机器翻译质量评测算法-BLEU</a></p>
+<p>复习记录：</p>
+<p>分词两大问题：歧义词和oov。后者对于最后的效果影响更大。<br>处理OOV 常用的方法：subword；使用多个word embedding（transfer learning）； 使用context embedding进行<br>分词常用的算法：基于规则的逆向最大匹配（中文的特点），频数；基于信息熵的内部凝固度和自由运用程度（分别考虑词语内部的紧密程度和外部搭配的丰富程度）；深度学习+NER进行的词性标注，条件随机场CRF之类的。</p>
+<p>中英文语料预处理的区别：中文需要分词，英文需要处理时态，对于名词和形容词处理成标准名词，对于动词进行词性还原。</p>
+<p>NLP中数据的特征：</p>
+<ol>
+<li>输入是一维线性</li>
+<li>输入是不定长</li>
+<li>单词或者子句的相对位置很重要</li>
+</ol>
+<p>RNN 的缺点，首先是捕捉长距离依赖，可以被LSTM 比较有效的解决；另一个缺点，RNN 这种序列的线性结构对于并行运算是不利的。CNN 的特点关键在于滑动窗口</p>
 
       
     </div>
@@ -759,8 +770,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/25/fastText-faiss/" rel="prev" title="fastText & faiss">
-                fastText & faiss <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/25/fastText-faiss/" rel="prev" title="fastText & faiss (ongoing)">
+                fastText & faiss (ongoing) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -852,7 +863,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -863,7 +874,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1146,7 +1157,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/03/25/NLP中的碎碎念/';
           this.page.identifier = '2019/03/25/NLP中的碎碎念/';
-          this.page.title = 'NLP中的碎碎念';
+          this.page.title = 'NLP中的碎碎念(1)';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

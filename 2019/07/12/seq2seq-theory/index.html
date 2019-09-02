@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/07/12/5d2884d89c4f355531.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/30/5d40530f9fdc224289.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/30/5d40530e2104e71958.png">
-<meta property="og:updated_time" content="2019-08-07T08:49:32.467Z">
+<meta property="og:updated_time" content="2019-09-02T09:34:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="All you need to know about seq2seq">
 <meta name="twitter:description" content="介绍 sequence to sequence 的定义、两种不同的结构、训练过程、注意力机制和常见的一些问题。本篇主要是理论，代码demo 可以参考另一篇。">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-07T16:49:32+08:00">
-                2019-08-07
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-02T17:34:28+08:00">
+                2019-09-02
               </time>
             
           </span>
@@ -398,9 +398,7 @@
 <p>Sequence-to-sequence (seq2seq) 模型，顾名思义，其输入是一个序列，输出也是一个序列. 目前来说，对于Seq2Seq生成模型来说，主要的思路是将该问题作为条件语言模型，在已知输入序列和前序生成序列的条件下,最大化下一目标词的概率，而最终希望得到的是整个输出序列的生成出现的概率最大：<br>$$<br>P ( Y | X ) = \sum _ { t = 1 } ^ { T } \log P \left( y _ { t } | y _ { 1 : t - 1 } , X \right)<br>$$</p>
 <p>seq2seq 可以用在很多方面：机器翻译、QA 系统、文档摘要生成、Image Captioning (图片描述生成器)。</p>
 <p><a href="https://i.loli.net/2019/07/12/5d2884d8b259814374.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2019/07/12/5d2884d8b259814374.png" alt="image1.png"></a></p>
-<center><span id="fig1"> Figure 1 </span></center>
-
-<p>介绍了一个标准的seq2seq模型。 其中红色的是encoder RNN, 绿色的是decoder RNN. 他们之间 有一个连线， 也就是encoder states 传给decoder RNN，当做initial state。</p>
+<p><center><span id="fig1"> Figure 1 </span></center><br>介绍了一个标准的seq2seq模型。 其中红色的是encoder RNN, 绿色的是decoder RNN. 他们之间 有一个连线， 也就是encoder states 传给decoder RNN，当做initial state。</p>
 <p><strong> 两种不同的结构</strong> </p>
 <p>第一种， seq2seq 模型可简单理解为由三部分组成：Encoder、Decoder 和连接两者的 State Vector (中间状态向量) C 。</p>
 <p><a href="https://i.loli.net/2019/07/12/5d2884d879a1396446.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2019/07/12/5d2884d879a1396446.png" alt="image2.png"></a></p>
@@ -411,8 +409,8 @@
 <p>激活函数: softmax()</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">crossent = tf.nn.spase_softmax_cross_entropy_with_logits(</span><br><span class="line">    labels=decoder_outputs, logits=logits)</span><br><span class="line">train_loss = (tf.reduce_sum(crossent * target_weights) /</span><br><span class="line">    batch_size)</span><br></pre></td></tr></table></figure>
 <p>loss 计算:</p>
-<p>（现在有时候分不清 loss 函数，也目标函数。在语言模型中目标是 最大化语言模型，给定生成一个句子的可能性越高越好。但是这个和交叉熵有什么关系呢，交叉熵说的是两个分布之间的差异，这个是一个 有趣的话题 ）<br>神经网络的Loss计算，把每个翻译出来的单词和目标单词对应， loss 上面写的很清楚 就是 多分类的cross entropy 函数。 </p>
-<p><strong> decoder</strong></p>
+<p>交叉熵是损失函数，针对单个样本；目标函数是针对整个数据集的损失函数+ 正则项。</p>
+<p><strong>decoder</strong></p>
 <p>当你训练你的 NMT 模型时（并且一旦你已经训练了模型），可以在给定之前不可见的源语句的情况下获得翻译。这一过程被称作推理。训练与推理之间有一个明确的区分（测试）：在推理时，我们只访问源语句，即 encoder_inputs。解码的方式有很多种，常见的有greedy 解码和束搜索解码（beam-search）。</p>
 <p>我们知道在Seq2Seq模型的最终目的是希望生成的序列发生的概率最大，也就是生成序列的联合概率最大。 实际做的时候有两种算法进行 decoder。</p>
 <p>greedy decoding：（贪心算法思维，得到是一种局部最优解）<br><a href="#fig1"> Fig 1</a> 描述的是Inference 的状态， decode 输出来的每一个单词都会当做下一个时刻的输入，来进行翻译。 而在训练过程中， 因为知道翻译出来的单词是什么，就会把这个单词当做输入进行训练。 图中 inference的过程中用到了argmax, 这个函数，也就是每次都选择概率最大的那个单词当做翻译。 这个叫做greedy decoding.  这个不是optimal solution。</p>
@@ -446,6 +444,14 @@
 <p><img src="https://i.loli.net/2019/07/30/5d40530e2104e71958.png" alt="2.png"></p>
 <p>随机的使用目标语言的输出和 decoder 预测的输出。</p>
 <p>相对于 beam search而言，每个时刻只是选择 top1的那种，类似一种求解局部最优解，实际上是一种贪心算法。</p>
+<h2 id="复习"><a href="#复习" class="headerlink" title="复习"></a>复习</h2><ol>
+<li>有两种encoder-decoder 结构，区别在于中间状态信息(context) 是否被使用多次。一种是在生成每个词语的时候都用到了 context 信息，一种是只有在decoder 第一个word 的时候使用context信息。</li>
+<li>损失函数、代价函数和目标函数的区别。损失函数是针对单个样本， 代价函数是针对整个数据集，目标函数是代价函数+ 正则项。目标函数是可以最大化或者最小化，但是代价函数是需要最小化的函数。</li>
+<li>在encoder-decoder 的模型中希望生成序列发生的概率最大，也就是生成序列的联合概率最大。有两种算法来记性decoder，一种是贪心搜索，得到的是局部最优解；一种是 beam search。前者是根据模型和数据每次选择概率最大的一个；后者是选择概率最大的前K 个，这个参数称为 beam width。算法复杂度相对前者是K 倍的。</li>
+<li>exposure bias 是指在训练和predict 过程中模型输入不一致而导致的问题。比如说，在训练过程中，使用上一个真实的词输入（使用真实token 本身的行为叫做teacher forcing）到下一个预测的神经元中，而在预测的时候是没有真实词的输入。这会导致错误的累计。解决思路：(1) 使用 scheduled sampling，在训练的时候 真实单词和之前产生的单词随机选择，使得模型不过分依赖真实单词。(2): 使用beam search 的思想，通过多条路径而非单一路径缓解。</li>
+<li>连续生成重复词语问题的解决思路: (1) beam search 的思路，给出多个不同的候选词 (2) 判断惩戒，如果生成了相同的上一个词语，那么拒绝这个词语。</li>
+<li>对于decoder 中神经元的输入存在着两种模式：(1) free-running mode， 使用上一个状态的输出组委下一个状态的输入；(2) teacher forcing: 使用 真实结果进行指导，这样使得训练变得稳定，快速的收敛。</li>
+</ol>
 
       
     </div>
@@ -579,7 +585,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -590,7 +596,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -675,7 +681,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义和结构"><span class="nav-number">1.</span> <span class="nav-text">定义和结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练过程"><span class="nav-number">2.</span> <span class="nav-text">训练过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意力机制"><span class="nav-number">3.</span> <span class="nav-text">注意力机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">5.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#teaching-forcing"><span class="nav-number">5.1.</span> <span class="nav-text">teaching forcing</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义和结构"><span class="nav-number">1.</span> <span class="nav-text">定义和结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练过程"><span class="nav-number">2.</span> <span class="nav-text">训练过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意力机制"><span class="nav-number">3.</span> <span class="nav-text">注意力机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">5.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#teaching-forcing"><span class="nav-number">5.1.</span> <span class="nav-text">teaching forcing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习"><span class="nav-number">6.</span> <span class="nav-text">复习</span></a></li></ol></div>
             
 
           </div>

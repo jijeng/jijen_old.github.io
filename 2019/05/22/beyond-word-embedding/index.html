@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a478w59aj21hc0ixmzq.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a47iu166j20ck072t90.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3a487h7rej2078079mx1.jpg">
-<meta property="og:updated_time" content="2019-08-03T10:23:25.032Z">
+<meta property="og:updated_time" content="2019-09-02T03:44:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Beyond  Word Embedding">
 <meta name="twitter:description" content="从one-hot 到 word2vec， 到elmo，简单介绍一下 NLP中词向量的过程。">
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-03T18:23:25+08:00">
-                2019-08-03
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-02T11:44:08+08:00">
+                2019-09-02
               </time>
             
           </span>
@@ -501,6 +501,16 @@
 <p>参考blog:<br><a href="https://towardsdatascience.com/beyond-word-embeddings-part-2-word-vectors-nlp-modeling-from-bow-to-bert-4ebd4711d0ec" target="_blank" rel="noopener">https://towardsdatascience.com/beyond-word-embeddings-part-2-word-vectors-nlp-modeling-from-bow-to-bert-4ebd4711d0ec</a></p>
 <p><a href="http://www.abigailsee.com/2017/04/16/taming-rnns-for-better-summarization.html" target="_blank" rel="noopener">http://www.abigailsee.com/2017/04/16/taming-rnns-for-better-summarization.html</a></p>
 <p><a href="https://skymind.ai/wiki/word2vec" target="_blank" rel="noopener">https://skymind.ai/wiki/word2vec</a></p>
+<h2 id="复习笔记"><a href="#复习笔记" class="headerlink" title="复习笔记"></a>复习笔记</h2><ol>
+<li><p>评价 word embedding的方面：是否能体现语义信息；是否比其他词语更加具有代表性；</p>
+</li>
+<li><p>word2vec(或者说 CBOW or Skip-gram )的特点，输入和输出都是 one-hot 的表示，长度都是字典的长度，在某一个位置是1，其他的位置都是0. 训练过程：分词之后组成预料库，扫描所有的词频，取词频最高的V个词语，构成词汇表，词频低的就会被丢弃（所以词语的学习需要多次的，有上下文的）， 都被用一个特殊符号代替掉。损失函数是概率模型，给定上下文然后中心词出现的概率，概率是需要加上log，就组成了loss function，训练的过程中是最大化概率模型（最小化loss）。CBOW和Skip-gram 的区别：CBOW在训练的过程中将上下文加和成一个向量表示，所以最后的训练速度是快于skip-gram 但是效果没有skip-gram。后者是一个个单词进行训练的（当然训练时间也是比较长的）。对于中文的embedding size，一般180 就OK了。在负采样中负样本是根据词频挑选的，但公式中使用了一种平滑机制，使得低频词也有了一些机会，对高频词语进行了一些约束。</p>
+</li>
+<li><p>word2vec 和glove 的区别：前者是预测类的模型，后者是cout-base的模型，本质上是对共现矩阵的降维处理。每一行表示一个word，每一列表示context，共现矩阵就是计算每个word 在每个context 中出现的频率。</p>
+</li>
+<li><p>fasttext 和word2vec 的区别：输入层，word2vec 是一个term，而fasttext中包含的是term和对应的n-gram的特征；输出层， 在分类中fasttext的输出是label 信息。</p>
+</li>
+</ol>
 
       
     </div>
@@ -535,8 +545,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/27/Dynamic-Programming-Examples/" rel="prev" title="Dynamic Programming Examples">
-                Dynamic Programming Examples <i class="fa fa-chevron-right"></i>
+              <a href="/2019/05/27/Dynamic-Programming-Examples/" rel="prev" title="Dynamic Programming Examples(1)">
+                Dynamic Programming Examples(1) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -628,7 +638,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -639,7 +649,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -724,7 +734,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Traditional-Word-Vectors"><span class="nav-number">1.</span> <span class="nav-text">Traditional Word Vectors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overview-of-Neural-NLP-Architectures"><span class="nav-number">2.</span> <span class="nav-text">overview of Neural NLP Architectures</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Traditional-Word-Vectors"><span class="nav-number">1.</span> <span class="nav-text">Traditional Word Vectors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overview-of-Neural-NLP-Architectures"><span class="nav-number">2.</span> <span class="nav-text">overview of Neural NLP Architectures</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习笔记"><span class="nav-number">3.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
             
 
           </div>

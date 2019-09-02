@@ -113,7 +113,10 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eqyoxmknj20ey0d640u.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g3esxw2nilj20dh08ujth.jpg">
 <meta property="og:image" content="https://upload.cc/i1/2019/08/04/2VsB5g.png">
-<meta property="og:updated_time" content="2019-08-16T09:28:32.826Z">
+<meta property="og:image" content="https://i.loli.net/2019/08/31/mJVuLDAM1sOXrYE.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/6c304cd1ba04192c.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/31/iKZ1mdzIfgEtraS.png">
+<meta property="og:updated_time" content="2019-09-02T07:44:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP Papers Reading- BERT (***)">
 <meta name="twitter:description" content="attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequen">
@@ -338,8 +341,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-16T17:28:32+08:00">
-                2019-08-16
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-02T15:44:10+08:00">
+                2019-09-02
               </time>
             
           </span>
@@ -452,7 +455,7 @@
 <p>Transformer 模型里面涉及两种 mask，分别是 padding mask 和 sequence mask。其中 padding mask 在所有的 scaled dot-product attention 里面都需要用到，而 sequence mask 只有在 decoder 的 self-attention 里面用到。前者就是一种填充技术，使得 不定长的sequence 变成定长的sequence之后做出的一些处理。</p>
 <p><strong> Padding Mask </strong></p>
 <p>什么是 padding mask 呢？因为每个批次输入序列长度是不一样的也就是说，我们要对输入序列进行对齐。具体来说，就是给在较短的序列后面填充 0。但是如果输入的序列太长，则是截取左边的内容，把多余的直接舍弃。因为这些填充的位置，其实是没什么意义的，所以我们的attention机制不应该把注意力放在这些位置上，所以我们需要进行一些处理。<br>具体的做法是，把这些位置的值加上一个非常大的负数(负无穷)，这样的话，经过 softmax，这些位置的概率就会接近0！</p>
-<p><strong> Sequence mask</strong><br>sequence mask 是为了使得 decoder 不能看见未来的信息。也就是对于一个序列，在 time_step 为 t 的时刻，我们的解码输出应该只能依赖于 t 时刻之前的输出，而不能依赖 t 之后的输出。因此我们需要想一个办法，把 t 之后的信息给隐藏起来。那么具体怎么做呢？也很简单：产生一个上三角矩阵，上三角的值全为0。把这个矩阵作用在每一个序列上，就可以达到我们的目的。</p>
+<p><strong> Sequence mask</strong><br>sequence mask 是为了使得 decoder 不能看见未来的信息。也就是对于一个序列，在 time_step 为 t 的时刻，我们的解码输出应该只能依赖于 t 时刻之前的输出，而不能依赖 t 之后的输出。因此我们需要想一个办法，把 t 之后的信息给隐藏起来。那么具体怎么做呢？也很简单：产生一个上三角矩阵，上三角的值全为1。把这个矩阵作用在每一个序列上，就可以达到我们的目的。</p>
 <p><strong> 缺点：</strong></p>
 <p>问题一： 长输入</p>
 <p>在文本只要等篇章级别的任务重， transformer 因为计算量的复杂性，所以速度回急速变慢。所以短期内，这些方面仍然是RNN 或者CNN的应用场景（虽然两者做的也不是很好）。</p>
@@ -503,11 +506,7 @@
 <p>related work:</p>
 <p>针对传统词向量是固定的，与上下文语境无关的缺点，先前的工作多通过两种方式来解决：<br> (1) 通过引入字符级(subword)信息丰富词向量表达；<br> (2) 学习每个单词不同含义的独立向量；<br> ELMo也利用了字符卷积（Character-Convolutions）引入字符级信息，并同时结合了深度双向语言模型的各层隐状态来丰富词向量表达。</p>
 <p>P.s.：基于字符的模型不仅能够通过引入字符级信息丰富词向量表达，也能够在很大程度上解决NLP领域的OOV（Out-Of-Vocabulary）问题。</p>
-<p>ELMo用到上文提到的双向的language model, 给定N个tokens (t1, t2,…,tN), language model通过给定前面的k-1个位置的token序列计算第k个token的出现的概率:<br>$$<br>p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { 1 } , t _ { 2 } , \ldots , t _ { k - 1 } \right)<br>$$<br>后向的计算方法与前向相似:</p>
-<p>$$<br>p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { k + 1 } , t _ { k + 2 } , \ldots , t _ { N } \right)<br>$$<br>biLM训练过程中的目标就是最大化:<br>$$<br>\sum _ { k = 1 } ^ { N } \left( \log p \left( t _ { k } | t _ { 1 } , \ldots , t _ { k - 1 } ; \Theta _ { x } , \vec { \Theta } _ { L S T M } , \Theta _ { s } \right) + \log p \left( t _ { k } | t _ { k + 1 } , \ldots , t _ { N } ; \Theta _ { x } , \overline { \Theta } _ { L S T M } , \Theta _ { s } \right) \right)<br>$$</p>
-<p>ELMo对于每个token $t_k$, 通过一个L层的biLM计算出2L+1个表示:</p>
-<p>$$<br>R_{ k } = { x _ { k } ^ { L M } , \vec { h } _ { k , j } ^ { L M } , h _ { k , j } ^ { L M } | j = 1 , \ldots , L } = { h _ { k , j } ^ { L M } | j = 0 , \ldots , L }<br>$$</p>
-<p>其中$h _ { k , 0 } ^ { L M }$是对token进行直接编码的结果(这里是字符通过CNN编码), $h _ { k , j } ^ { L M } = \left[ \vec { h } _ { k , j } ^ { L M } ; \overline { h } _ { k , j } \right]$ 是每个biLSTM层输出的结果. 在实验中还发现不同层的biLM的输出的token表示对于不同的任务效果不同.</p>
+<p>ELMo用到上文提到的双向的language model, 给定N个tokens (t1, t2,…,tN), language model通过给定前面的k-1个位置的token序列计算第k个token的出现的概率:<br>$$<br>p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { 1 } , t _ { 2 } , \ldots , t _ { k - 1 } \right)<br>$$<br>后向的计算方法与前向相似:<br>$$<br>p \left( t _ { 1 } , t _ { 2 } , \ldots , t _ { N } \right) = \prod _ { k = 1 } ^ { N } p \left( t _ { k } | t _ { k + 1 } , t _ { k + 2 } , \ldots , t _ { N } \right)<br>$$<br>biLM训练过程中的目标就是最大化:<br>$$<br>\sum _ { k = 1 } ^ { N } \left( \log p \left( t _ { k } | t _ { 1 } , \ldots , t _ { k - 1 } ; \Theta _ { x } , \vec { \Theta } _ { L S T M } , \Theta _ { s } \right) + \log p \left( t _ { k } | t _ { k + 1 } , \ldots , t _ { N } ; \Theta _ { x } , \overline { \Theta } _ { L S T M } , \Theta _ { s } \right) \right)<br>$$<br>ELMo对于每个token $t_k$, 通过一个L层的biLM计算出2L+1个表示:<br>$$<br>R_{ k } = { x _ { k } ^ { L M } , \vec { h } _ { k , j } ^ { L M } , h _ { k , j } ^ { L M } | j = 1 , \ldots , L } = { h _ { k , j } ^ { L M } | j = 0 , \ldots , L }<br>$$<br>其中$h _ { k , 0 } ^ { L M }$是对token进行直接编码的结果(这里是字符通过CNN编码), $h _ { k , j } ^ { L M } = \left[ \vec { h } _ { k , j } ^ { L M } ; \overline { h } _ { k , j } \right]$ 是每个biLSTM层输出的结果. 在实验中还发现不同层的biLM的输出的token表示对于不同的任务效果不同.</p>
 <p>应用中将ELMo中所有层的输出R压缩为单个向量, ELMok=E(Rk;Θϵ), 最简单的压缩方法是取最上层的结果做为token的表示:$E \left( R _ { k } \right) = h _ { k , L } ^ { L M }$ 更通用的做法是通过一些参数来联合所有层的信息:<br>$$E L M o _ { k } ^ { t a s k } = E \left( R _ { k } ; \Theta ^ { t a s k } \right) = \gamma ^ { t a s k } \sum _ { j = 0 } ^ { L } s _ { j } ^ { t a s k } h _ { k , j } ^ { L M }$$</p>
 <p>其中$s_j$是一个softmax出来的结果, $γ$是一个任务相关的scale参数, 我试了平均每个层的信息和学出来$s_j$发现学习出来的效果会好很多. 文中提到$γ$在不同任务中取不同的值效果会有较大的差异, 需要注意, 在SQuAD中设置为0.01取得的效果要好于设置为1时.</p>
 <p>ELMo: Context Matters</p>
@@ -524,8 +523,7 @@
 <p>优缺点：</p>
 <p>在ELMo中，嵌入基于一个双层的双向语言模型（biLM）的内部状态计算，ELMo也是因此得名的：Embeddings from Language Models（来自语言模型的嵌入）。<br>ELMo的特性：<br>ELMo的输入是字符而不是单词。这使得它可以利用子字（sub-word）单元为词汇表以外的单词计算有意义的表示（和FastText类似）。<br>ELMo是biLM的多层激活的连接（concatenation）。语言模型的不同层编码了单词的不同信息。连接所有层使得ELMo可以组合多种词表示，以提升下游任务的表现。</p>
 <h2 id="OpenAI-GPT"><a href="#OpenAI-GPT" class="headerlink" title="OpenAI GPT"></a>OpenAI GPT</h2><p>它的思想其实也很简单，使用Transformer来学习一个语言模型，对句子进行无监督的Embedding，然后根据具体任务对Transformer的参数进行微调。</p>
-<p>这篇论文中的 多任务学习是如何体现的呢？<br>首先是无监督的pretraining 中有一个语言模型，需要优化一个最大似然估计 L1，然后再监督的fine-tuning 中有一个交叉熵损失函数，这里也是有一个loss ，记为L2。正常情况下，我们应该调整参数最大化L2， 但是我们使用的是多任务学习，同时让它最大似然L1 和L2。</p>
-<p>$$<br>L_{3}(\mathcal{C})=L_{2}(\mathcal{C})+\lambda \times L_{1}(\mathcal{C})<br>$$</p>
+<p>这篇论文中的 多任务学习是如何体现的呢？<br>首先是无监督的pretraining 中有一个语言模型，需要优化一个最大似然估计 L1，然后再监督的fine-tuning 中有一个交叉熵损失函数，这里也是有一个loss ，记为L2。正常情况下，我们应该调整参数最大化L2， 但是我们使用的是多任务学习，同时让它最大似然L1 和L2。<br>$$<br>L_{3}(\mathcal{C})=L_{2}(\mathcal{C})+\lambda \times L_{1}(\mathcal{C})<br>$$</p>
 <h2 id="BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding"><a href="#BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding" class="headerlink" title="BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"></a>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</h2><p>嵌入（Embedding）的新时代<br>到目前为止，词嵌入一直是影响NLP模型处理语言的主要力量。但是我们使用GloVe，那么“stick”这个词将由一个向量表示，无论上下文是什么。所以词嵌入的方式并没有解决上下文的问题。ELMo 解决了这个问题：捕捉单词的上下文信息。ELMo不是对每个单词使用固定嵌入，而是在为其中的每个单词分配嵌入之前查看整个句子，它使用在特定任务上训练的双向LSTM来创建这些嵌入。</p>
 <p>BERT全称是Bidirectional Encoder Representations from Transformers，取了核心单词的首字母而得名，从名字我们能看出该模型两个核心特质：依赖于Transformer以及双向。</p>
 <p>首先介绍BERT的两种型号：</p>
@@ -718,6 +716,105 @@
 </ul>
 <p>总结：</p>
 <p>Sentence Embedding的质量往往由训练数据和Encoder共同决定。Encoder不一定是越复杂越好，需要依据下游任务、计算资源、时间开销等多方面因素综合考虑。</p>
+<h2 id="BERT的理解"><a href="#BERT的理解" class="headerlink" title="BERT的理解"></a>BERT的理解</h2><p><strong>词汇扩展：</strong></p>
+<p>对于词向量中 OOV 问题的处理方法：</p>
+<ol>
+<li>如果使用词向量分词的话，一种常见的是字节维度 n-gram 模型，也就是把一个单词分成多个部分，比如说playing 分成play he ##ing 两个token，这种更加细粒度的划分是一种常见的处理oov 的方式。</li>
+<li>但是在工业界，经常使用多个不同的语言模型得到word2vec， 可以分成两类，一类是针对该任务训练的word2vec，一类是在通用的模型下进行训练的word2vec， 并且当这种训练方法不同的时候，最后得到的结果也是不同的。通过不同的任务进行补充。在一定程度上是可以缓解 oov 问题的。</li>
+</ol>
+<p>在句子向量中进行词汇扩展的方式：常见的是使用 word2vec的词向量来进行扩展句子向量中的词向量。</p>
+<p><strong>ELMo</strong></p>
+<p>思路是使用双向RNN 在大量未标注数据上训练语言模型，对于之后特定的任务，我们使用这个语言模型进行特征提取得到输出的向量。和 word2vec 不同的是，这个embedding 是有上下文的。比如说 bank的embedding 的上下文如果有river 那么就是水边的意思；如果上下文有money 那么更可能是银行的意思。</p>
+<p>实现： 基于lstm 进行实现的，总的loss 是前后两个loss的相加，优化的时候，两个lstm的交叉熵加起来是最小的。</p>
+<p>openai 出的 GPT (generative pre-training)， 得到的语言模型中的参数不是固定的，是可以根据特定的任务进行微调，使得词向量更加匹配特定的任务。思想也是很简单，使用transformer学习一个语言模型，对句子进行无监督的embedding，然后根据特定的任务对transformer的参数进行微调。</p>
+<p>无监督的预训练：<br>最初的时候 transformer是用来进行机器翻译的，encoder 得到的输出输入到decoder中去。但是在GPT 中的模型，encoder 是用来预测下一个词的。但是基于self-attention的基本结构，它是能够看中心词汇左右两边的上下文，这个特点和想要达到的任务是不符合要求的。所以这里使用到了 mask的原理，将中心词后面的词汇遮住，然后进行训练。</p>
+<p>有监督的fine-tuning<br>当只有一个句子（分类问题）</p>
+<p>使用简单的分类问题作为一个例子，给定一个句子(x1, …xn)，然后给定标签。然后再最上层加上一个softmax，使用交叉熵损失函数计算loss，从而根据数据调整之前 transformer 和softmax 中weights 的参数。</p>
+<p>本来按照elmo 的思想，我们可以fixed（固定）encoder 这个语言模型中的参数，然后只是训练最后softmax 中weights 的参数，但是这里同时去优化 encoder 和最后softmax 的参数，就类似一种多任务学习，同时优化了两个loss，并且这两个loss 中是可以设置权重的，所以从理论上讲模型是具有更好的泛化性能的。（对于前一个loss 的训练，因为前者是无监督的，所以这里只是使用了其中的x，而没有使用其中的y）并且训练速度也会提高，为什么这么说呢？因为是基于大的已经训练好的数据集上进行fine tune，得到的结果可以用不会太差来进行描述，那么你的loss 也会相应的不会太大，所以需要的迭代的次数也不会很多。</p>
+<p>当有两个句子的时候（比如相似度的计算或者问答系统）。<br>需要使用特殊的技巧将两个序列变成一个输入序列。<br>（上面有个图是可以非常清楚的展示如何处理多种不同输入）</p>
+<p>对于只有一个序列的任务，可以在前后加上两个特殊token，”start” 和”extract”，分别表示开始和结束；对于两个序列，可以在中间加上一个特殊的token, “delim”，输出是三分类标签中的一个。如果是相似度计算，因为对称性，可以把他们交换顺序，然后输入两个transformer。</p>
+<p><img src="https://i.loli.net/2019/08/31/mJVuLDAM1sOXrYE.png" alt="1.png"></p>
+<p>好终于进入了bert 的学习：</p>
+<p>问题： 传统的ELMo 或者GPT 最大的问题是语言模型是单向，不同同时得到前后两个方向的信息。注意transformer中的self-attention 从理论上是可以同时handle 前后上下文的，但是这里使用了mask 机制，所以这种方式也是不行的。<br>防止过拟合的方法：<br>通过对网络结构的约束，比如CNN的局部特效，RNN的时序特效，多层网络的层次结构，对它进行了很多约束，从而使得能够收敛到最佳的参数。</p>
+<p>解决方案：<br>在BERT之前，LM 通常是单向的，常见的做法是分别训练正向和反向的LM，然后再做一个ensemble得到的上下文相关表示。这样的做法是会有信息缺失的问题的。</p>
+<p>BERT  是 “Bidirectional Encoder Representations from Transformers” 的缩写，B表示模型能够同时利用前后两个方向的信息，而ELMo和GPT 只能是单个方向的。</p>
+<p>而bert 仍然使用的是 transformer模型，那么是如何解决语言模型中的只利用一个方向的问题呢？因为bert 不是普通的语言模型，而是一种mask 语言模型。</p>
+<p><strong> bert 的输入表示：</strong><br>输入是两个句子，然后是对于每个token 进行3 个embedding：词的embedding， 位置的embedding和segment 的embedding。词语的embedding 是非常常见的，位置embedding引入了词语的顺序信息，segment 的embedding可以学习到不同的segment的信息。<br><img src="https://i.bmp.ovh/imgs/2019/07/6c304cd1ba04192c.png" alt=""><br>位置向量是因为transformer 不像传统的RNN 那样能够很好的处理时序，所以人为加入了表示位置的向量。</p>
+<p>这种海量数据还是很重要的。</p>
+<p>bert 模型是需要有一个固定的sequence的长度，比如说是128，如果不够了会padding，如果多了会进行裁剪。</p>
+<p>Mask LM 和NSP 分别对应的是词级别和句子级别的任务，效果很好。bert也是一种语言模型，在语料训练过程中，是把这两个任务的损失函数相加，同时学习这两个任务。所以这个就是一种多任务学习方式。BERT是通过两个辅助任务训练语言模型。</p>
+<p><strong>Mask LM（bert 的第一个重点终于来了）</strong></p>
+<p>mask语言模型类似完形填空，给定一个句子，然后把其中的某个词遮挡起来，让人猜测可能的词语。这个会随机mask 15%的词， 然后让bert 来预测这些mask 的词，同归调整模型的参数使得模型预测正确的概率尽可能的大，这个等价于交叉熵的损失函数。这样的transformer在编码一个词的时候（必须）参考上下文的信息。</p>
+<p>但是还有一个问题，就是在pretraineing mask LM 时候会出现一些特殊的token，但是在fine-tuning 时候并不会出现，这个时候就出现了mismatch 的问题。因此在bert中，如果某个token 被选中之后， 会随机按照以下的方式随机的执行：</p>
+<ul>
+<li>80%随机替换成mask</li>
+<li>10%替换成随机的一个词</li>
+<li>10%概率替换成单词本身</li>
+</ul>
+<p>因此，当他看到了 [mask或者apple 的时候，强迫模型在编码的时候不能太依赖当期的词，而是要考虑上下文，甚至进行上下文的“纠错”。</p>
+<p><strong>预测句子关系（bert模型中第二个训练任务）</strong></p>
+<p>在问答中，前后两个句子有一定的关联关系，我们希望bert pretraining 的模型能够学习到这种关系。因此bert 增加了一种新的额学习任务–预测两个句子是否有关联关系。这个训练集要求是文章（有上下文关系的句子）。对于这个任务，bert 以50%的概率随机抽取两个无关的句子，50%的概率抽取有关联的句子。（这个句子是经过token处理的句子）</p>
+<p>实验证明该项任务是可以明显给QA和NLI 类任务带来提升的。</p>
+<p>fine-tuning </p>
+<p>共有四种任务，</p>
+<p><img src="https://i.loli.net/2019/08/31/iKZ1mdzIfgEtraS.png" alt="2.png"></p>
+<p>（使用过的是两种任务，a和b，分别进行 sentence pair classification 和single sentence classification）<br>对于普通的分类任务，输入是一个序列，如图右上所示，所有的token 都是属于同一个segment，然后再模型的最后一层接上一个softmax进行分类， 用分类数据进行fine tuning</p>
+<p>对于相似度计算等输入为两个序列的任务，过程如左上所示；两个序列的token 是对应着不同的segment(id =0/1)。在最后一层加上softmax 进行分类，然后使用分类数据进行fine-tuning </p>
+<p>第三类任务是序列标注，比如命名实体识别，使用右下的方式进行训练。</p>
+<p>第四类是问答类问题，输入是一个问题和一段很长包含答案文字（paragraph），输出在这段文字里找到的问题的答案。</p>
+<p>在参数设置上，作者建议大部分的参数不用变，只是修改batch size， learning rate 和 number of epochs 就可以了：<br>batch size: 16,32<br>learning rate(adam): 5e-5, 3e-5, 2e-5<br>number of epochs: 3, 4<br>并且训练数据集越大，对超参数就越不敏感，而且fine tune 一般来说收敛的是比较快的。</p>
+<p>对于中文来说，bert对中文提供的模型是基于字的，而word2vec 是基于词的，所以当word2vec的词向量效果越好，那么这个差距是越大的。</p>
+<p>有监督的模型效果好，但是有标签的数据获取非常难。一种有效的解决方案是采用多任务学习(multi task learning MLT), 一方面可以在数据集标注较少的情况下利用其它相似任务的标注数据，另一方面可以降低针对特定任务的过拟合，起到正则化的作用。</p>
+<p>Resnet, BERT都告诉我们： 更大的数据规模，更多样性的数据和更高的数据质量。数据还是比较关键的。</p>
+<p>bert 模型的缺点：</p>
+<ol>
+<li>对于篇章级别的任务，transformer的计算量复杂，速度是变得很慢。解决方案是进行长输入的切分</li>
+<li>网络结构的过于复杂</li>
+</ol>
+<h2 id="transformer-的理解"><a href="#transformer-的理解" class="headerlink" title="transformer 的理解"></a>transformer 的理解</h2><p><em>Transformer</em> 其采用 <em>Self Attention</em> 来学习序列的表示, 具体的是: <em>Scaled Dot-Product Attention</em>. 为解决位置信息 (Position Information) 丢失问题, 模型将 <em>Positional Encpding</em> 与 Input Embedding 结合；为防止 decoder 中后续位置 (模型可并行计算) 对前面位置的影响, 模型在 decoder 中使用了 Mask 以使位置 ii 处的预测只依赖于前面的输出.</p>
+<p>Transformer由且仅由self-Attenion和Feed Forward Neural Network组成。一个基于Transformer的可训练的神经网络可以通过堆叠Transformer的形式进行搭建.作者的实验是通过搭建编码器和解码器各6层，总共12层的Encoder-Decoder(这个只是一个通用的框架，实际上是可以根据自己的需求进行不同的层的增减)</p>
+<p>Multi-Head Attention相当于 多个不同的self-attention的集成（ensemble）。</p>
+<p>如何表示位置信息？</p>
+<p>常见的模式有：a. 根据数据学习；b. 自己设计编码规则。在这里作者采用了第二种方式。编码公式如下：</p>
+<p>$$<br>P E(\text { pos, } 2 i)=\sin \left(\frac{\text { pos }}{10000^{\frac{2 i}{\text { model }}}}\right)<br>$$</p>
+<p>$$<br>P E(p o s, 2 i+1)=\cos \left(\frac{p o s}{10000^{\frac{2 i}{d_{m o d e l}}}}\right)<br>$$</p>
+<p>上式中，$pos$ 表示当前单词在句子中的位置，可以看出对于偶数位，使用正弦编码，对于奇数位使用余弦编码.。$d$ 表示模型的维度。除了单词的绝对位置，单词的相对位置也非常重要。这就是为什么使用正弦和余弦函数。根据公式$\sin (\alpha+\beta)=\sin \alpha \cos \beta+\cos \alpha \sin \beta$ 和$\cos (\alpha+\beta)=\cos \alpha \cos \beta-\sin \alpha \sin \beta$，这表明位置$k+p$  的位置向量可以表示为位置  $k$的特征向量的线性变化，这为模型捕捉单词之间的相对位置关系提供了非常大的便利。</p>
+<p>谷歌还特意将这种方式构造的向量和学习得到的向量作对比，发现效果接近，然后谷歌就用这个构造式的，因为虽然效果接近，但这种构造式的更能在使用中适应不同长度序列。</p>
+<p>将位置向量和词向量进行加和得到最终输入向量，所以前面我们看到词向量和位置向量维度是相同的。</p>
+<p><strong>两种mask 技术</strong></p>
+<p>padding mask：mask对某些值进行掩盖，使其不产生效果。我们每次批处理序列的长度是不一样的，所以我们需要对齐，具体来说是在较短序列中填充0. 而attention机制不应该把注意力放在这些位置上。具体做法是这些位置上加上一个非常大的负数，这样经过softmax，这些位置的概率就会接近0.</p>
+<p>在 encoder 和decoder 中都使用。</p>
+<p>sequence mask：是为了decoder 不能看见未来的信息，进行预测的时候只是依赖前$i$ 个单词的信息。具体做法，产生一个上三角形，上三角形值全部为1，下三角形和对角线都是0，作用在序列上就可以达到目的。只是在decoder 中使用。</p>
+<p>对于 attention 机制的分类</p>
+<p>可以从多角度对 Attention 进行分类，如从信息选择的方式上，可以分为 Soft attention 和 Hard attention。从信息接收的范围上可分为 Global attention 和 Local attention。</p>
+<p>global attention 中所有的信息都要参与计算，这样计算的开销就比较大，而别当encoder 的句子比较长时，如一段话或一篇文章。所以提出了 local attention的概念</p>
+<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>attention 机制是对于不同的词，在处理的时候给予不同的权重。最初是使用在机器翻译上，可以用来解决对齐问题。多头注意力机是点乘的升级版本，类似集成（ensemble） 的思想， 不同子空间的融合。</p>
+<p>SIF 中第一个公式中 $\alph$ 是一个超参数，一种平滑项，对于低频词的支持，即使出现的次数少，也还是有权重的。</p>
+<p>语序、语义和位置信息，这个都是相同的含义的不同表达。</p>
+<ol>
+<li>transformer 相关总结</li>
+</ol>
+<p>transformer 的结构：encoder 是由相同的6 个层组成，每个层是由多头自我注意力机制和全连接网络组成；层和层之间使用残差网络连接。decoder 也是由相同的6个层组成，decoder 是由masked 多头机制，用来保证预测第 $i$ 个位置的时候，只是依赖小于$i$ 的输入。多头attention 机制，原理很简单，想要从不同的方面维度处理信息，类似CNN中的filter 的概念，可以得到不同语义空间投射文本，然后将多个矩阵连在一起。transformer中使用padding mask 和sequence mask 两种mask 技术，分别是padding mask和 sequence mask，其中padding mask 是一种填充技术，使得不定长的sequence变成定长的sequence。</p>
+<p>transformer 的输入和输出都是词向量+位置向量。对于位置信息有两种处理手段，一种是通过网络学习，一种是</p>
+<p>设计编码规则。作者使用的是后者。使用单词的位置和单词的维度对单词进行位置编码，分别使用sin()和 cosine()函数计算位置信息，编码是一个长度为$d_{\text {model}}$ 的特征向量。该向量除了考虑绝对位置，还可以考虑到单词的相对位置。</p>
+<p>transformer 的计算上的优势，之前的RNN 是序列线性结构，句首的信息要经过n 次RNN 才能到达句尾，无法并行运算。而self-attention可以连接任意两个节点，所以可以进行并行运算。</p>
+<p>batch normalization 和 layer normalization 的区别？前者依赖于 batch size，经常使用在CNN  中，是不同样本在同一个特征上的归一化；后者是在样本上不同特征进行的归一化，经常在RNN中使用。</p>
+<ol start="2">
+<li>ELMo </li>
+</ol>
+<p>(1 ) 得到的特征是有上下文的，模型上使用的是bi-lstm 进行训练。好处，对于多义词有不同的embedding，缓解了歧义的发生。实现：正向一个loss，反向一个loss，相加，然后一起进行最小化。</p>
+<p>(2 ) ELMo 也引入了字符级信息，不仅丰富了词向量的表达，也很大程度上解决了NLP 领域中OOV 问题。</p>
+<ol start="3">
+<li>OpenAI GPT</li>
+</ol>
+<p>基于 transformer学习一个语言模型，对句子进行无监督的embedding，然后根据具体的任务对参数进行微调。</p>
+<ol start="4">
+<li>BERT</li>
+</ol>
+<p>两个比较巧妙的预训练模型：mask learning 和 predicting next sentence。通过这两个模型在大语料中进行无监督的学习。</p>
+<p>bert 的输入：</p>
+<p>(1) 词向量 (2)  segment embedding用来区别两个句子，因为bert 语言模型还要做两个句子输入的分类模型 (3) position embedding 通过公式计算的。</p>
+<p>bert 和ELMo 的区别: (1) ELMo 的基础是LSTM，而BERT使用 transformer 作为基本模型(2) 目标函数不同，ELMo是两个单个loss 的相加，后者是给定上下文，然后预测中心词，这种是同时的。</p>
 
       
     </div>
@@ -742,8 +839,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/27/Dynamic-Programming-Examples/" rel="next" title="Dynamic Programming Examples">
-                <i class="fa fa-chevron-left"></i> Dynamic Programming Examples
+              <a href="/2019/05/27/Dynamic-Programming-Examples/" rel="next" title="Dynamic Programming Examples(1)">
+                <i class="fa fa-chevron-left"></i> Dynamic Programming Examples(1)
               </a>
             
           </div>
@@ -845,7 +942,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -856,7 +953,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -941,7 +1038,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#attention-is-all-you-need"><span class="nav-number">1.</span> <span class="nav-text">attention is all you need</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#transformer-的结构"><span class="nav-number">1.1.</span> <span class="nav-text">transformer 的结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deep-Contextualized-Word-Representations"><span class="nav-number">2.</span> <span class="nav-text">Deep Contextualized Word Representations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenAI-GPT"><span class="nav-number">3.</span> <span class="nav-text">OpenAI GPT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding"><span class="nav-number">4.</span> <span class="nav-text">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预训练过程"><span class="nav-number">4.1.</span> <span class="nav-text">预训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">4.2.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-simple-but-tough-to-beat-baseline-for-sentence-embeddings"><span class="nav-number">5.</span> <span class="nav-text">A simple but tough-to-beat baseline for sentence embeddings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Supervised-Learning-of-Universal-Sentence-Representations-from-Natural-Language-Inference-Data"><span class="nav-number">6.</span> <span class="nav-text">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Universal-Sentence-Encoder"><span class="nav-number">7.</span> <span class="nav-text">Universal Sentence Encoder</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#attention-is-all-you-need"><span class="nav-number">1.</span> <span class="nav-text">attention is all you need</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#transformer-的结构"><span class="nav-number">1.1.</span> <span class="nav-text">transformer 的结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deep-Contextualized-Word-Representations"><span class="nav-number">2.</span> <span class="nav-text">Deep Contextualized Word Representations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenAI-GPT"><span class="nav-number">3.</span> <span class="nav-text">OpenAI GPT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding"><span class="nav-number">4.</span> <span class="nav-text">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预训练过程"><span class="nav-number">4.1.</span> <span class="nav-text">预训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">4.2.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-simple-but-tough-to-beat-baseline-for-sentence-embeddings"><span class="nav-number">5.</span> <span class="nav-text">A simple but tough-to-beat baseline for sentence embeddings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Supervised-Learning-of-Universal-Sentence-Representations-from-Natural-Language-Inference-Data"><span class="nav-number">6.</span> <span class="nav-text">Supervised Learning of Universal Sentence Representations from Natural Language Inference Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Universal-Sentence-Encoder"><span class="nav-number">7.</span> <span class="nav-text">Universal Sentence Encoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT的理解"><span class="nav-number">8.</span> <span class="nav-text">BERT的理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer-的理解"><span class="nav-number">9.</span> <span class="nav-text">transformer 的理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#笔记"><span class="nav-number">10.</span> <span class="nav-text">笔记</span></a></li></ol></div>
             
 
           </div>

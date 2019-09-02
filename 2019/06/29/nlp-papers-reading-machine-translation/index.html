@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/2cf84d89fe5fc1a4.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/82e16ed9bc913351.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/9e79af473abb92ec.png">
-<meta property="og:updated_time" content="2019-08-14T02:22:02.111Z">
+<meta property="og:updated_time" content="2019-09-02T08:39:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP Papers Reading-Machine Translation">
 <meta name="twitter:description" content="简单介绍一下 翻译系统的发展过程 然后附上两篇该方面论文的阅读笔记， 即Sequence to Sequence Learning with Neural Network 和 Effective Approaches to Attention-based Neural Machine Translation。">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-14T10:22:02+08:00">
-                2019-08-14
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-02T16:39:22+08:00">
+                2019-09-02
               </time>
             
           </span>
@@ -439,6 +439,13 @@
 <p>soft or hard attention 还是 global or local attention是从不同的角度进行分类的，前者是在概率分布上，后者是在 context上。</p>
 <p>这个是global attention：<br><img src="https://i.bmp.ovh/imgs/2019/06/82e16ed9bc913351.png" alt=""></p>
 <p>这个是 local attention<br><img src="https://i.bmp.ovh/imgs/2019/06/9e79af473abb92ec.png" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>三种不同的attention 种类</li>
+</ol>
+<p>attention 分成 hard 和soft 两种模式，简单理解 hard attention 就是从source sentence中国找到一个能够产生 $t^{th}$ 的特定单词，把这个单词设置成1，其他单词设置成0；而soft attention （global attention）是把source sentence中每个单词都给出一个对齐的概率模型，得到一个分布，然后整个模型是处处可分的。而前者不是处处可分的。local attention是相对于 global attention而言的，不是得到一个全局的attention，而是全局的子集，这样可以降低计算attention 的花费，得到一个相关信息的窗口。</p>
+<ol start="2">
+<li>nlp 中一般的发展路径: 显示基于 rule-base，然后是基于概率分布的，接着是NN， encoder-decoder框架，可能加上一些小的trick 比如说attention 机制来处理比较长的句子。</li>
+</ol>
 
       
     </div>
@@ -566,7 +573,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -577,7 +584,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -662,7 +669,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#五个主要的发展过程"><span class="nav-number">1.</span> <span class="nav-text">五个主要的发展过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两篇machine-translation-论文"><span class="nav-number">2.</span> <span class="nav-text">两篇machine translation 论文</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#五个主要的发展过程"><span class="nav-number">1.</span> <span class="nav-text">五个主要的发展过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两篇machine-translation-论文"><span class="nav-number">2.</span> <span class="nav-text">两篇machine translation 论文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>

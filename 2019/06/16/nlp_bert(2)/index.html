@@ -79,17 +79,19 @@
 
 
 
-<meta name="description" content="最长01相同子串已知一个长度为N的字符串，只由0和1组成， 求一个最长的子串，要求该子串出现0和1的次数相等。思路：最简单的方式是先生成字串，然后判断每个字串是否满足0的个数和1的个数相同。这种暴力求解时间复杂度O(n^3),明显是不合理的。下面说一下简单的做法：定义一个数组B[N]，B[i]表示从A[0…i]中 num_of_0 - num_of_1，0的个数与1的个数的差 。那么如果A[i]">
+<meta name="description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
 <meta property="og:type" content="article">
-<meta property="og:title" content="那些年的算法题目（二）">
-<meta property="og:url" content="http://yoursite.com/2018/07/21/那些年的算法题目（二）/index.html">
+<meta property="og:title" content="BERT学习笔记(2)">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/nlp_bert(2)/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="最长01相同子串已知一个长度为N的字符串，只由0和1组成， 求一个最长的子串，要求该子串出现0和1的次数相等。思路：最简单的方式是先生成字串，然后判断每个字串是否满足0的个数和1的个数相同。这种暴力求解时间复杂度O(n^3),明显是不合理的。下面说一下简单的做法：定义一个数组B[N]，B[i]表示从A[0…i]中 num_of_0 - num_of_1，0的个数与1的个数的差 。那么如果A[i]">
+<meta property="og:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-24T00:53:24.000Z">
+<meta property="og:image" content="https://i.loli.net/2019/08/16/E8lZBTc7JAfWVvC.png">
+<meta property="og:updated_time" content="2019-09-02T08:22:12.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="那些年的算法题目（二）">
-<meta name="twitter:description" content="最长01相同子串已知一个长度为N的字符串，只由0和1组成， 求一个最长的子串，要求该子串出现0和1的次数相等。思路：最简单的方式是先生成字串，然后判断每个字串是否满足0的个数和1的个数相同。这种暴力求解时间复杂度O(n^3),明显是不合理的。下面说一下简单的做法：定义一个数组B[N]，B[i]表示从A[0…i]中 num_of_0 - num_of_1，0的个数与1的个数的差 。那么如果A[i]">
+<meta name="twitter:title" content="BERT学习笔记(2)">
+<meta name="twitter:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/16/E8lZBTc7JAfWVvC.png">
 
 
 
@@ -119,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/07/21/那些年的算法题目（二）/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/06/16/nlp_bert(2)/"/>
 
 
 
@@ -138,7 +140,7 @@
 	})();
 </script>
 
-  <title>那些年的算法题目（二） | Jijeng's blog</title>
+  <title>BERT学习笔记(2) | Jijeng's blog</title>
   
 
 
@@ -265,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/那些年的算法题目（二）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/16/nlp_bert(2)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -282,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">那些年的算法题目（二）</h1>
+          <h1 class="post-title" itemprop="name headline">BERT学习笔记(2)</h1>
         
 
         <div class="post-meta">
@@ -294,8 +296,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-21T14:13:54+08:00">
-                2018-07-21
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-16T09:35:36+08:00">
+                2019-06-16
               </time>
             
 
@@ -310,8 +312,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-24T08:53:24+08:00">
-                2019-08-24
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-02T16:22:12+08:00">
+                2019-09-02
               </time>
             
           </span>
@@ -329,8 +331,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
                   </a>
                 </span>
 
@@ -347,9 +349,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/21/那些年的算法题目（二）/#comments" itemprop="discussionUrl">
+                <a href="/2019/06/16/nlp_bert(2)/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/07/21/那些年的算法题目（二）/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/06/16/nlp_bert(2)/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,16 +384,53 @@
       
 
       
-        <h2 id="最长01相同子串"><a href="#最长01相同子串" class="headerlink" title="最长01相同子串"></a>最长01相同子串</h2><p>已知一个长度为N的字符串，只由0和1组成， 求一个最长的子串，要求该子串出现0和1的次数相等。<br>思路：<br>最简单的方式是先生成字串，然后判断每个字串是否满足0的个数和1的个数相同。这种暴力求解时间复杂度O(n^3),明显是不合理的。<br>下面说一下简单的做法：<br>定义一个数组B[N]，B[i]表示从A[0…i]中 num_of_0 - num_of_1，0的个数与1的个数的差 。那么如果A[i] ~ A[j]是符合条件的子串，一定有 B[i] == B[j]，因为中间的部分0、1个数相等，相减等于0。</p>
-<p><strong>时间复杂度：O(n)，空间复杂度：O(n)</strong></p>
-<p>注意这个是求解的长度，是一个最值问题，而不是最长的01 子串本身。所以使用临时数组记录目前为止的01 的差值，然后选择最大的就行了。时间复杂度是O(N)，空间复杂度是O(N)。</p>
-<p>算法的优化的关键在于，可以基于前一步的计算结果继续往下计算。前一步算出了 (i-1) 的01 的差值，那么下一步可以计算前 i 的01 的差值。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengest01SubStr</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    最长0,1 相等的子串长度</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    count =[<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">    B =[<span class="number">0</span>]*len(s)</span><br><span class="line">    dic =&#123;&#125; <span class="comment"># 保存 0 1 的差值</span></span><br><span class="line">    lengest =<span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)):</span><br><span class="line">        count[int(s[i])]  +=<span class="number">1</span></span><br><span class="line">        B[i]  =count[<span class="number">0</span>] - count[<span class="number">1</span>]</span><br><span class="line">        <span class="comment"># start from 0th index</span></span><br><span class="line">        <span class="keyword">if</span> B[i] ==<span class="number">0</span>:</span><br><span class="line">            lengest +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> B[i] <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="comment"># i -dic[B[i]] , not from 0th index</span></span><br><span class="line">            lengest =max(lengest, i- dic[B[i]])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            dic[B[i]] =i</span><br><span class="line">    <span class="keyword">return</span> lengest</span><br><span class="line"></span><br><span class="line">a =<span class="string">'1011010'</span></span><br><span class="line">b =<span class="string">'10110100'</span></span><br><span class="line">print(lengest01SubStr(a)) <span class="comment"># 6 # '011010'</span></span><br><span class="line">print(lengest01SubStr(b)) <span class="comment"># 8 # '10110100'</span></span><br></pre></td></tr></table></figure>
-<h2 id="顺时针打印矩阵"><a href="#顺时针打印矩阵" class="headerlink" title="顺时针打印矩阵"></a>顺时针打印矩阵</h2><p>输入一个矩阵，按照从外向里以顺时针的顺序依次扫印出每一个数字。</p>
-<p>使用四个循环，就可以解决，这个应该属于找规律的题目。</p>
-<p>思路：<br>找到左上角的，一个start_point， 然后根据这个点进行上下左右的循环。</p>
-<p>python 中的 range() 是一种左闭右开的区间，并且在逆序遍历的时候，区间的值是不变的，最后使用 -1 就OK了。还有遍历时候的 i, j 都只是一种index，如果一个够用的话，那么就没有必要使用两个。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printMatrix</span><span class="params">(matrix)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> matrix <span class="keyword">or</span> matrix ==[[]]:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">        <span class="comment"># 第一次见这样判断空的matrix</span></span><br><span class="line">    row =len(matrix)</span><br><span class="line">    column =len(matrix[<span class="number">0</span>])</span><br><span class="line">    <span class="comment"># 这里的left, right, up, down 都是真实能够access到数据的</span></span><br><span class="line"></span><br><span class="line">    left =<span class="number">0</span></span><br><span class="line">    right =column <span class="number">-1</span></span><br><span class="line">    up =<span class="number">0</span></span><br><span class="line">    down =row <span class="number">-1</span></span><br><span class="line">    res =[]</span><br><span class="line">    <span class="keyword">while</span> left &lt;right <span class="keyword">and</span> up &lt;down:</span><br><span class="line">        <span class="comment"># from left to right</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left, right+<span class="number">1</span>): </span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">        <span class="comment"># from up to down</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(up+<span class="number">1</span>, down+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[i][right])</span><br><span class="line">        <span class="comment"># from right to left</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(right<span class="number">-1</span>, left<span class="number">-1</span>, <span class="number">-1</span>): </span><br><span class="line">            res.append(matrix[down][i])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(down<span class="number">-1</span>, up, <span class="number">-1</span>):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">        left +=<span class="number">1</span></span><br><span class="line">        right -=<span class="number">1</span></span><br><span class="line">        up +=<span class="number">1</span></span><br><span class="line">        down -=<span class="number">1</span></span><br><span class="line">    <span class="comment"># 最后对于这种特殊情况的处理是容易忘记的</span></span><br><span class="line">    <span class="comment"># left one row 这种情况很特殊，只是从左往右遍历</span></span><br><span class="line">    <span class="keyword">if</span> up ==down <span class="keyword">and</span> left &lt;right:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left, right+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[up][i])</span><br><span class="line">    <span class="comment"># left one column 只有可能是从上往下遍历</span></span><br><span class="line">    <span class="keyword">if</span> left ==right <span class="keyword">and</span> up &lt;down:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(up, down+<span class="number">1</span>):</span><br><span class="line">            res.append(matrix[i][left])</span><br><span class="line">    <span class="keyword">if</span> up ==down <span class="keyword">and</span> left ==right:</span><br><span class="line">        res.append(matrix[left][up])</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">print(printMatrix(matrix))</span><br></pre></td></tr></table></figure>
+        <p>学习<a href="http://fancyerii.github.io/2019/03/09/bert-theory/" target="_blank" rel="noopener">BERT模型详解</a> 笔记。</p>
+<p>（传统的机器学习特征确实是稀疏）<br>Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。</p>
+<p>（不同的对象对比，是有不同的侧重点的）<br>Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从而可以处理更大规模的语料。</p>
+<p>transformer 是可以作为一个基本的 encoder 或者decoder 而存在，这个对等的地位是和 lstm 是相同的。</p>
+<p>当然通过Multi-Task Learning，我们可以利用其它相关任务的数据。比如我们要做文本分类，我们可以利用机器翻译的训练数据，通过同时优化两个(多个)目标，让模型同时学到两个任务上的语义信息，因为这两个任务肯定是共享很多基础语义信息的，所以它的效果要比单个任务好。但即使这样，标注的数据量还是非常有限的。</p>
+<p>因为数据量的问题，所以转向了无监督学习，这样才能使用大规模的数据集，使用海量的无标注的数据学习模型。多任务学习也是可以被用来做词汇补充的。</p>
+<p>关于bert 的理解还是要多看看的。</p>
+<p>而BERT和OpenAI GPT的方法类似，也是Fine-Tuning的思路，但是它解决了OpenAI GPT(包括ELMo)单向信息流的问题，同时它的模型和语料库也更大。依赖Google强大的计算能力和工程能力，BERT横扫了OpenAI GPT。成王败寇，很少还有人记得OpenAI GPT的贡献了。但是BERT的很多思路都是沿用OpenAI GPT的，要说BERT的学术贡献，最多是利用了Mask LM(这个模型在上世纪就存在了)和Predicting Next Sentence这个Multi-task Learning而已。</p>
+<p>（首先 transformer 一开始就是用来做 机器翻译的，其次这段落是不太理解的， <a href="http://fancyerii.github.io/2019/03/09/bert-theory/" target="_blank" rel="noopener">来源</a>）<br>之前我们介绍的Transformer模型是用来做机器翻译的，它有一个Encoder和一个Decoder。这里使用的是Encoder，只不过Encoder的输出不是给Decoder使用，而是直接用它来预测下一个词，如下图所示。但是直接用Self-Attention来训练语言模型是有问题的，因为在k时刻𝑝(𝑡𝑘|𝑡1,..,𝑡𝑘−1)，也就是计算𝑡𝑘的时候只能利用它之前的词(或者逆向的语言模型只能用它之后的词)。但是Transformer的Self-Attention是可以利用整个句子的信息的，这显然不行，因为你让它根据”it is a”来预测后面的词，而且还告诉它整个句子是”it is a good day”，它就可能”作弊”，直接把下一个词输出了，这样loss是零。</p>
+<p>对于相似度的计算是有两种途径：</p>
+<ol>
+<li>通过无监督的学习得到词向量，然后使用词向量计算句子的相似度（无监督的）</li>
+<li>如果有标注的训练集的话，那么是可以使用 seq2seq 这样的模型 进行有监督的学习的</li>
+</ol>
+<p>ELMo和GPT最大的问题就是传统的语言模型是单向的——我们是根据之前的历史来预测当前词。但是我们不能利用后面的信息。比如句子”The animal didn’t cross the street because it was too tired”。我们在编码it的语义的时候需要同时利用前后的信息，因为在这个句子中，it可能指代animal也可能指代street。根据tired，我们推断它指代的是animal，因为street是不能tired。但是如果把tired改成wide，那么it就是指代street了。传统的语言模型，不管是RNN还是Transformer，它都只能利用单方向的信息。比如前向的RNN，在编码it的时候它看到了animal和street，但是它还没有看到tired，因此它不能确定it到底指代什么。如果是后向的RNN，在编码的时候它看到了tired，但是它还根本没看到animal，因此它也不能知道指代的是animal。Transformer的Self-Attention理论上是可以同时attend to到这两个词的，但是根据前面的介绍，由于我们需要用Transformer来学习语言模型，因此必须用Mask来让它看不到未来的信息，所以它也不能解决这个问题的。</p>
+<p>如下图所示，<strong>BERT能够同时利用前后两个方向的信息，而ELMo和GPT只能使用单个方向的。</strong></p>
+<p><img src="https://i.loli.net/2019/08/16/E8lZBTc7JAfWVvC.png" alt="bert-1.png"></p>
+<p>BERT仍然使用的是Transformer模型，那它是怎么解决语言模型只能利用一个方向的信息的问题呢？答案是它的pretraining训练的不是普通的语言模型，而是Mask语言模型。在介绍Mask语言模型之前我们先介绍BERT的输入表示。</p>
+<p><strong>输入表示</strong></p>
+<p>BERT的输入表示如下图所示。比如输入的是两个句子”my dog is cute”，”he likes playing”。后面会解释为什么需要两个句子。这里采用类似GPT的两个句子的表示方法，首先会在第一个句子的开头增加一个特殊的Token [CLS]，在cute的后面增加一个[SEP]表示第一个句子结束，在##ing后面也会增加一个[SEP]。注意这里的分词会把”playing”分成”play”和”##ing”两个Token，这种把词分成更细粒度的Word Piece的方法在前面的机器翻译部分介绍过了，这是一种解决未登录词的常见办法，后面的代码部分也会简单介绍。接着对每个Token进行3个Embedding：词的Embedding；位置的Embedding和Segment的Embedding。词的Embedding大家都很熟悉了，而位置的Embedding和词类似，把一个位置(比如2)映射成一个低维稠密的向量。而Segment只有两个，要么是属于第一个句子(segment)要么属于第二个句子，不管那个句子，它都对应一个Embedding向量。同一个句子的Segment Embedding是共享的，这样它能够学习到属于不同Segment的信息。对于情感分类这样的任务，只有一个句子，因此Segment id总是0；而对于Entailment任务，输入是两个句子，因此Segment是0或者1。</p>
+<p>BERT模型要求有一个固定的Sequence的长度，比如128。如果不够就在后面padding，否则就截取掉多余的Token，从而保证输入是一个固定长度的Token序列，后面的代码会详细的介绍。第一个Token总是特殊的[CLS]，它本身没有任何语义，因此它会(必须)编码整个句子(其它词)的语义。</p>
+<p><strong>Mask LM</strong></p>
+<p>为了解决只能利用单向信息的问题，BERT使用的是Mask语言模型而不是普通的语言模型。Mask语言模型有点类似与完形填空——给定一个句子，把其中某个词遮挡起来，让人猜测可能的词。这里会随机的Mask掉15%的词，然后让BERT来预测这些Mask的词，通过调整模型的参数使得模型预测正确的概率尽可能大，这等价于交叉熵的损失函数。这样的Transformer在编码一个词的时候会(必须)参考上下文的信息。</p>
+<p>但是这有一个问题：在Pretraining Mask LM时会出现特殊的Token [MASK]，但是在后面的fine-tuning时却不会出现，这会出现Mismatch的问题。因此BERT中，如果某个Token在被选中的15%个Token里，则按照下面的方式随机的执行：</p>
+<ul>
+<li>80%的概率替换成[MASK]，比如my dog is hairy → my dog is [MASK]</li>
+<li>10%的概率替换成随机的一个词，比如my dog is hairy → my dog is apple</li>
+<li>10%的概率替换成它本身，比如my dog is hairy → my dog is hairy</li>
+</ul>
+<p>这样做的好处是，BERT并不知道[MASK]替换的是哪一个词，而且任何一个词都有可能是被替换掉的，比如它看到的apple可能是被替换的词。这样强迫模型在编码当前时刻的时候不能太依赖于当前的词，而要考虑它的上下文，甚至更加上下文进行”纠错”。比如上面的例子模型在编码apple是根据上下文my dog is应该把apple(部分)编码成hairy的语义而不是apple的语义。</p>
+<p><strong>预测句子关系</strong></p>
+<p>在有些任务中，比如问答，前后两个句子有一定的关联关系，我们希望BERT Pretraining的模型能够学习到这种关系。因此BERT还增加了一个新的任务——预测两个句子是否有关联关系。这是一种Multi-Task Learing。BERT要求的Pretraining的数据是一个一个的”文章”，比如它使用了BookCorpus和维基百科的数据，BookCorpus是很多本书，每本书的前后句子是有关联关系的；而维基百科的文章的前后句子也是有关系的。对于这个任务，BERT会以50%的概率抽取有关联的句子(注意这里的句子实际只是联系的Token序列，不是语言学意义上的句子)，另外以50%的概率随机抽取两个无关的句子，然后让BERT模型来判断这两个句子是否相关。比如下面的两个相关的句子：</p>
+<blockquote>
+<p> [CLS] the man went to [MASK] store [SEP] he bought a gallon [MASK] milk [SEP]</p>
+</blockquote>
+<p>下面是两个不相关的句子：</p>
+<blockquote>
+<p>[CLS] the man [MASK] to the store [SEP] penguin [MASK] are flight ##less birds [SEP]</p>
+</blockquote>
+<p>ELMO 和OpenAI GPT 的区别：</p>
+<p>UMLFiT比较复杂，而且效果也不是特别好，我们暂且不提。ELMo和OpenAI GPT的思想其实非常非常简单，就是用海量的无标注数据学习语言模型，在学习语言模型的过程中自然而然的就学到了上下文的语义关系。它们都是来学习一个语言模型，前者使用的是LSTM而后者使用Transformer，在进行下游任务处理的时候也有所不同，ELMo是把它当成特征。拿分类任务来说，输入一个句子，ELMo用LSTM把它扫一次，这样就可以得到每个词的表示，这个表示是考虑上下文的，因此”He deposited his money in this bank”和”His soldiers were arrayed along the river bank”中的两个bank的向量是不同的。下游任务用这些向量来做分类，它会增加一些网络层，但是ELMo语言模型的参数是固定的。而OpenAI GPT不同，它直接用特定任务来Fine-Tuning Transformer的参数。因为用特定任务的数据来调整Transformer的参数，这样它更可能学习到与这个任务特定的上下文语义关系，因此效果也更好。</p>
+<p><strong>Skip Thought Vector 在训练语料上的区别</strong></p>
+<p>和训练Word2Vec不同，Word2Vec只需要提供句子，而Skip Thought Vector需要文章(至少是段落)。论文使用的数据集是BookCorpus(<a href="http://yknzhu.wixsite.com/mbweb)，目前网站已经不提供下载了。BookCorpus的统计信息如下图所示，有一万多本书，七千多万个句子。" target="_blank" rel="noopener">http://yknzhu.wixsite.com/mbweb)，目前网站已经不提供下载了。BookCorpus的统计信息如下图所示，有一万多本书，七千多万个句子。</a></p>
+<p>词汇扩展： 使用一个word2vec 的词向量去映射在训练句子向量中得到的向量，其中的映射关系是 $w$, 这个参数可以通过共现词进行学习。</p>
+<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>BERT 的创新点在于 mask LM和 predicting next sentence 这个多任务学习。mask 语言模型有点像完形填空，对一个句子，会随机mask 掉15% 的词语，让bert 来预测这些词语。这些词80% 是被替换成 [MASK], 10% 是被随机替换成一个词语，10% 是替换成单词本身。在预测句子关系中，随机50% 抽取两个无关的句子，50% 抽取两个有关联的句子，然后使用bert 模型判断这两个句子的相关性。在训练的时候是多任务学习。</p>
+<p>BERT 和OpenAI GPT 的区别：</p>
+<p>从训练目标上讲，bert 是同时上下文信息，而其他的都是单向的。</p>
 
       
     </div>
@@ -416,8 +455,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/07/Loss-Activation-and-Optimisation-Function/" rel="next" title="Activation Function and Loss Function">
-                <i class="fa fa-chevron-left"></i> Activation Function and Loss Function
+              <a href="/2019/06/09/lr/" rel="next" title="逻辑回归概念">
+                <i class="fa fa-chevron-left"></i> 逻辑回归概念
               </a>
             
           </div>
@@ -426,8 +465,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/21/LightGBM和XGBoost及其调参/" rel="prev" title="LightGBM和XGBoost及其调参">
-                LightGBM和XGBoost及其调参 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/06/16/nlp-tmp/" rel="prev" title="tmp">
+                tmp <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -615,7 +654,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#最长01相同子串"><span class="nav-number">1.</span> <span class="nav-text">最长01相同子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#顺时针打印矩阵"><span class="nav-number">2.</span> <span class="nav-text">顺时针打印矩阵</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#笔记"><span class="nav-number">1.</span> <span class="nav-text">笔记</span></a></li></ol></div>
             
 
           </div>
@@ -811,9 +850,9 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/07/21/那些年的算法题目（二）/';
-          this.page.identifier = '2018/07/21/那些年的算法题目（二）/';
-          this.page.title = '那些年的算法题目（二）';
+          this.page.url = 'http://yoursite.com/2019/06/16/nlp_bert(2)/';
+          this.page.identifier = '2019/06/16/nlp_bert(2)/';
+          this.page.title = 'BERT学习笔记(2)';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
