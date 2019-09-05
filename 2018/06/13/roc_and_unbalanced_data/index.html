@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ROC," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍ROC 曲线，auc 值和如何去处理不平衡数据。 ROC曲线和AUC值ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False,">
+<meta name="keywords" content="ROC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROC和 unbalanced data">
+<meta property="og:url" content="http://yoursite.com/2018/06/13/roc_and_unbalanced_data/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍ROC 曲线，auc 值和如何去处理不平衡数据。 ROC曲线和AUC值ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False,">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q453345pj205c046glh.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q4b2shb6j20at06vdfz.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/01/5d421f9678f9649303.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/01/5d422029970c282991.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*MrcJwiWD8z47AXe_GPgZkA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*H4pRIFSGcExAlV5pE6ObNA.png">
+<meta property="og:updated_time" content="2019-09-05T04:43:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ROC和 unbalanced data">
+<meta name="twitter:description" content="介绍ROC 曲线，auc 值和如何去处理不平衡数据。 ROC曲线和AUC值ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False,">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/13/roc_and_unbalanced_data/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>ROC和 unbalanced data | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/13/roc_and_unbalanced_data/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ROC和 unbalanced data</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-13T10:35:17+08:00">
+                2018-06-13
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-05T12:43:20+08:00">
+                2019-09-05
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/13/roc_and_unbalanced_data/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/13/roc_and_unbalanced_data/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍ROC 曲线，auc 值和如何去处理不平衡数据。</p>
+<h2 id="ROC曲线和AUC值"><a href="#ROC曲线和AUC值" class="headerlink" title="ROC曲线和AUC值"></a>ROC曲线和AUC值</h2><p>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。</p>
+<p><strong>ROC 曲线</strong>: ROC 曲线（接收者操作特征曲线）是一种显示分类模型在所有分类阈值下的效果的图表。该曲线绘制了以下两个参数：真正例率 和 假正例率。</p>
+<p>真正例率 (TPR) 是召回率的同义词，因此定义如下：<br>$$<br>T P R = \frac { T P } { T P + F N }<br>$$<br>假正例率 (FPR) 的定义如下：<br>$$<br>F P R = \frac { F P } { F P + T N }<br>$$</p>
+<p>ROC 中 TPR =(True positive / ( True positive +False negative)), 那个false negative 也是真实的类别，只不过是错误的当做了 negative（false negative）</p>
+<p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg" alt=""></p>
+<p>第一类错误和第二类措施是假设检验中的概念。第一类错误是原来假设是错误的，但是却被认为是正确的；第二类错误是原来的假设是正确的，但是被认为是错误的。</p>
+<p>针对一个二分类问题，将实例分成正类(postive)或者负类(negative)。但是实际中分类时，会出现四种情况.</p>
+<ul>
+<li>若一个实例是正类并且被预测为正类，即为真正类(True Postive TP)</li>
+<li>若一个实例是正类，但是被预测成为负类，即为假负类(False Negative FN)</li>
+<li>若一个实例是负类，但是被预测成为正类，即为假正类(False Postive FP)</li>
+<li>若一个实例是负类，但是被预测成为负类，即为真负类(True Negative TN)</li>
+</ul>
+<p><strong>ROC 曲线是如何绘制的</strong>: 采用不同分类阈值时的 TPR 与 FPR。降低分类阈值会导致将更多样本归为正类别，从而增加假正例（FP）和真正例（TP）的个数，可以理解为降低了被认为正确的标准，数量自然就增多了。下图显示了一个典型的 ROC 曲线。注意观察图中TPR 和 FPR是呈正相关的，验证了上述的结论。<br><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q453345pj205c046glh.jpg" alt=""><br>为了计算 ROC 曲线上的点，我们可以使用不同的分类阈值多次评估逻辑回归模型，但这样做效率非常低。幸运的是，有一种基于排序的高效算法可以为我们提供此类信息，这种算法称为曲线下面积。</p>
+<p>ROC曲线，一般适用于你的分类器输出一个“概率值”，即这个样本属于某个类的概率是多少。 如此的话，你就需要设定一个阈值， 大于这个阈值属于正类，小于这个阈值属于负类。   从而，对于这个阈值P0， 就会得到对应的TPR, FPR, 也就是ROC曲线上的一个点，你设置不同的阈值，就会得到不同的TPR, FPR， 从而构成ROC曲线。   通常来说 阈值降低，即进入正类的门槛变低， TPR会变大，但是FPR也会变大， 看他们谁变的快。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">gbc = GradientBoostingClassifier()</span><br><span class="line">gbc.fit(x_train, y_train)</span><br><span class="line">resu = gbc.predict(x_test)  <span class="comment">#进行预测</span></span><br><span class="line">y_pred_gbc = gbc.predict_proba(x_test)[:,<span class="number">1</span>]  <span class="comment">###这玩意就是预测概率的</span></span><br><span class="line">fpr, tpr, threshold = roc_curve(y_test, y_pred_gbc)   <span class="comment">###画图的时候要用预测的概率，而不是你的预测的值</span></span><br><span class="line">plt.plot(fpr, tpr, <span class="string">'b'</span>, label=<span class="string">'AUC = %0.2f'</span> % rocauc)<span class="comment">#生成ROC曲线</span></span><br><span class="line">plt.legend(loc=<span class="string">'lower right'</span>)</span><br><span class="line">plt.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], <span class="string">'r--'</span>)</span><br><span class="line">plt.xlim([<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">plt.ylim([<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">plt.ylabel(<span class="string">'真正率'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'假正率'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q4b2shb6j20at06vdfz.jpg" alt=""></p>
+<p>接着我们计算TRP(True Positive Radio)，FRP(False Positive Ratio)用于描述ROC曲线，分别表示该曲线的Y轴，X轴。<br>TPR=TP/(TP+FN)<br>FPR=FP/(FP+TN)<br>最后就形成了类似这样的图像(来源于上述的训练模型)</p>
+<p>我们希望的结果是TRU越大（接近1），FRU越小（接近0）。AUC的值是ROC所覆盖的面积，当AUC越大时候，分类器的效果越好。从图中可以看出模型(ensemble)的面积是最大的，分类效果也是最好的。<br>关于该图像还有一点，如果你的曲线拟合对角线（图中虚线），那么相当于随机猜测。</p>
+<p>ROC(<em>receiver operating characteristic curve</em>): ROC曲线的横坐标为<em>false positive rate</em>（FPR,假正率），纵坐标为<em>true positive rate</em>（TPR，真正率，召回率）<br>PRC(<em>precision recall curve</em>): PRC曲线的横坐标为召回率<em>Recall</em>，纵坐标为准确率<em>Precision</em>。</p>
+<p>用ROC curve来表示分类器的performance很直观好用。可是，人们总是希望能有一个数值来标志分类器的好坏。<br>通常，AUC的值介于0.5到1.0之间，较大的AUC代表了较好的Performance。<br>一般来说，如果ROC是光滑的，那么基本可以判断没有太大的overfitting（比如图中0.2到0.4可能就有问题，但是样本太少了），这个时候调模型可以只看AUC，面积越大一般认为模型越好。</p>
+<p><img src="https://i.loli.net/2019/08/01/5d421f9678f9649303.jpg" alt="1.jpg"></p>
+<p>一般情况，用不同的阀值，统计出一组不同阀值下的精确率和召回率，这就是PRC曲线。如下图：<br><img src="https://i.loli.net/2019/08/01/5d422029970c282991.png" alt="1.png"><br>如果是做搜索，那就是保证召回的情况下提升准确率；如果做疾病监测、反垃圾，则是保准确率的条件下，提升召回。</p>
+<p>两者的区别：<br>在正负样本分布得极不均匀(highly skewed datasets)的情况下，PRC比ROC能更有效地反应分类器的好坏。</p>
+<p>Recall：查全率，正样本中被预测出来是正的比例(越大越好)<br>Precision：查准率，预测的正样本中被正确预测的比例(越大越好)<br>True Positive Rate：跟 Recall 定义一样 （越大越好)<br>FPR : 负样本中被预测为正的比例(越小越好)</p>
+<p>对于一个二分类问题，往往要设定一个 threshold，当预测值大于这个 threshold 时预测为正样本，小于这个 threshold 时预测为负样本。如果以 Recall 为横轴，Precision 为纵轴，那么设定一个 threshold 时，便可在坐标轴上画出一个点，设定多个 threshold 则可以画出一条曲线，这条曲线便是 PR 曲线。</p>
+<p>PR 曲线是以 Recall 为横轴，Precision 为纵轴；而 ROC曲线则是以 FPR 为横轴，TPR 为纵轴。</p>
+<p>定理1：对于一个给定的的数据集，ROC空间和PR空间存在一一对应的关系，因为二者包含完全一致的混淆矩阵。我们可以将ROC曲线转化为PR曲线，反之亦然。</p>
+<p>定理 2 中 “曲线A优于曲线B” 是指曲线 B 的所有部分与曲线 A 重合或在曲线 A 之下。而在ROC空间，ROC曲线越凸向左上方向效果越好。与ROC曲线左上凸不同的是，PR曲线是右上凸效果越好。</p>
+<p>F1对于PRC就好象AUC对于ROC一样。一个数字比一条线更方便调模型。</p>
+<p>阈值设定的两种方法：</p>
+<ol>
+<li>等距离阈值，range(0, 1, 100) 生成了100 个阈值，那么对应着p-r 中的100 个点</li>
+<li>二分类结果是模型的概率值，对概率值进行排序，依次使用这些概率值作为阈值，也是可以得到不同的点的坐标。</li>
+</ol>
+<p>如精准营销领域的商品推荐模型，模型目的是尽量将商品推荐给感兴趣的用户，若用户对推荐的商品不感兴趣，也不会有很大损失，因此此时TPR相对FPR更重要。再比如反欺诈领域的欺诈预测模型，由于模型结果会对识别的坏人进行一定的处置措施，FPR过高会对好人有一定干扰，造成误杀，影响客户体验，因此模型需保证在低于一定FPR的基础上尽量增加TPR。</p>
+<p>如果在我们所说的fraud detection 或者癌症检测这一类应用中，我们的倾向肯定是“宁可错杀一千，不可放过一个”呀。所以我们可以设定在合理的precision下，最高的recall作为最优点，找到这个对应的threshold点。</p>
+<p>召回率应用场景<br>召回率的应用场景：比如拿网贷违约率为例，相对好用户，我们更关心坏用户，不能错放过任何一个坏用户。因为如果我们过多的将坏用户当成好用户，这样后续可能发生的违约金额会远超过好用户偿还的借贷利息金额，造成严重偿失。召回率越高，代表实际坏用户被预测出来的概率越高，它的含义类似：宁可错杀一千，绝不放过一个。</p>
+<p>对于ROC 曲线，我们希望， TPR 越高，同时FPR 越低（ROC 曲线向着左上角扩展，越陡越好）</p>
+<p>先看二分类问题。指标的好坏主要取决于分类器的目标。比方说，电子邮件的垃圾过滤，你是希望它更全面（查出所有的垃圾，但是会有大量有用信息也被判为垃圾）呢，还是希望它尽量精准（不要老是将有用的邮件判为垃圾）呢？在这个例子里，显然，我们认为False Positive的伤害要大于False Negative：重要邮件要是被判成垃圾所造成的损失，远大于收件箱里还有一部分的垃圾邮件——前者可能会让你错过重要的工作，后者仅仅是让你在阅读的时候皱皱眉头。在这种情况下，我们会认为Precision的指标会比较重要，或者反应在ROC图上，FPR尽量的小——自然，在保证FPR的基础上，Recall依然还是重要的——毕竟用户购买的是垃圾过滤，如果只是过滤了1条垃圾但是Precision＝100%，这样的东西看起来也没什么用——那么综合起来，我们也可以通过ROC的AUC来进行比较，面积较大的代表同样的FPR下面，recall比较高。</p>
+<p>其次是搜索问题。搜索问题其实是一个排序问题，但我们往往会定义Precision@Top K这样的指标，即正确的答案有没有被排在Top K中，如果是的话，就相当于判断为“真”，反之则为“否”。这样搜索问题就转化为了一个二分类问题，唯一的问题是，这是一个典型的数据不均衡的case。很显然，所有的候选集的数量是非常巨大的，但是K的数量不会很大（比如Top 10, Top 20）。所以，在这个问题中，我们会主要看Precision-Recall curve。更重要的是，一般而言，人们看搜索结果都不会太有耐心，所以希望Top K中的有用信息尽量多，换言之，Precision@Top K的指标，是最核心的。</p>
+<p>然而如果我们的问题是多分类的问题，实际上这些指标就不适合了，我们需要看的是Confusion Matri:</p>
+<p>简单来讲,</p>
+<p>尽可能地找到正样例(最关心的类别)时,选recall(immediate from recall定义)<br>尽可能地避免把非正样例预测为正样例时，选precision(immediate from precision定义)</p>
+<p>拿楼上的『地震预测』举例子。我的理解是，对模型的要求是不能漏报（recall一定要高），但是不能老是误报（FPR不能太高）。混合的准确率其实没有太大的意义。所以，我会选择ROC。『犯罪检测』也是一样的。要求一样，数据分布也类似（正样本&lt;&lt;负样本）</p>
+<p><strong>TakeOff</strong></p>
+<p>If you have an imbalanced dataset accuracy can give you false assumptions regarding the classifier’s performance, it’s better to rely on precision and recall, in the same way a Precision-Recall curve is better to calibrate the probability threshold in an imbalanced class scenario as a ROC curve.</p>
+<ul>
+<li><p>ROC Curves: summarise the trade-off between the true positive rate and false positive rate for a predictive model using different probability thresholds.</p>
+</li>
+<li><p>Precision-Recall curves: summarise the trade-off between the true positive rate and the positive predictive value for a predictive model using different probability thresholds.</p>
+</li>
+</ul>
+<p>ROC curves are appropriate when the observations are balanced between each class, whereas precision-recall curves are appropriate for imbalanced datasets. In both cases the area under the curve (AUC) can be used as a summary of the model performance.</p>
+<p>Why a ROC curve cannot measure well?</p>
+<p>The Receiver Operating Characteristic (ROC) curves plot FPR vs. TPR as shown below. Because TPR only depends on positives, ROC curves do not measure the effects of negatives. <strong>The area under the ROC curve (AUC) assesses overall classification performance </strong>. AUC does not place more emphasis on one class over the other, so it does not reflect the minority class well.</p>
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*MrcJwiWD8z47AXe_GPgZkA.png" alt=""><br>Davis and Goadrich in this paper propose that Precision-Recall (PR) curves will be more informative than ROC when dealing with highly skewed datasets. The PR curves plot precision vs. recall (FPR). Because Precision is directly influenced by class imbalance so the Precision-recall curves are better to highlight differences between models for highly imbalanced data sets. When you compare different models with imbalanced settings, the area under the Precision-Recall curve will be more sensitive than the area under the ROC curve.<br><img src="https://cdn-images-1.medium.com/max/1600/1*H4pRIFSGcExAlV5pE6ObNA.png" alt=""></p>
+<p><a href="http://www.davidsbatista.net/blog/2018/08/19/NLP_Metrics/" target="_blank" rel="noopener">最强讲解</a></p>
+<h2 id="how-to-handle-unbalanced-data"><a href="#how-to-handle-unbalanced-data" class="headerlink" title="how to handle unbalanced data"></a>how to handle unbalanced data</h2><p>对于这类问题是可以从数据和模型来进行考虑的。</p>
+<p>Imbalanced data typically refers to a problem with classification problems where the classes are not represented equally. The accuracy paradox is the name for the exact situation in the introduction to this post.</p>
+<p><strong> Data approach</strong><br>Oversample minority class  and Undersample majority class</p>
+<ul>
+<li>Over-sampling increases the number of minority class members in the training set. The advantage of over-sampling is that no information from the original training set is lost, as all observations from the minority and majority classes are kept. On the other hand, it is prone to overfitting. (You can add copies of instances from the under-represented class called over-sampling or more formally sampling with replacement)</li>
+<li>Under-sampling, on contrary to over-sampling, aims to reduce the number of majority samples to balance the class distribution. Since it is removing observations from the original data set, it might discard useful information. (You can delete instances from the over-represented class, called under-sampling.)</li>
+</ul>
+<p>Some Rules of Thumb</p>
+<ul>
+<li>Consider testing under-sampling when you have an a lot data (tens- or hundreds of thousands of instances or more)</li>
+<li>Consider testing over-sampling when you don’t have a lot of data (tens of thousands of records or less)</li>
+<li>Consider testing random and non-random (e.g. stratified) sampling schemes.</li>
+<li>Consider testing different resampled ratios (e.g. you don’t have to target a 1:1 ratio in a binary classification problem, try other ratios)</li>
+</ul>
+<p><strong> Try Different Algorithms</strong><br>基于树的这种结构的模型还是表现比较给力的。<br>That being said, decision trees often perform well on imbalanced datasets. The splitting rules that look at the class variable used in the creation of the trees, can force both classes to be addressed.</p>
+<p><strong>Try Penalized Models</strong><br>Penalized classification imposes an additional cost on the model for making classification mistakes on the minority class during training. These penalties can bias the model to pay more attention to the minority class.</p>
+<p><strong> Try Changing Your Performance Metric</strong></p>
+<p>使用 precision and recall  curves or F1 去评价你的网络效果</p>
+<ul>
+<li>Precision: A measure of a classifiers exactness.</li>
+<li>Recall: A measure of a classifiers completeness</li>
+<li>F1 Score (or F-score): A weighted average of precision and recall.</li>
+</ul>
+<p>而 ROC curves 通常不是一个最好的选择。</p>
+<p><a href="https://medium.com/anomaly-detection-with-python-and-r/sampling-techniques-for-extremely-imbalanced-data-281cc01da0a8" target="_blank" rel="noopener">https://medium.com/anomaly-detection-with-python-and-r/sampling-techniques-for-extremely-imbalanced-data-281cc01da0a8</a></p>
+<ul>
+<li>GBC参数<br>这些参数中，类似于Adaboost，我们把重要参数分为两类，第一类是Boosting框架的重要参数，第二类是弱学习器即CART回归树的重要参数。<br>n_estimators: 也就是弱学习器的最大迭代次数，或者说最大的弱学习器的个数。<br>learning_rate: 即每个弱学习器的权重缩减系数ν，也称作步长<br>对于分类模型，有对数似然损失函数”deviance”和指数损失函数”exponential”两者输入选择。默认是对数似然损失函数”deviance”。一般来说，推荐使用默认的”deviance”。它对二元分离和多元分类各自都有比较好的优化。而指数损失函数等于把我们带到了Adaboost算法。<br>对于回归模型，有均方差”ls”, 绝对损失”lad”, Huber损失”huber”和分位数损失“quantile”。默认是均方差”ls”。一般来说，如果数据的噪音点不多，用默认的均方差”ls”比较好。如果是噪音点较多，则推荐用抗噪音的损失函数”huber”。而如果我们需要对训练集进行分段预测的时候，则采用“quantile”。<br>max_features:可以使用很多种类型的值，默认是”None”,意味着划分时考虑所有的特征数.<br>subsample: 选择小于1的比例可以减少方差，即防止过拟合，但是会增加样本拟合的偏差，因此取值不能太低。推荐在[0.5, 0.8]之间，默认是1.0，即不使用子采样。</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://www.cnblogs.com/pinard/p/6143927.html" target="_blank" rel="noopener">GBC参数设置</a><br><a href="https://www.cnblogs.com/gatherstars/p/6084696.html" target="_blank" rel="noopener">ROC曲线和AUC值</a><br><a href="https://www.dataquest.io/blog/introduction-to-ensembles/" target="_blank" rel="noopener">Introduction to Python Ensembles</a></p>
+<h2 id="复习笔记"><a href="#复习笔记" class="headerlink" title="复习笔记"></a>复习笔记</h2><ol>
+<li>ROC曲线，precision-recall 曲线是二分类模型中经常使用的评价模型最后效果的指标。AUC值一般是指ROC 曲线的面积，对应的precision-recall 也有一个数值指标F1。对于ROC 曲线纵坐标是TP_rate， 横坐标是FP_rate。</li>
+<li>处理 unbalanced data 思路从data 和model 两方面进行考虑。（其实任何NN 中问题都是可以从这两方面进行考虑的）。<strong>数据处理</strong>，(1) 增强类别数量少的样本 (2)减少类别数量多的样本。在predict 的时候确实是可以设定不同的正负样本比，然后看一下模型的对于样本是否具有偏差。<strong>模型处理</strong>：(1) 基于树的模型在处理imbalanced data 还是比较给力的 (2 ) 当minority class 预测出错的时候，添加 additional cost，这样使得模型能够更加关注minority class。 <strong>使用不同的评价指标</strong>： 当样本不均衡的时候，使用 precision_ recall 或者 F1 去评价模型（这个时候ROC 通常不是很好的选择，因为对于正负样本比例不是很敏感）</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ROC/" rel="tag"># ROC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/05/对抗性生成网络/" rel="next" title="对抗生成网络实验对比">
+                <i class="fa fa-chevron-left"></i> 对抗生成网络实验对比
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/22/那些年的算法题目（一）/" rel="prev" title="那些年的算法题目（一）">
+                那些年的算法题目（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC曲线和AUC值"><span class="nav-number">1.</span> <span class="nav-text">ROC曲线和AUC值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-handle-unbalanced-data"><span class="nav-number">2.</span> <span class="nav-text">how to handle unbalanced data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习笔记"><span class="nav-number">4.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/06/13/roc_and_unbalanced_data/';
+          this.page.identifier = '2018/06/13/roc_and_unbalanced_data/';
+          this.page.title = 'ROC和 unbalanced data';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

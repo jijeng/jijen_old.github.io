@@ -91,7 +91,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/08/e7nUjx.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/10/IBuWOkUMyHAnt3K.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/08/10/6YJtTZdLI9cb8vj.jpg">
-<meta property="og:updated_time" content="2019-08-10T10:44:52.000Z">
+<meta property="og:updated_time" content="2019-09-03T13:25:15.245Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Finding Similar Quora Questions">
 <meta name="twitter:description" content="介绍 kaggle 上 finding similar quora quesitons 竞赛，作为一次总结。">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-10T18:44:52+08:00">
-                2019-08-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-03T21:25:15+08:00">
+                2019-09-03
               </time>
             
           </span>
@@ -481,6 +481,21 @@
 </ul>
 <p>参考资料</p>
 <p><a href="https://www.kaggle.com/sudalairajkumar/simple-leaky-exploration-notebook-quora" target="_blank" rel="noopener">kaggle kernel 1</a><br><a href="https://www.kaggle.com/anokas/data-analysis-xgboost-starter-0-35460-lb" target="_blank" rel="noopener">kaggle kernel 2</a><br><a href="https://colab.research.google.com/github/susanli2016/NLP-with-Python/blob/master/Word2vec_xgboost.ipynb#scrollTo=JvMxWAWhYLel" target="_blank" rel="noopener">代码 </a><br><a href="https://towardsdatascience.com/finding-similar-quora-questions-with-word2vec-and-xgboost-1a19ad272c0d" target="_blank" rel="noopener">https://towardsdatascience.com/finding-similar-quora-questions-with-word2vec-and-xgboost-1a19ad272c0d</a></p>
+<h2 id="复习总结"><a href="#复习总结" class="headerlink" title="复习总结"></a>复习总结</h2><ol>
+<li>数据分析</li>
+</ol>
+<p>数据：训练数据集是40万，测试数据集是5 倍 training data（这里有生成的虚假数据，防止作弊）<br>数据特点：（1）句子对在训练集的频数（使用pid 在训练集中出现的次数，发现大多数句子重复率是比较低的10-50之间），并且在训练数据集中这种重复度是随着时间递减， 测试集中没有标注pid （2）句子中单词的长度是在20个词左右（正太分布中的u）</p>
+<ol start="2">
+<li>特征工程</li>
+</ol>
+<p>数据挖掘特征 + NLP embedding特征。简单举例说明，前者是两个句子的共现词；后者根据 word embedding 计算的字符串的匹配之类的，比如cosine distance 或者jaccard distance之类的。</p>
+<ol start="3">
+<li>模型</li>
+</ol>
+<p>xgboost</p>
+<ol start="4">
+<li>其他<br>众数、均值和中位数和偏态分布的关系（相对于正太分布而言）<br>(1) 对于正太分布，中位数、众数和均值是一个。<br>偏态的定义是根据尾部命名，右偏态表示尾部在右边。中位数是样本总数中间位置，如果是右偏态，那么中位数在偏向于右边；众数是偏向于左边，因为尾部是在右边，所以头部是在左边。 所以  众数&lt;中位数&lt; 均值。（对于均值可能不太好理解，可以看上面的解释）</li>
+</ol>
 
       
     </div>
@@ -608,7 +623,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -704,7 +719,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据特点"><span class="nav-number">2.</span> <span class="nav-text">数据特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征"><span class="nav-number">3.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#好的代码"><span class="nav-number">4.</span> <span class="nav-text">好的代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据特点"><span class="nav-number">2.</span> <span class="nav-text">数据特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征"><span class="nav-number">3.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#好的代码"><span class="nav-number">4.</span> <span class="nav-text">好的代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习总结"><span class="nav-number">5.</span> <span class="nav-text">复习总结</span></a></li></ol></div>
             
 
           </div>

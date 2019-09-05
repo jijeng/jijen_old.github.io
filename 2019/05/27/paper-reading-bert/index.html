@@ -116,7 +116,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/31/mJVuLDAM1sOXrYE.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/6c304cd1ba04192c.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/31/iKZ1mdzIfgEtraS.png">
-<meta property="og:updated_time" content="2019-09-02T07:44:10.000Z">
+<meta property="og:updated_time" content="2019-09-05T09:56:31.468Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP Papers Reading- BERT (***)">
 <meta name="twitter:description" content="attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequen">
@@ -341,8 +341,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-02T15:44:10+08:00">
-                2019-09-02
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-05T17:56:31+08:00">
+                2019-09-05
               </time>
             
           </span>
@@ -435,7 +435,7 @@
 <p><strong> self-attention</strong></p>
 <p>先说一下 attention 机制的实现：</p>
 <p><img src="https://i.loli.net/2019/07/19/5d31a365bd27877659.png" alt="20190322151729943.png"></p>
-<p>当使用 self的时候，query, key and value 这三个就都是相同的。经过softmax() 得到就是一个权重，用于标记和 当前处理的词语的关系。self-attention是Transformer用来将其他相关单词的“理解”转换成我们正在处理的单词的一种思路，</p>
+<p>当使用 self的时候，query, key and value 这三个就都是相同的。经过softmax() 得到就是一个权重，用于标记和 当前处理的词语的关系。self-attention是Transformer用来将其他相关单词的“理解”转换成我们正在处理的单词的一种思路，attention 就是一种加权平均数，self-attention 可以进一步下放，当前句子中对当前处理的词语最重要的是哪些部分。</p>
 <p><strong>Multi-Headed Attention</strong></p>
 <p>我的理解就是 在CNN中使用多个filter 的类似产物。该机制理解起来很简单，就是说不仅仅只初始化一组Q、K、V的矩阵，而是初始化多组，tranformer是使用了8组，所以最后得到的结果是8个矩阵。</p>
 <p><strong> 这样做的主要目的是从不同的语义空间投射原文本，能够从更多的角度表征，并且能够拓展模型对不同位置的关注能力。</strong></p>
@@ -589,7 +589,7 @@
 </ul>
 <p>第一步中的$p(w) $ 是在语料中的词频，第二步中对整个句子集合进行一次PCA，然后对每个句子上面得到的向量减去它在第一奇异向量或者说主成分上的投影。<br>最后初步的句子向量减去对应句子向量的共性成分(起到平滑作用),得到最后的独有的句子向量(使得各个句子向量间的耦合度降低,增强句子的鲁棒性).耦合性越低（模块之间的关联性越小）</p>
 <p>作用：</p>
-<p>第一步骤中的超参数 $a $ 是一种平滑项，对于低频词的支持，即使出现的次数少，也还是权重的。$ ( \alpha p(w)) $,其中$(p(w))$是单词 $(w) $在整个语料中出现的概率(词频角度), $ (\alpha) $是一个超参数. 这样, 即使和 $ (c_s) $的内积很小, 这个单词也有概率出现. 第二步骤中的减去 主成分，可以理解为让各个词向量更好的分开，减去公共的部分，减少耦合性，使得相似的句子聚类在一起。因为这个主成分是整个语料库中的主成分.</p>
+<p>第一步骤中的超参数 $a $ 是一种平滑项，对于低频词的支持，出现的次数少，反而权重是比较大的，降低常见词的权重。$ ( \alpha p(w)) $,其中$(p(w))$是单词 $(w) $在整个语料中出现的概率(词频角度), $ (\alpha) $是一个超参数. 这样, 即使和 $ (c_s) $的内积很小, 这个单词也有概率出现. 第二步骤中的减去 主成分，可以理解为让各个词向量更好的分开，减去公共的部分，减少耦合性，使得相似的句子聚类在一起。因为这个主成分是整个语料库中的主成分.</p>
 <p>另外论文中还提到了这种方法的鲁棒性:</p>
 <ul>
 <li>使用不同语料(多种领域)训练得到的不同的word embedding, 均取得了很好的效果, 说明了对各种语料的友好.</li>
@@ -788,15 +788,14 @@
 <p>对于 attention 机制的分类</p>
 <p>可以从多角度对 Attention 进行分类，如从信息选择的方式上，可以分为 Soft attention 和 Hard attention。从信息接收的范围上可分为 Global attention 和 Local attention。</p>
 <p>global attention 中所有的信息都要参与计算，这样计算的开销就比较大，而别当encoder 的句子比较长时，如一段话或一篇文章。所以提出了 local attention的概念</p>
-<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>attention 机制是对于不同的词，在处理的时候给予不同的权重。最初是使用在机器翻译上，可以用来解决对齐问题。多头注意力机是点乘的升级版本，类似集成（ensemble） 的思想， 不同子空间的融合。</p>
-<p>SIF 中第一个公式中 $\alph$ 是一个超参数，一种平滑项，对于低频词的支持，即使出现的次数少，也还是有权重的。</p>
+<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>attention 机制是对于不同的词，在处理的时候给予不同的权重。最初是使用在机器翻译上，可以用来解决对齐问题。多头注意力机是点乘的升级版本，类似集成（ensemble） 的思想， 不同子空间的融合。attention 机制就是一种加权平均和。</p>
+<p>SIF 中第一个公式中 $ \alpha$ 是一个超参数，一种平滑项，对于低频词的支持，即使出现的次数少，也还是有权重的。</p>
 <p>语序、语义和位置信息，这个都是相同的含义的不同表达。</p>
 <ol>
 <li>transformer 相关总结</li>
 </ol>
-<p>transformer 的结构：encoder 是由相同的6 个层组成，每个层是由多头自我注意力机制和全连接网络组成；层和层之间使用残差网络连接。decoder 也是由相同的6个层组成，decoder 是由masked 多头机制，用来保证预测第 $i$ 个位置的时候，只是依赖小于$i$ 的输入。多头attention 机制，原理很简单，想要从不同的方面维度处理信息，类似CNN中的filter 的概念，可以得到不同语义空间投射文本，然后将多个矩阵连在一起。transformer中使用padding mask 和sequence mask 两种mask 技术，分别是padding mask和 sequence mask，其中padding mask 是一种填充技术，使得不定长的sequence变成定长的sequence。</p>
-<p>transformer 的输入和输出都是词向量+位置向量。对于位置信息有两种处理手段，一种是通过网络学习，一种是</p>
-<p>设计编码规则。作者使用的是后者。使用单词的位置和单词的维度对单词进行位置编码，分别使用sin()和 cosine()函数计算位置信息，编码是一个长度为$d_{\text {model}}$ 的特征向量。该向量除了考虑绝对位置，还可以考虑到单词的相对位置。</p>
+<p>transformer 的结构：encoder 是由相同的6 个层组成，每个层是由多头自我注意力机制和全连接网络组成；层和层之间使用残差网络连接。decoder 也是由相同的6个层组成，decoder 是由masked 多头机制，用来保证预测第 $i$ 个位置的时候，只是依赖小于$i$ 的输入。多头attention 机制，原理很简单，想要从不同的方面维度处理信息，类似CNN中的filter 的概念，可以得到不同语义空间投射文本，然后将多个矩阵连在一起。transformer中使用padding mask 和sequence mask 两种mask 技术，其中padding mask 是一种填充技术，使得不定长的sequence变成定长的sequence。（一种解读方式是规范化，可以并行计算）</p>
+<p>transformer 的输入和输出都是词向量+位置向量。对于位置信息有两种处理手段，一种是通过网络学习，一种是设计编码规则。作者使用的是后者。使用单词在当前句子的位置和单词的维度对单词进行位置编码，偶数位置使用sin()和奇数位置使用 cosine()函数计算位置信息，编码是一个长度为$d_{\text {model}}$ 的特征向量。该向量除了考虑绝对位置，还可以考虑到单词的相对位置。多头attention产生的多个结构是需要和 weights矩阵 相乘得到原始大小的矩阵，然后再输入到网络中。</p>
 <p>transformer 的计算上的优势，之前的RNN 是序列线性结构，句首的信息要经过n 次RNN 才能到达句尾，无法并行运算。而self-attention可以连接任意两个节点，所以可以进行并行运算。</p>
 <p>batch normalization 和 layer normalization 的区别？前者依赖于 batch size，经常使用在CNN  中，是不同样本在同一个特征上的归一化；后者是在样本上不同特征进行的归一化，经常在RNN中使用。</p>
 <ol start="2">
@@ -942,7 +941,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

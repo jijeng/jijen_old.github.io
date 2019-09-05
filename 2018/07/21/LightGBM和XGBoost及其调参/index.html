@@ -88,7 +88,7 @@
 <meta property="og:description" content="先主要介绍树的基本知识，然后介绍LightGBM和XGBoost及其调参.">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g455x2q9e6j20i80ei3zq.jpg">
-<meta property="og:updated_time" content="2019-06-18T03:48:06.000Z">
+<meta property="og:updated_time" content="2019-09-03T11:55:26.262Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LightGBM和XGBoost及其调参">
 <meta name="twitter:description" content="先主要介绍树的基本知识，然后介绍LightGBM和XGBoost及其调参.">
@@ -313,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-18T11:48:06+08:00">
-                2019-06-18
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-03T19:55:26+08:00">
+                2019-09-03
               </time>
             
           </span>
@@ -471,6 +471,10 @@
 <ul>
 <li>Subsampling the data: Gradient-based One-Side Sampling (lightGBM)<br>biased sampling(抽样的基本原则是随机性，但是在抽样过程中由于一系列因素造成偏差抽样，造成样本是不符合真实样本的分布)<br>这个就是缓解，也不是为了彻底让其均衡，lightgbm increases the weigths of the samples.<br>This means that it is more efficient to concentrate on data points with larger gradients.<br>In order to mitigate this problem, lightGBM also randomly samples from data with small gradients.<br>lightGBM increases the weight of the samples with small gradients when computing their contribution to the change in loss (this is a form of importance sampling, a technique for efficient sampling from an arbitrary distribution).</li>
 </ul>
+<h2 id="复习笔记"><a href="#复习笔记" class="headerlink" title="复习笔记"></a>复习笔记</h2><ol>
+<li>xgboost 的优势 (1) 能够 handle missing values  (2) 数的增长方式，一种是基于level 增长，一种是基于叶子节点增长（如果是相同的结点数量，那么基于叶子增长的方式是更加的深）</li>
+<li>调参是能够调整的参数（max_depth,  随机样本的比例，随机特征的比例），不是常见的参数（比如说 ntthread 线程数量， silent 与否）。</li>
+</ol>
 
       
     </div>
@@ -606,7 +610,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -702,7 +706,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数"><span class="nav-number">1.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantages-of-LightGBM"><span class="nav-number">2.</span> <span class="nav-text">Advantages of LightGBM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数-1"><span class="nav-number">3.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#referrence"><span class="nav-number">4.</span> <span class="nav-text">referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost调参"><span class="nav-number">5.</span> <span class="nav-text">XGBoost调参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantage-of-XGBoost"><span class="nav-number">6.</span> <span class="nav-text">Advantage of XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost-Parameters"><span class="nav-number">7.</span> <span class="nav-text">XGBoost Parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#general-parameters"><span class="nav-number">7.1.</span> <span class="nav-text">general parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#booster-parameters"><span class="nav-number">7.2.</span> <span class="nav-text">booster parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#learning-task-parameters"><span class="nav-number">7.3.</span> <span class="nav-text">learning task parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Control-Overfitting"><span class="nav-number">7.4.</span> <span class="nav-text">Control Overfitting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Referrence"><span class="nav-number">8.</span> <span class="nav-text">Referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LightGBM-和-XGBoost-的一些区别"><span class="nav-number">9.</span> <span class="nav-text">LightGBM 和 XGBoost 的一些区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数"><span class="nav-number">1.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantages-of-LightGBM"><span class="nav-number">2.</span> <span class="nav-text">Advantages of LightGBM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数-1"><span class="nav-number">3.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#referrence"><span class="nav-number">4.</span> <span class="nav-text">referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost调参"><span class="nav-number">5.</span> <span class="nav-text">XGBoost调参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantage-of-XGBoost"><span class="nav-number">6.</span> <span class="nav-text">Advantage of XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost-Parameters"><span class="nav-number">7.</span> <span class="nav-text">XGBoost Parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#general-parameters"><span class="nav-number">7.1.</span> <span class="nav-text">general parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#booster-parameters"><span class="nav-number">7.2.</span> <span class="nav-text">booster parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#learning-task-parameters"><span class="nav-number">7.3.</span> <span class="nav-text">learning task parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Control-Overfitting"><span class="nav-number">7.4.</span> <span class="nav-text">Control Overfitting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Referrence"><span class="nav-number">8.</span> <span class="nav-text">Referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LightGBM-和-XGBoost-的一些区别"><span class="nav-number">9.</span> <span class="nav-text">LightGBM 和 XGBoost 的一些区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习笔记"><span class="nav-number"></span> <span class="nav-text">复习笔记</span></a></div>
             
 
           </div>

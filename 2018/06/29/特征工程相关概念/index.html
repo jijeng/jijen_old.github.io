@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-13T13:03:34.000Z">
+<meta property="og:updated_time" content="2019-09-05T14:28:45.172Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="特征工程">
 <meta name="twitter:description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-13T21:03:34+08:00">
-                2019-08-13
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-05T22:28:45+08:00">
+                2019-09-05
               </time>
             
           </span>
@@ -446,6 +446,18 @@
 <p>The first component is the most important one, followed by the second, then the third, and so on.</p>
 </li>
 </ul>
+<p>如何去理解PCA 降维？<br>PCA 通过线性变换将原始数据变换成一组各维度线性无关的表示，可以用于提取数据的主要特征分量，将用于高纬数据的降维。我们期待的是降维的同时将信息的损失尽量降低。</p>
+<p>矩阵相乘的意义：将右边矩阵中的每一列列向量变换到左边矩阵中每一行行向量为基所表示的向量空间中去。更加抽象的说，一个矩阵可以表示一种线性变换。</p>
+<p>我们希望投影后投影值尽可能分散，而这种分散程序，可以用数学中的方差进行表示。</p>
+<p>PCA 算法步骤</p>
+<p>假设原始数据按列组成n行m列矩阵X</p>
+<ol>
+<li>将X的每一行（代表一个属性字段）进行零均值化，即减去这一行的均值</li>
+<li>求出协方差矩阵$C=\frac{1}{m}XX^\mathsf{T}$</li>
+<li>求出协方差矩阵的特征值及对应的特征向量</li>
+<li>将特征向量按对应特征值大小从上到下按行排列成矩阵，取前k行组成矩阵P</li>
+<li>$Y=PX$即为降维到k维后的数据</li>
+</ol>
 <h3 id="SVD"><a href="#SVD" class="headerlink" title="SVD"></a>SVD</h3><p>SVD decomposes the original variables into three constituent matrices. It is essentially used to remove redundant features from the dataset. It uses the concept of Eigenvalues and Eigenvectors to determine those three matrices. We will not go into the mathematics of it due to the scope of this article, but let’s stick to our plan, i.e. reducing the dimensions in our dataset.</p>
 <p>$$<br>\operatorname { Data } _ { m \times n } = U _ { m \times m } \Sigma _ { m \times n } V _ { n \times n } ^ { T }<br>$$<br>SVD将原始的数据集矩阵Data分解成三个矩阵：U、Sigma、VT，如果原始矩阵是m行n列，那么U、Sigma和VT分别就是m行m列、m行n列、n行n列。比较值得一提的是矩阵Sigma，该矩阵只有对角元素，其他元素均为0，有一个惯例是：Sigma的对角元素是从大到小排列的。这些对角元素就称为奇异值.</p>
 <p>PCA 是方阵是 $ m<em>m $操作，那么SVD 是$m</em>n$ 就是更加广泛的矩阵操作。</p>
@@ -484,10 +496,15 @@
 </tr>
 </tbody>
 </table>
-<h3 id="待解决的问题"><a href="#待解决的问题" class="headerlink" title="待解决的问题"></a>待解决的问题</h3><p>问题一： IV 的计算</p>
-<p>IV的全称是Information Value，中文意思是信息价值，或者信息量。<br>从直观逻辑上大体可以这样理解“用IV去衡量变量预测能力”这件事情：我们假设在一个分类问题中，目标变量的类别有两类：Y1，Y2。对于一个待预测的个体A，要判断A属于Y1还是Y2，我们是需要一定的信息的，假设这个信息总量是I，而这些所需要的信息，就蕴含在所有的自变量C1，C2，C3，……，Cn中，那么，对于其中的一个变量Ci来说，其蕴含的信息越多，那么它对于判断A属于Y1还是Y2的贡献就越大，Ci的信息价值就越大，Ci的IV就越大，它就越应该进入到入模变量列表中。<br>IV的计算是以WOE为基础的。<br>例中性别变量的信息值为0.0147，表示性别对目标变量的预测能力非常弱。<br>一般说来，信息值0.02以下表示与目标变量相关性非常弱。0.02-0.1很弱；0.1-0.3一般；0.3-0.5强；0.5-1很强。<br>（<a href="https://blog.csdn.net/kevin7658/article/details/50780391" target="_blank" rel="noopener">https://blog.csdn.net/kevin7658/article/details/50780391</a> 这个讲解的是iv 计算过程，可以说是很详细了）</p>
-<p>问题二： 非监督模型，比如说聚类是如何真正的在 feature selection 中使用的？</p>
-<p>需要的是例子。</p>
+<h2 id="复习总结"><a href="#复习总结" class="headerlink" title="复习总结"></a>复习总结</h2><ol>
+<li>特征工程可以分成人工构造特征（一部分来自于统计学构造特征，另一部分是应用背景下的特征）和自动提取特征（比如使用xgboost +LR模型，其中xgboost 就是一种自动提取特征的方式）。</li>
+<li>连续特征离散化的<strong>好处</strong>： (1)  增加了模型的非线性，提升了模型表达能力 (2) 离散化特征对异常数据具有很强的鲁棒性。<strong>常用的选取离散点的方法</strong>：(1) 等距离离散 (2) 等样本离散 (3) 画图 (4) 根据实际场景，比如对于年龄的划分</li>
+<li>特征组合( 1)基本特征的非线性组合  (2) 特征之间的差和乘积商，mean,variance，std 统计学特征</li>
+<li>特征选择（降维）的<strong>方法</strong>: (1) 特征本身 （如果缺省值比较大或者数据的波动比较小） (2) 特征之间的关系（特征之间有较强的相关性，可以使用PCA进行降维） (3 ) 特征和最后target 的关系 (feature  importance, 卡房分布， pearson 相关系数) (4) 很多常见的机器学习模型都是一种特征选择的方式，比如xgboost</li>
+<li>LR 是广义的线性模型，内部是矩阵运算，速度相当的快。随着工业界计算能力的提升，使用xgboost 的范围是越来越大，不再局限于LR 模型。</li>
+<li>正则化是使得模型不再变得那么复杂，具体是通过减少目标函数中loss 中weights 的相对大小。</li>
+<li>embedding 的方式 (1) label embedding (2) one-hot (3) 神经网络，万物embedding</li>
+</ol>
 
       
     </div>
@@ -623,7 +640,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -719,7 +736,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征生成"><span class="nav-number">1.</span> <span class="nav-text">特征生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征离散化？"><span class="nav-number">2.</span> <span class="nav-text">特征离散化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合特征"><span class="nav-number">3.</span> <span class="nav-text">组合特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">4.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#feature-selection"><span class="nav-number">5.</span> <span class="nav-text">feature selection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Principal-Component-Analysis-PCA"><span class="nav-number">5.1.</span> <span class="nav-text">Principal Component Analysis (PCA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVD"><span class="nav-number">5.2.</span> <span class="nav-text">SVD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投影也是一种降维手段"><span class="nav-number">5.3.</span> <span class="nav-text">投影也是一种降维手段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T-sne"><span class="nav-number">5.4.</span> <span class="nav-text">T-sne</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂货铺"><span class="nav-number">6.</span> <span class="nav-text">杂货铺</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#待解决的问题"><span class="nav-number">6.1.</span> <span class="nav-text">待解决的问题</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征生成"><span class="nav-number">1.</span> <span class="nav-text">特征生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征离散化？"><span class="nav-number">2.</span> <span class="nav-text">特征离散化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合特征"><span class="nav-number">3.</span> <span class="nav-text">组合特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">4.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#feature-selection"><span class="nav-number">5.</span> <span class="nav-text">feature selection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Principal-Component-Analysis-PCA"><span class="nav-number">5.1.</span> <span class="nav-text">Principal Component Analysis (PCA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVD"><span class="nav-number">5.2.</span> <span class="nav-text">SVD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投影也是一种降维手段"><span class="nav-number">5.3.</span> <span class="nav-text">投影也是一种降维手段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T-sne"><span class="nav-number">5.4.</span> <span class="nav-text">T-sne</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂货铺"><span class="nav-number">6.</span> <span class="nav-text">杂货铺</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习总结"><span class="nav-number">7.</span> <span class="nav-text">复习总结</span></a></li></ol></div>
             
 
           </div>
