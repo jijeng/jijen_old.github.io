@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/5943e64a703c05ae.png">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/a092b5fbafccc6de.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/08/06/7qwQfF.jpg">
-<meta property="og:updated_time" content="2019-08-06T12:49:02.000Z">
+<meta property="og:updated_time" content="2019-09-06T10:49:06.958Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Union-Find (并查集算法)">
 <meta name="twitter:description" content="并查集是一种树型数据结构，用于处理不相交 (Disjoint Sets) 的合并及查询问题。">
@@ -315,8 +315,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-06T20:49:02+08:00">
-                2019-08-06
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-06T18:49:06+08:00">
+                2019-09-06
               </time>
             
           </span>
@@ -390,6 +390,12 @@
         <p>并查集是一种树型数据结构，用于处理不相交 (Disjoint Sets) 的合并及查询问题。</p>
 <a id="more"></a>
 <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>并查集，在一些有N个元素的集合应用问题中，我们通常是在开始时让每个元素构成一个单元素的集合，然后按一定顺序将属于同一组的元素所在的集合合并，其间要反复查找一个元素在哪个集合中。</p>
+<p>并查集属于一种数据结构算法，一般来说有半确定的模块功能：</p>
+<ol>
+<li>初始化操作 </li>
+<li>合并操作 （能够体现层级关系的，数量少的集合是需要并入到数量大的集合中去）</li>
+<li>路径压缩  （在查询的过程中，用进行路径压缩）</li>
+</ol>
 <p>对于查找操作，假设需要确定x所在的的集合，也就是确定集合的代表元。判断两个元素是否属于同一集合，只需要看他们的代表元是否相同即可。并查集为了避免时间和空间上的损耗，在每一轮的查找时，都要进行一次路径压缩优化。</p>
 <p><strong> 路径压缩 </strong>： 在递归找到根节点的时候，把当前节点到根节点间所有节点的父节点都设置为根节点。</p>
 <p>我们来看下图，首先我们有个这样的一棵树，现在要找到元素9所在树的根节点，在找根节点的过程中使用路径压缩，也就是说9到根的路径上的节点9，6，3，1的父节点都设置成为根节点0，所以呢，在FIND-SET(9)之后，树的形态就变成了下面的样子</p>
@@ -478,8 +484,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/05/tree/" rel="next" title="数据结构">
-                <i class="fa fa-chevron-left"></i> 数据结构
+              <a href="/2019/08/05/data_structure/" rel="next" title="Data Structure">
+                <i class="fa fa-chevron-left"></i> Data Structure
               </a>
             
           </div>

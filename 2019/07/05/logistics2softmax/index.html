@@ -79,18 +79,19 @@
 
 
 
-<meta name="description" content="Logistics 和 softmax 的公式推导。">
+<meta name="description" content="Logistics 和 softmax 的公式推导。总结常在面试过程中用到的公式推导。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="logistics 和softmax 的公式推导">
 <meta property="og:url" content="http://yoursite.com/2019/07/05/logistics2softmax/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="Logistics 和 softmax 的公式推导。">
+<meta property="og:description" content="Logistics 和 softmax 的公式推导。总结常在面试过程中用到的公式推导。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/09/b364e0a5d1a0ef53.png">
-<meta property="og:updated_time" content="2019-09-05T14:11:06.487Z">
+<meta property="og:image" content="https://i.loli.net/2019/09/08/3LZow4UyMCSXkHc.jpg">
+<meta property="og:updated_time" content="2019-09-10T01:15:37.856Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="logistics 和softmax 的公式推导">
-<meta name="twitter:description" content="Logistics 和 softmax 的公式推导。">
+<meta name="twitter:description" content="Logistics 和 softmax 的公式推导。总结常在面试过程中用到的公式推导。">
 <meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2019/09/b364e0a5d1a0ef53.png">
 
 
@@ -312,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-05T22:11:06+08:00">
-                2019-09-05
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-10T09:15:37+08:00">
+                2019-09-10
               </time>
             
           </span>
@@ -384,20 +385,21 @@
       
 
       
-        <p>Logistics 和 softmax 的公式推导。</p>
+        <p>Logistics 和 softmax 的公式推导。总结常在面试过程中用到的公式推导。</p>
 <a id="more"></a>
-<h3 id="Logistics"><a href="#Logistics" class="headerlink" title="Logistics"></a>Logistics</h3><p>Logistics Regression 是线性分类器。所以还是先从线性回归中开始推导。</p>
+<h3 id="Logistics公式推导"><a href="#Logistics公式推导" class="headerlink" title="Logistics公式推导"></a>Logistics公式推导</h3><p>Logistics Regression 是线性分类器。所以还是先从线性回归中开始推导。LR 模型推导分成以下四个部分： 线性回归表示，sigmoid 激活函数、优化目标极大似然估计 和使用梯度上升的方式更新权重。</p>
 <p><strong>线性函数</strong></p>
 <p>$$<br>\begin{split}<br>h_{w}\left(x^{i}\right) &amp;=w_{0}+w_{1} x_{1}+w x_{2}+\ldots+w_{n} x_{n} \\<br>h_{w}\left(x^{j}\right) &amp;=w^{T} x_{i}=W^{T} X<br>\end{split}<br>$$</p>
 <p>然后分别进行向量表示：</p>
 <p>$$<br>\begin{split}<br>X &amp;= \left[ 1  \  x_1  \  \dots x_n \right]^T  \\<br>W &amp;= \left[ w_0 \ w_1 \ \dots \ w_n \right]^T \\<br>\end{split}<br>$$</p>
-<p>为了更好的表示分类模型，这里就引出了 Logistics 回归。</p>
+<p>为了更好的表示分类模型，使用sigmoid 激活函数，引入了Logistics 回归。</p>
 <p>逻辑回归是假设数据服从 Bernoulli 分布（抛硬币），因此LR属于参数模型。LR目标函数的定义：$$h_{\theta}(x)=g\left(\theta^{T} x\right)$$<br>其中sigmoid 函数为：$g(z)=\frac{1}{1+e^{-z}}$。 sigmoid 函数的导数有很好的性质 $ g^{\prime}(z)=g(z)(1-g(z))$</p>
 <p><strong>似然函数</strong></p>
+<p>为什么这里会出现概率呢？ 因为经过sigmoid 激活函数之后，会输出 $y_{pred}$， 范围是在 [0, 1] 之间，一般是跟军 0.5 去划分，如果大于 0.5 那么是 A 类，否则是B 类。<br>逻辑回归的优化目标是极大化对数似然估计，采用梯度上升来学习及更新参数$ \theta $向量的值。</p>
 <p>假设有n个独立的训练样本 ${(x_1, y_1),(x_2, y_2), \ldots,(x_n, y_n)} $, 并且$ y ={ 0, 1} $。那每一个观察到的样本 $(x_i, y_i)$ 出现的概率是：</p>
-<p>$$<br>P(y_i, x_i) = {P(y_i = 1| x_i)}^{y_i}{1 -P(y_i =1| x_i)}^{1-y_i}<br>$$</p>
+<p>$$<br>P(y_i, x_i) = {P(y_i = 1| x_i)}^{y_i}{(1 -P(y_i =1| x_i)}^{1-y_i)}<br>$$</p>
 <p>推广到所有样本下，得到整体的似然函数表达，需要将所有的样本似然函数全部相乘。</p>
-<p>$$<br>L(\theta) =\Pi{P(y_i = 1| x_i)}^{y_i}{1 -P(y_i =1| x_i)}^{1-y_i}<br>$$</p>
+<p>$$<br>L(\theta) =\Pi{P(y_i = 1| x_i)}^{y_i}({1 -P(y_i =1| x_i)})^{1-y_i}<br>$$</p>
 <p>累乘的形式不利于进行优化分析，这里将似然函数取对数，得到对数似然函数，作为我们的最终优化目标，运用极大似然估计来求得最优的 $\theta$ (这个参数是来自线性相乘中的参数)</p>
 <p>$$<br>\begin{split}<br>l(\theta)  &amp;=logL(\theta) \\<br>&amp;= \sum_{i =1}^{m}(y^{(i)} \log h\left(x^{(i)}\right)+\left(1-y^{(i)}\right) \log \left(1-h\left(x^{(i)}\right)\right))<br>\end{split}<br>$$</p>
 <p><strong>最优化求解</strong></p>
@@ -412,10 +414,48 @@
 <p>$$ \frac{\partial}{\partial \theta_{j}} \ell(\theta)= \left(y-h_{\theta}(x)\right) x_{j}$$</p>
 <p>因此总的 $\theta $ 的更新公式为：<br>$$ J(\theta) := \theta_{j}+\alpha\left(y^{(i)}-h_{\theta}\left(x^{(i)}\right)\right) x_{j}^{(i)}$$</p>
 <p>关于logistics 的公式推导已经结束。</p>
+<p>原文链接：<a href="http://alexjiangzy.com/2019/02/13/LogisticsSummary/" target="_blank" rel="noopener">Logistics到softmax推导整理</a></p>
+<h3 id="纯python-实现逻辑回归"><a href="#纯python-实现逻辑回归" class="headerlink" title="纯python 实现逻辑回归"></a>纯python 实现逻辑回归</h3><p>线性分类器：模型是参数的线性函数，分类平面是（超）平面；<br>非线性分类器：模型分界面可以是曲面或者超平面的组合。<br>典型的线性分类器有感知机，LDA，逻辑斯特回归，SVM（线性核）；<br>典型的非线性分类器有 kNN，决策树，SVM（非线性核）</p>
+<p>关键是看后面，如何使用纯python 去实现一个逻辑回归。</p>
+<p>代码：<a href="https://github.com/Azure-Sky-L/Machine-learning/blob/master/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92.py" target="_blank" rel="noopener">逻辑回归.py</a><br>讲解：<a href="https://juejin.im/post/5b124606e51d4506cf109b1a#heading-10" target="_blank" rel="noopener">机器学习算法 之逻辑回归以及python实现</a></p>
 <h3 id="softmax-的推导"><a href="#softmax-的推导" class="headerlink" title="softmax 的推导"></a>softmax 的推导</h3><p>多分类中使用的是交叉熵损失函数 ( cross entropy error function)，交叉熵函数是凸函数。最后一层的网络展开，最终的结果展开成 one-hot 的形式，用 softmax 得到的概率值进行交叉熵的计算，带入公式</p>
 <p>$$<br>J=-\sum_{c=1}^{M} y_{c} \log \left(p_{c}\right)<br>$$</p>
 <p>好好理解一下从softmax 到交叉熵计算过程。</p>
 <p><img src="https://ftp.bmp.ovh/imgs/2019/09/b364e0a5d1a0ef53.png" alt=""></p>
+<p>这个里面有一部分关乎 softmax 的推导，但是感觉不是很全很详细：<a href="http://alexjiangzy.com/2019/02/13/LogisticsSummary/" target="_blank" rel="noopener">Logistics到softmax推导整理</a></p>
+<h3 id="SVM公式推导"><a href="#SVM公式推导" class="headerlink" title="SVM公式推导"></a>SVM公式推导</h3><p><img src="https://i.loli.net/2019/09/08/3LZow4UyMCSXkHc.jpg" alt="1.png"></p>
+<p>如上图中只有线上的点叫做支持向量，其他的点在 $y$ 中的表示要么是 1要么是-1。支持向量可以用来进行分类和回归，这里介绍的是分类问题。支持向量的目标是最大化正负样本之间的间隔。分类问题可以分成三类：</p>
+<ol>
+<li>线性可分（硬间隔支持向量）</li>
+<li>近似线性可分（软间隔支持向量，通过引入松弛变量实现）</li>
+<li>线性完全不可分（使用非线性核函数）</li>
+</ol>
+<p>下面的公式推导都是基于线性可分条件下的，也就是硬间隔支持向量机。步骤有二：</p>
+<ol>
+<li>寻找最大分隔间距（原问题可以转换成对偶问题）</li>
+<li>通过拉格朗日求解优化问题</li>
+</ol>
+<p>从第一步中得到是一个二次规划问题，可以求解，但当样本量大的时候，计算量非常大，所以可以转换成其对偶问题求解。然后使用拉格朗日公式求解，这个时候引入一个参数拉格朗日参数，求解这个参数即可。</p>
+<p>具体公式的推导可以参考下面的文章：</p>
+<p><a href="https://joshuaw1990.github.io/2017/12/12/SVM%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/" target="_blank" rel="noopener">SVM公式推导</a></p>
+<p><strong>对于上面文章的解读</strong></p>
+<ol>
+<li>从原来的分段函数表示成下面的公式，在于这样的结果是可以直接表示分类结果的正确与否，如果结果大于0表示 $f(x)$ 和 $label $ 是同号，那么表示预测正确，否则预测错误。<br>$$<br>y_{i} \cdot\left(w^{T} x_{i}+b\right) \geq 1<br>$$<br>公式中的 1-5 对应的是步骤一；步骤6-10 是对应求解问题。</li>
+</ol>
+<ol start="2">
+<li><p>在计算过程中支持向量的点是用来计算距离的，其他样本点是体现在约束条件中。</p>
+</li>
+<li><p>判别模型</p>
+</li>
+</ol>
+<h3 id="反向传播的推导"><a href="#反向传播的推导" class="headerlink" title="反向传播的推导"></a>反向传播的推导</h3><p>这个推导也是超级简单，分成三个步骤：</p>
+<ol>
+<li>前向传播，注意$f_1$ 和 $y_1$ 所表示的含义的不同，前者经过激活函数 比如说sigmoid 就得到了后者</li>
+<li>反向传播，和前向传播是一样的，只不过出发点是 $\delta$，关键是要使用到前面的weight 信息进行 $\delta$ 的重新分配</li>
+<li>权值更新，注意涉及到原来的 weights、error、梯度和学习率四个变量。</li>
+</ol>
+<p>(注意在权值更新推导的时候，一定要使用到学习率，求导，error 这几个变量，否则是没有办法基于之前的进行更新的)<br>详细情况可以看这里</p>
+<p><a href="http://galaxy.agh.edu.pl/~vlsi/AI/backp_t_en/backprop.html" target="_blank" rel="noopener">反向传播的推导</a></p>
 
       
     </div>
@@ -639,7 +679,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Logistics"><span class="nav-number">1.</span> <span class="nav-text">Logistics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#softmax-的推导"><span class="nav-number">2.</span> <span class="nav-text">softmax 的推导</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Logistics公式推导"><span class="nav-number">1.</span> <span class="nav-text">Logistics公式推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#纯python-实现逻辑回归"><span class="nav-number">2.</span> <span class="nav-text">纯python 实现逻辑回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#softmax-的推导"><span class="nav-number">3.</span> <span class="nav-text">softmax 的推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVM公式推导"><span class="nav-number">4.</span> <span class="nav-text">SVM公式推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播的推导"><span class="nav-number">5.</span> <span class="nav-text">反向传播的推导</span></a></li></ol></div>
             
 
           </div>
