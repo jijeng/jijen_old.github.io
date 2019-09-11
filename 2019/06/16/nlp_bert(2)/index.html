@@ -87,7 +87,7 @@
 <meta property="og:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://i.loli.net/2019/08/16/E8lZBTc7JAfWVvC.png">
-<meta property="og:updated_time" content="2019-09-02T08:22:12.000Z">
+<meta property="og:updated_time" content="2019-09-10T11:25:27.642Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BERT学习笔记(2)">
 <meta name="twitter:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-02T16:22:12+08:00">
-                2019-09-02
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-10T19:25:27+08:00">
+                2019-09-10
               </time>
             
           </span>
@@ -430,7 +430,7 @@
 <p>词汇扩展： 使用一个word2vec 的词向量去映射在训练句子向量中得到的向量，其中的映射关系是 $w$, 这个参数可以通过共现词进行学习。</p>
 <h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>BERT 的创新点在于 mask LM和 predicting next sentence 这个多任务学习。mask 语言模型有点像完形填空，对一个句子，会随机mask 掉15% 的词语，让bert 来预测这些词语。这些词80% 是被替换成 [MASK], 10% 是被随机替换成一个词语，10% 是替换成单词本身。在预测句子关系中，随机50% 抽取两个无关的句子，50% 抽取两个有关联的句子，然后使用bert 模型判断这两个句子的相关性。在训练的时候是多任务学习。</p>
 <p>BERT 和OpenAI GPT 的区别：</p>
-<p>从训练目标上讲，bert 是同时上下文信息，而其他的都是单向的。</p>
+<p>从训练目标上讲，bert 是<strong>同时</strong>上下文信息，而其他的都是单向的。</p>
 
       
     </div>
@@ -558,7 +558,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

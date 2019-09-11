@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/01/5d422029970c282991.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*MrcJwiWD8z47AXe_GPgZkA.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*H4pRIFSGcExAlV5pE6ObNA.png">
-<meta property="og:updated_time" content="2019-09-05T04:43:20.000Z">
+<meta property="og:updated_time" content="2019-09-10T08:59:06.729Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ROC和 unbalanced data">
 <meta name="twitter:description" content="介绍ROC 曲线，auc 值和如何去处理不平衡数据。 ROC曲线和AUC值ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False,">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-05T12:43:20+08:00">
-                2019-09-05
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-10T16:59:06+08:00">
+                2019-09-10
               </time>
             
           </span>
@@ -437,6 +437,12 @@
 <p>简单来讲,</p>
 <p>尽可能地找到正样例(最关心的类别)时,选recall(immediate from recall定义)<br>尽可能地避免把非正样例预测为正样例时，选precision(immediate from precision定义)</p>
 <p>拿楼上的『地震预测』举例子。我的理解是，对模型的要求是不能漏报（recall一定要高），但是不能老是误报（FPR不能太高）。混合的准确率其实没有太大的意义。所以，我会选择ROC。『犯罪检测』也是一样的。要求一样，数据分布也类似（正样本&lt;&lt;负样本）</p>
+<p>ROC-AUC 和 precision-recall 在实现上的差别</p>
+<p>在实现上 pyplot 是 (x, y)， 如何记忆 x 和y 轴对应的是哪个指标呢？ （一般对于图标的描述是先y 后x）比如说P-R曲线，说明precision 是y 轴，recall 是x 轴。ROC 曲线是TP-FN，那么true positive rate 是y 轴，false negative rate 是x 轴。所以这两个曲线中的  recall（true positive rate ）是相反的位置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">x = np.arange(<span class="number">0</span>, <span class="number">5</span>, <span class="number">0.1</span>)</span><br><span class="line">y = np.sin(x)</span><br><span class="line">plt.plot(x, y)</span><br></pre></td></tr></table></figure>
+<p>ROC 曲线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fpr, tpr, thresholds = roc_curve(testy, probs)</span><br><span class="line">pyplot.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], linestyle=<span class="string">'--'</span>)</span><br><span class="line">pyplot.plot(fpr, tpr, marker=<span class="string">'.'</span>)</span><br><span class="line">pyplot.show()</span><br><span class="line">auc_score = roc_auc_score(testy, probs)</span><br><span class="line">print(<span class="string">'AUC: %.3f'</span> % auc_score)</span><br></pre></td></tr></table></figure></p>
+<p>P-R曲线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pyplot.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0.5</span>, <span class="number">0.5</span>], linestyle=<span class="string">'--'</span>)</span><br><span class="line">pyplot.plot(recall, precision, marker=<span class="string">'.'</span>)</span><br><span class="line">pyplot.show()</span><br><span class="line">print(<span class="string">'AUC: %.3f'</span> % auc_score)</span><br></pre></td></tr></table></figure></p>
+<p>看完上面的，这个链接是补充信息<br><a href="http://www.davidsbatista.net/blog/2018/08/19/NLP_Metrics/" target="_blank" rel="noopener">Evaluation Metrics, ROC-Curves and imbalanced datasets</a></p>
 <p><strong>TakeOff</strong></p>
 <p>If you have an imbalanced dataset accuracy can give you false assumptions regarding the classifier’s performance, it’s better to rely on precision and recall, in the same way a Precision-Recall curve is better to calibrate the probability threshold in an imbalanced class scenario as a ROC curve.</p>
 <ul>
@@ -616,7 +622,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
