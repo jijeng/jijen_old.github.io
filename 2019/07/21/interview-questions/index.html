@@ -87,10 +87,12 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要总结一下在面试过程中遇到的非技术类的问题（自用，已加密）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-31T06:36:46.000Z">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/09/a93c846b81fc9ccc.png">
+<meta property="og:updated_time" content="2019-09-12T14:59:27.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Interview Questions">
 <meta name="twitter:description" content="主要总结一下在面试过程中遇到的非技术类的问题（自用，已加密）">
+<meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2019/09/a93c846b81fc9ccc.png">
 
 
 
@@ -311,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-31T14:36:46+08:00">
-                2019-08-31
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-12T22:59:27+08:00">
+                2019-09-12
               </time>
             
           </span>
@@ -453,54 +455,8 @@
 <p>最好的方式是凭着工作能力说话，让别人觉得能力ok 不加班也是把工作做完做好的。</p>
 <p>目前团队工作氛围怎么样？ 加班情况如何？之类的是可以提前问一下的。如果自己急需工作，先拿下工作之后再说，等自己缓和一下再谋出路。</p>
 <ol start="9">
-<li>最后的发问？<br>你们小组是干什么，有什么产品？<br>实习内容主要干什么？（这两个问题是不一样的）</li>
+<li>最后的发问？<br>你们小组是干什么，有什么业务产品？<br>团队怎么样？<br>如果我比较幸运能够来着工作的话，那么主要做哪些方面的工作？</li>
 </ol>
-<h2 id="小抄（简历上的面试问题）"><a href="#小抄（简历上的面试问题）" class="headerlink" title="小抄（简历上的面试问题）"></a>小抄（简历上的面试问题）</h2><p><strong>腾讯新闻的实习经历</strong></p>
-<p>绝对提高和相对提高：假如之前的水平是a，然后之后的水平是b，那么绝对提高就是 (b -a); 相对提高 (b -a) /a *100% </p>
-<p>faiss 的介绍<br>首先使用 index对于向量进行预处理，然后选择不同的模式. 主要讲的是三种模式，一个维度是简单模式，适合在小数据上进行计算 欧氏距离；一个维度是加快检索速度，这种模式下是需要提前的train，其基本的思路对向量进行聚类，当然文中说的是 “细胞”，建立倒排索引，然后检索的时候，搜索这个“细胞”内 和周围的“细胞” 的id 的集合，就可以返回前 K 个最相近的结果；最后一个维度是减少内存的使用，上面两种都是使用的完整的向量，这个模式下是使用的压缩向量，可以使用PCA 进行实现，当然这个模式下得到的结果也是近似解。还有两种计算的上的优化，对于向量进行分段计算，这种可以实现并行，并且支持任务在GPU 上进行运算。</p>
-<p>什么是 AB test?<br>在对产品进行A/B测试时，我们可以为同一个优化目标（例如优化购买转化率）制定两个方案（比如两个页面），让一部分用户使用A 方案，同时另一部分用户使用 B 方案，统计并对比不同方案的转化率、点击量、留存率等指标，以判断不同方案的优劣并进行决策，从而提升转化率。</p>
-<p>过渡到我这个项目，就是一部分用户使用原来的版本的 topK  的模型，另外一部分用户使用我这个版本 topk 的模型。</p>
-<ol>
-<li>经常使用的框架 和模型？<br>中文 nltk (Natural Language Toolkit — NLTK 3.4.4 documentation), 中文分词 jieba hanlp stanford nlp bert<br>英文 nltk genism  bert<br>nltk 和 gensim 自然语言工具包 实现了很多nlp 中的算法，比如tfidf</li>
-</ol>
-<p>深度学习框架<br>keras  tensorflow pytorch</p>
-<ol start="2">
-<li>句子向量的训练过程？<br>word embedding 表示的句子的缺点：<br>没有词序；没有上下文；依赖前期的处理</li>
-</ol>
-<p>SIF 这种句子向量 （无监督，非网络结构）</p>
-<p>如何进行 sentence 训练?<br>无监督模型，通过skip-though 举例说明：<br>skip-gram  根据中心词汇预测上下文<br>skip-thought  根据中心句 预测上下句<br>encoder -decoder<br>encoder 就是一个 特征提取，然后又两个decoder， 是语言模型 ，分别对应着 上一句和下一句<br>统计语言模型是一个单词序列上的概率分布，对于一个给定长度为m的序列，它可以为整个序列产生一个概率 P(w_1,w_2,…,w_m) 。</p>
-<p>词汇扩展：<br>使用 word2vec 得到的词向量 来补充 encoder 过程中 该问题的词向量，要求前者的规模是远远大于后者的。<br>通过这种方法补充 encoder 过程中的词汇。</p>
-<p>该模型要求：<br>数据集中的句子是有衔接关系的，论文中的数据集是 google news dataset。要求有一定的逻辑的文章。</p>
-<p>有监督模型：<br>infersent</p>
-<p>综述类型，找到了 nlp 领域的imagenet 和 inception network。网络结构模型是 使用一个encoder 得到向量表示，然后记性 u 相加 和点乘 三种操作，得到 fully-connection 最后是softmax。encoder 是 bi-lstm 并且使用 max pooling 进行网络结构的优化。数据集是 句子对组成的数据集，标注信息是数据间的关系（蕴含，对立和中性）数据量 570k。</p>
-<p>具体实验对比的是 RNN lstm gru 然后搭配着 单向or 双向 max pooling or average pooling 进行做的实验。</p>
-<p>universal sentence encoder</p>
-<p>上面那个是 facebook 团队出的，然后这个是 google 出的，主要的区别在于使用 transformer 代替bi-lstm 作为encoder。 训练的时候，既进行了有监督的学习，又进行了无监督的训练。</p>
-<p>图像处理和nlp 的差别：<br>图像是连续实数空间，而nlp 处理的是离散的数据。图像中的pixel 是连续的，而文本是离散的token 表示。</p>
-<p><strong>对于 bert transformer 的介绍？</strong></p>
-<p>如果想要讲解 bert，那么就得讲解 transformer，如果想要讲解 transformer，那么就得讲解 self-attention，如果想要讲解 self-attention，那么就得说下 attention机制。 直接从 transformer 说起，大的结构还是 encoder、decoder 的结构。encoder 是6 个两层结构， decoder 也是 6个三层结构。 </p>
-<p>bert 中有几个技术点是需要讲解： layer normalization （主要 vs batch normalization）、position embedding （在encoder 中是结合了 word embedding 一块作为输入的）、masked attention（当predict t 时刻的word的时候，只能看到  t 之前的情况，将 t 之后的word 进行了 mask）、multi-head attention（类似 图像中的多个 filter ）、self-attention 就不多说了</p>
-<p>从 transformer 到 bert 又是一个比较复杂的模型组合的工作。</p>
-<p><strong>文章去重</strong></p>
-<p>参加的一个课题项目，针对某个特定的行业，比如房地产、互联网，基于大数据，对网页或者文章进行分析，使用数据挖掘的手段，捕捉热点，然后为企业或者个人提供事件或者品牌的情感分析、品牌分析。这个是大的项目背景。</p>
-<p>我参与的是在于对网页或者网页的去重工作，因为之后的文章分析的指标计算，比如流行度，都是比较依赖于数据的准确性。数据的来源：新闻（搜狐网、新浪网）电子报纸，app 新闻，分成不同类别的新闻，比如科技、教育、金融和体育。每条数据由标题、站点、url、发布时间、内容、阅读量、评论量等组成，数据量是百万级别的。其中内容部分是由500 到2000不等的字数组成。步骤的话，先是文本的预处理，提取关键词，然后使用simhash 或者minhash 进行计算，重复文章的集合，最后去掉重复的文章。</p>
-<p>优化：多线程，字典（有一些品牌类的，人名类，需要进行人工的添加、新词发现，网络词汇）</p>
-<p>如何去考察最后去重的效果，一般来说，simhash 中的距离函数是汉明距离，这个在3 以内，都是可以认为是相似的文章。当然对于定量的评价的话，有一个标注的小的测试集，然后可以在上面进行 baseline的验证。</p>
-<p><strong>Home credit default risk</strong></p>
-<p>尽可能的从业务本身，提取更多可解释、稳定的特征。比如在 6张子表中，是用户的行为数据，如果对于最后的违约概率来说，时间就显得比较重要，用户的最近几个月的消费水平和长期的消费水平分别对应的是近期行为和长期行为，这个对于 违约概率的影响也是不同的。所以需要尽可能地懂数据，然后从这些维度提取可解释的特征。<br>当然最原始的数据中有一些未标明的数据，进行一下交叉和组合也是统计学中经常使用到的手段。</p>
-<p>调参也是技术活，常常使用Grid search 和Random search</p>
-<p>这个也是可以展开的：<br>domain： 所有的超参数及其值 的dictionary（键值对）<br>Optimization algorithm:  如何去选择下一组 超参数。<br>目标函数：这个是模型中的目标函数<br>results history： 目标函数和 一组超参数的对应关系</p>
-<p>关于 results history 的使用就是 random search 和基于贝叶斯方式搜索的区别，前者没有使用这种对应的关系，后者有利用这种关系。 贝叶斯，p(目标函数 | 一组超参数)。</p>
-<p><strong>pygen 项目</strong></p>
-<p>faker 中生成的信息是单列的，个人信息之间是没有联系的，所以想要用在机器学习训练的时候比较难。<br>关键技术：<br>中文名字有很强的性别属性。例如名字中带有“杰”“志”“宏”等字的一般为男性，带有“琬”“佩”“梅”等字的一般为女性。当然也有一些比较中性的字，例如“文”“安”“清”等，比较难猜测性别，关于这点会在另一个博客中展开，请期待。</p>
-<p><strong> gan 论文</strong></p>
-<p>D 网络在判别的时候，是从逼真程度上进行判别的，并不是从生成图像多样性上进行判别的，并且是无法从多样性上进行判别的，因为输入到D 网络中的是一个样本或者说是一个 batch的样本，是很难得到生成图像的多样性这个角度的。</p>
-<p>同理 G 网络也只是考虑单个的生成图像，对于G 网络图像的多样性是没有考虑在内的。</p>
-<p>有时候也会在训练过程中也会利用这种性质，比如说只是为了得到一张或者几张非常逼真好看的图像，而不会很在乎最后是否生成了多样性的图像。</p>
-<p>孪生网络最初是用来做指纹的验证，然后扩展到 cv 和nlp 中都有用来做相似度方面的计算。在论文中的是用来作为生成图像之间相似度的计算，该网络中两个 CNN 用于提取特征，然后基于 欧式距离进行计算，输出label 是0-1 之间的数字， 0表示最相近，1表示不想近。<br>损失函数使用的是 对比损失函数，有点类似交叉熵的感觉，分段函数， y =0 的时候是平方损失函数，y =1 的时候，是合页损失函数。</p>
-<p>主要的是做了以下的优化：<br>label 浮点化，Label Smoothing :这种距离的计算是通过聚类实现的，在同一个簇中或者相邻簇中的距离小，向着0 靠近；在不同的簇之间的相距大，不超过1.</p>
-<p>网络结构上有两点优化：<br>对于对抗生成网络的D 网路的权重进行正则化，具体来说是 谱归一化，使其符合lipschitz 约束，其中超参数 K 取1.即 D(x) -D(y) 的欧式距离是不大于 x-y 的欧式距离的。</p>
-<p>加入了 self -attention机制。</p>
 <h2 id="大疆笔试题"><a href="#大疆笔试题" class="headerlink" title="大疆笔试题"></a>大疆笔试题</h2><p>图像领域中的数据增强?</p>
 <p>一种是收集更多的数据，一种是根据现有的数据进行增强。<br>数据增强，常用的方式，就是旋转图像，剪切图像，改变图像色差,扭曲图像特征，改变图像尺寸大小，增强图像噪音（一般使用高斯噪音，盐椒噪音）等.</p>
 <p>逻辑回归的目标函数：log 似然函数<br>$ p(y)$， 先验概率：一个事件发生的概率<br>$ p(y|x) $，后验概率：一个事件在另一个事件发生条件下的条件概率</p>
@@ -523,6 +479,22 @@
 <p>C错误。间隔应该是2/||w||才对，后半句应该没错，向量的模通常指的就是其二范数。（根据两侧的距离）</p>
 <p>SVM 分类和深度学习逻辑回归分类的区别<br>逻辑回归是线性分类，SVM 可以应用于线性分类和非线性分类问题，取决于核函数的选取。</p>
 <p>SVM 是凸问题，深度学习都是非凸问题<br>正确，深度学习算法的目标函数，几乎全都是非凸的。</p>
+<h3 id="笔试面试中的问题总结"><a href="#笔试面试中的问题总结" class="headerlink" title="笔试面试中的问题总结"></a>笔试面试中的问题总结</h3><ol>
+<li>下列哪一种偏移，是我们在最小二乘直线拟合的情况下使用的？图中横坐标是输入 X，纵坐标是输出 Y。<br><img src="https://ftp.bmp.ovh/imgs/2019/09/a93c846b81fc9ccc.png" alt=""></li>
+</ol>
+<p>线性回归模型计算损失函数，例如均方差损失函数时，使用的都是 vertical offsets。perpendicular offsets 一般用于主成分分析（PCA）中。</p>
+<ol start="2">
+<li><p>fork() 函数<br>fork()函数是Linux系统中唯一可以创建一个新进程的方法。其新创建的进程称为子进程，原进程称为父进程。子进程将从父进程处继承了整个父进程的地址空间（包括进程上下文、代码段、进程堆栈、内存信息、打开的文件描述符、进程优先级、进程组号等）。<br>由于fork()函数所产生的子进程是完全复制的父进程，因此它们会运行同一个程序，父进程的代码从fork()函数的返回值开始分别在两个地址空间中同时运行，从而时两个进程分别获得其各自的fork()函数返回值，父进程返回值为子进程的进程号，子进程的返回值为0，所以可以通过判断fork()函数的返回值来确定该进程为父进程还是子进程。</p>
+</li>
+<li><p>对10TB的数据文件进行排序，应使用的方法是<br>（这个主要考察的是内存问题，而不是数据量大造成的速度快慢问题， 是内存中放不下的问题）<br>对于10TB的海量数据，数据不可能一次全部载入内存，传统的排序方法就不适用了，需要用到外排序的方法。外排序采用分治思想，即先对数据分块，对块内数据进行排序，然后采用归并排序的思想进行排序，得到数据的一个有序序列。</p>
+</li>
+</ol>
+<ol start="4">
+<li>请问经过表达式a = 5 ? 0 : 1的运算,变量a的最终值是? -&gt; 0<br>表达式中的a 是一种接收变量，是bool 类型的。</li>
+</ol>
+<ol start="5">
+<li>假设你有以下数据：输入和输出都只有一个变量。使用线性回归模型（y=wx+b）来拟合数据。那么使用留一法（Leave-One Out）交叉验证得到的均方误差是多少？<br>留一法，简单来说就是假设有 N 个样本，将每一个样本作为测试样本，其它 N-1 个样本作为训练样本。这样得到 N 个分类器，N 个测试结果。用这 N个结果的平均值来衡量模型的性能。<br>题目可以参考<a href="https://www.sohu.com/a/242789904_633698" target="_blank" rel="noopener">这里</a></li>
+</ol>
 
       
     </div>
@@ -656,7 +628,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -752,7 +724,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#非技术类问题"><span class="nav-number">1.</span> <span class="nav-text">非技术类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小抄（简历上的面试问题）"><span class="nav-number">2.</span> <span class="nav-text">小抄（简历上的面试问题）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大疆笔试题"><span class="nav-number">3.</span> <span class="nav-text">大疆笔试题</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#非技术类问题"><span class="nav-number">1.</span> <span class="nav-text">非技术类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大疆笔试题"><span class="nav-number">2.</span> <span class="nav-text">大疆笔试题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#笔试面试中的问题总结"><span class="nav-number">2.1.</span> <span class="nav-text">笔试面试中的问题总结</span></a></li></ol></li></ol></div>
             
 
           </div>

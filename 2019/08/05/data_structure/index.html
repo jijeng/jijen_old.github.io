@@ -86,6 +86,9 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍面试过程中的数据结构，树、Hash表和图。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/09/34819be3e755ae7c.png">
+<meta property="og:image" content="https://upload.cc/i1/2019/09/15/bTSD9e.png">
+<meta property="og:image" content="https://upload.cc/i1/2019/09/15/067dri.gif">
 <meta property="og:image" content="https://i.loli.net/2019/09/05/9gECZRzJqrswSiM.png">
 <meta property="og:image" content="https://i.loli.net/2019/09/05/ogIAdEY7T4w6jZu.gif">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007X8olVly1g6pusahnhqj30za05rtbn.jpg">
@@ -101,11 +104,11 @@
 <meta property="og:image" content="https://i.loli.net/2019/09/05/8ybFoZ7qdjMhVlp.png">
 <meta property="og:image" content="https://i.loli.net/2019/09/05/WjuNKxF7J4psdyU.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/06/nMmL5R.png">
-<meta property="og:updated_time" content="2019-09-11T00:12:38.189Z">
+<meta property="og:updated_time" content="2019-09-17T01:50:09.837Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Data Structure">
 <meta name="twitter:description" content="介绍面试过程中的数据结构，树、Hash表和图。">
-<meta name="twitter:image" content="https://i.loli.net/2019/09/05/9gECZRzJqrswSiM.png">
+<meta name="twitter:image" content="https://i.bmp.ovh/imgs/2019/09/34819be3e755ae7c.png">
 
 
 
@@ -326,8 +329,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-11T08:12:38+08:00">
-                2019-09-11
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-17T09:50:09+08:00">
+                2019-09-17
               </time>
             
           </span>
@@ -404,7 +407,34 @@
 <p>节点的度：指的是结点拥有的子树的个数，二叉树的度不大于2</p>
 <p>高度：叶子节点的高度是1， 根结点的高度最高</p>
 <p>节点的层次：从根结点开始，根结点为第一层，根结点的叶子节点为第二层，以此类推。</p>
-<p>下面的树结构都是一种高效的查找结构。</p>
+<p>两种特殊的二叉树</p>
+<p><strong>满二叉树</strong></p>
+<p>一棵深度为 $k$ 且有 $2^k -1$个结点的二叉树被称为满二叉树。</p>
+<p>特点：</p>
+<ol>
+<li>每一层上的结点都是最大结点数（每层都是满） 数学表达为，$2^{k-1}$ </li>
+<li>叶子结点全部都是在最底层</li>
+</ol>
+<p><img src="https://i.bmp.ovh/imgs/2019/09/34819be3e755ae7c.png" alt=""></p>
+<p>对满二叉树结点位置进行编号（编号的定义对于完全二叉树的理解有重要的意义）</p>
+<ol>
+<li>从根节点开始，自上而下，自左而右</li>
+<li>每一结点位置上都有元素</li>
+</ol>
+<p><strong>完全二叉树</strong></p>
+<p>深度为 $k$ 的具有 $n$ 个结点的二叉树，当且仅当其每一个结点都与深度为 $k$ 的满二叉树中编号为 $1 \sim n$ 的结点一一对应，称之为完全二叉树。<br>（满二叉树在实际中不是那么常见，但是完全二叉树就比较常见，因为没有约束最后一层必须是满的，但是存在的结点却保留这满二叉树的性质，存在的结点都是和满二叉树一一对应的）</p>
+<p><strong>大根堆和小根堆</strong></p>
+<p><img src="https://upload.cc/i1/2019/09/15/bTSD9e.png" alt="img"></p>
+<p>特点：</p>
+<ol>
+<li>堆是一个完全二叉树( 如果有 h 层，那么 1- h-1 层都是满的，在h 层缺失的若干个 右叶子)</li>
+<li>小根堆的根节点的值是最小值，大根堆的根节点是最大值</li>
+<li>堆的结构适合采用顺序存储</li>
+</ol>
+<p>堆的存储结构<br>一般都用数组来表示堆，$i $结点的父结点下标就为 $(i–1)/2 $。它的左右子结点下标分别为 $2 <em> i + 1 $和 $2 </em> i + 2$。如第0个结点左右子结点下标分别为1和2。在二叉排序树中，某结点的右孩子结点的值一定大于该结点的左孩子结点的值；在堆中却不一定，堆只是限定了某结点的值大于（或小于）其左右孩子结点的值，但没有限定左右孩子结点之间的大小关系。</p>
+<p><img src="https://upload.cc/i1/2019/09/15/067dri.gif" alt="img"></p>
+<p>堆的结构和完全二叉树的区别：<br>堆是一个完全二叉树，并且每个结点的值都大于或等于其左右孩子结点的值（这里的讨论以大根堆为例），所以，堆是结点之间满足一定次序关系的完全二叉树。具有n个结点的堆，其深度即为堆所对应的完全二叉树的深度$logn $。</p>
+<p>接下来的树结构都是一种高效的查找结构。</p>
 <p><strong>二叉搜索树（二叉排序树）</strong></p>
 <p>定义： 是空树或者满足以下的性质</p>
 <p>特点：</p>
@@ -571,6 +601,8 @@
 <p>考虑城市之间间隔的距离，建设通信线路的难度等各种因素，将这些因素综合成一个数值表示，然后可以计算最小的建设成本。</p>
 <p><a href="https://blog.csdn.net/luoshixian099/article/details/51908175" target="_blank" rel="noopener">写作参考</a></p>
 <p><a href="https://www.bilibili.com/video/av47042691/" target="_blank" rel="noopener">看视频理解</a></p>
+<p><strong>完全二叉树中叶子节点数量的计算</strong></p>
+<p>解法一：<br>叶子节点为 n/2 （向上取整），其中n 个是节点的总个数<br>解法二：<br>节点总数=n0+n1+n2<br>对于任意一个为空的子树 n0 =n2+1<br>当节点总数为偶数时候，n1 为1；当结点总数为奇数，n1 为0.所以连方程组，求解n2 和n0</p>
 <h2 id="Hash-表"><a href="#Hash-表" class="headerlink" title="Hash 表"></a>Hash 表</h2><p>一个hash 函数  $f(x) $</p>
 <p>hash 函数</p>
 <ol>
@@ -772,7 +804,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

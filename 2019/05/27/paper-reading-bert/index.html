@@ -116,7 +116,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/31/mJVuLDAM1sOXrYE.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/6c304cd1ba04192c.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/31/iKZ1mdzIfgEtraS.png">
-<meta property="og:updated_time" content="2019-09-10T11:23:41.756Z">
+<meta property="og:updated_time" content="2019-09-15T14:24:12.040Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP Papers Reading- BERT (***)">
 <meta name="twitter:description" content="attention is all you needSelf-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequen">
@@ -341,8 +341,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-10T19:23:41+08:00">
-                2019-09-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-15T22:24:12+08:00">
+                2019-09-15
               </time>
             
           </span>
@@ -769,7 +769,12 @@
 <ol>
 <li>对于篇章级别的任务，transformer的计算量复杂，速度是变得很慢。解决方案是进行长输入的切分</li>
 <li>网络结构的过于复杂</li>
+<li>对于中文的改进（从字到词语 的mask）</li>
 </ol>
+<p>这几篇文章都是对BERT模型的Pretraining阶段的Mask进行了不同方式的改进。为了解决OOV的问题，我们通常会把一个词切分成更细粒度的WordPiece(不熟悉的读者可以参考机器翻译·分词和WordpieceTokenizer)。BERT在Pretraining的时候是随机Mask这些WordPiece的，这就可能出现只Mask一个词的一部分的情况。</p>
+<p>简单说原来的bert 模型对于中文是基于字的， 比如如何mask 掉琵琶中的一个字，那么模型是很容易预测下一个字的。所以为了解决这个问题，很自然的想法就是把词作为一个整体，要么都mask 掉，要么不mask。当然前不久哈工大和科大讯飞是做了这方面的工作的。</p>
+<p>但是对于BERT模型本身(基于Mask LM的Pretraining、Transformer模型和Fine-tuning)没有做任何修改。</p>
+<p><a href="https://fancyerii.github.io/2019/08/02/bert-pretrain-imp/" target="_blank" rel="noopener">原文链接</a></p>
 <h2 id="transformer-的理解"><a href="#transformer-的理解" class="headerlink" title="transformer 的理解"></a>transformer 的理解</h2><p><em>Transformer</em> 其采用 <em>Self Attention</em> 来学习序列的表示, 具体的是: <em>Scaled Dot-Product Attention</em>. 为解决位置信息 (Position Information) 丢失问题, 模型将 <em>Positional Encpding</em> 与 Input Embedding 结合；为防止 decoder 中后续位置 (模型可并行计算) 对前面位置的影响, 模型在 decoder 中使用了 Mask 以使位置 ii 处的预测只依赖于前面的输出.</p>
 <p>Transformer由且仅由self-Attenion和Feed Forward Neural Network组成。一个基于Transformer的可训练的神经网络可以通过堆叠Transformer的形式进行搭建.作者的实验是通过搭建编码器和解码器各6层，总共12层的Encoder-Decoder(这个只是一个通用的框架，实际上是可以根据自己的需求进行不同的层的增减)</p>
 <p>Multi-Head Attention相当于 多个不同的self-attention的集成（ensemble）。</p>
@@ -941,7 +946,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

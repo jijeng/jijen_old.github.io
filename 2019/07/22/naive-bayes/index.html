@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="从贝叶斯定理到 naive bayes 分类器，最后说明一下其应用和优缺点。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-31T13:27:50.000Z">
+<meta property="og:updated_time" content="2019-09-18T02:40:34.466Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Naive Bayes Classifier">
 <meta name="twitter:description" content="从贝叶斯定理到 naive bayes 分类器，最后说明一下其应用和优缺点。">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-07-31T21:27:50+08:00">
-                2019-07-31
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-18T10:40:34+08:00">
+                2019-09-18
               </time>
             
           </span>
@@ -385,12 +385,39 @@
       
         <p>从贝叶斯定理到 naive bayes 分类器，最后说明一下其应用和优缺点。</p>
 <a id="more"></a>
-<h2 id="贝叶斯定理"><a href="#贝叶斯定理" class="headerlink" title="贝叶斯定理"></a>贝叶斯定理</h2><p>贝叶斯学派的思想可以概括为先验概率+数据=后验概率。也就是说我们在实际问题中需要得到的后验概率，可以通过先验概率和数据一起综合得到。</p>
-<p>我们经常遇到的情况是 已知 $P(A |B)$ 然后求解的是 $P(B |A)$。这里先说一下条件概率。</p>
-<p>条件概率：</p>
-<p>$$<br>P ( A | B ) = \frac { P ( A B ) } { P ( B ) }<br>$$</p>
-<p>事件的独立性：<br>当两个事件 A，B 满足 $P ( A B ) = P ( A ) P ( B )$, 则称A， B 相互独立。</p>
-<p>因此bayes 定理打通了上述两个条件概率的关系。<br>$$<br>P ( B | A ) = \frac { P ( A | B ) P ( B ) } { P ( A ) }<br>$$</p>
+<p>在所有的机器学习分类算法中，朴素贝叶斯和其他绝大多数的分类算法都不同。对于大多数的分类算法，比如决策树,KNN,逻辑回归，支持向量机等，他们都是判别方法，也就是直接学习出特征输出$ Y$和特征 $X $之间的关系，要么是决策函数 $𝑌=𝑓(𝑋) $（比如支持向量机）,要么是条件分布 $𝑃(𝑌|𝑋) $（比如逻辑回归）。但是朴素贝叶斯却是生成方法，也就是直接找出特征输出 $Y $和特征 $X $的联合分布 $𝑃(𝑋,𝑌) $,然后用 $𝑃(𝑌|𝑋)= \frac{𝑃(𝑋,𝑌)}{𝑃(𝑋) }$得出。</p>
+<h2 id="朴素贝叶斯"><a href="#朴素贝叶斯" class="headerlink" title="朴素贝叶斯"></a>朴素贝叶斯</h2><p>贝叶斯学派的思想可以概括为先验概率+数据=后验概率。也就是说我们在实际问题中需要得到的后验概率，可以通过先验概率和数据一起综合得到。先验概率就是我们对于数据所在领域的历史经验，但是这个经验常常难以量化或者模型化，于是贝叶斯学派大胆的假设先验分布的模型，比如正态分布，beta分布等。（因为在没有计算之前就认为数据服从某个分布，所以被称为先验概率）</p>
+<p>贝叶斯公式：</p>
+<p>$$<br>P(Y | X)=\frac{P(X | Y) P(Y)}{P(X)}<br>$$</p>
+<ul>
+<li>先验概率 $P(X) $：先验概率是指根据以往经验和分析得到的概率。</li>
+<li>后验概率 $P(Y|X) $：事情已经发生，要求这件事情发生的原因是由某个因素引起的可能性的大小，后验分布 $P(Y|X) $表示事件 $X $已经发生的前提下，事件 $Y $发生的概率，叫做事件 $X $发生下事件 $Y $的条件概率。（执果索因）</li>
+<li>后验概率 $P(X|Y) $：在已知Y发生后X的条件概率，也由于知道 $Y $的取值而被称为 $X $的后验概率</li>
+<li>朴素：朴素贝叶斯算法是假设各个特征之间相互独立，也是朴素这词的意思那么贝叶斯公式中的 $P(X|Y) $可写成：</li>
+</ul>
+<p>$$<br>P(X | Y)=P\left(x_{1} | Y\right) P\left(x_{2} | Y\right) \cdots P\left(x_{n} | Y\right)<br>$$</p>
+<p>全概率公式：<br>$$<br>P(X)=\sum_{k} P\left(X | Y=Y_{k}\right)<br>$$<br>其中  $\sum_{k} P(Y_k) =1$</p>
+<p>所以，将上面的式子整合起来，得到朴素贝叶斯公式：</p>
+<p>$$<br>P(Y | X)=\frac{P(X | Y_k) P(Y_k)}{\sum_{k} P(X | Y=Y_{k})}<br>$$</p>
+<h2 id="三种常见的贝叶斯模型"><a href="#三种常见的贝叶斯模型" class="headerlink" title="三种常见的贝叶斯模型"></a>三种常见的贝叶斯模型</h2><p>上文提到了先验概率模型，这里主要介绍多项式模型（MultinomialNB）、高斯模型（GaussianNB）和伯努利模型（BernoulliNB）。</p>
+<p><strong>多项式模型（MultinomialNB）</strong></p>
+<p>多项式朴素贝叶斯常用语文本分类，特征是单词，值时单词出现的次数。多项式模型在计算先验概率 $P(Y_k) $和和条件概率 $P(X_i|Y_k) $时，会做出一些平滑处理（拉普拉斯平滑），具体公式为：<br>$$<br>P\left(Y_{k}\right)=\frac{N_{Y_{k}}+\alpha}{N+K \alpha}<br>$$</p>
+<ul>
+<li>$N$：样本数</li>
+<li>$N_{Y_k} $：类别为$Y_k$的样本数</li>
+<li>$K$：总的类别个数</li>
+<li>$\alpha$：平滑值</li>
+</ul>
+<p>$$<br>P\left(x_{i} | Y_{k}\right)=\frac{N_{Y_{k}, x_{i}}+\alpha}{N_{Y_{k}}+n \alpha}<br>$$</p>
+<ul>
+<li>$N_{Y_{k}, x_{i}}$：类别为$Y_k $，且特征为$X_i$的样本数</li>
+<li>$n$：特征$X_i $可以选择的数量</li>
+</ul>
+<p><strong>高斯模型（GaussianNB）</strong></p>
+<p>当特征是连续变量的时候，假设特征分布为正态分布，根据样本算出均值和方差，再求得概率。</p>
+<p>可以参考<a href="https://www.cnblogs.com/wj-1314/p/10560870.html" target="_blank" rel="noopener">这里</a>.</p>
+<p><strong> 伯努利模型（BernoulliNB）</strong><br>伯努利模型适用于离散特征的情况，伯努利模型中每个特征的取值只能是1和0。</p>
+<p>可以参考<a href="https://www.cnblogs.com/wj-1314/p/10560870.html" target="_blank" rel="noopener">这里</a></p>
 <h2 id="朴素贝叶斯分类的原理和流程"><a href="#朴素贝叶斯分类的原理和流程" class="headerlink" title="朴素贝叶斯分类的原理和流程"></a>朴素贝叶斯分类的原理和流程</h2><p>总体的公式：<br>$$ p(类别 | 特征) = \frac {p(类别) * p特征|类别）}{p(特征)}$$</p>
 <ol>
 <li>设特征  $x = { a _ { 1 } , a _ { 2 } , \ldots , a _ { m } }$， 其中 x 是一条数据， $a_i$ 是一个特征属性。</li>
@@ -406,18 +433,19 @@
 </ol>
 <p>$$<br>P \left( y _ { i } | x \right) = \frac { P \left( x | y _ { i } \right) P \left( y _ { i } \right) } { P ( x ) }<br>$$</p>
 <p>因为分母对于所有类别为常数，因为我们只要将分子最大化皆可。又因为各特征属性是条件独立的，所以有：<br>$$<br>P \left( x | y _ { i } \right) P \left( y _ { i } \right) = P \left( a _ { 1 } | y _ { i } \right) P \left( a _ { 2 } | y _ { i } \right) \ldots P \left( a _ { m } | y _ { i } \right) P \left( y _ { i } \right) = P \left( y _ { i } \right) \prod _ { j = 1 } ^ { m } P \left( a _ { j } | y _ { i } \right)<br>$$</p>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>很多实际应用中，贝叶斯理论很好用，比如垃圾邮件分类，文本分类</p>
-<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点：</p>
+<p>如果再计算过程中某个概率值为0，那么是可以考虑拉普拉斯平滑。两个概率计算公式，分子和分母都分别加上一个常数，就可以避免这个问题。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>朴素贝叶斯的思想基础是这样的：对于给出的待分类项，求解在此项出现的条件下各个类别出现的概率，哪个最大，即认为此待分类项属于哪个类别。适用场景：</p>
 <ul>
-<li>算法比较简单，常用于文本分类</li>
-<li>同时具备接收大数据量训练和查询时具备高速度的特点</li>
+<li>算法比较简单，在大样本下会有比较好的表现</li>
+<li>对缺省数据不太敏感</li>
 <li>具有支持增量式训练的能力（不借助于旧有训练数据，每一组新的训练数据都有可能引起概率值的变化，而如决策树和支持向量机，则需要我们一次性将整个数据集都传给它们。）对于一个如垃圾邮件过滤这样的应用程序而言，支持增量式训练的能力是非常重要的，因为过滤程序时常要对新到的邮件进行训练，然后必须即可进行相应的调整；更何况，过滤程序也未必有权限访问已经收到的所有邮件信息。</li>
 </ul>
 <p>缺点：</p>
 <ul>
-<li>对缺省数据不太敏感</li>
+<li>不适合输入的向量有很强的特征关联的场景</li>
 <li>无法处理基于特征值组合所产生的变化结果。例如：“在线”和“药店”分开出现时一般出现在正常邮件中，但当组合起来时“在线药店”却一般出现在垃圾邮件中，贝叶斯分类器无法理解这种特征组合。</li>
 </ul>
+<p>它经常被用于文本分类中，包括互联网新闻的分类，垃圾邮件的筛选。</p>
 
       
     </div>
@@ -551,7 +579,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -647,7 +675,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#贝叶斯定理"><span class="nav-number">1.</span> <span class="nav-text">贝叶斯定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#朴素贝叶斯分类的原理和流程"><span class="nav-number">2.</span> <span class="nav-text">朴素贝叶斯分类的原理和流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">3.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优缺点"><span class="nav-number">4.</span> <span class="nav-text">优缺点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#朴素贝叶斯"><span class="nav-number">1.</span> <span class="nav-text">朴素贝叶斯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三种常见的贝叶斯模型"><span class="nav-number">2.</span> <span class="nav-text">三种常见的贝叶斯模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#朴素贝叶斯分类的原理和流程"><span class="nav-number">3.</span> <span class="nav-text">朴素贝叶斯分类的原理和流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a></li></ol></div>
             
 
           </div>

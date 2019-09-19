@@ -90,10 +90,12 @@
 <meta property="og:image" content="https://i.loli.net/2019/07/25/5d39a850b018046129.jpg">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/25/emEGPs.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/25/emVrm8.gif">
+<meta property="og:image" content="https://i.loli.net/2019/09/17/pPBnDIto2chyz3f.png">
+<meta property="og:image" content="https://i.loli.net/2019/09/17/F7v5OJKLdzyHIUf.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/703577797f0de21b.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/08/dDOKPI.jpg">
-<meta property="og:updated_time" content="2019-09-03T09:24:14.000Z">
+<meta property="og:updated_time" content="2019-09-17T00:50:22.246Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习概念">
 <meta name="twitter:description" content="解释一些机器学习中小的基本的概念。梯度下降、牛顿法、凸函数">
@@ -318,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-03T17:24:14+08:00">
-                2019-09-03
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-17T08:50:22+08:00">
+                2019-09-17
               </time>
             
           </span>
@@ -427,9 +429,14 @@
 </ul>
 <p>牛顿法最明显快的特点是对于二阶函数(考虑多元函数的话要在凸函数的情况下)，牛顿法能够一步到达，非常有效。</p>
 <p>所以这个综合上面两种方法，一般在开始的时候使用 梯度下降，然后快要接近最值点（这个时候使用 梯度下降容易发生震荡），使用牛顿法，牛顿法是需要计算二阶梯度，一般计算量比较大，所以可以考虑使用拟牛顿法。</p>
+<h3 id="雅克比矩阵和海森矩阵"><a href="#雅克比矩阵和海森矩阵" class="headerlink" title="雅克比矩阵和海森矩阵"></a>雅克比矩阵和海森矩阵</h3><p>雅可比矩阵类似于多元函数的导数.<br><img src="https://i.loli.net/2019/09/17/pPBnDIto2chyz3f.png" alt="image.png"></p>
+<p>$$<br>H(f)<em>{i j}(x)=D</em>{i} D_{j} f(x)<br>$$</p>
+<p><img src="https://i.loli.net/2019/09/17/F7v5OJKLdzyHIUf.png" alt="image2.png"></p>
+<p>凸函数上任意一点对应的Hessian矩阵都是半正定的。证明可以看<a href="http://yangzhou301.xyli.me/2016/03/14/826442654/" target="_blank" rel="noopener">这里</a></p>
 <h3 id="凸函数"><a href="#凸函数" class="headerlink" title="凸函数"></a>凸函数</h3><p>对于损失函数无非是凸函数和非凸函数。其中对凸函数一般是可以求得全局最小值的。对于非凸函数来说，其函数是抖动的，可能存在很多局部解，而在对这类问题求解时可能不能有效地找出其全局最小值，</p>
 <p>凸优化:对凸优化的问题我们在基础数学上面已经有了很多解决方法，例如可以将凸优化问题Lagerange做对偶化，然后用Newton、梯度下降算法求解。</p>
-<p>凸函数：<br>Jacobian矩阵和Hessian矩阵：在向量分析中, 雅可比矩阵是一阶偏导数以一定方式排列成的矩阵, 其行列式称为雅可比行列式。<br>Hessian矩阵：</p>
+<p>凸函数的来源是和凸集相对应的。凸集的“凸”是可以从几何上直观理解的，连接点集中的任意两点，线段上的每一点都在该点集内，则为凸集。这样就可以理解为甚 $y =x^2$ 是凸函数。</p>
+<p>凸函数：<br>Jacobian矩阵和Hessian矩阵：在向量分析中, 雅可比矩阵是一阶偏导数以一定方式排列成的矩阵, 其行列式称为雅可比行列式。</p>
 <h3 id="bias-and-variance"><a href="#bias-and-variance" class="headerlink" title="bias and variance"></a>bias and variance</h3><p>个人感觉 variance 更像是一种稳定性的评价，预测结果的波动性，如果variance 小，那么就是稳定性好。</p>
 <p>bias variance tradeoff 实际上是有三个名词 bias (偏差)，variance (方差) and noise (噪声)。<br>偏差是预测值和实际值的差值，是准不准的问题；而方差是预测值的属性，如果最后的结果比较分散，那么方差就比较大。所以是两个不同的维度。最好的模型当然是低方差并且低偏差了。<br>一图胜千言</p>
 <p><img src="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg" alt="ZoKN34.jpg"></p>
@@ -614,7 +621,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -710,7 +717,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">3.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">4.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">5.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">6.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雅克比矩阵和海森矩阵"><span class="nav-number">3.</span> <span class="nav-text">雅克比矩阵和海森矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">4.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">5.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">6.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">7.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
             
 
           </div>

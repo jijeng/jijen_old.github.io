@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/01/5d422029970c282991.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*MrcJwiWD8z47AXe_GPgZkA.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*H4pRIFSGcExAlV5pE6ObNA.png">
-<meta property="og:updated_time" content="2019-09-10T08:59:06.729Z">
+<meta property="og:updated_time" content="2019-09-15T11:01:06.405Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ROC和 unbalanced data">
 <meta name="twitter:description" content="介绍ROC 曲线，auc 值和如何去处理不平衡数据。 ROC曲线和AUC值ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False,">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-10T16:59:06+08:00">
-                2019-09-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-15T19:01:06+08:00">
+                2019-09-15
               </time>
             
           </span>
@@ -414,7 +414,9 @@
 <p>ROC(<em>receiver operating characteristic curve</em>): ROC曲线的横坐标为<em>false positive rate</em>（FPR,假正率），纵坐标为<em>true positive rate</em>（TPR，真正率，召回率）<br>PRC(<em>precision recall curve</em>): PRC曲线的横坐标为召回率<em>Recall</em>，纵坐标为准确率<em>Precision</em>。</p>
 <p>用ROC curve来表示分类器的performance很直观好用。可是，人们总是希望能有一个数值来标志分类器的好坏。<br>通常，AUC的值介于0.5到1.0之间，较大的AUC代表了较好的Performance。<br>一般来说，如果ROC是光滑的，那么基本可以判断没有太大的overfitting（比如图中0.2到0.4可能就有问题，但是样本太少了），这个时候调模型可以只看AUC，面积越大一般认为模型越好。</p>
 <p><img src="https://i.loli.net/2019/08/01/5d421f9678f9649303.jpg" alt="1.jpg"></p>
-<p>一般情况，用不同的阀值，统计出一组不同阀值下的精确率和召回率，这就是PRC曲线。如下图：<br><img src="https://i.loli.net/2019/08/01/5d422029970c282991.png" alt="1.png"><br>如果是做搜索，那就是保证召回的情况下提升准确率；如果做疾病监测、反垃圾，则是保准确率的条件下，提升召回。</p>
+<p>一般情况，用不同的阀值，统计出一组不同阀值下的精确率和召回率，这就是PRC曲线。如下图：</p>
+<p><img src="https://i.loli.net/2019/08/01/5d422029970c282991.png" alt="1.png"></p>
+<p>如果是做搜索，那就是保证召回的情况下提升准确率；如果做疾病监测、反垃圾，则是保准确率的条件下，提升召回。（从图中上可以看出，一般来说，召回率的提升不会导致准确率的上升，也就是说 准确率可能不变，可能下降）</p>
 <p>两者的区别：<br>在正负样本分布得极不均匀(highly skewed datasets)的情况下，PRC比ROC能更有效地反应分类器的好坏。</p>
 <p>Recall：查全率，正样本中被预测出来是正的比例(越大越好)<br>Precision：查准率，预测的正样本中被正确预测的比例(越大越好)<br>True Positive Rate：跟 Recall 定义一样 （越大越好)<br>FPR : 负样本中被预测为正的比例(越小越好)</p>
 <p>对于一个二分类问题，往往要设定一个 threshold，当预测值大于这个 threshold 时预测为正样本，小于这个 threshold 时预测为负样本。如果以 Recall 为横轴，Precision 为纵轴，那么设定一个 threshold 时，便可在坐标轴上画出一个点，设定多个 threshold 则可以画出一条曲线，这条曲线便是 PR 曲线。</p>
@@ -622,7 +624,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
