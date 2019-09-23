@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="介绍ROC 曲线，auc 值和如何去处理不平衡数据。 ROC曲线和AUC值ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False,">
+<meta name="description" content="介绍机器学习中分类模型常用的评价指标，acc，auc，F1 和如何去处理不平衡数据。">
 <meta name="keywords" content="ROC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ROC和 unbalanced data">
 <meta property="og:url" content="http://yoursite.com/2018/06/13/roc_and_unbalanced_data/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="介绍ROC 曲线，auc 值和如何去处理不平衡数据。 ROC曲线和AUC值ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False,">
+<meta property="og:description" content="介绍机器学习中分类模型常用的评价指标，acc，auc，F1 和如何去处理不平衡数据。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg">
 <meta property="og:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3q453345pj205c046glh.jpg">
@@ -94,10 +94,10 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/01/5d422029970c282991.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*MrcJwiWD8z47AXe_GPgZkA.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/1*H4pRIFSGcExAlV5pE6ObNA.png">
-<meta property="og:updated_time" content="2019-09-15T11:01:06.405Z">
+<meta property="og:updated_time" content="2019-09-22T13:54:26.089Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ROC和 unbalanced data">
-<meta name="twitter:description" content="介绍ROC 曲线，auc 值和如何去处理不平衡数据。 ROC曲线和AUC值ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False,">
+<meta name="twitter:description" content="介绍机器学习中分类模型常用的评价指标，acc，auc，F1 和如何去处理不平衡数据。">
 <meta name="twitter:image" content="http://ws1.sinaimg.cn/large/e9a223b5ly1g3qc7npncdj20ug0dawfa.jpg">
 
 
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-15T19:01:06+08:00">
-                2019-09-15
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-22T21:54:26+08:00">
+                2019-09-22
               </time>
             
           </span>
@@ -391,7 +391,8 @@
       
 
       
-        <p>介绍ROC 曲线，auc 值和如何去处理不平衡数据。</p>
+        <p>介绍机器学习中分类模型常用的评价指标，acc，auc，F1 和如何去处理不平衡数据。</p>
+<a id="more"></a>
 <h2 id="ROC曲线和AUC值"><a href="#ROC曲线和AUC值" class="headerlink" title="ROC曲线和AUC值"></a>ROC曲线和AUC值</h2><p>ROC全称是“受试者工作特征”（Receiver Operating Characteristic）。ROC曲线的面积就是AUC（Area Under the Curve）。AUC用于衡量“二分类问题”机器学习算法性能（泛化能力）。说到这里不得不提及就是经常使用的符号，TP(True Positive), FP(False, Positive), TN(True Negative),FN(False Negative)。他们是根据原来真实数据和预测类别进行的排列组合（当然这是针对二分问题）。</p>
 <p><strong>ROC 曲线</strong>: ROC 曲线（接收者操作特征曲线）是一种显示分类模型在所有分类阈值下的效果的图表。该曲线绘制了以下两个参数：真正例率 和 假正例率。</p>
 <p>真正例率 (TPR) 是召回率的同义词，因此定义如下：<br>$$<br>T P R = \frac { T P } { T P + F N }<br>$$<br>假正例率 (FPR) 的定义如下：<br>$$<br>F P R = \frac { F P } { F P + T N }<br>$$</p>
@@ -414,7 +415,7 @@
 <p>ROC(<em>receiver operating characteristic curve</em>): ROC曲线的横坐标为<em>false positive rate</em>（FPR,假正率），纵坐标为<em>true positive rate</em>（TPR，真正率，召回率）<br>PRC(<em>precision recall curve</em>): PRC曲线的横坐标为召回率<em>Recall</em>，纵坐标为准确率<em>Precision</em>。</p>
 <p>用ROC curve来表示分类器的performance很直观好用。可是，人们总是希望能有一个数值来标志分类器的好坏。<br>通常，AUC的值介于0.5到1.0之间，较大的AUC代表了较好的Performance。<br>一般来说，如果ROC是光滑的，那么基本可以判断没有太大的overfitting（比如图中0.2到0.4可能就有问题，但是样本太少了），这个时候调模型可以只看AUC，面积越大一般认为模型越好。</p>
 <p><img src="https://i.loli.net/2019/08/01/5d421f9678f9649303.jpg" alt="1.jpg"></p>
-<p>一般情况，用不同的阀值，统计出一组不同阀值下的精确率和召回率，这就是PRC曲线。如下图：</p>
+<h3 id="precision-recall-的方式"><a href="#precision-recall-的方式" class="headerlink" title="precision-recall 的方式"></a>precision-recall 的方式</h3><p>一般情况，用不同的阀值，统计出一组不同阀值下的精确率和召回率，这就是PRC曲线。如下图：</p>
 <p><img src="https://i.loli.net/2019/08/01/5d422029970c282991.png" alt="1.png"></p>
 <p>如果是做搜索，那就是保证召回的情况下提升准确率；如果做疾病监测、反垃圾，则是保准确率的条件下，提升召回。（从图中上可以看出，一般来说，召回率的提升不会导致准确率的上升，也就是说 准确率可能不变，可能下降）</p>
 <p>两者的区别：<br>在正负样本分布得极不均匀(highly skewed datasets)的情况下，PRC比ROC能更有效地反应分类器的好坏。</p>
@@ -445,6 +446,9 @@
 <p>ROC 曲线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fpr, tpr, thresholds = roc_curve(testy, probs)</span><br><span class="line">pyplot.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], linestyle=<span class="string">'--'</span>)</span><br><span class="line">pyplot.plot(fpr, tpr, marker=<span class="string">'.'</span>)</span><br><span class="line">pyplot.show()</span><br><span class="line">auc_score = roc_auc_score(testy, probs)</span><br><span class="line">print(<span class="string">'AUC: %.3f'</span> % auc_score)</span><br></pre></td></tr></table></figure></p>
 <p>P-R曲线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pyplot.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0.5</span>, <span class="number">0.5</span>], linestyle=<span class="string">'--'</span>)</span><br><span class="line">pyplot.plot(recall, precision, marker=<span class="string">'.'</span>)</span><br><span class="line">pyplot.show()</span><br><span class="line">print(<span class="string">'AUC: %.3f'</span> % auc_score)</span><br></pre></td></tr></table></figure></p>
 <p>看完上面的，这个链接是补充信息<br><a href="http://www.davidsbatista.net/blog/2018/08/19/NLP_Metrics/" target="_blank" rel="noopener">Evaluation Metrics, ROC-Curves and imbalanced datasets</a></p>
+<h3 id="PR曲线和-ROC曲线的区别"><a href="#PR曲线和-ROC曲线的区别" class="headerlink" title="PR曲线和 ROC曲线的区别"></a>PR曲线和 ROC曲线的区别</h3><p>要平衡精确率和召回率，可以调节区分正负类别的概率临界值。 为提高精确率，可以提高概率临界值，使得正类别的判断更加保守；为了提高召回率，可以降低概率临界值，以增加正类别的数量</p>
+<p>做搜索：保证召回的情况下提升准确率；做疾病监测、反垃圾：保证准确率的条件下，提升召回率</p>
+<p>当正负样本的分布发生变化时，ROC曲线的形状能够基本保持不变，而P-R曲线的形状一般会发生较剧烈的变化。ROC能够尽量降低不同测试集带来的干扰，更加客观的衡量模型本身的性能。如果研究者希望更多地看到模型在特定数据集上的表现，P-R曲线能够更直观地反映其性能。</p>
 <p><strong>TakeOff</strong></p>
 <p>If you have an imbalanced dataset accuracy can give you false assumptions regarding the classifier’s performance, it’s better to rely on precision and recall, in the same way a Precision-Recall curve is better to calibrate the probability threshold in an imbalanced class scenario as a ROC curve.</p>
 <ul>
@@ -458,6 +462,14 @@
 <p>The Receiver Operating Characteristic (ROC) curves plot FPR vs. TPR as shown below. Because TPR only depends on positives, ROC curves do not measure the effects of negatives. <strong>The area under the ROC curve (AUC) assesses overall classification performance </strong>. AUC does not place more emphasis on one class over the other, so it does not reflect the minority class well.</p>
 <p><img src="https://cdn-images-1.medium.com/max/1600/1*MrcJwiWD8z47AXe_GPgZkA.png" alt=""><br>Davis and Goadrich in this paper propose that Precision-Recall (PR) curves will be more informative than ROC when dealing with highly skewed datasets. The PR curves plot precision vs. recall (FPR). Because Precision is directly influenced by class imbalance so the Precision-recall curves are better to highlight differences between models for highly imbalanced data sets. When you compare different models with imbalanced settings, the area under the Precision-Recall curve will be more sensitive than the area under the ROC curve.<br><img src="https://cdn-images-1.medium.com/max/1600/1*H4pRIFSGcExAlV5pE6ObNA.png" alt=""></p>
 <p><a href="http://www.davidsbatista.net/blog/2018/08/19/NLP_Metrics/" target="_blank" rel="noopener">最强讲解</a></p>
+<h2 id="AUC-precision-recall-和ROC-的比较"><a href="#AUC-precision-recall-和ROC-的比较" class="headerlink" title="AUC, precision-recall 和ROC 的比较"></a>AUC, precision-recall 和ROC 的比较</h2><p>acc （准确率）的局限性主要发生在正负样本不均衡的条件下。</p>
+<p>在排序问题中，通常没有一个确定的阈值把得到的结果直接判定为正样本或负样本，而是采用Top N返回结果的Precision值和Recall值来衡量排序模型的性能，即认为模型返回的Top N的结果就是模型判定的正样本，然后计算前N个位置上的准确率Precision@N和前N个位置上的召回率Recall@N。<br>Precision值和Recall值是既矛盾又统一的两个指标，为了提高Precision值，分类器需要尽量在“更有把握”时才把样本预测为正样本,但此时往往会因为过于保守而漏掉很多“没有把握”的正样本，导致Recall值降低。</p>
+<p>模型返回的Precision@5的结果非常好，也就是说排序模型Top 5的返回值的质量是很高的。但在实际应用过程中，用户为了找一些冷门的视频,往往会寻找排在较靠后位置的结果，甚至翻页去查找目标视频。但根据题目描述，用户经常找不到想要的视频，这说明模型没有把相关的视频都找出来呈现给用户。显然，问题出在召回率上。如果相关结果有100个，即使Precision@5达到了100%，Recall@5也仅仅是5%。在模型评估时，我们是否应该同时关注Precision值和Recall值。进一步而言， 应该选取不同的Top N的结果进行观察，应该选取更高阶的评估指标来更全面地反映模型在Precision值和Recall值两方面的表现。最好绘制出模型的PR曲线。</p>
+<p>F1 其中只是一种特例，还有更加一般的形式。<br>更一般的，我们定$F_β$分数为<br>$$<br>F_{\beta}=\left(1+\beta^{2}\right) \cdot \frac{\text {precision} \cdot \text {recall}}{\left(\beta^{2} \cdot \text {precision}\right)+\text {recall}}<br>$$</p>
+<p>$F_β$的物理意义就是将准确率和召回率这两个分值合并为一个分值，在合并的过程中，召回率的权重是准确率的 $β $倍。F1分数认为召回率和准确率同等重要，F2分数认为召回率的重要程度是准确率的2倍，而 $F_{0.5}$分数认为召回率的重要程度是准确率的一半。</p>
+<p>PR曲线和 ROC 曲线的区别?</p>
+<p>将测试集中的负样本数量增加10倍后，可以看出PR曲线发生了明显的变化，而ROC曲线形状基本不变。这个特点让ROC曲线能够尽量降低不同测试集带来的干扰，更加客观地衡量模型本身的性能。实际问题中，正负样本的数量往往很不均衡。比如计算广告领域经常涉及转化率模型，正样本的数量往往是负样本数量的1比1000甚至1比10000。若选择不同的测试集，P-R曲线的变化就会非常大，而ROC曲线则能够更加稳定地反映模型本身的好坏。所以，ROC曲线的适用场景更多，被广泛用于排序、推荐、广告等领域。但需要注意的是，选择P-R曲线还是ROC曲线是因实际问题而异的，如果研究者希望更多地看到模型在特定数据集上的表现，P-R曲线则能够更直观地反映其性能。</p>
+<p><a href="https://zdkswd.github.io/2019/03/20/%E7%99%BE%E9%9D%A2%20%20%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/" target="_blank" rel="noopener">参考文献</a></p>
 <h2 id="how-to-handle-unbalanced-data"><a href="#how-to-handle-unbalanced-data" class="headerlink" title="how to handle unbalanced data"></a>how to handle unbalanced data</h2><p>对于这类问题是可以从数据和模型来进行考虑的。</p>
 <p>Imbalanced data typically refers to a problem with classification problems where the classes are not represented equally. The accuracy paradox is the name for the exact situation in the introduction to this post.</p>
 <p><strong> Data approach</strong><br>Oversample minority class  and Undersample majority class</p>
@@ -624,7 +636,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -635,7 +647,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -646,7 +658,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -720,7 +732,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC曲线和AUC值"><span class="nav-number">1.</span> <span class="nav-text">ROC曲线和AUC值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-handle-unbalanced-data"><span class="nav-number">2.</span> <span class="nav-text">how to handle unbalanced data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习笔记"><span class="nav-number">4.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC曲线和AUC值"><span class="nav-number">1.</span> <span class="nav-text">ROC曲线和AUC值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#precision-recall-的方式"><span class="nav-number">1.1.</span> <span class="nav-text">precision-recall 的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PR曲线和-ROC曲线的区别"><span class="nav-number">1.2.</span> <span class="nav-text">PR曲线和 ROC曲线的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AUC-precision-recall-和ROC-的比较"><span class="nav-number">2.</span> <span class="nav-text">AUC, precision-recall 和ROC 的比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-handle-unbalanced-data"><span class="nav-number">3.</span> <span class="nav-text">how to handle unbalanced data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习笔记"><span class="nav-number">5.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
             
 
           </div>

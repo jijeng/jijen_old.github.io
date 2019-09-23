@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/703577797f0de21b.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/08/dDOKPI.jpg">
-<meta property="og:updated_time" content="2019-09-17T00:50:22.246Z">
+<meta property="og:updated_time" content="2019-09-22T12:51:26.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习概念">
 <meta name="twitter:description" content="解释一些机器学习中小的基本的概念。梯度下降、牛顿法、凸函数">
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-17T08:50:22+08:00">
-                2019-09-17
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-22T20:51:26+08:00">
+                2019-09-22
               </time>
             
           </span>
@@ -481,6 +481,16 @@
 <p>对于判别式模型来说求得P(Y|X)，对未见示例X，根据P(Y|X)可以求得标记Y，即可以直接判别出来，如上图的左边所示，实际是就是直接得到了判别边界，所以传统的、耳熟能详的机器学习算法如线性回归模型、支持向量机SVM等都是判别式模型，这些模型的特点都是输入属性X可以直接得到Y。</p>
 <p>而生成式模型求得P(Y,X)，对于未见示例X，你要求出X与不同标记之间的联合概率分布，然后大的获胜，如上图右边所示，并没有什么边界存在，对于未见示例（红三角），求两个联合概率分布（有两个类），比较一下，取那个大的。比如朴素贝叶斯算法和隐式马尔科夫模型。</p>
 <p>判别式模型举例：要确定一个羊是山羊还是绵羊，用判别模型的方法是从历史数据中学习到模型，然后通过提取这只羊的特征来预测出这只羊是山羊的概率，是绵羊的概率。生成式模型举例：利用生成模型是根据山羊的特征首先学习出一个山羊的模型，然后根据绵羊的特征学习出一个绵羊的模型，然后从这只羊中提取特征，放到山羊模型中看概率是多少，在放到绵羊模型中看概率是多少，哪个大就是哪个。</p>
+<h3 id="主要的验证方法"><a href="#主要的验证方法" class="headerlink" title="主要的验证方法"></a>主要的验证方法</h3><ol>
+<li><p>Holdout检验：<br>直接将原始的样本集合随机划分成训练集和验证集两部分。比方说，对于一个点击量预测模型，我们把样本按照70%~30%的比例分成两部分，70%的样本用于模型训练；30%的样本用于模型验证，包括绘制ROC曲线、计算精确率和召回率等指标来评估模型性能；<br>缺点：在验证集上计算出来的最后评估指标与原始分组有很大的关系</p>
+</li>
+<li><p>交叉验证</p>
+</li>
+</ol>
+<ul>
+<li>K-fold交叉验证：首先将全部样本划分成k个大小相等的样本子集；一次遍历这k个子集，每次把当前子集作为验证集，其余所有子集作为训练集，进行模型的训练和评估；最后把k次评估指标的平均值作为最终的评估指标。在实验中，k经常取10.</li>
+<li>留一验证：每次留下一个样本作为验证集，其余所有样本作为测试集。在样本总数较多的情况下，留一验证的时间开销极大.</li>
+</ul>
 <h3 id="复习笔记"><a href="#复习笔记" class="headerlink" title="复习笔记"></a>复习笔记</h3><ol>
 <li>优化器： 梯度下降得到是全局最优解，但是当数据量大的时候，训练速度变慢。随机梯度下降得到局部解，训练速度快；batch_size 得到了 batch梯度下降，是两者方法的折中。</li>
 <li>牛顿法相比于梯度下降是二阶求导，基于当前位置切线来确定下一次的位置，更加快。和一阶在最优点会震荡，但是二阶不会。</li>
@@ -621,7 +631,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -632,7 +642,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -643,7 +653,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -717,7 +727,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雅克比矩阵和海森矩阵"><span class="nav-number">3.</span> <span class="nav-text">雅克比矩阵和海森矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">4.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">5.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">6.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">7.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雅克比矩阵和海森矩阵"><span class="nav-number">3.</span> <span class="nav-text">雅克比矩阵和海森矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">4.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">5.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">6.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主要的验证方法"><span class="nav-number">7.</span> <span class="nav-text">主要的验证方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">8.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
             
 
           </div>

@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://i.postimg.cc/KYJB8Xxr/image.png">
 <meta property="og:image" content="https://i.postimg.cc/283DHMHb/2.jpg">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/f679cd0e83891f4e.png">
-<meta property="og:updated_time" content="2019-09-01T02:26:52.000Z">
+<meta property="og:updated_time" content="2019-09-23T02:22:13.582Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP中的碎碎念(1)">
 <meta name="twitter:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-01T10:26:52+08:00">
-                2019-09-01
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-23T10:22:13+08:00">
+                2019-09-23
               </time>
             
           </span>
@@ -394,7 +394,7 @@
         <p>顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。</p>
 <a id="more"></a>
 <h2 id="关键词提取"><a href="#关键词提取" class="headerlink" title="关键词提取"></a>关键词提取</h2><h3 id="TF-IDF"><a href="#TF-IDF" class="headerlink" title="TF-IDF"></a>TF-IDF</h3><p>这个是可以参看之前自己写的一个<a href="https://jijeng.github.io/2018/08/23/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%AF%94%E8%BE%83%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" target="_blank" rel="noopener">博客</a></p>
-<h3 id="卡方分布"><a href="#卡方分布" class="headerlink" title="卡方分布"></a>卡方分布</h3><p>卡方检验是以χ2分布为基础的一种常用假设检验方法。该检验的基本思想是：首先假设H0成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。</p>
+<h3 id="卡方分布"><a href="#卡方分布" class="headerlink" title="卡方分布"></a>卡方分布</h3><p>卡方检验是以χ2分布为基础的一种常用假设检验方法。该检验的基本思想是：首先假设$H_0$成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。</p>
 <p>官方定义：</p>
 <p>若k 个随机变量$Z_1$、……、$Z_k $相互独立，且数学期望为0、方差为 1(即服从标准正态分布)，则随机变量X<br>$$<br>X = \sum _ { n = 1 } ^ { k } Z _ { n } ^ { 2 }<br>$$<br>被称为服从自由度为 k 的卡方分布，记作<br>$$<br>X \sim \chi ^ { 2 } ( k )<br>$$</p>
 <p>从直观的角度感受一下自由度k 和图像形状的关系，自由度越大卡方分布越接近正太分布。<br><a href="https://imgchr.com/i/ZttIoD" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/03/ZttIoD.png" alt="ZttIoD.png"></a></p>
@@ -577,7 +577,7 @@
 <li>transfer learning (fine tune)</li>
 <li>使用 context embedding 去表示缺省的 中心词（oov） <a href="https://aclweb.org/anthology/D17-1030" target="_blank" rel="noopener">文献</a></li>
 </ul>
-<h2 id="新词发现"><a href="#新词发现" class="headerlink" title="新词发现"></a>新词发现</h2><p>在中文分词的世界里，最主要的挑战有两个：歧义词识别，未登录词（新词）识别。对于歧义词简单说一下，比如“乒乓球拍卖完了”，切分为以下两种情况都是合理的，“乒乓球拍/卖/完了”，“乒乓球/拍卖/完了”。这个就是典型的歧义词。而处理这种问题常用的一种手段是使用逆向最大匹配法去处理歧义词，由于汉语中偏正结构较多，若从后向前匹配，可以适当提高精确度。比如取出“南京市长江大桥”的后四个字“长江大桥”，发现词典中有匹配，切割下来；对剩余的“南京市”进行分词，整体结果为：“南京市/长江大桥”。</p>
+<h2 id="新词发现"><a href="#新词发现" class="headerlink" title="新词发现"></a>新词发现</h2><p>该算法最主要是基于互信息和左右熵的计算规则，而这两个概念都是出自信息论的范畴，其一者称内部凝和度，其二者称外部自由度或者边界自由度。在中文分词的世界里，最主要的挑战有两个：歧义词识别，未登录词（新词）识别。对于歧义词简单说一下，比如“乒乓球拍卖完了”，切分为以下两种情况都是合理的，“乒乓球拍/卖/完了”，“乒乓球/拍卖/完了”。这个就是典型的歧义词。而处理这种问题常用的一种手段是使用逆向最大匹配法去处理歧义词，由于汉语中偏正结构较多，若从后向前匹配，可以适当提高精确度。比如取出“南京市长江大桥”的后四个字“长江大桥”，发现词典中有匹配，切割下来；对剩余的“南京市”进行分词，整体结果为：“南京市/长江大桥”。</p>
 <blockquote>
 <p>新词对最后结果的影响程度是大于歧义词（20倍左右吧）。</p>
 </blockquote>
@@ -599,7 +599,8 @@
 <p>后者可以有对应的专家 handle，但涉及到商用这种人力成本也是比较高的了，所以一般使用基础词汇+ 各领域的常用词汇。即使这样的方案仍然是无法可持续的，所以需要一种算法去判断是否是新词。在当下的互联网时代，人们还会不断的创造出一些新词出来，比如：“神马”、“不明觉厉”等。未登录词辨别未登录词包括是种类繁多，形态组合各异，规模宏大的一个领域。对这些词语的自动辨识，是一件非常困难的事。比如，“美的”、“快的”、“英雄联盟”应该被作为一个词，却被切成了两个词，失去了原有的语义。未登录词（out-of-vocabulary, OOV）笼统地之未在词典中出现的词， 人工标注可以解决很好识别，比如最典型的未登录词就是人名，尤其是明星，然后最简单的是手动的维护，但是人力成本也是比较高昂的。</p>
 <p>从分词的角度来看，新词一般表现为细粒度切分后相邻词的组合。</p>
 <p><strong> 基于统计的新词发现</strong></p>
-<p>基于信息熵的新词发现算法，从左右信息熵和互信息入手，成词的标准有两个：</p>
+<p>这里有三个阈值（都是越大越好）：<br>第一是最小互信息，因为互信息越大说明相关度越大，将n-gram分好的词计算互信息，如果低于阈值，则说明不能成词。<br>第二是最小熵值，因为熵也是越大说明周边词越丰富，计算其左熵和右熵的最小值，如果最小值低于阈值，则说明不能成词。<br>第三个是最少出现次数，为什么有这个数呢？假设前后两个词是完全相关的，出现400次，总共8000词，那么互信息=log((400/8000)/(400/8000)<em>(400/8000))，约掉之后剩下log(8000/400)。但是一个词如果从头到尾出现了一次，但是并不是单词，则互信息为=log((1/8000)/(1/8000)</em>(1/8000))=log(8000/1)，那么它的互信息会更大。取最少出现次数也会出现问题，就是一些低频率的词不能发现。</p>
+<p>基于信息熵的新词发现算法，从互信息和左右信息熵入手，成词的标准有两个：</p>
 <ul>
 <li>内部凝固度</li>
 <li>自由运用程度</li>
@@ -863,7 +864,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -874,7 +875,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -885,7 +886,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
