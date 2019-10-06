@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g468268n4gj20jm04k0sn.jpg">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/20/Zzs1Vf.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/20/Zzs3a8.png">
-<meta property="og:updated_time" content="2019-09-17T23:25:58.978Z">
+<meta property="og:updated_time" content="2019-09-27T02:44:43.671Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="逻辑回归概念">
 <meta name="twitter:description" content="本文主要介绍逻辑回归（logistics regression）和决策树（Decision Tree）。逻辑回归从线性回归出发到逻辑回归，然后手推公式和相关的一些特点；介绍一下决策树的特点。">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-18T07:25:58+08:00">
-                2019-09-18
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-27T10:44:43+08:00">
+                2019-09-27
               </time>
             
           </span>
@@ -382,6 +382,16 @@
 <p>分成三部分求导：<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g468268n4gj20jm04k0sn.jpg" alt=""></p>
 <p>用L(θ)对θ求导，得到：<br>$$<br>\begin{split}<br>\frac { d } { d \theta _ { i } } \operatorname { loss } ( \theta ) &amp;= \left( y \frac { 1 } { \sigma \left( \theta ^ { T } x \right) } - ( 1 - y ) \frac { 1 } { 1 - \sigma \left( \theta ^ { T } x \right) } \right) \frac { d } { d \theta _ { i } } \sigma \left( \theta ^ { T } x \right) \\<br>&amp;= \left( y \frac { 1 } { \sigma \left( \theta ^ { T } x \right) } - ( 1 - y ) \frac { 1 } { 1 - \sigma \left( \theta ^ { T } x \right) } \right) \sigma \left( \theta ^ { T } x \right) \left( 1 - \sigma \left( \theta ^ { T } x \right) \right) \frac { d } { d \theta _ { i } } \theta ^ { T } x \\<br>&amp;= \left( y \left( 1 - \sigma \left( \theta ^ { T } x \right) \right) - ( 1 - y ) \sigma \left( \theta ^ { T } x \right) \right) x _ { i } \\<br>&amp;= \left( y - h _ { \theta } ( x ) \right) x _ { i }<br>\end{split}<br>$$</p>
 <p>注意一会儿有 $\sum$ 一会儿没有的，其实我们更倾向于不用，采用矩阵相乘的方式更加简洁。只是在表达似然函数，使用$ \sum$更加直观<br>$$<br>\theta _ { i } : = \theta _ { j } + \alpha \left( y ^ { ( i ) } - h _ { \theta } \left( x ^ { ( i ) } \right) \right) x _ { j } ^ { ( i ) }<br>$$</p>
+<h3 id="为什么使用-logistics-function"><a href="#为什么使用-logistics-function" class="headerlink" title="为什么使用 logistics function"></a>为什么使用 logistics function</h3><p>一种解释是可以。</p>
+<ul>
+<li>sigmoid 函数连续，单调递增</li>
+<li>对 sigmoid 函数求导非常的方便</li>
+<li>可以将负无穷到正无穷的数值映射到 [0, 1] 这样的区间</li>
+</ul>
+<p>另外一种维度是从伯努利分布的角度去解释。</p>
+<p>$$<br>f(x ; p)=p^{x}(1-p)^{1-x} \quad x=0,1<br>$$<br>其中 $p$ 是成功的概率。如果进行一次投掷，那么均值是 $p$ 方差是 $p (1-p)$。 然后再看二分类任务，样本的标签$y$ 服从二项分布。</p>
+<p>$$<br>p ( y | x ; \theta ) = \left( h _ { \theta } ( x ) \right) ^ { y } \left( 1 - h _ { \theta } ( x ) \right) ^ { 1 - y }<br>$$<br>详细的推导可以看这里：</p>
+<p>[img]<a href="https://ftp.bmp.ovh/imgs/2019/09/39e481f9fd958d4b.png[/img]" target="_blank" rel="noopener">https://ftp.bmp.ovh/imgs/2019/09/39e481f9fd958d4b.png[/img]</a></p>
 <h3 id="逻辑回归的特点"><a href="#逻辑回归的特点" class="headerlink" title="逻辑回归的特点"></a>逻辑回归的特点</h3><p><strong> 优点：</strong><br> LR 能以概率的形式输出结果,而非只是 0,1 判定， 可以做 ranking model；<br> LR 的可解释性强,可控度高；<br> 训练快</p>
 <p><strong> 缺点：</strong><br> 容易欠拟合，一般准确度不太高<br> 只能处理两分类问题. (可以应用多个逻辑回归实现多分类,类似SVM的方式; 另外对于父子类别同时分类的情况,使用逻辑回归要比Softmax等方式效果好)</p>
 <p>“海量离散特征+简单模型” 同“少量连续特征+复杂模型”的权衡。既可以离散化用线性模型，也可以用连续特征加深度学习</p>
@@ -417,7 +427,6 @@
 <blockquote>
 <p>This problem of over-fitting is overcome to large extent by using Random Forests, which are nothing but a very clever extension of decision trees. But random forest take away easy to explain business rules because now you have thousands of such trees and their majority votes to make things complex. Also by decision trees have forced interactions between variables , which makes them rather inefficient if most of your variables have no or very weak interactions.</p>
 </blockquote>
-<p><strong> 使用范围：</strong><br>1 数值型：数值型目标变量则可以从无限的数值集合中取值，如0.100，42.001等 (数值型目标变量主要用于回归分析)<br>2 标称型：标称型目标变量的结果只在有限目标集中取值，如真与假(标称型目标变量主要用于分类)</p>
 <h3 id="决策树的工作原理"><a href="#决策树的工作原理" class="headerlink" title="决策树的工作原理"></a>决策树的工作原理</h3><p>原始的数据集：</p>
 <p>编号    色泽    根蒂    敲声    纹理    脐部    触感    好瓜<br>1    青绿    蜷缩    浊响    清晰    凹陷    硬滑    是<br>2    乌黑    蜷缩    沉闷    清晰    凹陷    硬滑    是<br>3    乌黑    蜷缩    浊响    清晰    凹陷    硬滑    是<br>4    青绿    蜷缩    沉闷    清晰    凹陷    硬滑    是<br>5    浅白    蜷缩    浊响    清晰    凹陷    硬滑    是<br>6    青绿    稍蜷    浊响    清晰    稍凹    软粘    是<br>7    乌黑    稍蜷    浊响    稍糊    稍凹    软粘    是<br>8    乌黑    稍蜷    浊响    清晰    稍凹    硬滑    是<br>9    乌黑    稍蜷    沉闷    稍糊    稍凹    硬滑    否<br>10    青绿    硬挺    清脆    清晰    平坦    软粘    否<br>11    浅白    硬挺    清脆    模糊    平坦    硬滑    否<br>12    浅白    蜷缩    浊响    模糊    平坦    软粘    否<br>13    青绿    稍蜷    浊响    稍糊    凹陷    硬滑    否<br>14    浅白    稍蜷    沉闷    稍糊    凹陷    硬滑    否<br>15    乌黑    稍蜷    浊响    清晰    稍凹    软粘    否<br>16    浅白    蜷缩    浊响    模糊    平坦    硬滑    否<br>17    青绿    蜷缩    沉闷    稍糊    稍凹    硬滑    否</p>
 <p><strong>信息熵和信息增益</strong></p>
@@ -442,22 +451,42 @@
 <p>最后一点需要注意的是，增益率准则虽然减少了对取值数目较多的属性依赖，但是增加了对取值数目较少的属性偏好。因此， C4.5 并没有直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出 信息增益 高于 平均水平 的属性，再从中选择 增益率 最高的。</p>
 <p><strong>基尼指数 - CART</strong></p>
 <p>最后介绍一种选择划分属性的依据是使用 基尼指数 (Gini index)。数据集合 𝐷 的纯度可用基尼指数来度量：<br>$$<br>Gini ( D ) = \sum _ { k = 1 } ^ { | \mathcal { Y } | } \sum _ { k ^ { \prime } \neq k } p _ { k } p _ { k ^ { \prime } } = 1 - \sum _ { k = 1 } ^ { \mathcal { V } } p _ { k } ^ { 2 }<br>$$<br>直观来看，$Gini(𝐷) $ 反映了从数据集 𝐷 中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(𝐷) $ 越小，则数据集 𝐷 的纯度越高。</p>
-<p>对特定属性 𝑎 的基尼指数定义如下：<br>$$<br>Gini_{index}( D , a ) = \sum _ { v = 1 } ^ { V } \frac { \left| D _ { v } \right| } { | D | } \operatorname { Gini } \left( D _ { v } \right)</p>
-<p>$$<br>我们在候选属性集合 𝐴 中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
+<p>对特定属性 𝑎 的基尼指数定义如下：<br>$$<br>Gini_{index}( D , a ) = \sum _ { v = 1 } ^ { V } \frac { \left| D _ { v } \right| } { | D | } \operatorname { Gini } \left( D _ { v } \right)<br>$$<br>我们在候选属性集合 𝐴 中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
 <p>$$<br>a _ { * } = \arg \min _ { a \in A } Gini_{index } ( D , a )<br>$$</p>
 <p>采用基尼指数作为划分属性的判据的决策树是一种 CART 决策树。</p>
 <h3 id="决策树的优缺点"><a href="#决策树的优缺点" class="headerlink" title="决策树的优缺点"></a>决策树的优缺点</h3><p>优点：</p>
-<p>决策树易于理解（能够写出判断的路径，逻辑表达式）和实现， 人们知道该如何去优化。<br>可以处理缺省数据，意味着数据的准备工作是比较简单的。相对比其他的技术，往往需要一般化之类的操作。<br>能够处理数值型和常规性属性。</p>
+<ul>
+<li>决策树易于理解（能够写出判断的路径，逻辑表达式）和实现， 人们知道该如何去优化。</li>
+<li>可以处理缺省数据，意味着数据的准备工作是比较简单的。相对比其他的技术，往往需要一般化之类的操作。</li>
+<li>能够处理数值型和常规性属性。</li>
+</ul>
 <p>缺点：</p>
-<p>容易过拟合<br>对于各个类别不一致的数据，决策树当中信息增益的结果偏向于那些具有更多数值的特征。</p>
+<ul>
+<li>容易过拟合</li>
+<li>对于各个类别不一致的数据，决策树当中信息增益的结果偏向于那些具有更多数值的特征。</li>
+</ul>
+<h3 id="如何进行剪枝"><a href="#如何进行剪枝" class="headerlink" title="如何进行剪枝"></a>如何进行剪枝</h3><ol>
+<li>通过树的最大深度（超参数的设定）</li>
+<li>在 cross validation 中根据 验证集的loss 进行剪枝，如果不再下降，那么说明这个时候说明过拟合了。 不能根据训练数据集loss，因为训练数据集的loss 总是会下降的。</li>
+</ol>
+<h2 id="Decision-tree-总结"><a href="#Decision-tree-总结" class="headerlink" title="Decision tree 总结"></a>Decision tree 总结</h2><p>决策树的工作原理？</p>
+<p>决策树的生成过程就是最优划分属性的选择的过程。<br>策略：可以进行选择，大致分为了 ID3 [Quinlan, 1986]、C4.5 [Quinlan, 1993]、CART [Breiman et al., 1984] 三种。<br>目标：一般来说我们希望选择一个属性之后，其分支节点所包含的样本尽可能属于同一个类别，即结点的纯度 (purity)越来越高。</p>
+<p><strong> ID3信息增益（对应的互信息）</strong></p>
+<p>色泽为例，有三个取值青绿、乌黑、浅白。以该属性对数据集进行划分，得到 3 个子集。在子集中计算 取值y 和自己内部的信息熵。然后计算在该属性下的信息增益。再选择下一个特征为例，计算信息增益。依次类推。时间复杂度是 O(n*m)。</p>
+<p><strong> C4.5 信息增益率</strong></p>
+<p>上一种方式缺点在于当使用信息增益划分时候，当某一个属性的取值类别非常多时，对应的属性的自己小，那么分类信息熵会比较小，最后的信息增益会比较大。</p>
+<p>原因：log 函数不是线性的， 信息量减少速度大于类别数量增加的速度。（虽然项数多了，但是每项减少的速度更大）</p>
+<p>（最后的选择策略还是比较牛逼的，各种情况都是可以考虑到的）<br>所以第二种策略采用信息增益率，简单来说就是归一化，将数据集的大小考虑在内。最后一点需要注意的是，增益率准则虽然减少了对取值数目较多的属性依赖，但是增加了对取值数目较少的属性偏好。因此， C4.5 并没有直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出 信息增益 高于 平均水平 的属性，再从中选择 增益率 最高的。</p>
+<p><strong>基尼指数（CART）</strong></p>
+<p>目标是选择一个属性之后，其分支节点包含的样本尽可能属于同一个类别，简单说就是同一个分支之下是保持纯度高。这种性质是可以使用基尼系数进行判别的。操作上也很简单，从数据集D 中随机抽取两个样本，其类别不一致的概率。<br>常见的CART 树就是使用这种侧率进行选择最优的分裂点。</p>
 <p><strong>参考文献</strong></p>
 <p><a href="https://www.anmou.me/20180722-Decision_Tree/" target="_blank" rel="noopener">决策树及决策树生成与剪枝</a></p>
 <h2 id="LR-vs-SVM"><a href="#LR-vs-SVM" class="headerlink" title="LR vs. SVM"></a>LR vs. SVM</h2><p>单独<a href="https://jijeng.github.io/2019/06/08/svm-all-you-need/" target="_blank" rel="noopener">讲解SVM</a>。这里主要是比较两种的异同。</p>
 <p><strong>相同点</strong></p>
 <ol>
-<li>LR和SVM都是分类算法。</li>
+<li>LR和SVM都是分类算法。（svm 可以作为回归模型）</li>
 <li>LR和SVM都是监督学习算法。监督是体现在有标签。</li>
-<li>两者都属于判别模型。</li>
+<li>两者都属于判别模型。（相对于bayes 模型）</li>
 </ol>
 <p>判别模型会生成一个表示$P(Y|X) $的判别函数（或预测模型），而生成模型先计算联合概率$P(Y,X) $然后通过贝叶斯公式转化为条件概率。常见的判别模型有：：KNN、SVM、LR。常见的生成模型有：朴素贝叶斯，隐马尔可夫模型。</p>
 <p><strong>不同点</strong></p>
@@ -489,6 +518,16 @@
 <p>n是数据中特征的数量 m是样本数</p>
 <p>1、如果n相对于m来说很大，则使用LR算法或者不带核函数的SVM（线性分类）<br>n远大于m，n=10000，m=10-1000<br>2、如果n很小，m的数量适中（n=1-1000，m=10-10000）<br>使用带有核函数的SVM算法<br>3、如果n很小，m很大（n=1-1000，m=50000+）<br>增加更多的feature然后使用LR算法或者不带核函数的SVM<br>LR和不带核函数的SVM比较类似。</p>
 <p>简单说，如果特征相对于数据量来说很大，那么使用 LR或者线性SVM 算法；如果相反，那么使用带有核函数的SVM。</p>
+<h2 id="总结分类模型区别"><a href="#总结分类模型区别" class="headerlink" title="总结分类模型区别"></a>总结分类模型区别</h2><p>LR  vs. SVM  vs. Bayes</p>
+<p><strong>数据</strong></p>
+<p>LR 数据处理是 balanced（依赖于概率分布）；SVM 一般是要normalization（空间距离函数）</p>
+<p><strong>loss function</strong></p>
+<p>LR 是log loss，使用最大似然估计求解 \theta ； SVM 是拉格朗日定量求解。</p>
+<p><strong>正则项</strong></p>
+<p>LR 需要手动加上；SVM自带，SVM是结构风险最小化算法的</p>
+<p><strong>增量学习</strong><br>LR 收到新来的数据的影响， SVM 不受（基本上只是依赖 支持向量 的点），bayes 支持增量学习。</p>
+<p><strong>实战</strong><br>LR 和不带核函数的SVM 比较类似。（基本上可以互用）</p>
+<p>m 是样本数（数据量），n 是特征数<br>特征数n 远大于数据量 m，选择LR 模型 （n =1w，m&lt; 1000）<br>特征n 小，m 适中 （n &lt; 1000, m ~1w）使用带有核函数的SVM 算法<br>特征n 很小，m 很大 （m &gt; 5w） 增加特征</p>
 <h2 id="LR-和朴素贝叶斯的区别"><a href="#LR-和朴素贝叶斯的区别" class="headerlink" title="LR 和朴素贝叶斯的区别"></a>LR 和朴素贝叶斯的区别</h2>
       
     </div>
@@ -531,8 +570,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/06/16/nlp-tmp/" rel="prev" title="tmp">
-                tmp <i class="fa fa-chevron-right"></i>
+              <a href="/2019/06/16/nlp_bert(2)/" rel="prev" title="BERT学习笔记(2)">
+                BERT学习笔记(2) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -624,7 +663,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -646,7 +685,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -720,7 +759,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归"><span class="nav-number">1.</span> <span class="nav-text">逻辑回归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#公式推导"><span class="nav-number">1.1.</span> <span class="nav-text">公式推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑回归的特点"><span class="nav-number">1.2.</span> <span class="nav-text">逻辑回归的特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decision-tree"><span class="nav-number">2.</span> <span class="nav-text">Decision tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树的工作原理"><span class="nav-number">2.1.</span> <span class="nav-text">决策树的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树的优缺点"><span class="nav-number">2.2.</span> <span class="nav-text">决策树的优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LR-vs-SVM"><span class="nav-number">3.</span> <span class="nav-text">LR vs. SVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LR-和朴素贝叶斯的区别"><span class="nav-number">4.</span> <span class="nav-text">LR 和朴素贝叶斯的区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归"><span class="nav-number">1.</span> <span class="nav-text">逻辑回归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#公式推导"><span class="nav-number">1.1.</span> <span class="nav-text">公式推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么使用-logistics-function"><span class="nav-number">1.2.</span> <span class="nav-text">为什么使用 logistics function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑回归的特点"><span class="nav-number">1.3.</span> <span class="nav-text">逻辑回归的特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decision-tree"><span class="nav-number">2.</span> <span class="nav-text">Decision tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树的工作原理"><span class="nav-number">2.1.</span> <span class="nav-text">决策树的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树的优缺点"><span class="nav-number">2.2.</span> <span class="nav-text">决策树的优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何进行剪枝"><span class="nav-number">2.3.</span> <span class="nav-text">如何进行剪枝</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decision-tree-总结"><span class="nav-number">3.</span> <span class="nav-text">Decision tree 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LR-vs-SVM"><span class="nav-number">4.</span> <span class="nav-text">LR vs. SVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结分类模型区别"><span class="nav-number">5.</span> <span class="nav-text">总结分类模型区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LR-和朴素贝叶斯的区别"><span class="nav-number">6.</span> <span class="nav-text">LR 和朴素贝叶斯的区别</span></a></li></ol></div>
             
 
           </div>

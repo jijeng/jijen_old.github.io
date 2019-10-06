@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="hmm," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
+<meta name="keywords" content="hmm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="新词发现和马尔科夫模型">
+<meta property="og:url" content="http://yoursite.com/2019/06/06/hmm/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.loli.net/2019/10/06/tK3C7vhwJVfgry4.png">
+<meta property="og:image" content="https://i.loli.net/2019/10/06/hYUIJn4WBewdGxi.png">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/18a585b8bf2b6eb2.png">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/2ee1d361a3b03f25.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/06/ugejln.png">
+<meta property="og:updated_time" content="2019-10-06T12:11:02.064Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="新词发现和马尔科夫模型">
+<meta name="twitter:description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
+<meta name="twitter:image" content="https://i.loli.net/2019/10/06/tK3C7vhwJVfgry4.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/06/hmm/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>新词发现和马尔科夫模型 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/06/hmm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">新词发现和马尔科夫模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-06T09:22:18+08:00">
+                2019-06-06
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-06T20:11:02+08:00">
+                2019-10-06
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/06/hmm/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/06/hmm/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍隐马尔科夫模型（HMM） 和新词发现。</p>
+<a id="more"></a>
+<h3 id="分词手段"><a href="#分词手段" class="headerlink" title="分词手段"></a>分词手段</h3><p>网络新词充分应用了英语、汉语、数字和符号等相互结合的方式，结构新颖自由。</p>
+<ol>
+<li>基于规则</li>
+</ol>
+<p>基于规则的方法是从语言学的角度对新词的构词规则进行归纳总结并建立正则表达式规则库。该方法对于高频新词有很好的识别效果，对特定的领域有很好的准确率，但是人工制定规则需要大量人力成本，存在规则领域适应能力下降等问题。</p>
+<p>比如在微博中的新词发现的一种规则：</p>
+<p><img src="https://i.loli.net/2019/10/06/tK3C7vhwJVfgry4.png" alt="Screen Shot 2019-10-06 at 9.47.01 AM.png"></p>
+<p>可以提取相应的规则：</p>
+<p><img src="https://i.loli.net/2019/10/06/hYUIJn4WBewdGxi.png" alt="Screen Shot 2019-10-06 at 9.48.06 AM.png"></p>
+<p><a href="http://www.joca.cn/CN/volumn/home.shtml" target="_blank" rel="noopener">来源</a></p>
+<ol start="2">
+<li>基于信息熵</li>
+</ol>
+<p>使用词频,内部凝固程度,自由程度三个考察纬度进行新词筛选. </p>
+<ol>
+<li>词频很好理解，词的出现频率一般比较高，需要设置一个阈值，如果高于这个阈值那么就判定为一个新词。</li>
+<li>自由程度利用信息熵来衡量候选新词的左邻字符和右临字符的不确定性，候选新词的邻接熵越大，说明邻接字符的不确定性越大，成为新词边界的可能性就越大。可以很好的解决新词边界的问题。</li>
+<li>内部凝固度（互信息）用来衡量候选子串之间的结合程度。主要是用来提高对于低频新词的识别精度。当低频新词的子串出现频率也较低，子串之间的额结合程度紧密时，其互信息仍然是较高的，从而达到精确识别该类新词的效果。</li>
+</ol>
+<p>更多详细的信息可以查看这篇<a href="https://jijeng.github.io/2019/03/25/NLP%E4%B8%AD%E7%9A%84%E7%A2%8E%E7%A2%8E%E5%BF%B5/" target="_blank" rel="noopener">博客</a> 中”新词发现“部分讲解。</p>
+<p>jieba分词会依照这个字典,将出现在词典中的词生成一个无向图DAG:</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/18a585b8bf2b6eb2.png" alt=""></p>
+<p>统计方法有很强的领域适应能力和可扩展性，但存在需要大规模语料库和数据稀疏等问题。</p>
+<ol start="3">
+<li>基于HMM</li>
+</ol>
+<p>对于未登录词,词典中没有,所以使用上述方法会被分为单字词,还是上面的例子:</p>
+<blockquote>
+<p>结婚／的／和／尚未／结婚／的 </p>
+</blockquote>
+<p>对于jieba分词来说,这里的连续单字词”的和”就很有可能是一个新词,会被送入隐马尔科夫模型来做进一步的识别.</p>
+<p>实际上当我们把dict.txt中的词语全部删除，jieba依然能够进行分词，其实这个时候使用的就是HMM来进行分词了。</p>
+<p>自然语言处理中的序列标注问题, 在目前, 比较主流的技术是语言模型(如LSTM, BERT)+CRF(条件随机场)。为什么单单使用语言模型是不可以的，后面需要加上概率图模型？<br>比如说”自贸区”对应的标注是: 自(B-LOC)贸(I-LOC)区(I-LOC), 这三个字都对应一个”地名”的标签, 但是第一个字属于实体开头的字, 所以使用”B”开头的标签, 后面两个字的标签都是”I”开头. 比如说搭建好模型之后，使用交叉熵来训练模型，很有可能得到argmax 是上面的组合；上面的原因就是我们要从语言模型(例如BERT, LSTM)后面再加上概率图模型, 例如条件随机场, 用来约束模型的输出, 防止出现不合规的标注输出. 如果使用条件随机场，那么条件随机场的损失是可以反传到模型中去，帮助模型做更好的建立序列之间的依赖关系。</p>
+<p>什么是HMM？</p>
+<p>HMM模型是概率图模型的一种, 属于生成模型, 笼统的说, 我们上面说的”BIO”的实体标签, 就是一个不可观测的隐状态, 而HMM模型描述的就是由这些隐状态序列(实体标记)生成可观测状态(可读文本)的过程.</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/2ee1d361a3b03f25.jpg" alt=""></p>
+<p><strong>HMM模型有两个基本假设(非常重要)</strong>:   </p>
+<ol>
+<li>第$t$个隐状态(实体标签)只跟前一时刻的$t-1$隐状态(实体标签)有关, 与除此之外的其他隐状态(如$t-2,\  t+3$)无关.<br>例如上图中: 蓝色的部分指的是$i_t$只与$i_{t-1}$有关, 而与蓝色区域之外的所有内容都无关, 而$P(i_{t}|i_{t-1})$指的是隐状态$i$从$t-1$时刻转向$t$时刻的概率, 具体转换方式下面会细讲.</li>
+<li>观测独立的假设, 我们上面说过, HMM模型中是由<strong>隐状态序列(实体标记)生成可观测状态(可读文本)的过程</strong>,<br>观测独立假设是指在任意时刻观测$o_t$只依赖于当前时刻的隐状态$i_t$, 与其他时刻的隐状态无关.<br>例如上图中: 粉红色的部分指的是$i_{t+1}$只与$o_{t+1}$有关, 跟粉红色区域之外的所有内容都无关.</li>
+</ol>
+<p>我们现在已经了解了HMM的三大参数$A, \ B, \ \pi$, 假设我们已经通过建模学习, 学到了这些参数, 得到了模型的概率, 我们怎么使用这些参数来解决序列标注问题呢?<br>设目前在时刻$t$, 我们有当前时刻的观测到的一个汉字$o_t=v_k$(指的第$t$时刻观测到$v_k$), 假设我们还知道在$t-1$时刻(前一时刻)对应的实体标记类型$i_{t-1} = \hat{q}^{t-1}_i$(指的$t-1$时刻标记为$\hat{q}^{t-1}<em>i$). 我们要做的仅仅是列举所有$i</em>{t}$可能的实体标记$\hat{q}^{t}<em>{j}$, 并求可以使下式输出值最大的那个实体类型$q^{t}</em>{j}$(也就是隐状态类型):<br>$$\hat{q}<em>j^{t} = argmax</em>{\hat{q}<em>j^{t} \in Q</em>{hidden}}<br>P(i_t = \hat{q}<em>j^{t} | i</em>{t-1} = \hat{q}^{t-1}_i) P(o_t=v_k| i_t = \hat{q}_j^{t})$$<br>将所有$t$时刻<strong>当前可取的实体标签</strong>带入下式中, 找出一个可以使下式取值最大的那个实体标签作为当前字的标注:<br>$$P(当前可取实体标签|上一时刻实体标签)P(测到的汉字|当前可取实体标签)$$<br><strong>注意</strong>: 我们这里只讲到了怎样求第$t$时刻的最优标注, 但是在每一时刻进行这样的计算, 并不一定能保证最后能得出全局最优序列路径, 例如在第$t$时刻最优实体标签是$q_j$, 但到了下一步, 由于从$q_j$转移到其他某些实体标签的转移概率比较低, 而降低了经过$q_j$的路径的整体概率, 所以到了下一时刻最优路径就有可能在第$t$时刻不经过$q_j$了, 所以每一步的局部最优并不一定可以达成全局最优, 所以我们之后会用到<strong>维特比算法</strong>来找到全局最优的标注序列, 这个后面会有详细讲解.</p>
+<p><strong>HMM参数学习(监督学习)</strong>:<br>我们今天要用HMM解决的是序列标注问题, 所以我们解决的是监督学习的问题. 也就是说我们现在有一些文本和与之对应的标注数据, 我们要训练一个HMM来拟合这些数据, 以便之后用这个模型进行数据标注任务, 最简单的方式是直接用<strong>极大似然估计</strong>来估计参数:</p>
+<ol>
+<li><p>初始隐状态概率$\pi$的参数估计:<br>$$\hat{\pi}_{q_i}=\frac{count(q^{1}_{i})}{count(o_1)}$$<br>上式指的是, 计算在第$1$时刻, 也就是文本中第一个字, $q^{1}_{i}$出现的次数占总第一个字$o_1$观测次数的比例, $q^{1}_{i}$上标1指的是第1时刻, 下标$i$指的是第$i$种标签(隐状态), $count$是的是记录次数.</p>
+</li>
+<li><p>转移概率矩阵$A$的参数估计:<br>我们之前提到过$transition \ matrix$里面$A_{ij}$(矩阵的第i行第j列)指的是在$t$时刻实体标签为$q_i$, 而在$t+1$时刻实体标签转换到$q_j$的概率, 则转移概率矩阵的参数估计相当与一个二元模型$bigram$, 也就是把所有的标注序列中每相邻的两个实体标签分成一组, 统计他们出现的概率:<br>$$\hat{A}<em>{ij}=P(i</em>{t+1}= q_j | i_{t} = q_i)=\frac{count(q_i后面出现q_j的次数)}{count(q_i的次数)}$$</p>
+</li>
+</ol>
+<p>联合概率 除以边缘概率</p>
+<ol start="3">
+<li>发射概率矩阵$B$的参数估计:<br>我们提到过$emission \ matrix$中的$B_{jk}$(矩阵第j行第k列)指的是在$t$时刻由实体标签(隐状态)$q_j$生成汉字(观测结果)$v_k$的概率.<br>$$\hat{B}<em>{jk}=P(o</em>{t}= v_k | i_{t} = q_j)=\frac{count(q_j与v_k同时出现的次数)}{count(q_j出现的次数)}$$<br>到此为止, 我们就可以遍历所有语料, 根据上面的方式得到模型的参数$A, \ B, \ \pi$的估计.</li>
+</ol>
+<p><a href="https://search.bilibili.com/all?keyword=%E6%B1%89%E8%AF%AD%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86&amp;from_source=banner_search" target="_blank" rel="noopener">视频讲解</a></p>
+<p><strong>基于隐马尔科夫模型的新词发现</strong></p>
+<p>互联网中经常会出现很多网红词,比如最近的”佛系青年”,“食草男”.这些词并不在词典中,被称为未登录词,前面写过一篇文章信息熵在新词发现中的运用利用简单的概率知识就可以识别这种新词,不过jieba分词并没有采用这种方法,而是用更为强大的隐马尔科夫模型进行新词发现.</p>
+<p>对于未登录词,词典中没有,所以使用上述方法会被分为单字词,还是上面的例子:</p>
+<blockquote>
+<p>结婚／的／和／尚未／结婚／的 </p>
+</blockquote>
+<p>对于jieba分词来说,这里的连续单字词”的和”就很有可能是一个新词,会被送入隐马尔科夫模型来做进一步的识别.</p>
+<p>实际上当我们把dict.txt中的词语全部删除，jieba依然能够进行分词，其实这个时候使用的就是HMM来进行分词了。</p>
+<p>马尔科夫模型用来分词时,使用BMES,作为每个字的状态,B代表词头,M代表词中,E代表词尾词,S代表单个字的词.根据预先训练好的起始状态,转移概率和观测概率,就可以估计出每个单词状态:</p>
+<p><a href="https://imgchr.com/i/ugejln" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/10/06/ugejln.png" alt="ugejln.png"></a></p>
+<p>新词发现和分词同样的道理,估计每个字的隐状态就可以判断是否为一个词.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hmm/" rel="tag"># hmm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/01/nlp-papers-reading-sentence-embedding/" rel="next" title="NLP  Papers Reading-Sentence Embedding">
+                <i class="fa fa-chevron-left"></i> NLP  Papers Reading-Sentence Embedding
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/08/svm-all-you-need/" rel="prev" title="SVM All You Need to Know">
+                SVM All You Need to Know <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#分词手段"><span class="nav-number">1.</span> <span class="nav-text">分词手段</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/06/06/hmm/';
+          this.page.identifier = '2019/06/06/hmm/';
+          this.page.title = '新词发现和马尔科夫模型';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

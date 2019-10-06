@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/703577797f0de21b.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/08/dDOKPI.jpg">
-<meta property="og:updated_time" content="2019-09-22T12:51:26.474Z">
+<meta property="og:updated_time" content="2019-10-05T02:51:48.379Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习概念">
 <meta name="twitter:description" content="解释一些机器学习中小的基本的概念。梯度下降、牛顿法、凸函数">
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-22T20:51:26+08:00">
-                2019-09-22
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-05T10:51:48+08:00">
+                2019-10-05
               </time>
             
           </span>
@@ -439,7 +439,7 @@
 <p>凸函数：<br>Jacobian矩阵和Hessian矩阵：在向量分析中, 雅可比矩阵是一阶偏导数以一定方式排列成的矩阵, 其行列式称为雅可比行列式。</p>
 <h3 id="bias-and-variance"><a href="#bias-and-variance" class="headerlink" title="bias and variance"></a>bias and variance</h3><p>个人感觉 variance 更像是一种稳定性的评价，预测结果的波动性，如果variance 小，那么就是稳定性好。</p>
 <p>bias variance tradeoff 实际上是有三个名词 bias (偏差)，variance (方差) and noise (噪声)。<br>偏差是预测值和实际值的差值，是准不准的问题；而方差是预测值的属性，如果最后的结果比较分散，那么方差就比较大。所以是两个不同的维度。最好的模型当然是低方差并且低偏差了。<br>一图胜千言</p>
-<p><img src="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg" alt="ZoKN34.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg" width="80%" height="80%"></p>
 <p>常见的几种说法：</p>
 <p>当网络结构比价简单的时候，容易出现高偏差，一般来说这个时候是欠拟合</p>
 <p>当网络比较复杂的时候，容易出现高方差，一般来说这个时候是过拟合</p>
@@ -469,7 +469,20 @@
 <li>当模型处于欠拟合状态时，训练集和验证集上的误差都很高；</li>
 <li>当模型处于过拟合状态时，训练集上的误差低，而验证集上的误差会非常高。</li>
 </ul>
-<p>这两个概念和模型的复杂度又有着很深的联系：<br><img src="https://i.bmp.ovh/imgs/2019/06/703577797f0de21b.png" alt=""></p>
+<p>这两个概念和模型的复杂度又有着很深的联系：</p>
+<p><img src="https://i.bmp.ovh/imgs/2019/06/703577797f0de21b.png" width="80%" height="80%"></p>
+<p><strong>bias-variance 和 bagging-boosting的关系</strong></p>
+<p>数据的质量决定了学习的上限。而假设在数据已经给定的情况下，此时上限已定，我们要做的就是尽可能的接近这个上限。而模型的期望泛化误差由偏差和方差组成。一般来说，简单模型偏差高，方差低；复杂模型方差高，偏差低。</p>
+<p>偏差描述的是算法的预测的平均值和真实值的关系（可以想象成算法的拟合能力如何），而方差描述的是同一个算法在不同数据集上的预测值和所有数据集上的平均预测值之间的关系（可以想象成算法的稳定性如何）。 （ps：个人认为可以把偏差认为是单个模型的学习能力，而方差则描述的是同一个学习算法在不同数据集的不稳定性） </p>
+<p>Bagging和Boosting是集成学习当中比较常用的两种方法，刚好分别对应了降低模型方差和偏差。 </p>
+<p>decision + bagging其实做了两个事情减少了variance。</p>
+<ol>
+<li>bootstrap；就是从training data里面sample with replacement，然后生成training data x N。（例如sample 是 [1,2,3,4,5,6], bootstrap之后有了三份[2,2,3,4,1,6], [1,3,5,6,1,2], [1,2,3,1,2,3]。）bootstrap是个很重要的idea 数学上有很多证明这样做能有效减低variance。</li>
+<li>averaging from all the output。这个很好理解，做个思考实验 - 从方差固定的population里取10 个sample，对比与从同一个population取2个sample-取平均-重复10次；两组10个数字的variance的期望肯定是前者高。补充一点，random forest其实是bagging的延伸。加的idea就是每次build tree的时候只选一部分的attribute - 因为decision tree一般很受重要的attribute的影响（例如有个attribute和response/label 相关性很高，基本每次bootstrap第一个split都是这个attribute），导致bootstrap完之后variance没有减少（因为每次的树都是很相似的）- 所以大家想remove这个attribute in some bootstrap sample</li>
+</ol>
+<p>Bagging是通过重采样的方法来得到不同的模型，假设模型独立则有：<br>$$<br>E\left(\frac{\sum_{i} \vec{E}\left(X_{i}\right)}{n}\right)=E\left(X_{i}\right)<br>$$<br>$$<br>\operatorname{Var}\left(\frac{\sum_{i} \operatorname{Var}\left(X_{i}\right)}{n}\right)=\frac{1}{n} \operatorname{Var}\left(X_{i}\right)<br>$$<br>所以从这里我们可以看出Bagging主要可以降低的是方差。 bagging是对许多强（甚至过强）的分类器求平均。在这里，每个单独的分类器的bias都是低的，平均之后bias依然低；而每个单独的分类器都强到可能产生overfitting的程度，也就是variance高，求平均的操作起到的作用就是降低这个variance。</p>
+<p>而Boosting每一次都关注使整体的loss减少，很显然可以降低bias。基于boosting框架的Gradient Tree Boosting模型中基模型也为树模型，同Random Forrest，我们也可以对特征进行随机抽样来使基模型间的相关性降低，从而达到减少方差的效果。（比如说xgboost 中的sample 参数，既可以对样本数量进行sample 也可以对特征进行sample）boosting 可以降低偏差应该是很好理解的，其原理就是将多个弱学习器组合成一个强学习器。<br>boosting是把许多弱的分类器组合成一个强的分类器。弱的分类器bias高，而强的分类器bias低，所以说boosting起到了降低bias的作用。variance不是boosting的主要考虑因素。为什么随机森林的树的深度往往大于GBDT的树的深度？</p>
+<p>总之要记住： bias跟模型有关，variance跟数据有关。</p>
 <h3 id="生成式模型和判别式比较"><a href="#生成式模型和判别式比较" class="headerlink" title="生成式模型和判别式比较"></a>生成式模型和判别式比较</h3><p>判别式模型对 $ P(Y|X) $进行建模,目的是找到一个决策边界,根据这个边界来确定新样本的类别.<br>生成式模型对 $P(X,Y) $进行建模,目的是找到每个类别的分布,根据类别的分布情况确定新样本的类别.</p>
 <p><img src="https://upload.cc/i1/2019/07/08/dDOKPI.jpg" alt=""><br>如上图所示,当一个新样本进来后,如果是判别式模型,会判断它在决策边界的左边还是右边,即计算P(Y_1|X)与P(Y_2|X)来判断新样本是蓝色还是黄色.如果是生成式模型会根据两个类别分布分别计算属于两个类别的概率,即P(Y_1,X)与P(Y_2,X)来判断新样本是蓝色还是黄色.</p>
 <p>举例子说明常见的算法：</p>
@@ -478,10 +491,10 @@
 <p>$$<br>P ( y | x ) = \frac { P ( x , y ) } { P ( x ) }<br>$$</p>
 <p>分母是常数,分子根据条件独立性可以转化为:<br>$$<br>P ( x , y ) = p \left( y , f _ { 1 } , \ldots , f _ { n } \right) = \prod _ { i = 1 } ^ { n } P \left( f _ { i } | y \right)<br>$$</p>
 <p>也就是说朴素贝叶斯相当于为每一个特征建立了一个高斯模型.所以朴素贝叶斯是生成式模型.</p>
-<p>对于判别式模型来说求得P(Y|X)，对未见示例X，根据P(Y|X)可以求得标记Y，即可以直接判别出来，如上图的左边所示，实际是就是直接得到了判别边界，所以传统的、耳熟能详的机器学习算法如线性回归模型、支持向量机SVM等都是判别式模型，这些模型的特点都是输入属性X可以直接得到Y。</p>
-<p>而生成式模型求得P(Y,X)，对于未见示例X，你要求出X与不同标记之间的联合概率分布，然后大的获胜，如上图右边所示，并没有什么边界存在，对于未见示例（红三角），求两个联合概率分布（有两个类），比较一下，取那个大的。比如朴素贝叶斯算法和隐式马尔科夫模型。</p>
+<p>对于判别式模型来说求得 $P(Y|X) $，对未见示例 $X $，根据P(Y|X)可以求得标记Y，即可以直接判别出来，如上图的左边所示，实际是就是直接得到了判别边界，所以传统的、耳熟能详的机器学习算法如线性回归模型、支持向量机SVM等都是判别式模型，这些模型的特点都是输入属性X可以直接得到Y。</p>
+<p>而生成式模型求得 $P(Y,X) $，对于未见示例X，你要求出X与不同标记之间的联合概率分布，然后大的获胜，如上图右边所示，并没有什么边界存在，对于未见示例（红三角），求两个联合概率分布（有两个类），比较一下，取那个大的。比如朴素贝叶斯算法和隐式马尔科夫模型。</p>
 <p>判别式模型举例：要确定一个羊是山羊还是绵羊，用判别模型的方法是从历史数据中学习到模型，然后通过提取这只羊的特征来预测出这只羊是山羊的概率，是绵羊的概率。生成式模型举例：利用生成模型是根据山羊的特征首先学习出一个山羊的模型，然后根据绵羊的特征学习出一个绵羊的模型，然后从这只羊中提取特征，放到山羊模型中看概率是多少，在放到绵羊模型中看概率是多少，哪个大就是哪个。</p>
-<h3 id="主要的验证方法"><a href="#主要的验证方法" class="headerlink" title="主要的验证方法"></a>主要的验证方法</h3><ol>
+<h3 id="数据集的划分"><a href="#数据集的划分" class="headerlink" title="数据集的划分"></a>数据集的划分</h3><ol>
 <li><p>Holdout检验：<br>直接将原始的样本集合随机划分成训练集和验证集两部分。比方说，对于一个点击量预测模型，我们把样本按照70%~30%的比例分成两部分，70%的样本用于模型训练；30%的样本用于模型验证，包括绘制ROC曲线、计算精确率和召回率等指标来评估模型性能；<br>缺点：在验证集上计算出来的最后评估指标与原始分组有很大的关系</p>
 </li>
 <li><p>交叉验证</p>
@@ -491,6 +504,10 @@
 <li>K-fold交叉验证：首先将全部样本划分成k个大小相等的样本子集；一次遍历这k个子集，每次把当前子集作为验证集，其余所有子集作为训练集，进行模型的训练和评估；最后把k次评估指标的平均值作为最终的评估指标。在实验中，k经常取10.</li>
 <li>留一验证：每次留下一个样本作为验证集，其余所有样本作为测试集。在样本总数较多的情况下，留一验证的时间开销极大.</li>
 </ul>
+<ol start="3">
+<li>两者结合起来</li>
+</ol>
+<p>使用 training data， evaluation data 和test data 三种数据集。第一种方法相当于只有 training data 和 test data，第二种方法是training data 和evaluation data； 第三种方式相当于是有 training data， evaluation data 和test data。</p>
 <h3 id="复习笔记"><a href="#复习笔记" class="headerlink" title="复习笔记"></a>复习笔记</h3><ol>
 <li>优化器： 梯度下降得到是全局最优解，但是当数据量大的时候，训练速度变慢。随机梯度下降得到局部解，训练速度快；batch_size 得到了 batch梯度下降，是两者方法的折中。</li>
 <li>牛顿法相比于梯度下降是二阶求导，基于当前位置切线来确定下一次的位置，更加快。和一阶在最优点会震荡，但是二阶不会。</li>
@@ -631,7 +648,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -653,7 +670,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -727,7 +744,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雅克比矩阵和海森矩阵"><span class="nav-number">3.</span> <span class="nav-text">雅克比矩阵和海森矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">4.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">5.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">6.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主要的验证方法"><span class="nav-number">7.</span> <span class="nav-text">主要的验证方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">8.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雅克比矩阵和海森矩阵"><span class="nav-number">3.</span> <span class="nav-text">雅克比矩阵和海森矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">4.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">5.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">6.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集的划分"><span class="nav-number">7.</span> <span class="nav-text">数据集的划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">8.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
             
 
           </div>

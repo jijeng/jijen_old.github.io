@@ -91,12 +91,13 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8x600o5j21440lsjz0.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1f8xzkf3yj213y0lsti8.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fboz6w71j20n20bedh7.jpg">
+<meta property="og:image" content="https://upload.cc/i1/2019/10/07/7jutsV.png">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/07/02/5d1b275bd20aa40709.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/8b4f6493ed14471b.png">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44zy5fny9j209i08sdh1.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44zwyhj76j20fz0av3zf.jpg">
-<meta property="og:updated_time" content="2019-09-16T01:12:42.472Z">
+<meta property="og:updated_time" content="2019-10-06T23:13:05.247Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fastText &amp; faiss">
 <meta name="twitter:description" content="主要介绍 fastText、faiss 两个常用的工具，然后顺带介绍一下容易混淆的概念 k-means 和knn。">
@@ -321,8 +322,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-16T09:12:42+08:00">
-                2019-09-16
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-07T07:13:05+08:00">
+                2019-10-07
               </time>
             
           </span>
@@ -425,6 +426,14 @@
 <blockquote>
 <p>Training a neural network means taking a training example and adjusting all of the neuron weights slightly so that it predicts that training sample more accurately. In other words, each training sample will tweak all of the weights in the neural network.<br>As we discussed above, the size of our word vocabulary means that our skip-gram neural network has a tremendous number of weights, all of which would be updated slightly by every one of our billions of training samples!<br>Negative sampling addresses this by having each training sample only modify a small percentage of the weights, rather than all of them. Here’s how it works.<br>When training the network on the word pair (“fox”, “quick”), recall that the “label” or “correct output” of the network is a one-hot vector. That is, for the output neuron corresponding to “quick” to output a 1, and for all of the other thousands of output neurons to output a 0.<br>With negative sampling, we are instead going to randomly select just a small number of “negative” words (let’s say 5) to update the weights for. (In this context, a “negative” word is one for which we want the network to output a 0 for). We will also still update the weights for our “positive” word (which is the word “quick” in our current example).<br>The paper says that selecting 5-20 words works well for smaller datasets, and you can get away with only 2-5 words for large datasets.<br>Recall that the output layer of our model has a weight matrix that’s 300 x 10,000. So we will just be updating the weights for our positive word (“quick”), plus the weights for 5 other words that we want to output 0. That’s a total of 6 output neurons, and 1,800 weight values total. That’s only 0.06% of the 3M weights in the output layer!<br>In the hidden layer, only the weights for the input word are updated (this is true whether you’re using Negative Sampling or not).</p>
 </blockquote>
+<p><strong>对应的参数</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-wordNgrams	最大ngram	1</span><br><span class="line">-minn	字符ngram最小长度	0</span><br><span class="line">-maxn	字符ngram最大长度	0</span><br></pre></td></tr></table></figure>
+<p>其中 wordNgrams 是对应语序，字符minn 和maxn 是解决oov 问题。</p>
+<ul>
+<li>只用unigram的话会丢掉word order信息，所以通过加入N-gram features进行补充</li>
+<li>用hashing来减少N-gram的存储<br>由于n-gram的量远比word大的多，完全存下所有的n-gram也不现实。Fasttext采用了Hash桶的方式，把所有的n-gram都哈希到buckets个桶中，哈希到同一个桶的所有n-gram共享一个embedding vector。如下图所示：</li>
+</ul>
+<p><img src="https://upload.cc/i1/2019/10/07/7jutsV.png" alt="img"></p>
 <h3 id="Positive-samples-and-Negative-samples"><a href="#Positive-samples-and-Negative-samples" class="headerlink" title="Positive samples and  Negative samples"></a>Positive samples and  Negative samples</h3><p>One little detail that’s missing from the description above is how do we select the negative samples.<br>（下面说的是如何进行选择negative sample的问题：基本思路是根据出现频率进行选择）<br>The negative samples are chosen using the unigram distribution. Essentially, the probability of selecting a word as a negative sample is related to its frequency, with more frequent words being more likely to be selected as negative samples. Instead of using the raw frequency in the original word2vec paper, each word is given a weight that’s equal to it’s frequency (word count) raised to the 3/4 power. The probability for selecting a word is just it’s weight divided by the sum of weights for all words.<br>$$P \left( w _ { i } \right) = \frac { f \left( w _ { i } \right) ^ { 3 / 4 } } { \sum _ { i = 0 } ^ { n } \left( f \left( w _ { j } \right) ^ { 3 / 4 } \right) }$$</p>
 <p>上述中的函数是幂函数，图像的形状和log 函数差不多，都是从 $y =x$ 进行了一下约束，函数变得更加的平缓。对于高频词进行了约束，对于低频次也有机会出现。</p>
 <p>This decision to raise the frequency to the 3/4 power appears to be empirical; as the author claims it outperformed other functions (e.g. just using unigram distribution).<br>Side note: The way this selection is implemented in the original word2vec C code is interesting. They have a large array with 100M elements (which they refer to as the unigram table). They fill this table with the index of each word in the vocabulary multiple times, and the number of times a word’s index appears in the table is given by </p>
@@ -787,7 +796,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -809,7 +818,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

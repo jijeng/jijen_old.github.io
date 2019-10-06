@@ -89,7 +89,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/12/laVvjT.png">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/e9f310e2c0dc1ada.png">
-<meta property="og:updated_time" content="2019-09-03T23:37:47.182Z">
+<meta property="og:updated_time" content="2019-10-01T01:19:25.588Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="A Gentle Introduction of GBDT">
 <meta name="twitter:description" content="介绍GBDT 的定义、训练过程、优缺点和常见的问题。">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-04T07:37:47+08:00">
-                2019-09-04
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-01T09:19:25+08:00">
+                2019-10-01
               </time>
             
           </span>
@@ -478,7 +478,14 @@
 <li>对异常样本敏感，异常样本在迭代过程中可能获得较高的权重，影响最终的强学习器的预测准确率。</li>
 </ul>
 <h2 id="复习总结"><a href="#复习总结" class="headerlink" title="复习总结"></a>复习总结</h2><ol>
-<li>adaboost 和gbdt 区别和联系：两者都是boost 算法，通过在下一轮中改善上一轮的结果最后的效果的提升。区别：方式不同，adaboost 是分配权重，在下一轮中分错的样本权重得到加强，分对的分类器的得到加强；gbdt 是通过梯度下降的方式，不断减少 loss提升。如果是回归问题，采用的平方差损失函数，那么就是不断拟合上一步的残差。对于异常样本的敏感程度不同，adaboost 是敏感性强。</li>
+<li><p>gbdt 的优点<br>a. 可以灵活的处理各类数据（连续性和离散型）， 使用稠密的数据更加，对于稀疏的数据，可能LR 这些模型更加好。<br>b. 继承了树模型的优点： 对于异常值和缺省值有很好的处理的效果。因为是在树节点分裂，那么异常值的影响是比较小的；单独把缺省值放到一边，最后处理，可以支持对缺省值的处理<br>c. 大量数据也可以方便处理（相对于 svm 而言），如果说支持数据量最大的，还是 LR<br>缺点：<br>a. 如果噪声很多，那么是容易过拟合； 如果在不带噪声的数据集上，分类效果不如LR 或者 SVM；现实中的数据是有点噪声，那么使用 GBDT 还是可以的。<br>b. 无法并行（主要是指 决策树的建立过程）</p>
+</li>
+<li><p>gbdt 的损失函数<br>如果是二分类一般使用log loss，多分类使用交叉熵损失函数，回归算法使用均方误差损失函数。</p>
+</li>
+<li><p>gbdt 核心的知识点<br>a. 基学习器需要足够的简单，具有高偏差和低方差，这个是为了缓解过拟合的问题<br>b. 通过多个分类器的线性累加求最后的预测结果，变相的增加了被分错的样本的权重（分对实例的残差是0）</p>
+</li>
+<li><p>adaboost  和gbd的区别<br>a. 首先两者都是boosting提升算法。区别在于实现方式，adaboost 是分配权重，adaboost在下一轮的循环中分错的样本得到加强，分对的分类器得到加强；gbdt 是通过梯度下降的方式实现的，定义一个loss，然后分错的loss 是比较大的，然后通过减少loss间接的重视分错的样本。<br>b. adaboost 对于异常值比较敏感，gbdt 每一个分类器都是弱分类器，并且可以加上正则项，抵御数据中噪声<br>c. adaboost 损失函数只能是 指数损失函数， gbdt 可以针对不同的问题，选择合适的损失函数<br>d. adaboost 一般用于分类，gbt 一般用于回归</p>
+</li>
 </ol>
 
       
@@ -510,8 +517,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/10/summary_resume/" rel="next" title="Summary Resume">
-                <i class="fa fa-chevron-left"></i> Summary Resume
+              <a href="/2019/07/10/summary_resume/" rel="next" title="Summary">
+                <i class="fa fa-chevron-left"></i> Summary
               </a>
             
           </div>
@@ -613,7 +620,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -635,7 +642,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

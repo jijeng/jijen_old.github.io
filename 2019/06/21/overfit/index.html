@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="overfit,dropout,normalization," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="分析机器学习 和深度学习中出现的过拟合现象，从不同的角度简述常用的处理手段。">
+<meta name="keywords" content="overfit,dropout,normalization">
+<meta property="og:type" content="article">
+<meta property="og:title" content="overfit">
+<meta property="og:url" content="http://yoursite.com/2019/06/21/overfit/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="分析机器学习 和深度学习中出现的过拟合现象，从不同的角度简述常用的处理手段。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/a345c92ae8db05eb.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/03/gkYd5AIiXlqeu2V.jpg">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/09/24205c5cadebe345.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/23/5d370b5ee206022821.png">
+<meta property="og:updated_time" content="2019-09-30T01:43:26.881Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="overfit">
+<meta name="twitter:description" content="分析机器学习 和深度学习中出现的过拟合现象，从不同的角度简述常用的处理手段。">
+<meta name="twitter:image" content="https://b2.bmp.ovh/imgs/2019/07/a345c92ae8db05eb.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/21/overfit/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>overfit | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/21/overfit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">overfit</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-21T21:01:01+08:00">
+                2019-06-21
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-09-30T09:43:26+08:00">
+                2019-09-30
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/21/overfit/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/21/overfit/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>分析机器学习 和深度学习中出现的过拟合现象，从不同的角度简述常用的处理手段。</p>
+<a id="more"></a>
+<h2 id="什么是过拟合"><a href="#什么是过拟合" class="headerlink" title="什么是过拟合?"></a>什么是过拟合?</h2><p>训练数据集规模小是导致过拟合的原因，而网络足够的复杂（有能力）记住了所有的样本，然后在train sets 表现要远远好于 test sets。 还有一种说法是网络拟合了噪声数据。</p>
+<h2 id="如何处理过拟合"><a href="#如何处理过拟合" class="headerlink" title="如何处理过拟合"></a>如何处理过拟合</h2><p>处理该问题可以从数据和模型两个方面去考虑。</p>
+<h3 id="模型角度"><a href="#模型角度" class="headerlink" title="模型角度"></a>模型角度</h3><p>简化模型，通过不断降低模型的复杂度（比如随机森林中的估计量，神经网络中的参数），最终达到一个平衡状态：模型足够简单到不产生过拟合，又足够复杂到能从数据中学习。这样操作时一个比较方便的方法是根据模型的复杂程度查看模型在所有数据集上的误差。如 <span id="jump"> 图 1 </span> 所示。</p>
+<p><img src="https://b2.bmp.ovh/imgs/2019/07/a345c92ae8db05eb.png" alt=""></p>
+<center>  图 1</center>
+
+<p>简化模型的另一个好处在于训练速度更加快.</p>
+<h3 id="数据角度"><a href="#数据角度" class="headerlink" title="数据角度"></a>数据角度</h3><ul>
+<li>获取更多的数据 </li>
+<li>数据增强</li>
+</ul>
+<p>获取更多的数据侧重获取得到的原始的训练数据集；而数据增强在图像处理中更加常见，主要是图像的变形，噪声方面进行考虑。</p>
+<h3 id="训练过程角度"><a href="#训练过程角度" class="headerlink" title="训练过程角度"></a>训练过程角度</h3><p>提前终止 (early stop)</p>
+<p>如<a href="#jump">图 1</a> ，当 test error 增加的时候，那么模型就应该停止了。</p>
+<h3 id="正则化角度"><a href="#正则化角度" class="headerlink" title="正则化角度"></a>正则化角度</h3><p>神经网络中有主要有两类实体：神经元和连接神经元的边。所以按照规范化的操作对象的不同可以分成两大类，一类是对于L 层的神经元的激活值或者说对于第 L+1 层网络神经元的输入值进行normalization 操作，比如说 batch normalization / Layer normalization 等方法都是属于这类；另一种是对于神经元之间相连的边上的权重进行规范化操作，比如说 weights normalization就属于这类。 广义上讲，一般机器学习中的损失函数中加入的 L1/ L2 等正则项 属于第二类。L1 正则项造成参数的稀疏性，使得大量的参数取得 0值， L2 正则项使得原始参数值有效的减小。通过这些规范化的手段改变参数值，已达到避免模型过拟合的目的。</p>
+<p>（最初对于输入data 的normalization， 是属于神经元的 normalization）</p>
+<p>虽然上述方法分别对神经元和weights 进行了规范化，但本质上都实现了对数据的规范化，只是 scale 的参数的来源是不同的。</p>
+<p>使用L1 or L2 在 loss function (error function) 中添加正则项，对损失函数中的weights 进行限制其变大。</p>
+<p>对于神经元的激活值来说，不管哪种方式，其目标都是一样的，将激活值规范到均值为0，方差为1 的正太分布。<br><strong> BN </strong></p>
+<p>定义：<br>BN针对一个minibatch的输入样本，计算均值和方差，基于计算的均值和方差来对某一层神经网络的输入X中每一个case进行归一化操作。</p>
+<p>BN 的优点：</p>
+<ul>
+<li>是一种正则化手段，加上BN 之后，学习率可以有很大的提高，可以加快模型的收敛速度</li>
+<li>一般来说在激活函数之前比较好解释一些，效果好一些；输入激活函数之前进行了数据的归一化，防止进去到激活函数的饱和区。</li>
+</ul>
+<p>所以可以得到BN 的适用场景：每个mini-batch 都比较大，数据分布比较接近。在训练之前，最好是做好了 充分的shuffle，否则效果可能不太好。</p>
+<p>BN 的不足：</p>
+<ul>
+<li>高度依赖 mini-batch 的大小，当batch size 比较小的时候，效果不好。因为数据样本少，得不到有效的统计量，也可以说噪声比较大。<br>当然是可以通过调整 batch size 的大小规避这种问题，但是有的任务要求 batch size 不能太大；并且BN 是无法应用到 online learning 中的，因为online 都是单实例更新模型，很难组织起 mini-batch 的结构。</li>
+<li>对于相似级别的图像生成任务，BN 效果不佳<br>对于图片分类等任务，只要能够找出关键特征，就能正确分类，这算是一种粗粒度的任务，在这种情形下通常 BN 是有积极效果的。但是对于有些输入输出都是图片的像素级别图片生成任务，比如图片风格转换等应用场景，使用 BN 会带来负面效果，这很可能是因为在 Mini-Batch 内多张无关的图片之间计算统计量，弱化了单张图片本身特有的一些细节信息。</li>
+<li>因为输入的 Sequence 序列是不定长的，这源自同一个 Mini-Batch 中的训练实例有长有短。对于类似 RNN 这种动态网络结构，BN 使用起来不方便</li>
+<li>训练时和推理时统计量不一致<br>对于 BN 来说，采用 Mini-Batch 内实例来计算统计量，这在训练时没有问题，但是在模型训练好之后，在线推理的时候会有麻烦。因为在线推理或预测的时候，是单实例的，不存在 Mini-Batch。<br>虽说实际使用并没大问题，但是确实存在训练和推理时刻统计量计算方法不一致的问题。<br><strong> Layer normalization </strong> 也是一种正则化手段</li>
+</ul>
+<p>BN vs LN ：</p>
+<p><img src="https://i.loli.net/2019/08/03/gkYd5AIiXlqeu2V.jpg" alt="1.jpg"></p>
+<p>从图中看可以知道 batch是“竖”着来的，各个维度做归一化，所以与batch size有关系。 layer是“横”着来的，对一个样本，不同的神经元neuron间做归一化。显示了同一层的神经元的情况。假设这个mini-batch一共有N个样本，则Batch Normalization是对每一个维度进行归一。而Layer Normalization对于单个的样本就可以处理。</p>
+<p>相同点： BN 和LN 都是可以很好的一直梯度消失和梯度爆炸的。</p>
+<p>实践证明， LN 更加适合 RNN ，BN 更加适合CNN</p>
+<p>至于各种 Normalization 的适用场景，可以简洁归纳如下：对于 RNN 的神经网络结构来说，目前只有 LayerNorm 是相对有效的；如果是 GAN 等图片生成或图片内容改写类型的任务，可以优先尝试 InstanceNorm；如果使用场景约束 BatchSize 必须设置很小，无疑此时考虑使用 GroupNorm；而其它任务情形应该优先考虑使用 BatchNorm。</p>
+<p>参考文献：<a href="https://www.jiqizhixin.com/articles/2018-08-29-7" target="_blank" rel="noopener">深度学习中的Normalization模型</a></p>
+<h3 id="四种不同的normalization"><a href="#四种不同的normalization" class="headerlink" title="四种不同的normalization"></a>四种不同的normalization</h3><p><strong> 四种 normalization 时间轴</strong></p>
+<p>BN（Batch Normalization）于2015年由 Google 提出，开创了Normalization 先河；2016年出了LN（layer normalization）和IN（Instance Normalization）；2018年也就是今年，Kaiming提出了GN（Group normalization），成为了ECCV 2018最佳论文提名。</p>
+<p>正则化的本质是为了减少数据的复杂程度和减少模型的复杂程度，这样就可以设置更大的学习率，更快的进行收敛。</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/09/24205c5cadebe345.png" alt=""></p>
+<p>用更简单的语言来讲，各种Norm之间的差别只是针对的维度不同而已。</p>
+<ol>
+<li>BN是在batch上，对N、H、W做归一化，而保留通道 C 的维度。BN对较小的batch size效果不好。BN适用于固定深度的前向神经网络，如CNN，不适用于RNN；</li>
+<li>LN在通道方向上，对C、H、W归一化，主要对RNN效果明显；</li>
+<li>IN在图像像素上，对H、W做归一化，用在风格化迁移；</li>
+<li>GN将channel分组，然后再做归一化。</li>
+</ol>
+<p><strong>BN</strong></p>
+<p>主要在 CNN中使用</p>
+<p>BN 的缺点</p>
+<ol>
+<li>效果依赖于batch size，如果batch size 比较小，那么效果比较差</li>
+<li>理论上 batch size 越大，那么效果是越好的，但是batch size 大的时候，可能出现 out of memory 的问题</li>
+</ol>
+<p><strong>LN</strong></p>
+<p>不依赖于 batch size, 在 RNN 中效果更好。</p>
+<p><strong>IN</strong></p>
+<p>IN针对图像像素做normalization，最初用于图像的风格化迁移。在三维图像中使用。</p>
+<p><strong>GN</strong></p>
+<p>GN是为了解决BN对较小的mini-batch size效果差的问题。</p>
+<p>就像作者自己比较的说法：LN和IN只是GN的两种极端形式。我们对channel进行分组，分组数为G，即一共分G组。 当G=1时，GN就是LN了；当G=C时，GN就是IN了。这也是一个有趣的比较，类似于GN是LN和IN的一个tradeoff。文章里对G的默认值是32。</p>
+<p><a href="https://blog.csdn.net/ft_sunshine/article/details/99203548#Instance_Normalization___121" target="_blank" rel="noopener">深度学习中的Normalization总结</a><br><a href="https://zhuanlan.zhihu.com/p/72589565" target="_blank" rel="noopener">常用的 Normalization 方法</a></p>
+<h3 id="深度学习中的模型"><a href="#深度学习中的模型" class="headerlink" title="深度学习中的模型"></a>深度学习中的模型</h3><p>Dropout 或者Dropconnect. 其理念就是在训练中随机让神经元无效（即dropout）或让网络中的连接无效（即dropconnect）。这个有点类似集成学习，提高网络模型的泛化性能，减少过拟合的问题。（类似bagging 的思想，使用不同的网络结构在不同的训练集上进行训练）.如果从集成学习角度理解dropout，那么resnet 网络是不是也有点集成学习的味道。</p>
+<p><strong> Dropout 的具体流程</strong></p>
+<ol>
+<li>首先随机（临时）删掉网络中一半的隐藏神经元，输入输出神经元保持不变（图3中虚线为部分临时被删除的神经元）</li>
+<li>然后把输入x通过修改后的网络前向传播，然后把得到的损失结果通过修改的网络反向传播。一小批训练样本执行完这个过程后，在没有被删除的神经元上按照随机梯度下降法更新对应的参数（w，b）。</li>
+<li>然后继续重复这一过程</li>
+</ol>
+<ul>
+<li>恢复被删掉的神经元（此时被删除的神经元保持原样，而没有被删除的神经元已经有所更新）</li>
+<li>从隐藏层神经元中随机选择一个一半大小的子集临时删除掉（备份被删除神经元的参数）。</li>
+<li>对一小批训练样本，先前向传播然后反向传播损失并根据随机梯度下降法更新参数（w，b） （没有被删除的那一部分参数得到更新，删除的神经元参数保持被删除前的结果）。</li>
+</ul>
+<p>Dropout vs Dropconnect：</p>
+<p><img src="https://i.loli.net/2019/07/23/5d370b5ee206022821.png" alt="1.png"><br>它们的区别大体在于，在训练过程中dropout是随机drop掉一些节点，而dropconnect则是随机drop掉一些边。</p>
+<h3 id="使用多种模型"><a href="#使用多种模型" class="headerlink" title="使用多种模型"></a>使用多种模型</h3><p>Bagging： 最典型的就是 随机森林( Random Forest)， 通过不相关的决策树在不同的数据集上进行训练，最后的每个模型使用相同的权重来“融合”。<br>Boosting: 在简单的网络上不断提升。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>降低“过拟合”的方法：<br>（1）获得更多的训练数据<br>（2）降低模型复杂度<br>（3）正则化方法<br>（4）集成学习方法<br>降低“欠拟合”风险的方法：<br>（1）添加新特征<br>（2）增加模型复杂度<br>（3）减小正则化系数</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/overfit/" rel="tag"># overfit</a>
+          
+            <a href="/tags/dropout/" rel="tag"># dropout</a>
+          
+            <a href="/tags/normalization/" rel="tag"># normalization</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/21/resnet-understanding/" rel="next" title="ResNet and Inception V3 Understanding">
+                <i class="fa fa-chevron-left"></i> ResNet and Inception V3 Understanding
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/21/similarity-measures/" rel="prev" title="Similarity Measures">
+                Similarity Measures <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是过拟合"><span class="nav-number">1.</span> <span class="nav-text">什么是过拟合?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何处理过拟合"><span class="nav-number">2.</span> <span class="nav-text">如何处理过拟合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型角度"><span class="nav-number">2.1.</span> <span class="nav-text">模型角度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据角度"><span class="nav-number">2.2.</span> <span class="nav-text">数据角度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练过程角度"><span class="nav-number">2.3.</span> <span class="nav-text">训练过程角度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化角度"><span class="nav-number">2.4.</span> <span class="nav-text">正则化角度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四种不同的normalization"><span class="nav-number">2.5.</span> <span class="nav-text">四种不同的normalization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深度学习中的模型"><span class="nav-number">2.6.</span> <span class="nav-text">深度学习中的模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用多种模型"><span class="nav-number">2.7.</span> <span class="nav-text">使用多种模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/06/21/overfit/';
+          this.page.identifier = '2019/06/21/overfit/';
+          this.page.title = 'overfit';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
