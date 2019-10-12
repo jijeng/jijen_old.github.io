@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="消息通信的基本方式有两种：  同步方式 两个通信应用服务之间必须要进行同步，两个服务之间必须都是正常运行的。发送程序和接收程序都必须一直处于运行状态，并且随时做好相互通信的准备。 发送程序首先向接收程序发起一个请求，称之为发送消息，发送程序紧接着就会堵塞当前自身的进程，不与其他应用进行任何的通信以及交互，等待接收程序的响应，待发送消息得到接收程序的返回消息之后会继续向下运行，进行下一步的业务处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔试总结">
+<meta property="og:url" content="http://yoursite.com/2019/06/09/笔试总结/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="消息通信的基本方式有两种：  同步方式 两个通信应用服务之间必须要进行同步，两个服务之间必须都是正常运行的。发送程序和接收程序都必须一直处于运行状态，并且随时做好相互通信的准备。 发送程序首先向接收程序发起一个请求，称之为发送消息，发送程序紧接着就会堵塞当前自身的进程，不与其他应用进行任何的通信以及交互，等待接收程序的响应，待发送消息得到接收程序的返回消息之后会继续向下运行，进行下一步的业务处理">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.loli.net/2019/10/09/UdkYnoshEc2HJDC.jpg">
+<meta property="og:updated_time" content="2019-10-10T01:36:13.838Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="笔试总结">
+<meta name="twitter:description" content="消息通信的基本方式有两种：  同步方式 两个通信应用服务之间必须要进行同步，两个服务之间必须都是正常运行的。发送程序和接收程序都必须一直处于运行状态，并且随时做好相互通信的准备。 发送程序首先向接收程序发起一个请求，称之为发送消息，发送程序紧接着就会堵塞当前自身的进程，不与其他应用进行任何的通信以及交互，等待接收程序的响应，待发送消息得到接收程序的返回消息之后会继续向下运行，进行下一步的业务处理">
+<meta name="twitter:image" content="https://i.loli.net/2019/10/09/UdkYnoshEc2HJDC.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/09/笔试总结/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>笔试总结 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/09/笔试总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">笔试总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-09T08:39:20+08:00">
+                2019-06-09
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-10T09:36:13+08:00">
+                2019-10-10
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS基础/" itemprop="url" rel="index">
+                    <span itemprop="name">CS基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/09/笔试总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/09/笔试总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li>消息通信的基本方式有两种：</li>
+</ol>
+<p>同步方式</p>
+<p>两个通信应用服务之间必须要进行同步，两个服务之间必须都是正常运行的。发送程序和接收程序都必须一直处于运行状态，并且随时做好相互通信的准备。</p>
+<p>发送程序首先向接收程序发起一个请求，称之为发送消息，发送程序紧接着就会堵塞当前自身的进程，不与其他应用进行任何的通信以及交互，等待接收程序的响应，待发送消息得到接收程序的返回消息之后会继续向下运行，进行下一步的业务处理。</p>
+<p>异步方式</p>
+<p>两个通信应用之间可以不用同时在线等待，任何一方只需各自处理自己的业务，比如发送方发送消息以后不用登录接收方的响应，可以接着处理其他的任务。也就是说发送方和接收方都是相互独立存在的，发送方只管方，接收方只能接收，无须去等待对方的响应。</p>
+<p>Java中JMS就是典型的异步消息处理机制，JMS消息有两种类型：点对点、发布/订阅。</p>
+<ol start="2">
+<li><p>视图的操作，是最终都要转化成对基本表的操作</p>
+</li>
+<li><p>常见的设计模式</p>
+</li>
+</ol>
+<p>大致按照模式的应用目标分类，设计模式可以分为创建型模式、结构型模式和行为型模式。</p>
+<p>创建型模式，是对对象创建过程的各种问题和解决方案的总结，包括各种工厂模式（Factory、Abstract Factory）、单例模式（Singleton）、构建器模式（Builder）、原型模式（ProtoType）。</p>
+<p>结构型模式，是针对软件设计结构的总结，关注于类、对象继承、组合方式的实践经验。常见的结构型模式，包括桥接模式（Bridge）、适配器模式（Adapter）、装饰者模式（Decorator）、代理模式（Proxy）、组合模式（Composite）、外观模式（Facade）、享元模式（Flyweight）等。</p>
+<p>行为型模式，是从类或对象之间交互、职责划分等角度总结的模式。比较常见的行为型模式有策略模式（Strategy）、解释器模式（Interpreter）、命令模式（Command）、观察者模式（Observer）、迭代器模式（Iterator）、模板方法模式（Template Method）、访问者模式（Visitor）。</p>
+<p>工厂模式是我们最常用的实例化对象模式了，简单讲是用工厂方法代替new操作的一种模式。<br>单例模式限制了类实例的创建，但采用这种模式设计的类，可以保证仅有一个实例，并可提供访问该实例的全局访问点。<br>创建 HttpRequest 的过程，就是典型的构建器模式（Builder），通常会被实现成fluent 风格的 API，也有人叫它方法链。<br>适配器模式 ：将一个类的接口转换成客户希望的另外一个接口。适配器模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。<br>装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于结构型模式，它是作为现有的类的一个包装。</p>
+<ol start="4">
+<li>多态的代码题目</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt;<span class="string">"Base 1"</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt;<span class="string">"Base 2"</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base1, <span class="keyword">public</span> Base2</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt;<span class="string">"Derived"</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Base1 bs1, *p1;</span><br><span class="line">    Base2 bs2, *p2;</span><br><span class="line">    Derived dv;</span><br><span class="line">    p1 =&amp;bs1;</span><br><span class="line">    p1-&gt; fun();</span><br><span class="line">    p1 =&amp;dv;</span><br><span class="line">    p1-&gt; fun();</span><br><span class="line">    </span><br><span class="line">    p2 =&amp;bs2;</span><br><span class="line">    p2-&gt; fun();</span><br><span class="line">    p2 =&amp;dv;</span><br><span class="line">    p2-&gt; fun();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Base 1</span><br><span class="line">Derived</span><br><span class="line">Base 2</span><br><span class="line">Base 2</span><br></pre></td></tr></table></figure></p>
+<p>逻辑量和真假值是相同的意思。</p>
+<ol start="5">
+<li>常见的数据校验方法</li>
+</ol>
+<p>定义：校验,是为保护数据的完整性，用一种指定的算法对原始数据计算出的一个校验值。当接收方用同样的算法再算一次校验值，如果两次校验值一样，表示数据完整。</p>
+<p>奇偶校验： 根据被传输的一组二进制代码中“1”的个数是奇数或偶数来进行校验。eg.  数据位为 10001100 （1）  -&gt; 最后一位为校验位。此时若约定好为奇校验，那么数据表示为正确的，若为偶校验，那么数据传输出错了。<br>CRC校验（循环冗余校验码）：利用除数以及余数的原理进行错误检测，将接收到的码组进行除法运算 ，如果除尽，则说明传输无误；如果未除尽，则表明传输出现差错。<br>   借助于多项式除法，其余数为校验字段。</p>
+<p>例如：信息字段代码为: 1011001；对应m(x)=x6+x4+x3+1 </p>
+<pre><code>假设生成多项式为：g(x)=x4+x3+1；则对应g(x)的代码为: 11001
+
+ x4m(x)=x10+x8+x7+x4 对应的代码记为：10110010000；
+</code></pre><p>采用多项式除法:  得余数为: 1010     (即校验字段为：1010）</p>
+<p>发送方：发出的传输字段为: 1 0 1 1 0 0 11 0 10</p>
+<pre><code>信息字段      校验字段
+</code></pre><ol start="6">
+<li>tcp </li>
+</ol>
+<p>服务器端启动进程，调用Socket创建一个基于TCP协议的流套接字描述符。 其次，服务进程调用bind命名套接字，将套接字描述符绑定到本地地址和本地端口上。 再次，服务器端调用listen，开始侦听客户端的Socket连接请求。 接下来阻塞，直到收到了客户端的connect请求，调用accept进行相应。 因此，不阻塞bind和listen<br><img src="https://i.loli.net/2019/10/09/UdkYnoshEc2HJDC.jpg" alt="1.jpeg"></p>
+<ol start="7">
+<li>单例模式（以下都是正确的）<br>A 用户无法通过new方式实例化单例类<br>B 违背了单一职责原则<br>C 单例模式用于多线程应用程序<br>D 单例模式属于创建型模式</li>
+</ol>
+<ol start="8">
+<li>产生式(production)描述了将终结符和非终结符组合成串的方法</li>
+</ol>
+<p>一个上下文无关文法一般是由一组非终结符号，一组终结符号，一个开始符号和一组产生式构成，那么产生式是用于定义（语法成分）的一种规则</p>
+<ol start="9">
+<li>堆的存储</li>
+</ol>
+<p>根据结点判别大根堆和小根堆。</p>
+<p>一般用数组来表示堆，若根结点存在序号0处， i结点的父结点下标就为i/2。i结点的左右子结点下标分别为2<em>i+1和2</em>i+2。（注：如果根结点是从1开始，则左右孩子结点分别是2i和2i+1。）如第0个结点左右子结点下标分别为1和2。</p>
+<ol start="10">
+<li>常见的端口和服务</li>
+</ol>
+<p>端口：21 服务：FTP 说明：FTP服务器所开放的端口，用于上传、下载。<br>端口：23 服务：Telnet 说明：远程登录，入侵者在搜索远程登录UNIX的服务。<br>端口：80 服务：HTTP 说明：用于网页浏览。木马Executor开放此端口。</p>
+<ol start="11">
+<li>windows 中的</li>
+</ol>
+<p>在windows,线程同步的方式比较多,这篇只是简单的介绍使用内核对象互斥量进行线程同步,互斥量Mutex为内核对象,使用方式原理和临界区CriticalSection差不多,临界区是基于用户空间进行线程同步的,只能进行同一个进程中线程的同步,不能跨进程,因为不是基于内核态的.</p>
+<ol start="12">
+<li>linux 中的同步和互斥</li>
+</ol>
+<p>临界资源的概念：多个线程不能同时使用的资源称为临界资源CR（Critical    Resource）。临界资源可以是一些独占设备，比如打印机等，也可以是一些共享变量，表格，链表等。<br>临界区：不论硬件临界资源还是软件临界资源，多个线程必须互斥的对其进行访问。每个线程中访问临界资源的那段代码称为临界区CS（Critical Section）。每个线程在进入临界区以前，应该对欲访问的临界资源进行检查，看他是否正在被访问。若是，则该线程不能进入临界区，若否，则该线程可以进入临界区对该资源进行访问，并设置只在被访问的标志。<br>线程互斥的概念：线程互斥是指多个线程不能同时使用同一个临界资源，即两个或两个以上线程必须互斥的使用临界资源，当然不能同时进入临界区。<br>线程同步的概念：线程同步是指有协作关系的线程之间不断地调整他们之间的相对速度或者执行过程，以保证临界资源的合理利用和线程的顺利执行。实现线程同步的机制称为线程同步机制。<br>   同步机制遵循的规则：</p>
+<ul>
+<li>空闲让进：并发线程中某个线程不再临界区时，不阻止其它线程进入临界区。</li>
+<li>忙则等待：只允许同一时刻一个线程进入临界区，其它欲进入临界区的线程等待。</li>
+<li>有限等待：欲访问临界区的线程要在有限的时间内访问到临界区，避免陷入“死等”状态。</li>
+<li>让权等待:当线程不能进入自己的临界区的时候，应立即释放CPU，以避免线程陷入“忙等”状态。</li>
+</ul>
+<p>锁机制：实现互斥的一种方式是采用锁机制，即提供上锁（Lock）和开锁（Unlock）原语，以及一个锁变量w或者锁位（1bit）。<br>信号量:（Semaphore）也叫信号灯，是在信号同步机制中用于实现线程的同步和互斥有效的数据结构。信号量机制：信号量机制中，申请和释放临界资源的两个原语操作为wait操作和signal操作，有时也称为P操作和V操作。</p>
+<ol start="13">
+<li>常见的页面置换算法</li>
+</ol>
+<p>最佳置换算法（OPT）：最佳（Optimal，OPT）置换算法所选择的被淘汰页面将是以后永不适用的，或者是在最长时间内不再被访问的页面，这样可以保证获得最低的缺页率。但是由于人们目前无法预知进程在内存下的若干页面中哪个是未来最长时间不再被访问的，因而该算法无法实现。 </p>
+<p>先进先出（FIFO）页面置换算法：FIFO算法还会产生当所分配的物理块数增大而页故障数不减反增的异常现象，这时由belady于1969年发现，故称为Belady异常。只有FIFO算法可能出现Belady异常，而LRU和OPT算法永远不会出现Belady异常。</p>
+<p>最近最久未使用（LRU）置换算法：选择最近最长时间未访问过的页面予以淘汰，它认为过去时间内一段时间内未访问过的页面，在最近的将来也不会被访问。（使用一个队列来模拟整个过程）。 LRU性能较好，但需要寄存器和栈的硬件支持。LRU是堆栈类的算法。理论上可以证明，堆栈类的算法不可能出现belady异常。FIFO基于队列实现，不是堆栈类算法。</p>
+<p>LRU算法的性能接近于OPT，但是实现起来比较困难，且开销大；FIFO算法实现简单，但性能差。<br>时钟（CLOCK）置换算法：如果所有帧的使用位均为1，则指针在缓冲区中完整地循环一周，将所有使用位都置为0，并且停留在最初的位置上，替换该帧中的页。由于该算法循环地检查各页面的情况，故称为CLOCK算法，又称为最近未使用（Not Recently Used，NRU）算法<br>（这个算法其实不是很懂 过程，）</p>
+<p><a href="https://www.cnblogs.com/gaveme/archive/2013/06/21/3147537.html" target="_blank" rel="noopener">缺页率的计算</a></p>
+<ol start="14">
+<li>try catch的使用</li>
+</ol>
+<p>只有错误可预知时才用try。所有不可预知的错误用try都是不负责任的写法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    语句组</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(异常类型) &#123;</span><br><span class="line">    异常处理代码</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">catch</span>(异常类型) &#123;</span><br><span class="line">    异常处理代码</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="15">
+<li>UML类图中的六大关系：关联、聚合、组合、依赖、继承、实现</li>
+</ol>
+<p>关联描述两个类之间行为的一般二元关系。例如，一个学生选修一门特定的课程是学生类Student和课程类Course之间的一个关联，而一个教师教授一门课程是师资类Faculty和课程类Course之间的一个关联。Java代码中，关联可以用属性和方法来实现。</p>
+<p>聚合是一种特殊的关联(Association)形式，表示两个对象之间的所属(has-a)关系。所有者对象称为聚合对象，它的类称为聚合类；从属对象称为被聚合对象，它的类称为被聚合类。例如，一个公司有很多员工就是公司类Company和员工类Employee之间的一种聚合关系。被聚合对象和聚合对象有着各自的生命周期，即如果公司倒闭并不影响员工的存在。</p>
+<p>聚合是一种较弱形式的对象包含(一个对象包含另一个对象)关系。较强形式是组合(Composition). 在组合关系中包含对象负责被包含对象的创建以及生命周期，即当包含对象被销毁时被包含对象也会不复存在。例如一辆汽车拥有一个引擎是汽车类Car与引擎类Engine的组合关系。</p>
+<p>依赖(Dependency)描述的是一个类的引用用作另一个类的方法的参数。例如，可以使用Calendar类中的setTime(Date date)方法设置日历，所以Calendar和Date之间的关系可以用依赖描述。</p>
+<p>继承(Inheritance)模拟两个类之间的is-a关系。强是(strong is-a)关系描述两个类之间的直接继承关系。弱是(weak is-a)关系描述一个类具有某个属性。强是关系可以用类的继承表示。例如，Spring的ApplicationEvent是一个EventObject，ApplicationEvent和EventObject间就是一种强是关系，可以用继承描述。</p>
+<p>实现(Realization)描述的是一个类实现了接口（可以是多个）。</p>
+<ol start="16">
+<li>sizeof 的使用</li>
+</ol>
+<p>char,short int(short),int,long int(long),float,double, long double大小分别是：1，2，4，4，4，8, 10。</p>
+<p> 不懂函数中的那个为什么是 sizeof 是8 呀。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">char</span> str[<span class="number">100</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(str)&lt;&lt;<span class="built_in">endl</span>; <span class="comment">// 8</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[<span class="number">200</span>];</span><br><span class="line">    func(str);</span><br><span class="line">    <span class="keyword">char</span> ch; <span class="comment">//1</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(str)&lt;&lt;<span class="built_in">endl</span>; <span class="comment">//200</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="16">
+<li>常见的生成模型和判别模型</li>
+</ol>
+<p>生成模型：hmm，朴素贝叶斯<br>判别模型：条件随机场crf， </p>
+<ol start="17">
+<li>下面哪些优化算法和动量相关</li>
+</ol>
+<p>momentum, adam,  nesterov accelerated gradient(在rnn 中使用比较常见 )（参考博客<a href="http://localhost:4000/2019/03/26/深度网络中的碎碎念/）" target="_blank" rel="noopener">http://localhost:4000/2019/03/26/深度网络中的碎碎念/）</a></p>
+<ol start="18">
+<li>四种数据存储结构—顺序存储 链接存储 索引存储 散列存储</li>
+</ol>
+<p>顺序结构和链接结构适用在内存结构中。索引结构和散列结构适用在外存与内存交互结构。<br>除建立存储结点信息外，还建立附加的索引表来标识结点的地址。索引表由若干索引项组成。其优点是检索速度快，缺点是增加了附加的索引表,会占用较多的存储空间。在数据表中，就是用索引键来进行存储与检索的。<br>散列存储，又称hash存储，是一种力图将数据元素的存储位置与关键码之间建立确定对应关系的查找技术。</p>
+<ol start="19">
+<li><p>根据余数进行“聚类”的题目<br>假定一个线性表为 (12,23,74,55,63,40) ，若按 Key % 4 条件进行划分，使得同一余数的元素成为一个子表，则得到的四个子表分别为（1）  、（2） 、（3）  和（4）  。</p>
+</li>
+<li><p>逻辑结构和存储结构<br>逻辑结构分成线性结构和非线性结构；存储结构分为顺序存储 和链式存储。</p>
+</li>
+</ol>
+<ol start="21">
+<li>运算符号<br>表达式 (a++) +(++b) +a<em>b 注意加法是有顺序的，所以说结果应该是 a+ b+1 + (a+1)</em>(b+1) 。当执行完 a++，这个时候 a 已经变化了。</li>
+</ol>
+<ol start="22">
+<li>java 的过程</li>
+</ol>
+<p>‘’‘<br>java中源文件的后缀为.java，经过javac.exe编译后生成字节码文件，后缀为.class，再经过java.exe编译为可执行文件，后缀为.exe。</p>
+<p>.jar 一种压缩包格式，用来打包类库<br>···</p>
+<ol start="23">
+<li>重写<br>子类中的某个方法和函数名，参数个数，参数类型和父类中的某个方法完全一样，那么就是覆盖了。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/08/svm-all-you-need/" rel="next" title="SVM All You Need to Know">
+                <i class="fa fa-chevron-left"></i> SVM All You Need to Know
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/09/lr/" rel="prev" title="逻辑回归概念">
+                逻辑回归概念 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">86</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/06/09/笔试总结/';
+          this.page.identifier = '2019/06/09/笔试总结/';
+          this.page.title = '笔试总结';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="bias-variance," />
+  <meta name="keywords" content="bias-variance,one-hot," />
 
 
 
@@ -80,10 +80,10 @@
 
 
 <meta name="description" content="解释一些机器学习中小的基本的概念。梯度下降、牛顿法、凸函数">
-<meta name="keywords" content="bias-variance">
+<meta name="keywords" content="bias-variance,one-hot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习概念">
-<meta property="og:url" content="http://yoursite.com/2018/05/28/机器学习优化方法/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/05/28/机器学习概念/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="解释一些机器学习中小的基本的概念。梯度下降、牛顿法、凸函数">
 <meta property="og:locale" content="default">
@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/703577797f0de21b.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/08/dDOKPI.jpg">
-<meta property="og:updated_time" content="2019-10-05T02:51:48.379Z">
+<meta property="og:updated_time" content="2019-10-07T04:51:41.181Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习概念">
 <meta name="twitter:description" content="解释一些机器学习中小的基本的概念。梯度下降、牛顿法、凸函数">
@@ -129,7 +129,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/28/机器学习优化方法/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/28/机器学习概念/"/>
 
 
 
@@ -275,7 +275,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/机器学习优化方法/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/机器学习概念/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-05T10:51:48+08:00">
-                2019-10-05
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-07T12:51:41+08:00">
+                2019-10-07
               </time>
             
           </span>
@@ -357,9 +357,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/05/28/机器学习优化方法/#comments" itemprop="discussionUrl">
+                <a href="/2018/05/28/机器学习概念/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/28/机器学习优化方法/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/05/28/机器学习概念/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -508,6 +508,36 @@
 <li>两者结合起来</li>
 </ol>
 <p>使用 training data， evaluation data 和test data 三种数据集。第一种方法相当于只有 training data 和 test data，第二种方法是training data 和evaluation data； 第三种方式相当于是有 training data， evaluation data 和test data。</p>
+<h3 id="one-hot"><a href="#one-hot" class="headerlink" title="one-hot"></a>one-hot</h3><p>One-Hot编码，又称为一位有效编码，主要是采用N位状态寄存器来对N个状态进行编码，每个状态都由他独立的寄存器位，并且在任意时候只有一位有效。One-Hot编码是分类变量作为二进制向量的表示。这首先要求将分类值映射到整数值。然后，<strong>每个整数值被表示为二进制向量，除了整数的索引之外，它都是零值，它被标记为1</strong>。</p>
+<p>在很多机器学习任务中，特征并不总是连续值，而有可能是分类值。离散特征的编码分为两种情况：</p>
+<ul>
+<li>离散特征的取值之间没有大小的意义，比如color：[red,blue],那么就使用one-hot编码</li>
+<li>离散特征的取值有大小的意义，比如size:[X,XL,XXL],那么就使用数值的映射{X:1,XL:2,XXL:3}</li>
+</ul>
+<p><strong>优缺点</strong><br>优点：</p>
+<ul>
+<li>简单，将类别数据解析成分类器可以处理的数据类型。</li>
+<li>要是one hot encoding的类别数目不太多，建议优先考虑。<br>缺点：</li>
+<li>当类别的数量很多时，特征空间会变得非常大。在这种情况下，一般可以用PCA来减少维度。而且one hot encoding+PCA这种组合在实际中也非常有用。</li>
+<li>降维前可以交叉的降维后可能变得不能交叉 </li>
+</ul>
+<p><strong>实现</strong></p>
+<ul>
+<li>手动实现</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">one_hot</span><span class="params">(list1)</span>:</span></span><br><span class="line">    list1_u =np.unique(list1)</span><br><span class="line">    <span class="comment"># save (val, index) </span></span><br><span class="line">    dict1 =dict()</span><br><span class="line">    <span class="keyword">for</span> (ind, val) <span class="keyword">in</span> enumerate(list1_u):</span><br><span class="line">        dict1[str(val)] =ind</span><br><span class="line">    </span><br><span class="line">    res =np.zeros((len(list1), len(list1_u)))</span><br><span class="line">    <span class="comment"># modify (ind, val)</span></span><br><span class="line">    <span class="keyword">for</span> (ind, val) <span class="keyword">in</span> enumerate(list1):</span><br><span class="line">        res[ind, dict1[str(val)]] =<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">list1 =[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br><span class="line">print(one_hot(list1))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用pandas 实现</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">s = pd.Series(list(<span class="string">"abcdd"</span>))</span><br><span class="line">arr =pd.get_dummies(s)</span><br><span class="line">arr1 =pd.get_dummies(s, sparse =<span class="keyword">True</span>)</span><br><span class="line">print(type(arr), arr)</span><br><span class="line">print(type(arr1), arr1)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用sklearn 实现</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> OneHotEncoder</span><br><span class="line">labels =[<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>]</span><br><span class="line">labels =np.array(labels).reshape(len(labels), <span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">enc =OneHotEncoder()</span><br><span class="line">enc.fit(labels)</span><br><span class="line">targets =enc.transform(labels).toarray()</span><br></pre></td></tr></table></figure>
+<p>数据矩阵是4*3，即4个数据，3个特征维度。（所以最后的结果不一定是只是出现了一个 1）</p>
+<p><strong>其他</strong></p>
+<p> 什么情况下(不)需要归一化？<br>需要： 基于参数的模型或基于距离的模型，都是要进行特征的归一化。<br>不需要：基于树的方法是不需要进行特征的归一化，例如随机森林，bagging 和 boosting等。</p>
+<p>Tree Model不太需要one-hot编码</p>
 <h3 id="复习笔记"><a href="#复习笔记" class="headerlink" title="复习笔记"></a>复习笔记</h3><ol>
 <li>优化器： 梯度下降得到是全局最优解，但是当数据量大的时候，训练速度变慢。随机梯度下降得到局部解，训练速度快；batch_size 得到了 batch梯度下降，是两者方法的折中。</li>
 <li>牛顿法相比于梯度下降是二阶求导，基于当前位置切线来确定下一次的位置，更加快。和一阶在最优点会震荡，但是二阶不会。</li>
@@ -533,6 +563,8 @@
         <div class="post-tags">
           
             <a href="/tags/bias-variance/" rel="tag"># bias-variance</a>
+          
+            <a href="/tags/one-hot/" rel="tag"># one-hot</a>
           
         </div>
       
@@ -648,7 +680,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -670,7 +702,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -744,7 +776,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雅克比矩阵和海森矩阵"><span class="nav-number">3.</span> <span class="nav-text">雅克比矩阵和海森矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">4.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">5.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">6.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集的划分"><span class="nav-number">7.</span> <span class="nav-text">数据集的划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">8.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雅克比矩阵和海森矩阵"><span class="nav-number">3.</span> <span class="nav-text">雅克比矩阵和海森矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">4.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">5.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">6.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集的划分"><span class="nav-number">7.</span> <span class="nav-text">数据集的划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#one-hot"><span class="nav-number">8.</span> <span class="nav-text">one-hot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">9.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
             
 
           </div>
@@ -940,8 +972,8 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/05/28/机器学习优化方法/';
-          this.page.identifier = '2018/05/28/机器学习优化方法/';
+          this.page.url = 'http://yoursite.com/2018/05/28/机器学习概念/';
+          this.page.identifier = '2018/05/28/机器学习概念/';
           this.page.title = '机器学习概念';
         };
         var d = document, s = d.createElement('script');

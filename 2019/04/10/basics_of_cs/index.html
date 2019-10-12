@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://upload.cc/i1/2019/09/20/CDHUti.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/09/20/VvctyL.jpg">
 <meta property="og:image" content="https://upload.cc/i1/2019/09/20/F1yRb0.jpg">
-<meta property="og:updated_time" content="2019-10-01T02:57:59.871Z">
+<meta property="og:updated_time" content="2019-10-12T08:07:36.862Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机基础">
 <meta name="twitter:description" content="计算机中的基础知识，比如操作系统、计算机组成、数据库、计算机网络、软件工程。">
@@ -318,8 +318,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-01T10:57:59+08:00">
-                2019-10-01
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-12T16:07:36+08:00">
+                2019-10-12
               </time>
             
           </span>
@@ -427,6 +427,8 @@
 <p>CPU调度器追求目标</p>
 <p>CPU利用率（CPU utilization）<br>吞吐率（Throughput）<br>周转时间（Turnaround time）<br>等待时间（Waiting time）<br>响应时间（Response time）</p>
 <p>常用的调度算法：<br>a. FCFS调度算法（First-Come,First-Served Scheduling）<br>b. Shortest-Job-First（SJF）调度算法（最短作业优先算法）<br>c. 优先权法（Priority Scheduling）<br>d. 轮转法（Round Robin，RR）常说的时间片轮转，如果时间片用完了，那么就被迫交出 CPU资源</p>
+<p>可以通过一个例题讲解：</p>
+<p><a href="https://www.cnblogs.com/gaveme/archive/2013/06/21/3147537.html" target="_blank" rel="noopener">缺页率的计算</a></p>
 <h2 id="计算机组成原理"><a href="#计算机组成原理" class="headerlink" title="计算机组成原理"></a>计算机组成原理</h2><ol>
 <li><a href="https://www.cnblogs.com/zhangziqiu/archive/2011/03/30/ComputerCode.html" target="_blank" rel="noopener">原码, 反码, 补码</a></li>
 </ol>
@@ -697,6 +699,7 @@
 <li>因果图法<br>因果图法也是较常用的一种黑盒测试方法，是一种简化了的逻辑图。因果图能直观地表明输入条件和输出动作之间的因果关系，能帮助测试人员把注意力集中到与程序功能有关的输入组合上。因果图法是一种适合于描述对于多种输入条件组合的测试方法，根据输入条件的组合、约束关系和输出条件的因果关系，分析输入条件的各种组合情况，从而设计测试用例的方法，它适合于检查程序输入条件的各种组合情况</li>
 <li>错误推测法<br>错误推测法是基于以往的经验和直觉，参照以往的软件系统出现的错误，推测当前被测程序中可能存在的缺陷和错误，有针对性地设计测试用例。</li>
 </ol>
+<p>等价类划分法是一种典型的黑盒测试用例设计方法。采用等价类划分法时，完全不用考虑程序内部结构，设计测试用例的唯一依据是软件需求规格说明书。<br>所谓等价类，是输入条件的一个子集合，该输入集合中的数据对于揭示程序中的错误是等价的。等价类又分为有效等价类和无效等价类。有效等价类代表对程序有效的输入，而无效等价类则是其他任何可能的输入（即不正确的输入值）。有效等价类和无效等价类都是使用等价类划分法设计用例时所必须的，因为被测程序若是正确的，就应该既能接受有效的输入，也能接受无效输入的考验。</p>
 <p>白盒测试：也称结构测试或逻辑驱动测试，它是知道产品内部工作过程，可通过测试来检测产品内部动作是否按照规格说明书的规定正常进行，按照程序内部的结构测试程序，检验程序中的每条通路是否都有能按预定要求正确工作，而不顾它的功能。</p>
 <p>白盒测试的方法有三种，一是程序结构分析，根据源代码可以首先绘制程序的流程图，然后根据流程图分析程序的结构。二是逻辑覆盖方测试，根据程序的内部结构，对所有的路径进行测试，是一种穷举路径的测试方法。三是基本路径测试，根据程序的逻辑判断，分析程序中的路径，再进行用例的设计。</p>
 <p>灰盒测试，确实是介于二者之间的，可以这样理解，灰盒测试关注输出对于输入的正确性，同时也关注内部表现，但这种关注不象白盒那样详细、完整，只是通过一些表征性的现象、事件、标志来判断内部的运行状态，有时候输出是正确的，但内部其实已经错误了，这种情况非常多，如果每次都通过白盒测试来操作，效率会很低，因此需要采取这样的一种灰盒的方法。</p>
@@ -735,6 +738,14 @@
 <p>$$= \begin{cases}<br>S_n = a_1 + a_2 + a_3 + …… + a_n&amp; \\<br>qS_n =  a_2 + a_3 + …… + a_n+ a_{n+1}&amp;<br>\end{cases}$$</p>
 <p>然后得到<br>$$<br>(1-q)S_n =a_1-a_{n+1}<br>$$</p>
 <p>那么<br>$$S_n= \begin{cases}<br>na_1&amp; (q =1)\\<br>\frac{a_{1}\left(1-q^{n}\right)}{1-q}=\frac{a_{1}-a_{n} q}{1-q} &amp; (q \neq 1)<br>\end{cases}$$</p>
+<p><strong>编程语言中的取模和取余</strong></p>
+<p>在matlab中，关于取余和取模是这么定义的：<br>当y≠0时：取余：rem(x,y)=x-y.<em>fix(x./y)取模：mod(x,y)=x-y.</em>floor(x./y)其中，fix()函数是向0取整，floor()函数是向负无穷取整<br>以前边的运算为例：7/（-3）=-2.3，在这个运算中，x为7，y为-3，分别调用fix()和floor()两个函数，<br>得到结果是：fix（-2.3）=-2floor（-2.3）=-3所以，rem（7，-3）=1，mod（7，-3）=-2</p>
+<p>对于整数 a，b 来说，取模运算或者求余运算的方法要分如下两步：<br>1、求整数商：c=a/b<br>2、计算模或者余数：r=a-(c*b)</p>
+<p>求模运算和求余运算在第一步不同<br>取余运算在计算商值向0方向舍弃小数位<br>取模运算在计算商值向负无穷方向舍弃小数位</p>
+<p>比如说</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; mod(5,2)</span><br><span class="line">ans =1                   % 除数是正，余数就是正</span><br><span class="line">&gt;&gt; mod(-5,2)</span><br><span class="line">ans =1</span><br><span class="line">&gt;&gt; mod(5,-2)</span><br><span class="line">ans =-1                  % 除数是负，余数就是负</span><br><span class="line">&gt;&gt; mod(-5,-2)</span><br><span class="line">ans =-1                  % 用 rem 时，不管除数是正是负，余数的符号与被除数的符号相同</span><br><span class="line">&gt;&gt; rem(5,2)</span><br><span class="line">ans =1                   % 被除数是正，余数就是正</span><br><span class="line">&gt;&gt; rem(5,-2); </span><br><span class="line">ans =1</span><br><span class="line">&gt;&gt; rem(-5,2)</span><br><span class="line">ans =-1                 % 被除数是负， 余数就是负</span><br><span class="line">&gt;&gt; rem(-5,-2)</span><br><span class="line">ans =-1</span><br></pre></td></tr></table></figure>
+<p>当两个操作数是同号的时候，两者是没有区别的。异号时候，这两者是不一样的结果。一般计算机中使用求模运算，数学中使用求余运算。</p>
+<p>在C语言中，%符号表示的是求余运算，在python脚本中，%表示的是取模。（通常取模运算中b不允许是负数，但是在python 2.5.1里可以在%后面跟负数，因为python语言中除法的结果是向0舍入，因此计算结果是取模！）</p>
 
       
     </div>
@@ -862,7 +873,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -884,7 +895,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

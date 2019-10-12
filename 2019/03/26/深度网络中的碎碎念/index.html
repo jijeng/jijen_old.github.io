@@ -91,6 +91,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fz79596rj20fu0boaad.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1fzc05tnrj20cy08u74e.jpg">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/62d1aaa2d8701f35.jpg">
+<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/62d1aaa2d8701f35.jpg">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/ed14b5c14cb9fc02.gif">
 <meta property="og:image" content="https://upload.cc/i1/2019/06/20/cMRW62.jpg">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/d95ac0845ef9211a.png">
@@ -98,7 +99,7 @@
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/2ce4806231a16edb.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/11/1yQFLb.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/31/srRb1v.png">
-<meta property="og:updated_time" content="2019-08-10T13:47:46.000Z">
+<meta property="og:updated_time" content="2019-10-12T04:46:17.369Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度网络中的碎碎念">
 <meta name="twitter:description" content="介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器 和常见的技术比如 dropout。">
@@ -323,8 +324,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-10T21:47:46+08:00">
-                2019-08-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-12T12:46:17+08:00">
+                2019-10-12
               </time>
             
           </span>
@@ -533,7 +534,86 @@
 <p>如何选择？</p>
 <p>如果数据是稀疏的，就用自适用方法，即 Adagrad, Adadelta, RMSprop, Adam。RMSprop, Adadelta, Adam 在很多情况下的效果是相似的。</p>
 <p>很多论文里都会用 SGD，没有 momentum 等。SGD 虽然能达到极小值，但是比其它算法用的时间长，而且可能会被困在鞍点。如果需要更快的收敛，或者是训练更深更复杂的神经网络，需要用一种自适应的算法。</p>
-<p>参考文献：<br><a href="https://zhuanlan.zhihu.com/p/22252270" target="_blank" rel="noopener">深度学习最全优化方法总结比较（SGD，Adagrad，Adadelta，Adam，Adamax，Nadam）</a></p>
+<p>（重写）<br>3 大类<br>3-n<br>3-n-3 （三个点）</p>
+<p>参考文献：<br><a href="https://zhuanlan.zhihu.com/p/22252270" target="_blank" rel="noopener">深度学习最全优化方法总结比较（SGD，Adagrad，Adadelta，Adam，Adamax，Nadam）</a> 可以参考后面部分<br><a href="https://www.cnblogs.com/guoyaohua/p/8542554.html" target="_blank" rel="noopener">深度学习——优化器算法Optimizer详解</a> 可以参考前面的部分</p>
+<h3 id="vanilla"><a href="#vanilla" class="headerlink" title="vanilla"></a>vanilla</h3><ol>
+<li><strong>Gradient Descent</strong></li>
+</ol>
+<p>针对整个数据集</p>
+<p>$$<br>\theta = \theta - \eta \cdot \nabla _ { \theta } J ( \theta )<br>$$<br>特点：</p>
+<ul>
+<li>使用整个数据集计算梯度，计算起来非常慢</li>
+<li>能够找到全局最优点</li>
+</ul>
+<ol start="2">
+<li><strong>Stochastic Gradient Descent (SGD)</strong></li>
+</ol>
+<p>SGD 又走入了另外一个极端，SGD 拿到一个数据之后，马上计算梯度，然后对参数进行更新.</p>
+<p>$$<br>\theta = \theta - \eta \cdot J \left( \theta ; x ^ { ( i ) } , y ^ { ( i ) } \right)<br>$$</p>
+<p>特点：</p>
+<ul>
+<li>无法使用矩阵加速运算</li>
+<li>收敛速度快</li>
+</ul>
+<ol start="3">
+<li><strong>Mini-Batch Gradient Descent （MBGD）</strong></li>
+</ol>
+<p>Mini-batch 的方法是在上述两个方法中取了个折衷，每次从全部的熟练数据中取一个 mini-batch 的数据计算。</p>
+<p>$$<br>\theta = \theta - \eta \cdot J \left( \theta ; x ^ { ( i : i + n ) } , y ^ { ( i : i + n ) } \right)<br>$$</p>
+<p>batch size 的选择 n： 一般取值在 50～256</p>
+<p>目前，mini-batch 的方法是深度学习中主流方法，各种深度学习工具默认也是这种方法。也可以把上述两种方法看成是 mini-batch 的特例，Batch 的方法，就是 mini-batch size 是整个数据集，SGD 方法就是 min-batch=1 的情况.</p>
+<p>目前遇到的问题</p>
+<ul>
+<li>learning rate 如何进行自动调整</li>
+<li>如何跳出马鞍点</li>
+</ul>
+<h3 id="人工设置学习率"><a href="#人工设置学习率" class="headerlink" title="人工设置学习率"></a>人工设置学习率</h3><ol start="4">
+<li><strong>Momentum</strong></li>
+</ol>
+<p>$$<br>\begin{split}<br>m_{t} &amp; = \mu <em> m_{t-1}+g_{t} \\<br>\Delta \theta_{t} &amp; = -\eta </em> m_{t}<br>\end{split}<br>$$</p>
+<p>其中 $\mu$ 是动量因子，取值 0.9 左右。</p>
+<p>特点</p>
+<ul>
+<li>可以加速 SGD， 并且抑制震荡</li>
+</ul>
+<ol start="5">
+<li><strong>Nesterov Accelerated Gradient</strong></li>
+</ol>
+<p>momentum 和 nesterov accelerated gradient 区别：考虑之前的向量和当前的向量的顺序是不一样的。</p>
+<p><img src="https://b2.bmp.ovh/imgs/2019/08/62d1aaa2d8701f35.jpg" alt=""></p>
+<p>momentum首先计算一个梯度(短的蓝色向量)，然后在加速更新梯度的方向进行一个大的跳跃(长的蓝色向量)，nesterov项首先在之前加速的梯度方向进行一个大的跳跃(棕色向量)，计算梯度然后进行校正(绿色梯向量)</p>
+<h3 id="自适应学习率方法"><a href="#自适应学习率方法" class="headerlink" title="自适应学习率方法"></a>自适应学习率方法</h3><ol start="6">
+<li><strong>Adagrad （Adaptive gradient algorithm）</strong></li>
+</ol>
+<p>$$<br>\begin{split}<br>n_{t} &amp;=n_{t-1}+g_{t}^{2} \\<br>\Delta \theta_{t} &amp;=-\frac{\eta}{\sqrt{n_{t}+\epsilon}} * g_{t}<br>\end{split}<br>$$</p>
+<ol start="7">
+<li><strong>Adadelta</strong></li>
+</ol>
+<p>$$<br>\begin{split}<br>n_{t} &amp;=\nu <em> n_{t-1}+(1-\nu) </em> g_{t}^{2} \\<br>\Delta \theta_{t} &amp;=-\frac{\eta}{\sqrt{n_{t}+\epsilon}} * g_{t}<br>\end{split}<br>$$</p>
+<ol start="8">
+<li><strong>RMSprop</strong></li>
+</ol>
+<p>RMSprop可以算作Adadelta的一个特例：</p>
+<p>当 $\rho = 0.5$，  $E\left|g^{2}\right|<em>{t}=\rho * E\left|g^{2}\right|</em>{t-1}+(1-\rho) * g_{t}^{2}$ 就变为了求梯度平方和的平均数。如果再求根的话，就变成了RMS(均方根)：</p>
+<p>此时，这个RMS就可以作为学习率 的一个约束：</p>
+<p>特点</p>
+<ul>
+<li>适合处理RNN 效果很好</li>
+</ul>
+<ol start="9">
+<li><strong>Adam：Adaptive Moment Estimation</strong></li>
+</ol>
+<p>公式</p>
+<p>$$<br>\begin{split}<br>m_{t} &amp;=\mu <em> m_{t-1}+(1-\mu) </em> g_{t} \\<br>n_{t} &amp;=\nu <em> n_{t-1}+(1-\nu) </em> g_{t}^{2} \\<br>\hat{m}<em>{t} &amp;=\frac{m</em>{t}}{1-\mu^{t}} \\<br>\hat{n}<em>{t} &amp;=\frac{n</em>{t}}{1-\nu^{t}} \\<br>\Delta \theta_{t} &amp;=-\frac{\hat{m}<em>{t}}{\sqrt{\hat{n}</em>{t}}+\epsilon} * \eta \\<br>\end{split}<br>$$</p>
+<p>其中， $m_{t} $, </p>
+<p>其中，$m_{t} $，$n_{t}$分别是对梯度的一阶矩估计和二阶矩估计，可以看作对期望$E\left|g_{t}\right|$ ，E\left|g_{t}^{2}\right|的估计；，\hat{m}<em>{t} , \hat{n}</em>{t} 是对，$m_t$和 $n_t$的校正，这样可以近似为对期望的无偏估计。</p>
+<p>特点</p>
+<ul>
+<li>结合了Adagrad善于处理稀疏梯度和RMSprop善于处理非平稳目标的优点</li>
+<li>也适用于大多非凸优化 - 适用于大数据集和高维空间</li>
+</ul>
+<p><strong>参考文献</strong></p>
+<p><a href="https://zhuanlan.zhihu.com/p/22252270" target="_blank" rel="noopener">深度学习最全优化方法总结比较（SGD，Adagrad，Adadelta，Adam，Adamax，Nadam）</a> 可以参考后面部分<br><a href="https://www.cnblogs.com/guoyaohua/p/8542554.html" target="_blank" rel="noopener">深度学习——优化器算法Optimizer详解</a> 可以参考前面的部分</p>
 <h2 id="卷积网络"><a href="#卷积网络" class="headerlink" title="卷积网络"></a>卷积网络</h2><p>一个卷积神经网络由若干卷积层、Pooling层、全连接层组成。</p>
 <h3 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h3><p>$Input \rightarrow [Conv] \times N \rightarrow [Pool] \times M \rightarrow [FK] \times K$</p>
 <p>下面的动画显示了包含两个filter的卷积层的计算。我们可以看到 $7 \times 7 \times 3$ 输入，经过两个$3 \times 3 \times 3 $filter的卷积(步幅为2)，得到了$ 3 \times 3 \times 2 $的输出。另外我们也会看到下图的Zero padding是1，也就是在输入元素的周围补了一圈0。Zero padding对于图像边缘部分的特征提取是很有帮助的。</p>
@@ -757,7 +837,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -779,7 +859,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -853,7 +933,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization-ˈzeɪvjər-s"><span class="nav-number">1.2.</span> <span class="nav-text">Xavier initialization /ˈzeɪvjər/s</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.3.</span> <span class="nav-text">He Initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积网络"><span class="nav-number">4.</span> <span class="nav-text">卷积网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层"><span class="nav-number">4.1.</span> <span class="nav-text">卷积层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pooling-层"><span class="nav-number">4.2.</span> <span class="nav-text">Pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层-vs-pooling-层"><span class="nav-number">4.3.</span> <span class="nav-text">卷积层 vs pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全连接层"><span class="nav-number">4.4.</span> <span class="nav-text">全连接层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dropout"><span class="nav-number">4.5.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度消失-梯度爆炸"><span class="nav-number">4.6.</span> <span class="nav-text">梯度消失/ 梯度爆炸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感受野的计算"><span class="nav-number">4.7.</span> <span class="nav-text">感受野的计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积和池化操作的计算（例题）"><span class="nav-number">4.8.</span> <span class="nav-text">卷积和池化操作的计算（例题）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weights-Initialization"><span class="nav-number">1.</span> <span class="nav-text">Weights Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Initialization"><span class="nav-number">1.1.</span> <span class="nav-text">Random Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xavier-initialization-ˈzeɪvjər-s"><span class="nav-number">1.2.</span> <span class="nav-text">Xavier initialization /ˈzeɪvjər/s</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization"><span class="nav-number">1.3.</span> <span class="nav-text">He Initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-function"><span class="nav-number">2.</span> <span class="nav-text">Activation function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid-function-Logistic-Activation"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid function (Logistic Activation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh-function"><span class="nav-number">2.2.</span> <span class="nav-text">Tanh function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Relu-Rectified-Linear-Unit-Activation"><span class="nav-number">2.3.</span> <span class="nav-text">Relu (Rectified Linear Unit) Activation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaky-Relu"><span class="nav-number">2.4.</span> <span class="nav-text">Leaky Relu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.5.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimizer"><span class="nav-number">3.</span> <span class="nav-text">Optimizer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-Descent"><span class="nav-number">3.1.</span> <span class="nav-text">Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">3.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">3.4.</span> <span class="nav-text">Adam</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vanilla"><span class="nav-number">3.5.</span> <span class="nav-text">vanilla</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#人工设置学习率"><span class="nav-number">3.6.</span> <span class="nav-text">人工设置学习率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自适应学习率方法"><span class="nav-number">3.7.</span> <span class="nav-text">自适应学习率方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积网络"><span class="nav-number">4.</span> <span class="nav-text">卷积网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层"><span class="nav-number">4.1.</span> <span class="nav-text">卷积层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pooling-层"><span class="nav-number">4.2.</span> <span class="nav-text">Pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层-vs-pooling-层"><span class="nav-number">4.3.</span> <span class="nav-text">卷积层 vs pooling 层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全连接层"><span class="nav-number">4.4.</span> <span class="nav-text">全连接层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dropout"><span class="nav-number">4.5.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度消失-梯度爆炸"><span class="nav-number">4.6.</span> <span class="nav-text">梯度消失/ 梯度爆炸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感受野的计算"><span class="nav-number">4.7.</span> <span class="nav-text">感受野的计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积和池化操作的计算（例题）"><span class="nav-number">4.8.</span> <span class="nav-text">卷积和池化操作的计算（例题）</span></a></li></ol></li></ol></div>
             
 
           </div>

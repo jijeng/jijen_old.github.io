@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="binary-search," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍二分查找中的三个模板，以 LeetCode 中的习题为例。">
+<meta name="keywords" content="binary-search">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Binary Search">
+<meta property="og:url" content="http://yoursite.com/2018/01/23/binary-search/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍二分查找中的三个模板，以 LeetCode 中的习题为例。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload.cc/i1/2019/07/23/hWl7A6.png">
+<meta property="og:updated_time" content="2019-10-08T15:09:42.289Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Binary Search">
+<meta name="twitter:description" content="介绍二分查找中的三个模板，以 LeetCode 中的习题为例。">
+<meta name="twitter:image" content="https://upload.cc/i1/2019/07/23/hWl7A6.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/23/binary-search/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>Binary Search | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/23/binary-search/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Binary Search</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-23T21:11:15+08:00">
+                2018-01-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-08T23:09:42+08:00">
+                2019-10-08
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/23/binary-search/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/23/binary-search/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍二分查找中的三个模板，以 LeetCode 中的习题为例。</p>
+<a id="more"></a>
+<p>首先介绍一下二分查找中使用的术语：</p>
+<p>目标 Target —— 你要查找的值<br>索引 Index —— 你要查找的当前位置<br>左、右指示符 Left，Right —— 我们用来维持查找空间的指标<br>中间指示符 Mid —— 我们用来应用条件来确定我们应该向左查找还是向右查找的索引</p>
+<p>二分的思想：<br>每次把区间缩小一半，在缩小的过程中一定要保证，答案是在区间里面的，最后答案的区间长度为1的时候，就得到了目标区间。70%的题目都具有某种单调性。（具有单调性，那么是可以使用二分解决；但是使用二分的题目不一定都具有单调性）95% 的题目是存在二段性。</p>
+<h3 id="模板1"><a href="#模板1" class="headerlink" title="模板1"></a>模板1</h3><p>模板 1 是二分查找的最基础和最基本的形式。这是一个标准的二分查找模板，是非常基础简单的二分查找。模板 1 用于查找可以通过访问数组中的单个索引来确定的元素或条件。模版 1 不需要后处理，因为每一步中，你都在检查是否找到了元素。如果到达末尾，则知道未找到该元素。</p>
+<p>语法关键：</p>
+<p>初始条件：left = 0, right = length-1<br>终止：left &gt; right<br>向左查找：right = mid-1<br>向右查找：left = mid+1</p>
+<p>模版#1 对应的例题为：<br>LeetCode69 x 的平方根<br>LeetCode374 猜数字大小<br>LeetCode33 搜索旋转排序数组</p>
+<h3 id="模板2"><a href="#模板2" class="headerlink" title="模板2"></a>模板2</h3><p>模板 2 是二分查找的高级模板。它用于查找需要访问数组中当前索引及其直接右邻居索引的元素或条件。<br>查找条件需要访问元素的直接右邻居。<br>使用元素的右邻居来确定是否满足条件，并决定是向左还是向右。<br>保证查找空间在每一步中至少有 2 个元素。<br>需要进行后处理。 当你剩下 1 个元素时，循环 / 递归结束。 需要评估剩余元素是否符合条件。</p>
+<p>语法关键：</p>
+<p>初始条件：left = 0, right = length<br>终止：left == right<br>向左查找：right = mid<br>向右查找：left = mid+1</p>
+<p>模版#2 对应的例题为：<br>LeetCode278 第一个错误的版本<br>LeetCode75 寻找峰值<br>LeetCode159 寻找旋转排序数组中的最小值</p>
+<p>LeetCode69 x 的平方根</p>
+<ol>
+<li><a href="https://leetcode.com/problems/sqrtx/submissions/" target="_blank" rel="noopener">LeetCode69 x 的平方根</a></li>
+</ol>
+<blockquote>
+<p>实现 int sqrt(int x) 函数。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">mySqrt</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> right = x;</span><br><span class="line">        <span class="keyword">if</span> (x &lt;= <span class="number">1</span>) <span class="keyword">return</span> x;</span><br><span class="line">        <span class="keyword">int</span> ans= <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;=right)&#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (right+left) /<span class="number">2</span>; <span class="comment">//计算中间值</span></span><br><span class="line">            <span class="keyword">if</span>(x/mid &gt;= mid ) &#123;</span><br><span class="line">                left = mid+<span class="number">1</span>; <span class="comment">//如果mid*mid&lt;=x 证明mid小了 left = mid+1</span></span><br><span class="line">                ans = mid; <span class="comment">//当前的mid作为ans</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> right = mid<span class="number">-1</span>; <span class="comment">//否则right = mid-1</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 使用二分进行求解, 时间复杂度是logn</span></span><br><span class="line">    <span class="comment">// 二分有两种更新方式， 一种是 l =mid, r =mid -1; 一种是 l =mid +1, r =mid 这个记住也是不难的，r 只能是mid 或者是 mid -1； l 只能是mid 或者是mid +1</span></span><br><span class="line">    <span class="comment">// 并且这种mid +-1 操作只能出现一次。当出现mid -1 那么就需要设置一下 mid = (l +r +1ll )/2 ，防止陷入死循环。通过观察可以知道，都是需要出席 +1 这种操作</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">mySqrt</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l =<span class="number">0</span>, r =x;</span><br><span class="line">        <span class="keyword">while</span>(l &lt; r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid =(l +r +<span class="number">1l</span>l) /<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(mid &lt;= x/mid) l =mid;</span><br><span class="line">            <span class="keyword">else</span> r =mid <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><a href="https://leetcode.com/problems/guess-number-higher-or-lower/" target="_blank" rel="noopener">374. Guess Number Higher or Lower</a></li>
+</ol>
+<p>这个题目 有bug 吧，说反了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Forward declaration of guess API.</span></span><br><span class="line"><span class="comment">// @param num, your guess</span></span><br><span class="line"><span class="comment">// @return -1 if my number is lower, 1 if my number is higher, otherwise return 0</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">guess</span><span class="params">(<span class="keyword">int</span> num)</span></span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">guessNumber</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l =<span class="number">1</span>, r =n;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (l+r) /<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(guess(mid) ==<span class="number">0</span>) <span class="keyword">return</span> mid;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(guess(mid) == <span class="number">1</span>) l =mid +<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> r = mid <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><a href="https://leetcode.com/problems/search-in-rotated-sorted-array/submissions/" target="_blank" rel="noopener">Search in Rotated Sorted Array</a></li>
+</ol>
+<p>这个题目非常的经典的，使用了一个二分，时间复杂度是 $logn$，  解释可以参考<a href="https://www.acwing.com/solution/LeetCode/content/104/" target="_blank" rel="noopener">这里</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//数据特点， 分成了左右两个递增序列， nums[0] &gt; 后面的递增序列的</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n =nums.size();</span><br><span class="line">        <span class="keyword">if</span> (n ==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> l=<span class="number">0</span>, r =nums.size() <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (l+r) &gt;&gt;<span class="number">1</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(nums[mid] &gt;= nums[<span class="number">0</span>])</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>( target &gt;= nums[<span class="number">0</span>] &amp;&amp; target &lt;= nums[mid])</span><br><span class="line">                    r =mid ;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    l =mid +<span class="number">1</span>;   </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(target &lt;nums[<span class="number">0</span>] &amp;&amp; target &gt;nums[mid])</span><br><span class="line">                    l =mid +<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    r =mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> target == nums[l] ? l : <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li><a href="https://leetcode.com/problems/search-in-rotated-sorted-array-ii/submissions/" target="_blank" rel="noopener">Search in Rotated Sorted Array II</a></li>
+</ol>
+<p>这种做法是比较好的， LeetCode平台上 两个 90%，可以近似的看成 $logn$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 这个是33 有点类似，只是多了可能存在重复的数字，所以要保证二分的条件，保证的是严格的单调性</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">search</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> n =nums.size();</span><br><span class="line">        <span class="keyword">if</span>(n ==<span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span>(target == nums[<span class="number">0</span>]) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">int</span> k =n <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(k &gt;=<span class="number">0</span> &amp;&amp; nums[k] ==nums[<span class="number">0</span>]) k --;</span><br><span class="line">        n =k;</span><br><span class="line">        <span class="comment">// 然后现在就是不</span></span><br><span class="line">        <span class="keyword">int</span> l =<span class="number">0</span>, r =n;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (l+r) &gt;&gt;<span class="number">1</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(nums[mid] &gt;= nums[<span class="number">0</span>])</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>( target &gt;= nums[<span class="number">0</span>] &amp;&amp; target &lt;= nums[mid])</span><br><span class="line">                    r =mid ;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    l =mid +<span class="number">1</span>;   </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(target &lt;nums[<span class="number">0</span>] &amp;&amp; target &gt;nums[mid])</span><br><span class="line">                    l =mid +<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    r =mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums[l] ==target? <span class="literal">true</span>:<span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li><a href="https://leetcode.com/problems/find-peak-element/" target="_blank" rel="noopener">Find Peak Element</a></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 这个关键是要 会使用二分进行求解</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findPeakElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n =nums.size() ;</span><br><span class="line">        <span class="keyword">if</span>(n ==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> l =<span class="number">0</span>, r =n <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l +r+<span class="number">1</span> &gt;&gt;<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] &gt; nums[mid <span class="number">-1</span>]) l =mid;</span><br><span class="line">            <span class="keyword">else</span> r =mid <span class="number">-1</span>; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li><a href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" target="_blank" rel="noopener"> Find First and Last Position of Element in Sorted Array</a></li>
+</ol>
+<p>划分结点的选择，一定是假定mid 就是那个能够划分成两个部分的结点。好好理解一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    // 自己写这种函数的的时候，一定要以 mid 作为分裂点看</span><br><span class="line">    vector&lt;int&gt; searchRange(vector&lt;int&gt;&amp; nums, int target) &#123;</span><br><span class="line">        </span><br><span class="line">        int n =nums.size();</span><br><span class="line">        if (n ==0) return vector&lt;int&gt;&#123;-1, -1&#125;;</span><br><span class="line">        </span><br><span class="line">        int l =0, r =n-1;</span><br><span class="line">        while(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            int mid = l +r &gt;&gt;1;</span><br><span class="line">            </span><br><span class="line">            if(nums[mid] &lt; target) l =mid+1 ;</span><br><span class="line">            else r =mid ;</span><br><span class="line">        &#125;</span><br><span class="line">        //cout &lt;&lt; l &lt;&lt; endl;</span><br><span class="line">        if(nums[l] != target) return vector&lt;int&gt;&#123;-1, -1&#125;;</span><br><span class="line">        </span><br><span class="line">        int left =l;</span><br><span class="line">        l =0, r =n-1;</span><br><span class="line">        while(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            int mid =l +r +1&gt;&gt;1;</span><br><span class="line">            if(nums[mid]&gt; target ) r =mid -1;</span><br><span class="line">            else l =mid ;</span><br><span class="line">        &#125;</span><br><span class="line">        int right =l;</span><br><span class="line">        </span><br><span class="line">        if(left&gt;=0 &amp;&amp; l&lt; n) return vector&lt;int&gt;&#123;left, right&#125;;</span><br><span class="line">        return vector&lt;int&gt;&#123;-1, -1&#125;;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li><a href="https://leetcode.com/problems/first-bad-version/" target="_blank" rel="noopener">LeetCode278 第一个错误的版本</a></li>
+</ol>
+<blockquote>
+<p>由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
+</blockquote>
+<p>题目非常简单，直接套用模板#2即可。此题与模板#1的最大区别就在于，right不能修改为mid-1，而必须修改为mid。因为当如果mid是错误产品，无法判断第一个错误版本在mid之前，还是就是当前mid。这是模板#2与模板#1的最大不同。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">firstBadVersion</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">long</span> right = n;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;right)&#123;</span><br><span class="line">            <span class="keyword">long</span> mid = (left+right)/<span class="number">2</span>; <span class="comment">//计算中点</span></span><br><span class="line">            <span class="keyword">if</span>(isBadVersion(mid)==<span class="literal">false</span>) left = mid+<span class="number">1</span>; <span class="comment">//如果mid是正常产品，证明第一个错误产品在右侧</span></span><br><span class="line">            <span class="keyword">if</span>(isBadVersion(mid)==<span class="literal">true</span>) right = mid; <span class="comment">//如果mid是错误产品，证明第一个错误产品在是自己或者在左侧</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li><a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/" target="_blank" rel="noopener">Find Minimum in Rotated Sorted Array II</a></li>
+</ol>
+<p>如果有重复的元素，那么是从右边开始进行比较。好好考虑这种合理性。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 对于这种 duplicates 是很容出来的</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findMin</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n =arr.size();</span><br><span class="line">        <span class="keyword">if</span>(n ==<span class="number">1</span>) <span class="keyword">return</span> arr[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span>(arr[<span class="number">0</span>] &lt; arr.back()) <span class="keyword">return</span> arr[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> l =<span class="number">0</span>, r =n <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l +r &gt;&gt;<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(arr[mid] &gt; arr[r]) l =mid +<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(arr[mid] &lt; arr[r]) r =mid;</span><br><span class="line">            <span class="keyword">else</span> r --;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[l];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="8">
+<li><a href="">isBadVersion</a></li>
+</ol>
+<p>时间复杂度是$O(logn)$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Forward declaration of isBadVersion API.</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isBadVersion</span><span class="params">(<span class="keyword">int</span> version)</span></span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 二分的本质是可以分块查找，找到一个分界点，左边是一种情况，右边是另一种情况。</span></span><br><span class="line">    <span class="comment">//mid 是坏的版本，r =mid， 如果mid 是好的版本， l =mid +1 （这种加一 or 之间等于是根据实际问题作出的选择）</span></span><br><span class="line">    <span class="comment">// 然后根据这种情况，去选择第一个或者是第二个版本的模板</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">firstBadVersion</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l =<span class="number">1</span>, r =n;</span><br><span class="line">        <span class="keyword">while</span>(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (<span class="number">0l</span>l+l +r )/<span class="number">2</span>; <span class="comment">// 这个可能产生溢出的问题， 注意细节，如果 0ll 放到了最后，那么同样是会溢出，因为三个数相加本质上是两个数先相加然后加上第三个数</span></span><br><span class="line">            <span class="keyword">if</span>(isBadVersion(mid))  r =mid;</span><br><span class="line">            <span class="keyword">else</span> l =mid +<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="9">
+<li><a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/" target="_blank" rel="noopener"> Find Minimum in Rotated Sorted Array</a></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 最小值前面的数字都满足 nums[i] &gt;= nums[0]， 最小值后面的数字都不满足</span></span><br><span class="line">    <span class="comment">// 这个就形成了分块（可以使用二分）</span></span><br><span class="line">    <span class="comment">// 如果 nums[mid] &gt;= nums[0] , l =mid +1,  r =mid</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findMin</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 注意这个是严格的大于号，因为没有重复元素，所以可以这么操作</span></span><br><span class="line">        <span class="keyword">if</span>(nums.back() &gt; nums[<span class="number">0</span>]) <span class="keyword">return</span> nums[<span class="number">0</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 这个是边界问题的一种处理方法， 这个是一种方式（关键是不影响时间复杂度的，常数级别的）</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        if(nums.size() &lt;=5)</span></span><br><span class="line"><span class="comment">        &#123;</span></span><br><span class="line"><span class="comment">            int min_v =INT_MAX;</span></span><br><span class="line"><span class="comment">            for(auto u : nums)</span></span><br><span class="line"><span class="comment">                min_v =min(min_v, u);</span></span><br><span class="line"><span class="comment">            return min_v;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        <span class="keyword">int</span> l =<span class="number">0</span>, r =nums.size() <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid =(l +r )/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>( nums[mid] &gt;=nums[<span class="number">0</span>]) l =mid +<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> r =mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums[l];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>题目非常简单，直接套用模板#2即可。此题与模板#1的最大区别就在于，right不能修改为mid-1，而必须修改为mid。因为当如果mid是错误产品，无法判断第一个错误版本在mid之前，还是就是当前mid。这是模板#2与模板#1的最大不同。</p>
+<h3 id="模板3"><a href="#模板3" class="headerlink" title="模板3"></a>模板3</h3><p>模板 3 是二分查找的另一种独特形式。它用于搜索需要访问当前索引及其在数组中的直接左右邻居索引的元素或条件。<br>搜索条件需要访问元素的直接左右邻居。<br>使用元素的邻居来确定它是向右还是向左。<br>保证查找空间在每个步骤中至少有 3 个元素。<br>需要进行后处理。 当剩下 2 个元素时，循环 / 递归结束。 需要评估其余元素是否符合条件。</p>
+<p>对应的leetcode 例题<br>LeetCode34 在排序数组中查找元素的第一个和最后一个位置<br>LeetCode658 找到 K 个最接近的元素</p>
+<p>语法关键：</p>
+<p>初始条件：left = 0, right = length-1<br>终止：left + 1 == right<br>向左查找：right = mid<br>向右查找：left = mid</p>
+<ol start="10">
+<li><a href="">binarySearch 模板题</a></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.size() == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.size() - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left + <span class="number">1</span> &lt; right)&#123;</span><br><span class="line">        <span class="comment">// Prevent (left + right) overflow</span></span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            right = mid;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Post-processing:</span></span><br><span class="line">    <span class="comment">// End Condition: left + 1 == right</span></span><br><span class="line">    <span class="keyword">if</span>(nums[left] == target) <span class="keyword">return</span> left;</span><br><span class="line">    <span class="keyword">if</span>(nums[right] == target) <span class="keyword">return</span> right;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>来个模板, 所谓的访问文件保留几个元素，就是包括与否mid 的意思。如果 left 和 right 都可以为 mid，那么就是三个访问空间；<br>如果只有 left or right 可以= mid，那么就是两个访问空间；如果 left =mid -1 且 right =mid +1 那么只有一个访问空间。同样三个条件依次为 left &lt;= right, left &lt; right 和 left +1 &lt; right 保证访问空间是可以 access 的。</p>
+<p>总结如下：</p>
+<p><img src="https://upload.cc/i1/2019/07/23/hWl7A6.png" alt=""></p>
+<ol start="10">
+<li><a href="https://leetcode.com/problems/find-k-closest-elements/" target="_blank" rel="noopener">Find K Closest Elements</a></li>
+</ol>
+<p>这个算法太精妙了，真的是难以理解了。总的时间复杂度 $O(log(n -k) +k)$<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//时间复杂度 O(log (n-k) +k)</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; findClosestElements(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr, <span class="keyword">int</span> k, <span class="keyword">int</span> x) &#123;</span><br><span class="line">        <span class="keyword">int</span> n = arr.size();</span><br><span class="line">        <span class="keyword">int</span> l =<span class="number">0</span>, r =n -k;</span><br><span class="line">        <span class="keyword">while</span>( l&lt; r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l +r &gt;&gt;<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(x -arr[mid]  &gt; arr[mid+k]  -x) l =mid +<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> r =mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(arr.begin() +l, arr.begin() +l+k);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p><strong>浮点数二分算法</strong></p>
+<p><a href="https://www.acwing.com/problem/content/792/" target="_blank" rel="noopener">数的三次方根</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">double x;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    cin &gt;&gt;x;</span><br><span class="line">    double l = -10000, r = 100000;</span><br><span class="line">    // 如果是保留6 位消失，那么使用 1e-8，如果是2位，那么是 1e-4</span><br><span class="line">    while(r -l &gt; 1e-8)</span><br><span class="line">    &#123;</span><br><span class="line">        double mid = (l+r) /2;</span><br><span class="line">        if(mid *mid *mid &gt;x) r =mid;</span><br><span class="line">        else l =mid;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;%.6f&quot;, l);// 输出的格式 %.6f 表示double 类型</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参考文献：</p>
+<p><a href="https://www.jianshu.com/p/b72c80fdb240" target="_blank" rel="noopener">数据结构也不难：二分查找模版与例题</a></p>
+<h3 id="python-对于-binary-search-的支持"><a href="#python-对于-binary-search-的支持" class="headerlink" title="python 对于 binary search 的支持"></a>python 对于 binary search 的支持</h3><p>包函数 bisect</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> bisect</span><br><span class="line"> </span><br><span class="line">L = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">12</span>,<span class="number">15</span>]</span><br><span class="line">x = <span class="number">3</span></span><br><span class="line"> </span><br><span class="line">x_insert_point = bisect.bisect_left(L,x)　　<span class="comment">#在L中查找x，x存在时返回x左侧的位置，x不存在返回应该插入的位置..这是3存在于列表中，返回左侧位置１</span></span><br><span class="line"><span class="keyword">print</span> x_insert_point</span><br><span class="line"> </span><br><span class="line">x_insert_point = bisect.bisect_right(L,x)  <span class="comment">#在L中查找x，x存在时返回x右侧的位置，x不存在返回应该插入的位置..这是3存在于列表中，返回右侧位置３</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> x_insert_point</span><br><span class="line"> </span><br><span class="line">x_insort_left = bisect.insort_left(L,x)  <span class="comment">#将x插入到列表L中，x存在时插入在左侧</span></span><br><span class="line"><span class="keyword">print</span> L</span><br><span class="line"> </span><br><span class="line">x_insort_rigth = bisect.insort_right(L,x) <span class="comment">#将x插入到列表L中，x存在时插入在右侧</span></span><br></pre></td></tr></table></figure>
+<p>防止越界的tips：<br>change “mid = (low + high) / 2 “ -&gt; “mid = low + (high - low) / 2 “或者使用 ”mid = (low + high) &gt;&gt; 1“，</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/binary-search/" rel="tag"># binary-search</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/05/emsemble/" rel="prev" title="集成学习">
+                集成学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">86</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#模板1"><span class="nav-number">1.</span> <span class="nav-text">模板1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板2"><span class="nav-number">2.</span> <span class="nav-text">模板2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板3"><span class="nav-number">3.</span> <span class="nav-text">模板3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-对于-binary-search-的支持"><span class="nav-number">4.</span> <span class="nav-text">python 对于 binary search 的支持</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/01/23/binary-search/';
+          this.page.identifier = '2018/01/23/binary-search/';
+          this.page.title = 'Binary Search';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
