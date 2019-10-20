@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="hmm,热词," />
+  <meta name="keywords" content="hmm,热词,ner," />
 
 
 
@@ -80,10 +80,10 @@
 
 
 <meta name="description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
-<meta name="keywords" content="hmm,热词">
+<meta name="keywords" content="hmm,热词,ner">
 <meta property="og:type" content="article">
 <meta property="og:title" content="新词发现和马尔科夫模型">
-<meta property="og:url" content="http://yoursite.com/2019/06/06/hmm/index.html">
+<meta property="og:url" content="http://yoursite.com/2019/02/06/hmm/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
 <meta property="og:locale" content="default">
@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/06/ugejln.png">
 <meta property="og:image" content="https://i.loli.net/2019/10/10/sQ79N2dwJxjH3GV.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/10/10/5tNl7M4ERpoiAK8.jpg">
-<meta property="og:updated_time" content="2019-10-10T14:10:45.325Z">
+<meta property="og:updated_time" content="2019-10-20T02:30:50.541Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="新词发现和马尔科夫模型">
 <meta name="twitter:description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
@@ -128,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/06/06/hmm/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/02/06/hmm/"/>
 
 
 
@@ -274,7 +274,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/06/hmm/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/06/hmm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-06T09:22:18+08:00">
-                2019-06-06
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-06T09:22:18+08:00">
+                2019-02-06
               </time>
             
 
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-10T22:10:45+08:00">
-                2019-10-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-20T10:30:50+08:00">
+                2019-10-20
               </time>
             
           </span>
@@ -356,9 +356,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/06/06/hmm/#comments" itemprop="discussionUrl">
+                <a href="/2019/02/06/hmm/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/06/06/hmm/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/02/06/hmm/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -436,6 +436,7 @@
 <p>不仅如此，不少状态还带有地理位置信息，因而我们可以站在空间的维度对信息进行观察。这个地方的人都爱说些什么？爱说这个词的人都分布在哪里？借助这些包含地理位置的签到信息，我们也能挖掘出很多有意思的结果来。例如，对北京用户的签到信息进行抽词，然后对于每一个抽出来的词，筛选出所有包含该词的签到信息并按地理坐标的位置聚类，这样我们便能找出那些地理分布最集中的词。结果非常有趣：“考试”一词集中分布在海淀众高校区，“天津”一词集中出现在北京南站，“逛街”一词则全都在西单附近扎堆。北京首都国际机场也是一个非常特别的地点，“北京”、“登机”、“终于”、“再见”等词在这里出现的密度极高。</p>
 <p>从全国范围来看，不同区域的人也有明显的用词区别。我们可以将全国地图划分成网格，统计出所有签到信息在各个小格内出现的频数，作为标准分布；然后对于每一个抽出来的词，统计出包含该词的签到信息在各个小格内出现的频数，并与标准分布进行对比（可以采用余弦距离等公式），从而找出那些分布最反常的词。程序运行后发现，这样的词还真不少。一些明显具有南北差异的词，分布就会与整个背景相差甚远。例如，在节假日的时候，“滑雪”一词主要在北方出现，“登山”一词则主要在南方出现。地方特色也是造成词语分布差异的一大原因，例如“三里屯”一词几乎只在北京出现，“热干面”一词集中出现在武汉地区，“地铁”一词明显只有个别城市有所涉及。这种由当地人的用词特征反映出来的真实的地方特色，很可能是许多旅游爱好者梦寐以求的信息。另外，方言也会导致用词分布差异，例如“咋这么”主要分布在北方地区，“搞不懂”主要分布在南方城市，“伐”则非常集中地出现在上海地区。当数据规模足够大时，或许我们能通过计算的方法，自动对中国的方言区进行划分。</p>
 <p> 其实，不仅仅是发布时间、用户年龄、用户性别、地理位置这四个维度，我们还可以对浏览器、用户职业、用户活跃度、用户行为偏好等各种各样的维度进行分析，甚至可以综合考虑以上维度，在某个特定范围内挖掘热点事件，或者根据语言习惯去寻找出某个特定的人群。或许这听上去太过理想化，不过我坚信，有了合适的算法，这些想法终究会被一一实现。</p>
+<p>上面的称述只是抛转引玉，详细的<a href="http://www.matrix67.com/blog/archives/5044" target="_blank" rel="noopener">基于SNS的文本数据挖掘</a></p>
 <ol start="4">
 <li>基于HMM</li>
 </ol>
@@ -510,6 +511,27 @@
 <p>一个表格记录最大的概率， 另一个表格记录最大概率是从哪个隐状态转移过来的。</p>
 <p>最优路径的特点：<br>最优路径有以下特性: 假设我们有一条最优路径在$t$时刻通过一个隐状态$i_t$, 那么这一路径从$i_t$到最优路径的终点$i_T$相对于<strong>在这段距离里所有可能出现的路径里</strong>, 也必须是最优的. 否则从$i_t$到$i_T$就会有更优的一条路径, 如果把他和从$i_1$到$i_t$的路径(最优路径$i_t$之前的部分)连起来, 等于我们又有一条更优路径, 这是矛盾的.    </p>
 <p>时间复杂度分析：假设我们有 $N$ 中隐状态，在每个时刻之间，一共可能的路径有 $N^2$ 中，假设我们有$T$ 个时刻，那么维特比算法的时间复杂度是 $O(TN^2)$</p>
+<p><strong>ner</strong></p>
+<p>HMM  可以使用在 有监督的学习中（知道了隐状态 和观测状态， 未知变量是模型的参数），和无监督学习中（只是知道观测状态，需要求解 模型的参数和隐状态，这个时候需要使用类似 EM 算法的思想）</p>
+<p><strong>命名实体识别（Name Entity Recognition,NER）</strong></p>
+<p>命名实体识别（Name Entity Recognition,NER）,也称作“专名识别”，是指识别<br>文本中具有特定意义的实体，包括人名、地名、机构名、专有名词等。</p>
+<p>NER 的评价指标， acc precision, recall 和F1值</p>
+<p> 命名实体识别是将文本中的元素分成预先定义的类，如人名、地名、 机构名、时间、货币等等。作为自然语言的承载信息单位，命名实体识别 属于文本信息处理的基础的研究领域，是信息抽取、信息检索、机器翻译、 问答系统等多种自然语言处理技术中必不可少的组成部分。</p>
+<p> 命名实体识别主要分类，一般包括 3 大类（实体类、时间类和数字类）和 7 小类（人名、地名、组织名、机构名、时间、日期、货币和百分比）。但随着 NLP 任务的不断扩充，在特定领域中会出现特定的类别，比如医药领域中，药名、疾病等类别。</p>
+<p>主流的方法：</p>
+<p>这个是之前一个人回答的，大概谈了NER 中模型发展的历史：有一些，大致如下：MLP-&gt;LSTM-&gt;LSTM/CNN+CRF-&gt;BiLSTM+CRF- &gt;BiLSTM+CNN+CRF。提到技术，是不是大家都是用的 CRF，除了目前最新的深度学习。（<strong>CRF+ 深度学习</strong>）</p>
+<p>词性需要有一定的规范，如将词分为名词、形容词、动词，然后用’n’ ‘adj’ ‘v’来表示。北大词性标注集部分标注词性如下表所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Ag     形语素     形容词性语素。形容词代码为a，语素代码ｇ前面置以A。</span><br><span class="line">   a       形容词      取英语形容词adjective的第1个字母。</span><br><span class="line">　ad     副形词 直接作状语的形容词。形容词代码a和副词代码d并在一起。</span><br><span class="line">　an     名形词 具有名词功能的形容词。形容词代码a和名词代码n并在一起。</span><br><span class="line">   b       区别词      取汉字“别”的声母。</span><br><span class="line">   c       连词        取英语连词conjunction的第1个字母。</span><br><span class="line">   Dg     副语素     副词性语素。副词代码为d，语素代码ｇ前面置以D。</span><br><span class="line">   d       副词     取adverb的第2个字母，因其第1个字母已用于形容词。</span><br><span class="line">   e       叹词     取英语叹词exclamation的第1个字母。</span><br><span class="line">   f        方位词      取汉字“方” 的声母。</span><br><span class="line">　g       语素    绝大多数语素都能作为合成词的“词根”，取汉字“根”的声母。</span><br><span class="line">   h       前接成分   取英语head的第1个字母。</span><br><span class="line">   i        成语        取英语成语idiom的第1个字母。</span><br><span class="line">   j        简称略语  取汉字“简”的声母。</span><br><span class="line">   k       后接成分</span><br><span class="line">   l        习用语     习用语尚未成为成语，有点“临时性”，取“临”的声母。</span><br><span class="line">   m       数词     取英语numeral的第3个字母，n，u已有他用。</span><br><span class="line">   Ng      名语素     名词性语素。名词代码为n，语素代码ｇ前面置以N。</span><br><span class="line">   n        名词        取英语名词noun的第1个字母。</span><br><span class="line">   nr      人名        名词代码n和“人(ren)”的声母并在一起。</span><br><span class="line">   ns      地名     名词代码n和处所词代码s并在一起。</span><br><span class="line">   nt      机构团体    “团”的声母为t，名词代码n和t并在一起。</span><br><span class="line">   nz     其他专名    “专”的声母的第1个字母为z，名词代码n和z并在一起。 </span><br><span class="line">   o       拟声词     取英语拟声词onomatopoeia的第1个字母。</span><br><span class="line">   p       介词     取英语介词prepositional的第1个字母。</span><br><span class="line">   q       量词        取英语quantity的第1个字母。</span><br><span class="line">   r       代词        取英语代词pronoun的第2个字母,因p已用于介词。</span><br><span class="line">   s       处所词     取英语space的第1个字母。</span><br><span class="line">   Tg     时语素      时间词性语素。时间词代码为t,在语素的代码g前面置以T。</span><br><span class="line">   t        时间词      取英语time的第1个字母。</span><br><span class="line">   u       助词        取英语助词auxiliary 的第2个字母,因a已用于形容词。</span><br><span class="line">   Vg     动语素      动词性语素。动词代码为v。在语素的代码g前面置以V。</span><br><span class="line">   v       动词        取英语动词verb的第一个字母。</span><br><span class="line">   vd     副动词      直接作状语的动词。动词和副词的代码并在一起。</span><br><span class="line">   vn     名动词      指具有名词功能的动词。动词和名词的代码并在一起。</span><br><span class="line">   w      标点符号   </span><br><span class="line">   x       非语素字    非语素字只是一个符号，字母x通常用于代表未知数、符号。</span><br><span class="line">   y       语气词      取汉字“语”的声母。</span><br><span class="line">   z       状态词      取汉字“状”的声母的前一个字母。</span><br></pre></td></tr></table></figure>
+<p>NER 的应用场景：</p>
+<ol>
+<li><strong>新闻标注：</strong>和文本分类不同, 这里可以使用NER技术将与文章相关的人物, 地点都以标签的形式标注出来, 方便用户对某个人物或地点进行索引。</li>
+<li><strong>搜索引擎：</strong>可以通过使用命名实体识别来抽取web页面中的实体, 后续可以使用这些信息来提高搜索效率和准确度。</li>
+<li><strong>从商品描述中自动提取商品类别, 品牌等信息</strong>, 提高货物上架效率, 在咸鱼等应用上已经实现了类似功能。</li>
+<li><strong>工具易用性提升</strong>, 例如从短信息或邮件中提取时间和地点等实体, 从而实现点击时间直接创建日历, 点击地址直接跳转到地图App等便捷操作。</li>
+</ol>
+<p><strong>一般来说 NER 是不使用在文本分类领域的。</strong></p>
+<p>视频讲解</p>
+<p><a href="https://www.bilibili.com/video/av52626653/?p=3" target="_blank" rel="noopener">HMM与CRF隐形马尔可夫链与条件随机场</a><br><a href="https://www.bilibili.com/video/av58239477" target="_blank" rel="noopener">-attention is all you need</a></p>
 
       
     </div>
@@ -531,6 +553,8 @@
           
             <a href="/tags/热词/" rel="tag"># 热词</a>
           
+            <a href="/tags/ner/" rel="tag"># ner</a>
+          
         </div>
       
 
@@ -542,8 +566,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/01/nlp-papers-reading-sentence-embedding/" rel="next" title="NLP  Papers Reading-Sentence Embedding">
-                <i class="fa fa-chevron-left"></i> NLP  Papers Reading-Sentence Embedding
+              <a href="/2019/01/17/剑指offer-其他/" rel="next" title="剑指offer-其他(1)">
+                <i class="fa fa-chevron-left"></i> 剑指offer-其他(1)
               </a>
             
           </div>
@@ -552,8 +576,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/06/08/svm-all-you-need/" rel="prev" title="SVM All You Need to Know">
-                SVM All You Need to Know <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/06/algorithm-demo1/" rel="prev" title="算法模板-基础算法">
+                算法模板-基础算法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -636,7 +660,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">86</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -658,7 +682,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -912,8 +936,8 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/06/06/hmm/';
-          this.page.identifier = '2019/06/06/hmm/';
+          this.page.url = 'http://yoursite.com/2019/02/06/hmm/';
+          this.page.identifier = '2019/02/06/hmm/';
           this.page.title = '新词发现和马尔科夫模型';
         };
         var d = document, s = d.createElement('script');

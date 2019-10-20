@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,github," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍linux 中常见的命令 和github 中常用的命令">
+<meta name="keywords" content="linux,github">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux commands">
+<meta property="og:url" content="http://yoursite.com/2019/02/18/linux-commands/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍linux 中常见的命令 和github 中常用的命令">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-10-20T00:16:43.425Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux commands">
+<meta name="twitter:description" content="介绍linux 中常见的命令 和github 中常用的命令">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/18/linux-commands/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>linux commands | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/18/linux-commands/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux commands</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-18T11:18:35+08:00">
+                2019-02-18
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-20T08:16:43+08:00">
+                2019-10-20
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/18/linux-commands/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/02/18/linux-commands/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍linux 中常见的命令 和github 中常用的命令</p>
+<a id="more"></a>
+<h2 id="Linux-常见命令"><a href="#Linux-常见命令" class="headerlink" title="Linux 常见命令"></a>Linux 常见命令</h2><p>软链接 硬链接 和cp</p>
+<p>ln -s 源文件 目标文件 做软链接</p>
+<p>软链接：通过软链接建立的链接文件与原文件并不是同一个文件，相当于原文件的快捷方式。</p>
+<p>硬链接：硬链接的两个文件是独立的两个引用计数文件，他们共用同一份数据，所以他们- 的inode节点相同删除硬链接中的任意一个文件，另外一个文件不会被删除。</p>
+<blockquote>
+<p> ln -s ~/sag_common/production/search/nlp/query_quality/src/libglog.so.0 /usr/lib6</p>
+<p>ln -s log2013.log link2013</p>
+</blockquote>
+<p>grep 命令</p>
+<blockquote>
+<p>history | grep “ssh” # 在返回的结果中使用 grep 进行查找</p>
+</blockquote>
+<p>ssh 远程登录的命令</p>
+<blockquote>
+<p>ssh -i .ssh/qiso_id_rsa  <a href="mailto:qiso@10.39.22.30" target="_blank" rel="noopener">qiso@10.39.22.30</a></p>
+<p>使用 exit 退出当前账户的ssh 登录</p>
+<p>ssh -i .ssh/qiso_id_rsa  <a href="mailto:zhlu@10.52.80.185" target="_blank" rel="noopener">zhlu@10.52.80.185</a> # 这个是有gpu 的机器</p>
+<p>ssh  -i .ssh/qiso_id_rsa <a href="mailto:qiso@10.39.22.30" target="_blank" rel="noopener">qiso@10.39.22.30</a> # 这个应该是hadoop 的机器</p>
+</blockquote>
+<p>所以现在一共有三个机器，一个是我账户下的机器，一个是 gpu机器，一个是qiso 的机器</p>
+<p>scp -i 表示使用ssh 进行传输文件</p>
+<blockquote>
+<p>scp -r -i ~/.ssh/qiso_id_rsa <a href="mailto:qiso@10.39.22.30" target="_blank" rel="noopener">qiso@10.39.22.30</a>:/home/qiso/jarvis* ~/</p>
+<p>scp -r -i ~/.ssh/qiso_id_rsa <a href="mailto:qiso@10.39.22.30" target="_blank" rel="noopener">qiso@10.39.22.30</a>:/home/qiso/data/production//search/nlp/default_query/data/<em>traditi</em> /home/qiso/data/production/search/nlp/query_quality/data/</p>
+<p>scp -i  Selects the file from which the identity (private key) for public # 使用 private key 进行测试</p>
+</blockquote>
+<p>tar 命令</p>
+<blockquote>
+<p>解包：tar zxvf FileName.tar<br>打包：tar czvf FileName.tar DirName</p>
+</blockquote>
+<p>两个命令连用：</p>
+<p>ps -ax 查看进程的， To see every process on the system using BSD syntax:</p>
+<blockquote>
+<p> ps -ax | grep vulgar_</p>
+<p>kill -9 pid 杀死进程</p>
+</blockquote>
+<p>ps 是显示进程的</p>
+<blockquote>
+<p>下面两个都是显示进程用的</p>
+<p>ps -e</p>
+<p>ps -ef</p>
+</blockquote>
+<p>执行shell 脚本</p>
+<blockquote>
+<p>sh -x vulgar_query_preprocessor.sh</p>
+</blockquote>
+<blockquote>
+<p>scp -r -i ~/.ssh/qiso_id_rsa <a href="mailto:qiso@10.39.22.30" target="_blank" rel="noopener">qiso@10.39.22.30</a>:/home/qiso/data/production/search/nlp/query_quality/data/vulgar_query/model/ ./</p>
+</blockquote>
+<p>·</p>
+<p>/home/qiso/data/production/search/nlp/query_quality/data/vulgar_query/embedding/query_ngram_represent</p>
+<p><strong>diff 命令</strong></p>
+<p>讲解：</p>
+<p><a href="http://www.ruanyifeng.com/blog/2012/08/how_to_read_diff.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2012/08/how_to_read_diff.html</a> </p>
+<p>比较两个文件</p>
+<blockquote>
+<p>diff &lt;a.file&gt; &lt;b.file&gt;</p>
+<p>最简单的形式，没有参数，得到的是3四行</p>
+<p>4c4 #第一行是提示，表示变动的位置, c表示 change , a 表示 addition, d 表示 deletion</p>
+<p>&lt; a #表示 a.file 去除 a 内容</p>
+<p>—- # 分隔符</p>
+<p>> b #表示b.file 添加该行</p>
+</blockquote>
+<p><strong>alias</strong></p>
+<p>在机器上使用vim 而不要使用 vi</p>
+<blockquote>
+<p> alias vi=’/usr/bin/vim’ # 设置 alias </p>
+<p> alias vi=’vim’ # 设置指向</p>
+</blockquote>
+<p><strong>source, sh, bash, ./ 执行 shell 文件的区别</strong></p>
+<ol>
+<li><p>source</p>
+<blockquote>
+<p>source a.sh # 在当前的shell 中读取，a.sh 不需要有执行权利</p>
+<p>. a.sh # 也可以写成这样，注意中间是有空格的</p>
+<p>#这个是在当前的 shell 中，逐行读入的脚本，然后创建的变量都保存在当前的shell 中</p>
+</blockquote>
+</li>
+<li><p>sh/bash</p>
+<blockquote>
+<p>sh a.sh</p>
+<p>bash a.sh # 这两种方式都是打开一个 subshell 去执行， a.sh 不需要有执行权限</p>
+<p>sh -x a.sh # 这个是 boss 常用的执行方式</p>
+</blockquote>
+</li>
+<li><p>./</p>
+<blockquote>
+<p>./a.sh #打开一个subshell 执行， a.sh 是需要有执行权限的，如果没有可以通过 chmod +x 进行添加</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>环境变量 - set、env、export</strong></p>
+<p>set命令显示当前shell的变量，包括当前用户的变量;</p>
+<p>env命令显示当前用户的变量;</p>
+<p>export命令显示当前导出成用户变量的shell变量。</p>
+<p><strong>查看命令-more, less, cat </strong></p>
+<p><strong>cat</strong> 是一次性显示整个文件的内容，还可以将多个文件连接起来显示，它常与<strong>重定向符号配合使用</strong>，适用于文件内容少的情况；</p>
+<p><strong>more</strong>命令，功能类似 cat。more命令只能前向后读取文件，因此在启动时就加载整个文件。</p>
+<p><strong>less</strong>可以前后看，比more 功能更加强大。</p>
+<p><strong>linux 中 sort</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sort file1.txt file2.txt  &gt; sorted.txt</span><br><span class="line">sort file1.txt file2.txt  -o sorted.txt #上面两种手工写法都是一样的</span><br><span class="line"></span><br><span class="line">cat sorted_file.txt | uniq &gt; uniq_lines.txt # 找出已排序文件中不重复的行：</span><br><span class="line">sort -k 2 data.txt # k表示的列数  依据第二列进行排序</span><br><span class="line">sort -nrk 1 data.txt #依据第一列进行逆序排序, -r 表示逆序</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">依据第二列进行排序</span><br></pre></td></tr></table></figure>
+<p><strong>linux 中的脚本调试</strong></p>
+<p>常用是以下的三种方式。</p>
+<ol>
+<li><p>echo 方式输出</p>
+<p>最简单的调试方法， 比如：</p>
+<blockquote>
+<p>echo $VAR</p>
+</blockquote>
+</li>
+<li><p>命令选项 -n</p>
+<p>功能：读取shell脚本，但是不执行。 比如</p>
+<blockquote>
+<p>bash –n script.sh</p>
+</blockquote>
+</li>
+<li><p>命令选项 -x</p>
+<p>功能： 提供跟踪执行信息,将执行脚本的过程中把实际执行的每个命令显示出来，行首显示+, +后面显示经过替换之后的命令行内容，有助于分析实际执行的是什么命令.</p>
+<p>其中”+” 表示执行的某个命令人，然后基于上一个”+” 使用”++” 表示更近一步的执行。很好理解的方式。</p>
+<p>特点： 是shell 首选的调试方式。比如：</p>
+<blockquote>
+<p>在命令行提供参数: sh -x script.sh</p>
+<p>在脚本开头提供参数: #!/bin/sh -x</p>
+<p>在脚本中用 set 命令启用or 禁用参数： set -x 表示启用， set +x 表示禁用</p>
+</blockquote>
+</li>
+</ol>
+<p>这个cat 命令也是不太懂得</p>
+<blockquote>
+<p>cat base_meta | python segmentor.py ~/default_query/data &gt; base_meta.seg</p>
+</blockquote>
+<p> <strong>awk</strong></p>
+<blockquote>
+<p>awk -F’\t’ ‘{print $1;}’ all-test.txt &gt; all_query.inc</p>
+</blockquote>
+<p>AWK是一种处理文本文件的语言，是一个强大的文本分析工具。之所以叫AWK是因为其取了三位创始人 Alfred Aho，Peter Weinberger, 和 Brian Kernighan 的 Family Name 的首字符。</p>
+<p>awk 非常擅长处理结构化数据和生成表单.和 sed 和 grep 很相似.由于 awk 具备各种及哦啊本语言的特点,所以可以把它看做是一种脚本语言.</p>
+<p>语法（有三种方式）</p>
+<ul>
+<li>第一种方式:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk [-F 分隔符] ‘commands’ input-file(s)</span><br></pre></td></tr></table></figure>
+<p>在 awk 中默认使用空格间隔； 如果文件中使用冒号作为分隔符，那么必须使用 -F 选项:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F : &apos;commands&apos; input-file</span><br></pre></td></tr></table></figure></p>
+<p>第二种方式</p>
+<p>将所有 awk 命令插入一个单独文件，然后调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -f awk-script-file input-file</span><br></pre></td></tr></table></figure></p>
+<p>常见的案例学习</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">统计/etc/passwd:文件名，每行的行号，每行的列数，对应的完整行内容:</span><br><span class="line"></span><br><span class="line">awk -F &apos;:&apos; &apos;&#123;print &quot;filename:&quot; FILENAME &quot;,linenumber:&quot; NR &quot;,columns:&quot; NF &quot;,linecontent:&quot;$0&#125;&apos; /etc/passwd</span><br><span class="line"></span><br><span class="line">除了 awk 的内置变量,awk 还可以自定义变量.</span><br><span class="line">例如:统计/etc/passwd 的行数:</span><br><span class="line"></span><br><span class="line">awk &apos;&#123;count++&#125;END&#123;print count&#125;&apos; /etc/passwd</span><br><span class="line"></span><br><span class="line">count 是自定义变量,这里没有初始化 count,虽然默认是 0,但是妥当的做法还是初始化为 0.</span><br><span class="line"></span><br><span class="line">awk &apos;BEGIN&#123;count=0&#125;&#123;count=count+1&#125;END&#123;print count&#125;&apos; /etc/passwd</span><br><span class="line"></span><br><span class="line">例如:统计某个文件夹下的文件占用的字节数</span><br><span class="line"></span><br><span class="line">ls -l |awk &apos;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size&#125;&apos;</span><br><span class="line"></span><br><span class="line">如果按照 M 为单位显示</span><br><span class="line"></span><br><span class="line">ls -l |awk &apos;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&apos;</span><br></pre></td></tr></table></figure>
+<p><a href="https://wiki.jikexueyuan.com/project/shell-learning/awk-command.html" target="_blank" rel="noopener">shell 学习十七天—awk 命令</a></p>
+<p>解释：打印包含 MA 的行中的第一个单词。(使用 echo 关键字可以模拟读入文件的操作)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &apos;this is one world\nthat is another world&apos; | awk &apos;&#123;print $1&#125;&apos;</span><br></pre></td></tr></table></figure>
+<p>关于 -F 的使用</p>
+<p>按照 [] 进行切分<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F &apos;[\[\]]&apos; &apos;&#123;print $1, $2, $3&#125;&apos; log.txt</span><br></pre></td></tr></table></figure></p>
+<p>按照 () 进行切分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F &apos;[()]&apos; &apos;&#123;print $1, $2, $3&#125;&apos; log.txt</span><br></pre></td></tr></table></figure>
+<p>这里的 ‘$0’ 就是一行的信息, ‘$1’ 就是第一列信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;&#123;$2 = &quot;***&quot;; print $0&#125;&apos; fruit.txt</span><br></pre></td></tr></table></figure></p>
+<p>在输出的时候，可以加上字符串和转义字符之类的， 注意加上的这些东西是使用双引号表示的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;&#123;print $1 &quot;\t&quot; $2 &quot;\t&quot; $3&#125;&apos; fruit.txt</span><br></pre></td></tr></table></figure></p>
+<p>同时处理多个文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;&#123;print FILENAME &quot;\t&quot; $0&#125;&apos; demo1.txt demo2.txt</span><br></pre></td></tr></table></figure>
+<p>在 awk 中使用变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;&#123;msg=&quot;hello world&quot;; print msg &quot;\t&quot; $0&#125;&apos; log.txt</span><br></pre></td></tr></table></figure>
+<p>如果要判断文件的第 3 列数据，也就是平均工资小于 5500 的公司，然后将其打印输出</p>
+<p>···<br>awk ‘$3 &lt; 5500 {print $0}’ company.txt<br>···</p>
+<p>在 awk 中使用正则表达式</p>
+<p>使用正则表达式匹配字符串 “There” ，将包含这个字符串的行打印并输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;/There/&#123;print $0&#125;&apos; poetry.txt</span><br></pre></td></tr></table></figure>
+<p>使用正则表达式配一个包含字母 t 和字母 e ，并且 t 和 e 中间只能有任意单个字符的行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;/t.e/&#123;print $0&#125;&apos; poetry.txt</span><br><span class="line"></span><br><span class="line">There is nothing either good or bad, but thinking makes it so</span><br><span class="line">There’s a special providence in the fall of a sparrow</span><br><span class="line">No matter how dark long, may eventually in the day arrival</span><br></pre></td></tr></table></figure>
+<p><a href="http://einverne.github.io/post/2018/01/awk.html" target="_blank" rel="noopener">awk 处理文本</a></p>
+<p>常见的变量</p>
+<p>变量NF表示当前行有多少个字段，因此$NF就代表最后一个字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &apos;this is a test&apos; | awk &apos;&#123;print $NF&#125;&apos;</span><br><span class="line">test</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(NF-1)代表倒数第二个字段。</span><br></pre></td></tr></table></figure>
+<p>print命令里面，如果原样输出字符，要放在双引号里面。</p>
+<p>awk还提供了一些内置函数，方便对原始数据的处理。</p>
+<p>函数toupper()用于将字符转为大写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tolower()：字符转为小写。</span><br><span class="line">length()：返回字符串长度。</span><br><span class="line">substr()：返回子字符串。</span><br><span class="line">sin()：正弦。</span><br><span class="line">cos()：余弦。</span><br><span class="line">sqrt()：平方根。</span><br><span class="line">rand()：随机数。</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.gnu.org/software/gawk/manual/html_node/Built_002din.html#Built_002din" target="_blank" rel="noopener">完整的built-in function 手册</a> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 输出奇数行</span><br><span class="line">$ awk -F &apos;:&apos; &apos;NR % 2 == 1 &#123;print $1&#125;&apos; demo.txt</span><br><span class="line">root</span><br><span class="line">bin</span><br><span class="line">sync</span><br><span class="line"></span><br><span class="line"># 输出第三行以后的行</span><br><span class="line">$ awk -F &apos;:&apos; &apos;NR &gt;3 &#123;print $1&#125;&apos; demo.txt</span><br><span class="line">sys</span><br><span class="line">sync</span><br></pre></td></tr></table></figure>
+<p>下面的例子输出第一个字段等于指定值的行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ awk -F &apos;:&apos; &apos;$1 == &quot;root&quot; &#123;print $1&#125;&apos; demo.txt</span><br><span class="line">root</span><br><span class="line">$ awk -F &apos;:&apos; &apos;$1 == &quot;root&quot; || $1 == &quot;bin&quot; &#123;print $1&#125;&apos; demo.txt</span><br><span class="line">root</span><br><span class="line">bin</span><br></pre></td></tr></table></figure>
+<p>if else 语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ awk -F &apos;:&apos; &apos;&#123;if ($1 &gt; &quot;m&quot;) print $1&#125;&apos; demo.txt</span><br><span class="line">root</span><br><span class="line">sys</span><br><span class="line">sync</span><br></pre></td></tr></table></figure>
+<p>上面代码输出第一个字段的第一个字符大于m的行。</p>
+<h2 id="git-常见的命令"><a href="#git-常见的命令" class="headerlink" title="git 常见的命令"></a>git 常见的命令</h2><p><strong>git命令</strong></p>
+<p>git 命令清单</p>
+<p><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></p>
+<blockquote>
+<p>git checkout # 检出分支， 创建分支和切换分支</p>
+<p>git checkout [branch-name] # 切换到指定分支</p>
+<p>git checkout -b dev origin/dev </p>
+<p>git checkout -b [branch]  #新建一个分支 并切换到该分支</p>
+<p>git branch [branch] # 新建一个分支 并停留在当前的分支</p>
+<p>git checkout dev </p>
+<p>git checkout master</p>
+</blockquote>
+<blockquote>
+<p>git fetch 命令用于从另一个存储库下载对象和引用。</p>
+<p>git fetch &lt;远程主机名&gt; &lt;分支名&gt;</p>
+<p>git fetch #更新所有分支，命令可以简写为：</p>
+<p>git fetch origin  </p>
+<p>git fetch [remote] # 下载远程仓库所有的变动</p>
+<p>git push origin dev</p>
+<p>git push [remote] [branch] # 上传本地指定分支到远程仓库</p>
+</blockquote>
+<blockquote>
+<p>git commit -am “update”</p>
+<p>-a append, 追加修改过的文件然后提交到仓库里面</p>
+<p>-m message 添加message</p>
+</blockquote>
+<p>在每次执行 <code>git commit</code>之前先使用<code>git status</code>检查文件状态是一个很好的习惯, 这样能防止你不小心提交了您不想提交的东西。</p>
+<blockquote>
+<p>git status </p>
+</blockquote>
+<p><a href="https://segmentfault.com/a/1190000015482463" target="_blank" rel="noopener">Git命令详解</a></p>
+<h2 id="vi-常见命令和配置"><a href="#vi-常见命令和配置" class="headerlink" title="vi 常见命令和配置"></a>vi 常见命令和配置</h2><ol>
+<li>第一阶段</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">i → Insert 模式，按 ESC 回到 Normal 模式.</span><br><span class="line">x → 删当前光标所在的一个字符。</span><br><span class="line">:wq → 存盘 + 退出 (:w 存盘, :q 退出)   （陈皓注：:w 后可以跟文件名）</span><br><span class="line">dd → 删除当前行，并把删除的行存到剪贴板里</span><br><span class="line">p → 粘贴剪贴板</span><br><span class="line">推荐:</span><br><span class="line"></span><br><span class="line">hjkl (强例推荐使用其移动光标，但不必需) →你也可以使用光标键 (←↓↑→). 注: j 就像下箭头。</span><br><span class="line">:help &lt;command&gt; → 显示相关命令的帮助。你也可以就输入 :help 而不跟命令。（陈皓注：退出帮助需要输入:q）</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>第二阶段</li>
+</ol>
+<ul>
+<li>各种插入模式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a → 在光标后插入</span><br><span class="line">o → 在当前行后插入一个新行</span><br><span class="line">O → 在当前行前插入一个新行</span><br><span class="line">cw → 替换从光标所在位置后到一个单词结尾的字符</span><br></pre></td></tr></table></figure>
+<ul>
+<li>简单的移动光标</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> → 数字零，到行头</span><br><span class="line">^ → 到本行第一个不是blank字符的位置（所谓blank字符就是空格，tab，换行，回车等）</span><br><span class="line">$ → 到本行行尾</span><br><span class="line">g_ → 到本行最后一个不是blank字符的位置。</span><br><span class="line">/pattern → 搜索 pattern 的字符串（陈皓注：如果搜索出多个匹配，可按n键到下一个）</span><br></pre></td></tr></table></figure>
+<ul>
+<li>拷贝/粘贴 </li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">P → 粘贴</span><br><span class="line">yy → 拷贝当前行当行于 ddP</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Undo/Redo</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">u → undo</span><br><span class="line">&lt;C-r&gt; → redo</span><br></pre></td></tr></table></figure>
+<ul>
+<li>打开/保存/退出/改变文件(Buffer)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">:e &lt;path/to/file&gt; → 打开一个文件</span><br><span class="line">:w → 存盘</span><br><span class="line">:saveas &lt;path/to/file&gt; → 另存为 &lt;path/to/file&gt;</span><br><span class="line">:x， ZZ 或 :wq → 保存并退出 (:x 表示仅在需要时保存，ZZ不需要输入冒号并回车)</span><br><span class="line">:q! → 退出不保存 :qa! 强行退出所有的正在编辑的文件，就算别的文件有更改。</span><br><span class="line">:bn 和 :bp → 你可以同时打开很多文件，使用这两个命令来切换下一个或上一个文件。（陈皓注：我喜欢使用:n到下一个文件）</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>第三阶段</li>
+</ol>
+<ul>
+<li>使得 vim 重复任务</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">. → 重复上一个命令—— 100 “desu “.</span><br><span class="line">3. → 重复 3 次 “desu” (注意：不是 300，你看，VIM多聪明啊).</span><br></pre></td></tr></table></figure>
+<ul>
+<li>光标的移动</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">NG → 到第 N 行 （陈皓注：注意命令中的G是大写的，另我一般使用 : N 到第N行，如 :137 到第137行）</span><br><span class="line">gg → 到第一行。（陈皓注：相当于1G，或 :1）</span><br><span class="line">G → 到最后一行。</span><br><span class="line">按单词移动：</span><br><span class="line">w → 到下一个单词的开头。</span><br><span class="line">e → 到下一个单词的结尾。</span><br><span class="line">&gt; 如果你认为单词是由默认方式，那么就用小写的e和w。默认上来说，一个单词由字母，数字和下划线组成（陈皓注：程序变量）</span><br><span class="line">&gt; 如果你认为单词是由blank字符分隔符，那么你需要使用大写的E和W。（陈皓注：程序语句）</span><br><span class="line"></span><br><span class="line">% : 匹配括号移动，包括 (, &#123;, [. （陈皓注：你需要把光标先移到括号上）</span><br><span class="line">* 和 #:  匹配光标当前所在的单词，移动光标到下一个（或上一个）匹配单词（*是下一个，#是上一个）</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>第四阶段</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">在当前行上移动光标: 0 ^ $ f F t T , ;</span><br><span class="line"></span><br><span class="line">0 → 到行头</span><br><span class="line">^ → 到本行的第一个非blank字符</span><br><span class="line">$ → 到行尾</span><br><span class="line">g_ → 到本行最后一个不是blank字符的位置。</span><br><span class="line">fa → 到下一个为a的字符处，你也可以fs到下一个为s的字符。</span><br><span class="line">t, → 到逗号前的第一个字符。逗号可以变成其它字符。</span><br><span class="line">3fa → 在当前行查找第三个出现的a。</span><br><span class="line">F 和 T → 和 f 和 t 一样，只不过是相反方向。</span><br></pre></td></tr></table></figure>
+<p>区域选择 <action>a<object> 或 <action>i<object><br>(这个部分没有看懂，可以详细的<a href="https://coolshell.cn/articles/5426.html" target="_blank" rel="noopener">看原文</a>)</object></action></object></action></p>
+<p>块操作: <c-v></c-v></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">块操作，典型的操作： 0 &lt;C-v&gt; &lt;C-d&gt; I-- [ESC]</span><br><span class="line">^ → 到行头</span><br><span class="line">&lt;C-v&gt; → 开始块操作</span><br><span class="line">&lt;C-d&gt; → 向下移动 (你也可以使用hjkl来移动光标，或是使用%，或是别的)</span><br><span class="line">I-- [ESC] → I是插入，插入“--”，按ESC键来为每一行生效。</span><br></pre></td></tr></table></figure>
+<p>可视化之后的操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">J → 把所有的行连接起来（变成一行）</span><br><span class="line">&lt; 或 &gt; → 左右缩进</span><br><span class="line">= → 自动给缩进 （陈皓注：这个功能相当强大，我太喜欢了）</span><br></pre></td></tr></table></figure></p>
+<p>分屏: :split 和 vsplit.<br>（这个我个人使用的不多，更加的倾向于使用软件分屏，而不是命令分屏）</p>
+<p><a href="https://coolshell.cn/articles/5426.html" target="_blank" rel="noopener">简明 VIM 练级攻略</a></p>
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>这个应该是根据具体语言而说，比如说cpp 中的正则表达式， 或者是 python中的正则表达式</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/github/" rel="tag"># github</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/16/leetcode-list/" rel="next" title="LeetCode-List">
+                <i class="fa fa-chevron-left"></i> LeetCode-List
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/01/leetcode-tree/" rel="prev" title="leetcode tree">
+                leetcode tree <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-常见命令"><span class="nav-number">1.</span> <span class="nav-text">Linux 常见命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-常见的命令"><span class="nav-number">2.</span> <span class="nav-text">git 常见的命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-常见命令和配置"><span class="nav-number">3.</span> <span class="nav-text">vi 常见命令和配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式"><span class="nav-number">3.1.</span> <span class="nav-text">正则表达式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/02/18/linux-commands/';
+          this.page.identifier = '2019/02/18/linux-commands/';
+          this.page.title = 'linux commands';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
