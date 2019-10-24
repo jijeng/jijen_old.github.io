@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="LightGBM,XGBoost," />
+  <meta name="keywords" content="LightGBM,XGBoost,xgboost+lr," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="先主要介绍树的基本知识，然后介绍LightGBM和XGBoost及其调参.">
-<meta name="keywords" content="LightGBM,XGBoost">
+<meta name="keywords" content="LightGBM,XGBoost,xgboost+lr">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LightGBM和XGBoost及其调参">
 <meta property="og:url" content="http://yoursite.com/2018/07/21/LightGBM和XGBoost及其调参/index.html">
@@ -88,7 +88,8 @@
 <meta property="og:description" content="先主要介绍树的基本知识，然后介绍LightGBM和XGBoost及其调参.">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g455x2q9e6j20i80ei3zq.jpg">
-<meta property="og:updated_time" content="2019-09-03T11:55:26.262Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/21/KQ7MEF.png">
+<meta property="og:updated_time" content="2019-10-21T03:32:12.196Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LightGBM和XGBoost及其调参">
 <meta name="twitter:description" content="先主要介绍树的基本知识，然后介绍LightGBM和XGBoost及其调参.">
@@ -313,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-03T19:55:26+08:00">
-                2019-09-03
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-21T11:32:12+08:00">
+                2019-10-21
               </time>
             
           </span>
@@ -471,6 +472,48 @@
 <ul>
 <li>Subsampling the data: Gradient-based One-Side Sampling (lightGBM)<br>biased sampling(抽样的基本原则是随机性，但是在抽样过程中由于一系列因素造成偏差抽样，造成样本是不符合真实样本的分布)<br>这个就是缓解，也不是为了彻底让其均衡，lightgbm increases the weigths of the samples.<br>This means that it is more efficient to concentrate on data points with larger gradients.<br>In order to mitigate this problem, lightGBM also randomly samples from data with small gradients.<br>lightGBM increases the weight of the samples with small gradients when computing their contribution to the change in loss (this is a form of importance sampling, a technique for efficient sampling from an arbitrary distribution).</li>
 </ul>
+<h3 id="xgboost-lr"><a href="#xgboost-lr" class="headerlink" title="xgboost + lr"></a>xgboost + lr</h3><p>如果清楚GBDT原理的话（机器学习-一文理解GBDT的原理-20171001），最后模型预测结果也是将叶子结点进行线性加总，权值就是训练得到的各叶子结点的权重。如果将GBDT得到的叶子节点特征喂入LR的话，其实相当于用逻辑回归对叶子结点的权重进行了重新训练计算，在这里GBDT只是将数据中的非线性关系进行了一层转换，从而可以利用lr进行线性组合。</p>
+<p>除了原理和实现方式之外，其实还有一些小的细节需要注意的，比如：</p>
+<p>1、进行LR训练时，原始特征是否要加进去；<br>原始特征的加入在xgb欠拟合的时候起的作用更大，当xgb树的颗数上升到一定数量时，原始特征的加入没什么提升。<br>2、gbdt训练的模型效果对最终LR的训练出来的模型有多大的影响；</p>
+<p>当xgb训练充分时，lr直接利用xgb叶子结点的编码特征在合适的惩罚系数下可以训练得到和xgb一样的甚至更好的效果（不显著）；</p>
+<p>3、树的棵数，叶子结点数，学习率，树的深度，采样会如何影响最终的模型效果等等；</p>
+<p>lr利用xgb叶子结点的编码特征进行训练，分别在不同的C下训练得到train和test的auc值</p>
+<p>简单地说，就是把gbdt的输出，作为logistic regression的输入，最后得到一个logistic regression模型。例如，gbdt里有3棵树T1,T2,T3，每棵树的叶节点个数为4，第i个树的第j个叶节点是Li,j。当gdbt训练完成之后，样本X1在第一棵树中被分到了第3个叶节点上，也就是L1,3，那么这个样本在T1上的向量表达为(0,0,1,0)。</p>
+<p>样本X1在T2被分到了L2,1，那么X1在T2上的向量表达为(1,0,0,0)<br>样本X1在T3被分到了L3,4，那么X1在T3上的向量表达为(0,0,0,1)<br>那么X1在整个gbdt上的向量表达为</p>
+<p>(0,0,1,0,1,0,0,0,0,0,0,1)<br>所以每个样本都会被表示为一个长度为12的0-1向量，其中有3个数值是1。</p>
+<p>然后这类向量就是LR模型的输入数据。</p>
+<p>LR 和 XGOOST 是 CTR 中常用的两种模型，二者各有优缺点，在 facebook 中使用 XGBOOST（提取特征） + LR（预测） 的方式。GBDT 模型擅长处理连续特征值，而 LR 则擅长处理离散特征值。</p>
+<p>在工业界，很少直接将连续值作为特征喂给逻辑回归模型，而是将连续特征离散化为一系列0、1特征交给逻辑回归模型，这样做的优势有以下几点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1.稀疏向量内积乘法运算速度快，计算结果方便存储，容易scalable（扩展）。</span><br><span class="line">2.离散化后的特征对异常数据有很强的鲁棒性：比如一个特征是年龄&gt;30是1，否则0。如果特征没有离散化，一个异常数据“年龄300岁”会给模型造成很大的干扰。</span><br><span class="line">3.逻辑回归属于广义线性模型，表达能力受限；单变量离散化为N个后，每个变量有单独的权重，相当于为模型引入了非线性，能够提升模型表达能力，加大拟合。</span><br><span class="line">4.离散化后可以进行特征交叉，由M+N个变量变为M*N个变量，进一步引入非线性，提升表达能力。</span><br><span class="line">5.特征离散化后，模型会更稳定，比如如果对用户年龄离散化，20-30作为一个区间，不会因为一个用户年龄长了一岁就变成一个完全不同的人。当然处于区间相邻处的样本会刚好相反，所以怎么划分区间是门学问。</span><br></pre></td></tr></table></figure>
+<p>先用已有特征训练Xgboost模型，然后利用Xgboost模型学习到的树来构造新特征，最后把这些新特征加入原有特征一起训练模型。构造的新特征向量是取值0/1的，向量的每个元素对应于Xgboost模型中树的叶子结点。当一个样本点通过某棵树最终落在这棵树的一个叶子结点上，那么在新特征向量中这个叶子结点对应的元素值为1，而这棵树的其他叶子结点对应的元素值为0。新特征向量的长度等于XGBoost模型里所有树包含的叶子结点数之和。最后将新的特征扔到LR模型进行训练。</p>
+<p>xgboost+lr模型融合方法用于分类或者回归的思想最早由facebook在广告ctr预测中提出，其论文Practical Lessons from Predicting Clicks on Ads at Facebook有对其进行阐述。在这篇论文中他们提出了一种将xgboost作为feature transform的方法。大概的思想可以描述为如下：先用已有特征训练XGBoost模型，然后利用XGBoost模型学习到的树来构造新特征，最后把这些新特征加入原有特征一起训练模型。构造的新特征向量是取值0/1的，向量的每个元素对应于XGBoost模型中树的叶子结点。当一个样本点通过某棵树最终落在这棵树的一个叶子结点上，那么在新特征向量中这个叶子结点对应的元素值为1，而这棵树的其他叶子结点对应的元素值为0。新特征向量的长度等于XGBoost模型里所有树包含的叶子结点数之和。最后将新的特征扔到LR模型进行训练。实验结果表明xgboost+lr能取得比单独使用两个模型都好的效果。</p>
+<p><img src="https://s2.ax1x.com/2019/10/21/KQ7MEF.png" alt="KQ7MEF.png"></p>
+<p>实现角度</p>
+<p>在实践中的关键点是如何获得每个样本落在训练后的每棵树的哪个叶子结点上。</p>
+<p>A、对于Xgboost来说，因为其有sklearn接口和自带接口，因此有两种方法可以获得：</p>
+<p>①、sklearn接口。可以设置pre_leaf=True获得每个样本在每颗树上的leaf_Index。XGBoost官方文档</p>
+<p>②、自带接口。利用apply()方法可以获得leaf indices。SKlearn GBDT API</p>
+<p>！！！此过程需注意： 无论是设置pre_leaf=True还是利用apply()方法，获得的都是叶子节点的 index，也就是说落在了具体哪颗树的哪个叶子节点上，并非是0/1变量，因此需要自己动手去做 onehot 编码。onehot 可以在 sklearn 的预处理包中调用即可。</p>
+<p>onehot的知识点可以参看这篇博客。</p>
+<p>B、对于其它的树模型，如随机森林和GBDT，我们只能使用apply()方法获得leaf indices。</p>
+<p><a href="https://zhuanlan.zhihu.com/p/42123341" target="_blank" rel="noopener">XGBoost+LR融合的原理和简单实现</a><br><a href="http://rongzijing.win/index.php/archives/168/" target="_blank" rel="noopener">xgboost和LR模型级联</a></p>
+<p>对于原始数据的编码方式</p>
+<ol>
+<li>连续特征离散化</li>
+<li>离散的特征one-hot 或者特征组合</li>
+<li>使用 boosting 方式将连续特征离散化（xgboost 特征提取）XGBoost + LR 是一种有效的特征工程手段</li>
+</ol>
+<p>利用 GBDT+LR 融合的方案有很多好处，利用 GDBT 主要是发掘有区分度的 特征和特征组合：</p>
+<ul>
+<li>LR 模型无法实现特征组合，但是模型中特征组合很关键，依靠人工经验非常耗时而且不一定能有好的效果。利用 GBDT 可以自动发现有效的特征、特征组合。GBDT 每次迭代都是在减少残差的梯度方向上面新建一棵决策树，GBDT 的每个叶子结点对应一个路径，也就是一种组合方式。</li>
+</ul>
+<p>为进一步理解GBDT-LR的运行过程，同时排查编程实现的错误。这里对整个过程中的数据形态变化进行检视。数据的处理流程为：</p>
+<p>原始特征数据 -&gt; 标签编码 -&gt; GBDT -&gt; 独热编码 -&gt; LR -&gt; 输出。</p>
+<p><a href="http://rongzijing.win/index.php/archives/168/" target="_blank" rel="noopener">xgboost和LR模型级联</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">更新：：：经过实践检验后，我们发现xgb+lr相比xgb几乎没有提升。xgb不像DNN，其本身的特征交叉能力是有限的，用xgb作为lr的特征交叉部分是远远不够的，所以还是需要在LR这边做大量的人工特征交叉设计，我们当时并没有一个实践检验过很好的单LR模型，因为我们没有时间和人力做精细的人工特征交叉设计。</span><br><span class="line"></span><br><span class="line">其实当人工的特征设计足够优秀的时候，特征维度很丰满的单LR已经很强了，xgb那点叶子结点的影响力其实不大。一个好的单LR模型其实根本不太需要xgb这点交叉，一个单xgb模型本身也足够优秀，级联一个垃圾LR不如不级联。 Facebook在2014年的思路是没错的，xgb能够很好的处理连续性型特征，LR来补齐xgb对离散类特征信息的盲区。但是工程上如果想有提升，不可避免还是要做特征工程，要踩得坑太多而且收益甚微，有这个精力不如搞深度学习。</span><br><span class="line"></span><br><span class="line">想要有质变的话建议直接上深度学习，Wide&amp;Deep用Deep部分代替xgb，DNN的特征交叉能力和信息量要比xgb大得多。</span><br></pre></td></tr></table></figure>
+<p>xgboost 确实能够处理连续特征，但是在特征交叉方面，还是有不足的，所以要么是特征工程，增强对离散特征LR。要么是深度网络， DNN（或者transformer）的特征交叉能力和信息量要比xgb大得多。<br>xgboost也就是做了特征筛选和特征交叉。人工特征工程做的够好，LR是可以俯瞰众生，但是考虑到花费的人力物力，还是选模型级联吧！特征工程慢慢做= =</p>
+<p>LR是广义线性模型，能够并行化处理大量亿万级特征的训练样本。LR模型是只使用离散型特征的，连续型特征不是不能用，而是用了以后效果不好，对模型有负影响。LR快速高效，完全可以处理高纬度稀疏的离散化特征。</p>
+<p><a href="http://tva1.sinaimg.cn/large/007X8olVly1g85nwj63oaj30pa0ny75e.jpg" target="_blank" rel="noopener"></a></p>
 <h2 id="复习笔记"><a href="#复习笔记" class="headerlink" title="复习笔记"></a>复习笔记</h2><ol>
 <li>xgboost 的优势 (1) 能够 handle missing values  (2) 数的增长方式，一种是基于level 增长，一种是基于叶子节点增长（如果是相同的结点数量，那么基于叶子增长的方式是更加的深）</li>
 <li>调参是能够调整的参数（max_depth,  随机样本的比例，随机特征的比例），不是常见的参数（比如说 ntthread 线程数量， silent 与否）。</li>
@@ -495,6 +538,8 @@
             <a href="/tags/LightGBM/" rel="tag"># LightGBM</a>
           
             <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
+          
+            <a href="/tags/xgboost-lr/" rel="tag"># xgboost+lr</a>
           
         </div>
       
@@ -610,7 +655,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -632,7 +677,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -706,7 +751,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数"><span class="nav-number">1.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantages-of-LightGBM"><span class="nav-number">2.</span> <span class="nav-text">Advantages of LightGBM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数-1"><span class="nav-number">3.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#referrence"><span class="nav-number">4.</span> <span class="nav-text">referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost调参"><span class="nav-number">5.</span> <span class="nav-text">XGBoost调参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantage-of-XGBoost"><span class="nav-number">6.</span> <span class="nav-text">Advantage of XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost-Parameters"><span class="nav-number">7.</span> <span class="nav-text">XGBoost Parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#general-parameters"><span class="nav-number">7.1.</span> <span class="nav-text">general parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#booster-parameters"><span class="nav-number">7.2.</span> <span class="nav-text">booster parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#learning-task-parameters"><span class="nav-number">7.3.</span> <span class="nav-text">learning task parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Control-Overfitting"><span class="nav-number">7.4.</span> <span class="nav-text">Control Overfitting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Referrence"><span class="nav-number">8.</span> <span class="nav-text">Referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LightGBM-和-XGBoost-的一些区别"><span class="nav-number">9.</span> <span class="nav-text">LightGBM 和 XGBoost 的一些区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习笔记"><span class="nav-number"></span> <span class="nav-text">复习笔记</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数"><span class="nav-number">1.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantages-of-LightGBM"><span class="nav-number">2.</span> <span class="nav-text">Advantages of LightGBM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lightGBM调参-常用参数-1"><span class="nav-number">3.</span> <span class="nav-text">lightGBM调参(常用参数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#referrence"><span class="nav-number">4.</span> <span class="nav-text">referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost调参"><span class="nav-number">5.</span> <span class="nav-text">XGBoost调参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advantage-of-XGBoost"><span class="nav-number">6.</span> <span class="nav-text">Advantage of XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XGBoost-Parameters"><span class="nav-number">7.</span> <span class="nav-text">XGBoost Parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#general-parameters"><span class="nav-number">7.1.</span> <span class="nav-text">general parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#booster-parameters"><span class="nav-number">7.2.</span> <span class="nav-text">booster parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#learning-task-parameters"><span class="nav-number">7.3.</span> <span class="nav-text">learning task parameters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Control-Overfitting"><span class="nav-number">7.4.</span> <span class="nav-text">Control Overfitting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Referrence"><span class="nav-number">8.</span> <span class="nav-text">Referrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LightGBM-和-XGBoost-的一些区别"><span class="nav-number">9.</span> <span class="nav-text">LightGBM 和 XGBoost 的一些区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xgboost-lr"><span class="nav-number">10.</span> <span class="nav-text">xgboost + lr</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习笔记"><span class="nav-number"></span> <span class="nav-text">复习笔记</span></a></div>
             
 
           </div>

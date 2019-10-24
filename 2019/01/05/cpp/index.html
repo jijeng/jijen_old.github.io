@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/bf905cfa70640b78.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/c2aae26f93e96a77.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007X8olVly1g7jzvczlytj304s050weg.jpg">
-<meta property="og:updated_time" content="2019-10-18T01:50:31.314Z">
+<meta property="og:updated_time" content="2019-10-24T05:36:39.324Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++ 编程语言">
 <meta name="twitter:description" content="主要介绍C++ 编程语言。">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-18T09:50:31+08:00">
-                2019-10-18
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-24T13:36:39+08:00">
+                2019-10-24
               </time>
             
           </span>
@@ -847,6 +847,7 @@
 <p>在《编译原理》中我们可以了解到一个编译器对程序代码的编译主要分为下面几个过程：<br>a) 词法分析<br>b) 语法分析<br>c) 语义分析<br>d) 中间代码生成<br>e) 代码优化<br>f) 代码生成<br>g) 符号表管理<br>h) 将多个步骤组合成趟</p>
 <p>3) 汇编过程</p>
 <p>汇编过程实际上指把汇编语言代码翻译成目标机器指令的过程。对于被翻译系统处理的每一个C语言源程序，<br>都将最终经过这一处理而得到相应的目标文件。目标文件中所存放的也就是与源程序等效的目标的机器语言代码。<br>目标文件由段组成。通常一个目标文件中至少有两个段： 代码段：该段中所包含的主要是程序的指令。<br>该段一般是可读和可执行的，但一般却不可写。 数据段：主要存放程序中要用到的各种全局变量或静态的数据。一般数据段都是可读，可写，可执行的。</p>
+<p>汇编语言和二级制代码是不一样的。汇编语言是最接近机器语言的编程语言。常用的命令比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov a,#10000000B</span><br><span class="line">mov a,#80H</span><br><span class="line">mov a,#128</span><br></pre></td></tr></table></figure></p>
 <p>4) 链接程序</p>
 <p>链接程序的主要工作就是将有关的目标文件彼此相连接，也即将在一个文件中引用的符号同该符号在另外一个文件中的定义连接起来，使得所有的这些目标文件成为一个能够诶操作系统装入执行的统一整体。<br>根据开发人员指定的同库函数的链接方式的不同，链接处理可分为两种：</p>
 <p>（1）静态链接 在这种链接方式下，函数的代码将从其所在地静态链接库中被拷贝到最终的可执行程序中。</p>
@@ -854,6 +855,14 @@
 <p>其中的每个文件含有库中的一个或者一组相关函数的代码。 </p>
 <p>（2） 动态链接<br>在此种方式下，函数的代码被放到称作是动态链接库或共享对象的某个目标文件中。链接程序此时所作的只是在最终的可执行程序中记录下共享对象的名字以及其它少量的登记信息。在此可执行文件被执行时，动态链接库的全部内容将被映射到运行时相应进程的虚地址空间。动态链接程序将根据可执行程序中记录的信息找到相应的函数代码。C/C++编译过程对于可执行文件中的函数调用，可分别采用动态链接或静态链接的方法。使用动态链接能够使最终的可执行文件比较短小，并且当共享对象被多个进程使用时能节约一些内存，因为在内存中只需要保存一份此共享对象的代码。但并不是使用动态链接就一定比使用静态链接要优越。在某些情况下动态链接可能带来一些性能上损害。</p>
 <p><a href="http://sniffer.site/2016/10/24/Java%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B/" target="_blank" rel="noopener">Java程序编译过程</a></p>
+<p>用gcc编译成执行程序。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello.c</span><br></pre></td></tr></table></figure></p>
+<p>该命令将hello.c直接生成最终二进制可执行程序a.out</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello.c -o hello.exe</span><br></pre></td></tr></table></figure>
+<p>如何要指定最终二进制可执行程序名，那么用-o选项来指定名称。比如需要生成执行程序hello.exe</p>
+<p>GCC的命令剖析–四步走<br>GCC编译C源码有四个步骤：</p>
+<p>预处理—–&gt; 编译 —-&gt; 汇编 —-&gt; 链接</p>
+<p>预处理<br>在该阶段，编译器将C源代码中的包含的头文件如stdio.h编译进来<br>编译<br>第二步进行的是编译阶段，在这个阶段中，Gcc首先要检查代码的规范性、是否有语法错误等，以确定代码的实际要做的工作，在检查无误后，Gcc把代码翻译成汇编语言。</p>
+<p>汇编<br>汇编阶段是把编译阶段生成的”.s”文件转成二进制目标代码.<br>链接阶段(Link)<br>在成功编译之后，就进入了链接阶段。</p>
 <p><strong>解释型语言和编译型语言</strong></p>
 <p>计算机是不能够识别高级语言的，所以当我们运行一个高级语言程序的时候，就需要一个“翻译机”来从事把高级语言转变成计算机能读懂的机器语言的过程。这个过程分成两类，第一种是编译，第二种是解释。</p>
 <p>编译型语言在程序执行之前，先会通过编译器对程序执行一个编译的过程，把程序转变成机器语言。运行时就不需要翻译，而直接执行就可以了。最典型的例子就是C语言。</p>
@@ -878,6 +887,12 @@
 <li>在设计一个软件系统时，重用和非重用的东西是不是也应该分开来对待，这是软件设计原则的重要部分。</li>
 <li>在设计缓存系统（或者其他系统）时，我们如何来避免程序的过期，其实Python的解释器也为我们提供了一个特别常见而且有效的解决方案。</li>
 </ul>
+<p>常见的编译性语言： c/ c++, pascal<br>常见的解释性语言： java python javascript </p>
+<p>机器翻译的方式有两种，一个是编译，一个是解释。两种方式只是翻译的时间不同。<br>编译型语言写的程序执行之前，需要一个专门的编译过程，把程序编译成为机器语言的文件，比如exe文件，以后要运行的话就不用重新翻译了，直接使用编译的结果就行了（exe文件），因为翻译只做了一次，运行时不需要翻译，所以编译型语言的程序执行效率高。</p>
+<p>解释性语言的程序不需要编译，省了道工序，解释性语言在运行程序的时候才翻译，比如解释性java语言，专门有一个解释器能够直接执行java程序，每个语句都是执行的时候才翻译。这样解释性语言每执行一次就要翻译一次，效率比较低。</p>
+<p>脚本语言是解释性语言。脚本语言一般都有相应的脚本引擎来解释执行。它们一般需要解释器才能运行。所以只要系统上有相应语言的解释程序就可以做到<strong>跨平台</strong>。脚本语言是一种解释性的语言，例如vbscript,javascript,install shield script等等,它不象c\c++等可以编译成二进制代码，以可执行文件的形式存在。脚本语言不需要编译，可以直接用，由解释器来负责解释。</p>
+<p>编译语言： 整个程序经过编译之后再执行，执行效率高。解释性语言，一行一行执行，执行效率低，解释性语言在运行程序的时候才翻译。（所以在debug 的时候，python 的出错的地方能够定位到某一行，但是c++ 就比较困难。）</p>
+<p>其实java 不能完全划分为第二类，java 执行的过程，先是编译成 字节码，然后再执行。脚本语言和解释性语言是一个意思。</p>
 
       
     </div>
@@ -1005,7 +1020,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1027,7 +1042,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
