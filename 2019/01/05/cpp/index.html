@@ -86,17 +86,18 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要介绍C++ 编程语言。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/3eccba34374277a4.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/22/uSWZDJ.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/22/uSWeb9.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/22/uSWGKe.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/bf905cfa70640b78.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/c2aae26f93e96a77.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007X8olVly1g7jzvczlytj304s050weg.jpg">
-<meta property="og:updated_time" content="2019-10-24T05:36:39.324Z">
+<meta property="og:updated_time" content="2019-10-28T04:20:55.041Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++ 编程语言">
 <meta name="twitter:description" content="主要介绍C++ 编程语言。">
-<meta name="twitter:image" content="https://s2.ax1x.com/2019/09/22/uSWZDJ.png">
+<meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2019/10/3eccba34374277a4.png">
 
 
 
@@ -317,8 +318,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-24T13:36:39+08:00">
-                2019-10-24
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-28T12:20:55+08:00">
+                2019-10-28
               </time>
             
           </span>
@@ -416,11 +417,30 @@
 </blockquote>
 <p>虚函数</p>
 <p>虚函数： 就是允许被其子类重新定义的成员函数，子类重新定义父类虚函数的做法，可实现成员函数的动态覆盖（Override）。</p>
+<p>C++中的虚函数实现了多态的机制，也就是用父类型指针指向其子类的实例，然后通过父类的指针调用实际子类的成员函数，这种技术可以让父类的指针有“多种形态”，这也是一种泛型技术，也就是使用不变的代码来实现可变的算法。</p>
 <p>使用虚函数的好处：</p>
 <ol>
 <li>有了虚函数，无需向下转型，可以使用父类的指针或者引用，调用子类的函数</li>
 <li>调用虚函数时，到底调用哪个版本，是根据指针或引用实际所指向的对象的类型来确定，而不是调用者本身的类型来确定</li>
 </ol>
+<p>对象数据和函数的存储方式#<br>我们知道，用类去定义对象，系统会为每一个对象分配存储空间</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/3eccba34374277a4.png" alt=""><br>每个对象占用存储空间的只是该对象的数据部分（虚函数指针和虚基类指针也属于数据部分），函数代码属于公用部分</p>
+<p>C++的内存分区大概分成五个部分：</p>
+<p>栈（stack）：是由编译器在需要时自动分配，不需要时自动清除的变量存储区，通常存放局部变量、函数参数等。<br>堆（heap）：是由new分配的内存块，由程序员释放（编译器不管），一般一个new与一个delete对应，一个new[]与一个delete[]对应，如果程序员没有释放掉，资源将由操作系统在程序结束后自动回收<br>自由存储区：是由malloc等分配的内存块，和堆十分相似，用free来释放<br>全局/静态存储区：全局变量和静态变量被分配到同一块内存中<br>常量存储区：这是一块特殊存储区，里边存放常量，不允许修改<br>（<strong>堆和自由存储区其实不过是同一块区域，new底层实现代码中调用了malloc，new可以看成是malloc智能化的高级版本</strong>）</p>
+<p>你可能会问：静态成员函数和非静态成员函数都是在类的定义时放在内存的代码区的，因而可以说它们都是属于类的，但是类为什么只能直接调用静态类成员函数，而非静态类成员函数(即使函数没有参数)只有类对象才能调用呢</p>
+<p>原因是：类的非静态类成员函数其实都内含了一个指向类对象的指针型参数(即this指针)，因此只有类对象才能调用(此时this指针有实值)</p>
+<p><strong>虚函数表原理简述</strong></p>
+<p>C++实现虚函数的方法是：为每个类对象添加一个隐藏成员，隐藏成员保存了一个指针，这个指针叫虚表指针（vptr），它指向一个虚函数表（virtual function table, vtbl）</p>
+<p>虚函数表就像一个数组，表中有许多的槽（slot），每个槽中存放的是一个虚函数的地址（可以理解为数组里存放着指向每个虚函数的指针）</p>
+<p>即：每个类使用一个虚函数表，每个类对象用一个虚表指针</p>
+<p>C++的编译器会保证虚函数表的指针存在于对象实例中最前面的位置（为了保证取虚函数表有最高的性能，在有多层继承或是多重继承的情况下），这意味着我们通过对象实例的地址得到这张虚函数表的地址，然后就可以遍历其中函数指针，并调用相应的函数</p>
+<p>我们建立一个新类</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">"Base::f"</span> &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">g</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">"Base::g"</span> &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">h</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">"Base::h"</span> &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>按照上面的说法，我们可以通过Base的实例来得到虚函数表，这个表（数组）存了指向f，g，h这三个函数的指针<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">typedef void(*Fun)(void);</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    Base bObj;</span><br><span class="line">    Fun pFun = NULL;    </span><br><span class="line">    //指向void* pf(void)类的函数的指针pFun</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; &quot;虚函数表的地址：&quot; &lt;&lt; (int*)(&amp;bObj) &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &quot;虚函数表的第一个函数地址：&quot; &lt;&lt; (int*) * (int*)(&amp;bObj) &lt;&lt; endl;</span><br><span class="line">    //再次取址得到第一个虚函数的地址</span><br><span class="line"></span><br><span class="line">    //第一个虚函数</span><br><span class="line">    pFun = (Fun) * ((int*) * (int*)(&amp;bObj));</span><br><span class="line">    pFun();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>计算内存大小</p>
+<p>c++中最重要的就是类，那么一个类的对象，它在内存中如何存储的？它占<br>内存中多少个字节？<br>首先确定类的构成：<br>1，数据成员：可以是内置类型，类类型。<br>2，函数成员：虚函数，非虚函数<br>1）数据成员<br><strong>内置类型对齐原则</strong><br>内置类型就是常用的：char,short,long,int,float,double.<br>这些内置类型在类的对象中对齐方式，字节为单位（在c 中结构体也是一样的）<br>char 1<br>short 2<br>long 4<br>int 4<br>float 4<br>fouble 8<br><strong>类类型对齐原则（c 中就是结构体对齐原则）</strong><br>取类中最长的数据成员作为对齐原则。例如，类中最长为 double,那么就是8 个字节。<br>2）函数成员<br>函数成员是不占用内存中类的对象的字节。为什么呢，你可以这样理解，c++中为了兼容c<br>也允许struct 作为类的声明。在c 中struct 是用来声明结构体类型的，只不过c 中的结构<br>体没有函数成员。<br>同样 c++中允许的函数成员，只不过是类给函数提供了一个作用域</p>
+<p>更多的例子是看这里：</p>
+<p><a href="http://www.ishenping.com/ArtInfo/3127703.html" target="_blank" rel="noopener">C++类的存储及类对象内存结构</a></p>
 <p>纯虚函数： 是在基类中声明的虚函数，它在基类中没有定义，但要求任何派生类都要定义自己的实现方法。在基类中实现纯虚函数的方法是在函数原型后加“=0”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//纯虚函数：虚函数只有声明，没有实现，函数体=0</span><br><span class="line">virtual void draw() =0;</span><br><span class="line">virtual void rotate(double ) =0; // 没有实现</span><br></pre></td></tr></table></figure>
 <p>抽象类： 包含纯虚函数的类称为抽象类。由于抽象类包含了没有定义的纯虚函数，所以不能进行实例化。</p>
@@ -511,6 +531,27 @@
 </blockquote>
 <p>auto 关键词</p>
 <p>在C++ 11 中，已经删除了该用法，取而代之的作用是：自动推断变量的类型。</p>
+<p><strong>define 和 typedef 的区别</strong></p>
+<p><code>#define</code> 是 C 中定义的语法, <code>typedef</code> 是 C++ 中定义的语法, 二者在 C++ 中可以通用, 但 <code>#define</code> 成了预编译指令, <code>typedef</code> 当成语句处理. <code>typedef</code> 和 <code>define</code> 都可以用来给对象取一个别名, 但是俩者却有很大的不同, 有以下几点</p>
+<ul>
+<li>执行时间</li>
+</ul>
+<p>关键字 typedef 在编译阶段有效, 由于是在编译阶段, 因此 typededf 有类型检查的功能.<br>define 是宏定义, 发生在预处理阶段, 也就是编译之前, 它只是进行简单而机械的字符串替换, 而不进行任何检查.</p>
+<ul>
+<li>功能不同</li>
+</ul>
+<p><code>typedef</code> 用来定义类型的别名<br><code>#define</code>不止可以为类型取别名, 还可以定义常量, 变量, 编译开关等.</p>
+<ul>
+<li>作用域不同</li>
+</ul>
+<p><code>#define</code> 没有作用域的限制, 只要是之前预定义过的宏, 在以后的程序中都可以使用. 而 <code>typedef</code> 有自己的作用域.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void fun() &#123;</span><br><span class="line">  #define A int</span><br><span class="line">&#125;</span><br><span class="line">void gun() &#123;</span><br><span class="line">//在这里也可以使用A，因为宏替换没有作用域，</span><br><span class="line">//但如果上面用的是typedef，那这里就不能用A ，不过一般不在函数内使用typedef</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最指针操作作用不同</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Typedef int * pint；  </span><br><span class="line">#define PINT int *  </span><br><span class="line">Const pint p；//p不可更改，p指向的内容可以更改，相当于 int * const p;  </span><br><span class="line">Const PINT p；//p可以更改，p指向的内容不能更改，相当于 const int *p；或 int const *p；  </span><br><span class="line">pint s1, s2; //s1和s2都是int型指针  </span><br><span class="line">PINT s3, s4; //相当于int * s3，s4；只有一个是指针。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define MAX(a,b) (a&gt;b)?a:b</span><br><span class="line"></span><br><span class="line">max = MAX(x,y);</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.jianshu.com/p/53ac91a23979" target="_blank" rel="noopener">define 和 typedef 区别</a><br><a href="https://whu-pzhang.github.io/define-and-typedef/" target="_blank" rel="noopener">C/C++ 中的 define 和 typedef</a><br><a href="https://www.cnblogs.com/Wayou/p/macros_in_c_and_cpp.html" target="_blank" rel="noopener">C/C++ 中的宏/Macro</a></p>
+<p>decltype类型指示符</p>
+<p>从表达式的类型推断出要定义的变量的类型，但是不想用该表达式的值初始化变量。</p>
 <h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><p>下面小的程序计算的就是数字 x 的二进制表示中 1 的个数。9999 的二进制表示为 “10011100001111”。 做笔试的时候，周围还是需要有一个电脑，这样的话，就能够查一下资料。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int counters =0;</span><br><span class="line">int x;</span><br><span class="line">x =9999;</span><br><span class="line">while(x)</span><br><span class="line">&#123;</span><br><span class="line">    counters +=1;</span><br><span class="line">    x = x&amp; (x-1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>降序排序和 ceil and floor 库函数</p>
@@ -679,6 +720,42 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Box</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">   <span class="keyword">public</span>:</span><br><span class="line">      Box() &#123; </span><br><span class="line">         <span class="built_in">cout</span> &lt;&lt; <span class="string">"调用构造函数！"</span> &lt;&lt;<span class="built_in">endl</span>; </span><br><span class="line">      &#125;</span><br><span class="line">      ~Box() &#123; </span><br><span class="line">         <span class="built_in">cout</span> &lt;&lt; <span class="string">"调用析构函数！"</span> &lt;&lt;<span class="built_in">endl</span>; </span><br><span class="line">      &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   Box* myBoxArray = <span class="keyword">new</span> Box[<span class="number">4</span>];</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">delete</span> [] myBoxArray; <span class="comment">// 删除数组</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果要为一个包含四个 Box 对象的数组分配内存，构造函数将被调用 4 次，同样地，当删除这些对象时，析构函数也将被调用相同的次数（4次）。</p>
 <p><a href="https://chenqx.github.io/2014/09/25/Cpp-Memory-Management/" target="_blank" rel="noopener">C/C++内存管理详解</a></p>
+<p>两者的区别：</p>
+<p>malloc的全称是memory allocation,中文叫做：动态内存分配。<br>注意事项：</p>
+<p>1)申请内存空间后，必须检查是否分配成功；</p>
+<p>2）当不需要再使用申请的内存时，记得释放；释放后应该把指向这块内存的指针指向NULL，以防后面的程序不小心使用了野指针</p>
+<p>3）malloc和free应该配对使用；释放只能释放一次，若释放两次或更多会出现错误，（释放空指针例外，释放空指针其实等于啥都没做，释放空指针多少次都没有问题）</p>
+<p>4）malloc从堆里面获得内存；函数返回的指针指向堆里面的一块内存。操作系统中有一个记录空闲内存地址的链表，当操作系统收到程序的申请时，就会遍历链表，然后寻找第一个空间大于所申请空间的堆结点，然后将该结点从空闲结点链表中删除，并将该结点分配给程序。</p>
+<p><strong>new运算符</strong></p>
+<p>c++中，用new和delete动态创建和释放数组或者单个对象。<br>动态创建对象时，只需要指定其数据类型，而不必为该对象命名。</p>
+<p>c++中，用new和delete动态创建和释放数组或者单个对象。</p>
+<p>动态创建对象时，只需要指定其数据类型，而不必为该对象命名。</p>
+<p>1） new运算符返回指向该创建对象的指针。</p>
+<p>我们可以通过指针来访问此对象。int *pi = new int ;此new表达式在堆区中分配创建了一个整型对象，并返回此对象的地址，并用该地址初始化指针pi。</p>
+<p>2） 动态创建对象的初始化</p>
+<p>2.1） 动态创建的对象可以用初始化变量的方式初始化。</p>
+<p>int * pi = new int (100);//指针pi所指向的对象初始化为100</p>
+<p>string <em>ps = new string(10,’9’)//</em>ps为“9999999999”</p>
+<p>如果不提供显示初始化，对于类类型，用该类的默认构造函数初始化；而内置类型的对象则无初始化。</p>
+<p>2.2） 可以对动态创建的对象做值初始化：</p>
+<p>int *pi = new int ();//初始化为0；</p>
+<p>int *pi = new int ;//pi指向一个没有初始化的int</p>
+<p>string *ps = new string();//初始化为空字符串（对于提供了默认构造函数的类型，没有必要对其对象进行值初始化）</p>
+<p>3）delete撤销动态创建的对象</p>
+<p>delete表达式释放指针指向的地址空间；</p>
+<p>delete pi；//释放单个对象</p>
+<p>delete [ ] pi;//释放数组</p>
+<p>如果指针指向的不是new分配的内存地址，则使用delete是不合法的。</p>
+<p>4） delete之后，重设指针的值</p>
+<p>delete p；执行完该语句后，p变成了不确定的指针，尽管p值没有明确定义，但仍然存放了它之前所指对象的地址，然后p所指的内存已经被释放了，所以p不再有效。此时，该指针变成了悬垂指针（悬垂指针指向曾经存放对象的内存，但该对象已经不存在了）。悬垂指针往往导致程序错误，而且很难检测出来。</p>
+<p>一旦删除了指针所指的对象，立即将指针置为0，这样就可以非常清楚的指明指针不再指向任何对象。（零值指针：int * ip =0;）</p>
+<p>3 malloc和new的区别<br>（1）new 返回指定类型指针，并且可以自动计算所需要的大小；malloc需要手动计算字节数，并且在返回后强制类型转换为实际类型的指针。</p>
+<p>（2）malloc只管分配内存，并不能对所得到的内存进行初始化，所以得到的一片新内存中，其值将是随机的；new不仅分配内存，还对内存中的对象进行初始化;free只管释放内存；delete不仅释放内存，还会调用对象的析构函数，销毁对象。</p>
+<p>（3） malloc/free是c++/c的标准库函数，头文件为stdlib.h;而new/delete是c++的运算符。他们都可用于申请动态内存和释放内存。</p>
+<p>（4） 对于非内部数据结构的对象而言，光用malloc/free无法满足动态对象的要求，对象在创建的同时，还要自动执行构造函数，对象在消亡之前要自动执行析构函数，由于malloc/free是库函数而不是运算符，不在编译器控制权限之内，不能够把执行构造函数和析构函数的任务强加于malloc/free;因此，c++语言需要一个能够完成动态内存分配和初始化的运算符new，以及一个能完成清理与释放内存工作的运算符delete；我们不要企图用malloc和free来完成动态对象的内存管理，应该用new/delete。由于内部数据类型没有构造和析构过程，对他们而言malloc/free和new/delete是等价的。</p>
+<p>new/delete的功能完全覆盖了malloc/free,为什么还要malloc和free了？<br>这是因为c++程序经常要调用c函数，而c程序只能用malloc和free来管理动态内存。</p>
+<p>如果用free释放new创建的动态对象，那么该对象因无法执行析构函数而可能导致程序出错。如果用delete释放掉malloc申请的动态内存，结果也会导致程序出错，结果理论上应该可以，但是程序的可读性很差。所以new/delete必须配对使用，malloc和free也一样。</p>
+<p><a href="https://www.jianshu.com/p/8a5b5ee5c4d0" target="_blank" rel="noopener">malloc和new的区别</a></p>
 <h2 id="指针和引用"><a href="#指针和引用" class="headerlink" title="指针和引用"></a>指针和引用</h2><p>在C++中, 如果要对某个存储单元进行访问(读取/写入), 有两种方式, 一是通过变量名找到存储地址再进行访问, 二是直接通过存储地址进行访问。</p>
 <ul>
 <li><p>通过变量名进行访问<br>通过变量名进行访问就是我们通过编译器起一个名字, 程序在运行时, 系统为该程序建立一个变量名与内存单元地址之间的映射表, 通过名字即可找到该存储单元的地址并进行操作。</p>
@@ -1020,7 +1097,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">89</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
