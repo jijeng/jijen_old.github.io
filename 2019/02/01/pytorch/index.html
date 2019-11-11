@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="pytorch," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分， 一个是关于Autograd 部分。">
+<meta name="keywords" content="pytorch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch">
+<meta property="og:url" content="http://yoursite.com/2019/02/01/pytorch/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分， 一个是关于Autograd 部分。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-11-02T15:34:30.950Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pytorch">
+<meta name="twitter:description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分， 一个是关于Autograd 部分。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/01/pytorch/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>pytorch | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/01/pytorch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">pytorch</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-01T20:36:03+08:00">
+                2019-02-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-02T23:34:30+08:00">
+                2019-11-02
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/01/pytorch/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/02/01/pytorch/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>pytorch 学习笔记</p>
+<p>不理解的地方，一个是关于 nn包搭建网络的部分， 一个是关于Autograd 部分。</p>
+<a id="more"></a>
+<ol>
+<li>pytorch 和torch 比较</li>
+</ol>
+<p>编程语言：<br>pytorch 采用python语言，实际上使用c语言和c++ 做接口<br>torch 采用lua，使用c语言和lua 语言做接口<br>（lua 语言相当于一个小型加强版的c语言，支持类和面向对象）<br>依赖库：<br>pytorch 和 torch 框架的区别和联系：<br>pytorch 可调用python强大的第三方库，比如 opencv<br>torch 可调用 lua 库函数，目前 lua库函数没有python多<br>pytorch 依赖库多于 torch<br>效率：<br>python 的debug 功能比lua 强大，所以pytorch 效率高于torch<br>模型和中间变量的关系：<br>pytorch 中中间变量都存在计算图中，所以model 共享中间变量<br>torch 的中间变量在每一个模块中，所以想要调用其他模块的参数就必须复制这个模块然后再调用</p>
+<p>总结<br>pytorch可以说是torch 的python版本，并增加了很多新功能</p>
+<ol start="2">
+<li>常用的框架比较</li>
+</ol>
+<p>tensorflow 背后是google， mxnet 是Amazon，pytorch背后是Facebook<br>每个框架都有各自的有点，比如tensorflow的工程能力很强，Theano特别适合科研等等<br>keras是一个很高层的结构，它的后端支持theano和tensorflow，它本质上并不是一个框架，只是对框架的操作做了一个封装，你在写keras的时候其实是对其后端进行调用，相当于你还是在tensorflow或者theano上跑程序，只不过你把你的语言交给keras处理了一下变成tensorflow听得懂的语言，然后再交给tensorflow处理，这样的后果当然方便你构建网络，方便定义模型做训练，极快的构建你的想法，工程实现很强，但是这样也有一个后果，那就是细节你没有办法把控，训练过程高度封装，导致你没有办法知道里面的具体细节，以及每个参数的具体细节，使得调试和研究变得很困难。</p>
+<ol start="3">
+<li>pytorch的思想</li>
+</ol>
+<p>PyTorch 的构建者表明，PyTorch 的哲学是解决当务之急，也就是说即时构建和运行我们的计算图。这恰好适合 Python 的编程方法，因为我们不需等待整个代码都被写入才能知道是否起作用。我们很容易运行部分代码，并实时检查它。</p>
+<p>PyTorch 是一个基于 Python 的库，旨在为深度学习提供一个灵活的开发平台。PyTorch 的工作流程非常接近于 Python 的科学计算库 NumPy。那么为什么我们需要使用 PyTorch 构建深度学习模型？以下作者根据实际经验提供了三个理由：</p>
+<ul>
+<li>便于使用的 API：它的使用如同 Python 那样简单。</li>
+<li>支持 Python：正如上文所述，PyTorch 可以平滑地与 Python 数据科学栈相结合。它与 NumPy 一样简单，甚至我们都感觉不出它们的区别。</li>
+<li>动态计算图：PyTorch 不再采用特定的函数预定义计算图，而是提供构建动态计算图的框架，甚至我们可以在运行时修正它们。这种动态框架在我们不知道所构建的神经网络需要多少内存时非常有用。<br>其它一些使用 PyTorch 的优点还有多 GPU 支持、自定义数据加载器和极简的预处理过程等。</li>
+</ul>
+<p>在讨论 PyTorch 的各个组件前，我们需要了解它的工作流。PyTorch 使用一种称之为 imperative / eager 的范式，即每一行代码都要求构建一个图以定义完整计算图的一个部分。即使完整的计算图还没有完成构建，我们也可以独立地执行这些作为组件的小计算图，这种动态计算图被称为<strong>「define-by-run」</strong>方法。</p>
+<p>PyTorch 提供了 CPU 张量和 GPU 张量，并且极大地加速了计算的速度。<br>从张量的构建与运行就能体会到 PyTorch 相比 TensorFLow 需要声明张量、初始化张量要简洁地多。以下语句将随机初始化一个 5×3 的二维张量，因为 PyTorch 是一种动态图，所以它声明和真实赋值是同时进行的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.Tensor(5, 3)</span><br></pre></td></tr></table></figure></p>
+<p>若我们希望随机初始化的张量服从某些分布，那么我们可以直接对张量对象使用一些方法。如下初始化的张量将服从均匀分布：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.Tensor(5, 3).uniform_(-1, 1)</span><br></pre></td></tr></table></figure></p>
+<p>PyTorch 同样支持广播（Broadcasting）操作，一般它会隐式地把一个数组的异常维度调整到与另一个算子相匹配的维度以实现维度兼容。</p>
+<p>如下，我们定义了两个 GPU 张量，并对这两个张量执行矩阵乘法。当然，我们也可以如下所示将 CPU 张量转换为 GPU 张量。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以下转化CPU张量为GPU张量</span></span><br><span class="line">x = torch.FloatTensor(<span class="number">5</span>, <span class="number">3</span>).uniform_(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">print(x)</span><br><span class="line">x = x.cuda(device=<span class="number">0</span>)</span><br><span class="line">print(x)</span><br><span class="line">x = x.cpu()</span><br><span class="line">print(x)</span><br></pre></td></tr></table></figure></p>
+<p><code>AutoGrad 模块</code></p>
+<p>TensorFlow、Caffe 和 CNTK 等大多数框架都是使用的静态计算图，开发者必须建立或定义一个神经网络，并重复使用相同的结构来执行模型训练。改变网络的模式就意味着我们必须从头开始设计并定义相关的模块。</p>
+<p>但 PyTorch 使用的技术为自动微分（automatic differentiation）。在这种机制下，系统会有一个 Recorder 来记录我们执行的运算，然后再反向计算对应的梯度。这种技术在构建神经网络的过程中十分强大，因为我们可以通过计算前向传播过程中参数的微分来节省时间。</p>
+<p><strong>最优化模块</strong><br>torch.optim 是实现神经网络中多种优化算法的模块，它目前已经支持大多数一般的方法，所以我们不需要从头构建优化算法。以下展示了使用 Adam 优化器的基本代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)</span><br></pre></td></tr></table></figure></p>
+<p>我们一般可以使用 torch.nn 包构建神经网络，下面提供了一些 API 的表达及意义：</p>
+<ul>
+<li>线性层- nn.Linear、nn.Bilinear</li>
+<li>卷积层 - nn.Conv1d、nn.Conv2d、nn.Conv3d、nn.ConvTranspose2d</li>
+<li>非线性激活函数- nn.Sigmoid、nn.Tanh、nn.ReLU、nn.LeakyReLU</li>
+<li>池化层 - nn.MaxPool1d、nn.AveragePool2d</li>
+<li>循环网络 - nn.LSTM、nn.GRU</li>
+<li>归一化 - nn.BatchNorm2dDropout - nn.Dropout、nn.Dropout2d</li>
+<li>嵌入 - nn.Embedding</li>
+<li>损失函数 - nn.MSELoss、nn.CrossEntropyLoss、nn.NLLLoss</li>
+</ul>
+<p><strong>张量</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import torch</span><br><span class="line">a = torch.FloatTensor(5, 7)</span><br></pre></td></tr></table></figure></p>
+<p>相同点 / 不同点<br>第一个区别是，所有的操作在张量操作需要有<em>后缀。例如，add在此处无用，使用add</em>是可用的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a.fill_(<span class="number">3.5</span>)</span><br><span class="line"><span class="comment"># 将a填充值3.5。</span></span><br><span class="line">b = a.add(<span class="number">4.0</span>)</span><br><span class="line"><span class="comment"># a 依然是填充3.5</span></span><br><span class="line"><span class="comment"># 新张量b的返回值为3.5 + 4＝7.5。</span></span><br><span class="line">print(a, b)</span><br></pre></td></tr></table></figure>
+<p><strong>零索引</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">b = a[0, 3]  # 选择a中的1行4列</span><br><span class="line">b = a[:, 3:5]  # 从a中选择所以行的4到5列</span><br><span class="line">x.index_add_(1, torch.LongTensor([4, 0]), z)</span><br></pre></td></tr></table></figure></p>
+<p>下一个小的区别是所有的功能现在都不是驼峰命名了。例如indexAdd现在调用index_add_</p>
+<p>CUDA传感器在pytorch中很好并且很容易，并将CUDA张量从CPU转移到GPU将保留其基础类型。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看电脑是否支持CUDA</span></span><br><span class="line"><span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">    <span class="comment"># 创建一个LongTensor并且把它全部转换为3</span></span><br><span class="line">    <span class="comment"># to GPU as torch.cuda.LongTensor</span></span><br><span class="line">    a = torch.LongTensor(<span class="number">10</span>).fill_(<span class="number">3</span>).cuda()</span><br><span class="line">    print(type(a))</span><br><span class="line">    b = a.cpu()</span><br><span class="line">    <span class="comment"># transfers it to CPU, back to</span></span><br><span class="line">    <span class="comment"># being a torch.LongTensor</span></span><br></pre></td></tr></table></figure></p>
+<p>基本类型<br>Tensor的基本数据类型有五种：</p>
+<ul>
+<li>32位浮点型：torch.FloatTensor。 (默认)</li>
+<li>64位整型：torch.LongTensor。</li>
+<li>32位整型：torch.IntTensor。</li>
+<li>16位整型：torch.ShortTensor。</li>
+<li>64位浮点型：torch.DoubleTensor。</li>
+</ul>
+<p>numpy 和 tensor 之间的相互转换</p>
+<p>使用numpy 方法将tensor 转换成 ndarray<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn((<span class="number">3</span>, <span class="number">2</span>))</span><br><span class="line"><span class="comment"># tensor转化为numpy</span></span><br><span class="line">numpy_a = a.numpy()</span><br><span class="line">print(numpy_a)</span><br></pre></td></tr></table></figure></p>
+<p>numpy转化为Tensor<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch_a = torch.from_numpy(numpy_a)</span><br><span class="line">torch_a</span><br></pre></td></tr></table></figure></p>
+<p>一般情况下可以使用.cuda方法将tensor移动到gpu，这步操作需要cuda设备支持</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cpu_a=torch.rand(4, 3)</span><br><span class="line">cpu_a.type()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gpu_a=cpu_a.cuda()</span><br><span class="line">gpu_a.type()</span><br></pre></td></tr></table></figure>
+<p>使用.cpu 将tensor 转换成cpu<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cpu_b=gpu_a.cpu()</span><br><span class="line">cpu_b.type()</span><br></pre></td></tr></table></figure></p>
+<p>如果我们有多GPU的情况，可以使用to方法来确定使用那个设备，这里只做个简单的实例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#使用torch.cuda.is_available()来确定是否有cuda设备</span><br><span class="line">device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)</span><br><span class="line">print(device)</span><br><span class="line">#将tensor传送到设备</span><br><span class="line">gpu_b=cpu_b.to(device)</span><br><span class="line">gpu_b.type()</span><br></pre></td></tr></table></figure></p>
+<p>下一章介绍PyTorch的自动求导机制</p>
+<ul>
+<li>变量</li>
+<li>梯度</li>
+</ul>
+<p>从0.4起, Variable 正式合并入Tensor类, 通过Variable嵌套实现的自动微分功能已经整合进入了Tensor类中。虽然为了代码的兼容性还是可以使用Variable(tensor)这种方式进行嵌套, 但是这个操作其实什么都没做。所以，以后的代码建议直接使用Tensor类进行操作，因为官方文档中已经将Variable设置成过期模块。要想通过Tensor类本身就支持了使用autograd功能，只需要设置.requries_grad=True。 Variable类中的的grad和grad_fn属性已经整合进入了Tensor类中</p>
+<p>每个变量都有两个标志：<code>requires_grad</code>和<code>volatile</code>。它们都允许从梯度计算中精细地排除子图，并可以提高效率。</p>
+<p><code>requires_grad</code><br>如果有一个单一的输入操作需要梯度，它的输出也需要梯度。相反，只有所有输入都不需要梯度，输出才不需要。如果其中所有的变量都不需要梯度进行，后向计算不会在子图中执行。</p>
+<p>这个标志特别有用，当您想要冻结部分模型时，或者您事先知道不会使用某些参数的梯度。例如，如果要对预先训练的CNN进行优化，只要切换冻结模型中的requires_grad标志就足够了，直到计算到最后一层才会保存中间缓冲区，其中的仿射变换将使用需要梯度的权重并且网络的输出也将需要它们。</p>
+<p><code>volatile</code></p>
+<p>纯粹的inference模式下推荐使用volatile，当你确定你甚至不会调用.backward()时。它比任何其他自动求导的设置更有效——它将使用绝对最小的内存来评估模型。volatile也决定了require_grad is False。</p>
+<p>volatile不同于require_grad的传递。如果一个操作甚至只有有一个volatile的输入，它的输出也将是volatile。Volatility比“不需要梯度”更容易传递——只需要一个volatile的输入即可得到一个volatile的输出，相对的，需要所有的输入“不需要梯度”才能得到不需要梯度的输出。使用volatile标志，您不需要更改模型参数的任何设置来用于inference。创建一个volatile的输入就够了，这将保证不会保存中间状态。</p>
+<p>参考<a href="https://pytorch-cn.readthedocs.io/zh/latest/notes/autograd/" target="_blank" rel="noopener">官方教程</a></p>
+<p>PyTorch 基础 : 神经网络包nn和优化器optm</p>
+<h3 id="疑惑"><a href="#疑惑" class="headerlink" title="疑惑"></a>疑惑</h3><h3 id="pytorch-使用torch-模型"><a href="#pytorch-使用torch-模型" class="headerlink" title="pytorch 使用torch 模型"></a>pytorch 使用torch 模型</h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/pytorch/" rel="tag"># pytorch</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/22/regular-expression/" rel="next" title="Regular Expression">
+                <i class="fa fa-chevron-left"></i> Regular Expression
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/06/hmm/" rel="prev" title="新词发现和马尔科夫模型">
+                新词发现和马尔科夫模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#疑惑"><span class="nav-number">1.</span> <span class="nav-text">疑惑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pytorch-使用torch-模型"><span class="nav-number">2.</span> <span class="nav-text">pytorch 使用torch 模型</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/02/01/pytorch/';
+          this.page.identifier = '2019/02/01/pytorch/';
+          this.page.title = 'pytorch';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -87,7 +87,7 @@
 <meta property="og:description" content="简历信息">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/09/3baa1391fe380171.png">
-<meta property="og:updated_time" content="2019-10-12T14:38:57.643Z">
+<meta property="og:updated_time" content="2019-10-29T09:09:58.739Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Summary">
 <meta name="twitter:description" content="简历信息">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-12T22:38:57+08:00">
-                2019-10-12
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-29T17:09:58+08:00">
+                2019-10-29
               </time>
             
           </span>
@@ -444,7 +444,7 @@
 <li>图像处理和nlp 的差别：<br>离散  or 连续； 定长 or 非定长；稠密 or 稀疏。</li>
 </ol>
 <ol start="6">
-<li>对于 bert transformer 的介绍？<br>bert 是集大成者，前面还有很多重要的研究成果，比如attention，self-attention 和transformer。直接从 transformer 说起，大的结构还是 encoder、decoder 的结构。encoder 是6 个两层结构， decoder 也是 6个三层结构。<br>bert 中有几个技术点是需要讲解： layer normalization （主要 vs batch normalization）、position embedding （在encoder 中是结合了 word embedding 一块作为输入的）、masked attention（当predict t 时刻的word的时候，只能看到  t 之前的情况，将 t 之后的word 进行了 mask）、multi-head attention（类似 图像中的多个 filter ）、self-attention 就不多说了<br>从 transformer 到 bert 又是一个比较复杂的模型组合的工作。</li>
+<li>对于 bert transformer 的介绍？<br>bert 是集大成者，前面还有很多重要的研究成果，比如attention，self-attention 和transformer。直接从 transformer 说起，大的结构还是 encoder、decoder 的结构。encoder 是6 个两层结构， decoder 也是 6个三层结构。<br>transformer 中有几个技术点是需要讲解： layer normalization （主要 vs batch normalization）、position embedding （在encoder 中是结合了 word embedding 一块作为输入的）、masked attention（当predict t 时刻的word的时候，只能看到  t 之前的情况，将 t 之后的word 进行了 mask）、multi-head attention（类似 图像中的多个 filter ）、self-attention 就不多说了<br>从 transformer 到 bert 又是一个比较复杂的模型组合的工作。</li>
 </ol>
 <p>6.1 关于bert 和lstm 的比较<br>（解答这种问题需要有一个切入点，那么就是 lstm 的缺点）<br>lstm 是无法解决长依赖的问题，lstm 使用输入门，遗忘门和输出门可以缓解一定程度上的长依赖的问题，但是当句子更长的时候，那么也是无能为力的。 bert 是一个集大成这，其中大量使用了 transformer的结构，而transformer 结构是基于 attention机制，所以可以解决长依赖的问题。<br>除此之外，bert是可以在 GPU 上进行fine tune，那么意味着计算效率是比较高的，可以并行运算。当然还有其他的，比如 bert 是一个预训练模型，可以在特定的任务上进行fine tune 得到比较好的结果，比如我论文中的模型就是基于 bert 进行fine tune ，然后不需要怎么训练，效果就已经很好了。</p>
 <p>效果好并且速度比较快，这个快是指的 fine-tune 的效果，不是从头开始训练的时间。（一般都是从 速度 和效果两方面评价模型的好坏）效果主要体现在表示语义，上下文信息；给定it 能够知道指代的关系</p>
@@ -474,10 +474,11 @@
 <ol start="7">
 <li><p>关键词提取技术<br>卡方分布：卡方检验是以χ2分布为基础的一种常用假设检验方法。该检验的基本思想是：首先假设$H_0$（比如说某个特征和label 无关）成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。卡方分布中的参数F（自由度，（行数 - 1） * （列数 - 1）），有了自由度那么就可以得到对应表中的卡方值，然后得到原假设成立的概率。但是在实际应用中，只需要将最后的将最后的结果进行排序，选择最大的前K，就是最后的结果。缺点： 考虑的是出现与否，不是频率；没有考虑语意信息。</p>
 </li>
-<li><p>多线程，多进行<br>python 中的实现， 多线程是 ， 使用threading， 处理的是io 响应； ，多进程是Concurrency， 使用multiprocessing 包，处理的是多核cpu的操作。并发和并行，并发只是用户感觉，通过快速切换，保存现场实现；并行是真正的同一时刻运行着不同的程序。</p>
+<li><p>多线程，多进行<br>python 中的实现， 多线程是 ， 使用threading， 处理的是io 响应；多进程是Concurrency， 使用multiprocessing 包，处理的是多核cpu的操作。并发和并行，并发只是用户感觉，通过快速切换，保存现场实现；并行是真正的同一时刻运行着不同的程序。<br>对于io 绑定的任务，使用多进程可以提高性能；使用多进程也可以提高性能，但是开销往往比多线程高。比如说访问多个网站，使用多线程进行爬取网页的任务的效率是高于单个线程的效率。（大部分和io 绑定的程序 都是在等待输入输出，无所事事。比如由于网络延迟，导致来自网络 数据库 文件所花费的时间是远远大于 cpu 处理时间，那么这个时候使用多线程就比较nice）<br>对于cpu 绑定的任务，使用多线程往往可以降低性能，使用多进程可以提高性能。比如说就算 1w 以内的所有的质数，因为现在的cpu 都是多核的，可以调用多个处理模块，但是当生成的进程数量多于cpu 的处理能力，那么就观察到了性能的下降，因为这个时候使用更多的工作来换取cpu 内核内外的进程。</p>
 </li>
-<li><p>新词发现<br>这里有三个阈值（都是越大越好）：<br>第一是最小互信息，因为互信息越大说明相关度越大，将n-gram分好的词计算互信息，如果低于阈值，则说明不能成词。<br>第二是最小熵值，因为熵也是越大说明周边词越丰富，计算其左熵和右熵的最小值，如果最小值低于阈值，则说明不能成词。<br>第三个是最少出现次数，为什么有这个数呢？假设前后两个词是完全相关的，出现400次，总共8000词，那么互信息=log((400/8000)/(400/8000)<em>(400/8000))，约掉之后剩下log(8000/400)。但是一个词如果从头到尾出现了一次，但是并不是单词，则互信息为=log((1/8000)/(1/8000)</em>(1/8000))=log(8000/1)，那么它的互信息会更大。取最少出现次数也会出现问题，就是一些低频率的词不能发现。<a href="https://jijeng.github.io/2019/03/25/NLP%E4%B8%AD%E7%9A%84%E7%A2%8E%E7%A2%8E%E5%BF%B5/" target="_blank" rel="noopener">有更加详细的公式</a></p>
-</li>
+</ol>
+<ol start="9">
+<li>新词发现<br>这里有三个阈值（都是越大越好）：<br>第一是最小互信息，因为互信息越大说明相关度越大，将n-gram分好的词计算互信息，如果低于阈值，则说明不能成词。<br>第二是最小熵值，因为熵也是越大说明周边词越丰富，计算其左熵和右熵的最小值，如果最小值低于阈值，则说明不能成词。<br>第三个是最少出现次数，为什么有这个数呢？假设前后两个词是完全相关的，出现400次，总共8000词，那么互信息=log((400/8000)/(400/8000)<em>(400/8000))，约掉之后剩下log(8000/400)。但是一个词如果从头到尾出现了一次，但是并不是单词，则互信息为=log((1/8000)/(1/8000)</em>(1/8000))=log(8000/1)，那么它的互信息会更大。取最少出现次数也会出现问题，就是一些低频率的词不能发现。<a href="https://jijeng.github.io/2019/03/25/NLP%E4%B8%AD%E7%9A%84%E7%A2%8E%E7%A2%8E%E5%BF%B5/" target="_blank" rel="noopener">有更加详细的公式</a></li>
 </ol>
 <h3 id="文章去重"><a href="#文章去重" class="headerlink" title="文章去重"></a>文章去重</h3><p>参加的一个课题项目，针对某个特定的行业，比如房地产、互联网，基于大数据，对网页或者文章进行分析，使用数据挖掘的手段，捕捉热点，然后为企业或者个人提供事件或者品牌的情感分析、品牌分析。这个是大的项目背景。</p>
 <p>我参与的是在于对网页或者网页的去重工作，因为之后的文章分析的指标计算，比如流行度，都是比较依赖于数据的准确性。数据的来源：新闻（搜狐网、新浪网）电子报纸，app 新闻，分成不同类别的新闻，比如科技、教育、金融和体育。每条数据由标题、站点、url、发布时间、内容、阅读量、评论量等组成，数据量是百万级别的。其中内容部分是由500 到2000不等的字数组成。步骤的话，先是文本的预处理，提取关键词，然后使用simhash 或者minhash 进行计算，重复文章的集合，最后去掉重复的文章。</p>
@@ -701,7 +702,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-count">95</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -723,7 +724,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

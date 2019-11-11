@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/bf905cfa70640b78.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/c2aae26f93e96a77.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007X8olVly1g7jzvczlytj304s050weg.jpg">
-<meta property="og:updated_time" content="2019-10-28T04:20:55.041Z">
+<meta property="og:updated_time" content="2019-11-06T12:41:08.499Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++ 编程语言">
 <meta name="twitter:description" content="主要介绍C++ 编程语言。">
@@ -318,8 +318,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-28T12:20:55+08:00">
-                2019-10-28
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-06T20:41:08+08:00">
+                2019-11-06
               </time>
             
           </span>
@@ -756,6 +756,21 @@
 <p>new/delete的功能完全覆盖了malloc/free,为什么还要malloc和free了？<br>这是因为c++程序经常要调用c函数，而c程序只能用malloc和free来管理动态内存。</p>
 <p>如果用free释放new创建的动态对象，那么该对象因无法执行析构函数而可能导致程序出错。如果用delete释放掉malloc申请的动态内存，结果也会导致程序出错，结果理论上应该可以，但是程序的可读性很差。所以new/delete必须配对使用，malloc和free也一样。</p>
 <p><a href="https://www.jianshu.com/p/8a5b5ee5c4d0" target="_blank" rel="noopener">malloc和new的区别</a></p>
+<p><strong>对于c++ 中malloc 的理解</strong></p>
+<p>在C++ STL中，vector是用内建（build-in）的动态数组（dynamic array）实现的。动态数组是相对于静态数组（数组大小不变）而言的，在C++中普通的数组的大小是固定的，在初始化的时候就确定了，使用的时候不能超过其范围。</p>
+<p>静态数组是在栈上分配的空间</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">100</span>] = &#123;<span class="number">0</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>动态数组是在堆上分配的空间<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>); <span class="built_in">memset</span>(p, <span class="number">0</span>, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br></pre></td></tr></table></figure></p>
+<p>一般来说，如果重新分配，那么是之前的二倍。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function insertEnd(dynarray a, element e)</span><br><span class="line">    if (a.size = a.capacity)</span><br><span class="line">        // resize a to twice its current capacity:</span><br><span class="line">        a.capacity ← a.capacity * 2</span><br><span class="line">        // (copy the contents to the new memory location here)</span><br><span class="line">    a[a.size] ← e</span><br><span class="line">    a.size ← a.size + 1</span><br></pre></td></tr></table></figure></p>
+<p>当不够的时候，需要考虑分配，释放，复制和析构等步骤。这些过程会大大影响系统的性能。那么如何避免vector在使用中频繁的分配？ 主要有两种方式。</p>
+<ol>
+<li><p>使用reserve()保留适当容量:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;     <span class="comment">//size 0,capacity 0</span></span><br><span class="line">v.reserve(<span class="number">80</span>);          <span class="comment">//size 0,capacity 80</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>初始化期间就向构造函数传递附加参数，构造出足够的空间:</p>
+</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt; v(<span class="number">5</span>);    <span class="comment">//size 0,capacity 80</span></span><br></pre></td></tr></table></figure>
 <h2 id="指针和引用"><a href="#指针和引用" class="headerlink" title="指针和引用"></a>指针和引用</h2><p>在C++中, 如果要对某个存储单元进行访问(读取/写入), 有两种方式, 一是通过变量名找到存储地址再进行访问, 二是直接通过存储地址进行访问。</p>
 <ul>
 <li><p>通过变量名进行访问<br>通过变量名进行访问就是我们通过编译器起一个名字, 程序在运行时, 系统为该程序建立一个变量名与内存单元地址之间的映射表, 通过名字即可找到该存储单元的地址并进行操作。</p>
@@ -838,6 +853,8 @@
 </ol>
 <p>sizeof：<br>1、计算所有变量类型的占用字节大小<br>2、在计算字符串的时候，会将字符串后面的’\0’的大小也计算上来。<br>3、计算的是字节内存的大小<br>4、计算数组名的时候特殊，会计算整个数组的长度。其他的均计算单个变量</p>
 <p>strlen：<br>1、计算的是字符串的长度大小<br>3、计算字符串长度时，将会忽略’\0’结束符，遇到’\0’字符就会结束。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[] =<span class="string">"world"</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(str)&lt;&lt;<span class="string">":"</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">strlen</span>(str)&lt;&lt;<span class="string">":"</span>;</span><br><span class="line">    <span class="keyword">char</span> *p =str;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(p) &lt;&lt;<span class="string">":"</span>;</span><br><span class="line">    <span class="keyword">char</span> i =<span class="number">10</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(i) &lt;&lt;<span class="string">":"</span>;</span><br><span class="line">    <span class="comment">// 输出的结果 6:5:8:1:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>sizeof 会包含 <code>\0</code> 的长度， 但是strlen() 不会。但是当申请固定长度的 char 数组，那么sizeof 就不包括了<code>\0</code>，可以查看下面的例子。但是strlen 一直是有效的长度。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[<span class="number">10</span>] =<span class="string">"world"</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(str)&lt;&lt;<span class="string">":"</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">strlen</span>(str)&lt;&lt;<span class="string">":"</span>;</span><br><span class="line">    <span class="keyword">char</span> *p =str;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(p) &lt;&lt;<span class="string">":"</span>;</span><br><span class="line">    <span class="keyword">char</span> i =<span class="number">10</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(i) &lt;&lt;<span class="string">":"</span>;</span><br><span class="line">    <span class="comment">// 输出的结果 10:5:8:1:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <ol start="9">
 <li>利用malloc分配内存</li>
 </ol>
@@ -1097,7 +1114,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-count">95</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1119,7 +1136,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

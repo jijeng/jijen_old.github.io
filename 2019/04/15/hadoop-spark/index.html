@@ -87,12 +87,13 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要介绍 Hadoop 和 Spark 的关系和联系。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/62a4ef4f63e2329b.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/885ded3d1dbfbe91.png">
-<meta property="og:updated_time" content="2019-10-20T02:31:05.676Z">
+<meta property="og:updated_time" content="2019-10-29T14:12:14.689Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hadoop And Spark">
 <meta name="twitter:description" content="主要介绍 Hadoop 和 Spark 的关系和联系。">
-<meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2019/10/885ded3d1dbfbe91.png">
+<meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2019/10/62a4ef4f63e2329b.png">
 
 
 
@@ -313,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-20T10:31:05+08:00">
-                2019-10-20
+              <time title="Post modified" itemprop="dateModified" datetime="2019-10-29T22:12:14+08:00">
+                2019-10-29
               </time>
             
           </span>
@@ -389,6 +390,16 @@
 <a id="more"></a>
 <p>Hadoop的框架最核心的设计就是：HDFS和MapReduce。HDFS为海量的数据提供了存储，则MapReduce为海量的数据提供了计算。所以使用Hadoop则可以抛开spark，而直接使用Hadoop自身的mapreduce完成数据的处理。Spark是不提供文件管理系统的，但也不是只能依附在Hadoop上，它同样可以选择其他的基于云的数据系统平台，但spark默认的一般选择的还是hadoop。</p>
 <p>HDFS是一个采用Master/Slave模式的高度容错的分布式文件系统，DataNode节点用于存储数据，NameNode节点维护集群内的元数据，Map负责对数据进行打散，Reduce负责对数据进行聚合，核心步骤为：首先将计算机任务拆分成若干个Map任务，然后分配到不同的节点上执行，每一个Map任务处理数据中的一部分，完成后生产的的中间结果，保存在磁盘中，Reduce将前面的若干个Map的输出汇总到一起输出。</p>
+<p>Hadoop集群由一个Master主节点和若干个Slave节点组成。其中，Master节点上运行NameNode和JobTracker守护进程；Slave节点上运行DataNode和TaskTracker守护进程。 </p>
+<ul>
+<li>Namenode<br>是整个文件系统的管理节点。它维护着1.整个文件系统的文件目录树，2.文件/目录的元信息和每个文件对应的数据块列表。3.接收用户的操作请求。</li>
+<li>dataNode提供真实文件数据的存储服务。</li>
+</ul>
+<ol>
+<li>文件块（block）：最基本的存储单位。对于文件内容而言，一个文件的长度大小是size，那么从文件的０偏移开始，按照固定的大小，顺序对文件进行划分并编号，划分好的每一个块称一个Block。</li>
+<li>HDFS默认Block大小是128MB，以一个256MB文件，共有256/128=2个Block. 不同于普通文件系统的是，HDFS中，如果一个文件小于一个数据块的大小，并不占用整个数据块存储空间。   (这样设置可以减轻namenode压力，因为namonode维护者文件与数据块列表的对应大小)</li>
+<li>Replication。多复本。默认是三个。（hdfs-site.xml的dfs.replication属性）</li>
+</ol>
 <p>首先了解一下Mapreduce，它最本质的两个过程就是Map和Reduce，Map的应用在于我们需要数据一对一的元素的映射转换，比如说进行截取，进行过滤，或者任何的转换操作，这些一对一的元素转换就称作是Map；Reduce主要就是元素的聚合，就是多个元素对一个元素的聚合，比如求Sum等，这就是Reduce。</p>
 <p>spark 的优势</p>
 <ul>
@@ -435,7 +446,7 @@
 <ul>
 <li>本地模式</li>
 </ul>
-<p>Spark不一定非要跑在hadoop集群，可以在本地，起多个线程的方式来指定。方便调试，本地模式分三类<br>local：只启动一个executor<br>local[k]: 启动k个executor<br>local：启动跟cpu数目相同的 executor</p>
+<p>Spark不一定非要跑在hadoop集群，可以在本地，起多个线程的方式来指定。方便调试，本地模式分三类<br>local：只启动一个executor<br>local[k]: 启动k个executor<br>local[*]：启动跟cpu数目相同的 executor</p>
 <ul>
 <li>standalone模式</li>
 </ul>
@@ -444,6 +455,9 @@
 <li>Spark on yarn模式</li>
 </ul>
 <p>分布式部署集群，资源和任务监控交给yarn管理<br>粗粒度资源分配方式，包含cluster和client运行模式<br>cluster 适合生产，driver运行在集群子节点，具有容错功能<br>client 适合调试，dirver运行在客户端</p>
+<p>spark on yarn 的支持两种模式<br>1）yarn-cluster：适用于生产环境；<br>2）yarn-client：适用于交互、调试，希望立即看到app的输出</p>
+<p><a href="https://matt33.com/2018/09/01/yarn-architecture-learn/" target="_blank" rel="noopener">YARN 架构学习总结</a></p>
+<p><a href="https://cloud.tencent.com/developer/article/1074740" target="_blank" rel="noopener">Spark核心技术原理透视二（Spark运行模式</a><br><a href="https://www.zybuluo.com/sasaki/note/252413" target="_blank" rel="noopener">谈谈Spark运行模式</a></p>
 <ul>
 <li>Spark On Mesos模式</li>
 </ul>
@@ -467,7 +481,7 @@
 </ul>
 <p>丰富的API（Java、Scala、Python、R四种语言，sort、join等高效算子）<br>DAG执行引擎，中间结果不落盘<br>线程池模型减少task启动开销<br>充分利用内存，减少磁盘IO<br>避免不必要的排序操作<br>适合迭代计算，比如机器学习算法</p>
 <ul>
-<li>RDD？（视频讲解 RDD 是什么东西）</li>
+<li>RDD</li>
 </ul>
 <p>spark 涉及的核心概念就是resilient distributed dataset (RDD)，rdd是具有容错性的数据集合，并可以并行数据计算。有两种方法可以创建rdd,第一种就是parallelizing 方法：序列化存在driver program 中的集合，见下方代码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val data = Array(1, 2, 3, 4, 5)</span><br><span class="line">val distData = sc.parallelize(data)</span><br></pre></td></tr></table></figure>
@@ -510,11 +524,15 @@
 <p>影响性能的主要因素是Shuffle，可以优化代码减少不必要的Stage数量及Shuffle数据量以改进Shuffle性能。由于Shuffle的中间结果数据都是要落磁盘的，所以可以考虑给服务器加SSD（一般100G左右就够了），将Spark的tmp目录设置为SSD目录，性能提升20%左右。</p>
 <p>其次是IO，网络IO建议上万兆网络（这也是影响Shuffle性能的一个因素），对于磁盘IO，一般是给服务器设置多块单盘，不要做RAID！挂载磁盘时设置noatime，提高磁盘IO性能。</p>
 <p>最后是CPU，Spark做计算如果数据已经加载到内存了，CPU就比较容易成为计算瓶颈，代码方面主要是优化计算，减少计算量，同时也要关注计算任务是否有数据倾斜的现象；硬件方面只能换性能更强劲的CPU了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">正常的数据分布理论上都是倾斜的，就是我们所说的20-80原理：80%的财富集中在20%的人手中, 80%的用户只使用20%的功能 , 20%的用户贡献了80%的访问量 , 不同的数据字段可能的数据倾斜一般有两种情况。</span><br><span class="line"></span><br><span class="line">什么是数据倾斜</span><br><span class="line">简单的讲，数据倾斜就是我们在计算数据的时候，数据的分散度不够，导致大量的数据集中到了一台或者几台机器上计算，这些数据的计算速度远远低于平均计算速度，导致整个计算过程过慢。</span><br><span class="line"></span><br><span class="line">以Hadoop和Spark是最常见的两个计算平台，下面就以这两个平台说明：</span><br><span class="line">Hadoop中的数据倾斜</span><br><span class="line">- Hadoop中的数据倾斜主要表现在ruduce阶段卡在99.99%，一直99.99%不能结束。</span><br><span class="line"></span><br><span class="line">Spark中的数据倾斜的表现</span><br><span class="line">- 单个Executor执行时间特别久，整体任务卡在某个阶段不能结束</span><br><span class="line">- Executor lost，OOM，Shuffle过程出错</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">数据倾斜的原理</span><br><span class="line">我们以Spark和Hive的使用场景为例。他们在做数据运算的时候会设计到，countdistinct、group by、join等操作，这些都会触发Shuffle动作，一旦触发，所有相同key的值就会拉到一个或几个节点上，就容易发生单点问题。</span><br></pre></td></tr></table></figure>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/62a4ef4f63e2329b.png" alt=""></p>
+<p>大部分数据倾斜的原理就类似于下图，很明了，因为数据分布不均匀，导致大量的数据分配到了一个节点。</p>
+<p>如何解决这种问题<br>1.业务逻辑，我们从业务逻辑的层面上来优化数据倾斜，比如上面的例子，我们单独对这两个城市来做count，最后和其它城市做整合。<br>2.程序层面，比如说在Hive中，经常遇到count（distinct）操作，这样会导致最终只有一个reduce，我们可以先group 再在外面包一层count，就可以了。<br>3.调参方面，Hadoop和Spark都自带了很多的参数和机制来调节数据倾斜，合理利用它们就能解决大部分问题。</p>
 <p>硬盘有机械硬盘(HDD)和固态硬盘(SSD)</p>
 <p>针对不同的作业类型，在对集群进行良好配置的提前下，spark作业最耗时的部分往往是因为集群资源的限制，主要体现在三个方面：CPU、DISK IO、NETWORK IO。spark将作业拆分成的单元是stage，不同的stage内部执行不同的逻辑。stage内部既有io操作，也有cpu计算操作，还会有network（主要是shuffle引起的），当这三个部分其中某一部分所占的比例较大时，在资源占用上就会体现出这一部分的bottleneck。例如，</p>
 <p>这样一个stage，就是简单的从hdfs中读取文本数据计算有多少行。几乎没有cpu操作，shuffle的量也很小，主要的操作在DISK IO上，因此，这个stage耗时最长的部分就是在磁盘读写上。因此，判断一个作业最耗时的部分，需要实际的去分析stage的执行逻辑，结合实际的资源占用情况，这样才能的到准确完整的答案</p>
 <p>对于不同的计算场景，io，shuffle，cpu都有可能成为计算瓶颈。<br>一般来说，做统计的时候io是最大的瓶颈，做数据挖掘的时候比较慢的是shuffle和cpu。</p>
-<p>Shuffle的作用是什么？(需要找一下视频教程，看一下)</p>
+<p>Shuffle的作用是什么？</p>
 <p>Shuffle的中文解释为“洗牌操作”，可以理解成将集群中所有节点上的数据进行重新整合分类的过程。其思想来源于hadoop的mapReduce,Shuffle是连接map阶段和reduce阶段的桥梁。由于分布式计算中，每个阶段的各个计算节点只处理任务的一部分数据，若下一个阶段需要依赖前面阶段的所有计算结果时，则需要对前面阶段的所有计算结果进行重新整合和分类，这就需要经历shuffle过程。<br>在spark中，RDD之间的关系包含窄依赖和宽依赖，其中宽依赖涉及shuffle操</p>
 <p>filter map flatMap等操作属于transform，rdd经过若干的transform，直到action（如take count isEmpty foreach foreachPartition）才会真正执行。</p>
 <p>spark 中常见的action 算子<br>Action类算子也是一类算子（函数）叫做行动算子，如foreach,collect，count等。Transformations类算子是延迟执行，Action类算子是触发执行。一个application应用程序（就是我们编写的一个应用程序）中有几个Action类算子执行，就有几个job运行。</p>
@@ -710,7 +728,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-count">95</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -732,7 +750,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

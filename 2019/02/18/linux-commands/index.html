@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍linux 中常见的命令 和github 中常用的命令">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-28T02:28:11.363Z">
+<meta property="og:updated_time" content="2019-11-08T09:41:41.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux commands">
 <meta name="twitter:description" content="介绍linux 中常见的命令 和github 中常用的命令">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-28T10:28:11+08:00">
-                2019-10-28
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-08T17:41:41+08:00">
+                2019-11-08
               </time>
             
           </span>
@@ -537,6 +537,13 @@
 <p><strong>linux 中 sort</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sort file1.txt file2.txt  &gt; sorted.txt</span><br><span class="line">sort file1.txt file2.txt  -o sorted.txt #上面两种手工写法都是一样的</span><br><span class="line"></span><br><span class="line">cat sorted_file.txt | uniq &gt; uniq_lines.txt # 找出已排序文件中不重复的行：</span><br><span class="line">sort -k 2 data.txt # k表示的列数  依据第二列进行排序</span><br><span class="line">sort -nrk 1 data.txt #依据第一列进行逆序排序, -r 表示逆序</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">依据第二列进行排序</span><br></pre></td></tr></table></figure>
+<p>查看cpu信息的方法</p>
+<ol>
+<li>使用命令 <code>lscpu</code></li>
+<li>查看系统文件 <code>less /proc/cpuinfo</code></li>
+<li>使用三方的软件包</li>
+</ol>
+<p>查看GPU 的信息： <code>nvidia-smi</code> 这个是查看NVIDIA 显卡的命令</p>
 <p><strong>linux 中的脚本调试</strong></p>
 <p>常用是以下的三种方式。</p>
 <ol>
@@ -563,6 +570,22 @@
 </blockquote>
 </li>
 </ol>
+<h3 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h3><p>linux 中有些命令是可以带参数，接受“标准输入”作为参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd | grep root</span><br></pre></td></tr></table></figure></p>
+<p>其中的 <code>|</code> 是管道命令。左侧的命令(<code>cat /etc/passwd</code>)的标准输出作为后面命令的输入。其中grep 是可以接受标准输入作为参数。上面的命令等同于<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep root /etc/passwd</span><br></pre></td></tr></table></figure></p>
+<p>但是大多数的命令是不接受标准输入作为参数，比如说 <code>echo</code></p>
+<p>这个使用后就出现了 <code>xargs</code> 命令, 该命令将标准输入转换成命令行参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello world&quot; | xargs echo</span><br><span class="line"># hello world 就是输出</span><br></pre></td></tr></table></figure>
+<p>该命令的格式如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ xargs [-options] [command]</span><br></pre></td></tr></table></figure></p>
+<p><code>xargs</code>的作用在于，大多数命令（比如<code>rm</code>、<code>mkdir</code>、<code>ls</code>）与管道一起使用时，都需要<code>xargs</code>将标准输入转为命令行参数。</p>
+<p>默认情况下， <code>xargs</code> 将换行符和空格作为分隔符，把标准输入分解成一个个命令行参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;one two three&quot; | xargs mkdir</span><br></pre></td></tr></table></figure></p>
+<p>使用 <code>-d</code> 可以更改分隔符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e &quot;a\tb\tc&quot; | xargs -d &quot;\t&quot; echo</span><br></pre></td></tr></table></figure></p>
+<p>参数 <code>-p</code>，可以确认到底执行的是什么命令</p>
+<p><code>-p</code>参数打印出要执行的命令，询问用户是否要执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &apos;one two three&apos; | xargs -p touch</span><br><span class="line">touch one two three ?...</span><br></pre></td></tr></table></figure>
+<p><code>-t</code>参数则是打印出最终要执行的命令，然后直接执行，不需要用户确认。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &apos;one two three&apos; | xargs -t rm</span><br><span class="line">rm one two three</span><br></pre></td></tr></table></figure>
+<p>examples</p>
+<p><code>xargs</code> 和<code>cp</code> 命令结合使用过，返回前 5 个结果作为 cp 的输入。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls | head -n 5| xargs -i cp &#123;&#125; /home/jijeng/projects/test/src</span><br><span class="line"></span><br><span class="line"># 回到上一个目录（最近的目录）</span><br><span class="line">cd -</span><br></pre></td></tr></table></figure></p>
 <h2 id="git-常见的命令"><a href="#git-常见的命令" class="headerlink" title="git 常见的命令"></a>git 常见的命令</h2><p><strong>git命令</strong></p>
 <p>git 命令清单</p>
 <p><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></p>
@@ -642,6 +665,35 @@
 <p>可视化之后的操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">J → 把所有的行连接起来（变成一行）</span><br><span class="line">&lt; 或 &gt; → 左右缩进</span><br><span class="line">= → 自动给缩进 （陈皓注：这个功能相当强大，我太喜欢了）</span><br></pre></td></tr></table></figure></p>
 <p>分屏: :split 和 vsplit.<br>（这个我个人使用的不多，更加的倾向于使用软件分屏，而不是命令分屏）</p>
 <p><a href="https://coolshell.cn/articles/5426.html" target="_blank" rel="noopener">简明 VIM 练级攻略</a></p>
+<p>使用技能：</p>
+<p>使用 <code>vi</code> 命令搜索下一个字符串所在的位置</p>
+<p>按esc键，输入<code>/string</code>回车，就能定位字符串string，按<code>n</code>定位下一个</p>
+<p>linux 中进程和线程的关系</p>
+<p>几种进程间的通信方式</p>
+<ol>
+<li>管道（pipe）：管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有血缘关系的进程间使用。进程的血缘关系通常指父子进程关系。</li>
+<li>有名管道（named pipe）：有名管道也是半双工的通信方式，但是它允许无亲缘关系进程间通信。</li>
+<li>信号量（semophore）：信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它通常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。</li>
+<li>消息队列（message queue）：消息队列是由消息组成的链表，存放在内核中 并由消息队列标识符标识。消息队列克服了信号传递信息少，管道只能承载无格式字节流以及缓冲区大小受限等缺点。</li>
+<li>信号（signal）：信号是一种比较复杂的通信方式，用于通知接收进程某一事件已经发生。</li>
+<li>共享内存（shared memory）：共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问，共享内存是最快的IPC方式，它是针对其他进程间的通信方式运行效率低而专门设计的。它往往与其他通信机制，如信号量配合使用，来实现进程间的同步和通信。</li>
+<li>套接字（socket）：套接口也是一种进程间的通信机制，与其他通信机制不同的是它可以用于不同及其间的进程通信。</li>
+</ol>
+<p>几种线程间的通信机制</p>
+<ol>
+<li>锁机制</li>
+</ol>
+<ul>
+<li>互斥锁：提供了以排它方式阻止数据结构被并发修改的方法。</li>
+<li>读写锁：允许多个线程同时读共享数据，而对写操作互斥。</li>
+<li>条件变量：可以以原子的方式阻塞进程，直到某个特定条件为真为止。对条件测试是在互斥锁的保护下进行的。条件变量始终与互斥锁一起使用。</li>
+</ul>
+<ol start="2">
+<li>信号量机制：包括无名线程信号量与有名线程信号量</li>
+<li>信号机制：类似于进程间的信号处理。</li>
+</ol>
+<p>线程间通信的主要目的是用于线程同步，所以线程没有象进程通信中用于数据交换的通信机制。</p>
+<p>更多关于这方面的介绍可以参考<a href="https://blog.csdn.net/yang_teng_/article/details/53325280" target="_blank" rel="noopener">这里</a></p>
 
       
     </div>
@@ -777,7 +829,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-count">95</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -799,7 +851,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -873,7 +925,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-常见命令"><span class="nav-number">1.</span> <span class="nav-text">Linux 常见命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-取列数据"><span class="nav-number">1.1.</span> <span class="nav-text">awk 取列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-命令"><span class="nav-number">1.2.</span> <span class="nav-text">grep 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-行编辑器"><span class="nav-number">1.3.</span> <span class="nav-text">sed 行编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于上述三个命令的练习"><span class="nav-number">1.4.</span> <span class="nav-text">关于上述三个命令的练习</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-常见的命令"><span class="nav-number">2.</span> <span class="nav-text">git 常见的命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-常见命令和配置"><span class="nav-number">3.</span> <span class="nav-text">vi 常见命令和配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-常见命令"><span class="nav-number">1.</span> <span class="nav-text">Linux 常见命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-取列数据"><span class="nav-number">1.1.</span> <span class="nav-text">awk 取列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-命令"><span class="nav-number">1.2.</span> <span class="nav-text">grep 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-行编辑器"><span class="nav-number">1.3.</span> <span class="nav-text">sed 行编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于上述三个命令的练习"><span class="nav-number">1.4.</span> <span class="nav-text">关于上述三个命令的练习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">1.5.</span> <span class="nav-text">管道</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-常见的命令"><span class="nav-number">2.</span> <span class="nav-text">git 常见的命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-常见命令和配置"><span class="nav-number">3.</span> <span class="nav-text">vi 常见命令和配置</span></a></li></ol></div>
             
 
           </div>

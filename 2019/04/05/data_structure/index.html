@@ -106,7 +106,9 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/06/nMmL5R.png">
 <meta property="og:image" content="https://i.loli.net/2019/09/30/jnMcvP7C4wzmxT1.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/09/30/85zCd2.png">
-<meta property="og:updated_time" content="2019-10-06T05:35:15.186Z">
+<meta property="og:image" content="https://upload.cc/i1/2019/11/10/ZNQk6B.png">
+<meta property="og:image" content="https://upload.cc/i1/2019/11/10/YVSpah.jpg">
+<meta property="og:updated_time" content="2019-11-10T13:33:45.248Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Data Structure">
 <meta name="twitter:description" content="介绍面试过程中的数据结构，树、Hash表和图。">
@@ -331,8 +333,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-06T13:35:15+08:00">
-                2019-10-06
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-10T21:33:45+08:00">
+                2019-11-10
               </time>
             
           </span>
@@ -655,7 +657,16 @@
 <li>再hash 法（同时使用多个hash 函数，如果第一个hash 函数发生冲突，那么接着使用第二个hash 函数）</li>
 <li>链地址法（将同一个hash 值相同的元素使用一个单链表进行存储）</li>
 </ol>
-<h2 id="图"><a href="#图" class="headerlink" title="图"></a>图</h2><p>并查集：判断图上是否存在环。可以参考之前的一个<a href="https://jijeng.github.io/2019/08/05/union-find/" target="_blank" rel="noopener">博客</a>。</p>
+<h2 id="图"><a href="#图" class="headerlink" title="图"></a>图</h2><p><strong>连通图</strong></p>
+<p>对于无向图 $G$而言，若 $V(G)$中任一两个不同的顶点 $V_i$ 和$V_j$都连通（即有路径），则称$G$为连通图。</p>
+<p>对于有向图$G$中， 如果对于两个顶点 $V_i$和$V_j$有一条从 $V_i$到 $V_j$ 的有向路径，同时有一条从 $V_j$ 到$V_i$的有向路径，那么称这两个顶点强连通。如果有向图中两个顶点都强连通，那么称这个图为强连通图。</p>
+<p><strong>连通分量</strong></p>
+<p>在无向图中，连通分量即为连通子图。<br><img src="https://upload.cc/i1/2019/11/10/ZNQk6B.png" alt="img"></p>
+<p>上图中，总共有四个连通分量。顶点A、B、C、D构成了一个连通分量，顶点E构成了一个连通分量，顶点F，G和H，I分别构成了两个连通分量。</p>
+<p>强连通分量：在有向图中，尽可能多的若干顶点组成的子图中，这些顶点都是相互可到达的，则这些顶点称为一个强连通分量。</p>
+<p><img src="https://upload.cc/i1/2019/11/10/YVSpah.jpg" alt="img"></p>
+<p>上图中有三个强连通分量，分别是a、b、e以及f、g和c、d、h。</p>
+<p>并查集：判断图上是否存在环。可以参考之前的一个<a href="https://jijeng.github.io/2019/08/05/union-find/" target="_blank" rel="noopener">博客</a>。</p>
 <h2 id="KMP-算法"><a href="#KMP-算法" class="headerlink" title="KMP 算法"></a>KMP 算法</h2><p>next数组的含义：以 i 为终点的后缀 和以1 为起点的前缀相等，并且满足长度最长，那么这个就是 next[i] </p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> s 表示source， p表示pattern，n和m 分别是对应的长度</span></span><br><span class="line"><span class="comment"> get_next是计算了 next数组， 主程序中写了匹配的模板（逻辑结构）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N =<span class="number">1e6</span>+<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="keyword">char</span> s[N], p[N];</span><br><span class="line"><span class="keyword">int</span> nex[N];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 因为存储和计算的时候都是从 1开始的，所以 j+1 才是真正有意义比较项，这个模板其实很好记的。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_next</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">2</span>, j =<span class="number">0</span>; i&lt;=m; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(j &amp;&amp; p[i] !=p[j+<span class="number">1</span>]) j=nex[j];</span><br><span class="line">        <span class="keyword">if</span>(p[i] ==p[j+<span class="number">1</span>]) j++;</span><br><span class="line">        nex[i] =j;</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// abcd, abcdd</span></span><br><span class="line"><span class="comment">// dd</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt; n&gt;&gt;m;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%s"</span>, s+<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%s"</span>, p+<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    get_next();</span><br><span class="line">    <span class="comment">//匹配</span></span><br><span class="line">    <span class="comment">//for(int i =1; i&lt;=m; i++) cout&lt;&lt; nex[i] &lt;&lt;" ";</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>, j =<span class="number">0</span>; i&lt;=n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(j &amp;&amp; s[i] != p[j+<span class="number">1</span>]) j =nex[j];</span><br><span class="line">        <span class="keyword">if</span>(s[i] ==p[j+<span class="number">1</span>]) j++;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(j ==m)</span><br><span class="line">        &#123;</span><br><span class="line">            j =nex[j];</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"true"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="时空复杂度分析"><a href="#时空复杂度分析" class="headerlink" title="时空复杂度分析"></a>时空复杂度分析</h2><p>复习之后，这两个视频是需要再快速过一遍的：</p>
@@ -916,7 +927,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-count">95</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -938,7 +949,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
