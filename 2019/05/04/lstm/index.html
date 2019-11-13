@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://upload.cc/i1/2019/08/04/GKfPiI.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/09/15/hMbW1OqsAy4TN6c.jpg">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/c8c7e53e5ed4489e.jpg">
-<meta property="og:updated_time" content="2019-10-02T23:57:17.178Z">
+<meta property="og:updated_time" content="2019-11-11T07:16:59.736Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LSTM">
 <meta name="twitter:description" content="主要介绍 LSTM 的概念和网络结构。">
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-03T07:57:17+08:00">
-                2019-10-03
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-11T15:16:59+08:00">
+                2019-11-11
               </time>
             
           </span>
@@ -401,7 +401,8 @@
 <li>文本相关。主要应用在自然语言处理方面（NLP）、对话系统、情感分析、机器翻译</li>
 <li>时序相关。就是在做时序预测问题，比如预测天气、温度，包括有很多人使用其在做预测股票价格的问题</li>
 </ul>
-<h3 id="长期依赖-Long-Term-Dependencies-的问题"><a href="#长期依赖-Long-Term-Dependencies-的问题" class="headerlink" title="长期依赖(Long Term Dependencies)的问题"></a>长期依赖(Long Term Dependencies)的问题</h3><p>有时候，我们只需要看最近的信息，就可以完成当前的任务。比如，考虑一个语言模型，通过前面的单词来预测接下来的单词。如果我们想预测句子“the clouds are in the sky”中的最后一个单词，我们不需要更多的上下文信息——很明显下一个单词应该是sky。 RNN 是可以被用来进行这样问题的训练学习。</p>
+<h3 id="长期依赖-Long-Term-Dependencies-的问题"><a href="#长期依赖-Long-Term-Dependencies-的问题" class="headerlink" title="长期依赖(Long Term Dependencies)的问题"></a>长期依赖(Long Term Dependencies)的问题</h3><p>对于RNN 来说，可以处理非常短的文本序列（比如下文第一种情况）但是不可以处理比较长的序列（比如下文第二种情况）</p>
+<p>有时候，我们只需要看最近的信息，就可以完成当前的任务。比如，考虑一个语言模型，通过前面的单词来预测接下来的单词。如果我们想预测句子“the clouds are in the sky”中的最后一个单词，我们不需要更多的上下文信息——很明显下一个单词应该是sky。 RNN 是可以被用来进行这样问题的训练学习。</p>
 <p>然而，有时候我们需要更多的上下文信息。比如，我们想预测句子“I grew up in France… I speak fluent French”中的最后一个单词。不幸的是，随着距离的增大，RNN对于如何将这样的信息连接起来无能为力。</p>
 <h3 id="LSTM-中的基本概念"><a href="#LSTM-中的基本概念" class="headerlink" title="LSTM 中的基本概念"></a>LSTM 中的基本概念</h3><p>LSTM 是用来解决RNN 中的梯度消失/ 梯度爆炸问题的，可以处理 long-term sequence了。</p>
 <p>门（gate ）定义： gate 实际上就是一层全连接层，输入是一个向量，输出是一个 0到1 之间的实数向量。公式如下：<br>$$<br>g ( \mathbf { x } ) = \sigma ( W \mathbf { x } + \mathbf { b } )<br>$$</p>
@@ -441,6 +442,7 @@
 <li>LSTM 主要是解决RNN 中的梯度消失/ 梯度爆炸问题，使用遗忘门、输入门 和输出门分别控制上一时刻信息到context的保留程度、当前时刻输入到context的程度和context信息输出程度。可以处理常依赖的问题。</li>
 <li>LSTM 中参数的计算</li>
 </ol>
+<p>参考文献<br><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/" target="_blank" rel="noopener">Understanding LSTM Networks</a></p>
 
       
     </div>
@@ -475,8 +477,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/06/cpp2/" rel="prev" title="C++ 编程语言（2）">
-                C++ 编程语言（2） <i class="fa fa-chevron-right"></i>
+              <a href="/2019/05/06/hmm/" rel="prev" title="新词发现和马尔科夫模型">
+                新词发现和马尔科夫模型 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

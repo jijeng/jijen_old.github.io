@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="PCA,SVD," />
+  <meta name="keywords" content="pca,svd,t-sne," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
-<meta name="keywords" content="PCA,SVD">
+<meta name="keywords" content="pca,svd,t-sne">
 <meta property="og:type" content="article">
 <meta property="og:title" content="特征工程">
 <meta property="og:url" content="http://yoursite.com/2018/06/29/特征工程相关概念/index.html">
@@ -88,7 +88,7 @@
 <meta property="og:description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/09/d993b830928805b8.png">
-<meta property="og:updated_time" content="2019-09-25T01:21:21.359Z">
+<meta property="og:updated_time" content="2019-11-13T06:34:23.677Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="特征工程">
 <meta name="twitter:description" content="关于特征工程的概念，特征离散化、特征生成、组合特征、特征选取的方法。">
@@ -313,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-25T09:21:21+08:00">
-                2019-09-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-13T14:34:23+08:00">
+                2019-11-13
               </time>
             
           </span>
@@ -474,6 +474,55 @@
 <h3 id="PCA-vs-LDA"><a href="#PCA-vs-LDA" class="headerlink" title="PCA vs. LDA"></a>PCA vs. LDA</h3><p>LDA用于降维，和PCA有很多相同，也有很多不同的地方，因此值得好好的比较一下两者的降维异同点。</p>
 <p>首先我们看看相同点：<br>　　　　1）两者均可以对数据进行降维。<br>　　　　2）两者在降维时均使用了矩阵特征分解的思想。<br>　　　　3）两者都假设数据符合高斯分布。<br>我们接着看看不同点：<br>　　　　1）LDA是有监督的降维方法，而PCA是无监督的降维方法<br>　　　　2）LDA降维最多降到类别数k-1的维数，而PCA没有这个限制。<br>　　　　3）LDA除了可以用于降维，还可以用于分类。<br>　　　　4）LDA选择分类性能最好的投影方向，而PCA选择样本点投影具有最大方差的方向。</p>
 <p>当类别特别多的时候，每个类中的样本就越少，此时更加适合使用PCA而不是LDA。</p>
+<h3 id="t-SNE"><a href="#t-SNE" class="headerlink" title="t-SNE"></a>t-SNE</h3><p>PCA和 t-SNE的background：</p>
+<p>我们有一堆数据并且想要知道这些数据 “looks like”， 然后建立了一个”map”，使这些数据投影到了二维或者三维平面上。但是PCA 是线性 mapping，</p>
+<blockquote>
+<p>PCA learns a linear mapping, which is very restrictive. PCA focuses on preserving large pairwise distances.<br>对于 t-SNE 的定义<br>compute pairwise similarities between data with normalized Gaussian kernel </p>
+</blockquote>
+<p>计算步骤</p>
+<ol>
+<li>在高纬计算两点 with normalized Gaussian kernel(<a href="http://hyperphysics.phy-astr.gsu.edu/hbase/Math/gaufcn.html" target="_blank" rel="noopener">高斯分布</a><br>$$<br>p_{i,j}=\frac{\exp (-|x_{i}-x_{j}|^{2} / 2 \sigma^{2})}{\sum_{k} \sum_{l \neq k} \exp (-|x_{k}-x_{l}|^{2} / 2 \sigma^{2})}<br>$$</li>
+<li>在低维计算两点（使用 normalized Student-t similarities in the t-SNE map）<br>$$<br>q_{i,j}=\frac{(1+\overline{|} y_{i}-y_{j} |^{2})^{-1}}{\sum_{k} \sum_{l \neq k}(1+|y_{k}-y_{l}|^{2})^{-1}}<br>$$</li>
+<li>计算KL 散度（尽可能的最小化两者之间的差异， kl尽可能的小）<br>$$<br>K L(P | Q)=\sum_{i} \sum_{j \neq i} p_{i j} \log \frac{p_{i j}}{q_{i j}}<br>$$</li>
+</ol>
+<p>为什么选择 KL divergence?</p>
+<p>The KL divergence preserves local data structure： 如果在高维度 p中相差大，但是在低维q 中相差小，那么kl 的值非常大。如果再高纬度p 相差小，但是在低纬度相差大，那么kl 的值就非常小。所以说尽可能保存了 local information。</p>
+<p>降维必然带来信息损失，这里更加保存的是局部信息，那么必然损失的全局信息。而 t 分布能够放大这种密度，因为t 分布更加长尾。</p>
+<p>补充知识点（t分布和卡方分布）</p>
+<ol>
+<li>关于 $t$ 分布， 假设 $X \sim N(0, 1) $ ， $Y \sim  \chi^{2}(n)$ ，那么 $ Z=\frac{X}{\sqrt{Y / n}}  $ 的分布就被称为自由度为 $n$ 的 $t$ 分布， 记做 $Z \sim t(n)$。 但自由度$n$ 越大，那么越是接近正太分布。一般来说 $t$ 分布比 正太分布更加长尾。<br>如果是正太分布，那么就可以使用中心极限定理，但是 $t$ 分布就不可以了。$t$ 分布也被称为 学生t 分布。</li>
+<li>若 $k$个随机变量 $Z_1, Z_2, … Z_n$是相互独立，符合标准正态分布的随机变量（数学期望为0、方差为1），则随机变量 $Z$的平方和<br>$$<br>X=\sum_{i=1}^{k} Z_{i}^{2}<br>$$<br>被称为自由度为 $k$ 的卡方分布， 记做 $X \sim \chi^{2}(k)$。</li>
+</ol>
+<p>t-sne 时间复杂度 $n^2$</p>
+<blockquote>
+<p>naive implementations are quadratic in the number of data points</p>
+</blockquote>
+<p><strong>可以被用来做Do</strong></p>
+<ol>
+<li>Use t-SNE to get some <strong>qualitative</strong> hypotheses on what your features capture 这个是定性分析</li>
+<li>在输入和输出形式上可以 more creative</li>
+</ol>
+<p><strong>不可以被用来 Don’t</strong></p>
+<ol>
+<li>不是证明你的理论的工具</li>
+<li>assign meaning to distance across empty space（注意这个是局部的特征，not 全局的信息）</li>
+<li>think that t-sne will help you find outlier, or assign meaning to point densities in cluster</li>
+<li>forget the scale (perplexity) matters<br>（ you can think of perplexity as the “effective” number of nearest neighbors， 所以说当这个 perplexity 越是接近原始一个簇的neighbors的个数，那么这个分类的效果是）</li>
+<li>forget that t-SNE 是解决一个 non-convex objective: there are local mimima</li>
+<li>local minima generally split a natural cluster into multiple parts （就是如何有这个效果，那么不要惊讶，有可能出现多个不同的parts）</li>
+<li>forget that low-dimentional metric  spaces cannot caputure non-metric similarities</li>
+</ol>
+<p><strong>How input similarities in t-SNE are actually computed</strong></p>
+<ol>
+<li>compute conditional similarities<br>$$<br>p_{j |i}=\frac{\exp (-|x_{i}-x_{j}|^{2} / 2 \sigma_{i}^{2})}{\sum_{j^{\prime} \neq i} \exp (-|x_{i}-x_{j^{\prime}}|^{2} / 2 \sigma_{i}^{2})}<br>$$<br>perform a binary search over $\sigma_{i}$ to obtain a target perplexity</li>
+</ol>
+<p>( 从这里得到启发，如果某个指标是不对称的，那么 symmetrize 就是可以得到一个对称的指标， 想想从kl divergence 到JS divergence这个过程)</p>
+<ol start="2">
+<li>Symmetrize the conditions<br>$$<br>p_{i |j}=\frac{p_{j | i}+p_{i | j}}{2 N}<br>$$</li>
+</ol>
+<p><strong>Conclusion</strong></p>
+<p>t-SNE is a valuable tool in generating hypotheses and understanding, but does not produce conclusive evidence. </p>
+<p>来自<a href="http://deeplearning.csail.mit.edu/slide_cvpr2018/laurens_cvpr18tutorial.pdf" target="_blank" rel="noopener">do’s and Don’ts of using t-SNE to Understand Vision Models</a>的阅读笔记。<br><a href="http://frankchen.xyz/2018/01/30/Understanding-TSNE/" target="_blank" rel="noopener">理解TSNE算法</a></p>
 <h2 id="杂货铺"><a href="#杂货铺" class="headerlink" title="杂货铺"></a>杂货铺</h2><p><strong> 对于encodding 的理解</strong>，从字符转成数字，并且尽可能的保留原来的信息。接触的有三种，一种 label encoding，适合类别信息只有两类。如果大于两类那么就使用one-hot。第三种就是万物可以embedding，使用神经网络的思想。</p>
 <p>特征工程分为特征构造 (feature creation or construction)和 特征选择（feature selection） 。</p>
 <p>归一化（去中心，方差归一）是属于特征(预)处理:把特征值压缩成0~1的区间。</p>
@@ -532,9 +581,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/PCA/" rel="tag"># PCA</a>
+            <a href="/tags/pca/" rel="tag"># pca</a>
           
-            <a href="/tags/SVD/" rel="tag"># SVD</a>
+            <a href="/tags/svd/" rel="tag"># svd</a>
+          
+            <a href="/tags/t-sne/" rel="tag"># t-sne</a>
           
         </div>
       
@@ -746,7 +797,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征生成"><span class="nav-number">1.</span> <span class="nav-text">特征生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征离散化"><span class="nav-number">2.</span> <span class="nav-text">特征离散化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合特征"><span class="nav-number">3.</span> <span class="nav-text">组合特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">4.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#feature-selection"><span class="nav-number">5.</span> <span class="nav-text">feature selection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Principal-Component-Analysis-PCA"><span class="nav-number">5.1.</span> <span class="nav-text">Principal Component Analysis (PCA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVD"><span class="nav-number">5.2.</span> <span class="nav-text">SVD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投影也是一种降维手段"><span class="nav-number">5.3.</span> <span class="nav-text">投影也是一种降维手段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T-sne"><span class="nav-number">5.4.</span> <span class="nav-text">T-sne</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDA（有监督）"><span class="nav-number">5.5.</span> <span class="nav-text">LDA（有监督）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA-vs-LDA"><span class="nav-number">5.6.</span> <span class="nav-text">PCA vs. LDA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂货铺"><span class="nav-number">6.</span> <span class="nav-text">杂货铺</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习总结"><span class="nav-number">7.</span> <span class="nav-text">复习总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征生成"><span class="nav-number">1.</span> <span class="nav-text">特征生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征离散化"><span class="nav-number">2.</span> <span class="nav-text">特征离散化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合特征"><span class="nav-number">3.</span> <span class="nav-text">组合特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">4.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#feature-selection"><span class="nav-number">5.</span> <span class="nav-text">feature selection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Principal-Component-Analysis-PCA"><span class="nav-number">5.1.</span> <span class="nav-text">Principal Component Analysis (PCA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVD"><span class="nav-number">5.2.</span> <span class="nav-text">SVD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投影也是一种降维手段"><span class="nav-number">5.3.</span> <span class="nav-text">投影也是一种降维手段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T-sne"><span class="nav-number">5.4.</span> <span class="nav-text">T-sne</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDA（有监督）"><span class="nav-number">5.5.</span> <span class="nav-text">LDA（有监督）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA-vs-LDA"><span class="nav-number">5.6.</span> <span class="nav-text">PCA vs. LDA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#t-SNE"><span class="nav-number">5.7.</span> <span class="nav-text">t-SNE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂货铺"><span class="nav-number">6.</span> <span class="nav-text">杂货铺</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习总结"><span class="nav-number">7.</span> <span class="nav-text">复习总结</span></a></li></ol></div>
             
 
           </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="hmm,热词,ner," />
+  <meta name="keywords" content="hmm,crf," />
 
 
 
@@ -80,10 +80,10 @@
 
 
 <meta name="description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
-<meta name="keywords" content="hmm,热词,ner">
+<meta name="keywords" content="hmm,crf">
 <meta property="og:type" content="article">
 <meta property="og:title" content="新词发现和马尔科夫模型">
-<meta property="og:url" content="http://yoursite.com/2019/02/06/hmm/index.html">
+<meta property="og:url" content="http://yoursite.com/2019/05/06/hmm/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
 <meta property="og:locale" content="default">
@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/06/ugejln.png">
 <meta property="og:image" content="https://i.loli.net/2019/10/10/sQ79N2dwJxjH3GV.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/10/10/5tNl7M4ERpoiAK8.jpg">
-<meta property="og:updated_time" content="2019-10-20T02:30:50.541Z">
+<meta property="og:updated_time" content="2019-11-13T04:16:03.110Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="新词发现和马尔科夫模型">
 <meta name="twitter:description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
@@ -128,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/06/hmm/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/05/06/hmm/"/>
 
 
 
@@ -274,7 +274,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/06/hmm/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/06/hmm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-06T09:22:18+08:00">
-                2019-02-06
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-06T09:22:18+08:00">
+                2019-05-06
               </time>
             
 
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-20T10:30:50+08:00">
-                2019-10-20
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-13T12:16:03+08:00">
+                2019-11-13
               </time>
             
           </span>
@@ -356,9 +356,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/02/06/hmm/#comments" itemprop="discussionUrl">
+                <a href="/2019/05/06/hmm/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/02/06/hmm/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/05/06/hmm/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -393,7 +393,7 @@
       
         <p>介绍隐马尔科夫模型（HMM） 和新词发现。</p>
 <a id="more"></a>
-<p>网络新词充分应用了英语、汉语、数字和符号等相互结合的方式，结构新颖自由。</p>
+<h2 id="HMM"><a href="#HMM" class="headerlink" title="HMM"></a>HMM</h2><p>网络新词充分应用了英语、汉语、数字和符号等相互结合的方式，结构新颖自由。</p>
 <ol>
 <li>基于规则</li>
 </ol>
@@ -532,6 +532,78 @@
 <p><strong>一般来说 NER 是不使用在文本分类领域的。</strong></p>
 <p>视频讲解</p>
 <p><a href="https://www.bilibili.com/video/av52626653/?p=3" target="_blank" rel="noopener">HMM与CRF隐形马尔可夫链与条件随机场</a><br><a href="https://www.bilibili.com/video/av58239477" target="_blank" rel="noopener">-attention is all you need</a></p>
+<h2 id="CRF-conditional-random-field"><a href="#CRF-conditional-random-field" class="headerlink" title="CRF (conditional random field )"></a>CRF (conditional random field )</h2><p><strong>定义和intuition</strong><br>CRF 利用了label (在HMM 中的hidden layer) 的信息，因为上一个标签是有助于下一个标签的预测。比如上一个是动词，那么下一个词语的label 也是动词的概率是非常小的。</p>
+<blockquote>
+<p> we should incorporate the labels of nearby photos, and this is precisely what a conditional random field does.</p>
+</blockquote>
+<p><strong>特征函数</strong></p>
+<p>特征函数的输入：</p>
+<ul>
+<li>a sentence s</li>
+<li>the position $i $of a word in the sentence</li>
+<li>the label $l_i$ of the current word</li>
+<li>the label $l_i−1$ of the previous word</li>
+</ul>
+<p>这里约束的是 <em>linear-chain CRF</em></p>
+<p>(Note: by restricting our features to depend on only the current and previous labels, rather than arbitrary labels throughout the sentence, I’m actually building the special case of a linear-chain CRF. For simplicity, I’m going to ignore general CRFs in this post.)</p>
+<p><strong>特征的概率</strong></p>
+<ol>
+<li>计算某个 feature function的条件下得到的score：<br>$$<br>score (l | s)=\sum_{j=1}^{m} \sum_{i=1}^{n} \lambda_{j} f_{j}\left(s, i, l_{i}, l_{i-1}\right)<br>$$</li>
+<li>正则化到区间 $[0, 1]$<br>$$<br>p(l | s)=\frac{\exp [ {scorells})]}{\sum_{l^{\prime}} \exp \left[\operatorname{score}\left(l^{\prime} | s\right)\right]}=\frac{\exp \left[\sum_{j=1}^{m} \sum_{i=1}^{n} \lambda_{i} f_{j}\left(s, i, l_{i-1}\right)\right]}{\sum_{l^{\prime}} \exp \left[\sum_{j=1}^{m} \sum_{i=1}^{n} \lambda_{i} f_{j}\left(s, i_{l}^{\prime} l_{i-1}^{\prime}\right)\right]}<br>$$</li>
+</ol>
+<p><strong>feature functions例子</strong>（这个就类似人工的提取特征）</p>
+<ul>
+<li>$f1(s,i,l_i,l_{i−1})=1 $if$ l_i= ADVERB $and the ith word ends in “-ly”; 0 otherwise. ** If the weight λ1 associated with this feature is large and positive, then this feature is essentially saying that we prefer labelings where words ending in -ly get labeled as ADVERB.<br>如果以 <code>-ly</code> 结尾，并且权重比较大，那么就是 adj</li>
+<li>如果句子的结尾是 <code>?</code>，那么开头的单词就可能是一个动词</li>
+</ul>
+<p><strong>和 HMM 的比较</strong></p>
+<p>CRF 更加强大，任何一个    HMM 都是可以看做是某个 CRF。这个是因为：</p>
+<ul>
+<li>CRFs can define a much larger set of features. </li>
+<li>CRFs can have arbitrary weights. </li>
+</ul>
+<p><strong>learning weights</strong></p>
+<p>当然是使用 gradient descent 的思想。</p>
+<p><strong>Finding the optimal labeling</strong></p>
+<p>和HMM 一样， 使用 Viterbi algorithm。</p>
+<p>理论讲解<a href="https://blog.echen.me/2012/01/03/introduction-to-conditional-random-fields/" target="_blank" rel="noopener">Introduction to Conditional Random Fields</a></p>
+<p>To identify entities in text, one must be able to identify the pattern. For example, if we need to identify the claim number, we can look at the words around it such as “my id is” or “my number is”, etc. Let us examine a few approaches mentioned below for identifying the patterns.</p>
+<ol>
+<li>Regular expressions: Regular expressions (RegEx) are a form of finite state automaton. They are very helpful in identifying patterns that follow a certain structure. For example, email ID, phone number, etc. can be identified well using RegEx. However, the downside of this approach is that one needs to be aware of all the possible exact words that occur before the claim number. This is not a learning approach, but rather a brute force one</li>
+<li>Hidden Markov Model (HMM): This is a sequence modelling algorithm that identifies and learns the pattern. Although HMM considers the future observations around the entities for learning a pattern, it assumes that the features are independent of each other. This approach is better than regular expressions as we do not need to model the exact set of word(s). But in terms of performance, it is not known to be the best method for entity recognition</li>
+<li>MaxEnt Markov Model (MEMM): This is also a sequence modelling algorithm. This does not assume that features are independent of each other and also does not consider future observations for learning the pattern. In terms of performance, it is not known to be the best method for identifying entity relationships either</li>
+<li>Conditional Random Fields (CRF): This is also a sequence modelling algorithm. This not only assumes that features are dependent on each other, but also considers the future observations while learning a pattern. This combines the best of both HMM and MEMM. In terms of performance, it is considered to be the best method for entity recognition problem</li>
+</ol>
+<p>The bag of words (BoW) approach works well for multiple text classification problems. This approach assumes that presence or absence of word(s) matter more than the sequence of the words. However, there are problems such as entity recognition, part of speech identification where word sequences matter as much, if not more. Conditional Random Fields (CRF) comes to the rescue here as it uses word sequences as opposed to just words.</p>
+<p>Broadly speaking, there are 2 components to the CRF formula:</p>
+<ol>
+<li>Normalization: You may have observed that there are no probabilities on the right side of the equation where we have the weights and features. However, the output is expected to be a probability and hence there is a need for normalization. The normalization constant Z(x) is a sum of all possible state sequences such that the total becomes 1. You can find more details in the reference section of this article to understand how we arrived at this value.</li>
+<li>Weights and Features: This component can be thought of as the logistic regression formula with weights and the corresponding features. The weight estimation is performed by maximum likelihood estimation and the features are defined by us.</li>
+</ol>
+<p><a href="https://www.analyticsvidhya.com/blog/2018/08/nlp-guide-conditional-random-fields-text-classification/" target="_blank" rel="noopener">Complete tutorial on Text Classification using Conditional Random Fields Model (in Python)</a></p>
+<h2 id="发展的脉络"><a href="#发展的脉络" class="headerlink" title="发展的脉络"></a>发展的脉络</h2><ol>
+<li><p>隐马尔可夫模型（Hidden Markov Model，HMM）</p>
+<p>NER本质上可以看成是一种序列标注问题（预测每个字的BIOES标记），在使用HMM解决NER这种序列标注问题的时候，我们所能观测到的是字组成的序列（观测序列），观测不到的是每个字对应的标注（状态序列）。</p>
+</li>
+</ol>
+<p>解码问题，我们使用的是维特比（viterbi）算法。</p>
+<ol start="2">
+<li>条件随机场（Conditional Random Field, CRF)</li>
+</ol>
+<p>上面讲的HMM模型中存在两个假设，一是输出观察值之间严格独立，二是状态转移过程中当前状态只与前一状态有关。也就是说，在命名实体识别的场景下，HMM认为观测到的句子中的每个字都是相互独立的，而且当前时刻的标注只与前一时刻的标注相关。但实际上，命名实体识别往往需要更多的特征，比如词性，词的上下文等等，同时当前时刻的标注应该与前一时刻以及后一时刻的标注都相关联。由于这两个假设的存在，显然HMM模型在解决命名实体识别的问题上是存在缺陷的。</p>
+<p>而条件随机场就没有这种问题，它通过引入自定义的特征函数，不仅可以表达观测之间的依赖，还可表示当前观测与前后多个状态之间的复杂依赖，可以有效克服HMM模型面临的问题。</p>
+<p>解码的时候与HMM类似，也可以采用维特比算法。</p>
+<ol start="3">
+<li>Bi-LSTM</li>
+</ol>
+<p>除了以上两种基于概率图模型的方法，LSTM也常常被用来解决序列标注问题。和HMM、CRF不同的是，LSTM是依靠神经网络超强的非线性拟合能力，在训练时将样本通过高维空间中的复杂非线性变换，学习到从样本到标注的函数，之后使用这个函数为指定的样本预测每个token的标注。</p>
+<p>LSTM比起CRF模型最大的好处就是简单粗暴，不需要做繁杂的特征工程，直接训练即可，同时比起HMM，LSTM的准确率也比较高。</p>
+<ol start="4">
+<li>Bi-LSTM+CRF</li>
+</ol>
+<p>简单的LSTM的优点是能够通过双向的设置学习到观测序列（输入的字）之间的依赖，在训练过程中，LSTM能够根据目标（比如识别实体）自动提取观测序列的特征，但是缺点是无法学习到状态序列（输出的标注）之间的关系，要知道，在命名实体识别任务中，标注之间是有一定的关系的，比如B类标注（表示某实体的开头）后面不会再接一个B类标注，所以LSTM在解决NER这类序列标注任务时，虽然可以省去很繁杂的特征工程，但是也存在无法学习到标注上下文的缺点。</p>
+<p>相反，CRF的优点就是能对隐含状态建模，学习状态序列的特点，但它的缺点是需要手动提取序列特征。所以一般的做法是，在LSTM后面再加一层CRF，以获得两者的优点。</p>
+<p><a href="https://zhuanlan.zhihu.com/p/61227299" target="_blank" rel="noopener">NLP实战-中文命名实体识别</a></p>
 
       
     </div>
@@ -551,9 +623,7 @@
           
             <a href="/tags/hmm/" rel="tag"># hmm</a>
           
-            <a href="/tags/热词/" rel="tag"># 热词</a>
-          
-            <a href="/tags/ner/" rel="tag"># ner</a>
+            <a href="/tags/crf/" rel="tag"># crf</a>
           
         </div>
       
@@ -566,8 +636,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/01/pytorch/" rel="next" title="pytorch">
-                <i class="fa fa-chevron-left"></i> pytorch
+              <a href="/2019/05/04/lstm/" rel="next" title="LSTM">
+                <i class="fa fa-chevron-left"></i> LSTM
               </a>
             
           </div>
@@ -576,8 +646,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/06/algorithm-demo1/" rel="prev" title="算法模板-基础算法">
-                算法模板-基础算法 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/05/06/cpp2/" rel="prev" title="C++ 编程语言（2）">
+                C++ 编程语言（2） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -640,8 +710,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -746,6 +825,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HMM"><span class="nav-number">1.</span> <span class="nav-text">HMM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRF-conditional-random-field"><span class="nav-number">2.</span> <span class="nav-text">CRF (conditional random field )</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发展的脉络"><span class="nav-number">3.</span> <span class="nav-text">发展的脉络</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -936,8 +1031,8 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/02/06/hmm/';
-          this.page.identifier = '2019/02/06/hmm/';
+          this.page.url = 'http://yoursite.com/2019/05/06/hmm/';
+          this.page.identifier = '2019/05/06/hmm/';
           this.page.title = '新词发现和马尔科夫模型';
         };
         var d = document, s = d.createElement('script');
