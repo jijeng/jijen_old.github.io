@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="动态规划专题，题目来源于LeetCode。主要使用c++ 实现，有的会用python 实现。">
+<meta name="description" content="先介绍了动态规划的概念，使用的必要条件，和其他类似算法的区别和联系。然后是实战，coding部分。">
 <meta name="keywords" content="dp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dynamic Programming">
 <meta property="og:url" content="http://yoursite.com/2019/08/29/dynamic-programming/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="动态规划专题，题目来源于LeetCode。主要使用c++ 实现，有的会用python 实现。">
+<meta property="og:description" content="先介绍了动态规划的概念，使用的必要条件，和其他类似算法的区别和联系。然后是实战，coding部分。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-30T09:51:30.000Z">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/11/9c9a9100834666a3.png">
+<meta property="og:updated_time" content="2019-11-16T15:13:21.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dynamic Programming">
-<meta name="twitter:description" content="动态规划专题，题目来源于LeetCode。主要使用c++ 实现，有的会用python 实现。">
+<meta name="twitter:description" content="先介绍了动态规划的概念，使用的必要条件，和其他类似算法的区别和联系。然后是实战，coding部分。">
+<meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2019/11/9c9a9100834666a3.png">
 
 
 
@@ -311,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-30T17:51:30+08:00">
-                2019-08-30
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-16T23:13:21+08:00">
+                2019-11-16
               </time>
             
           </span>
@@ -383,9 +385,176 @@
       
 
       
-        <p>动态规划专题，题目来源于LeetCode。主要使用c++ 实现，有的会用python 实现。</p>
+        <p>先介绍了动态规划的概念，使用的必要条件，和其他类似算法的区别和联系。然后是实战，coding部分。</p>
 <a id="more"></a>
-<p>动态规划的求解需要考虑三个问题：</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><blockquote>
+<p>Dynamic programming (DP) is as hard as it is counterintuitive. </p>
+</blockquote>
+<p>dp 不太好想出来，所以是 counterintuitive，但如果想出来，那么程序时间效率上会很高。</p>
+<p>定义：</p>
+<p>Dynamic programming amounts to breaking down an optimization problem into simpler sub-problems, and storing the solution to each sub-problem so that each sub-problem is only solved once.</p>
+<p>使用dp 的两个必要条件：</p>
+<blockquote>
+<ol>
+<li>has an optimal substructure.</li>
+<li>has overlapping subproblems.</li>
+</ol>
+</blockquote>
+<ol>
+<li>最优子结构<br>最优子结构，如果简单理解，那么可以等同于递归。如果一个问题能够使用递归解决，那么就具有最优子结构。</li>
+</ol>
+<blockquote>
+<p>Optimal substructure simply means that you can find the optimal solution to a problem by considering the optimal solution to its subproblems.</p>
+</blockquote>
+<p>对于一个子问题的最优解，那么也是原来问题的最优解。</p>
+<p>举例说明一个不是最优子结构的问题. according to wikipedida:</p>
+<blockquote>
+<p>“Using online flight search, we will frequently find that the cheapest flight from airport A to airport B involves a single connection through airport C, but the cheapest flight from airport A to airport C involves a connection through some other airport D.”</p>
+</blockquote>
+<ol start="2">
+<li>重复的子问题</li>
+</ol>
+<p>正因为有了 overlapping subproblems，那么才是需要 memory，才是需要cache。使用 Fibonacci problem 举例说明：</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/11/9c9a9100834666a3.png" alt=""><br>如上图所示，计算 <code>fib(4)</code> 和计算 <code>fib(3)</code> 都是需要计算<code>fib(1)</code> 和<code>fib(2)</code>。 那么这个时候就是有重复的子问题。</p>
+<p>时间复杂度分析</p>
+<blockquote>
+<p>In programming, Dynamic Programming is a powerful technique that allows one to solve different types of problems in time $O(n^2)$ or $O(n^3)$ for which a naive approach would take exponential time.</p>
+</blockquote>
+<p>使用 $O(n^2) $或者 $O(n^3)$的时间复杂度从而避免指数级运算。所以有下面的额表示方式：</p>
+<blockquote>
+<p>One can think of dynamic programming as a table-filling algorithm: you know the calculations you have to do, so you pick the best order to do them in and ignore the ones you don’t have to fill in.<br>Tabulation is an approach where you solve a dynamic programming problem by first filling up a table, and then compute the solution to the original problem based on the results in this table.</p>
+</blockquote>
+<p>表格实现了memory机制，优化了时间效率。memory 就等同于 cache，这个基本假设是有多次相同的问题需要被解决，如果没有重复的问题，那么也是没有必要使用memory 进行时间上的优化的。</p>
+<p>两种不同的思考方式：</p>
+<blockquote>
+<ol>
+<li>Top-Down : Start solving the given problem by breaking it down. If you see that the problem has been solved already, then just return the saved answer. If it has not been solved, solve it and save the answer. This is usually easy to think of and very intuitive. This is referred to as Memoization.</li>
+<li>Bottom-Up : Analyze the problem and see the order in which the sub-problems are solved and start solving from the trivial subproblem, up towards the given problem. In this process, it is guaranteed that the subproblems are solved before solving the problem. This is referred to as Dynamic Programming.</li>
+</ol>
+</blockquote>
+<p>第一种类似带有memory机制的递归。memory机制就是一种典型的空间换取时间的方式。</p>
+<p>dp 和其他算法的不同</p>
+<blockquote>
+<ol>
+<li>Divide and conquer is slightly a different technique. In that, we divide the problem in to non-overlapping subproblems and solve them independently, like in merge sort and quick sort.</li>
+<li>Greedy Algorithms which make a decision once and for all every time they need to make a choice, in such a way that it leads to a near-optimal solution. </li>
+<li>Dynamic programming is basically, recursion plus using memory. The intuition behind dynamic programming is that we trade space for time.</li>
+</ol>
+</blockquote>
+<p>大多数dp 问题都可以归结为这两类：</p>
+<blockquote>
+<ol>
+<li>Optimization problems.</li>
+<li>Combinatorial problems.<br>The optimization problems expect you to select a feasible solution, so that the value of the required function is minimized or maximized. Combinatorial problems expect you to figure out the number of ways to do something, or the probability of some event happening.</li>
+</ol>
+</blockquote>
+<p>最优解得到是最大值或者最小值；组合问题得到是解的个数。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>解题步骤</p>
+<blockquote>
+<ol>
+<li>Define subproblems</li>
+<li>Write down the recurrence that relates subproblems </li>
+<li>Recognize and solve the base cases</li>
+</ol>
+</blockquote>
+<ol>
+<li>对问题的定义（一般是一维、二维表格）</li>
+<li>找到当前问题和子问题的转换关系</li>
+<li>初始化</li>
+</ol>
+<h3 id="1-dimensional-DP-Example"><a href="#1-dimensional-DP-Example" class="headerlink" title="1-dimensional DP Example"></a>1-dimensional DP Example</h3><p>问题一：</p>
+<blockquote>
+<p>Problem: given n, find the number of different ways to write n as the sum of 1, 3, 4<br>Example: for n = 5, the answer is 6</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">5</span><br><span class="line">= 1+1+1+1+1</span><br><span class="line">= 1+1+3 </span><br><span class="line">= 1+3+1</span><br><span class="line">= 3+1+1</span><br><span class="line">= 1+4</span><br><span class="line">= 4+1</span><br></pre></td></tr></table></figure>
+<p>解题步骤</p>
+<ol>
+<li>对问题的定义<blockquote>
+<p>Let $D_n$ be the number of ways to write  the sum of 1, 3, 4</p>
+</blockquote>
+</li>
+<li>转换关系<blockquote>
+<p> $D_n = D_{n−1} + D_{n−3} + D_{n−4}$</p>
+</blockquote>
+</li>
+<li>初始化<blockquote>
+<p>  $D_0 =D_1 =D_2 =1$, and $D_3 =2$</p>
+</blockquote>
+</li>
+</ol>
+<p>c++ 代码实现</p>
+<p>版本一：就是一种dfs 的思路<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 这个说是dp 但是更像是dfs，只不过</span></span><br><span class="line">    <span class="keyword">if</span> (n ==<span class="number">0</span> || n ==<span class="number">1</span> ||n ==<span class="number">2</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(n ==<span class="number">3</span>) <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> dfs(n<span class="number">-1</span>) +dfs(n<span class="number">-3</span>)+dfs(n<span class="number">-4</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>空间复杂度是 $O(n)$，时间是 $O(n)$， 空间换取时间。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; cache;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 这个说是dp 但是更像是dfs，只不过</span></span><br><span class="line">    <span class="keyword">if</span> (n ==<span class="number">0</span> || n ==<span class="number">1</span> ||n ==<span class="number">2</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(n ==<span class="number">3</span>) <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (cache.count(n)) <span class="keyword">return</span> cache[n];</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        cache[n] =dfs(n<span class="number">-1</span>) +dfs(n<span class="number">-3</span>)+dfs(n<span class="number">-4</span>);</span><br><span class="line">        <span class="keyword">return</span> cache[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>python 实现，时间复杂度 $O(n)$ 空间复杂度 $O(n)$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cache =&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dp</span><span class="params">(n)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> n==<span class="number">0</span> <span class="keyword">or</span> n ==<span class="number">1</span> <span class="keyword">or</span> n==<span class="number">2</span>: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> n ==<span class="number">3</span>: <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> cache: <span class="keyword">return</span> cache[n]</span><br><span class="line">    <span class="keyword">else</span>: </span><br><span class="line">        cache[n] =dp(n<span class="number">-1</span>) +dp(n<span class="number">-3</span>) +dp(n <span class="number">-4</span>)</span><br><span class="line">        <span class="keyword">return</span> cache[n]</span><br><span class="line">print(dp(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+<p>问题二： Tri Tiling （这里是需要补充的）</p>
+<blockquote>
+<p>Given n, find the number of ways to fill a 3×n board with dominoes</p>
+</blockquote>
+<p>c++ 代码，关键是动态转移方程。<br>$$<br>\begin{split}<br>A_n &amp;= A_{n-2} +B_{n-1} + C_{n-1} \\<br>B_n &amp;= A_{n-1} + B_{n-2}<br>\end{split}<br>$$</p>
+<p><a href="https://www.geeksforgeeks.org/tiling-with-dominoes/" target="_blank" rel="noopener">讲解</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> n , <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp; a, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    a[<span class="number">0</span>] =<span class="number">1</span>, a[<span class="number">1</span>] =<span class="number">0</span>;</span><br><span class="line">    b[<span class="number">0</span>] =<span class="number">1</span>, b[<span class="number">1</span>] =<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">2</span>; i&lt;=n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        a[i] =a[i<span class="number">-2</span>] +<span class="number">2</span>*b[i<span class="number">-1</span>];</span><br><span class="line">        b[i] =a[i<span class="number">-1</span>] +b[i<span class="number">-2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a[n];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt;n;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; a1(n+<span class="number">1</span>), b1(n+<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; fun(n, a1, b1)&lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有一个比较简单的题目，</p>
+<blockquote>
+<p>Given n, find the number of ways to fill a 2*n board with dominoes</p>
+</blockquote>
+<p>动态转移方程（这个相对上一个考虑的情况少一些）<br>$$<br>\begin{split}<br>A_n  &amp;=n if n ==1 || n ==2 \\<br>A_n &amp; = A_{n-1} +A_{n -2}   else\\<br>\end{split}<br>$$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> n , <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp; a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    a[<span class="number">1</span>] =<span class="number">1</span>, a[<span class="number">2</span>] =<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">3</span> ; i&lt;=n; i++)</span><br><span class="line">        a[i] =a[i<span class="number">-1</span>] + a[i<span class="number">-2</span>];</span><br><span class="line">    <span class="keyword">return</span> a[n];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt;n;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; a(n+<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; fun(n, a)&lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-dimensional-DP-Example"><a href="#2-dimensional-DP-Example" class="headerlink" title="2-dimensional DP Example"></a>2-dimensional DP Example</h3><p>问题一：最长子序列</p>
+<blockquote>
+<p>Problem: given two strings x and y, find the longest common subsequence (LCS) and print its length</p>
+</blockquote>
+<p>解题步骤：</p>
+<ol>
+<li>对问题的定义<br>$D_{ij}$ 表示 $x_{1, …, i}$ 和$y_{1, …, j}$ 的LCS 的长度</li>
+<li>转换关系</li>
+</ol>
+<ul>
+<li>$D_{ij} =D_{i-1, j-1} +1$ if $x_i =y_j$， 因为both of them contribute to the LCS</li>
+<li>$D_{ij} =max{D_{i-1, j}, D_{i, j-1}} $ 否则的话</li>
+</ul>
+<ol start="3">
+<li>初始化(就是解决最小的问题，就是当 $i-1 ==0$ 的时候， 或者bad case 是如何进行处理)<br>$D_{i0} =D_{0j} =0$</li>
+</ol>
+<p>python代码实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>c++ 代码实现<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXV =<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> n,m;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lcs</span><span class="params">(<span class="keyword">char</span> * str1, <span class="keyword">char</span> * str2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dp(n+<span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(m+<span class="number">1</span>, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>; i&lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j =<span class="number">1</span>; j&lt;=m; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(str1[i] ==str2[j])</span><br><span class="line">                dp[i][j] =dp[i<span class="number">-1</span>][j<span class="number">-1</span>] +<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                dp[i][j] =max(dp[i][j<span class="number">-1</span>], dp[i<span class="number">-1</span>][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n][m];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> s1[MAXV], s2[MAXV];</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt;s1+<span class="number">1</span>&gt;&gt; s2+<span class="number">1</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; lcs(s1, s2)&lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>python实现。在申请空间的时候，多申请一圈的空间。并且在判断的时候，使用 <code>str1[i-1] ==str2[j-1]</code> 来处理越界的问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 边界条件是根据实际意义出发</span></span><br><span class="line">str1 =<span class="string">"abcd"</span></span><br><span class="line">str2 =<span class="string">"bad"</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lcs</span><span class="params">(str1, str2)</span>:</span></span><br><span class="line">    n, m =len(str1), len(str2)</span><br><span class="line">    dp =[ [<span class="number">0</span>]*(m+<span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(n+<span class="number">1</span>)]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, m +<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span>(str1[i<span class="number">-1</span>] ==str2[j<span class="number">-1</span>]):</span><br><span class="line">                dp[i][j] =dp[i<span class="number">-1</span>][j<span class="number">-1</span>] +<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[i][j] =max(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>]) </span><br><span class="line">    <span class="keyword">return</span> dp[n][m]</span><br><span class="line">print(lcs(str1, str2))</span><br></pre></td></tr></table></figure>
+<p>How can we now find the sequence? To find the sequence, we just walk backwards through matrix starting the lower-right corner. If either the cell directly above or directly to the right contains a value equal to the value in the current cell, then move to that cell (if both to, then chose either one). If both such cells have values strictly less than the value in the current cell, then move diagonally up-left (this corresponts to applying Case 2), and output the associated character. This will output the characters in the LCS in reverse order. For instance, running on the matrix above, this outputs DABA.</p>
+<p>上面的是从底到上思路（迭代）</p>
+<p>然后看第二种思路（从上到下），那么就递归+ memory</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">LCS(S,n,T,m)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (n==<span class="number">0</span> || m==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (arr[n][m] != unknown) <span class="keyword">return</span> arr[n][m]; <span class="comment">// &lt;- added this line (*) if (S[n] == T[m]) result = 1 + LCS(S,n-1,T,m-1);</span></span><br><span class="line"><span class="keyword">else</span> result = max( LCS(S,n<span class="number">-1</span>,T,m), LCS(S,n,T,m<span class="number">-1</span>) );</span><br><span class="line">arr[n][m] = result;</span><br><span class="line"><span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>扩展题目</p>
+<p>More about LCS: Discussion and Extensions. An equivalent problem to LCS is the “mini- mum edit distance” problem, where the legal operations are insert and delete.</p>
+<h3 id="Interval-翻译成间隔或者区间-DP"><a href="#Interval-翻译成间隔或者区间-DP" class="headerlink" title="Interval (翻译成间隔或者区间)DP"></a>Interval (翻译成间隔或者区间)DP</h3><blockquote>
+<p> Problem: given a string $x = x_{1…n} $, find the minimum number of characters that need to be inserted to make it a palindrome</p>
+</blockquote>
+<p>解题思路</p>
+<ol>
+<li>问题的定义<br>Let $D_{ij}$ be the minimum number of characters that need to be inserted to make $x_{i…j}$ into a palindrome</li>
+<li>转换关系<br>$$ D_{ij} = \begin{cases}<br>1 +min{D_{i+1, j},  D_{i, j-1}} &amp;  x_i \neq x_j \\<br>D_{i+1, j-1}&amp; x_i \eq x_j<br>\end{cases}$$</li>
+<li>初始化<blockquote>
+<p>Find and solve the base cases: $D_{ii} = D_i, i−1 = 0 $ for all $ i$<br>The entries of D must be filled in increasing order of  $j − i$</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>An alternate solution</strong></p>
+<ul>
+<li>Reverse $x $to get $x^R$</li>
+<li>The answer is $n−L $, where $ L $is the length of the LCS of $ x$ and $x^R$</li>
+</ul>
+<p>代码实现部分</p>
+<p>python 代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">c++ 代码实现部分</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```c++</span><br></pre></td></tr></table></figure></p>
+<h3 id="Tree-DP-（选做）"><a href="#Tree-DP-（选做）" class="headerlink" title="Tree DP （选做）"></a>Tree DP （选做）</h3><blockquote>
+<p>Problem: given a tree, color nodes black as many as possible without coloring two adjacent nodes</p>
+</blockquote>
+<h3 id="Subset-DP-选做"><a href="#Subset-DP-选做" class="headerlink" title="Subset DP (选做)"></a>Subset DP (选做)</h3><blockquote>
+<p>Problem: given a weighted graph with n nodes, find the shortest path that visits every node exactly once (Traveling Salesman Problem)</p>
+</blockquote>
+<h3 id="The-Knapsack-Problem-背包问题也是可以纳入到-dp系列中"><a href="#The-Knapsack-Problem-背包问题也是可以纳入到-dp系列中" class="headerlink" title="The Knapsack Problem 背包问题也是可以纳入到 dp系列中"></a>The Knapsack Problem 背包问题也是可以纳入到 dp系列中</h3><p>In the knapsack problem we are given a set of n items, where each item i is specified by a size si and a value vi. We are also given a size bound S (the size of our knapsack). The goal is to find the subset of items of maximum total value such that sum of their sizes is at most S (they all fit into the knapsack).</p>
+<h3 id="matrix-product-parenthesization-problem"><a href="#matrix-product-parenthesization-problem" class="headerlink" title="matrix product parenthesization problem."></a>matrix product parenthesization problem.</h3><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://web.stanford.edu/class/cs97si/04-dynamic-programming.pdf" target="_blank" rel="noopener">standford Dynamic Programming</a><br><a href="">dp-cmu 课件</a><br><a href="https://www.freecodecamp.org/news/demystifying-dynamic-programming-3efafb8d4296/" target="_blank" rel="noopener">Demystifying Dynamic Programming</a><br><a href="https://simpleprogrammer.com/guide-dynamic-programming/" target="_blank" rel="noopener">The Ultimate Guide to Dynamic Programming</a><br><a href="https://yourbasic.org/algorithms/dynamic-programming-explained/" target="_blank" rel="noopener">Dynamic programming [step-by-step example]</a><br><a href="https://www.hackerearth.com/zh/practice/algorithms/dynamic-programming/introduction-to-dynamic-programming-1/tutorial/" target="_blank" rel="noopener">Introduction to Dynamic Programming 1</a><br><a href="https://www.codechef.com/wiki/tutorial-dynamic-programming" target="_blank" rel="noopener">Tutorial For Dynamic Programming</a></p>
+<h3 id="之前的"><a href="#之前的" class="headerlink" title="之前的"></a>之前的</h3><p>动态规划的求解需要考虑三个问题：</p>
 <ol>
 <li>状态怎么表示</li>
 <li>怎么计算每个状态</li>
@@ -597,8 +766,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -617,7 +795,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">96</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -703,6 +881,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-dimensional-DP-Example"><span class="nav-number">2.1.</span> <span class="nav-text">1-dimensional DP Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-dimensional-DP-Example"><span class="nav-number">2.2.</span> <span class="nav-text">2-dimensional DP Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interval-翻译成间隔或者区间-DP"><span class="nav-number">2.3.</span> <span class="nav-text">Interval (翻译成间隔或者区间)DP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-DP-（选做）"><span class="nav-number">2.4.</span> <span class="nav-text">Tree DP （选做）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Subset-DP-选做"><span class="nav-number">2.5.</span> <span class="nav-text">Subset DP (选做)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Knapsack-Problem-背包问题也是可以纳入到-dp系列中"><span class="nav-number">2.6.</span> <span class="nav-text">The Knapsack Problem 背包问题也是可以纳入到 dp系列中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#matrix-product-parenthesization-problem"><span class="nav-number">2.7.</span> <span class="nav-text">matrix product parenthesization problem.</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#之前的"><span class="nav-number">3.1.</span> <span class="nav-text">之前的</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
