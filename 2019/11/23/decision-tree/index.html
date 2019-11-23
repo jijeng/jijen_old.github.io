@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="decision_tree," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍决策树的定义、三种不同的决策树和优劣等相关分析。">
+<meta name="keywords" content="decision_tree">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Decision Tree">
+<meta property="og:url" content="http://yoursite.com/2019/11/23/decision-tree/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍决策树的定义、三种不同的决策树和优劣等相关分析。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/20/Zzs1Vf.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/20/Zzs3a8.png">
+<meta property="og:updated_time" content="2019-11-23T04:11:02.058Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Decision Tree">
+<meta name="twitter:description" content="介绍决策树的定义、三种不同的决策树和优劣等相关分析。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/07/20/Zzs1Vf.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/23/decision-tree/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>Decision Tree | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/23/decision-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Decision Tree</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-23T10:48:58+08:00">
+                2019-11-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-23T12:11:02+08:00">
+                2019-11-23
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/23/decision-tree/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/11/23/decision-tree/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍决策树的定义、三种不同的决策树和优劣等相关分析。</p>
+<a id="more"></a>
+<p>从数学上讲，决策树是一个分段函数。决策树是一种基本的分类和回归方法。决策树的学习通常包括三个步骤： 特征选择、决策树的生成和决策树的修建。主要有三种算法： ID3、C4.5生成算法和CART 算法。</p>
+<blockquote>
+<p>A learned binary tree is actually a partitioning of the input space. You can think of each input variable as a dimension on a p-dimensional space. The decision tree split this up into rectangles (when p=2 input variables) or some kind of hyper-rectangles with more inputs.</p>
+</blockquote>
+<p>当决策树训练完之后，就相当于把 $p$ 维空间分成了若干个子空间（数量是和叶子节点数量相同），然后predict 的过程就是把某个样本放到某个空间的过程。</p>
+<h2 id="决策树的定义"><a href="#决策树的定义" class="headerlink" title="决策树的定义"></a>决策树的定义</h2><h2 id="三种算法"><a href="#三种算法" class="headerlink" title="三种算法"></a>三种算法</h2><blockquote>
+<p>As we move further down the tree, the level of impurity or uncertainty decreases, thus leading to a better classification or best split at every node. To decide the same, splitting measures such as Information Gain, Gini Index, etc. are used.</p>
+</blockquote>
+<p>当沿着树的结构往下走的时候，样本的不确定性或者”impurity“应该是下降的。衡量的指标有 Gini Index或者Information Gain。</p>
+<h3 id="CART算法"><a href="#CART算法" class="headerlink" title="CART算法"></a>CART算法</h3><blockquote>
+<p>CART algorithm can be used for building both Classification and Regression Decision Trees. The impurity (or purity) measure used in building decision tree in CART is Gini Index. The decision tree built by CART algorithm is always a binary decision tree (each node will have only two child nodes).</p>
+</blockquote>
+<p>既可以使用在分类场景也可以使用在回归场景，基于二叉树构建。</p>
+<blockquote>
+<p>For regression predictive modeling problems the cost function that is minimized to choose split points is the sum squared error across all training samples that fall within the rectangle:<br>$$sum(y- prediction) ^2$$<br>For classification the Gini index function is used which provides an indication of how “pure” the leaf nodes are (how mixed the training data assigned to each node is).</p>
+</blockquote>
+<p>以 greedy splitting 为例，当然也有基于这种方式的优化，比如在xgboost 中使用桶的方式进行优化。greedy splittinig 简单说是对于样本中的每个特征和特征中的每个分裂点进行枚举。对于回归问题，使用均方差作为loss function；对于二分类问题，使用gini 系数作为loss function。</p>
+<blockquote>
+<p>Each root node represents a single input variable (x) and a split point on that variable (assuming the variable is numeric). The leaf nodes of the tree contain an output variable (y) which is used to make a prediction.</p>
+</blockquote>
+<p>树的结构：根节点是数据的输入 $x$（$x$ 是可以包含若干个特征的）， 叶子节点是数值用于 make a prediciton.</p>
+<p>CART算法基于Gini 系数。下面介绍关于GIni系数的定义，计算的例子。</p>
+<ol>
+<li>第一种定义</li>
+</ol>
+<blockquote>
+<p>Gini index or Gini impurity measures the degree or probability of a particular variable being wrongly classified when it is randomly chosen.<br>Gini Index is a metric to measure how often a randomly chosen element would be incorrectly identified.</p>
+</blockquote>
+<p>基尼系数或者基尼不纯： 任意选择一个样本，该样本被错误分类的概率。表示为以下的形式</p>
+<p>$$<br>Gini =1-\sum _{i=1}  ^{C}(p _{i})  ^{2}<br>$$</p>
+<p>其中 $C$表示类别的个数。在xgboost 或者说在 boosted tree 中使用的是该指标。</p>
+<blockquote>
+<p>It means an attribute with lower Gini index should be preferred.</p>
+</blockquote>
+<p>数值越小，那么最后的结果是越好的</p>
+<blockquote>
+<p>The algorithm works as$ 1 – ( P(class1)^2 + P(class2)^2 + … + P(classN)^2)$</p>
+</blockquote>
+<p>详细情况看下面的例子。当选择一个分裂点之后，计算每个不同类的概率进而计算Gini 系数。</p>
+<ol start="2">
+<li>第二种定义</li>
+</ol>
+<blockquote>
+<p>Gini impurity is a measure of misclassification, which applies in a multiclass classifier context.<br>Gini coefficient applies to binary classification and requires a classifier that can in some way rank examples according to the likelihood of being in a positive class.</p>
+</blockquote>
+<ol start="3">
+<li>第三种定义</li>
+</ol>
+<p>数据集合 𝐷 的纯度可用基尼指数来度量：<br>$$<br>Gini ( D ) = \sum _ { k = 1 } ^ { | \mathcal { Y } | } \sum _ { k ^ { \prime } \neq k } p _ { k } p _ { k ^ { \prime } } = 1 - \sum _ { k = 1 } ^ { \mathcal { V } } p _ { k } ^ { 2 }<br>$$<br>直观来看，$Gini(𝐷) $ 反映了从数据集 𝐷 中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(𝐷) $ 越小，则数据集 𝐷 的纯度越高。</p>
+<p>对特定属性 𝑎 的基尼指数定义如下：<br>$$<br>Gini  _{index}( D , a ) = \sum _ { v = 1 } ^ { V } \frac { | D _ { v } | } { | D | } \operatorname { Gini } ( D _ { v } )<br>$$<br>我们在候选属性集合 𝐴 中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
+<p>$$<br>a _ { * } = \arg \min _ { a \in A } Gini _{index } ( D , a )<br>$$</p>
+<p>采用基尼指数作为划分属性的判据的决策树是一种 CART 决策树。</p>
+<ol start="4">
+<li>例子</li>
+</ol>
+<p>选择最优分类点的整体思路：首先遍历特征，在每个特征内遍历可以分裂的点。比如</p>
+<blockquote>
+<p>Calculating Gini Index for Var A:<br>Value &gt;= 5: 12<br>Attribute A &gt;= 5 &amp; class = positive:  $\frac{5}{12}$<br>Attribute A &gt;= 5 &amp; class = negative:  $\frac{7}{12} $<br>$Gini(5, 7) =  1 –  [  ( \frac{5}{12}  ) ^{2} +  ( \frac{7}{12}  ) ^{2} ]    = 0.4860 $<br>Value &lt; 5: 4<br>Attribute A &lt; 5 &amp; class = positive:  $\frac{3}{4} $<br>Attribute A &lt; 5 &amp; class = negative:  $\frac{1}{4} $<br>$Gini(3, 1) = 1 –  [  ( \frac{3}{4}  ) ^{2} +  ( \frac{1}{4}  ) ^{2} ]      = 0.375 $<br>By adding weight and sum each of the gini indices:<br>$gini(Target, A) =  ( \frac{12}{16}  ) * (0.486) +  ( \frac{4}{16}  ) * (0.375) = 0.45825 $</p>
+</blockquote>
+<p>所以对于特征A 那么得到的基尼系数是 0.45825。 同理可以计算计算特征B，C… H. 然后选择基尼系数最小的特征作为当前的分类结点。</p>
+<p>关于例子介绍更加详细的内容，参看<a href="https://www.geeksforgeeks.org/decision-tree-introduction-example/" target="_blank" rel="noopener">Decision Tree Introduction with example</a></p>
+<h3 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h3><p>ID3 （Iterative Dichotomiser 3） 基于信息增益计算。</p>
+<ol>
+<li>信息增益的定义</li>
+</ol>
+<blockquote>
+<p>This algorithm uses Information Gain to decide which attribute is to be used classify the current subset of the data. For each level of the tree, information gain is calculated for the remaining data recursively.</p>
+</blockquote>
+<p>是基于信息增益作为衡量的指标。熵公式表示为：<br>$$<br>E=\sum _{i=1}  ^{C}-p _{i} * \log  _{2}(p _{i})<br>$$</p>
+<p>信息增益的表示为：<br>$$<br>Gain(D, C_1) =H(D) - E _{C_1}<br>$$<br>其中 $H(D)$ 是划分前的信息熵，$E _{C_1}$ 是划分之后的信息熵。</p>
+<blockquote>
+<p>熵（entropy）： 熵指的是体系的混乱的程度<br>信息增益（information gain）： 在划分数据集前后信息发生的变化称为信息增益，信息增益越大，确定性越强。</p>
+</blockquote>
+<p>对于Gini 系数是越小越好，但是对于信息增益来说是越大越好。</p>
+<ol start="2">
+<li>计算信息增益的例子</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">原始的数据集：</span><br><span class="line"></span><br><span class="line">编号	色泽	根蒂	敲声	纹理	脐部	触感	好瓜</span><br><span class="line">1	青绿	蜷缩	浊响	清晰	凹陷	硬滑	是</span><br><span class="line">2	乌黑	蜷缩	沉闷	清晰	凹陷	硬滑	是</span><br><span class="line">3	乌黑	蜷缩	浊响	清晰	凹陷	硬滑	是</span><br><span class="line">4	青绿	蜷缩	沉闷	清晰	凹陷	硬滑	是</span><br><span class="line">5	浅白	蜷缩	浊响	清晰	凹陷	硬滑	是</span><br><span class="line">6	青绿	稍蜷	浊响	清晰	稍凹	软粘	是</span><br><span class="line">7	乌黑	稍蜷	浊响	稍糊	稍凹	软粘	是</span><br><span class="line">8	乌黑	稍蜷	浊响	清晰	稍凹	硬滑	是</span><br><span class="line">9	乌黑	稍蜷	沉闷	稍糊	稍凹	硬滑	否</span><br><span class="line">10	青绿	硬挺	清脆	清晰	平坦	软粘	否</span><br><span class="line">11	浅白	硬挺	清脆	模糊	平坦	硬滑	否</span><br><span class="line">12	浅白	蜷缩	浊响	模糊	平坦	软粘	否</span><br><span class="line">13	青绿	稍蜷	浊响	稍糊	凹陷	硬滑	否</span><br><span class="line">14	浅白	稍蜷	沉闷	稍糊	凹陷	硬滑	否</span><br><span class="line">15	乌黑	稍蜷	浊响	清晰	稍凹	软粘	否</span><br><span class="line">16	浅白	蜷缩	浊响	模糊	平坦	硬滑	否</span><br><span class="line">17	青绿	蜷缩	沉闷	稍糊	稍凹	硬滑	否</span><br></pre></td></tr></table></figure>
+<p>使用上面的数据集进行说明。在决策树学习开始时，根结点包含 𝐷 中所有样例，正例占 $p _ { 1 } = \frac { 8 } { 17 }$，反例占$ p_2=\frac{9}{17}$。根结点的信息熵（下面我们都以比特为单位计算）为：</p>
+<p>$$<br>H ( D ) = - \sum _ { k = 1 } ^ { 2 } p ( k ) \log _ { 2 } p ( k ) = - ( \frac { 7 } { 17 } \log _ { 2 } \frac { 7 } { 17 } + \frac { 9 } { 17 } \log _ { 2 } \frac { 9 } { 17 } ) = 0.998<br>$$</p>
+<p>然后我们要计算出与当前属性集合 {色泽、根蒂、敲声、纹理、脐部、触感}中每个属性的<strong><em> 信息增益，也就是对应的互信息</em></strong>。以属性“色泽”为例，它有 3 个可能取值：{青绿、乌黑、浅白}。以该属性对数据集进行划分，可以得到 3 个子集，分别为：$D_1(色泽=青绿) $、$ D_2(色泽=乌黑)$ 、$D_3(色泽=浅白)$。</p>
+<p>对子集$ D_1$ 来说，包含了编号为 {1,4,6,10,13,17} 的 6 个样例，其中正例为 {1,4,6}，占$ p_1=36$ ；反例为 {10,13,17}，占 $p_1=36$。计算其熵为：<br>$$<br>H ( D _ { 1 } ) = - ( \frac { 3 } { 6 } \log _ { 2 } \frac { 3 } { 6 } + \frac { 3 } { 6 } \log _ { 2 } \frac { 3 } { 6 } ) = 1.000<br>$$</p>
+<p>依次可以计算另外两个子集的信息熵为：<br>$$<br>H ( D _ { 2 } ) = 0.918<br>$$<br>$$<br>H ( D _ { 3 } ) = 0.722<br>$$<br>最终可以计算数据集 $D$ 的类别信息在属性“色泽”熵的信息增益（也可以理解为类别与“色泽”属性之间的互信息）为：</p>
+<p>$$<br>\begin{split}<br>Gain(D, 色泽) &amp;= H ( D ) - \sum _ { v = 1 } ^ { 3 } p ( v ) H ( D _ { v } ) \\<br>&amp;= 0.998 - ( \frac { 6 } { 17 } \times 1.000 + \frac { 6 } { 17 } \times 0.918 + \frac { 5 } { 17 } \times 0.722 ) \\<br>&amp;= 0.109<br>\end{split}<br>$$<br>重复上述的计算步骤，我们可以计算出其他属性的信息增益：</p>
+<p>$$<br>\begin{split}<br>Gain(𝐷,根蒂)  &amp;=0.143 \\<br>Gain(𝐷,敲声) &amp;= 0.141 \\<br>Gain(𝐷,纹理) &amp;= 0.381\\<br>Gain(𝐷,脐部) &amp;= 0.289 \\<br>Gain(𝐷,触感) &amp;=0.006<br>\end{split}<br>$$</p>
+<p>经过比较，发现采用“纹理”进行划分得到的信息增益最大，于是它被选为划分属性。下图给出了根据“纹理”属性划分之后的数据子集：</p>
+<p><img src="https://s2.ax1x.com/2019/07/20/Zzs1Vf.png" alt="Zzs1Vf.png"></p>
+<p>对每一个数据子集按照上边的步骤继续划分下去就能得到最终的决策树（需要注意的是每次样例子集中的属性不包含父结点中划分所依赖的属性），如下图所示：</p>
+<p><img src="https://s2.ax1x.com/2019/07/20/Zzs3a8.png" alt="Zzs3a8.png"></p>
+<h3 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h3><blockquote>
+<p>This algorithm is the successor of the ID3 algorithm. This algorithm uses either Information gain or Gain ratio to decide upon the classifying attribute. It is a direct improvement from the ID3 algorithm as it can handle both continuous and missing attribute values.</p>
+</blockquote>
+<p>是基于ID3的改进，基于信息增益率，改进点在于支持连续性变量和缺省值。</p>
+<p>上一种方式缺点在于当使用信息增益划分时候，当某一个属性的取值类别非常多时，对应的属性的自己小，那么分类信息熵会比较小，最后的信息增益会比较大。</p>
+<p>原因：log 函数不是线性的， 信息量减少速度大于类别数量增加的速度。（虽然项数多了，但是每项减少的速度更大）</p>
+<p>（最后的选择策略还是比较牛逼的，各种情况都是可以考虑到的）<br>所以第二种策略采用信息增益率，简单来说就是归一化，将数据集的大小考虑在内。最后一点需要注意的是，增益率准则虽然减少了对取值数目较多的属性依赖，但是增加了对取值数目较少的属性偏好。因此， C4.5 并没有直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出 信息增益 高于 平均水平 的属性，再从中选择 增益率 最高的。</p>
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><blockquote>
+<p>Gini Index, unlike information gain, isn’t computationally intensive as it doesn’t involve the logarithm function used to calculate entropy in information gain, which is why Gini Index is preferred over Information gain.</p>
+</blockquote>
+<p>Gini index 的计算量相对于信息增益是要小，因为后者有log 运算。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><ol>
+<li>树形结构为什么不需要归一化？</li>
+</ol>
+<ul>
+<li>数值缩放不影响分裂点位置，对树模型的结构不造成影响。 按照特征值进行排序的，排序的顺序不变，那么所属的分支以及分裂点就不会有不同。</li>
+<li>树模型是不能进行梯度下降的，因为构建树模型（回归树）寻找最优点时是通过寻找最优分裂点完成的，因此树模型是阶跃的，阶跃点是不可导的，并且求导没意义，也就不需要归一化。</li>
+</ul>
+<ol start="2">
+<li>决策树如何进行剪枝?</li>
+</ol>
+<p>基本上有预剪枝和后剪枝两种策略。</p>
+<blockquote>
+<p>The most common stopping procedure is to use a minimum count on the number of training instances assigned to each leaf node. If the count is less than some minimum then the split is not accepted and the node is taken as a final leaf node.</p>
+</blockquote>
+<p>预剪枝，在训练过程中，使用验证数据集验证，如果划分能够提高划分的准确性，阿么就划分，否则就标记为叶子节点。</p>
+<blockquote>
+<p>The fastest and simplest pruning method is to work through each leaf node in the tree and evaluate the effect of removing it using a hold-out test set. Leaf nodes are removed only if it results in a drop in the overall cost function on the entire test set. You stop removing nodes when no further improvements can be made.</p>
+</blockquote>
+<p>后剪枝，当训练完成之后，自底向上对叶子节点进行检查，如果去掉不影响在 测试集上的loss，那么就去掉</p>
+<ol start="3">
+<li>优缺点</li>
+</ol>
+<p>优点：</p>
+<ul>
+<li>决策树易于理解（能够写出判断的路径，逻辑表达式）和实现， 人们知道该如何去优化。</li>
+<li>可以处理缺省数据，意味着数据的准备工作是比较简单的。相对比其他的技术，往往需要一般化之类的操作。</li>
+<li>能够处理数值型和常规性属性。</li>
+<li>可以学习到特征的组合</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>容易过拟合</li>
+<li>对于各个类别不一致的数据，决策树当中信息增益的结果偏向于那些具有更多数值的特征。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/decision-tree/" rel="tag"># decision_tree</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/17/optimizer/" rel="next" title="optimizer">
+                <i class="fa fa-chevron-left"></i> optimizer
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树的定义"><span class="nav-number">1.</span> <span class="nav-text">决策树的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三种算法"><span class="nav-number">2.</span> <span class="nav-text">三种算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CART算法"><span class="nav-number">2.1.</span> <span class="nav-text">CART算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ID3"><span class="nav-number">2.2.</span> <span class="nav-text">ID3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C4-5"><span class="nav-number">2.3.</span> <span class="nav-text">C4.5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比较"><span class="nav-number">2.4.</span> <span class="nav-text">比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">3.</span> <span class="nav-text">分析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/11/23/decision-tree/';
+          this.page.identifier = '2019/11/23/decision-tree/';
+          this.page.title = 'Decision Tree';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分， 一个是关于Autograd 部分。">
+<meta name="description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分。">
 <meta name="keywords" content="pytorch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch">
 <meta property="og:url" content="http://yoursite.com/2019/02/01/pytorch/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分， 一个是关于Autograd 部分。">
+<meta property="og:description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-13T11:43:42.254Z">
+<meta property="og:updated_time" content="2019-11-17T13:53:33.599Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pytorch">
-<meta name="twitter:description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分， 一个是关于Autograd 部分。">
+<meta name="twitter:description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分。">
 
 
 
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-11-13T19:43:42+08:00">
-                2019-11-13
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-17T21:53:33+08:00">
+                2019-11-17
               </time>
             
           </span>
@@ -362,7 +362,7 @@
 
       
         <p>pytorch 学习笔记</p>
-<p>不理解的地方，一个是关于 nn包搭建网络的部分， 一个是关于Autograd 部分。</p>
+<p>不理解的地方，一个是关于 nn包搭建网络的部分。</p>
 <a id="more"></a>
 <ol>
 <li>pytorch 和torch 比较</li>
@@ -390,7 +390,16 @@
 <p>如下，我们定义了两个 GPU 张量，并对这两个张量执行矩阵乘法。当然，我们也可以如下所示将 CPU 张量转换为 GPU 张量。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以下转化CPU张量为GPU张量</span></span><br><span class="line">x = torch.FloatTensor(<span class="number">5</span>, <span class="number">3</span>).uniform_(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">print(x)</span><br><span class="line">x = x.cuda(device=<span class="number">0</span>)</span><br><span class="line">print(x)</span><br><span class="line">x = x.cpu()</span><br><span class="line">print(x)</span><br></pre></td></tr></table></figure></p>
 <p><code>AutoGrad 模块</code></p>
 <p>TensorFlow、Caffe 和 CNTK 等大多数框架都是使用的静态计算图，开发者必须建立或定义一个神经网络，并重复使用相同的结构来执行模型训练。改变网络的模式就意味着我们必须从头开始设计并定义相关的模块。</p>
-<p>但 PyTorch 使用的技术为自动微分（automatic differentiation）。在这种机制下，系统会有一个 Recorder 来记录我们执行的运算，然后再反向计算对应的梯度。这种技术在构建神经网络的过程中十分强大，因为我们可以通过计算前向传播过程中参数的微分来节省时间。</p>
+<p>PyTorch 使用的技术为自动微分（automatic differentiation），这个是用来自动求解微分的模块。在这种机制下，系统会有一个 Recorder 来记录我们执行的运算，然后再反向计算对应的梯度。这种技术在构建神经网络的过程中十分强大，因为我们可以通过计算前向传播过程中参数的微分来节省时间。</p>
+<p>从概念上讲, <code>Autograd</code> 对数据记录记录了一个有向无环图（DAG）， 叫做计算图，用来表示它的计算过程。沿着计算图应用链式求导法则就可以求出其梯度。<code>Autograd</code> 包中有两个核心包： <code>torch.Tensor</code> 和<code>torch.Function</code>， 默认某个 tensor的属性是 <code>.requires_grad</code> 为true，当计算完成的时候可以调用 <code>.backward()</code> 来自动计算所有的梯度，针对这个tensor 可以在 <code>.grad</code> 属性中去查看。</p>
+<p>设置一个张量不跟踪历史记录的方法：</p>
+<ol>
+<li>调用 <code>.detach()</code> 将其从计算历史中分离出来</li>
+<li>使用 <code>torch.no_grad()</code> 包裹代码块，那么在该代码块中的计算都不会计算梯度。使用的情况是， 在评估阶段（predict）阶段。</li>
+<li>设置某个tensor 的属性为 <code>Required_grad =False</code></li>
+</ol>
+<p><code>Function</code> 类，每一个tensor都有一个<code>.grad_fn</code> 属性指向一个 <code>Function</code>，表示如何得到了当期的tensor。如果是用户自己创建的张量tensor，那么 <code>grad_fn is None</code>。</p>
+<p><code>.requires_grad</code>具有传递性，比如说 $x_1, x_2, \dots, x_n$ 中某一个满足 <code>required_grad =True</code>，那么这个时候由这些tensor表示tensor 的属性都是<code>true</code>。</p>
 <p><strong>最优化模块</strong><br>torch.optim 是实现神经网络中多种优化算法的模块，它目前已经支持大多数一般的方法，所以我们不需要从头构建优化算法。以下展示了使用 Adam 优化器的基本代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)</span><br></pre></td></tr></table></figure></p>
 <p>我们一般可以使用 torch.nn 包构建神经网络，下面提供了一些 API 的表达及意义：</p>
 <ul>
@@ -592,7 +601,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -614,7 +623,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

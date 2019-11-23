@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="xgboost原理," />
 
 
 
@@ -79,20 +79,24 @@
 
 
 
-<meta name="description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
+<meta name="description" content="介绍 xgboost 原理, xgboost+ lr 模型和 决策树。">
+<meta name="keywords" content="xgboost原理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XGBoost">
 <meta property="og:url" content="http://yoursite.com/2018/06/05/XGBoost/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
+<meta property="og:description" content="介绍 xgboost 原理, xgboost+ lr 模型和 决策树。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://s2.ax1x.com/2019/11/22/M7O8fO.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/04/uBgJoQ.png">
 <meta property="og:image" content="https://i.loli.net/2019/10/04/NbFc5hSjsD6VHzY.png">
-<meta property="og:updated_time" content="2019-10-05T03:20:36.789Z">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/11/0e7f7da922071d57.png">
+<meta property="og:image" content="https://upload.cc/i1/2019/11/21/GOAZyS.png">
+<meta property="og:updated_time" content="2019-11-23T04:10:59.056Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XGBoost">
-<meta name="twitter:description" content="Introduction to XGBoostXGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Frie">
-<meta name="twitter:image" content="https://s2.ax1x.com/2019/10/04/uBgJoQ.png">
+<meta name="twitter:description" content="介绍 xgboost 原理, xgboost+ lr 模型和 决策树。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/11/22/M7O8fO.png">
 
 
 
@@ -313,8 +317,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-05T11:20:36+08:00">
-                2019-10-05
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-23T12:10:59+08:00">
+                2019-11-23
               </time>
             
           </span>
@@ -385,30 +389,176 @@
       
 
       
-        <h3 id="Introduction-to-XGBoost"><a href="#Introduction-to-XGBoost" class="headerlink" title="Introduction to XGBoost"></a>Introduction to XGBoost</h3><p>XGBoost is short for “Extreme Gradient Boosting”, where the term “Gradient Boosting” is proposed in the paper Greedy Function Approximation: A Gradient Boosting Machine, by Friedman. XGBoost is based on this original model. And most of the content is based on the websit(<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">http://xgboost.readthedocs.io/en/latest/model.html</a>)</p>
-<h3 id="element-of-Supervised-learning"><a href="#element-of-Supervised-learning" class="headerlink" title="element of Supervised learning"></a>element of Supervised learning</h3><p>XGBoost is used for supervised learning problems, where we use the training data (with multiple features) xi to predict a target variable yi.</p>
-<h3 id="Objective-Function-Training-Loss-Regularization"><a href="#Objective-Function-Training-Loss-Regularization" class="headerlink" title="Objective Function: Training Loss + Regularization"></a>Objective Function: Training Loss + Regularization</h3><p>A very important fact about objective functions is they <strong>must always</strong> contain two parts: training loss and regularization.</p>
-<p>For example, a commomly used training loss is mean squared error.</p>
-<p>Another commonly used loss function is logistic loss for logistic regression</p>
-<p>The <strong>regularization term</strong> is what people usually forget to add. The regularization term controls the complexity of the model, which helps us to avoid overfitting.<br>The general principle is we want both a simple and predictive model. The tradeoff between the two is also referred as bias-variance tradeoff in machine learning.</p>
-<h3 id="Decision-Tree-and-random-forest"><a href="#Decision-Tree-and-random-forest" class="headerlink" title="Decision Tree and random forest"></a>Decision Tree and random forest</h3><blockquote>
-<p> Decision Trees: It is one of my favorite techniques. It can be used as a ultimate solution to tackle multiple challenges like missing values, outliers and identifying significant variables. It worked well in our Data Hackathon also. </p>
-</blockquote>
-<p>现在理解可能是基于”增益“ 之类的东西，关于 RF 最后一条。</p>
+        <p>介绍 xgboost 原理, xgboost+ lr 模型和 决策树。</p>
+<a id="more"></a>
+<h2 id="提升树简介"><a href="#提升树简介" class="headerlink" title="提升树简介"></a>提升树简介</h2><h3 id="监督学习的要素"><a href="#监督学习的要素" class="headerlink" title="监督学习的要素"></a>监督学习的要素</h3><ol>
+<li>model and parameters</li>
+</ol>
 <blockquote>
-<p>Random Forest: Similar to decision tree is Random Forest. I would also recommend using the in-built feature importance provided by random forests to select a smaller subset of input features. Just be careful that random forests have a tendency to bias towards variables that have more no. of distinct values i.e. favor numeric variables over binary/categorical values.</p>
+<p>The parameters are the undetermined part that we need to learn from data. In linear regression problems, the parameters are the coefficients $\theta$. </p>
 </blockquote>
-<h3 id="Tree-Ensemble"><a href="#Tree-Ensemble" class="headerlink" title="Tree Ensemble"></a>Tree Ensemble</h3><p>The tree ensemble model is a set of classification and regression trees(CART). Here is a simple example of a CART that classifies whether someone will like computer games.</p>
-<p>A CART is a bit different from decision trees, where the leaf only contains decision values. In CART, a real score is associated with each of the leaves, which gives us richer interpretations that go beyond classification. This also makes the unified optimization step easier, as we will see in a later part of this tutorial.</p>
-<p>Usually, a single tree is not strong enough to be used in practice. What is actually used is the so-called tree ensemble model, which sums the prediction of multiple trees together.</p>
-<p>Here is an example of a tree ensemble of two trees. The prediction scores of each individual tree are summed up to get the final score. If you look at the example, an important fact is that the two trees try to complement each other. </p>
-<p>Now here comes the question, what is the model for random forests? It is exactly tree ensembles! So random forests and boosted trees are not different in terms of model, the difference is how we train them. This means if you write a predictive service of tree ensembles, you only need to write one of them and they should directly work for both random forests and boosted trees. One example of why elements of supervised learning rock.</p>
-<h3 id="Tree-Boosting"><a href="#Tree-Boosting" class="headerlink" title="Tree Boosting"></a>Tree Boosting</h3><p>After introducing the model, let us begin with the real training part. How should we learn the trees? The answer is, as is always for all supervised learning models: define an objective function, and optimize it!</p>
-<p>Assume we have the following objective function (remember it always needs to contain training loss and regularization)</p>
-<h3 id="Additive-Training"><a href="#Additive-Training" class="headerlink" title="Additive Training"></a>Additive Training</h3><p>First thing we want to ask is what are the parameters of trees? You can find that what we need to learn are those functions fi, with each containing the structure of the tree and the leaf scores. This is much harder than traditional optimization problem where you can take the gradient and go. It is not easy to train all the trees at once. Instead, we use an additive strategy: fix what we have learned, and add one new tree at a time. </p>
-<p>It remains to ask, which tree do we want at each step? A natural thing is to add the one that optimizes our objective.</p>
-<h3 id="Training-model"><a href="#Training-model" class="headerlink" title="Training model"></a>Training model</h3><p>The XGBoost model for classification is called <strong>XGBClassifier</strong>(regression is called XGBRegressor). We can create and and fit it to our training dataset. Models are fit using the scikit-learn API and the <strong>model.fit()</strong> function.</p>
-<h3 id="xgboost-lr模型"><a href="#xgboost-lr模型" class="headerlink" title="xgboost +lr模型"></a>xgboost +lr模型</h3><p>简单地说，就是把gbdt的输出，作为logistic regression的输入，最后得到一个logistic regression模型。</p>
+<p>对于监督学习中，学习的是模型的参数 $\theta$。不论是回归还是分类模型，基本假设是参数表示数据的分布。</p>
+<ol start="2">
+<li>目标函数= 训练loss function + 正则项<br>$$<br>obj(\theta) =L(\theta) + \Omega(\theta)<br>$$</li>
+</ol>
+<blockquote>
+<p><code>training loss</code> measures how well model fit on training data, while <code>regularization</code>, measures complexity of model<br>其中 $L(\theta)$ 是loss function，表示模型的预测性； $\Omega(\theta) $表示模型的复杂度。 这个的选择就是bias-variance tradeoff 的问题。</p>
+</blockquote>
+<p>为什么要simple models?</p>
+<blockquote>
+<p>simple models tends to have smaller variance in future predictions, making prediction stable。<br>一般来说简单的参数，得到的结果是more stable。</p>
+</blockquote>
+<h3 id="决策树集合（Decision-Tree-Ensembles）"><a href="#决策树集合（Decision-Tree-Ensembles）" class="headerlink" title="决策树集合（Decision Tree Ensembles）"></a>决策树集合（Decision Tree Ensembles）</h3><blockquote>
+<p>To begin with, let us first learn about the model choice of XGBoost: decision tree ensembles. The tree ensemble model consists of a set of classification and regression trees (CART).</p>
+</blockquote>
+<p>xgboost 就是一系列决策树的集合。这些决策树是由一系列的 CART 树组成的。</p>
+<blockquote>
+<p> A CART is a bit different from decision trees, in which the leaf only contains decision values. In CART, a real score is associated with each of the leaves, which gives us richer interpretations that go beyond classification. This also allows for a principled, unified approach to optimization, as we will see in a later part of this tutorial.</p>
+</blockquote>
+<p>通常情况下，一棵树是不足以进行预测，所以使用的是决策树的集合。对于某一个样本的结果是多个树的总和。</p>
+<p>决策树就是分段函数，所以一个决策树是可以使用 $f(x)$ 进行表示的。<br>$$<br>\hat{y} _{i}=\sum _{k=1} ^{K} f _{k}(x _{i}), f _{k} \in \mathcal{F}<br>$$<br>其中 $K$ 是树的个数（函数的个数）, $f $ 表示某个函数, $ \mathcal{F}$所有的CARTs 可能的总的空间。</p>
+<p>于是新的目标函数可以：</p>
+<p>$$<br>obj(\theta) =\sum _{i} ^{n} l(y _{i}, \hat{y} _{i})+\sum _{k=1} ^{K} \Omega(f _{k})<br>$$</p>
+<blockquote>
+<p>Now here comes a trick question: what is the model used in random forests? Tree ensembles! So random forests and boosted trees are really the same models; the difference arises from how we train them. </p>
+</blockquote>
+<p>但是一个问题出现了，boosted trees 和 random forest 都是相同的模型，其区别在于如何训练。</p>
+<h3 id="提升树"><a href="#提升树" class="headerlink" title="提升树"></a>提升树</h3><p>这个小结讲的是如何进行训练的问题。第一小节中陈述的是监督学习中通用模型是通过梯度下降进行训练的，在这个过程中学习到了参数。树模型不能使用梯度下降进行训练，需要把树看做整体。</p>
+<ol>
+<li>加法学习</li>
+</ol>
+<blockquote>
+<p>It is intractable to learn all the trees at once. Instead, we use an additive strategy: fix what we have learned, and add one new tree at a time.</p>
+</blockquote>
+<p>它是一种启发式学习，优化的目标不是全部的树。而是每次在上一步的基础上进行优化，每次增加一棵树。</p>
+<p>但是还有一个问题，那么如何去选择哪个树呢？当然是使得最后loss 下降的那颗树。</p>
+<p>$$<br>\begin{split}<br>obj ^{(t)} &amp;= \sum _{i=1} ^{n} l(y _{i}, \hat{y} _{i} ^{(t)})+\sum _{i=1} ^{t} \Omega(f _{i}) \\<br>&amp; =\sum _{i=1} ^{n} l(y _{i}, \hat{y} _{i} ^{(t-1)}+f _{t}(x _{i}))+\Omega(f _{t})+\text { constant }<br>\end{split}<br>$$</p>
+<p>这个时候，使用均方误差作为损失函数，可以得到：</p>
+<p>\begin{split}<br>obj _{(t)}  &amp; =\sum _{i=1} ^{n} (y _{i}, \hat{y} _{i} ^{(t-1)}+f _{t}(x _{i})) ^2+ \sum _{i=1} ^t \Omega(f _{i}) \\<br>&amp;=\sum _{i=1} ^{n}[2(\hat{y} _{i} ^{(t-1)}-y _{i}) f _{t}(x _{i})+f _{t}(x _{i}) ^{2}]+\Omega(f _{t})+\text { constant }<br>\end{split}</p>
+<p>当使用均方误差的时候，很nice 得到了比较简洁的形式（残差形式），但是如果是其他的损失函数，就没有这种组合成 $f(x), f^2(x)$ 这种形式，所以这个时候使用到的是talor 展开式。所以更加通用的形式如下：<br>$$<br>\mathrm{obj} ^{(t)}=\sum _{i=1} ^{n}[l(y _{i}, \hat{y} _{i} ^{(t-1)})+g _{i} f _{t}(x _{i})+\frac{1}{2} h _{i} f _{t} ^{2}(x _{i})]+\Omega(f _{t})+\mathrm{constant}<br>$$</p>
+<p>其中 $g_i$和 $h_i$ 分别定义为如下形式：</p>
+<p>$$<br>\begin{split}<br>g _{i} &amp;=\partial _{\hat{y} _{i} ^{(t-1)}} l(y _{i}, \hat{y} _{i} ^{(t-1)}) \\<br>h _{i} &amp;=\partial _{\hat{y} _{i} ^{(t-1)}} ^{2} l(y _{i}, \hat{y} _{i} ^{(t-1)})<br>\end{split}<br>$$</p>
+<p>最后去掉所有的常量，在 $t$时刻的目标函数是如下形式：<br>$$<br>\sum _{i=1} ^{n}[g _{i} f _{t}(x _{i})+\frac{1}{2} h _{i} f _{t} ^{2}(x _{i})]+\Omega(f _{t})<br>$$</p>
+<p>有了上述通用的形式，那么就可以定义任意的损失函数，只要该损失函数有一阶导数和二阶导数即可， so convinent。</p>
+<ol start="2">
+<li>模型的复杂度</li>
+</ol>
+<blockquote>
+<p>this is not the only possible definition<br>对于模型的复杂度有多种定义方式，下面的这种是一种常见的并且在实际应用中效果很好的。</p>
+</blockquote>
+<p>$$<br>\Omega(f)=\gamma T+\frac{1}{2} \lambda \sum_{j=1}^{T} w_{j} ^{2}<br>$$</p>
+<p>其中$T$ 表示<code>number of leaves</code>， $w$表示<code>L2 norm of leaf scores</code></p>
+<blockquote>
+<p>Simpler model means less overfitting and lower variance.</p>
+</blockquote>
+<p>减少方差和过拟合</p>
+<ol start="3">
+<li>The Structure Score</li>
+</ol>
+<p>$$<br>\begin{split}<br>obj ^{(t)} \approx \sum _{i=1} ^{n}[g _{i} w _{q(x _{i})}+\frac{1}{2} h _{i} w _{q(x _{i})} ^{2}]+\gamma T+\frac{1}{2} \lambda \sum _{j=1} ^{T} w _{j} ^{2}<br>=\sum _{j=1} ^{T}[(\sum _{i \in I _{j}} g _{i}) w _{j}+\frac{1}{2}(\sum _{i \in I _{j}} h _{i}+\lambda) w _{j} ^{2}]+\gamma T<br>\end{split}<br>$$</p>
+<p>公式出现 $\approx$， 这个是因为使用一阶导数和二阶导数去近似地代替原始的函数，这个在计算的时候比较方便~。这个时候可以看成是一个二次方程，那么就可以求解最值了。</p>
+<ol start="4">
+<li>学习树的结构 （additive training）</li>
+</ol>
+<blockquote>
+<p>We can not use methods such as SGD, to find f (since they are trees, instead of just numerical vectors)<br>需要使用 <code>Additive Training (boosting)</code>， 以树为单位进行加法和减法。</p>
+</blockquote>
+<p>$$<br>\text {Gain}=\frac{1}{2}[\frac{G _{L}  ^{2}}{H _{L}+\lambda}+\frac{G _{R}  ^{2}}{H _{R}+\lambda}-\frac{(G _{L}+G _{R})  ^{2}}{H _{L}+H _{R}+\lambda}]-\gamma<br>$$</p>
+<p>这个时候令 $G _{j}=\sum _{i \in I _{j}} g _{i}$ ， $H _{j}=\sum _{i \in I _{i}} h _{i}$， 所以可以化简成以下的形式：<br>$$<br>\mathrm{obj} ^{(t)}=\sum _{j=1} ^{T}[G _{j} w _{j}+\frac{1}{2}(H _{j}+\lambda) w _{j} ^{2}]+\gamma T<br>$$</p>
+<p>二次方程是可以求解到最值的，那么可以得到：</p>
+<p>$$<br>\begin{split}<br>w _{j} ^{<em>} &amp;=-\frac{G _{j}}{H _{j}+\lambda} \\<br>obj ^{</em>} &amp;=-\frac{1}{2} \sum _{j=1} ^{T} \frac{G _{j} ^{2}}{H _{j}+\lambda}+\gamma T<br>\end{split}<br>$$<br>进行分裂时的策略， 如果分裂的左右子树是能够有信息的增加，那么就进行分裂，否则的话不进行分裂，如果式子前半部小于 $\gamma$的话，那么就进行剪枝。</p>
+<p>$$<br>obj=-\sum _{j} \frac{G _{j} ^{2}}{H _{j}+\lambda}+3 \gamma<br>$$</p>
+<blockquote>
+<p>This score is like the impurity measure in a decision tree, except that it also takes the model complexity into account.</p>
+</blockquote>
+<p>其中，最后的数值越小，那么结构也是越好。（从这个角度出发是不是和基尼系数相似）</p>
+<ol start="5">
+<li>分裂点的寻找</li>
+</ol>
+<ul>
+<li><p>For each node, enumerate over all features</p>
+<ul>
+<li>for each feature, sorted the instances by feature value</li>
+<li>use a linear scan to decide the best split along that feature</li>
+<li>take the best split solution along all the features</li>
+</ul>
+</li>
+<li><p>对于每一个结点，都遍历所有的特征</p>
+<ul>
+<li>对于每一个特征，样本按照特征的值进行排序</li>
+<li>使用线性扫描的方式，决定最好的分裂点</li>
+<li>在所有的特征中，按照最优的分裂点进行分裂</li>
+</ul>
+</li>
+</ul>
+<p>时间复杂度分析</p>
+<ul>
+<li>Time Complexity growing a tree of depth$ K$<ul>
+<li>It is $O(n d K log n) $: or each level, need $O(n log n) $time to sort, there are $d$ features, and we need to do it for $K$ level</li>
+<li>This can be further optimized (e.g. use approximation or caching the sorted features)</li>
+<li>Can scale to very large dataset</li>
+</ul>
+</li>
+</ul>
+<p>（1） Basic Exact Greedy Algorithm</p>
+<p>暴力解法就是exact greedy algorithm。做法：在所有可能的分裂点上遍历所有的features 的值。效果虽然好，但是时间效率不高。<br>（2）approximate algorithm<br>exact greedy algorithm的缺点除了时间成本，还有内存上方面的考虑。当数据无法一次性读入内存，那么就不能使用。approximate algorithm：</p>
+<pre><code>- 根据feature 的分布选择候选分裂点
+- 根据分裂点划分连续数值的feature，分成不同的桶
+- 根据桶find 最好的结果（遍历成本就小了）
+</code></pre><ol start="5">
+<li>sparsity-aware split finding</li>
+</ol>
+<p>有三种来源：</p>
+<ul>
+<li>missing values in the data</li>
+<li>frequent zero entries in the statistics </li>
+<li>artifacts of feature engineering such as one-hot encoding</li>
+</ul>
+<p>类别变量是第三种情况：</p>
+<blockquote>
+<p>Actually it is not necessary to handle categorical separately</p>
+<ul>
+<li>We can encode the categorical variables into numerical vector using one-hot encoding. Allocate a #categorical length vector</li>
+<li>The vector will be sparse if there are lots of categories, the learning algorithm is preferred to handle sparse data</li>
+</ul>
+</blockquote>
+<p>把类别变量进行one-hot 转换成数值类型，那么最后就可以使用树的模型进行计算；算法比较擅长处理稀疏数据</p>
+<ol start="6">
+<li>Shrinkage and Column Subsampling</li>
+</ol>
+<blockquote>
+<p>Shrinkage scales newly added weights by a factor η after each step of tree boosting. Similar to a learning rate in stochastic optimization, shrinkage reduces the influence of each individual tree and leaves space for future trees to improve the model.</p>
+</blockquote>
+<p>Shrinkage 的思想和 stochastic optimizer中类似，减弱了当前的结点的影响力，leave space for future or before trees</p>
+<blockquote>
+<p>According to user feedback, using column sub-sampling prevents over-fitting even more so than the traditional row sub-sampling (which is also supported). The usage of column sub-samples also speeds up computations of the parallel algorithm described later.</p>
+</blockquote>
+<p>对于行（数据的数量）采样的思想早就有了，xgboost 中实现了列采样，不仅有利于加快计算速度（并行），也可以缓解过拟合（the idea from random forest）</p>
+<ol start="7">
+<li>学习的过程</li>
+</ol>
+<p>在监督学习中，不断减去 $\frac{\partial f(x)}{\partial x}$， 可以得到 $min_xf(x)$。同理不断减去 $\frac{\partial l}{\partial F}$，这样就得到了 $min_FL(F)$。只不过在决策树中使用的是一阶梯度，但是在xgboost 中使用的二阶梯度。</p>
+<h3 id="优势和不足"><a href="#优势和不足" class="headerlink" title="优势和不足"></a>优势和不足</h3><p>Advantages</p>
+<blockquote>
+<ol>
+<li>Invariant to scale of feature, need less data preprocessing, But it never means we don’t need to clean and transform features</li>
+</ol>
+</blockquote>
+<p>不需要进行减均值除方差的操作，但是基本的数据清洗还是要有的</p>
+<blockquote>
+<ol start="2">
+<li>Naturally support categorical feature<br>自动处理类别特征，不需要手动one-hot</li>
+</ol>
+</blockquote>
+<p>Disadvantages</p>
+<blockquote>
+<ol>
+<li>Overfitting<br>过拟合</li>
+</ol>
+</blockquote>
+<p>疑问？<br><img src="https://s2.ax1x.com/2019/11/22/M7O8fO.png" alt="M7O8fO.png"><br>图中叶子节点上的数值是如何得到，有什么计算方法吗？</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://xgboost.readthedocs.io/en/latest/tutorials/model.html#introduction-to-boosted-trees" target="_blank" rel="noopener">Introduction to Boosted Trees</a><br><a href="https://arxiv.org/abs/1603.02754" target="_blank" rel="noopener">XGBoost: A Scalable Tree Boosting System</a></p>
+<h2 id="xgboost-lr模型"><a href="#xgboost-lr模型" class="headerlink" title="xgboost +lr模型"></a>xgboost +lr模型</h2><p>简单地说，就是把gbdt的输出，作为logistic regression的输入，最后得到一个logistic regression模型。</p>
 <p>例如，gbdt里有3棵树T1,T2,T3，每棵树的叶节点个数为4，第i个树的第j个叶节点是Li,j。</p>
 <p>当gdbt训练完成之后，样本X1在第一棵树中被分到了第3个叶节点上，也就是L1,3，那么这个样本在T1上的向量表达为(0,0,1,0)。</p>
 <p>样本X1在T2被分到了L2,1，那么X1在T2上的向量表达为(1,0,0,0)<br>样本X1在T3被分到了L3,4，那么X1在T3上的向量表达为(0,0,0,1)<br>那么X1在整个gbdt上的向量表达为</p>
@@ -451,6 +601,43 @@
 <p>其次，我们已经在2.3小节中了解到GBDT很有可能构造出的新训练数据是高维的稀疏矩阵，而Logistic Regression使用高维稀疏矩阵进行训练，会直接导致计算量过大，特征权值更新缓慢的问题。</p>
 <p>针对上面可能出现的问题，可以翻看我之前的文章：FM算法解析及Python实现 ，使用FM算法代替LR，这样就解决了Logistic Regression的模型表达效果及高维稀疏矩阵的训练开销较大的问题。然而，这样就意味着可以高枕无忧了吗？当然不是，因为采用FM对本来已经是高维稀疏矩阵做完特征交叉后，新的特征维度会更加多，并且由于元素非0即1，新的特征数据可能也会更加稀疏，那么怎么办？</p>
 <p>所以，我们需要再次回到GBDT构造新训练数据这里。当GBDT构造完新的训练样本后，我们要做的是对每一个特征做与输出之间的特征重要度评估并筛选出重要程度较高的部分特征，这样，GBDT构造的高维的稀疏矩阵就会减少一部分特征，也就是说得到的稀疏矩阵不再那么高维了。之后，对这些筛选后得到的重要度较高的特征再做FM算法构造交叉项，进而引入非线性特征，继而完成最终分类器的训练数据的构造及模型的训练。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
+<li>介绍GBDT 中防止过拟合的方法：</li>
+</ol>
+<ul>
+<li>限制树的高度</li>
+<li>采样（训练每一棵树的时候，只使用一部分样本）</li>
+<li>列采样（训练每一个树的时候，只使用一部分特征。这是xgboost 中的创新，将随机森林的思想引入了GBDT 中）</li>
+<li>shrinkage（衰减稀疏，惩罚系数）</li>
+<li>early stop（在深度学习中，early stop 的指标是根据某个指标，但是在树的模型中，early stop是根据要不要加上某个树，注意效果的类比）</li>
+</ul>
+<ol start="2">
+<li>启发式学习<blockquote>
+<p>启发式算法（heuristic algorithm)是相对于最优化算法提出的。启发式算法可以这样定义：一个基于直观或经验构造的算法，在可接受的花费（指计算时间和空间）下给出待解决组合优化问题每一个实例的一个可行解，该可行解与最优解的偏离程度一般不能被预计。现阶段，启发式算法以仿自然体算法为主，主要有蚁群算法、模拟退火法、神经网络等。</p>
+</blockquote>
+</li>
+</ol>
+<ol start="3">
+<li>图解常见的集成学习</li>
+</ol>
+<p>bagging 的特点：</p>
+<ul>
+<li>Weak learners are independent.</li>
+<li>Bagging can be easily parallelized.</li>
+</ul>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/11/0e7f7da922071d57.png" alt=""></p>
+<p>adaboost的特点：</p>
+<p><img src="https://upload.cc/i1/2019/11/21/GOAZyS.png" alt="img"></p>
+<blockquote>
+<p>Guarantee: sum of unnormalized weights is monotonously decreasing. Sum of unnormalized weights measures the error.</p>
+</blockquote>
+<p>通过重采样，重新分配权重来处理bad 样本。（这点不是很理解哈？）</p>
+<p>Gradient Boosting 的特点：</p>
+<p>[img]<a href="https://upload.cc/i1/2019/11/21/EVuaCp.png[/img]" target="_blank" rel="noopener">https://upload.cc/i1/2019/11/21/EVuaCp.png[/img]</a></p>
+<blockquote>
+<p>Guarantee: sum of residuals is monotonously decreasing. Residuals are highly related to loss.</p>
+</blockquote>
+<p>通过减少残差的方式减少误差。</p>
 
       
     </div>
@@ -465,6 +652,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/xgboost原理/" rel="tag"># xgboost原理</a>
+          
+        </div>
       
 
       
@@ -578,7 +771,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -600,7 +793,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -674,7 +867,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction-to-XGBoost"><span class="nav-number">1.</span> <span class="nav-text">Introduction to XGBoost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#element-of-Supervised-learning"><span class="nav-number">2.</span> <span class="nav-text">element of Supervised learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Objective-Function-Training-Loss-Regularization"><span class="nav-number">3.</span> <span class="nav-text">Objective Function: Training Loss + Regularization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decision-Tree-and-random-forest"><span class="nav-number">4.</span> <span class="nav-text">Decision Tree and random forest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-Ensemble"><span class="nav-number">5.</span> <span class="nav-text">Tree Ensemble</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-Boosting"><span class="nav-number">6.</span> <span class="nav-text">Tree Boosting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Additive-Training"><span class="nav-number">7.</span> <span class="nav-text">Additive Training</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-model"><span class="nav-number">8.</span> <span class="nav-text">Training model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xgboost-lr模型"><span class="nav-number">9.</span> <span class="nav-text">xgboost +lr模型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#提升树简介"><span class="nav-number">1.</span> <span class="nav-text">提升树简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监督学习的要素"><span class="nav-number">1.1.</span> <span class="nav-text">监督学习的要素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树集合（Decision-Tree-Ensembles）"><span class="nav-number">1.2.</span> <span class="nav-text">决策树集合（Decision Tree Ensembles）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提升树"><span class="nav-number">1.3.</span> <span class="nav-text">提升树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优势和不足"><span class="nav-number">1.4.</span> <span class="nav-text">优势和不足</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">1.5.</span> <span class="nav-text">参考文献</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost-lr模型"><span class="nav-number">2.</span> <span class="nav-text">xgboost +lr模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">3.</span> <span class="nav-text">其他</span></a></li></ol></div>
             
 
           </div>
