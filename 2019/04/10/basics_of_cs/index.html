@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/09/3fc63bea8bb4816e.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/09/581907fe15dbb66c.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/22/K3bmPU.png">
-<meta property="og:updated_time" content="2019-10-25T02:05:48.500Z">
+<meta property="og:updated_time" content="2019-11-25T14:05:55.440Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机基础">
 <meta name="twitter:description" content="计算机中的基础知识，比如操作系统、计算机组成、数据库、计算机网络、软件工程。">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-25T10:05:48+08:00">
-                2019-10-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-11-25T22:05:55+08:00">
+                2019-11-25
               </time>
             
           </span>
@@ -405,7 +405,16 @@
 </li>
 <li><p>CPU调度算法<br>引入多程序设计，目的是提高计算机资源利用率，尤其是CPU利用率（CPU utilization）。<br>分为 非抢占式：进程自愿交出CPU，引起新一轮的调度。抢占式：进程被迫交出CPU，引起新一轮的调度。<br>CPU调度器追求目标<br>CPU利用率（CPU utilization）<br>吞吐率（Throughput）<br>周转时间（Turnaround time）<br>等待时间（Waiting time）<br>响应时间（Response time）<br>常用的调度算法：<br>a. FCFS调度算法（First-Come,First-Served Scheduling）<br>b. Shortest-Job-First（SJF）调度算法（最短作业优先算法）<br>c. 优先权法（Priority Scheduling）<br>d. 轮转法（Round Robin，RR）常说的时间片轮转，如果时间片用完了，那么就被迫交出 CPU资源<br>可以通过一个例题讲解：<br><a href="https://www.cnblogs.com/gaveme/archive/2013/06/21/3147537.html" target="_blank" rel="noopener">缺页率的计算</a></p>
 </li>
+<li><p>IO控制方式</p>
+</li>
 </ol>
+<p>I/O控制方式主要有程序查询方式、中断方式、DMA方式和通信方式。</p>
+<ul>
+<li>程序查询方式也称程序轮询方式，用户程序直接控制主机和外部设备之间输入和输出操作。cpu 通过不断循环检测IO 设备状态的端口，当发现设备ready 的时候，cpu 就可以与I/O 设备进行数据存取操作。</li>
+<li>中断方式：当I/O 设备完成时候，就会想CPU 发出中断请求信息，CPU 收到信号之后就采取相应的措施。与程序查询方式相比，该方式大大提高了CPU 的利用率，但是在中断方式下，也是以字节或者字为单位进行的，而系统是以”块“为存储单位，效率低下。</li>
+<li>DMA（直接内存存储）：允许主存储器和I/O 设备设备通过DMA 直接进行数据交换，整个过程无须CPU的干预。</li>
+<li>IO 通道，通道也被称为外围设备处理器、输入输出处理机，相对于CPU 而言，是一个处理器。与DMA 控制相比，通道需要的CPU 控制更少，一个通道是可以控制多个设备，并且能够一次进行多个不连续的数据块的存储交换，大大提高了计算系统效率</li>
+</ul>
 <h2 id="计算机组成原理"><a href="#计算机组成原理" class="headerlink" title="计算机组成原理"></a>计算机组成原理</h2><ol>
 <li><a href="https://www.cnblogs.com/zhangziqiu/archive/2011/03/30/ComputerCode.html" target="_blank" rel="noopener">原码, 反码, 补码</a></li>
 </ol>
@@ -862,7 +871,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -884,7 +893,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
