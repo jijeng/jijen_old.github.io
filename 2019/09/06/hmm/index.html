@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="GANs," />
+  <meta name="keywords" content="hmm,ner," />
 
 
 
@@ -79,26 +79,24 @@
 
 
 
-<meta name="description" content="In the past few yeas, GANs have been used in lots of different applications such as generating synthetic data, style transfer, super-resolution and text2image generation. But we donn’t aim to give a o">
-<meta name="keywords" content="GANs">
+<meta name="description" content="介绍自然语言处理中的命名实体识别（Named Entity Recognition，NER ）问题，目前主流的方式是通过一个语言模型（比如LSTM，BERT）+CRT（条件随机场）实现。要想要理解CRF模型，可以先从隐马尔科夫模型（Hidden Markov Model）学习，所以本文主要主要介绍基于HMM的序列标注问题。">
+<meta name="keywords" content="hmm,ner">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CycleGAN &amp; StyleGAN">
-<meta property="og:url" content="http://yoursite.com/2019/04/09/cyclegan-stylegan/index.html">
+<meta property="og:title" content="基于隐马尔科夫的命名实体识别">
+<meta property="og:url" content="http://yoursite.com/2019/09/06/hmm/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="In the past few yeas, GANs have been used in lots of different applications such as generating synthetic data, style transfer, super-resolution and text2image generation. But we donn’t aim to give a o">
+<meta property="og:description" content="介绍自然语言处理中的命名实体识别（Named Entity Recognition，NER ）问题，目前主流的方式是通过一个语言模型（比如LSTM，BERT）+CRT（条件随机场）实现。要想要理解CRF模型，可以先从隐马尔科夫模型（Hidden Markov Model）学习，所以本文主要主要介绍基于HMM的序列标注问题。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1w9einh3uj20sk0dkn1c.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wb7eq678j20vg0kidpn.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wbibdfe1j20i60c3wf0.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wet610p7j20km0ceabs.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfimzvg2g20ps0en4qq.gif">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfvtdeh3j20nn0b9gma.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wg3c5awfj20ca09q3z6.jpg">
-<meta property="og:updated_time" content="2019-06-20T06:47:02.000Z">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/2ee1d361a3b03f25.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/10/10/sQ79N2dwJxjH3GV.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/10/10/5tNl7M4ERpoiAK8.jpg">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/11/a486241f73ebf648.jpg">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/11/0f22b049e5783bc3.jpg">
+<meta property="og:updated_time" content="2019-12-03T08:44:36.326Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CycleGAN &amp; StyleGAN">
-<meta name="twitter:description" content="In the past few yeas, GANs have been used in lots of different applications such as generating synthetic data, style transfer, super-resolution and text2image generation. But we donn’t aim to give a o">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1w9einh3uj20sk0dkn1c.jpg">
+<meta name="twitter:title" content="基于隐马尔科夫的命名实体识别">
+<meta name="twitter:description" content="介绍自然语言处理中的命名实体识别（Named Entity Recognition，NER ）问题，目前主流的方式是通过一个语言模型（比如LSTM，BERT）+CRT（条件随机场）实现。要想要理解CRF模型，可以先从隐马尔科夫模型（Hidden Markov Model）学习，所以本文主要主要介绍基于HMM的序列标注问题。">
+<meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2019/10/2ee1d361a3b03f25.jpg">
 
 
 
@@ -128,7 +126,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/04/09/cyclegan-stylegan/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/09/06/hmm/"/>
 
 
 
@@ -147,7 +145,7 @@
 	})();
 </script>
 
-  <title>CycleGAN & StyleGAN | Jijeng's blog</title>
+  <title>基于隐马尔科夫的命名实体识别 | Jijeng's blog</title>
   
 
 
@@ -274,7 +272,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/09/cyclegan-stylegan/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/06/hmm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -291,7 +289,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CycleGAN & StyleGAN</h1>
+          <h1 class="post-title" itemprop="name headline">基于隐马尔科夫的命名实体识别</h1>
         
 
         <div class="post-meta">
@@ -303,8 +301,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-09T18:48:30+08:00">
-                2019-04-09
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-06T09:22:18+08:00">
+                2019-09-06
               </time>
             
 
@@ -319,8 +317,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-20T14:47:02+08:00">
-                2019-06-20
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-03T16:44:36+08:00">
+                2019-12-03
               </time>
             
           </span>
@@ -338,8 +336,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Deep learning</span>
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
                   </a>
                 </span>
 
@@ -356,9 +354,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/04/09/cyclegan-stylegan/#comments" itemprop="discussionUrl">
+                <a href="/2019/09/06/hmm/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/09/cyclegan-stylegan/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/09/06/hmm/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -391,40 +389,56 @@
       
 
       
-        <p>In the past few yeas, GANs have been used in lots of different applications such as generating synthetic data, style transfer, super-resolution and text2image generation. But we donn’t aim to give a overview of what GANs are made for. There are many great and detailed blogs for your understanding.</p>
-<p><strong>What this post is about</strong></p>
-<ul>
-<li>Main ideas of CycleGAN</li>
-<li>Keypoints in StyleGAN</li>
-</ul>
+        <p>介绍自然语言处理中的命名实体识别（Named Entity Recognition，NER ）问题，目前主流的方式是通过一个语言模型（比如LSTM，BERT）+CRT（条件随机场）实现。要想要理解CRF模型，可以先从隐马尔科夫模型（Hidden Markov Model）学习，所以本文主要主要介绍基于HMM的序列标注问题。</p>
 <a id="more"></a>
-<h1 id="A-Gentle-Introduction-of-GANs"><a href="#A-Gentle-Introduction-of-GANs" class="headerlink" title="A Gentle Introduction of GANs"></a>A Gentle Introduction of GANs</h1><p>We assume the reader has some prior experience with neural networks. In addition, if you are familiar with GANs you can <a href="#jump">skip</a> this section.</p>
-<p>The famous minimax objective function can be formulated as following:<br>$$<br>\min _ { \theta _ { g } } \max _ { \theta _ { d } } \left[ \mathbb { E } _ { x \sim p _ { d a t a } } \log D _ { \theta _ { d } } ( x ) + \mathbb { E } _ { z \sim p ( z ) } \log \left( 1 - D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right) \right)<br>$$<br>But in practical, the loss function cannot work very well. So we have alternative objective function:</p>
-<ol>
-<li>Gradient ascent on discriminator</li>
-</ol>
-<p>$$<br>\max _ { \theta _ { d } } \left[ \mathbb { E } _ { x \sim p _ { d a t a } } \log D _ { \theta _ { d } } ( x ) + \mathbb { E } _ { z \sim p ( z ) } \log \left( 1 - D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right) \right]<br>$$</p>
-<ol start="2">
-<li>Gradient ascent on generator<br>$$<br>\max _ { \theta _ { g } } \mathbb { E } _ { z \sim p ( z ) } \log \left( D _ { \theta _ { d } } \left( G _ { \theta _ { g } } ( z ) \right) \right)<br>$$</li>
-</ol>
-<p>The reasoning behind this can be found in original <a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">paper</a>. Simplily speaking, we can get higher gradient signal for bad samples, which works much better in practice.<br>bad case 的时候，使用原来的min-max function会使得学习率不够，使用 gradient ascent 就会好一些。</p>
-<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1w9einh3uj20sk0dkn1c.jpg" alt=""></p>
-<center><span id="jump">From Stanford CS231 Lecture 13 — Generative Models </span></center>
-
-<h1 id="Main-ideas-of-CycleGAN"><a href="#Main-ideas-of-CycleGAN" class="headerlink" title="Main ideas of CycleGAN"></a>Main ideas of CycleGAN</h1><p>CycleGAN was introduced in 2017 out of Berkeley, <a href="https://arxiv.org/abs/1703.10593" target="_blank" rel="noopener">Unpaired Image-to-Image Translation Using Cycle-Coonsistent Adversarial Networks</a>.  This task is performed on unpaired data. Recent methods such as Pix2Pix depend on the availability of training examples where the samee data is availabel in both domains. However, CycleGAN is able to learning such pair information without one-to-one mapping between training data in source and target domains.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wb7eq678j20vg0kidpn.jpg" alt=""></p>
-<h2 id="Network-Architecture"><a href="#Network-Architecture" class="headerlink" title="Network Architecture"></a>Network Architecture</h2><p>We build three networks.</p>
-<ul>
-<li>A generator $F$ to convert image $y$ to image $ \hat{x}$</li>
-<li>A generator $G$ to convert image $\hat{x}$ to image $ \hat{y}$</li>
-<li>A discriminator $D$ to identify real image or generated picture</li>
-</ul>
-<p>Simplified version of CycleGAN architecture can be showed in the following.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wbibdfe1j20i60c3wf0.jpg" alt=""><br>The function $F$ and $G$ are generator network, which consists of encoder, transformer and decoder. Encoder is extracting the features from an image which is done by convolution networks. Each convolution layer leads to extraction of progressively higher level features. We would like to transform the feature emebdding of an image from domain $X$ to that of domain $Y$. So for this, authors have used 6 layers of ResNet blocks. ResNet block is a neural network layer which consists of two convolutiona layers when a residue of input ia added to the output. This is done to ensure properties of input of previous layers are available for later layers as well. ResNet block can be summarized in following image<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wet610p7j20km0ceabs.jpg" alt=""><br>The decoder transfer embedding from $y$ back to original embedding $x$.</p>
-<h2 id="Loss-function"><a href="#Loss-function" class="headerlink" title="Loss function"></a>Loss function</h2><p>（对于loss 实际上只有两个，只不过在第一个loss 中 x 和y 分别使用了两次，所以变成了两个公式。）<br>There are two types of losses in CycleGAN. Besides adversarial loss, we have another loss named reconstruction cost.<br>Adversarial loss is similaity to original GAN.<br>$$<br>\operatorname { Loss } _ { a d v } \left( F , D _ { x } , Y \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { x } \left( F \left( y _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>$$<br>\operatorname { Loss } _ { a d v } \left( G , D _ { y } , X \right) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left( 1 - D _ { y } \left( G \left( x _ { i } \right) \right) \right) ^ { 2 }<br>$$<br>However, the adversarial loss alone is not sufficient to produce good looking images, which can not enfore that the input and output are recognizably the same. The cycle consistency loss addresses this issue. It relies on the expectation that if you convert an image to the other domain and back again, and then you should get back something similar to what you put in. It enforces that $F ( G ( x ) ) \approx x$ and $G ( F ( y ) ) \approx y$.<br>$$<br>\operatorname { Loss } _ { c y c } ( G , F , X , Y ) = \frac { 1 } { m } \sum _ { i = 1 } ^ { m } \left[ F \left( G \left( x _ { i } \right) \right) - x _ { i } \right] + \left[ G \left( F \left( y _ { i } \right) \right) - y _ { i } \right]<br>$$<br>We can get the full objective function by putting these two together.<br>$$<br>\mathcal { L } \left( G , F , D _ { x} , D _ { y } \right) = \mathcal { L } _ { \text { GAN } } \left( G , D _ { y } , X , Y \right) + \mathcal { L } _ { \text { GAN } } \left( F , D _ { x } , Y , X \right) + \lambda \mathcal { L } _ { \text { cyc } } ( G , F )<br>$$</p>
-<h1 id="Keypoints-of-StyleGAN"><a href="#Keypoints-of-StyleGAN" class="headerlink" title="Keypoints of StyleGAN"></a>Keypoints of StyleGAN</h1><p>(想要解决的问题，ProGAN 是训练过程中不是一个 fine-tune 的过程，而是从一种状态到另一种状态的过程，所以styleGAN 想要 control specific features during training)<br>The StyleGAN offers an upgrade version of ProGAN’s image generator, with a focus on the generator. </p>
-<p>ProGAN generates high-quality images but, in most models, its ability to control specific features of the generated image is very limited. In other word, the features are entangled and therefore attempting to tweak the input, even a bit, usually affects multiple features at the same time. A good illustrations would be following pictures.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfimzvg2g20ps0en4qq.gif" alt=""><br>Compared with first version (ProGAN), the new generator includes several additions to ProGAN’s generators.</p>
-<h2 id="Mapping-Network"><a href="#Mapping-Network" class="headerlink" title="Mapping Network"></a>Mapping Network</h2><p>The mapping network’s goal in to encode the input vector into an intermediate vector whose different elements control different visual features, which consists of 8 fully connected layers and its output $w$ is of the same size as the input.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wfvtdeh3j20nn0b9gma.jpg" alt=""></p>
-<h2 id="Style-Modules-AdaIN"><a href="#Style-Modules-AdaIN" class="headerlink" title="Style Modules (AdaIN)"></a>Style Modules (AdaIN)</h2><p>The AdaIn (Adaptive Instance Normalization) module transfers the encoded information $w$, created by the mapping network, into the generated image.<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g1wg3c5awfj20ca09q3z6.jpg" alt=""></p>
-<h2 id="Removing-traditional-input"><a href="#Removing-traditional-input" class="headerlink" title="Removing traditional input"></a>Removing traditional input</h2><p>Since the encoded information $w$ from mapping network was used into generator image, the traditional random input can be omitted and replaced by constant values.</p>
+<h2 id="命名实体识别"><a href="#命名实体识别" class="headerlink" title="命名实体识别"></a>命名实体识别</h2><blockquote>
+<p>Named-entity recognition (NER) (also known as entity identification, entity chunking and entity extraction) is a subtask of information extraction that seeks to locate and classify named entity mentions in unstructured text into pre-defined categories such as the person names, organizations, locations, medical codes, time expressions, quantities, monetary values, percentages, etc.</p>
+</blockquote>
+<p>给定一个句子，然后识别出句子中有意义的实体，比如说人名，机构名，地名，医药编码，时间表达，数量词，金钱表达和百分比。</p>
+<p>上述问题可以看成一个文本多分类的问题，按照道理讲使用一个语言模型应该是可以解决的，但是为什么还要加上概率图模型？</p>
+<blockquote>
+<p>“自贸区”对应的标注是: <strong>自(B-LOC)贸(I-LOC)区(I-LOC)</strong>, 这三个字都对应一个”地名”的标签, 但是第一个字属于实体开头的字, 所以使用”B”开头的标签, 后面两个字的标签都是”I”开头.<br>当单独使用语言模型时候可能出现上述的问题。所以如果加上概率图模型，比如条件随机场，就可以约束模型的输出，防止出现不合规的标注输出。</p>
+</blockquote>
+<h2 id="HMM"><a href="#HMM" class="headerlink" title="HMM"></a>HMM</h2><p>（1）定义</p>
+<p>马尔科夫模型（markov model）</p>
+<blockquote>
+<p>In probability theory, a Markov model is a stochastic model used to model randomly changing systems. It is assumed that future states depend only on the current state, not on the events that occurred before it (that is, it assumes the Markov property). Generally, this assumption enables reasoning and computation with the model that would otherwise be intractable.<br>在概率中，马尔科夫假设未来的状态仅仅由当前的状态决定，和其他的任何状态都无关。这种假设极大的简化了运算。</p>
+</blockquote>
+<p>隐马尔科夫模型</p>
+<blockquote>
+<p>A hidden Markov model is a Markov chain for which the state is only partially observable. In other words, observations are related to the state of the system, but they are typically insufficient to precisely determine the state. Several well-known algorithms for hidden Markov models exist. For example, given a sequence of observations, the Viterbi algorithm will compute the most-likely corresponding sequence of states, the forward algorithm will compute the probability of the sequence of observations, and the Baum–Welch algorithm will estimate the starting probabilities, the transition function, and the observation function of a hidden Markov model.</p>
+</blockquote>
+<p>隐马尔科夫模型描述的是由不可观测的隐状态序列（实体标注）生成可观测状态（可读文本）的过程。使用前向传递算法计算观测序列的概率，使用viterbi 算法得到最优的标注徐磊，使用Baum-Welch 算法估计初始的状态，转移概率矩阵和发射矩阵。</p>
+<p>（2）两大基本假设</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/2ee1d361a3b03f25.jpg" alt=""><br>1) 第$t$个隐状态(实体标签)只跟前一时刻的$t-1$隐状态(实体标签)有关, 与除此之外的其他隐状态(如$t-2,\  t+3$)无关.<br>例如上图中: 蓝色的部分指的是$i_t$只与$i_{t-1}$有关, 而与蓝色区域之外的所有内容都无关, 而$P(i_{t}|i_{t-1})$指的是隐状态$i$从$t-1$时刻转向$t$时刻的概率, 具体转换方式下面会细讲.<br>2) 观测独立的假设, HMM模型中是由<strong>隐状态序列(实体标记)生成可观测状态(可读文本)的过程</strong>, 观测独立假设是指在任意时刻观测$o_t$只依赖于当前时刻的隐状态$i_t$, 与其他时刻的隐状态无关. 例如上图中: 粉红色的部分指的是$i_{t+1}$只与$o_{t+1}$有关, 跟粉红色区域之外的所有内容都无关.</p>
+<p>（3）三大参数</p>
+<p>1) HMM的转移概率矩阵（transition probabilities）</p>
+<p><img src="https://i.loli.net/2019/10/10/sQ79N2dwJxjH3GV.jpg" alt="transition.jpg"></p>
+<p>转移矩阵表示为$A$矩阵, 则$A_{ij}$表示矩阵中第i行第j列:<br>$$A_{ij}=P(i_{t+1}= q_j | i_{t} = q_i) \quad q_i \in Q_{hidden}$$<br>上式表示在$t$ 时刻的实体标签是 $q_i$， 在 $t+1$时刻的实体标签转换成了 $q_j$，概率表示为上式。</p>
+<p>2) HMM的发射概率矩阵（emission probabilities）</p>
+<p><img src="https://i.loli.net/2019/10/10/5tNl7M4ERpoiAK8.jpg" alt="emission.jpg"></p>
+<p>发射矩阵表示为$B$矩阵, 则$B_{jk}$表示矩阵中第$j$行第$k$列:<br>$$B_{jk}=P(o_{t}= v_k | i_{t} = q_j) \quad q_i \in Q_{hidden} \quad v_k \in V_{obs.}={v_0, v_1, … , v_{M-1} }$$<br>上式表示指的是在$t$时刻由实体标签(隐状态)$q_j$生成汉字(观测结果)$v_k$的概率.  </p>
+<p>3) HMM的初始隐状态概率（initial probabilities）</p>
+<p>通常用$\pi$来表示（不是圆周率）:<br>$$\pi=P(i_1=q_i) \quad q_i \in Q_{hidden} = { q_0, q_1, … , q_{N-1}}$$<br>上式指的是<strong>语言序列中第一个字</strong>$o_1$的实体标记是$q_i$的概率, 也就是初始隐状态概率.   </p>
+<h2 id="Viterbi算法"><a href="#Viterbi算法" class="headerlink" title="Viterbi算法"></a>Viterbi算法</h2><p>（1）定义</p>
+<blockquote>
+<p>The Viterbi algorithm is a dynamic programming algorithm for finding the most likely sequence of hidden states—called the Viterbi path—that results in a sequence of observed events, especially in the context of Markov information sources and hidden Markov models (HMM).</p>
+</blockquote>
+<p>维特比算法（viterbi algorithm）使用的是动态规划的思想解决HMM 和CRF 中的预测问题。即在HMM模型中寻找最有可能的隐状态的路径。使用一句话概括为：在每一时刻，计算当前时刻是由上一个时刻中的每种隐状态导致的最大概率，并且记录这个最大概率是从前一时刻哪个隐状态转移过来的，最后回溯最大概率，即为路径。</p>
+<p>（2）数学表达</p>
+<p>1) $A_{i, j}^{t-1, t}$, 是转移概率矩阵$A$中的第$i$行第$j$列(下标), 指的是在$t-1$时刻实体标签为$q_i$, 而在$t$时刻实体标签转换到$q_j$的概率.<br>2) $B_{jk}$是发射矩阵的第j行第k列, 指的是在第$t$时刻, 由隐状态$q _j$生成观测$v _k$的概率.<br>3) 有了上面两点, 则$\hat{q} _j = A _{ij}B _{jk}$表示在$t$时刻的隐状态为$q _j$的概率估计.</p>
+<p>（3）计算过程</p>
+<p>假设我们通过HMM建模并学习, 得到了模型所估计的参数$(A, B, \pi)$, 注意下面的$A, B$矩阵按行求和为$1$;<br><img src="https://ftp.bmp.ovh/imgs/2019/11/a486241f73ebf648.jpg" alt=""></p>
+<p>需要申请$T1, T2$两个表格：如果$T1, T2$表格是$i*j$的矩阵, 则矩阵中第$j$列指的是第$j$时刻, 第$i$行指的是第$i$种隐状态, $T1[i, \ j]$指的是在第$j$时刻, 落到隐状态$i$的最大可能的概率是多少(不要着急, 到了下一个时刻就会明白<strong>最大</strong>是什么意思), 而$T2[i, \ j]$记录的是这个<strong>最大可能的概率</strong>是从第$j-1$时刻(上一时刻)的哪一种隐状态$i$转移过来的, 也就是说我们记录的是<strong>最大可能的概率的转移路径</strong>.<br>我们现在将第一时刻的计算结果填入$T1, T2$表格, 注意在第$0$时刻的隐状态是由初始隐状态概率矩阵提供的, 而不是从上一时刻的隐状态转移过来的, 所以我们直接在$T2$表格上记为$NAN(not \ a \ number)$。然后计算表格上每个位置的最大概率。</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/11/0f22b049e5783bc3.jpg" alt=""></p>
+<p>（4）时间复杂度</p>
+<p>假设有$N$种隐状态，在每个时刻之间，一共可能有 $N^2$种方式，假设有$T$时刻，那么viterbi 算法的时间复杂度$O(TN^2)$</p>
+<h2 id="分析代码"><a href="#分析代码" class="headerlink" title="分析代码"></a>分析代码</h2><p>（1）数据处理部分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.tag_size = len(self.tag2idx) <span class="comment"># 对于tag标签是len 取得长度</span></span><br><span class="line">self.vocab_size = max([v <span class="keyword">for</span> _, v <span class="keyword">in</span> self.char2idx.items()]) + <span class="number">1</span> <span class="comment"># 对于vocab 是需要求解index的最大值，有可能vocab中空着一些，以备后用</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">self.pi = np.log(self.pi) <span class="comment"># 在计算矩阵相乘的时候，log 运算转换成了矩阵加法，防止下溢出</span></span><br><span class="line">self.transition = np.log(self.transition)</span><br><span class="line">self.emission = np.log(self.emission)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T1_table[i, :] = np.max(curr_score, axis=<span class="number">0</span>) <span class="comment"># 使用viterbi 算法时候，t1 table存储概率最大值，t2 table 存储最大值所属于上一个隐状态的序号</span></span><br><span class="line">T2_table[i, :] = np.argmax(curr_score, axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval() <span class="comment"># 执行一个字符串表达式，然后返回运行的结果；一般来说可能不安全</span></span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>1.<a href="https://gg2.chn.moe/extdomains/en.wikipedia.org/wiki/Hidden_Markov_model" target="_blank" rel="noopener">Hidden Markov model</a><br>2.<a href="https://github.com/aespresso/a_journey_into_math_of_ml" target="_blank" rel="noopener">NER_hidden_markov_model</a></p>
 
       
     </div>
@@ -442,7 +456,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/GANs/" rel="tag"># GANs</a>
+            <a href="/tags/hmm/" rel="tag"># hmm</a>
+          
+            <a href="/tags/ner/" rel="tag"># ner</a>
           
         </div>
       
@@ -455,8 +471,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/06/The-evaluation-of-sentence-similarity/" rel="next" title="The Evaluation of Sentence Similarity">
-                <i class="fa fa-chevron-left"></i> The Evaluation of Sentence Similarity
+              <a href="/2019/08/29/dynamic-programming/" rel="next" title="Dynamic Programming">
+                <i class="fa fa-chevron-left"></i> Dynamic Programming
               </a>
             
           </div>
@@ -465,8 +481,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/04/10/basics_of_cs/" rel="prev" title="计算机基础">
-                计算机基础 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/04/python-learning3/" rel="prev" title="python learning 学习笔记3">
+                python learning 学习笔记3 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -558,7 +574,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -580,7 +596,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -654,7 +670,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#A-Gentle-Introduction-of-GANs"><span class="nav-number">1.</span> <span class="nav-text">A Gentle Introduction of GANs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Main-ideas-of-CycleGAN"><span class="nav-number">2.</span> <span class="nav-text">Main ideas of CycleGAN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Network-Architecture"><span class="nav-number">2.1.</span> <span class="nav-text">Network Architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loss-function"><span class="nav-number">2.2.</span> <span class="nav-text">Loss function</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Keypoints-of-StyleGAN"><span class="nav-number">3.</span> <span class="nav-text">Keypoints of StyleGAN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapping-Network"><span class="nav-number">3.1.</span> <span class="nav-text">Mapping Network</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Style-Modules-AdaIN"><span class="nav-number">3.2.</span> <span class="nav-text">Style Modules (AdaIN)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Removing-traditional-input"><span class="nav-number">3.3.</span> <span class="nav-text">Removing traditional input</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命名实体识别"><span class="nav-number">1.</span> <span class="nav-text">命名实体识别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HMM"><span class="nav-number">2.</span> <span class="nav-text">HMM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Viterbi算法"><span class="nav-number">3.</span> <span class="nav-text">Viterbi算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析代码"><span class="nav-number">4.</span> <span class="nav-text">分析代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
@@ -850,9 +866,9 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/04/09/cyclegan-stylegan/';
-          this.page.identifier = '2019/04/09/cyclegan-stylegan/';
-          this.page.title = 'CycleGAN & StyleGAN';
+          this.page.url = 'http://yoursite.com/2019/09/06/hmm/';
+          this.page.identifier = '2019/09/06/hmm/';
+          this.page.title = '基于隐马尔科夫的命名实体识别';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

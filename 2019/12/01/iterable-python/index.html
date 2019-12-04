@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iterable,generator_python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在python 中经常遇到以下的概念：容器（container）、可迭代（iterable）、迭代器（iterator）和生成器（generator）。上述概念经常混淆，整理一下，总结为图：">
+<meta name="keywords" content="iterable,generator_python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="可迭代对象 vs. 迭代器 vs. 生成器">
+<meta property="og:url" content="http://yoursite.com/2019/12/01/iterable-python/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="在python 中经常遇到以下的概念：容器（container）、可迭代（iterable）、迭代器（iterator）和生成器（generator）。上述概念经常混淆，整理一下，总结为图：">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.loli.net/2019/12/01/MAXQtk9CcGDEUmR.png">
+<meta property="og:image" content="https://upload.cc/i1/2019/12/01/kC2Zc8.png">
+<meta property="og:updated_time" content="2019-12-01T05:45:43.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="可迭代对象 vs. 迭代器 vs. 生成器">
+<meta name="twitter:description" content="在python 中经常遇到以下的概念：容器（container）、可迭代（iterable）、迭代器（iterator）和生成器（generator）。上述概念经常混淆，整理一下，总结为图：">
+<meta name="twitter:image" content="https://i.loli.net/2019/12/01/MAXQtk9CcGDEUmR.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/01/iterable-python/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>可迭代对象 vs. 迭代器 vs. 生成器 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/01/iterable-python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">可迭代对象 vs. 迭代器 vs. 生成器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-01T12:58:28+08:00">
+                2019-12-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-01T13:45:43+08:00">
+                2019-12-01
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/01/iterable-python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/12/01/iterable-python/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在python 中经常遇到以下的概念：容器（container）、可迭代（iterable）、迭代器（iterator）和生成器（generator）。上述概念经常混淆，整理一下，总结为图：</p>
+<p><img src="https://i.loli.net/2019/12/01/MAXQtk9CcGDEUmR.png" alt="1.png"></p>
+<a id="more"></a>
+<ol>
+<li>容器（container）</li>
+</ol>
+<p>容器（container）从字面的意思上很好理解，包含一定数量元素的物体。比如说 <code>list</code>, <code>set</code>, <code>tuple</code>, <code>dictioinary</code> , <code>string</code>等。容器的特点在于数量有限，大多数是可迭代，布隆过滤器（<a href="https://gg2.chn.moe/extdomains/en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="noopener">Bloom filter</a>）一般是不可迭代的，因为太大了。</p>
+<ol start="2">
+<li>可迭代（iterable）</li>
+</ol>
+<p>容器大多数是可迭代，但是可迭代的不一定是容器，不一定是某个数据结构，比如按行读取文件，打开一个sockets等操作。容器数据量一般是有限的，但是sockets操作可能是无限的数据量。所以任何物体都有可能满足可迭代性质。</p>
+<p>在python 语言，可迭代类需要实现<code>___iter__()</code> 和 <code>__next__()</code> 两个方法。下面的例子使用 Fibonacci数建立一个迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">fib</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">		self.prev =<span class="number">0</span></span><br><span class="line">		self.cur =<span class="number">1</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="keyword">return</span> self</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">		val =self.cur</span><br><span class="line">		self.cur += self.prev</span><br><span class="line">		self.prev =val</span><br><span class="line">		<span class="keyword">return</span> val</span><br><span class="line">f =fib()</span><br><span class="line">list(islice(f, <span class="number">0</span>, <span class="number">10</span> )) <span class="comment">#[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]</span></span><br></pre></td></tr></table></figure>
+<p>islice 是itertools中切片选择的函数，其中，iterable 是可迭代对象，start 是开始索引，stop 是结束索引，step 是步长，start 和 step 可选。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">islice(iterable, [start,] stop [, step])</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>迭代器（iterators）</li>
+</ol>
+<p>任何具有<code>__next__()</code> 方法的物体都是迭代器，使用 <code>next()</code>方法或者 ‘for’循环可以获取下一个元素。python中的模块 <code>itertools</code> 可以用于构建高效的迭代器。迭代的特点是惰性求值（lazy evaluation），即只要当迭代到该值的时候，才会被计算，非常适合于大文件或者无限集合的遍历，不用一次性存储在内存中。该模块中的迭代器类型分为以下三种：</p>
+<ul>
+<li>无限迭代器</li>
+<li>有限迭代器</li>
+<li>组合迭代器</li>
+</ul>
+<p>(1) 无限迭代器</p>
+<ul>
+<li>count(firstval=0, step=1)<br>创建一个从 firstval (默认值为 0) 开始，以 step (默认值为 1) 为步长的的无限整数迭代器</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> count</span><br><span class="line">counter =count(start =<span class="number">13</span>)</span><br><span class="line">next(counter)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>cycle(iterable)<br>对 iterable 中的元素反复执行循环，返回迭代器</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> cycle</span><br><span class="line">colors =cycle([<span class="string">'red'</span>, <span class="string">'white'</span>, <span class="string">'blue'</span>])</span><br><span class="line">next(colors) <span class="comment"># red</span></span><br><span class="line">next(colors)</span><br><span class="line">next(colors)</span><br><span class="line">next(colors) <span class="comment"># red</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>repeat(object [,times]<br>反复生成 object，如果给定 times，则重复次数为 times，否则为无限</li>
+</ul>
+<p>(2) 有限迭代器</p>
+<ul>
+<li>chain()</li>
+<li>dropwhile()</li>
+<li>groupby()</li>
+</ul>
+<p>chain的使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from itertools import chain</span><br><span class="line">for item in chain([1, 2, 3], [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]):</span><br><span class="line">	print item</span><br></pre></td></tr></table></figure></p>
+<p>dropwhile的使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dropwhile(predicate, iterable)</span><br></pre></td></tr></table></figure></p>
+<p>其中，predicate 是函数，iterable 是可迭代对象。对于 iterable 中的元素，如果 predicate(item) 为 true，则丢弃该元素，否则返回该项及所有后续项。（这种逻辑还是比较有意思的，只是进行一次的筛选）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> dropwhile</span><br><span class="line">list(dropwhile(<span class="keyword">lambda</span> x: x &lt; <span class="number">5</span>, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">1</span>])) <span class="comment">#[6, 2, 1]</span></span><br><span class="line">list(dropwhile(<span class="keyword">lambda</span> x: x &gt; <span class="number">3</span>, [<span class="number">2</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>])) <span class="comment">#[2, 1, 6, 5, 4]</span></span><br></pre></td></tr></table></figure></p>
+<p>(3) 组合生成器<br>itertools 模块还提供了多个组合生成器函数，用于求序列的排列、组合等：</p>
+<ul>
+<li>product</li>
+<li>permutations</li>
+<li>combinations</li>
+<li>combinations_with_replacement</li>
+</ul>
+<p><code>product</code>用于求多个可迭代对象的笛卡尔积，和嵌套的for 循环是等价的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from itertools import product</span><br><span class="line">for item in product(&apos;ABCD&apos;, &apos;xy&apos;):</span><br><span class="line">	 print item</span><br></pre></td></tr></table></figure></p>
+<p>permutations用于生成一个排列<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">permutations(iterable[, r])</span><br></pre></td></tr></table></figure></p>
+<p>其中，r 指定生成排列的元素的长度，如果不指定，则默认为可迭代对象的元素长度。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> permutations</span><br><span class="line">permutations(<span class="string">'ABC'</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure></p>
+<p>combinations用于求序列的组合，它的使用形式如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> combinations</span><br><span class="line">list(combinations(<span class="string">'ABC'</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure></p>
+<p>迭代器函数的返回值是迭代器，而不是list。</p>
+<p>并且上述容器可以转换成迭代器。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x =[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">z =iter(x)</span><br><span class="line">next(z)</span><br><span class="line">next(z)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload.cc/i1/2019/12/01/kC2Zc8.png" alt=""></p>
+<ol start="4">
+<li>生成器（generator）</li>
+</ol>
+<p>生成器必然是一种迭代器。写法更加简洁，不用实现<code>__iter__()</code> 和<code>__next__()</code> 方法，需要关键字 <code>yield</code>就ok。还是使用 Fibonacci数作为例子。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">()</span>:</span></span><br><span class="line">	pre, cur =<span class="number">0</span>,<span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">		<span class="keyword">yield</span> cur</span><br><span class="line">		pre, cur =cur,  pre+ cur</span><br><span class="line">f =fib()</span><br><span class="line">list(islice(f, <span class="number">0</span>, <span class="number">10</span>))</span><br></pre></td></tr></table></figure></p>
+<p>有木有代码量骤减的感觉。</p>
+<p>在python 中有两种类型的生成器：生成器函数和生成器表达。包含关键字<code>yield</code> 就是生成器函数（如上例子），生成器表达更加简洁，相当于<code>list comprehension</code>。比如<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">numbers =[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="comment"># list comprehension</span></span><br><span class="line">[x*x <span class="keyword">for</span> x <span class="keyword">in</span> numbers]</span><br><span class="line"><span class="comment"># set comprehension</span></span><br><span class="line">&#123;x*x <span class="keyword">for</span> x <span class="keyword">in</span> numbers&#125;</span><br><span class="line"><span class="comment"># or dict comprehension</span></span><br><span class="line">&#123;x: x*x <span class="keyword">for</span> x <span class="keyword">in</span> numbers&#125;</span><br><span class="line"><span class="comment"># not a tuple comprehension, 这个是一个 生成器表达</span></span><br><span class="line">lazy= (x*x <span class="keyword">for</span> x <span class="keyword">in</span> numbers) <span class="comment"># a generator</span></span><br><span class="line">next(lazy)</span><br><span class="line">lsit(lazy)</span><br></pre></td></tr></table></figure></p>
+<p>在处理训练数据集的时候，从<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">something</span><span class="params">()</span>:</span></span><br><span class="line">	res =[]</span><br><span class="line">	<span class="keyword">for</span> ... <span class="keyword">in</span> ..:</span><br><span class="line">		res.append(x)</span><br><span class="line">	<span class="keyword">return</span> res</span><br></pre></td></tr></table></figure></p>
+<p>转换成<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">iter_something</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">for</span> ... <span class="keyword">in</span> ...:</span><br><span class="line">		<span class="keyword">yield</span> x <span class="comment"># yield 并没有结束，等待下一个 next()</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">numbers = list()</span><br><span class="line"><span class="comment"># range()</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    numbers.append(i + <span class="number">1</span>)</span><br><span class="line">total = sum(numbers)</span><br><span class="line"><span class="comment"># (2) Using a generator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_numbers</span><span class="params">(n)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> num &lt; n:</span><br><span class="line">        <span class="keyword">yield</span> num</span><br><span class="line">        <span class="comment"># 这个yield 之后，函数并没有结束，不像 return 那种函数</span></span><br><span class="line">        num += <span class="number">1</span></span><br><span class="line">total = sum(generate_numbers(<span class="number">1000</span>))</span><br><span class="line">print(total)</span><br><span class="line">total = sum(range(<span class="number">1000</span> + <span class="number">1</span>))</span><br><span class="line">print(total)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># generator 的第一种实现 ()</span></span><br><span class="line">g =(x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</span><br><span class="line"></span><br><span class="line">print(next(g))</span><br><span class="line">print(next(g))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实现一个 image loader</span></span><br><span class="line"><span class="comment"># generator的第二种实现 yield 关键字实现，</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_data</span><span class="params">(file1)</span>:</span></span><br><span class="line">    f =open(file1)</span><br><span class="line">    x =[]</span><br><span class="line">    y =[]</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        line =f.readline()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line: <span class="keyword">break</span></span><br><span class="line">        line =line.split()</span><br><span class="line">        x =line[:<span class="number">-1</span>]</span><br><span class="line">        y =line[<span class="number">-1</span>]</span><br><span class="line">        y =map(float, y)</span><br><span class="line">        data.append(line)</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_data</span><span class="params">(file1, batch_size)</span>:</span></span><br><span class="line">    train_x, train_y =read_data(file1)</span><br><span class="line">    num_batch =len(datas) //batch_size</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_batch):</span><br><span class="line">        x = train_x[batch_size*i: batch_size*(i+<span class="number">1</span>)]</span><br><span class="line">        y =train_y[batch_size*i: batch_size*(i+<span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">yield</span> np.array(x), np.array(y)</span><br><span class="line"></span><br><span class="line">next(train_data(file1, batch_size))</span><br></pre></td></tr></table></figure>
+<p>参考文献</p>
+<p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs. Iterators vs. Generators</a><br><a href="https://gg2.chn.moe/extdomains/en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="noopener">Bloom filter - Wikipedia</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iterable/" rel="tag"># iterable</a>
+          
+            <a href="/tags/generator-python/" rel="tag"># generator_python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/29/greedy-algorithm/" rel="next" title="贪心算法">
+                <i class="fa fa-chevron-left"></i> 贪心算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/12/01/iterable-python/';
+          this.page.identifier = '2019/12/01/iterable-python/';
+          this.page.title = '可迭代对象 vs. 迭代器 vs. 生成器';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

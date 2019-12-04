@@ -87,7 +87,7 @@
 <meta property="og:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://i.loli.net/2019/08/16/E8lZBTc7JAfWVvC.png">
-<meta property="og:updated_time" content="2019-09-10T11:25:27.642Z">
+<meta property="og:updated_time" content="2019-12-01T02:55:34.629Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BERT学习笔记(2)">
 <meta name="twitter:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-10T19:25:27+08:00">
-                2019-09-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-01T10:55:34+08:00">
+                2019-12-01
               </time>
             
           </span>
@@ -431,6 +431,8 @@
 <h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>BERT 的创新点在于 mask LM和 predicting next sentence 这个多任务学习。mask 语言模型有点像完形填空，对一个句子，会随机mask 掉15% 的词语，让bert 来预测这些词语。这些词80% 是被替换成 [MASK], 10% 是被随机替换成一个词语，10% 是替换成单词本身。在预测句子关系中，随机50% 抽取两个无关的句子，50% 抽取两个有关联的句子，然后使用bert 模型判断这两个句子的相关性。在训练的时候是多任务学习。</p>
 <p>BERT 和OpenAI GPT 的区别：</p>
 <p>从训练目标上讲，bert 是<strong>同时</strong>上下文信息，而其他的都是单向的。</p>
+<h2 id="代码笔记"><a href="#代码笔记" class="headerlink" title="代码笔记"></a>代码笔记</h2><p>有时候需要进行多个文件的合并或者拆分，此时需要打开多个文件。python 中有种简洁的写法<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(file1) <span class="keyword">as</span> f1, open(file2) <span class="keyword">as</span> f2, open(file3) <span class="keyword">as</span> f3:</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> f1:</span><br><span class="line">		j =f2.readline()</span><br><span class="line">		k =f3.readline()</span><br><span class="line">		print(i, j, k)</span><br></pre></td></tr></table></figure></p>
+<p>或者还可以写成<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> nested</span><br><span class="line"><span class="keyword">with</span> nested(open(file1), open(file2), open(file3)) <span class="keyword">as</span> (f1, f2,f3):</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> f1:</span><br><span class="line">		j =f2.readline()</span><br><span class="line">		k =f3.readline()</span><br><span class="line">		pirnt(i, j, k)</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -455,8 +457,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/16/nlp-tmp/" rel="next" title="tmp">
-                <i class="fa fa-chevron-left"></i> tmp
+              <a href="/2019/06/16/attention/" rel="next" title="注意力机制介绍">
+                <i class="fa fa-chevron-left"></i> 注意力机制介绍
               </a>
             
           </div>
@@ -558,7 +560,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -580,7 +582,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -654,7 +656,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#笔记"><span class="nav-number">1.</span> <span class="nav-text">笔记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#笔记"><span class="nav-number">1.</span> <span class="nav-text">笔记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码笔记"><span class="nav-number">2.</span> <span class="nav-text">代码笔记</span></a></li></ol></div>
             
 
           </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="GANs," />
 
 
 
@@ -79,19 +79,18 @@
 
 
 
-<meta name="description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
+<meta name="description" content="从损失函数角度分析经典的对抗生成网络的模型，如GAN和WGAN。">
+<meta name="keywords" content="GANs">
 <meta property="og:type" content="article">
-<meta property="og:title" content="tmp">
-<meta property="og:url" content="http://yoursite.com/2019/06/16/nlp-tmp/index.html">
+<meta property="og:title" content="对抗生成网络简介">
+<meta property="og:url" content="http://yoursite.com/2019/04/09/gan/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
+<meta property="og:description" content="从损失函数角度分析经典的对抗生成网络的模型，如GAN和WGAN。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://i.loli.net/2019/08/16/E8lZBTc7JAfWVvC.png">
-<meta property="og:updated_time" content="2019-08-19T00:40:30.000Z">
+<meta property="og:updated_time" content="2019-12-03T03:20:31.999Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tmp">
-<meta name="twitter:description" content="学习BERT模型详解 笔记。 （传统的机器学习特征确实是稀疏）Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。 （不同的对象对比，是有不同的侧重点的）Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从">
-<meta name="twitter:image" content="https://i.loli.net/2019/08/16/E8lZBTc7JAfWVvC.png">
+<meta name="twitter:title" content="对抗生成网络简介">
+<meta name="twitter:description" content="从损失函数角度分析经典的对抗生成网络的模型，如GAN和WGAN。">
 
 
 
@@ -121,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/06/16/nlp-tmp/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/04/09/gan/"/>
 
 
 
@@ -140,7 +139,7 @@
 	})();
 </script>
 
-  <title>tmp | Jijeng's blog</title>
+  <title>对抗生成网络简介 | Jijeng's blog</title>
   
 
 
@@ -267,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/16/nlp-tmp/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/09/gan/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -284,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">tmp</h1>
+          <h1 class="post-title" itemprop="name headline">对抗生成网络简介</h1>
         
 
         <div class="post-meta">
@@ -296,8 +295,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-16T09:35:36+08:00">
-                2019-06-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-09T18:48:30+08:00">
+                2019-04-09
               </time>
             
 
@@ -312,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-19T08:40:30+08:00">
-                2019-08-19
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-03T11:20:31+08:00">
+                2019-12-03
               </time>
             
           </span>
@@ -331,8 +330,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index">
-                    <span itemprop="name">NLP</span>
+                  <a href="/categories/Deep-learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep learning</span>
                   </a>
                 </span>
 
@@ -349,9 +348,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/06/16/nlp-tmp/#comments" itemprop="discussionUrl">
+                <a href="/2019/04/09/gan/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/06/16/nlp-tmp/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/04/09/gan/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,52 +383,41 @@
       
 
       
-        <p>学习<a href="http://fancyerii.github.io/2019/03/09/bert-theory/" target="_blank" rel="noopener">BERT模型详解</a> 笔记。</p>
-<p>（传统的机器学习特征确实是稀疏）<br>Word Embedding解决了传统机器学习方法的特征稀疏问题，它通过把一个词映射到一个低维稠密的语义空间，从而使得相似的词可以共享上下文信息，从而提升泛化能力。</p>
-<p>（不同的对象对比，是有不同的侧重点的）<br>Self-Attention的初衷是为了用Attention替代LSTM，从而可以更好的并行(因为LSTM的时序依赖特效很难并行)，从而可以处理更大规模的语料。</p>
-<p>transformer 是可以作为一个基本的 encoder 或者decoder 而存在，这个对等的地位是和 lstm 是相同的。</p>
-<p>（多任务学习）<br>当然通过Multi-Task Learning，我们可以利用其它相关任务的数据。比如我们要做文本分类，我们可以利用机器翻译的训练数据，通过同时优化两个(多个)目标，让模型同时学到两个任务上的语义信息，因为这两个任务肯定是共享很多基础语义信息的，所以它的效果要比单个任务好。但即使这样，标注的数据量还是非常有限的。</p>
-<p>因为数据量的问题，所以转向了无监督学习，这样才能使用大规模的数据集，使用海量的无标注的数据学习模型。</p>
-<p>关于bert 的理解还是要多看看的。</p>
-<p>而BERT和OpenAI GPT的方法类似，也是Fine-Tuning的思路，但是它解决了OpenAI GPT(包括ELMo)单向信息流的问题，同时它的模型和语料库也更大。依赖Google强大的计算能力和工程能力，BERT横扫了OpenAI GPT。成王败寇，很少还有人记得OpenAI GPT的贡献了。但是BERT的很多思路都是沿用OpenAI GPT的，要说BERT的学术贡献，最多是利用了Mask LM(这个模型在上世纪就存在了)和Predicting Next Sentence这个Multi-task Learning而已。</p>
-<p>（首先 transformer 一开始就是用来做 机器翻译的，其次这段落是不太理解的， <a href="http://fancyerii.github.io/2019/03/09/bert-theory/" target="_blank" rel="noopener">来源</a>）<br>之前我们介绍的Transformer模型是用来做机器翻译的，它有一个Encoder和一个Decoder。这里使用的是Encoder，只不过Encoder的输出不是给Decoder使用，而是直接用它来预测下一个词，如下图所示。但是直接用Self-Attention来训练语言模型是有问题的，因为在k时刻𝑝(𝑡𝑘|𝑡1,..,𝑡𝑘−1)，也就是计算𝑡𝑘的时候只能利用它之前的词(或者逆向的语言模型只能用它之后的词)。但是Transformer的Self-Attention是可以利用整个句子的信息的，这显然不行，因为你让它根据”it is a”来预测后面的词，而且还告诉它整个句子是”it is a good day”，它就可能”作弊”，直接把下一个词输出了，这样loss是零。</p>
-<p>对于相似度的计算是有两种途径：</p>
-<ol>
-<li>通过无监督的学习得到词向量，然后使用词向量计算句子的相似度（无监督的）</li>
-<li>如果有标注的训练集的话，那么是可以使用 seq2seq 这样的模型 进行有监督的学习的</li>
-</ol>
-<p>ELMo和GPT最大的问题就是传统的语言模型是单向的——我们是根据之前的历史来预测当前词。但是我们不能利用后面的信息。比如句子”The animal didn’t cross the street because it was too tired”。我们在编码it的语义的时候需要同时利用前后的信息，因为在这个句子中，it可能指代animal也可能指代street。根据tired，我们推断它指代的是animal，因为street是不能tired。但是如果把tired改成wide，那么it就是指代street了。传统的语言模型，不管是RNN还是Transformer，它都只能利用单方向的信息。比如前向的RNN，在编码it的时候它看到了animal和street，但是它还没有看到tired，因此它不能确定it到底指代什么。如果是后向的RNN，在编码的时候它看到了tired，但是它还根本没看到animal，因此它也不能知道指代的是animal。Transformer的Self-Attention理论上是可以同时attend to到这两个词的，但是根据前面的介绍，由于我们需要用Transformer来学习语言模型，因此必须用Mask来让它看不到未来的信息，所以它也不能解决这个问题的。</p>
-<p>如下图所示，<strong>BERT能够同时利用前后两个方向的信息，而ELMo和GPT只能使用单个方向的。</strong></p>
-<p><img src="https://i.loli.net/2019/08/16/E8lZBTc7JAfWVvC.png" alt="bert-1.png"></p>
-<p>BERT仍然使用的是Transformer模型，那它是怎么解决语言模型只能利用一个方向的信息的问题呢？答案是它的pretraining训练的不是普通的语言模型，而是Mask语言模型。在介绍Mask语言模型之前我们先介绍BERT的输入表示。</p>
-<p><strong> 输入表示</strong></p>
-<p>BERT的输入表示如图下图所示。比如输入的是两个句子”my dog is cute”，”he likes playing”。后面会解释为什么需要两个句子。这里采用类似GPT的两个句子的表示方法，首先会在第一个句子的开头增加一个特殊的Token [CLS]，在cute的后面增加一个[SEP]表示第一个句子结束，在##ing后面也会增加一个[SEP]。注意这里的分词会把”playing”分成”play”和”##ing”两个Token，这种把词分成更细粒度的Word Piece的方法在前面的机器翻译部分介绍过了，这是一种解决未登录词的常见办法，后面的代码部分也会简单介绍。接着对每个Token进行3个Embedding：词的Embedding；位置的Embedding和Segment的Embedding。词的Embedding大家都很熟悉了，而位置的Embedding和词类似，把一个位置(比如2)映射成一个低维稠密的向量。而Segment只有两个，要么是属于第一个句子(segment)要么属于第二个句子，不管那个句子，它都对应一个Embedding向量。同一个句子的Segment Embedding是共享的，这样它能够学习到属于不同Segment的信息。对于情感分类这样的任务，只有一个句子，因此Segment id总是0；而对于Entailment任务，输入是两个句子，因此Segment是0或者1。</p>
-<p>BERT模型要求有一个固定的Sequence的长度，比如128。如果不够就在后面padding，否则就截取掉多余的Token，从而保证输入是一个固定长度的Token序列，后面的代码会详细的介绍。第一个Token总是特殊的[CLS]，它本身没有任何语义，因此它会(必须)编码整个句子(其它词)的语义。</p>
-<p><strong>Mask LM</strong></p>
-<p>为了解决只能利用单向信息的问题，BERT使用的是Mask语言模型而不是普通的语言模型。Mask语言模型有点类似与完形填空——给定一个句子，把其中某个词遮挡起来，让人猜测可能的词。这里会随机的Mask掉15%的词，然后让BERT来预测这些Mask的词，通过调整模型的参数使得模型预测正确的概率尽可能大，这等价于交叉熵的损失函数。这样的Transformer在编码一个词的时候会(必须)参考上下文的信息。</p>
-<p>但是这有一个问题：在Pretraining Mask LM时会出现特殊的Token [MASK]，但是在后面的fine-tuning时却不会出现，这会出现Mismatch的问题。因此BERT中，如果某个Token在被选中的15%个Token里，则按照下面的方式随机的执行：</p>
+        <p>从损失函数角度分析经典的对抗生成网络的模型，如GAN和WGAN。</p>
+<a id="more"></a>
+<p>对抗生成网络是尝试使用无监督的方式学习原数据的概率分布。在GAN的训练过程中，使用损失函数反映真实图像分布和生成图像分布之间的差异。本文主要介绍两种GAN损失函数：</p>
 <ul>
-<li>80%的概率替换成[MASK]，比如my dog is hairy → my dog is [MASK]</li>
-<li>10%的概率替换成随机的一个词，比如my dog is hairy → my dog is apple</li>
-<li>10%的概率替换成它本身，比如my dog is hairy → my dog is hairy</li>
+<li>最大最小化损失函数（minmax loss）</li>
+<li>Wasserstein损失函数（Wasserstein loss）</li>
 </ul>
-<p>这样做的好处是，BERT并不知道[MASK]替换的是哪一个词，而且任何一个词都有可能是被替换掉的，比如它看到的apple可能是被替换的词。这样强迫模型在编码当前时刻的时候不能太依赖于当前的词，而要考虑它的上下文，甚至更加上下文进行”纠错”。比如上面的例子模型在编码apple是根据上下文my dog is应该把apple(部分)编码成hairy的语义而不是apple的语义。</p>
-<p><strong>预测句子关系</strong></p>
-<p>在有些任务中，比如问答，前后两个句子有一定的关联关系，我们希望BERT Pretraining的模型能够学习到这种关系。因此BERT还增加了一个新的任务——预测两个句子是否有关联关系。这是一种Multi-Task Learing。BERT要求的Pretraining的数据是一个一个的”文章”，比如它使用了BookCorpus和维基百科的数据，BookCorpus是很多本书，每本书的前后句子是有关联关系的；而维基百科的文章的前后句子也是有关系的。对于这个任务，BERT会以50%的概率抽取有关联的句子(注意这里的句子实际只是联系的Token序列，不是语言学意义上的句子)，另外以50%的概率随机抽取两个无关的句子，然后让BERT模型来判断这两个句子是否相关。比如下面的两个相关的句子：</p>
-<blockquote>
-<p> [CLS] the man went to [MASK] store [SEP] he bought a gallon [MASK] milk [SEP]</p>
-</blockquote>
-<p>下面是两个不相关的句子：</p>
-<blockquote>
-<p>[CLS] the man [MASK] to the store [SEP] penguin [MASK] are flight ##less birds [SEP]</p>
-</blockquote>
-<p>ELMO 和OpenAI GPT 的区别：</p>
-<p>UMLFiT比较复杂，而且效果也不是特别好，我们暂且不提。ELMo和OpenAI GPT的思想其实非常非常简单，就是用海量的无标注数据学习语言模型，在学习语言模型的过程中自然而然的就学到了上下文的语义关系。它们都是来学习一个语言模型，前者使用的是LSTM而后者使用Transformer，在进行下游任务处理的时候也有所不同，ELMo是把它当成特征。拿分类任务来说，输入一个句子，ELMo用LSTM把它扫一次，这样就可以得到每个词的表示，这个表示是考虑上下文的，因此”He deposited his money in this bank”和”His soldiers were arrayed along the river bank”中的两个bank的向量是不同的。下游任务用这些向量来做分类，它会增加一些网络层，但是ELMo语言模型的参数是固定的。而OpenAI GPT不同，它直接用特定任务来Fine-Tuning Transformer的参数。因为用特定任务的数据来调整Transformer的参数，这样它更可能学习到与这个任务特定的上下文语义关系，因此效果也更好。</p>
-<p><strong>Skip Thought Vector 在训练语料上的区别</strong></p>
-<p>和训练Word2Vec不同，Word2Vec只需要提供句子，而Skip Thought Vector需要文章(至少是段落)。论文使用的数据集是BookCorpus(<a href="http://yknzhu.wixsite.com/mbweb)，目前网站已经不提供下载了。BookCorpus的统计信息如下图所示，有一万多本书，七千多万个句子。" target="_blank" rel="noopener">http://yknzhu.wixsite.com/mbweb)，目前网站已经不提供下载了。BookCorpus的统计信息如下图所示，有一万多本书，七千多万个句子。</a></p>
-<p>词汇扩展： 使用一个word2vec 的词向量去映射在训练句子向量中得到的向量，其中的映射关系是 $w$, 这个参数可以通过共现词进行学习。</p>
-<p>ELMo</p>
-<p>这篇论文的想法其实非常非常简单，但是取得了非常好的效果。它的思路是用深度的双向RNN(LSTM)在大量未标注数据上训练语言模型。然后在实际的任务中，对于输入的句子，我们使用这个语言模型来对它处理，得到输出的向量，因此这可以看成是一种特征提取。</p>
+<p>除了本文介绍的两个损失函数，还有许多其他不同的损失函数。</p>
+<p>GAN的训练过程中有两个损失函数：一个作为网络$G$的损失函数，一个作为网络$D$的损失函数。问题是，如果使用两个损失函数反映真实图像分布和生成图像分布之间的差异呢？</p>
+<ol>
+<li>最大最小化损失函数</li>
+</ol>
+<p>\begin{equation}\label{eq1}<br>\min_G \max_D V(D,G) =E_{x \sim p_{data}(x)}[ \log D(x)] + E_{z \sim p_z (z)}[log (1- D(G(z)))] \tag{1}<br>\end{equation}</p>
+<p>其中，$D(x)$ 是$D$网络对真实样本$x$ 预测为真的概率估计， $E_x$是所有的样本的期望值，$G(z)$ 是网络$G$的生成结果， $D(G(z))$是$D$网络对生成样本判别为真的概率估计， $E_z$ 是对所有生成样本判别为真的概率估计。</p>
+<p>$E_{x \sim p_{data}(x)}[ \log D(x)]$ 表示网络$D$判别真实的样本是真，$D(G(z))$表示网络$D$判别网路$G$生成的样本为真，$E_{z \sim p_z (z)}[log (1- D(G(z)))]$表示网络$D$判别网络$G$生成的样本为假。在网络$D$训练的过程中，需要最大化两个子式子；在网络$G$训练的过程中是需要最小化右边的式子，即$ E_{z \sim p_z (z)}[log (1- D(G(z)))]$。上述的计算都需要进行log运算。$D$网络承担的是分类器的功能，网络的输出是在$[0, 1]$之间，一般来说以0.5为界限，如果大于0.5，那么$D$网络认为该样本是真实的样本，否则是虚假的样本。</p>
+<p>该损失函数来源于交叉熵。如果两个分布$p$ 和$q$，那么两者之间的交叉熵为：<br>$$<br>H(p, q) =-\sum_{i} p_{i} \log q_{i}<br>$$<br>其中$p$ 和$q$分别是真实和预测的分布。两者都是离散的分布，如果是连续的话，那么应该使用积分符号而非求和符合。最初GAN的设计是一个二分类，判别图像是真实的$1$还是虚假的$0$。GAN的训练目标可以表示为以下形式：</p>
+<p>$$<br>H((x_{1}, y_{1}), D)=-y_{1} \log D(x_{1})-(1-y_{1}) \log (1-D(x_{1}))<br>$$</p>
+<p>对于真实样本$x$，网络$D$可以映射到 $[0,1]$区间，对于生成样本的判别，需要转化一下 $1-D(z)$，所以输出就约束于$[0, 1]$。上述是一个样本，然后将所有的样本加起来求期望得</p>
+<p>$$<br>H((x _{i}, y _{i}) _{i=1}^{N}, D)=-\sum _{i=1}^{N} y _{i} \log D(x _{i})-\sum _{i=1}^{N}(1-y _{i}) \log (1-D(x _{i}))<br>$$</p>
+<p>输入样本到$D$网络中的样本一般是来自真实数据集，一半是来自$G$网络，并且把求和符号转换成期望，写成如下的形式：</p>
+<p>$$<br>H((x _{i}, y _{i}) _{i=1}^{\infty}, D)=-\frac{1}{2} E _{x \sim p _{\text {data }}}[\log D(x)]-\frac{1}{2} E _{z}[\log (1-D(G(z)))]<br>$$<br>是不是和公式$(1)$很类似。</p>
+<ol start="2">
+<li>修正后的最大最小化损失函数</li>
+</ol>
+<p>最初的论文发现，对抗生成网路训练的开始几个阶段，最大最小化损失函数容易停止不动，这可能是$D$网络判别太容易。所以论文中修改原来损失函数中的$G$网络为最大化$ \log D(G(z))$。</p>
+<ol start="3">
+<li>Wasserstein损失函数</li>
+</ol>
+<p>在Wasserstein GAN（WGAN）中网络$D$不再承担分类样本的功能。这里的$D$只要能使得真实的样本的输出大于$G$生成样本就可以。所以这里的额$D$网路更像是一种”critic”的角色而不是一个”discriminator”的角色。损失函数就变得异常简单</p>
+<p>Critic Loss: $D(x) - D(G(z))$</p>
+<p>在训练过程中，$D$网络去最大化上述式子。也就是说，$D$网络努力最大化真实样本输出和生成样本输出之间的差距。</p>
+<p>Generator Loss: $D(G(z))$</p>
+<p>训练过程中，$G$网络最大化上述式子。也就是说，$G$网络的输出要被$D$网络认为是“真”。$D$网络的输出不必约束于$[0, 1]$之间。</p>
+<p>参考文献</p>
+<p><a href="https://danieltakeshi.github.io/2017/03/05/understanding-generative-adversarial-networks/" target="_blank" rel="noopener">Understanding Generative Adversarial Networks</a><br><a href="https://gg1.chn.moe/extdomains/developers.google.com/machine-learning/gan/loss" target="_blank" rel="noopener">Loss Functions</a></p>
 
       
     </div>
@@ -445,6 +433,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/GANs/" rel="tag"># GANs</a>
+          
+        </div>
+      
 
       
       
@@ -454,8 +448,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/09/lr/" rel="next" title="逻辑回归概念">
-                <i class="fa fa-chevron-left"></i> 逻辑回归概念
+              <a href="/2019/04/06/The-evaluation-of-sentence-similarity/" rel="next" title="The Evaluation of Sentence Similarity">
+                <i class="fa fa-chevron-left"></i> The Evaluation of Sentence Similarity
               </a>
             
           </div>
@@ -464,8 +458,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/06/16/nlp_bert(2)/" rel="prev" title="BERT学习笔记(2)">
-                BERT学习笔记(2) <i class="fa fa-chevron-right"></i>
+              <a href="/2019/04/10/basics_of_cs/" rel="prev" title="计算机基础">
+                计算机基础 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -548,7 +542,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -570,7 +564,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -824,9 +818,9 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/06/16/nlp-tmp/';
-          this.page.identifier = '2019/06/16/nlp-tmp/';
-          this.page.title = 'tmp';
+          this.page.url = 'http://yoursite.com/2019/04/09/gan/';
+          this.page.identifier = '2019/04/09/gan/';
+          this.page.title = '对抗生成网络简介';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
