@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="rnn,lstm," />
 
 
 
@@ -79,12 +79,13 @@
 
 
 
-<meta name="description" content="主要介绍 LSTM 的概念和网络结构。">
+<meta name="description" content="从 RNN到LSTM，重点介绍LSTM 的网络结构和LSTM是如何缓解RNN 中出现的梯度消失。">
+<meta name="keywords" content="rnn,lstm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LSTM">
+<meta property="og:title" content="从RNN到LSTM">
 <meta property="og:url" content="http://yoursite.com/2019/05/04/lstm/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="主要介绍 LSTM 的概念和网络结构。">
+<meta property="og:description" content="从 RNN到LSTM，重点介绍LSTM 的网络结构和LSTM是如何缓解RNN 中出现的梯度消失。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/6faac6eae7509bc8.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/04/eyYqm9.jpg">
@@ -95,10 +96,10 @@
 <meta property="og:image" content="https://upload.cc/i1/2019/08/04/GKfPiI.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/09/15/hMbW1OqsAy4TN6c.jpg">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/c8c7e53e5ed4489e.jpg">
-<meta property="og:updated_time" content="2019-11-11T07:16:59.736Z">
+<meta property="og:updated_time" content="2019-12-12T07:29:55.478Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LSTM">
-<meta name="twitter:description" content="主要介绍 LSTM 的概念和网络结构。">
+<meta name="twitter:title" content="从RNN到LSTM">
+<meta name="twitter:description" content="从 RNN到LSTM，重点介绍LSTM 的网络结构和LSTM是如何缓解RNN 中出现的梯度消失。">
 <meta name="twitter:image" content="https://b2.bmp.ovh/imgs/2019/08/6faac6eae7509bc8.png">
 
 
@@ -148,7 +149,7 @@
 	})();
 </script>
 
-  <title>LSTM | Jijeng's blog</title>
+  <title>从RNN到LSTM | Jijeng's blog</title>
   
 
 
@@ -292,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">LSTM</h1>
+          <h1 class="post-title" itemprop="name headline">从RNN到LSTM</h1>
         
 
         <div class="post-meta">
@@ -320,8 +321,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-11-11T15:16:59+08:00">
-                2019-11-11
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-12T15:29:55+08:00">
+                2019-12-12
               </time>
             
           </span>
@@ -392,7 +393,7 @@
       
 
       
-        <p>主要介绍 LSTM 的概念和网络结构。</p>
+        <p>从 RNN到LSTM，重点介绍LSTM 的网络结构和LSTM是如何缓解RNN 中出现的梯度消失。</p>
 <a id="more"></a>
 <h3 id="循环神经网络-RNN"><a href="#循环神经网络-RNN" class="headerlink" title="循环神经网络(RNN)"></a>循环神经网络(RNN)</h3><p>一个RNN可以看作是同一个网络的多份副本，每一份都将信息传递到下一个副本。如果我们将环展开的话：<br><img src="https://b2.bmp.ovh/imgs/2019/08/6faac6eae7509bc8.png" alt=""></p>
 <p>这种链式结构展示了RNN与序列和列表的密切关系。RNN的这种结构能够非常自然地使用这类数据。</p>
@@ -437,11 +438,19 @@
 <h3 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h3><p>GRU (gated recurrent unit) 是对于 LSTM 速度上的提升，但是相应的表达能力也受到了限制</p>
 <p><img src="https://b2.bmp.ovh/imgs/2019/08/c8c7e53e5ed4489e.jpg" alt=""></p>
 <p>GRU 中一共有两个门。GRU 把LSTM 中遗忘门(forget gate) 和输入门(input gate) 使用 更新门(update gate) 进行代替。还有一个重置门(reset gate)， 重置门主要决定了多少过去的信息需要遗忘。GRU 不会保存内部记忆 context，而且没有输出门。</p>
-<h3 id="复习"><a href="#复习" class="headerlink" title="复习"></a>复习</h3><ol>
-<li>RNN的应用场景： 文本相关和时序相关（比如 预测天气、温度）</li>
-<li>LSTM 主要是解决RNN 中的梯度消失/ 梯度爆炸问题，使用遗忘门、输入门 和输出门分别控制上一时刻信息到context的保留程度、当前时刻输入到context的程度和context信息输出程度。可以处理常依赖的问题。</li>
-<li>LSTM 中参数的计算</li>
-</ol>
+<h3 id="LSTM缓解梯度消失"><a href="#LSTM缓解梯度消失" class="headerlink" title="LSTM缓解梯度消失"></a>LSTM缓解梯度消失</h3><p>（1） RNN 中为什么会出现梯度消失</p>
+<p>RNN 中的传播公式</p>
+<p>\begin{equation}<br>\begin{array}{l}{s_{t}=\phi\left(U x_{t}+W s_{t-1}\right) } \\<br> {o_{t}=f\left(V s_{t}\right) }<br> \end{array}<br>\end{equation}</p>
+<p>其中 $s_t$表示隐藏层的状态值，$W$ 表示$s$的权重矩阵， $U$ 表示 $x$的权重矩阵。 第一个公式是隐藏层的计算公式，第二层是输出层的计算。</p>
+<p>假设时间序列 $t =3$，那么可得到：<br>$t=1$的时候的状态和输出，</p>
+<p>\begin{equation}<br>\begin{array}{l}{s_{1}=\phi\left(U x_{1}+W s_{0}\right) } \\<br>(o_{1}=f\left(V \phi\left(V x_{1}+W s_{0}\right)\right.)<br> \end{array}<br>\end{equation}<br>当 $t =2$ 的状态和输出：<br>\begin{equation}<br>\begin{array}{l}{s_{2}=\phi\left(U x_{2}+W s_{1}\right)} \\<br> {o_{2}=f\left(V \phi\left(V x_{2}+W s_{1}\right)\right)=f\left(V \phi\left(V x_{2}+W \phi\left(U x_{1}+W s_{0}\right)\right)\right)}\end{array}<br>\end{equation}</p>
+<p>当 $t =3$的状态和输出：<br>\begin{equation}<br>\begin{array}<br>{l}{s_{3}=\phi\left(U x_{3}+W s_{2}\right)} \\<br>o_{3}=f\left(V \phi\left(U x_{3}+W s_{2}\right)\right)=\ldots=f\left(V \phi\left(U x_{3}+W \phi\left(U x_{2}+W \phi\left(U x_{1}+W s_{0}\right)\right)\right)\right)<br>\end{array}<br>\end{equation}</p>
+<p>所以对于RNN 而言，所谓的无法解决长依赖是因为 $s_0$， $x_1$经过了太多的激活层和权重相乘。而常见的激活函数sigmoid 或者tanh其最大值是1，不可能是一直是1，那么很容易等于0。如 $0.8^{50}=0.00001427247$。 这就是RNN 中出现梯度消失的原因。</p>
+<p>使用Relu 是可以解决梯度消失，因为 $x&gt;0$ 情况下梯度恒为0。但是容易发生梯度爆炸（虽然可以通过设置适当的阈值）。</p>
+<p>如果说通过修改网络结构来解决梯度消失或者梯度爆炸，那么就是LSTM 了。</p>
+<p>（2）LSTM 是如何缓解梯度消失的？</p>
+<p>\begin{equation}<br>h_{t}=o_{t} \odot \phi \left(f_{t} \odot c_{t-1}+i_{t} \odot \phi \left(W_{x c} x_{t}+W_{h c} h_{t-1}+b_{c}\right)\right)<br>\end{equation}</p>
+<p>在隐藏层中 LSTM 相对于普通的RNN 有了很多加和，从而保证了在$c$(context) 这个路径上是有梯度的。但是其他路径上梯度流与普通 RNN 类似，照样会发生相同的权重矩阵反复连乘。梯度爆炸相对于梯度消失是更容易解决的。</p>
 <p>参考文献<br><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/" target="_blank" rel="noopener">Understanding LSTM Networks</a></p>
 
       
@@ -458,6 +467,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/rnn/" rel="tag"># rnn</a>
+          
+            <a href="/tags/lstm/" rel="tag"># lstm</a>
+          
+        </div>
+      
 
       
       
@@ -467,8 +484,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/27/paper-reading-bert/" rel="next" title="NLP Papers Reading- BERT (***)">
-                <i class="fa fa-chevron-left"></i> NLP Papers Reading- BERT (***)
+              <a href="/2019/04/27/paper-reading-bert/" rel="next" title="NLP Papers Reading- BERT">
+                <i class="fa fa-chevron-left"></i> NLP Papers Reading- BERT
               </a>
             
           </div>
@@ -570,7 +587,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -592,7 +609,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">70</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -666,7 +683,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#循环神经网络-RNN"><span class="nav-number">1.</span> <span class="nav-text">循环神经网络(RNN)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#长期依赖-Long-Term-Dependencies-的问题"><span class="nav-number">2.</span> <span class="nav-text">长期依赖(Long Term Dependencies)的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM-中的基本概念"><span class="nav-number">3.</span> <span class="nav-text">LSTM 中的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM网络"><span class="nav-number">4.</span> <span class="nav-text">LSTM网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM分步详解"><span class="nav-number">5.</span> <span class="nav-text">LSTM分步详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM中参数的计算"><span class="nav-number">6.</span> <span class="nav-text">LSTM中参数的计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GRU"><span class="nav-number">7.</span> <span class="nav-text">GRU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习"><span class="nav-number">8.</span> <span class="nav-text">复习</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#循环神经网络-RNN"><span class="nav-number">1.</span> <span class="nav-text">循环神经网络(RNN)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#长期依赖-Long-Term-Dependencies-的问题"><span class="nav-number">2.</span> <span class="nav-text">长期依赖(Long Term Dependencies)的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM-中的基本概念"><span class="nav-number">3.</span> <span class="nav-text">LSTM 中的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM网络"><span class="nav-number">4.</span> <span class="nav-text">LSTM网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM分步详解"><span class="nav-number">5.</span> <span class="nav-text">LSTM分步详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM中参数的计算"><span class="nav-number">6.</span> <span class="nav-text">LSTM中参数的计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GRU"><span class="nav-number">7.</span> <span class="nav-text">GRU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM缓解梯度消失"><span class="nav-number">8.</span> <span class="nav-text">LSTM缓解梯度消失</span></a></li></ol></div>
             
 
           </div>
@@ -864,7 +881,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/05/04/lstm/';
           this.page.identifier = '2019/05/04/lstm/';
-          this.page.title = 'LSTM';
+          this.page.title = '从RNN到LSTM';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="pca,svd,t-sne," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="降维分为以PCA为代表的线性降维和T-SNE为代表非线性降维。本文主要介绍这两种降维方式和代码实现，当然也会提及其他的降维算法比如LDA。">
+<meta name="keywords" content="pca,svd,t-sne">
+<meta property="og:type" content="article">
+<meta property="og:title" content="降维（Dimensionality Reduction）">
+<meta property="og:url" content="http://yoursite.com/2018/06/29/dimensionality_reduction/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="降维分为以PCA为代表的线性降维和T-SNE为代表非线性降维。本文主要介绍这两种降维方式和代码实现，当然也会提及其他的降维算法比如LDA。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/05/Q3a12D.md.png">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/09/d993b830928805b8.png">
+<meta property="og:updated_time" content="2019-12-05T03:53:18.618Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="降维（Dimensionality Reduction）">
+<meta name="twitter:description" content="降维分为以PCA为代表的线性降维和T-SNE为代表非线性降维。本文主要介绍这两种降维方式和代码实现，当然也会提及其他的降维算法比如LDA。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/12/05/Q3a12D.md.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/29/dimensionality_reduction/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>降维（Dimensionality Reduction） | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/29/dimensionality_reduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">降维（Dimensionality Reduction）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-29T22:28:25+08:00">
+                2018-06-29
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-05T11:53:18+08:00">
+                2019-12-05
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/29/dimensionality_reduction/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/29/dimensionality_reduction/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>降维分为以PCA为代表的线性降维和T-SNE为代表非线性降维。本文主要介绍这两种降维方式和代码实现，当然也会提及其他的降维算法比如LDA。</p>
+<a id="more"></a>
+<h2 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h2><blockquote>
+<p>Principal component analysis (PCA) is a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables (entities each of which takes on various numerical values) into a set of values of linearly uncorrelated variables called principal components.<br>PCA（principal component analysis）主成分分析是一种通过正交变换，将原来可能相关的变量转换成线性不相关的变量。</p>
+</blockquote>
+<p>PCA的优化目标：将一组$N$维向量降为$K$维度（$0&lt; K &lt; N $），选择$K$个单位正交基，使得原始数据变换到这组正交基上，各个特征之间协方差为0，单个特征的方差尽可能大。</p>
+<p>（1）数学概念</p>
+<p>均值表达式：<br>\begin{equation}<br>\bar{X}=\frac{\sum_{i=1}^{n} X_{i}}{n}<br>\end{equation}</p>
+<p>标准差（SD）是衡量单个数据离散程度的指标。</p>
+<p>\begin{equation}<br>s=\sqrt{\frac{\sum_{i=1}^{n}(X-\bar{X})^{2}}{(n-1)}}<br>\end{equation}<br>在统计学中，使用采样来预估总体的性质。分母是$n-1$而不是$n$，其中有比较复杂的数学证明，简单的结论就是，使用$n-1$计算出来的样本标准差和真实整体数据的标准差更加接近。</p>
+<p>方差（Variance）：在一维空间中数据偏离均值的程。<br>\begin{equation}<br>\sigma^{2}=\frac{\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}}{(n-1)}<br>\end{equation}</p>
+<p>协方差（Covariance）：二维空间中，单个特征和其他的特征之间的关系。</p>
+<p>\begin{equation}<br>\operatorname{cov}(X, Y) = s^2 =\frac{\sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)\left(Y_{i}-\bar{Y}\right)}{(n-1)}<br>\end{equation}</p>
+<p>解读协方差值：</p>
+<blockquote>
+<p>Exact value is not as important as its sign.</p>
+<ul>
+<li>数值的符号的意义大于具体数值意义</li>
+<li>如果是正值，那么说明两个维度特征是同增同减</li>
+<li>如果是负值，那么说明两个维度特征是异步，一增一减</li>
+<li>如果是0，两个维度是线性独立</li>
+</ul>
+</blockquote>
+<p>线性无关<br>数学表达为：</p>
+<p>\begin{equation}<br>c_{1} x_{1}+c_{2} x_{2}+\ldots+c_{k} x_{k}=0<br>\end{equation}<br>当且仅当 $c_1 =c_2= \dots =c_k =0$<br>图形表达为：<br><a href="https://imgse.com/i/Q3a12D" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/12/05/Q3a12D.md.png" alt="Q3a12D.md.png"></a><br>可以发现，PCA消除的真的只是线性的相关性。</p>
+<p>协方差矩阵（Covariance Matrix）将协方差矩阵话。该矩阵具有对称性。其中主对角线是方差。</p>
+<p>\begin{equation}<br>C=\left[\begin{array}{ccc}{\operatorname{cov}(X, X)} &amp; {\operatorname{cov}(X, Y)} &amp; {\operatorname{cov}(X, Z)} \\<br> {\operatorname{cov}(Y, X)} &amp; {\operatorname{cov}(Y, Y)} &amp; {\operatorname{cov}(Y, Z)} \\<br> {\operatorname{cov}(Z, X)} &amp; {\operatorname{cov}(Z, Y)} &amp; {\operatorname{cov}(Z, Z)}\end{array}\right]<br>\end{equation}</p>
+<p>特征值<br>只有方阵才有特征值和特征向量。其中特征值和特征向量是成对出现的。其次并不是所有的方阵都有特征向量。</p>
+<p>特征向量</p>
+<blockquote>
+<p>A vector consists of both length and direction.<br>一个向量由长度和方向组成。</p>
+</blockquote>
+<p>\begin{equation}<br>\mathbf{A} \cdot \mathbf{v}=\lambda \cdot \mathbf{v}<br>\end{equation}</p>
+<p>其中 $\mathbf{A} $是$m * m$矩阵， $\mathbf{v}$是特征向量， $\lambda$是特征值。所有的特征向量都是正交（相互垂直）的。</p>
+<p>矩阵相乘的意义，不加解释的给出：两个矩阵相乘的意义是将右边矩阵中的每一列列向量变换到左边矩阵中每一行行向量为基所表示的空间去。数学表达为：</p>
+<p>$$\begin{pmatrix} p_1 \\ p_2 \\ \vdots \\ p_R \end{pmatrix} \begin{pmatrix} a_1 &amp; a_2 &amp; \cdots &amp; a_M \end{pmatrix} = \begin{pmatrix} p_1a_1 &amp; p_1a_2 &amp; \cdots &amp; p_1a_M \\ p_2a_1 &amp; p_2a_2 &amp; \cdots &amp; p_2a_M \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ p_Ra_1 &amp; p_Ra_2 &amp; \cdots &amp; p_Ra_M \end{pmatrix}$$</p>
+<p>在PCA中中$R$表示降维之后的维度，如果$R$比原来的维数小，那么就达到了降维效果。</p>
+<p>（2）PCA</p>
+<p>既然是降维算法，那么需要去除一些维度，留下一些维度。留下的维度需要满足以下的要求</p>
+<ul>
+<li>不依赖别的特征，具有独立性（低协方差）</li>
+<li>具有较大的变化（和噪声不一样，是较高的方差）</li>
+</ul>
+<p>算法步骤</p>
+<p>1). 数据标准化（减均值，不是必须要除以标准差）<br>2). 计算协方差矩阵<br>3). 计算协方差矩阵的特征值和特征向量<br>4). 计算主成分<br>5). 降维</p>
+<p>不是必须要除以标准差，如果数据特征都是在一个量纲，那么没有必要，否则话，需要。</p>
+<p>（3）PCA的特点</p>
+<p>简单的，无参数化的降维方法</p>
+<p>对于离群点很敏感，因为PCA涉及到计算方差<br>无法处理非线性的依赖关系</p>
+<p>（4）代码实现</p>
+<p>1). 基于numpy实现PCA</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> array</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> mean</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> cov</span><br><span class="line"><span class="keyword">from</span> numpy.linalg <span class="keyword">import</span> eig</span><br><span class="line"><span class="comment"># define a matrix</span></span><br><span class="line">A = array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">print(A)</span><br><span class="line"><span class="comment"># calculate the mean of each column</span></span><br><span class="line">M = mean(A.T, axis=<span class="number">1</span>)</span><br><span class="line">print(M)</span><br><span class="line"><span class="comment"># center columns by subtracting column means</span></span><br><span class="line">C = A - M</span><br><span class="line">print(C)</span><br><span class="line"><span class="comment"># calculate covariance matrix of centered matrix</span></span><br><span class="line">V = cov(C.T)</span><br><span class="line">print(V)</span><br><span class="line"><span class="comment"># eigendecomposition of covariance matrix</span></span><br><span class="line">values, vectors = eig(V)</span><br><span class="line">print(vectors)</span><br><span class="line">print(values)</span><br><span class="line"><span class="comment"># project data</span></span><br><span class="line">P = vectors.T.dot(C.T)</span><br><span class="line">print(P.T)</span><br></pre></td></tr></table></figure>
+<p>2). Sklearn实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Principal Component Analysis</span></span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> array</span><br><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"><span class="comment"># define a matrix</span></span><br><span class="line">A = array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">print(A)</span><br><span class="line"><span class="comment"># create the PCA instance</span></span><br><span class="line">pca = PCA(<span class="number">2</span>)</span><br><span class="line"><span class="comment"># fit on data</span></span><br><span class="line">pca.fit(A)</span><br><span class="line"><span class="comment"># access values and vectors</span></span><br><span class="line">print(pca.components_)</span><br><span class="line">print(pca.explained_variance_)</span><br><span class="line"><span class="comment"># transform data</span></span><br><span class="line">B = pca.transform(A)</span><br><span class="line">print(B)</span><br></pre></td></tr></table></figure>
+<h2 id="t-SNE"><a href="#t-SNE" class="headerlink" title="t-SNE"></a>t-SNE</h2><p>（1）PCA和 t-SNE的background：</p>
+<p>我们有一堆数据并且想要知道这些数据 “looks like”， 然后建立了一个”map”，使这些数据投影到了二维或者三维平面上。但是PCA 是线性 mapping，</p>
+<blockquote>
+<p>PCA learns a linear mapping, which is very restrictive. PCA focuses on preserving large pairwise distances.<br>对于 t-SNE 的定义<br>compute pairwise similarities between data with normalized Gaussian kernel </p>
+</blockquote>
+<p>（2）计算步骤</p>
+<p>1). 在高纬计算两点 with normalized Gaussian kernel(<a href="http://hyperphysics.phy-astr.gsu.edu/hbase/Math/gaufcn.html" target="_blank" rel="noopener">高斯分布</a>)<br>$$<br>p_{i,j}=\frac{\exp (-|x_{i}-x_{j}|^{2} / 2 \sigma^{2})}{\sum_{k} \sum_{l \neq k} \exp (-|x_{k}-x_{l}|^{2} / 2 \sigma^{2})}<br>$$<br>2). 在低维计算两点（使用 normalized Student-t similarities in the t-SNE map）<br>$$<br>q_{i,j}=\frac{(1+\overline{|} y_{i}-y_{j} |^{2})^{-1}}{\sum_{k} \sum_{l \neq k}(1+|y_{k}-y_{l}|^{2})^{-1}}<br>$$<br>3). 计算KL 散度（尽可能的最小化两者之间的差异， kl尽可能的小）<br>$$<br>K L(P | Q)=\sum_{i} \sum_{j \neq i} p_{i j} \log \frac{p_{i j}}{q_{i j}}<br>$$</p>
+<p>（3）数学补充</p>
+<p>1). 为什么选择 KL divergence?</p>
+<p>The KL divergence preserves local data structure： 如果在高维度 p中相差大，但是在低维q 中相差小，那么kl 的值非常大。如果再高纬度p 相差小，但是在低纬度相差大，那么kl 的值就非常小。所以说尽可能保存了 local information。</p>
+<p>降维必然带来信息损失，这里更加保存的是局部信息，那么必然损失的全局信息。而 t 分布能够放大这种密度，因为t 分布更加长尾。</p>
+<p>2). t分布和卡方分布</p>
+<ul>
+<li>关于 $t$ 分布， 假设 $X \sim N(0, 1) $ ， $Y \sim  \chi^{2}(n)$ ，那么 $ Z=\frac{X}{\sqrt{Y / n}}  $ 的分布就被称为自由度为 $n$ 的 $t$ 分布， 记做 $Z \sim t(n)$。 但自由度$n$ 越大，那么越是接近正太分布。一般来说 $t$ 分布比 正太分布更加长尾。<br>如果是正太分布，那么就可以使用中心极限定理，但是 $t$ 分布就不可以了。$t$ 分布也被称为 学生t 分布。</li>
+<li>若 $k$个随机变量 $Z_1, Z_2, … Z_n$是相互独立，符合标准正态分布的随机变量（数学期望为0、方差为1），则随机变量 $Z$的平方和<br>$$<br>X=\sum_{i=1}^{k} Z_{i}^{2}<br>$$<br>被称为自由度为 $k$ 的卡方分布， 记做 $X \sim \chi^{2}(k)$。</li>
+</ul>
+<p>（3）T-SNE特点</p>
+<p>1). 可以被用来做Do</p>
+<ul>
+<li>Use t-SNE to get some <strong>qualitative</strong> hypotheses on what your features capture 这个是定性分析</li>
+<li>在输入和输出形式上可以 more creative</li>
+</ul>
+<p>2). 不可以被用来 Don’t</p>
+<ul>
+<li>不是证明你的理论的工具</li>
+<li>assign meaning to distance across empty space（注意这个是局部的特征，not 全局的信息）</li>
+<li>think that t-sne will help you find outlier, or assign meaning to point densities in cluster</li>
+<li>forget the scale (perplexity) matters<br>（ you can think of perplexity as the “effective” number of nearest neighbors， 所以说当这个 perplexity 越是接近原始一个簇的neighbors的个数，那么这个分类的效果是）</li>
+<li>forget that t-SNE 是解决一个 non-convex objective: there are local mimima</li>
+<li>local minima generally split a natural cluster into multiple parts （就是如何有这个效果，那么不要惊讶，有可能出现多个不同的parts）</li>
+<li>forget that low-dimentional metric  spaces cannot caputure non-metric similarities</li>
+</ul>
+<p>（4）How input similarities in t-SNE are actually computed</p>
+<p>1). compute conditional similarities<br>$$<br>p_{j |i}=\frac{\exp (-|x_{i}-x_{j}|^{2} / 2 \sigma_{i}^{2})}{\sum_{j^{\prime} \neq i} \exp (-|x_{i}-x_{j^{\prime}}|^{2} / 2 \sigma_{i}^{2})}<br>$$<br>perform a binary search over $\sigma_{i}$ to obtain a target perplexity</p>
+<p>( 从这里得到启发，如果某个指标是不对称的，那么 symmetrize 就是可以得到一个对称的指标， 想想从kl divergence 到JS divergence这个过程)<br>2). Symmetrize the conditions<br>$$<br>p_{i |j}=\frac{p_{j | i}+p_{i | j}}{2 N}<br>$$</p>
+<p>t-sne 时间复杂度 $n^2$</p>
+<blockquote>
+<p>naive implementations are quadratic in the number of data points</p>
+</blockquote>
+<p>（5）Conclusion</p>
+<p>t-SNE is a valuable tool in generating hypotheses and understanding, but does not produce conclusive evidence. </p>
+<p>来自<a href="http://deeplearning.csail.mit.edu/slide_cvpr2018/laurens_cvpr18tutorial.pdf" target="_blank" rel="noopener">do’s and Don’ts of using t-SNE to Understand Vision Models</a>的阅读笔记。<br><a href="http://frankchen.xyz/2018/01/30/Understanding-TSNE/" target="_blank" rel="noopener">理解TSNE算法</a></p>
+<h2 id="feature-selection"><a href="#feature-selection" class="headerlink" title="feature selection"></a>feature selection</h2><p>定义：</p>
+<p>feature selection 的过程就是dimension reduction的过程。就是说由较多的数据集 映射到 较少的数据集，这种方式就叫做降维。</p>
+<blockquote>
+<p>Using dimensionality reduction techniques, of course. You can use this concept to reduce the number of features in your dataset without having to lose much information and keep (or improve) the model’s performance.</p>
+</blockquote>
+<p>为什么? （必要性分析）</p>
+<p>时间角度，空间（内存）角度。减少冗余信息，就减少了模型去拟合”噪声“数据的可能性。</p>
+<p>常见的有以下几种方式：</p>
+<p><strong> 可以归结成几类：特征本身（数据缺省值比较大，数据的波动性比较小），特征和特征之间（特征具有较高的相关性，使用PCA 进行降维），特征和最后的target的关系（机器学习模型的 feature importance，卡方分布检测特征和target 的重要性，Pearson 相关系数：-1 表示负相关，0 表示不相关，1表示正相关）。</strong></p>
+<p>可以划分成三类：</p>
+<p>一、独立于模型的特征选择（没有在入模时候进行的特征选择）或者叫做 filter：</p>
+<ol>
+<li>移除低方差的特征 (Removing features with low variance)</li>
+</ol>
+<p>当特征值都是离散型变量的时候这种方法才能用，如果是连续型变量，就需要将连续变量离散化之后才能用。</p>
+<ol start="2">
+<li>单变量特征选择 (Univariate feature selection)</li>
+</ol>
+<p>对于分类问题(y离散)，可采用：卡方检验，f_classif, mutual_info_classif，互信息<br>对于回归问题(y连续)，可采用：皮尔森相关系数，f_regression, mutual_info_regression，最大信息系数</p>
+<p>这里说的是特征选择，但是上面说的都是针对“特征重要性” 这点展开的，但是一个特征入模是一个复杂的过程，需要考虑的因素很多。比如：变量的预测能力，变量之间的相关性，变量的简单性（容易生成和使用），变量的强壮性（不容易被绕过），变量在业务上的可解释性（被挑战时可以解释的通）等等。当然，其中最主要和最直接的衡量标准是变量的预测能力。</p>
+<p>尤其是当你使用LR 这类简单的模型的时候，是需要重点的在特征上下功夫的，因为模型是线性的，比较简单，引入特征，加入非线性，然后才能更好的表达实际问题。</p>
+<p>二、基于模型选择的特征排序</p>
+<p>有些机器学习方法本身就具有对特征进行打分的机制，或者很容易将其运用到特征选择任务中，例如回归模型，SVM，决策树，随机森林等等。这种方法的思路是直接使用你要用的机器学习算法，针对 每个单独的特征 和 响应变量建立预测模型。假如 特征 和 响应变量 之间的关系是非线性的，可以用基于树的方法(决策树、随机森林)、或者 扩展的线性模型 等。</p>
+<p>三、无监督的模型选择</p>
+<p>聚类，可以从降维的角度理解。可以在机器学习算法中的importance 不是很大，容易被忽略的特征。</p>
+<h3 id="SVD"><a href="#SVD" class="headerlink" title="SVD"></a>SVD</h3><p>SVD decomposes the original variables into three constituent matrices. It is essentially used to remove redundant features from the dataset. It uses the concept of Eigenvalues and Eigenvectors to determine those three matrices. We will not go into the mathematics of it due to the scope of this article, but let’s stick to our plan, i.e. reducing the dimensions in our dataset.</p>
+<p>$$<br>\operatorname { Data } _ { m \times n } = U _ { m \times m } \Sigma _ { m \times n } V _ { n \times n } ^ { T }<br>$$<br>SVD将原始的数据集矩阵Data分解成三个矩阵：U、Sigma、VT，如果原始矩阵是m行n列，那么U、Sigma和VT分别就是m行m列、m行n列、n行n列。比较值得一提的是矩阵Sigma，该矩阵只有对角元素，其他元素均为0，有一个惯例是：Sigma的对角元素是从大到小排列的。这些对角元素就称为奇异值.</p>
+<p>PCA 是方阵是 $ m^2 $ 操作，那么SVD 是 $mn$ 就是更加广泛的矩阵操作。</p>
+<p>特征分解只能分解方阵，奇异值分解可以分解任意矩阵，pca中的特征分解通常会使用svd。（方阵是一种特殊的矩阵，当行数和列数相同的时候就叫做方阵）</p>
+<h3 id="投影也是一种降维手段"><a href="#投影也是一种降维手段" class="headerlink" title="投影也是一种降维手段"></a>投影也是一种降维手段</h3><p>这种思想真的是服气，虽然我也不是很懂，但是思想是很好的<br>By projecting one vector onto the other, dimensionality can be reduced.</p>
+<p>当投影到另一个平面的时候，原来的平面维度就消失了，所以只剩下了投影面的维度。</p>
+<h3 id="T-sne"><a href="#T-sne" class="headerlink" title="T-sne"></a>T-sne</h3><p>就是指出 t-sne 这个可以非线性降维。有local approaches 和 global approaches 两种方式，我大概的理解就是：类之间还能尽可能的远离，类内保持差异性。（不知道对不对）<br>So far we have learned that PCA is a good choice for dimensionality reduction and visualization for datasets with a large number of variables. But what if we could use something more advanced? What if we can easily search for patterns in a non-linear way? t-SNE is one such technique. There are mainly two types of approaches we can use to map the data points:<br>Local approaches :  They maps nearby points on the manifold to nearby points in the low dimensional representation.<br>Global approaches : They attempt to preserve geometry at all scales, i.e. mapping nearby points on manifold to nearby points in low dimensional representation as well as far away points to far away points.</p>
+<h3 id="LDA（有监督）"><a href="#LDA（有监督）" class="headerlink" title="LDA（有监督）"></a>LDA（有监督）</h3><p>和上面最大的区别在于 LDA 是有监督的，<br>LDA试图让不同类别样本之间的距离最大，同时让相同类别样本之间的距离最小。简单来说LDA是为了使降维后的数据点尽可能的可分。</p>
+<p>上图中国提供了两种投影方式，哪一种能更好的满足我们的标准呢？从直观上可以看出，右图要比左图的投影效果好，因为右图的黑色数据和蓝色数据各个较为集中，且类别之间的距离明显。左图则在边界处数据混杂。以上就是LDA的主要思想了，当然在实际应用中，我们的数据是多个类别的，我们的原始数据一般也是超过二维的，投影后的也一般不是直线，而是一个低维的超平面</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/09/d993b830928805b8.png" alt=""></p>
+<p>这个是关于该算法的一个<a href="https://www.cnblogs.com/pinard/p/6244265.html" target="_blank" rel="noopener">讲解</a>， 如果对于步骤感兴趣的话。</p>
+<h3 id="PCA-vs-LDA"><a href="#PCA-vs-LDA" class="headerlink" title="PCA vs. LDA"></a>PCA vs. LDA</h3><p>LDA用于降维，和PCA有很多相同，也有很多不同的地方，因此值得好好的比较一下两者的降维异同点。</p>
+<p>首先我们看看相同点：<br>　　　　1）两者均可以对数据进行降维。<br>　　　　2）两者在降维时均使用了矩阵特征分解的思想。<br>　　　　3）两者都假设数据符合高斯分布。<br>我们接着看看不同点：<br>　　　　1）LDA是有监督的降维方法，而PCA是无监督的降维方法<br>　　　　2）LDA降维最多降到类别数k-1的维数，而PCA没有这个限制。<br>　　　　3）LDA除了可以用于降维，还可以用于分类。<br>　　　　4）LDA选择分类性能最好的投影方向，而PCA选择样本点投影具有最大方差的方向。</p>
+<p>当类别特别多的时候，每个类中的样本就越少，此时更加适合使用PCA而不是LDA。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/pca/" rel="tag"># pca</a>
+          
+            <a href="/tags/svd/" rel="tag"># svd</a>
+          
+            <a href="/tags/t-sne/" rel="tag"># t-sne</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/29/常见的排序算法总结/" rel="next" title="常见的排序算法总结">
+                <i class="fa fa-chevron-left"></i> 常见的排序算法总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/29/特征工程相关概念/" rel="prev" title="特征工程">
+                特征工程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PCA"><span class="nav-number">1.</span> <span class="nav-text">PCA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#t-SNE"><span class="nav-number">2.</span> <span class="nav-text">t-SNE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#feature-selection"><span class="nav-number">3.</span> <span class="nav-text">feature selection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SVD"><span class="nav-number">3.1.</span> <span class="nav-text">SVD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投影也是一种降维手段"><span class="nav-number">3.2.</span> <span class="nav-text">投影也是一种降维手段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T-sne"><span class="nav-number">3.3.</span> <span class="nav-text">T-sne</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDA（有监督）"><span class="nav-number">3.4.</span> <span class="nav-text">LDA（有监督）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA-vs-LDA"><span class="nav-number">3.5.</span> <span class="nav-text">PCA vs. LDA</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/06/29/dimensionality_reduction/';
+          this.page.identifier = '2018/06/29/dimensionality_reduction/';
+          this.page.title = '降维（Dimensionality Reduction）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

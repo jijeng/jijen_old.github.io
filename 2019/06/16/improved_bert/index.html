@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="k-fold,结构化风险," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,21 +79,19 @@
 
 
 
-<meta name="description" content="介绍模型选择的两种方法：交叉检验和正则化。使用交叉检验（K-fold cross validation）进行选择模型并不难理解，但正则化和模型选择的关系，一开始还不是很理解，所以通过整理，希望能带来一些启发。">
-<meta name="keywords" content="k-fold,结构化风险">
+<meta name="description" content="介绍基于BERT进行改进的模型：ALBERT、XLNet, DistilBERT （持续更新）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Model Selection">
-<meta property="og:url" content="http://yoursite.com/2019/08/12/model-selection/index.html">
+<meta property="og:title" content="后BERT时代">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/improved_bert/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="介绍模型选择的两种方法：交叉检验和正则化。使用交叉检验（K-fold cross validation）进行选择模型并不难理解，但正则化和模型选择的关系，一开始还不是很理解，所以通过整理，希望能带来一些启发。">
+<meta property="og:description" content="介绍基于BERT进行改进的模型：ALBERT、XLNet, DistilBERT （持续更新）">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/0060lm7Tly1g5x6vgi1poj30k009l76f.jpg">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/0060lm7Tly1g5x6vh0wx6j30fq0a0js8.jpg">
-<meta property="og:updated_time" content="2019-10-24T07:54:57.862Z">
+<meta property="og:image" content="https://upload.cc/i1/2019/12/14/qIHEid.png">
+<meta property="og:updated_time" content="2019-12-14T14:13:25.234Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Model Selection">
-<meta name="twitter:description" content="介绍模型选择的两种方法：交叉检验和正则化。使用交叉检验（K-fold cross validation）进行选择模型并不难理解，但正则化和模型选择的关系，一开始还不是很理解，所以通过整理，希望能带来一些启发。">
-<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/0060lm7Tly1g5x6vgi1poj30k009l76f.jpg">
+<meta name="twitter:title" content="后BERT时代">
+<meta name="twitter:description" content="介绍基于BERT进行改进的模型：ALBERT、XLNet, DistilBERT （持续更新）">
+<meta name="twitter:image" content="https://upload.cc/i1/2019/12/14/qIHEid.png">
 
 
 
@@ -123,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/12/model-selection/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/06/16/improved_bert/"/>
 
 
 
@@ -142,7 +140,7 @@
 	})();
 </script>
 
-  <title>Model Selection | Jijeng's blog</title>
+  <title>后BERT时代 | Jijeng's blog</title>
   
 
 
@@ -269,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/12/model-selection/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/16/improved_bert/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -286,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Model Selection</h1>
+          <h1 class="post-title" itemprop="name headline">后BERT时代</h1>
         
 
         <div class="post-meta">
@@ -298,8 +296,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-12T20:36:50+08:00">
-                2019-08-12
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-16T09:35:36+08:00">
+                2019-06-16
               </time>
             
 
@@ -314,8 +312,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-24T15:54:57+08:00">
-                2019-10-24
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-14T22:13:25+08:00">
+                2019-12-14
               </time>
             
           </span>
@@ -333,8 +331,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
                   </a>
                 </span>
 
@@ -351,9 +349,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/12/model-selection/#comments" itemprop="discussionUrl">
+                <a href="/2019/06/16/improved_bert/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/08/12/model-selection/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/06/16/improved_bert/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -386,59 +384,68 @@
       
 
       
-        <p>介绍模型选择的两种方法：交叉检验和正则化。使用交叉检验（K-fold cross validation）进行选择模型并不难理解，但正则化和模型选择的关系，一开始还不是很理解，所以通过整理，希望能带来一些启发。</p>
+        <p>介绍基于BERT进行改进的模型：ALBERT、XLNet, DistilBERT （持续更新）</p>
 <a id="more"></a>
-<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><p>模型选择有两种方式，一种是交叉验证，一种是正则化。对于前者是常规的做法，对于后者是从模型的复杂度角度去理解。</p>
-<p>为什么要 k-fold 模型选择？</p>
-<p>在机器学习建模过程中，通行的做法通常是将数据分为训练集和测试集。测试集是与训练独立的数据，完全不参与训练，用于最终模型的评估。在训练过程中，经常会出现过拟合的问题，就是模型可以很好的匹配训练数据，却不能很好在预测训练集外的数据。<strong>如果此时就使用测试数据来调整模型参数，就相当于在训练时已知部分测试数据的信息，会影响最终评估结果的准确性。</strong>通常的做法是在训练数据再中分出一部分做为验证(Validation)数据，用来评估模型的训练效果。(所以 k-fold 从训练过程上是可以 缓解过拟合的， 是把训练集进行了进一步的划分)</p>
-<p>如何做的呢？</p>
-<p>验证数据取自训练数据，但不参与训练，这样可以相对客观的评估模型对于训练集之外数据的匹配程度。模型在验证数据中的评估常用的是交叉验证，又称循环验证。它将原始数据分成K组(K-Fold)，将每个子集数据分别做一次验证集，其余的K-1组子集数据作为训练集，这样会得到K个模型。这K个模型分别在验证集中评估结果，最后的误差MSE(Mean Squared Error)加和平均就得到交叉验证误差。交叉验证有效利用了有限的数据，并且评估结果能够尽可能接近模型在测试集上的表现，可以做为模型优化的指标使用。<br>（从另一个角度讲，这个也是参数选择的过程，因为某一个k 是对应着某一组模型参数的）</p>
-<p>关于k 值的选择</p>
-<p>K越大，每次投入的训练集的数据越多，模型的Bias越小。但是K越大，又意味着每一次选取的训练集之前的相关性越大（考虑最极端的例子，当k=N，也就是在LOOCV（叫做留一法）里，每次都训练数据几乎是一样的）。而这种大相关性会导致最终的test error具有更大的Variance。 一般来说，根据经验我们一般选择k=5或10。</p>
-<h3 id="K-fold-cross-validation"><a href="#K-fold-cross-validation" class="headerlink" title="K-fold cross validation"></a>K-fold cross validation</h3><p>交叉检验通常被用作评估一个机器学习模型的表现，可以用于进行模型的选择。而K折交叉验证(K-fold cross validation)指的是把训练数据D 分为 K份，用其中的(K-1)份训练模型，把剩余的1份数据用于评估模型的质量。将这个过程在K份数据上依次循环，并对得到的K个评估结果进行合并，如求平均或投票。</p>
-<p>具体的步骤如下：</p>
-<p>第一步，不重复抽样将原始数据随机分为 k 份。</p>
-<p>第二步，每一次挑选其中 1 份作为测试集，剩余 k-1 份作为训练集用于模型训练。</p>
-<p>第三步，重复第二步 k 次，这样每个子集都有一次机会作为测试集，其余机会作为训练集。</p>
-<p>在每个训练集上训练后得到一个模型，</p>
-<p>用这个模型在相应的测试集上测试，计算并保存模型的评估指标，</p>
-<p>第四步，计算 k 组测试结果的平均值作为模型精度的估计，并作为当前 k 折交叉验证下模型的性能指标。</p>
-<p>当 K =10 的时候 ，训练数据D被分为了10 份，每次取其中9份数据作为训练集，1份作为测试集，最终将循环后所有的评估结果取平均。<br><img src="http://tva1.sinaimg.cn/large/0060lm7Tly1g5x6vgi1poj30k009l76f.jpg" alt=""></p>
-<p><strong>交叉验证的分类</strong></p>
-<p>当然有两种比较极端的 K 的取值，当k =1，全部的数据被用于训练，相当于只有训练数据集；当k =n 的时候，也被称为留一法。留一法交叉验证：假设有N个样本，将每一个样本作为测试样本，其它N-1个样本作为训练样本。这样得到N个分类器，N个测试结果。用这N个结果的平均值来衡量模型的性能。</p>
-<p><strong>如何去理解交叉验证呢？</strong></p>
-<p>简单的说是可以从方差和偏差的角度进行分析。当k =1，全部的数据被用于训练，容易出现过拟合，容易出现低偏差、高方差的；当k =n，也被称为留一法，偏差升高了而方差是减少了。所以说取值范围的变化可以看做是偏差和方差相互妥协的过程。</p>
-<p><strong>如何选择K 的值</strong></p>
-<p>经验上的选择，一般k =10。当数据量比较大的时候，k 可以小点；当数据量比较小的时候，k 可以小点。基本的原则是保证 有足够的训练样本用于训练。</p>
-<h3 id="正则化角度"><a href="#正则化角度" class="headerlink" title="正则化角度"></a>正则化角度</h3><p>模型训练过程中很容易出现过拟合，根本原因是模型的复杂度远小于数据量，模型的复杂度和训练误差于测试误差的关系如下图所示。</p>
-<p><img src="http://tva1.sinaimg.cn/large/0060lm7Tly1g5x6vh0wx6j30fq0a0js8.jpg" alt=""></p>
-<p>从图中可以看到， 随着模型复杂度的提高，训练误差是不断下降的，但测试误差是先下降后上升的。模型选择 的经典方法是正则化。正则化的作用是选择经验风险于模型复杂度同时较小的模型。也可以说，在所有可以选择的模型中，能够很好的解释数据并且十分简单的才是好模型。</p>
-<p>学习方法的泛化能力是指由该方法学习到的模型对未知数据的预测能力，是学习方法本质上重要的性质。现实中采用最多的方法是通过测试误差来评价学习方法的泛化能力。</p>
-<h2 id="结构化风险"><a href="#结构化风险" class="headerlink" title="结构化风险"></a>结构化风险</h2><p>要区分这三个概念，首先要引入一个损失函数的概念。损失函数是期望风险、经验风险和结构风险的基础。</p>
-<p>损失函数是针对单个具体的样本而言的。表示的是模型预测的值与样本真实值之间的差距。比如对于某个样本$(x_i, y_i)$，其真实的值为Yi,而我们的模型选择决策函数为 $f $,那么通过模型预测的值为$ f(x_i)$;损失函数就是用来表示$y_i$与$ f(x_i)$之间的差距的，我们用函数 $L(f(x_),y_i) $来衡量。我们希望的是这个L函数最小化。理想的情况是我们的模型决策函数预测值$f（x_i）$刚好等于该样本的真值 $y_i$。常见的损失函数有： 平方损失函数、绝对值损失函数和对数损失函数。</p>
-<p>通过损失函数我们只能知道模型决策函数 $f(x) $对于单个样本点的预测能力（借用损失函数 $L(y ,f(x)) $，损失函数越小，说明模型对于该样本预测越准确。），那么如果想知道模型 $f(x) $对训练样本中所有的样本的预测能力应该怎么办呢？显然只需所有的样本点都求一次损失函数然后进行累加就好了。如下式</p>
-<p>$$ (R_{exp}(f)=\frac{1}{N} \sum_{i=1}^{N} L\left(y_{i}, f\left(x_{i}\right)\right))$$</p>
-<p>这就经验风险，所谓的经验风险最小化便是让这个式子最小化，注意这个式子中累加和的上标N表示的是训练样例集中样本的数目。 </p>
-<p>经验风险是对训练集中的所有样本点损失函数的平均最小化。经验风险越小说明模型f(X)对训练集的拟合程度越好，但是对于未知的样本效果怎么样呢？我们知道未知的样本数据$（x, y）$的数量是不容易确定的，所以就没有办法用所有样本损失函数的平均值的最小化这个方法，那么怎么来衡量这个模型对所有的样本（包含未知的样本和已知的训练样本）预测能力呢？熟悉概率论的很容易就想到了用期望。即假设 $x  $和 $y $服从联合分布 $P(x ,y) $.那么期望风险就可以表示为：</p>
-<p>$$<br>R_{exp}(f)=E_{P}[L(Y, f(X))]=\int_{\mathrm{x \times y}} L(y, f(x)) P(x, y) d x d y<br>$$</p>
-<p>这就是期望风险，期望风险表示的是全局的概念，表示的是决策函数对所有的样本 $x,y $预测能力的大小，而经验风险则是局部的概念，仅仅表示决策函数对训练数据集里样本的预测能力。理想的模型（决策）函数应该是让所有的样本的损失函数最小的（也即期望风险最小化），但是期望风险函数往往是不可得到的，即上式中， $x $与 $ y $的联合分布函数不容易得到。现在我们已经清楚了期望风险是全局的，理想情况下应该是让期望风险最小化，但是呢，期望风险函数又不是那么容易得到的。怎么办呢？那就用局部最优的代替全局最优这个思想吧。这就是经验风险最小化的理论基础。</p>
-<p>通过上面的分析可以知道，经验风险与期望风险之间的联系与区别。现在在总结一下：</p>
-<p>经验风险是局部的，基于训练集所有样本点损失函数最小化的。</p>
-<p>期望风险是全局的，是基于所有样本点的损失函数最小化的。</p>
-<p>经验风险函数是现实的，可求的；</p>
-<p>期望风险函数是理想化的，不可求的；</p>
-<p>只考虑经验风险的话，会出现过拟合的现象，过拟合的极端情况便是模型f(x)对训练集中所有的样本点都有最好的预测能力，但是对于非训练集中的样本数据，模型的预测能力非常不好。怎么办呢？这个时候就引出了结构风险。结构风险是对经验风险和期望风险的折中。在经验风险函数后面加一个正则化项（惩罚项）便是结构风险了。如下式：</p>
-<p>$$<br>R_{\mathrm{em}}(f)=\frac{1}{N} \sum_{i=1}^{N} L\left(y_{i}, f\left(x_{i}\right)\right)+\lambda J(f)<br>$$</p>
-<p>相比于经验风险，结构风险多了一个惩罚项，其中是一个 $\lambda $是一个大于0的系数。$J(f) $表示的是是模型f的复杂度。结构风险可以这么理解：</p>
-<p>经验风险越小，模型决策函数越复杂，其包含的参数越多，当经验风险函数小到一定程度就出现了过拟合现象。也可以理解为模型决策函数的复杂程度是过拟合的必要条件，那么我们要想防止过拟合现象的方式，就要破坏这个必要条件，即降低决策函数的复杂度。也即，让惩罚项 $J(f) $最小化，现在出现两个需要最小化的函数了。我们需要同时保证经验风险函数和模型决策函数的复杂度都达到最小化，一个简单的办法把两个式子融合成一个式子得到结构风险函数然后对这个结构风险函数进行最小化。</p>
-<p>常见的说法：</p>
-<p>极大似然估计是经验风险最小化的一个例子，当模型是条件概率分布，损失函数是对数损失函数时，经验风险最小化就等于极大似然估计。（但是，当样本量很小时，经验风险最小化学习的效果未必很好，会产生后面叙述的“过拟合”现象。）</p>
-<p>结构风险最小化是为了防止过拟合而提出来的 策略。结构风险最小化等价于正则项或罚项。</p>
-<p>贝叶斯估计中的最大后验概率估计（MAP,maximum posterior probability estimation）就是结构风险最小化的一个例子。当模型是条件概率分布、损失函数是对数损失函数、模型复杂度由模型的先验概率表示时，结构风险最小化就等价于最大后验概率估计。</p>
-<h2 id="复习笔记"><a href="#复习笔记" class="headerlink" title="复习笔记"></a>复习笔记</h2><ol>
-<li>经验风险和期望风险，前者是针对训练集，可以计算；后者是对于全部训练数据，不可计算。结构化风险是两者的折中，在经验风险后面加上一个正则项，对经验风险进行了惩戒。</li>
-</ol>
-
+<h2 id="ALBERT"><a href="#ALBERT" class="headerlink" title="ALBERT"></a>ALBERT</h2><p>在同等网络规模（隐藏层）下，BERT 拥有 12.7 亿个参数，ALBERT 仅拥有 5900 万个参数……缩小约 21.5 倍。</p>
+<p>模型训练存在一个饱和点，一旦训练复杂性越过该饱和点，那么任何额外网络元素的加入都只会拉低增益。</p>
+<h3 id="对Embedding因式分解（Factorized-embedding-parameterization）"><a href="#对Embedding因式分解（Factorized-embedding-parameterization）" class="headerlink" title="对Embedding因式分解（Factorized embedding parameterization）"></a>对Embedding因式分解（Factorized embedding parameterization）</h3><p>ALBERT 的作者们指出，WordPiece 嵌入学习到的实际是与上下文无关的表示形式。而隐藏层嵌入则用于学习与上下文相关的表示形式。这两者是需要没有直接的关系，如果把这两个要素分开，可能更加合理。</p>
+<p>投射至一个较小的低维矩阵 E 中，而后再将 E 投射至 H 隐藏空间中。</p>
+<p>这一步操作其实就是没啥特别好说的，无外乎就是觉得词嵌入时的向量维度应该小一点，然后通过个网络扩充一下提升维度，这样一通操作就可以把参数量从$O(V×H)) $降到了$O(V×E+E×H)$</p>
+<h3 id="跨层的参数共享（Cross-layer-parameter-sharing）"><a href="#跨层的参数共享（Cross-layer-parameter-sharing）" class="headerlink" title="跨层的参数共享（Cross-layer parameter sharing）"></a>跨层的参数共享（Cross-layer parameter sharing）</h3><p>全连接层与attention层都进行参数共享，也就是说共享encoder内的所有参数</p>
+<p>参数量减少了很多，训练速度也提升了很多</p>
+<h3 id="句间连贯（sentence-order-prediction）"><a href="#句间连贯（sentence-order-prediction）" class="headerlink" title="句间连贯（sentence-order prediction）"></a>句间连贯（sentence-order prediction）</h3><p>在ALBERT中，为了只保留一致性任务去除主题识别的影响，提出了一个新的任务 sentence-order prediction（SOP），SOP的正样本和NSP的获取方式是一样的，负样本把正样本的顺序反转即可。</p>
+<p>SOP因为实在同一个文档中选的，其只关注句子的顺序并没有主题方面的影响。并且SOP能解决NSP的任务，但是NSP并不能解决SOP的任务，该任务的添加给最终的结果提升了一个点。</p>
+<p>增强了模型的学习能力。</p>
+<h3 id="移除dropout"><a href="#移除dropout" class="headerlink" title="移除dropout"></a>移除dropout</h3><p>除了上面提到的三个主要优化点，ALBERT的作者还发现一个很有意思的点，ALBERT在训练了100w步之后，模型依旧没有过拟合，于是乎作者果断移除了dropout，没想到对下游任务的效果竟然有一定的提升。这也是业界第一次发现dropout对大规模的预训练模型会造成负面影响。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>但实际上是通过参数共享的方式降低了内存，预测阶段还是需要和BERT一样的时间。</p>
+<p><a href="https://github.com/brightmart/albert_zh" target="_blank" rel="noopener">albert_zh</a></p>
+<h2 id="XLNet-讲解"><a href="#XLNet-讲解" class="headerlink" title="XLNet 讲解"></a>XLNet 讲解</h2><p>（1）两种成功的语言模型</p>
+<p>自回归语言模型（Autoregressive Language Modeling, AR）和自编码语言模型（Autoencoding LM, AE）是两大成功的预训练模型。</p>
+<p>自回归语言模型有个缺点，要么从左到右，要么从右到左，尽管可以类似ELMO两个都做，然后再拼接的方式。但是跟Bert比，效果明显不足够好（这里面有RNN弱于Transformer的因素，也有双向语言模型怎么做的因素）。</p>
+<p>\begin{equation}<br>\begin{array}{l}{p(x)=\prod_{T}^{T} p\left(x_{t} | x_{&lt;t}\right)} \\ {p(x)=\prod^{T} p\left(x_{t} | x_{&gt;t}\right)}\end{array}<br>\end{equation}</p>
+<p>1). 典型技术：GPT, ELMO（本质上是两方向的自回归简单拼接结合）。<br>2). 优点：和下游NLP任务有关，比如生成类NLP任务，文本摘要，机器翻译等，在实际生成内容的时候，都是从左向右，自回归语言模型天然匹配这个过程。而自编码语言模型和这个过程不匹配。<br>3). 缺点：只能利用上文或者下文的信息，或者像ELMO简单两方向结合。</p>
+<p>自编码语言模型定义：自编码语言模型是通过在输入X中随机Mask掉一部分单词，然后在预训练过程中根据上下文单词来预测这些被Mask掉的单词。该做法类似Denoising Autoencoder(DAE)的思路。那些被Mask掉的单词即为在输入侧加入的噪音。</p>
+<p>1). 典型技术：BERT。<br>2). 优点：同时利用利用上下文信息，双向语言模型。<br>3).缺点：</p>
+<ul>
+<li>输入侧引入[Mask]标记，导致预训练阶段和Fine-tuning阶段不一致，因为Fine-tuning阶段看不到[Mask]标记。</li>
+<li>独立假设问题：举个例子：比如”New York is a city”，假设我们Mask住”New”和”York”两个词，那么给定”is a city”的条件下”New”和”York”并不独立，因为”New York”是一个实体，看到”New”则后面出现”York”的概率要比看到”Old”后面出现”York”概率要大得多。所以同时Mask 15% 的词不是好的做法。</li>
+</ul>
+<p>（2）排列语言模型（Permutation Language Model）</p>
+<p>XLNet 也是学习到了双向信息，那么是怎么做到的呢？XLNet仍然遵循两阶段的过程，第一个阶段是语言模型预训练阶段；第二阶段是任务数据Fine-tuning阶段。这个可以理解为在自回归LM模式下，采取什么样的具体手段，融入双向语言模型。</p>
+<p>\begin{equation}<br>\max _{\theta} E _{z \sim Z_T} = \sum_{t=1} ^{T} \log p_{\theta} (x_{z_t}  | x_{z \le t})<br>\end{equation}</p>
+<p>从所有的排列中采样一种，然后根据这个排列来分解联合概率成条件概率的乘积，然后加起来。为了实现排列语言模型，论文采用了双流自注意力机制（Two-Stream Self-Attention）和Attention Mask。比如 $p(x_1| x_3)p(x_2|x_1 x_3)p(vx_3)$，我们可以在用Transformer编码 $x_1 $时候让它可以Attend to $x_3$，而把 $x_2$Mask掉 (意思就是算Attention score的时候只算 $x_3$对 $x_1$的影响，而 $x_2$的attention score为0)；编码 $x_3$的时候把 $x_1$, $x_2$都Mask掉。</p>
+<p>（3）双流注意力机制</p>
+<p>问题：当不同的排列组合如 $z_1 =[1, 3, 4, 2]$ 和$z_2 =[1, 3, 4, 5]$出现，$t =3$，则已知前三个状态，预测第四个状态，由于这两种排列当 $t \le 3$ 都是相同的，而 $t =4$的时候，信息是被 masked的，所以无法区别这两种信息。</p>
+<p>为了解决上述问题，论文中引入了两个 Stream，也就是两个隐状态：</p>
+<ul>
+<li>内容隐状态 $h_ \theta (X_{ z &lt; t})$，简写为 $h_{z_t}$，既可编码上下文位置也可以编码内容；</li>
+<li>查询隐状态 $g_{\theta}\left(x_{z_{&lt;t}}, z_{t}\right)$， 简写为$g_{z_t}$，只是编码位置信息。</li>
+</ul>
+<p><img src="https://upload.cc/i1/2019/12/14/qIHEid.png" width="90%" height="90%">`</p>
+<p>（3）部分预测</p>
+<p>排列语言模型排列很多，所以它的计算量很大，很难优化。因此我们只预测一个句子后面的一些词，为什么不预测前面的词呢？因为前面的词的上下文比较少，上下文信息相对较少。比如句子”I like New York”。预测I的时候没有任何上下文，因此可能的选择很多。而到最后一个词York的时候，如果New已经知道了，那么York的概率就非常大了。</p>
+<p>只是对句子后面的token进行预测，节省计算时间。<br>\begin{equation}<br>\frac{|z|-c}{|z|}=\frac{1}{K}<br>\end{equation}</p>
+<p>可以得出 $K \approx \frac{|z|-c}{|z|}$ ,所以前 $c$个不用预测的token。</p>
+<p>（4）Transformer-XL的思想</p>
+<p>引入了Transformer-XL的主要思路：相对位置编码以及分段RNN机制。transformer要求输入是定长的词序列，太长的需要截断，不足的需要padding。这样的操作存在以下问题：</p>
+<ul>
+<li>由于定长的要求，我们不可能让输入太长。因此虽然Self-Attention机制虽然不太受长度的约束，但是Transformer的语言模型实际能够考虑的上下文就是输入的长度。</li>
+<li>因为语言模型是自回归的，一步错步步错。这就是所谓的context fragmentation的问题。</li>
+</ul>
+<p>1). 建模多个segment</p>
+<p>我们会把之前一个固定长度的词序列每一层的输出都放到一个cache里，比如把𝑥1,…,𝑥4的计算结果都存起来，那么在训练第二个Segment[𝑥5,…,𝑥8]的时候就可以让Self-Attention机制参考[𝑥1,…,𝑥4]的信息了。当然在反向计算梯度的时候，cache里的内容是不会参与梯度的计算的。</p>
+<p>2). 相对Segment编码</p>
+<p>BERT使用的是绝对的Segment编码，也就是第一个句子对于的Segment id是0，而第二个句子是1。这样如果把两个句子换一下顺序，那么输出是不一样的。XLNet 中使用的是Transformer-XL 中相对编码的思想。</p>
+<p>XLNet 效果好的原因：</p>
+<ul>
+<li>与Bert采取De-noising Autoencoder方式不同的新的预训练目标：Permutation Language Model(简称PLM)；这个可以理解为在自回归LM模式下，如何采取具体手段，来融入双向语言模型。这个是XLNet在模型角度比较大的贡献，确实也打开了NLP中两阶段模式潮流的一个新思路。</li>
+<li>引入了Transformer-XL的主要思路：相对位置编码以及分段RNN机制。实践已经证明这两点对于长文档任务是很有帮助的。</li>
+<li>加大增加了预训练阶段使用的数据规模；Bert使用的预训练数据是BooksCorpus和英文Wiki数据，大小13G。XLNet除了使用这些数据外，另外引入了Giga5，ClueWeb以及Common Crawl数据，并排掉了其中的一些低质量数据，大小分别是16G,19G和78G。可以看出，在预训练阶段极大扩充了数据规模，并对质量进行了筛选过滤。这个明显走的是GPT2.0的路线。</li>
+</ul>
+<p>但是和BERT不同，我们并没有增加一个预测下一个句子的Task，原因是通过实验分析这个Task加进去后并不是总有帮助。【注：其实很多做法都是某些作者的经验，后面很多作者一看某个模型好，那么所有的Follow，其实也不见得就一定好。有的时候可能只是对某个数据集有效果，或者效果好是其它因素带来的，一篇文章修改了5个因素，其实可能只是某一两个因素是真正带来提高的地方，其它3个因素可能并不有用甚至还是有少量副作用。】</p>
+<p>参考文献</p>
+<p><a href="http://fancyerii.github.io/2019/06/30/xlnet-theory/" target="_blank" rel="noopener">XLNet原理</a></p>
+<h2 id="DistilBERT-讲解"><a href="#DistilBERT-讲解" class="headerlink" title="DistilBERT 讲解"></a>DistilBERT 讲解</h2>
       
     </div>
     
@@ -453,14 +460,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/k-fold/" rel="tag"># k-fold</a>
-          
-            <a href="/tags/结构化风险/" rel="tag"># 结构化风险</a>
-          
-        </div>
-      
 
       
       
@@ -470,8 +469,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/05/union-find/" rel="next" title="Union-Find (并查集算法)">
-                <i class="fa fa-chevron-left"></i> Union-Find (并查集算法)
+              <a href="/2019/06/16/attention/" rel="next" title="注意力机制介绍">
+                <i class="fa fa-chevron-left"></i> 注意力机制介绍
               </a>
             
           </div>
@@ -480,8 +479,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/17/writeDownNow/" rel="prev" title="write down now">
-                write down now <i class="fa fa-chevron-right"></i>
+              <a href="/2019/06/17/tf-learning/" rel="prev" title="tensorflow learning">
+                tensorflow learning <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -573,7 +572,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -595,7 +594,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">70</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -669,7 +668,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模型选择"><span class="nav-number">1.</span> <span class="nav-text">模型选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#K-fold-cross-validation"><span class="nav-number">1.1.</span> <span class="nav-text">K-fold cross validation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化角度"><span class="nav-number">1.2.</span> <span class="nav-text">正则化角度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构化风险"><span class="nav-number">2.</span> <span class="nav-text">结构化风险</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习笔记"><span class="nav-number">3.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ALBERT"><span class="nav-number">1.</span> <span class="nav-text">ALBERT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对Embedding因式分解（Factorized-embedding-parameterization）"><span class="nav-number">1.1.</span> <span class="nav-text">对Embedding因式分解（Factorized embedding parameterization）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨层的参数共享（Cross-layer-parameter-sharing）"><span class="nav-number">1.2.</span> <span class="nav-text">跨层的参数共享（Cross-layer parameter sharing）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#句间连贯（sentence-order-prediction）"><span class="nav-number">1.3.</span> <span class="nav-text">句间连贯（sentence-order prediction）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除dropout"><span class="nav-number">1.4.</span> <span class="nav-text">移除dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XLNet-讲解"><span class="nav-number">2.</span> <span class="nav-text">XLNet 讲解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DistilBERT-讲解"><span class="nav-number">3.</span> <span class="nav-text">DistilBERT 讲解</span></a></li></ol></div>
             
 
           </div>
@@ -865,9 +864,9 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/08/12/model-selection/';
-          this.page.identifier = '2019/08/12/model-selection/';
-          this.page.title = 'Model Selection';
+          this.page.url = 'http://yoursite.com/2019/06/16/improved_bert/';
+          this.page.identifier = '2019/06/16/improved_bert/';
+          this.page.title = '后BERT时代';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/06/703577797f0de21b.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/07/08/dDOKPI.jpg">
-<meta property="og:updated_time" content="2019-10-25T02:48:27.089Z">
+<meta property="og:updated_time" content="2019-12-10T12:34:10.841Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习概念">
 <meta name="twitter:description" content="解释一些机器学习中小的基本的概念。梯度下降、牛顿法、凸函数">
@@ -320,8 +320,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-25T10:48:27+08:00">
-                2019-10-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-10T20:34:10+08:00">
+                2019-12-10
               </time>
             
           </span>
@@ -494,20 +494,6 @@
 <p>对于判别式模型来说求得 $P(Y|X) $，对未见示例 $X $，根据P(Y|X)可以求得标记Y，即可以直接判别出来，如上图的左边所示，实际是就是直接得到了判别边界，所以传统的、耳熟能详的机器学习算法如线性回归模型、支持向量机SVM等都是判别式模型，这些模型的特点都是输入属性X可以直接得到Y。</p>
 <p>而生成式模型求得 $P(Y,X) $，对于未见示例X，你要求出X与不同标记之间的联合概率分布，然后大的获胜，如上图右边所示，并没有什么边界存在，对于未见示例（红三角），求两个联合概率分布（有两个类），比较一下，取那个大的。比如朴素贝叶斯算法和隐式马尔科夫模型。</p>
 <p>判别式模型举例：要确定一个羊是山羊还是绵羊，用判别模型的方法是从历史数据中学习到模型，然后通过提取这只羊的特征来预测出这只羊是山羊的概率，是绵羊的概率。生成式模型举例：利用生成模型是根据山羊的特征首先学习出一个山羊的模型，然后根据绵羊的特征学习出一个绵羊的模型，然后从这只羊中提取特征，放到山羊模型中看概率是多少，在放到绵羊模型中看概率是多少，哪个大就是哪个。</p>
-<h3 id="数据集的划分"><a href="#数据集的划分" class="headerlink" title="数据集的划分"></a>数据集的划分</h3><ol>
-<li><p>Holdout检验：<br>直接将原始的样本集合随机划分成训练集和验证集两部分。比方说，对于一个点击量预测模型，我们把样本按照70%~30%的比例分成两部分，70%的样本用于模型训练；30%的样本用于模型验证，包括绘制ROC曲线、计算精确率和召回率等指标来评估模型性能；<br>缺点：在验证集上计算出来的最后评估指标与原始分组有很大的关系</p>
-</li>
-<li><p>交叉验证</p>
-</li>
-</ol>
-<ul>
-<li>K-fold交叉验证：首先将全部样本划分成k个大小相等的样本子集；一次遍历这k个子集，每次把当前子集作为验证集，其余所有子集作为训练集，进行模型的训练和评估；最后把k次评估指标的平均值作为最终的评估指标。在实验中，k经常取10.</li>
-<li>留一验证：每次留下一个样本作为验证集，其余所有样本作为测试集。在样本总数较多的情况下，留一验证的时间开销极大.</li>
-</ul>
-<ol start="3">
-<li>两者结合起来</li>
-</ol>
-<p>使用 training data， evaluation data 和test data 三种数据集。第一种方法相当于只有 training data 和 test data，第二种方法是training data 和evaluation data； 第三种方式相当于是有 training data， evaluation data 和test data。</p>
 <h3 id="one-hot"><a href="#one-hot" class="headerlink" title="one-hot"></a>one-hot</h3><p>One-Hot编码，又称为一位有效编码，主要是采用N位状态寄存器来对N个状态进行编码，每个状态都由他独立的寄存器位，并且在任意时候只有一位有效。One-Hot编码是分类变量作为二进制向量的表示。这首先要求将分类值映射到整数值。然后，<strong>每个整数值被表示为二进制向量，除了整数的索引之外，它都是零值，它被标记为1</strong>。</p>
 <p>在很多机器学习任务中，特征并不总是连续值，而有可能是分类值。离散特征的编码分为两种情况：</p>
 <ul>
@@ -681,7 +667,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -703,7 +689,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">70</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -777,7 +763,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雅克比矩阵和海森矩阵"><span class="nav-number">3.</span> <span class="nav-text">雅克比矩阵和海森矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">4.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">5.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">6.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集的划分"><span class="nav-number">7.</span> <span class="nav-text">数据集的划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#one-hot"><span class="nav-number">8.</span> <span class="nav-text">one-hot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的几种分类算法的总结"><span class="nav-number">9.</span> <span class="nav-text">常见的几种分类算法的总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">10.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#牛顿法"><span class="nav-number">2.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雅克比矩阵和海森矩阵"><span class="nav-number">3.</span> <span class="nav-text">雅克比矩阵和海森矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#凸函数"><span class="nav-number">4.</span> <span class="nav-text">凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bias-and-variance"><span class="nav-number">5.</span> <span class="nav-text">bias and variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成式模型和判别式比较"><span class="nav-number">6.</span> <span class="nav-text">生成式模型和判别式比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#one-hot"><span class="nav-number">7.</span> <span class="nav-text">one-hot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的几种分类算法的总结"><span class="nav-number">8.</span> <span class="nav-text">常见的几种分类算法的总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复习笔记"><span class="nav-number">9.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
             
 
           </div>

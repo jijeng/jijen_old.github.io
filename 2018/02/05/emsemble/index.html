@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="主要介绍集成学习">
+<meta name="description" content="将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。">
 <meta name="keywords" content="ensemble">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集成学习">
 <meta property="og:url" content="http://yoursite.com/2018/02/05/emsemble/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="主要介绍集成学习">
+<meta property="og:description" content="将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-01T01:52:20.560Z">
+<meta property="og:updated_time" content="2019-12-11T02:40:53.594Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="集成学习">
-<meta name="twitter:description" content="主要介绍集成学习">
+<meta name="twitter:description" content="将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。">
 
 
 
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-01T09:52:20+08:00">
-                2019-10-01
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-11T10:40:53+08:00">
+                2019-12-11
               </time>
             
           </span>
@@ -383,43 +383,91 @@
       
 
       
-        <p>主要介绍集成学习</p>
+        <p>将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。</p>
 <a id="more"></a>
-<p>目前集成学习算法大多源于bagging、boosting、stacking三种思想。</p>
-<p>集成学习?<br>集成学习是一种机器学习范式。在集成学习中，我们会训练多个模型（通常称为「弱学习器」）解决相同的问题，并将它们结合起来以获得更好的结果。最重要的假设是：当弱模型被正确组合时，我们可以得到更精确和/或更鲁棒的模型。</p>
-<p>在大多数情况下（包括在众所周知的 bagging 和 boosting 方法中），我们会使用单一的基础学习算法，这样一来我们就有了以不同方式训练的同质弱学习器。这样得到的集成模型被称为「同质的」。然而，也有一些方法使用不同种类的基础学习算法：将一些异质的弱学习器组合成「异质集成模型」。</p>
-<p>很重要的一点是：我们对弱学习器的选择应该和我们聚合这些模型的方式相一致。如果我们选择具有低偏置高方差的基础模型，我们应该使用一种倾向于减小方差的聚合方法；而如果我们选择具有低方差高偏置的基础模型，我们应该使用一种倾向于减小偏置的聚合方法。</p>
-<p>这就引出了如何组合这些模型的问题。我们可以用三种主要的旨在组合弱学习器的「元算法」： </p>
+<blockquote>
+<p>Ensemble models in machine learning operate on a similar idea. They combine the decisions from multiple models to improve the overall performance. This can be achieved in various ways, which you will discover in this article.</p>
+</blockquote>
+<h2 id="基本集成学习方法"><a href="#基本集成学习方法" class="headerlink" title="基本集成学习方法"></a>基本集成学习方法</h2><p>（1）Max Voting</p>
+<p>多人投票机制，使用所有的模型预测结果的多数，常用于分类问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">model1 = tree.DecisionTreeClassifier()</span><br><span class="line">model2 = KNeighborsClassifier()</span><br><span class="line">model3= LogisticRegression()</span><br><span class="line"></span><br><span class="line">model1.fit(x_train,y_train)</span><br><span class="line">model2.fit(x_train,y_train)</span><br><span class="line">model3.fit(x_train,y_train)</span><br><span class="line"></span><br><span class="line">pred1=model1.predict(x_test)</span><br><span class="line">pred2=model2.predict(x_test)</span><br><span class="line">pred3=model3.predict(x_test)</span><br><span class="line"></span><br><span class="line">final_pred = np.array([])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(x_test)):</span><br><span class="line">    final_pred = np.append(final_pred, mode([pred1[i], pred2[i], pred3[i]]))</span><br></pre></td></tr></table></figure>
+<p>（2）Averaging</p>
+<blockquote>
+<p>Averaging can be used for making predictions in regression problems or while calculating probabilities for classification problems.<br>如果是回归问题，那么求解均值；如果是分类问题，那么求解概率</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">model1 = tree.DecisionTreeClassifier()</span><br><span class="line">model2 = KNeighborsClassifier()</span><br><span class="line">model3= LogisticRegression()</span><br><span class="line"></span><br><span class="line">model1.fit(x_train,y_train)</span><br><span class="line">model2.fit(x_train,y_train)</span><br><span class="line">model3.fit(x_train,y_train)</span><br><span class="line"></span><br><span class="line">pred1=model1.predict_proba(x_test)</span><br><span class="line">pred2=model2.predict_proba(x_test)</span><br><span class="line">pred3=model3.predict_proba(x_test)</span><br><span class="line"></span><br><span class="line">finalpred=(pred1+pred2+pred3)/<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>（3）Weighted Averaging</p>
+<p>和上面的思想类似，是有权重的，权重的依据是模型的准确率等指标。如果模型效果越好，那么权重越高。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">model1 = tree.DecisionTreeClassifier()</span><br><span class="line">model2 = KNeighborsClassifier()</span><br><span class="line">model3= LogisticRegression()</span><br><span class="line"></span><br><span class="line">model1.fit(x_train,y_train)</span><br><span class="line">model2.fit(x_train,y_train)</span><br><span class="line">model3.fit(x_train,y_train)</span><br><span class="line"></span><br><span class="line">pred1=model1.predict_proba(x_test)</span><br><span class="line">pred2=model2.predict_proba(x_test)</span><br><span class="line">pred3=model3.predict_proba(x_test)</span><br><span class="line"></span><br><span class="line">finalpred=(pred1*<span class="number">0.3</span>+pred2*<span class="number">0.3</span>+pred3*<span class="number">0.4</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="高级集成学习方法"><a href="#高级集成学习方法" class="headerlink" title="高级集成学习方法"></a>高级集成学习方法</h2><p>这就引出了如何组合这些模型的问题。我们可以用三种主要的旨在组合弱学习器的「元算法」： </p>
 <ul>
-<li><p>bagging，该方法通常考虑的是同质弱学习器，相互独立地并行学习这些弱学习器，并按照某种确定性的平均过程将它们组合起来。</p>
-</li>
-<li><p>boosting，该方法通常考虑的也是同质弱学习器。它以一种高度自适应的方法顺序地学习这些弱学习器（每个基础模型都依赖于前面的模型），并按照某种确定性的策略将它们组合起来。</p>
-</li>
-<li><p>stacking，该方法通常考虑的是异质弱学习器，并行地学习它们，并通过训练一个「元模型」将它们组合起来，根据不同弱模型的预测结果输出一个最终的预测结果。</p>
-</li>
+<li>bagging，该方法通常考虑的是同质弱学习器，相互独立地并行学习这些弱学习器，并按照某种确定性的平均过程将它们组合起来。</li>
+<li>boosting，该方法通常考虑的也是同质弱学习器。它以一种高度自适应的方法顺序地学习这些弱学习器（每个基础模型都依赖于前面的模型），并按照某种确定性的策略将它们组合起来。</li>
+<li>stacking，该方法通常考虑的是异质弱学习器，并行地学习它们，并通过训练一个「元模型」将它们组合起来，根据不同弱模型的预测结果输出一个最终的预测结果。</li>
 </ul>
-<p>我们将具体介绍 bagging 和 boosting 方法（它们比 stacking 方法使用更广泛，并且让我们可以讨论一些集成学习的关键概念），然后简要概述 stacking 方法。</p>
-<h3 id="bagging"><a href="#bagging" class="headerlink" title="bagging"></a>bagging</h3><ol>
-<li>从训练集𝑆中有放回的随机选取数据集 𝑀(∣𝑀∣&lt;∣𝑆∣);</li>
+<p>（1）Bagging</p>
+<p>思想：使用同质模型和相同的数据集，大概率得到的是相同的结果，这个是后boosting 算法中使用了一种采样方式 <code>Bootstrapping</code>。</p>
+<blockquote>
+<p>Bootstrapping is a sampling technique in which we create subsets of observations from the original dataset, <strong>with replacement</strong>. </p>
+</blockquote>
+<p>算法步骤：</p>
+<ol>
+<li>从训练集 $𝑆$中有放回的随机选取数据集 $𝑀(∣𝑀∣&lt;∣𝑆∣) $;</li>
 <li>生成一个分类模型 $𝐶 $;</li>
-<li>重复以上步骤𝑚次，得到𝑚个分类模型 $𝐶_1$, $𝐶<em>2 $,…, $𝐶</em>𝑚 $;</li>
-<li>对于分类问题，每一个模型投票决定，少数服从多数原则;</li>
-<li>对于回归问题，取平均值。</li>
+<li>重复以上步骤 $m$次，得到$m$个分类模型 $𝐶_1$, $𝐶_2 $,…, $𝐶_m $;</li>
+<li>对于分类问题，每一个模型投票决定，少数服从多数原则; 对于回归问题，取平均值。</li>
 </ol>
-<p>优点: 通过减少方差来提高预测结果。<br>缺点: 失去了模型的简单性。</p>
-<p>Random Forest 是对于这种思想的一种实现手段。基本的要求是强基学习器，不断的优化方差。</p>
-<p>优点</p>
-<ol>
-<li>减少了模型方差，提高了预测准确性。</li>
-<li>不需要给树做剪枝。</li>
-<li>在大规模数据集，尤其是特征较多的情况下，依然可以保持高效率。</li>
-</ol>
-<p>缺点</p>
-<ol>
-<li>随机森林已经被证明在某些噪音较大的分类或回归问题上会过拟合</li>
-</ol>
-<h3 id="boosting"><a href="#boosting" class="headerlink" title="boosting"></a>boosting</h3><p>每一轮根据上一轮的分类结果动态调整每个样本在分类器中的权重，训练得到k个弱分类器，他们都有各自的权重，通过加权组合的方式得到最终的分类结果(综合所有的基模型预测结果)。主要算法有AdaBoost/GBDT/Xgboost/LightGBM。</p>
-<p><strong> GBDT</strong></p>
+<p>（2）Boosting</p>
+<p>思想：如果模型本身的准确率就不高，那么多个模型组合起来不见得好。所以Boosting 的思想是在针对上一个模型的错误来训练当下的模型。</p>
+<p>（3）Stacking</p>
+<p>以二层的stacking 作为讲解。</p>
+<p>算法步骤：</p>
+<p>1). The train set is split into 10 parts.<br>2). A base model (suppose a decision tree) is fitted on 9 parts and predictions are made for the 10th part. This is done for each part of the train set.<br>3). The base model (in this case, decision tree) is then fitted on the whole train dataset.<br>4). Using this model, predictions are made on the test set.<br>5). Steps 2 to 4 are repeated for another base model (say knn) resulting in another set of predictions for the train set and test set.<br>6). The predictions from the train set are used as <strong>features to build a new model.</strong><br>7). This model is used to make final predictions on the test prediction set.</p>
+<p>关键步骤是以第一层模型的输出结果作为第二次的输入。给出代码实例。</p>
+<p>定义一个通用函数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Stacking</span><span class="params">(model,train,y,test,n_fold)</span>:</span></span><br><span class="line">   folds=StratifiedKFold(n_splits=n_fold,random_state=<span class="number">1</span>)</span><br><span class="line">   test_pred=np.empty((test.shape[<span class="number">0</span>],<span class="number">1</span>),float)</span><br><span class="line">   train_pred=np.empty((<span class="number">0</span>,<span class="number">1</span>),float)</span><br><span class="line">   <span class="keyword">for</span> train_indices,val_indices <span class="keyword">in</span> folds.split(train,y.values):</span><br><span class="line">      x_train,x_val=train.iloc[train_indices],train.iloc[val_indices]</span><br><span class="line">      y_train,y_val=y.iloc[train_indices],y.iloc[val_indices]</span><br><span class="line"></span><br><span class="line">      model.fit(X=x_train,y=y_train)</span><br><span class="line">      train_pred=np.append(train_pred,model.predict(x_val))</span><br><span class="line">      test_pred=np.append(test_pred,model.predict(test))</span><br><span class="line">    <span class="keyword">return</span> test_pred.reshape(<span class="number">-1</span>,<span class="number">1</span>),train_pred</span><br></pre></td></tr></table></figure></p>
+<p>第一层有两个基本的模型：决策树和K最近邻。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model1 = tree.DecisionTreeClassifier(random_state=<span class="number">1</span>)</span><br><span class="line">test_pred1 ,train_pred1=Stacking(model=model1,n_fold=<span class="number">10</span>, train=x_train,test=x_test,y=y_train)</span><br><span class="line">train_pred1=pd.DataFrame(train_pred1)</span><br><span class="line">test_pred1=pd.DataFrame(test_pred1)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model2 = KNeighborsClassifier()</span><br><span class="line">test_pred2 ,train_pred2=Stacking(model=model2,n_fold=<span class="number">10</span>,train=x_train,test=x_test,y=y_train)</span><br><span class="line">train_pred2=pd.DataFrame(train_pred2)</span><br><span class="line">test_pred2=pd.DataFrame(test_pred2)</span><br></pre></td></tr></table></figure>
+<p>第二层的结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df = pd.concat([train_pred1, train_pred2], axis=<span class="number">1</span>) <span class="comment"># 基本模型prediction 的结果当做训练的输入</span></span><br><span class="line">df_test = pd.concat([test_pred1, test_pred2], axis=<span class="number">1</span>)  <span class="comment"># 为了保证同分布，这里对test 数据集也做相同的转换</span></span><br><span class="line"></span><br><span class="line">model = LogisticRegression(random_state=<span class="number">1</span>)</span><br><span class="line">model.fit(df,y_train) <span class="comment"># 数据的label 还是作为第二层模型的label </span></span><br><span class="line">model.score(df_test, y_test) <span class="comment"># 最后是模型的输出</span></span><br></pre></td></tr></table></figure>
+<p>每一轮根据上一轮的分类结果动态调整每个样本在分类器中的权重，训练得到k个弱分类器，他们都有各自的权重，通过加权组合的方式得到最终的分类结果(综合所有的基模型预测结果)。主要算法有AdaBoost/GBDT/Xgboost/LightGBM。</p>
+<p>（4）Blending</p>
+<p>Blending 相比于Stacking而言，Blending 是在训练集上train，在验证集和测试集上prediction，然后使用验证集和测试集的prediction作为 features 去学习下一个模型。</p>
+<p>算法步骤：</p>
+<p>1). The train set is split into training and validation sets.<br>2). Model(s) are fitted on the training set.<br>3). The predictions are made on the validation set and the test set.<br>4). The validation set and its predictions are used as features to build a new model.<br>5). This model is used to make final predictions on the test and meta-features.</p>
+<p>同样给出了sample codes</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">model1 = tree.DecisionTreeClassifier()</span><br><span class="line">model1.fit(x_train, y_train)</span><br><span class="line">val_pred1=model1.predict(x_val)</span><br><span class="line">test_pred1=model1.predict(x_test)</span><br><span class="line">val_pred1=pd.DataFrame(val_pred1)</span><br><span class="line">test_pred1=pd.DataFrame(test_pred1)</span><br><span class="line"></span><br><span class="line">model2 = KNeighborsClassifier()</span><br><span class="line">model2.fit(x_train,y_train)</span><br><span class="line">val_pred2=model2.predict(x_val)</span><br><span class="line">test_pred2=model2.predict(x_test)</span><br><span class="line">val_pred2=pd.DataFrame(val_pred2)</span><br><span class="line">test_pred2=pd.DataFrame(test_pred2)</span><br></pre></td></tr></table></figure>
+<p>第二层使用了逻辑回归在test set 上进行预测。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df_val=pd.concat([x_val, val_pred1,val_pred2],axis=<span class="number">1</span>)</span><br><span class="line">df_test=pd.concat([x_test, test_pred1,test_pred2],axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">model = LogisticRegression()</span><br><span class="line">model.fit(df_val,y_val)</span><br><span class="line">model.score(df_test,y_test)</span><br></pre></td></tr></table></figure>
+<h2 id="基于集成学习的算法"><a href="#基于集成学习的算法" class="headerlink" title="基于集成学习的算法"></a>基于集成学习的算法</h2><p>Boosting 和Bagging 是最常使用的两类集成算法。Bagging algorithms的代表是Random fores。Boosting algorithms有以下几种：</p>
+<ul>
+<li>AdaBoost</li>
+<li>GBM</li>
+<li>XGBM</li>
+<li>Light GBM</li>
+<li>CatBoost</li>
+</ul>
+<p>（1）Random Forest</p>
+<p>Random Forest 的算法步骤：<br>1). Random subsets are created from the original dataset (bootstrapping).<br>2). At each node in the decision tree, only a random set of features are considered to decide the best split.<br>3). A decision tree model is fitted on each of the subsets.<br>4). The final prediction is calculated by averaging the predictions from all decision trees.</p>
+<p>总结来说，随机森林<strong>随机</strong> 选择数据点和特征，然后组成了多棵树的集合（森林）</p>
+<p>常见的超参数<br>1). n_estimators (子树的个数)</p>
+<ul>
+<li>It defines the number of decision trees to be created in a random forest.</li>
+<li>Generally, a higher number makes the predictions stronger and more stable, but a very large number can result in higher training time.<br>2). max_features (使用最多特征的数量进行建立树)</li>
+<li>It defines the maximum number of features allowed for the split in each decision tree.</li>
+<li>Increasing max features usually improve performance but a very high number can decrease the diversity of each tree.<br>3). max_depth ( 是一个树的最大深度，也是所有树的最大深度)</li>
+<li>The maximum depth of the tree.<br>4). min_samples_leaf</li>
+<li>This defines the minimum number of samples required to be at a leaf node.</li>
+<li>Smaller leaf size makes the model more prone to capturing noise in train data.</li>
+</ul>
+<p>（2）AdaBoost</p>
+<blockquote>
+<p>Adaptive boosting or AdaBoost is one of the simplest boosting algorithms. Usually, decision trees are used for modelling. Multiple sequential models are created, each correcting the errors from the last model. AdaBoost assigns weights to the observations which are incorrectly predicted and the subsequent model works to predict these values correctly.<br>提升策略主要是从分错类的样本角度提升，通过给予更大的权重。下一个模型预测的时候，着重该样本。</p>
+</blockquote>
+<p>（3）Gradient Boosting (GBM)</p>
+<blockquote>
+<p>Gradient Boosting or GBM is another ensemble machine learning algorithm that works for both regression and classification problems. GBM uses the boosting technique, combining a number of weak learners to form a strong learner. Regression trees used as a base learner, each subsequent tree in series is built on the errors calculated by the previous tree.<br>提升策略是从梯度角度考虑，使用决策树模型减少loss，进而提高模型的预测能力。</p>
+</blockquote>
 <p>优点</p>
 <ol>
 <li>在分布稠密的数据集上，泛化能力和表达能力都很好，这使得GBDT在Kaggle的众多竞赛中，经常名列榜首。</li>
@@ -429,18 +477,35 @@
 <li>GBDT在高维稀疏的数据集上，表现不如支持向量机或者神经网络。（所以说这种树的模型是有利于处理连续数值， 如果是 one-hot 就不建议使用gbdt）</li>
 <li>GBDT在处理文本分类特征问题上，相对其他模型的优势不如它在处理数值特征时明显。</li>
 </ol>
-<p><strong>Xgboost</strong></p>
-<p>XGBoost是陈天奇等人开发的一个开源机器学习项目，高效地实现了GBDT算法并进行了算法和工程上的许多改进。</p>
-<p>优点</p>
-<ol>
-<li>计算效率高，使用了二阶导。</li>
-<li>有正则化，减少过拟合。</li>
-</ol>
+<p>（4）XGBoost</p>
+<blockquote>
+<p>XGBoost has high predictive power and is almost 10 times faster than the other gradient boosting techniques. It also includes a variety of regularization which reduces overfitting and improves overall performance. Hence it is also known as ‘regularized boosting‘ technique.<br>提升速度和使用正则方式处理过拟合。</p>
+</blockquote>
+<p>主要采用以下的技术：<br>1). Regularization:</p>
+<ul>
+<li>Standard GBM implementation has no regularisation like XGBoost.</li>
+<li>Thus XGBoost also helps to reduce overfitting.<br>2). Parallel Processing:</li>
+<li>XGBoost implements parallel processing and is faster than GBM .</li>
+<li>XGBoost also supports implementation on Hadoop.<br>3). High Flexibility:</li>
+<li>XGBoost allows users to define custom optimization objectives and evaluation criteria adding a whole new dimension to the model.<br>4). Handling Missing Values:</li>
+<li>XGBoost has an in-built routine to handle missing values.<br>5). Tree Pruning:</li>
+<li>XGBoost makes splits up to the max_depth specified and then starts pruning the tree backwards and removes splits beyond which there is no positive gain.<br>6). Built-in Cross-Validation:</li>
+<li>XGBoost allows a user to run a cross-validation at each iteration of the boosting process and thus it is easy to get the exact optimum number of boosting iterations in a single run.</li>
+</ul>
 <p><strong>GBDT与XGboost联系与区别</strong></p>
 <p>(1) GBDT是机器学习算法，XGBoost是该算法的工程实现。<br>(2) 在使用CART作为基分类器时，XGBoost显式地加入了正则项来控制模型的复杂度，有利于防止过拟合，从而提高模型的泛化能力。<br>(3) GBDT在模型训练时只使用了代价函数的一阶导数信息，XGBoost对代价函数进行二阶泰勒展开，可以同时使用一阶和二阶导数。<br>(4) 传统的GBDT采用CART作为基分类器，XGBoost支持多种类型的基分类器，比如线性分类器。<br>(5) 传统的GBDT在每轮迭代时使用全部的数据，XGBoost则采用了与随机森林相似的策略，支持对数据进行采样。<br>(6) 传统的GBDT没有设计对缺失值进行处理，XGBoost能够自动学习出缺失值的处理策略。</p>
-<h3 id="stacking"><a href="#stacking" class="headerlink" title="stacking"></a>stacking</h3><p>正如上文已经提到的，stacking 的概念是学习几个不同的弱学习器，并通过训练一个元模型来组合它们，然后基于这些弱模型返回的多个预测结果输出最终的预测结果。</p>
-<p>因此，为了构建 stacking 模型，我们需要定义两个东西：想要拟合的 L 个学习器以及组合它们的元模型。</p>
-<p>例如，对于分类问题来说，我们可以选择 KNN 分类器、logistic 回归和SVM 作为弱学习器，并决定学习神经网络作为元模型。然后，神经网络将会把三个弱学习器的输出作为输入，并返回基于该输入的最终预测。</p>
+<p>（6）Light GBM</p>
+<blockquote>
+<p><strong> Light GBM beats all the other algorithms when the dataset is extremely large</strong>. Compared to the other algorithms, Light GBM takes lesser time to run on a huge dataset.<br>LightGBM is a gradient boosting framework that uses tree-based algorithms and follows leaf-wise approach while other algorithms work in a level-wise approach pattern. The images below will help you understand the difference in a better way.</p>
+</blockquote>
+<p>效果上使用基于叶子的树的生长方式，而非层次的生成方式。</p>
+<p>（7）CatBoost</p>
+<blockquote>
+<p>Handling categorical variables is a tedious process, especially when you have a large number of such variables. When your categorical variables have too many labels (i.e. they are highly cardinal), performing one-hot-encoding on them exponentially increases the dimensionality and it becomes really difficult to work with the dataset.<br>CatBoost can automatically deal with categorical variables and does not require extensive data preprocessing like other machine learning algorithms. Here is an article that explains CatBoost in detail.</p>
+</blockquote>
+<p>从名字上就知道在处理类别信息很多的数据集中，不需要预处理，直接使用。</p>
+<p>参考文献</p>
+<p><a href="https://www.analyticsvidhya.com/blog/2018/06/comprehensive-guide-for-ensemble-models/" target="_blank" rel="noopener">A Comprehensive Guide to Ensemble Learning (with Python codes)</a></p>
 
       
     </div>
@@ -574,7 +639,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -596,7 +661,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">70</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -670,7 +735,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#bagging"><span class="nav-number">1.</span> <span class="nav-text">bagging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#boosting"><span class="nav-number">2.</span> <span class="nav-text">boosting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stacking"><span class="nav-number">3.</span> <span class="nav-text">stacking</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本集成学习方法"><span class="nav-number">1.</span> <span class="nav-text">基本集成学习方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级集成学习方法"><span class="nav-number">2.</span> <span class="nav-text">高级集成学习方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于集成学习的算法"><span class="nav-number">3.</span> <span class="nav-text">基于集成学习的算法</span></a></li></ol></div>
             
 
           </div>
