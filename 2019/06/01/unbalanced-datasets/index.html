@@ -88,7 +88,7 @@
 <meta property="og:description" content="机器学习中出现的不平衡类别问题的分析、常用的解决方案。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/11/491005a55dcad9f0.jpg">
-<meta property="og:updated_time" content="2019-11-01T07:16:54.387Z">
+<meta property="og:updated_time" content="2019-12-19T12:08:44.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unbalanced Datasets Problems">
 <meta name="twitter:description" content="机器学习中出现的不平衡类别问题的分析、常用的解决方案。">
@@ -313,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-11-01T15:16:54+08:00">
-                2019-11-01
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-19T20:08:44+08:00">
+                2019-12-19
               </time>
             
           </span>
@@ -436,6 +436,34 @@
 <li>Focal Loss是个值得考虑的目标函数，论文：Focal Loss for Dense Object Detection。该损失函数在目标检测领域取得了良好的处理类别不平衡效果和改善误分类的效果，笔者在文本分类的任务中用了该目标函数，也能取得较大提升。</li>
 </ul>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://wqw547243068.github.io/2019/04/25/Imbalance-Data/" target="_blank" rel="noopener">如何处理机器学习中的不平衡类别</a><br><a href="https://zhuanlan.zhihu.com/p/36381828" target="_blank" rel="noopener">分类中解决类别不平衡问题</a></p>
+<h2 id="how-to-handle-unbalanced-data"><a href="#how-to-handle-unbalanced-data" class="headerlink" title="how to handle unbalanced data"></a>how to handle unbalanced data</h2><p>对于这类问题是可以从数据和模型来进行考虑的。</p>
+<p>Imbalanced data typically refers to a problem with classification problems where the classes are not represented equally. The accuracy paradox is the name for the exact situation in the introduction to this post.</p>
+<p><strong> Data approach</strong><br>Oversample minority class  and Undersample majority class</p>
+<ul>
+<li>Over-sampling increases the number of minority class members in the training set. The advantage of over-sampling is that no information from the original training set is lost, as all observations from the minority and majority classes are kept. On the other hand, it is prone to overfitting. (You can add copies of instances from the under-represented class called over-sampling or more formally sampling with replacement)</li>
+<li>Under-sampling, on contrary to over-sampling, aims to reduce the number of majority samples to balance the class distribution. Since it is removing observations from the original data set, it might discard useful information. (You can delete instances from the over-represented class, called under-sampling.)</li>
+</ul>
+<p>Some Rules of Thumb</p>
+<ul>
+<li>Consider testing under-sampling when you have an a lot data (tens- or hundreds of thousands of instances or more)</li>
+<li>Consider testing over-sampling when you don’t have a lot of data (tens of thousands of records or less)</li>
+<li>Consider testing random and non-random (e.g. stratified) sampling schemes.</li>
+<li>Consider testing different resampled ratios (e.g. you don’t have to target a 1:1 ratio in a binary classification problem, try other ratios)</li>
+</ul>
+<p><strong> Try Different Algorithms</strong><br>基于树的这种结构的模型还是表现比较给力的。<br>That being said, decision trees often perform well on imbalanced datasets. The splitting rules that look at the class variable used in the creation of the trees, can force both classes to be addressed.</p>
+<p><strong>Try Penalized Models</strong><br>Penalized classification imposes an additional cost on the model for making classification mistakes on the minority class during training. These penalties can bias the model to pay more attention to the minority class.</p>
+<p><strong> Try Changing Your Performance Metric</strong></p>
+<p>使用 precision and recall  curves or F1 去评价你的网络效果</p>
+<ul>
+<li>Precision: A measure of a classifiers exactness.</li>
+<li>Recall: A measure of a classifiers completeness</li>
+<li>F1 Score (or F-score): A weighted average of precision and recall.</li>
+</ul>
+<ul>
+<li>GBC参数<br>这些参数中，类似于Adaboost，我们把重要参数分为两类，第一类是Boosting框架的重要参数，第二类是弱学习器即CART回归树的重要参数。<br>n_estimators: 也就是弱学习器的最大迭代次数，或者说最大的弱学习器的个数。<br>learning_rate: 即每个弱学习器的权重缩减系数ν，也称作步长<br>对于分类模型，有对数似然损失函数”deviance”和指数损失函数”exponential”两者输入选择。默认是对数似然损失函数”deviance”。一般来说，推荐使用默认的”deviance”。它对二元分离和多元分类各自都有比较好的优化。而指数损失函数等于把我们带到了Adaboost算法。<br>对于回归模型，有均方差”ls”, 绝对损失”lad”, Huber损失”huber”和分位数损失“quantile”。默认是均方差”ls”。一般来说，如果数据的噪音点不多，用默认的均方差”ls”比较好。如果是噪音点较多，则推荐用抗噪音的损失函数”huber”。而如果我们需要对训练集进行分段预测的时候，则采用“quantile”。<br>max_features:可以使用很多种类型的值，默认是”None”,意味着划分时考虑所有的特征数.<br>subsample: 选择小于1的比例可以减少方差，即防止过拟合，但是会增加样本拟合的偏差，因此取值不能太低。推荐在[0.5, 0.8]之间，默认是1.0，即不使用子采样。</li>
+</ul>
+<p>参考文献</p>
+<p><a href="https://www.cnblogs.com/pinard/p/6143927.html" target="_blank" rel="noopener">GBC参数设置</a><br><a href="https://www.cnblogs.com/gatherstars/p/6084696.html" target="_blank" rel="noopener">ROC曲线和AUC值</a><br><a href="https://www.dataquest.io/blog/introduction-to-ensembles/" target="_blank" rel="noopener">Introduction to Python Ensembles</a></p>
 
       
     </div>
@@ -569,7 +597,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -591,7 +619,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -665,7 +693,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理方法"><span class="nav-number">2.</span> <span class="nav-text">处理方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#欠（下）采样（undersampling）"><span class="nav-number">2.1.</span> <span class="nav-text">欠（下）采样（undersampling）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过（上）采样（oversampling）"><span class="nav-number">2.2.</span> <span class="nav-text">过（上）采样（oversampling）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改变评价指标"><span class="nav-number">2.3.</span> <span class="nav-text">改变评价指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改变模型"><span class="nav-number">2.4.</span> <span class="nav-text">改变模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理方法"><span class="nav-number">2.</span> <span class="nav-text">处理方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#欠（下）采样（undersampling）"><span class="nav-number">2.1.</span> <span class="nav-text">欠（下）采样（undersampling）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过（上）采样（oversampling）"><span class="nav-number">2.2.</span> <span class="nav-text">过（上）采样（oversampling）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改变评价指标"><span class="nav-number">2.3.</span> <span class="nav-text">改变评价指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改变模型"><span class="nav-number">2.4.</span> <span class="nav-text">改变模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-handle-unbalanced-data"><span class="nav-number">4.</span> <span class="nav-text">how to handle unbalanced data</span></a></li></ol></div>
             
 
           </div>

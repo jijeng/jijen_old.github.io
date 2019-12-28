@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="k-means,knn," />
+  <meta name="keywords" content="k-means,knn,fasttext," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="主要介绍 fastText、faiss 两个常用的工具，然后顺带介绍一下容易混淆的概念 k-means 和knn。">
-<meta name="keywords" content="k-means,knn">
+<meta name="keywords" content="k-means,knn,fasttext">
 <meta property="og:type" content="article">
 <meta property="og:title" content="fastText &amp; faiss">
 <meta property="og:url" content="http://yoursite.com/2019/03/25/fastText-faiss/index.html">
@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/8b4f6493ed14471b.png">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44zy5fny9j209i08sdh1.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44zwyhj76j20fz0av3zf.jpg">
-<meta property="og:updated_time" content="2019-11-10T15:06:41.854Z">
+<meta property="og:updated_time" content="2019-12-16T03:50:09.773Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fastText &amp; faiss">
 <meta name="twitter:description" content="主要介绍 fastText、faiss 两个常用的工具，然后顺带介绍一下容易混淆的概念 k-means 和knn。">
@@ -322,8 +322,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-11-10T23:06:41+08:00">
-                2019-11-10
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-16T11:50:09+08:00">
+                2019-12-16
               </time>
             
           </span>
@@ -500,9 +500,8 @@
 </ul>
 <ol start="2">
 <li>从输入层到隐藏层，CBOW会将上下文单词向量叠加起来并经过一次矩阵乘法（线性变化）并应用激活函数，而fastText省略了这一过程，直接将embedding过的向量特征求和取平均；</li>
-<li>输出层，一般的CBOW模型会采用Softmax作为输出，而fastText则采用了Hierarchical Softmax，大大降低了模型训练时间；<br>CBOW 的输出层是被onehot编码过的目标词y</li>
+<li>两者都是使用的层次softmax，word2vec 最后的叶子节点是词典中的单词；而fasttext 针对多类有监督训练，将最后的叶子节点改为标签，并且基于哈夫曼树，类别多的标签的路径比较短。</li>
 </ol>
-<p>CBOW的输出是目标词汇，fastText的输出是文档对应的类标。</p>
 <p>使用 fasttext 进行文本分类的时候，其核心思想是 将整篇文档的词及n-gram向量叠加平均得到文档向量，然后使用文档向量做softmax多分类。</p>
 <p><strong> 层次softmax</strong></p>
 <p>softmax 是在 逻辑回归 （logistic regression） 在多分类任务上的推广，是网络中的最后一层。当 词汇数量V 较大时候，softmax 的计算代价是很大的， O(v) 量级。层次softmax 是将全局多分类转化成了若干个二分类问题，从而将时间复杂度从O(V) 转化成了 O(log V)。</p>
@@ -694,6 +693,8 @@
           
             <a href="/tags/knn/" rel="tag"># knn</a>
           
+            <a href="/tags/fasttext/" rel="tag"># fasttext</a>
+          
         </div>
       
 
@@ -808,7 +809,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -830,7 +831,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

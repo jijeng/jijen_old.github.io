@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍linux 中常见的命令 和github 中常用的命令">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-05T04:59:51.667Z">
+<meta property="og:updated_time" content="2019-12-26T14:37:17.494Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux commands">
 <meta name="twitter:description" content="介绍linux 中常见的命令 和github 中常用的命令">
@@ -311,12 +311,34 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-05T12:59:51+08:00">
-                2019-12-05
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-26T22:37:17+08:00">
+                2019-12-26
               </time>
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS基础/" itemprop="url" rel="index">
+                    <span itemprop="name">CS基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -376,9 +398,7 @@
 <p>AWK是一种处理文本文件的语言，是一个强大的文本分析工具。之所以叫AWK是因为其取了三位创始人 Alfred Aho，Peter Weinberger, 和 Brian Kernighan 的 Family Name 的首字符。</p>
 <p>awk 非常擅长处理结构化数据和生成表单.和 sed 和 grep 很相似.由于 awk 具备各种及哦啊本语言的特点,所以可以把它看做是一种脚本语言.</p>
 <p>语法（有三种方式）</p>
-<ul>
-<li>第一种方式:</li>
-</ul>
+<p>第一种方式:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk [-F 分隔符] ‘commands’ input-file(s)</span><br></pre></td></tr></table></figure>
 <p>在 awk 中默认使用空格间隔； 如果文件中使用冒号作为分隔符，那么必须使用 -F 选项:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F : &apos;commands&apos; input-file</span><br></pre></td></tr></table></figure></p>
 <p>第二种方式</p>
@@ -388,18 +408,16 @@
 <p><a href="https://wiki.jikexueyuan.com/project/shell-learning/awk-command.html" target="_blank" rel="noopener">shell 学习十七天—awk 命令</a></p>
 <p>解释：打印包含 MA 的行中的第一个单词。(使用 echo 关键字可以模拟读入文件的操作)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &apos;this is one world\nthat is another world&apos; | awk &apos;&#123;print $1&#125;&apos;</span><br></pre></td></tr></table></figure>
-<p>关于 -F 的使用</p>
-<p>按照 [] 进行切分<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F &apos;[\[\]]&apos; &apos;&#123;print $1, $2, $3&#125;&apos; log.txt</span><br></pre></td></tr></table></figure></p>
-<p>按照 () 进行切分</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F &apos;[()]&apos; &apos;&#123;print $1, $2, $3&#125;&apos; log.txt</span><br></pre></td></tr></table></figure>
-<p>这里的 ‘$0’ 就是一行的信息, ‘$1’ 就是第一列信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;&#123;$2 = &quot;***&quot;; print $0&#125;&apos; fruit.txt</span><br></pre></td></tr></table></figure></p>
+<p>关于 -F 的使用 （设置分割符）默认使用空格分割；如果是passwd 文件，那么使用冒号作为分割符。其中的 <code>$1</code> 表示第一个字段， <code>$0</code> 表示所有的字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F : &apos;commands&apos; input_file</span><br></pre></td></tr></table></figure>
+<p>按照 [] 进行切分，然后打印第1，2，和3 个字段。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F &apos;[\[\]]&apos; &apos;&#123;print $1, $2, $3&#125;&apos; log.txt</span><br></pre></td></tr></table></figure></p>
 <p>在输出的时候，可以加上字符串和转义字符之类的， 注意加上的这些东西是使用双引号表示的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;&#123;print $1 &quot;\t&quot; $2 &quot;\t&quot; $3&#125;&apos; fruit.txt</span><br></pre></td></tr></table></figure></p>
 <p>同时处理多个文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;&#123;print FILENAME &quot;\t&quot; $0&#125;&apos; demo1.txt demo2.txt</span><br></pre></td></tr></table></figure>
 <p>在 awk 中使用变量</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;&#123;msg=&quot;hello world&quot;; print msg &quot;\t&quot; $0&#125;&apos; log.txt</span><br></pre></td></tr></table></figure>
 <p>如果要判断文件的第 3 列数据，也就是平均工资小于 5500 的公司，然后将其打印输出</p>
-<p>···<br>awk ‘$3 &lt; 5500 {print $0}’ company.txt<br>···</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;$3 &lt; 5500 &#123;print $0&#125;&apos; company.txt</span><br></pre></td></tr></table></figure>
 <p>在 awk 中使用正则表达式</p>
 <p>使用正则表达式匹配字符串 “There” ，将包含这个字符串的行打印并输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;/There/&#123;print $0&#125;&apos; poetry.txt</span><br></pre></td></tr></table></figure>
@@ -436,6 +454,11 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-e&lt;script&gt;或--expression=&lt;script&gt;：以选项中的指定的script来处理输入的文本文件；</span><br><span class="line">-n或--quiet或——silent：仅显示script处理后的结果；</span><br></pre></td></tr></table></figure>
 <p>常用的命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a\ 在当前行下面插入文本。</span><br><span class="line">i\ 在当前行上面插入文本。</span><br><span class="line">c\ 把选定的行改为新的文本。</span><br><span class="line">d 删除，删除选择的行。</span><br><span class="line">n 读取下一个输入行，用下一个命令处理新的行而不是用第一个命令。</span><br><span class="line">s 替换指定字符</span><br><span class="line">p 打印模板块的行。</span><br><span class="line">q 退出Sed。</span><br><span class="line">r file 从file中读行。</span><br><span class="line">w file 写并追加模板块到file末尾。</span><br></pre></td></tr></table></figure></p>
 <p>更多<a href="https://segmentfault.com/a/1190000015885994" target="_blank" rel="noopener">详细的例子</a> 最好是动手试一下</p>
+<p>sed 是以行为单位处理信息的，比如下面的命令可以输出第二行的信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig  enp9s0f1 | sed -n &apos;2p&apos;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>inet 10.2.7.140  netmask 255.255.255.128  broadcast 10.2.7.255</p>
+</blockquote>
+<p>同样使用 awk 也可以达到同样的效果， 使用<code>NR</code> 关键词。所以awk 相比于sed 是更加强大处理工具。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig em1 | awk NR==2</span><br></pre></td></tr></table></figure></p>
 <h3 id="关于上述三个命令的练习"><a href="#关于上述三个命令的练习" class="headerlink" title="关于上述三个命令的练习"></a>关于上述三个命令的练习</h3><p>awk 的练习题看上面的例子就行</p>
 <p><a href="https://www.centos.bz/2017/10/%E5%BC%BA%E5%A4%A7%E7%9A%84grep%EF%BC%8Csed%E5%92%8Cawk-%E7%94%A8%E6%A1%88%E4%BE%8B%E6%9D%A5%E8%AE%B2%E8%A7%A3/" target="_blank" rel="noopener">强大的grep，sed和awk–用案例来讲解</a><br>更多<a href="https://segmentfault.com/a/1190000015885994" target="_blank" rel="noopener">sed 详细的例子</a><br><a href="https://hui-liu.github.io/blog/Linux%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bsed/" target="_blank" rel="noopener">关于sed 的练习题</a></p>
 <p>软链接 硬链接 和cp</p>
@@ -467,24 +490,14 @@
 <p>两个命令连用：</p>
 <p>ps -ax 查看进程的， To see every process on the system using BSD syntax:</p>
 <blockquote>
-<p> ps -ax | grep vulgar_</p>
-<p>kill -9 pid 杀死进程</p>
+<p> ps -ax | grep vulgar_<br>kill -9 pid 杀死进程</p>
 </blockquote>
 <p>ps 是显示进程的</p>
 <blockquote>
-<p>下面两个都是显示进程用的</p>
-<p>ps -e</p>
-<p>ps -ef</p>
+<p>下面两个都是显示进程用的<br>ps -e<br>ps -ef</p>
 </blockquote>
 <p>执行shell 脚本</p>
-<blockquote>
-<p>sh -x vulgar_query_preprocessor.sh</p>
-</blockquote>
-<blockquote>
-<p>scp -r -i ~/.ssh/qiso_id_rsa <a href="mailto:qiso@10.39.22.30" target="_blank" rel="noopener">qiso@10.39.22.30</a>:/home/qiso/data/production/search/nlp/query_quality/data/vulgar_query/model/ ./</p>
-</blockquote>
-<p>·</p>
-<p>/home/qiso/data/production/search/nlp/query_quality/data/vulgar_query/embedding/query_ngram_represent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh -x vulgar_query_preprocessor.sh</span><br><span class="line">scp -r -i ~/.ssh/qiso_id_rsa qiso@10.39.22.30:/home/qiso/data/production/search/nlp/query_quality/data/vulgar_query/model/ ./</span><br><span class="line">/home/qiso/data/production/search/nlp/query_quality/data/vulgar_query/embedding/query_ngram_represent</span><br></pre></td></tr></table></figure>
 <p><strong>diff 命令</strong></p>
 <p>讲解：</p>
 <p><a href="http://www.ruanyifeng.com/blog/2012/08/how_to_read_diff.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2012/08/how_to_read_diff.html</a> </p>
@@ -586,8 +599,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &apos;one two three&apos; | xargs -t rm</span><br><span class="line">rm one two three</span><br></pre></td></tr></table></figure>
 <p>examples</p>
 <p><code>xargs</code> 和<code>cp</code> 命令结合使用过，返回前 5 个结果作为 cp 的输入。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls | head -n 5| xargs -i cp &#123;&#125; /home/jijeng/projects/test/src</span><br><span class="line"></span><br><span class="line"># 回到上一个目录（最近的目录）</span><br><span class="line">cd -</span><br></pre></td></tr></table></figure></p>
-<h3 id="其他小命令"><a href="#其他小命令" class="headerlink" title="其他小命令"></a>其他小命令</h3><p>lsof(list open files) 列出当前系统打开文件的工具<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:端口号</span><br></pre></td></tr></table></figure></p>
+<h3 id="其他小命令"><a href="#其他小命令" class="headerlink" title="其他小命令"></a>其他小命令</h3><h3 id="查看端口"><a href="#查看端口" class="headerlink" title="查看端口"></a>查看端口</h3><p>在mac 上使用 <code>lsof</code>: list open files</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof -i # 查看某个端口是否被占用， i 表示ip tcp 表示tcp 协议</span><br><span class="line">lsof -i tcp:8888</span><br></pre></td></tr></table></figure>
 <p>比如说查看服务器8000 端口(port )的占用情况</p>
+<p>linux 中可以使用 <code>lsof</code> 和<code>netstat</code> 两个命令</p>
+<p><code>netstat</code>用来查看系统当前系统网络状态信息，包括端口，连接情况等，常用方式如下：</p>
+<p><code>netstat -atunlp</code>,各参数含义如下:<br>-t : 指明显示TCP端口<br>-u : 指明显示UDP端口<br>-l : 仅显示监听套接字(LISTEN状态的套接字)<br>-p : 显示进程标识符和程序名称，每一个套接字/端口都属于一个程序<br>-n : 不进行DNS解析<br>-a 显示所有连接的端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:端口号</span><br><span class="line">netstat -nltp | grep 进程号</span><br><span class="line"></span><br><span class="line">netstat -tunlp | grep 22</span><br><span class="line">netstat -tunlp | grep  端口号</span><br><span class="line"></span><br><span class="line">ps -ef | grep 进程名</span><br></pre></td></tr></table></figure>
 <h3 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h3><p>该命令和管道的命令是类似的，不同点在于， xargs 是把 <code>|</code> 左边的输出当做后面命令的一个参数来运行。而如果只是使用<code>|</code>， 是把其左边的输出当做右边命令的输入。xargs命令是给其他命令传递参数的一个过滤器，也是组合多个命令的一个工具。它擅长将标准输入数据转换成命令行参数，xargs能够处理管道或者stdin并将其转换成特定命令的命令参数。</p>
 <h3 id="Linux-中脚本执行的四种方式"><a href="#Linux-中脚本执行的四种方式" class="headerlink" title="Linux 中脚本执行的四种方式"></a>Linux 中脚本执行的四种方式</h3><p>（1）切换到shell脚本所在的目录（此时，称为工作目录）执行shell脚本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./hello.sh</span><br></pre></td></tr></table></figure>
@@ -628,6 +646,8 @@
 <p>git status </p>
 </blockquote>
 <p><a href="https://segmentfault.com/a/1190000015482463" target="_blank" rel="noopener">Git命令详解</a></p>
+<h3 id="bash相关快捷键"><a href="#bash相关快捷键" class="headerlink" title="bash相关快捷键"></a>bash相关快捷键</h3><p>bash 指得是命令行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ctrl键组合</span><br><span class="line"></span><br><span class="line">ctrl+a:光标移到行首。</span><br><span class="line"></span><br><span class="line">ctrl+c:杀死当前进程。</span><br><span class="line"></span><br><span class="line">ctrl+d:退出当前 Shell。</span><br><span class="line"></span><br><span class="line">ctrl+e:光标移到行尾。</span><br><span class="line"></span><br><span class="line">esc组合</span><br><span class="line">esc+d: 删除光标后的一个词</span><br><span class="line">esc+f: 往右跳一个词， 不能连续跳，需要按一下然后停一下。</span><br><span class="line">esc+b: 往左跳一个词</span><br><span class="line">esc+t: 交换光标位置前的两个单词。</span><br></pre></td></tr></table></figure>
 <h2 id="vi-常见命令和配置"><a href="#vi-常见命令和配置" class="headerlink" title="vi 常见命令和配置"></a>vi 常见命令和配置</h2><ol>
 <li>第一阶段</li>
 </ol>
@@ -840,7 +860,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -862,7 +882,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -936,7 +956,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-常见命令"><span class="nav-number">1.</span> <span class="nav-text">Linux 常见命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-取列数据"><span class="nav-number">1.1.</span> <span class="nav-text">awk 取列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-命令"><span class="nav-number">1.2.</span> <span class="nav-text">grep 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-行编辑器"><span class="nav-number">1.3.</span> <span class="nav-text">sed 行编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于上述三个命令的练习"><span class="nav-number">1.4.</span> <span class="nav-text">关于上述三个命令的练习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">1.5.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他小命令"><span class="nav-number">1.6.</span> <span class="nav-text">其他小命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xargs"><span class="nav-number">1.7.</span> <span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-中脚本执行的四种方式"><span class="nav-number">1.8.</span> <span class="nav-text">Linux 中脚本执行的四种方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-常见的命令"><span class="nav-number">2.</span> <span class="nav-text">git 常见的命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-常见命令和配置"><span class="nav-number">3.</span> <span class="nav-text">vi 常见命令和配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-常见命令"><span class="nav-number">1.</span> <span class="nav-text">Linux 常见命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-取列数据"><span class="nav-number">1.1.</span> <span class="nav-text">awk 取列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-命令"><span class="nav-number">1.2.</span> <span class="nav-text">grep 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-行编辑器"><span class="nav-number">1.3.</span> <span class="nav-text">sed 行编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于上述三个命令的练习"><span class="nav-number">1.4.</span> <span class="nav-text">关于上述三个命令的练习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">1.5.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他小命令"><span class="nav-number">1.6.</span> <span class="nav-text">其他小命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看端口"><span class="nav-number">1.7.</span> <span class="nav-text">查看端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xargs"><span class="nav-number">1.8.</span> <span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-中脚本执行的四种方式"><span class="nav-number">1.9.</span> <span class="nav-text">Linux 中脚本执行的四种方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-常见的命令"><span class="nav-number">2.</span> <span class="nav-text">git 常见的命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash相关快捷键"><span class="nav-number">2.1.</span> <span class="nav-text">bash相关快捷键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-常见命令和配置"><span class="nav-number">3.</span> <span class="nav-text">vi 常见命令和配置</span></a></li></ol></div>
             
 
           </div>

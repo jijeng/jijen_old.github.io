@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="python 学习笔记，之前有两篇笔记，因为太多了，所以新开一篇。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-03T06:04:08.968Z">
+<meta property="og:updated_time" content="2019-12-23T08:20:23.932Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python learning 学习笔记3">
 <meta name="twitter:description" content="python 学习笔记，之前有两篇笔记，因为太多了，所以新开一篇。">
@@ -310,8 +310,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-03T14:04:08+08:00">
-                2019-12-03
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-23T16:20:23+08:00">
+                2019-12-23
               </time>
             
           </span>
@@ -457,6 +457,72 @@
 <p>（6）<code>__eq__()</code>函数</p>
 <p>（7）<code>__add__(self, other)</code>函数</p>
 <p>python中魔术方法（magic method）是一种重载（overloading）函数。</p>
+<p>（6）python交换值为何不使用中间变量</p>
+<p>在C++和C 中交换两个变量需要使用到临时变量<code>tmp</code>，但是在python 中是不必的。交换两个变量一般使用如下的语句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x, y  =y, x</span><br></pre></td></tr></table></figure>
+<p>一般来说python语句是从左到右解析的，但是在赋值操作的时候，因为右值具有更高的计算优先级，所以是从右到左解析的。执行顺序如下：</p>
+<ul>
+<li>计算等号右边 <code>y, x</code> （可能是比较复杂的表达式），然后创建元组，分别存储 <code>y, x</code>的值</li>
+<li>计算左边的标识符，元组中的element 分别赋值（如果等号左右两边标识符数量不等的时候会出现 <code>ValueError</code>， 当左边只有一个变量时候，右边计算值就pack成一个元组传递给了左边的变量）</li>
+</ul>
+<h2 id="python2-和python3-的差异"><a href="#python2-和python3-的差异" class="headerlink" title="python2 和python3 的差异"></a>python2 和python3 的差异</h2><p>使用了<code>from __future__ import xxx</code>可以在python2，python3环境下运行同一份代码而不出错</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</span><br></pre></td></tr></table></figure>
+<p>以 为<a href="https://www.cnblogs.com/ajianbeyourself/p/4471035.html" target="_blank" rel="noopener">例子</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">now = datetime.now()</span><br><span class="line"><span class="keyword">print</span> now.strftime(<span class="string">'%m月%d日 %H:%M'</span>)</span><br><span class="line"><span class="comment">#  03月12日 21:53</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">now = datetime.now()</span><br><span class="line"><span class="keyword">print</span> now.strftime(<span class="string">'%m月%d日 %H:%M'</span>)</span><br><span class="line"><span class="comment"># 报错 UnicodeEncodeError: 'ascii' codec can't encode character u'\u6708' in position 2: ordinal not in range(128)</span></span><br></pre></td></tr></table></figure>
+<p>原因： 因为datetime.strftime()只接受str类型的字符串，不接受unicode类型的字符串。<br>解决方案：<br>推荐做法： 传入 str类型的参数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">now = datetime.now()</span><br><span class="line"><span class="keyword">print</span> now.strftime(<span class="string">'%m月%d日 %H:%M'</span>.encode(<span class="string">'utf-8'</span>))  <span class="comment"># 指明str类型字符串</span></span><br></pre></td></tr></table></figure></p>
+<p>不推荐做法： 设置运行的时候的编码为 utf-8<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">now = datetime.now()</span><br><span class="line"><span class="keyword">print</span> now.strftime(<span class="string">'%m月%d日 %H:%M'</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="python中-的使用"><a href="#python中-的使用" class="headerlink" title="python中*的使用"></a>python中<code>*</code>的使用</h2><p>python 中 <code>*</code>有乘法和赋值 (<code>[1] *5</code>) 的用法，除此之外还有解压（unpack）的功能。而zip() 是压缩的功能，如下代码所示：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">stuff = [<span class="string">'apple'</span>,<span class="string">'banana'</span>,<span class="string">'peach'</span>]</span><br><span class="line">money = [<span class="number">10</span>, <span class="number">5</span>, <span class="number">7</span>]</span><br><span class="line"></span><br><span class="line">pair = list(zip(stuff,money))</span><br><span class="line"><span class="comment"># pair = [('apple',10),('banana',5),('peach',7)]</span></span><br></pre></td></tr></table></figure></p>
+<p>同样的，当我们想要还原成原来的两个list， stuff 和money 时候，我们需要用到 <code>*</code> 符号。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stuff, money =zip(*pair)</span><br></pre></td></tr></table></figure></p>
+<p>当然，并不是说 <code>*</code>只能使用在 list 中，凡是可迭代对象都是可以使用 <code>*</code>符号。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">do_something</span><span class="params">(x,y,z)</span>:</span></span><br><span class="line">    print(<span class="string">'x is '</span>, x)</span><br><span class="line">    print(<span class="string">'y is '</span>, y)</span><br><span class="line">    print(<span class="string">'z is '</span>, z)</span><br><span class="line"></span><br><span class="line">list1 = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>]</span><br><span class="line">do_something(*list1)</span><br></pre></td></tr></table></figure></p>
+<p>可见， <code>*</code>操作符自动将list1 中的三个元素赋给了三个形参，所以是一种非常方便的用法。</p>
+<p><code>**</code> 的用法</p>
+<p>对于字典（dict） 来说，也是可以使用<code>*</code>运算符，但是一个 <code>*</code> 得到的是key 值，如果想要得到 value 值，那么是需要使用 <code>**</code>运算符。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dict2 = &#123;<span class="string">'z'</span>:<span class="number">1</span>, <span class="string">'x'</span>:<span class="number">2</span>, <span class="string">'y'</span>:<span class="number">3</span>&#125;</span><br><span class="line">do_something(**dict2)</span><br></pre></td></tr></table></figure></p>
+<p>所以上面那种传参的方式就是在程序中经常见到的。</p>
+<p><code>*args</code> 和 <code>**kwargs</code> 是我们经常见到的两个参数。用法很简单，当不确定有什么待传入的参数时候，就使用<code>*args</code> 将形参传入到 <code>args</code> 元组里面。同理 <code>**kwargs</code>效果则是将输入的未定义的形参及其对应的值存在kwargs字典。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">intro</span><span class="params">(**data)</span>:</span></span><br><span class="line">    print(<span class="string">"\nData type of argument:"</span>,type(data))</span><br><span class="line">    <span class="keyword">for</span> key, value <span class="keyword">in</span> data.items():</span><br><span class="line">        print(<span class="string">"&#123;&#125; is &#123;&#125;"</span>.format(key,value))</span><br><span class="line"></span><br><span class="line">intro(Firstname=<span class="string">"Sita"</span>, Lastname=<span class="string">"Sharma"</span>, Age=<span class="number">22</span>, Phone=<span class="number">1234567890</span>)</span><br></pre></td></tr></table></figure>
+<p>也可以进行字典的合并 <code>**</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">date_info = &#123;<span class="string">'year'</span>: <span class="string">"2020"</span>, <span class="string">'month'</span>: <span class="string">"01"</span>, <span class="string">'day'</span>: <span class="string">"01"</span>&#125; </span><br><span class="line">track_info = &#123;<span class="string">'artist'</span>: <span class="string">"Beethoven"</span>, <span class="string">'title'</span>: <span class="string">'Symphony No 5'</span>&#125; </span><br><span class="line">all_info = &#123;**date_info, **track_info&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h2><blockquote>
+<p>We do not need true randomness in machine learning. Instead we can use pseudorandomness. Pseudorandomness is a sample of numbers that look close to random, but were generated using a deterministic process.<br>很难得到到真实的随机数，然而是可以生成伪随机数。</p>
+</blockquote>
+<p>python 中的random() 库函数是基于马特赛特旋转演算法 （Mersenne Twister）算法生成的。</p>
+<blockquote>
+<p>The pseudorandom number generator is a mathematical function that generates a sequence of nearly random numbers. It takes a parameter to start off the sequence, called the seed. The function is deterministic, meaning given the same seed, it will produce the same sequence of numbers every time. The choice of seed does not matter.<br>给定特定的种子（seed），可以产生 deterministic 的结果，所以可以重复多次，所以可以复现相同的实验结果。</p>
+</blockquote>
+<h3 id="Random-with-Python"><a href="#Random-with-Python" class="headerlink" title="Random with Python"></a>Random with Python</h3><p>（1） Random Floating Point Values</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>): <span class="comment"># generate random numbers between 0-1</span></span><br><span class="line">	val =random()</span><br><span class="line">	print(val)</span><br></pre></td></tr></table></figure>
+<p>产生的是[0, 1]区间的浮点数，可以 rescale to 任意的范围。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scaled_value =min +(val *(max -min))</span><br></pre></td></tr></table></figure>
+<p>（2） Random Integer Values</p>
+<p>使用 <code>randint()</code> 得到整数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">frmo random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> randint</span><br><span class="line"></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">	val =randint(<span class="number">0</span>, <span class="number">10</span>)</span><br><span class="line">	print(val)</span><br></pre></td></tr></table></figure>
+<p>（3）Random Gaussian Values</p>
+<p>使用的是 <code>gauss</code> 分布。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> gauss</span><br><span class="line"></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">	val =gauss(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">	print(val)</span><br></pre></td></tr></table></figure></p>
+<p>（4） Random Choosing From a List</p>
+<p>使用到了 <code>choice()</code> 函数，choice 每次只是选择了其中的一个。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> choice</span><br><span class="line"></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">sequence =[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>)]</span><br><span class="line">print(sequence)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">	selection =choice(sequence)</span><br><span class="line">	print(selection)</span><br></pre></td></tr></table></figure>
+<p>（5）Random Subsample From a List</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> sample</span><br><span class="line"></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">sequence =[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>)]</span><br><span class="line">print(sequence)</span><br><span class="line"><span class="comment"># default without replacement，不放回抽样</span></span><br><span class="line">subset =sample(sequence, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<p>python 中的 <code>random.sample()</code> 是没有放回抽样的。如果想要实现，一种方式是基于 <code>randint()</code> 改造，一种是使用numpy 中的函数：<code>numpy.random.choice(replace =True)</code>。但是python自带的包中可以设置 <code>weight</code>权重，也就是有权重的sample。</p>
+<p>（5） Randomly Shuffle a List</p>
+<p>shuffle 操作在python 中是 <code>in-place()</code> 的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> shuffle</span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line">sequence =[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>)]</span><br><span class="line">print(sequence)</span><br><span class="line"></span><br><span class="line">shuffle(sequence)</span><br><span class="line">print(sequence)</span><br></pre></td></tr></table></figure>
+<h3 id="Random-Numbers-with-Numpy"><a href="#Random-Numbers-with-Numpy" class="headerlink" title="Random Numbers with Numpy"></a>Random Numbers with Numpy</h3><blockquote>
+<p>The NumPy pseudorandom number generator is different from the Python standard library pseudorandom number generator. Importantly, seeding the Python pseudorandom number generator does not impact the NumPy pseudorandom number generator. It must be seeded and used separately.<br>Numpy 中有自己实现的Random 机制，该机制和Numpy 中的机制不一样，当然Numpy 中也有马特赛特旋转演算法 （Mersenne Twister）算法。重要的是，两者是需要单独设置的。</p>
+</blockquote>
+<p>（1） Seed The Random Number Generator</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># seed the pseudorandom number generator</span></span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> rand</span><br><span class="line"><span class="comment"># seed random number generator</span></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># generate some random numbers</span></span><br><span class="line">print(rand(<span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<p>（2）Array of Random Floating Point Values</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> rand</span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line">vals =rand(<span class="number">10</span>)</span><br><span class="line">print(vals)</span><br></pre></td></tr></table></figure>
+<p>（3）Array of     Random Integer Values</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> randint</span><br><span class="line"></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># start, end, numbers</span></span><br><span class="line">values =randint(<span class="number">0</span>, <span class="number">10</span>, <span class="number">20</span>)</span><br><span class="line">print(values)</span><br></pre></td></tr></table></figure>
+<p>（4）Array of Random Gaussian Values</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy.randon <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> randn</span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line">values =randn(<span class="number">10</span>)</span><br><span class="line">print(values)</span><br></pre></td></tr></table></figure>
+<p>（5）Shuffle Numpy Array<br>这个也是 in-place 的操作<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> shuffle</span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">sequence =[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>)]</span><br><span class="line">print(sequence)</span><br><span class="line">shuffle(sequence)</span><br><span class="line">print(sequence)</span><br></pre></td></tr></table></figure></p>
+<p>总结：<br>随机数的生成需要设置 <code>seed</code>，如果生成number，那么使用 <code>python standard library</code>； 如果是生成array, 那么使用 <code>NumPy library</code>。</p>
+<p>参考文献</p>
+<p><a href="https://machinelearningmastery.com/how-to-generate-random-numbers-in-python/" target="_blank" rel="noopener">How to Generate Random Numbers in Python</a></p>
 
       
     </div>
@@ -491,8 +557,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/11/17/optimizer/" rel="prev" title="optimizer">
-                optimizer <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/17/entropy/" rel="prev" title="Entropy 相关的概念">
+                Entropy 相关的概念 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -555,8 +621,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -575,7 +650,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -597,7 +672,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -661,6 +736,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#python2-和python3-的差异"><span class="nav-number">1.</span> <span class="nav-text">python2 和python3 的差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中-的使用"><span class="nav-number">2.</span> <span class="nav-text">python中*的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机数"><span class="nav-number">3.</span> <span class="nav-text">随机数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-with-Python"><span class="nav-number">3.1.</span> <span class="nav-text">Random with Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Numbers-with-Numpy"><span class="nav-number">3.2.</span> <span class="nav-text">Random Numbers with Numpy</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -87,7 +87,7 @@
 <meta property="og:description" content="主要介绍机器学习中的数据预处理（这里主要讲的是数值型数据的预处理，而非中文数据预处理），包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。  数据预处理的时候需要注意 missing values、noisy d">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/b34a196be64960bd.png">
-<meta property="og:updated_time" content="2019-12-11T02:13:31.425Z">
+<meta property="og:updated_time" content="2019-12-23T10:37:23.257Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Data Pre-processing 学习笔记">
 <meta name="twitter:description" content="主要介绍机器学习中的数据预处理（这里主要讲的是数值型数据的预处理，而非中文数据预处理），包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。  数据预处理的时候需要注意 missing values、noisy d">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-11T10:13:31+08:00">
-                2019-12-11
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-23T18:37:23+08:00">
+                2019-12-23
               </time>
             
           </span>
@@ -399,10 +399,10 @@
 </ul>
 <p>关于这几种方法如何去选择，我如果说 “it depends”，那么其他人不认为这是一个具有说服力的答案，他们更像知道 it depends what, and when and why to use specific method? 我认为应该是根据缺省值程度和重要性进行经验性的选择，这也去就是 empirical study吧。</p>
 <p>接着是 <strong>noisy data (outlier)</strong>，我的观点是首先得认识到这个是错误的数据（使用 $3\sigma$定理去筛选异常值），不是真实的数据来源，可能是来自人为的笔误 或者仪器记录的问题，这个是需要修改的。可以使用聚类 (clustering) 进行noisy data 的检测，找到之后这个就类似 missing value了，可以采取以上的手段进行操作，应该注意到的这个 noisy data 所占比例不会很高，否则就成了主要的数据分布了。</p>
-<h3 id="Data-Integration"><a href="#Data-Integration" class="headerlink" title="Data Integration:"></a>Data Integration:</h3><p>处理数据库数据，经常是需要处理子表信息的，那么必然存在着主表，而子表系信息往往是主表信息的某一方面的细化。所以有必要将两者连接起来。如何连接？一般使用聚合函数（mean, variance, std, max, min，median, mode ）等方式得到子表的统计信息，然后将两者连接。</p>
-<h3 id="Data-Transformation"><a href="#Data-Transformation" class="headerlink" title="Data Transformation:"></a>Data Transformation:</h3><p>In data transformation, the data are transformed or consolidated into forms appropriate for mining.<br>这里想要澄清的是很多相同的内容都可以用不同的方式表达，并且可以放在数据处理的不同阶段，并且这种工作不是一次性完成的，而是迭代的 until you run out your patience and time.<br>首先我接触的最常见的就是 discrete variables -&gt; continuous variables. 当然对于 discrete variables，基于树结构的机器学习模型是可以处理的，这里想说的是有这种方式。这种 transformation 常见的处理方式: one-hot 或者 label encoding. </p>
+<h3 id="Data-Integration"><a href="#Data-Integration" class="headerlink" title="Data Integration"></a>Data Integration</h3><p>处理数据库数据，经常是需要处理子表信息的，那么必然存在着主表，而子表系信息往往是主表信息的某一方面的细化。所以有必要将两者连接起来。如何连接？一般使用聚合函数（mean, variance, std, max, min，median, mode ）等方式得到子表的统计信息，然后将两者连接。</p>
+<h3 id="Data-Transformation"><a href="#Data-Transformation" class="headerlink" title="Data Transformation"></a>Data Transformation</h3><p>In data transformation, the data are transformed or consolidated into forms appropriate for mining.<br>这里想要澄清的是很多相同的内容都可以用不同的方式表达，并且可以放在数据处理的不同阶段，并且这种工作不是一次性完成的，而是迭代的 until you run out your patience and time.<br>首先我接触的最常见的就是 discrete variables -&gt; continuous variables. 当然对于 discrete variables，基于树结构的机器学习模型是可以处理的，这里想说的是有这种方式。这种 transformation 常见的处理方式: one-hot 或者 label encoding. </p>
 <p>如果按照 data transformation的预设，那么 normalization 就也属于该模块的内容。 不论是在 machine learning 还是在 图像处理的时候，对于原始的数据经常采取 normalization. 一方面这个是可以预防梯度消失 或者 gradient exploding, 如果你采用了 Sigmoid的激活函数的话。另一方面我认为更加重要的原因是将 不同的数据放在了同一个尺度下，如果你采取了 normalization之后。</p>
-<h3 id="Data-Reduction"><a href="#Data-Reduction" class="headerlink" title="Data Reduction:"></a>Data Reduction:</h3><p>一般来说很少提及到到 data reduction的必要性，如果非要给出原因，那么可以从时间和空间的角度进行考虑。更加需要关注的是如何做的问题。 </p>
+<h3 id="Data-Reduction"><a href="#Data-Reduction" class="headerlink" title="Data Reduction"></a>Data Reduction</h3><p>一般来说很少提及到到 data reduction的必要性，如果非要给出原因，那么可以从时间和空间的角度进行考虑。更加需要关注的是如何做的问题。 </p>
 <p>我的理解reduction 可以从两个维度进行考虑，假设一个 matrics A 是 m*n，这个是一个二维的矩阵，那么可以从 行列两方面入手。映射到机器学习中一般这样描述 从dimension 和 data两个角度去描述，分别称之为 dimension reduction 和 data compression. 前者指的是特征的选取，后者是数据size的减少。<br>dimension reduction: where irrelevant, weakly relevant, or redundant attributes or dimensions may be detected and removed.<br>data compression: PCA 线性降维 to reduce the data set size. 这个是针对某一个特征展开的。</p>
 <h3 id="Data-Normalization"><a href="#Data-Normalization" class="headerlink" title="Data Normalization"></a>Data Normalization</h3><p><strong> 是什么？</strong></p>
 <p>中心化： 均值为0，对方差没有要求</p>
@@ -454,7 +454,15 @@
 </ul>
 <p>$$<br>x ^ { \prime } = \frac { x - \overline { x } } { \sigma }<br>$$</p>
 <h3 id="data-imbalanced"><a href="#data-imbalanced" class="headerlink" title="data imbalanced"></a>data imbalanced</h3><p>机器学习中的特征工程是有一定技巧可言，其中我觉得最为有趣的是: generation or you can call it abstraction. 对于特征的泛的提取才是对于问题本身或者特征的理解，这不仅需要积累，更需要对于该问题领域的专业知识， that’s all.举个栗子，在 “Home Credit Default Risk” (kaggle 竞赛)中，原始的训练数据有信贷金额和客户的年收入，这个时候 “credit_income_percent” 就是类似这种性质的提取特征。</p>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.analyticsvidhya.com/blog/2015/04/comprehensive-guide-data-exploration-sas-using-python-numpy-scipy-matplotlib-pandas/" target="_blank" rel="noopener">Ultimate guide for Data Exploration in Python using NumPy, Matplotlib and Pandas</a></p>
+<h3 id="Data-Exploration-using-Numpy，Matplotlib-and-Pandas"><a href="#Data-Exploration-using-Numpy，Matplotlib-and-Pandas" class="headerlink" title="Data Exploration using Numpy，Matplotlib and Pandas"></a>Data Exploration using Numpy，Matplotlib and Pandas</h3><p>（1）柱状图（Histogram）</p>
+<p>柱状图需要有两个参数，一个是数据；一个是分成多少块（bins）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">df=pd.read_excel(<span class="string">"E:/First.xlsx"</span>, <span class="string">"Sheet1"</span>)</span><br><span class="line">fig=plt.figure()</span><br><span class="line">ax = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">ax.hist(df[<span class="string">'Age'</span>],bins = <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Labels and Tit</span></span><br><span class="line">plt.title(<span class="string">'Age distribution'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Age'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'#Employee'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>（2）散点图（scatter plot）</p>
+<p>需要给定两个数据， $x$和$y$ 的数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ax = fig.add_subplot(1,1,1)</span><br><span class="line">#Variable</span><br><span class="line">ax.scatter(df[&apos;Age&apos;],df[&apos;Sales&apos;])</span><br><span class="line">#Labels and Tit</span><br><span class="line">plt.title(&apos;Sales and Age distribution&apos;)</span><br><span class="line">plt.xlabel(&apos;Age&apos;)</span><br><span class="line">plt.ylabel(&apos;Sales&apos;)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>（3）Box-plot</p>
+<p>箱形图使用seaborn 中的库函数。主要从图形上识别出 四分位线，二分位线。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns </span><br><span class="line">sns.boxplot(df[<span class="string">'Age'</span>]) </span><br><span class="line">sns.despine()</span><br></pre></td></tr></table></figure>
+<p>参考文献</p>
+<p>1). <a href="https://www.analyticsvidhya.com/blog/2015/04/comprehensive-guide-data-exploration-sas-using-python-numpy-scipy-matplotlib-pandas/" target="_blank" rel="noopener">Ultimate guide for Data Exploration in Python using NumPy, Matplotlib and Pandas</a><br>2). <a href="https://www.analyticsvidhya.com/blog/2015/04/comprehensive-guide-data-exploration-sas-using-python-numpy-scipy-matplotlib-pandas/" target="_blank" rel="noopener">Ultimate guide for Data Exploration in Python using NumPy, Matplotlib and Pandas</a></p>
 
       
     </div>
@@ -582,7 +590,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -604,7 +612,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -678,7 +686,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Normalization"><span class="nav-number">5.</span> <span class="nav-text">Data Normalization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-imbalanced"><span class="nav-number">6.</span> <span class="nav-text">data imbalanced</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Normalization"><span class="nav-number">5.</span> <span class="nav-text">Data Normalization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-imbalanced"><span class="nav-number">6.</span> <span class="nav-text">data imbalanced</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Exploration-using-Numpy，Matplotlib-and-Pandas"><span class="nav-number">7.</span> <span class="nav-text">Data Exploration using Numpy，Matplotlib and Pandas</span></a></li></ol></div>
             
 
           </div>

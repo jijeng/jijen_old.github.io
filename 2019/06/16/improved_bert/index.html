@@ -81,15 +81,16 @@
 
 <meta name="description" content="介绍基于BERT进行改进的模型：ALBERT、XLNet, DistilBERT （持续更新）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="后BERT时代">
+<meta property="og:title" content="关于BERT改进的几篇论文">
 <meta property="og:url" content="http://yoursite.com/2019/06/16/improved_bert/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍基于BERT进行改进的模型：ALBERT、XLNet, DistilBERT （持续更新）">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload.cc/i1/2019/12/14/qIHEid.png">
-<meta property="og:updated_time" content="2019-12-14T14:13:25.234Z">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/12/7bdfdac297efc4f6.png">
+<meta property="og:updated_time" content="2019-12-21T01:32:30.029Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="后BERT时代">
+<meta name="twitter:title" content="关于BERT改进的几篇论文">
 <meta name="twitter:description" content="介绍基于BERT进行改进的模型：ALBERT、XLNet, DistilBERT （持续更新）">
 <meta name="twitter:image" content="https://upload.cc/i1/2019/12/14/qIHEid.png">
 
@@ -140,7 +141,7 @@
 	})();
 </script>
 
-  <title>后BERT时代 | Jijeng's blog</title>
+  <title>关于BERT改进的几篇论文 | Jijeng's blog</title>
   
 
 
@@ -284,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">后BERT时代</h1>
+          <h1 class="post-title" itemprop="name headline">关于BERT改进的几篇论文</h1>
         
 
         <div class="post-meta">
@@ -312,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-14T22:13:25+08:00">
-                2019-12-14
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-21T09:32:30+08:00">
+                2019-12-21
               </time>
             
           </span>
@@ -399,21 +400,37 @@
 <h3 id="移除dropout"><a href="#移除dropout" class="headerlink" title="移除dropout"></a>移除dropout</h3><p>除了上面提到的三个主要优化点，ALBERT的作者还发现一个很有意思的点，ALBERT在训练了100w步之后，模型依旧没有过拟合，于是乎作者果断移除了dropout，没想到对下游任务的效果竟然有一定的提升。这也是业界第一次发现dropout对大规模的预训练模型会造成负面影响。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>但实际上是通过参数共享的方式降低了内存，预测阶段还是需要和BERT一样的时间。</p>
 <p><a href="https://github.com/brightmart/albert_zh" target="_blank" rel="noopener">albert_zh</a></p>
-<h2 id="XLNet-讲解"><a href="#XLNet-讲解" class="headerlink" title="XLNet 讲解"></a>XLNet 讲解</h2><p>（1）两种成功的语言模型</p>
-<p>自回归语言模型（Autoregressive Language Modeling, AR）和自编码语言模型（Autoencoding LM, AE）是两大成功的预训练模型。</p>
-<p>自回归语言模型有个缺点，要么从左到右，要么从右到左，尽管可以类似ELMO两个都做，然后再拼接的方式。但是跟Bert比，效果明显不足够好（这里面有RNN弱于Transformer的因素，也有双向语言模型怎么做的因素）。</p>
-<p>\begin{equation}<br>\begin{array}{l}{p(x)=\prod_{T}^{T} p\left(x_{t} | x_{&lt;t}\right)} \\ {p(x)=\prod^{T} p\left(x_{t} | x_{&gt;t}\right)}\end{array}<br>\end{equation}</p>
-<p>1). 典型技术：GPT, ELMO（本质上是两方向的自回归简单拼接结合）。<br>2). 优点：和下游NLP任务有关，比如生成类NLP任务，文本摘要，机器翻译等，在实际生成内容的时候，都是从左向右，自回归语言模型天然匹配这个过程。而自编码语言模型和这个过程不匹配。<br>3). 缺点：只能利用上文或者下文的信息，或者像ELMO简单两方向结合。</p>
-<p>自编码语言模型定义：自编码语言模型是通过在输入X中随机Mask掉一部分单词，然后在预训练过程中根据上下文单词来预测这些被Mask掉的单词。该做法类似Denoising Autoencoder(DAE)的思路。那些被Mask掉的单词即为在输入侧加入的噪音。</p>
-<p>1). 典型技术：BERT。<br>2). 优点：同时利用利用上下文信息，双向语言模型。<br>3).缺点：</p>
+<h2 id="XLNet-讲解"><a href="#XLNet-讲解" class="headerlink" title="XLNet 讲解"></a>XLNet 讲解</h2><p>（1）摘要（Abstract）</p>
+<blockquote>
+<p>However, relying on corrupt- ing the input with masks, BERT neglects dependency between the masked positions and suffers from a pretrain-finetune discrepancy<br>针对BERT <code>pretrain-finetune discrepancy</code> 的问题，主要做了以下三点工作：</p>
+<ul>
+<li>enables learning bidirectional contexts by maximizing the expected likelihood over all permutations of the factorization order </li>
+<li>overcomes the limitations of BERT thanks to its autoregressive formulation</li>
+<li>XLNet integrates ideas from Transformer-XL into pretraining.<br>其中前两点是比较重要，最后一点是在长句子数据集上预训练的改进。</li>
+</ul>
+</blockquote>
+<p>（2）Introduction</p>
+<p>自回归语言模型（Autoregressive Language Modeling, AR）和自编码语言模型（Autoencoding LM, AE）是两大成功的语言模型。自回归语言模型有个缺点，要么从左到右，要么从右到左，尽管可以类似ELMO两个都做，然后再拼接的方式。但是跟Bert比，效果明显不足够好（这里面有RNN弱于Transformer的因素，也有双向语言模型怎么做的因素）。<br>\begin{equation}<br>\begin{array}{l}{p(x)=\prod_{T}^{T} p\left(x_{t} | x_{&lt;t}\right)} \\ {p(x)=\prod^{T} p\left(x_{t} | x_{&gt;t}\right)}\end{array}<br>\end{equation}<br>1). 典型技术：GPT, ELMO（本质上是两方向的自回归简单拼接结合）。<br>2). 优点：和下游NLP任务有关，比如生成类NLP任务，文本摘要，机器翻译等，在实际生成内容的时候，都是从左向右，自回归语言模型天然匹配这个过程。而自编码语言模型和这个过程不匹配。<br>3). 缺点：只能利用上文或者下文的信息，或者像ELMO简单两方向结合。</p>
+<p>同样，自编码语言模型定义：自编码语言模型是通过在输入X中随机Mask掉一部分单词，然后在预训练过程中根据上下文单词来预测这些被Mask掉的单词。该做法类似Denoising Autoencoder(DAE)的思路。那些被Mask掉的单词即为在输入侧加入的噪音。<br>1). 典型技术：BERT。<br>2). 优点：同时利用上下文信息，双向语言模型。<br>3).缺点：</p>
 <ul>
 <li>输入侧引入[Mask]标记，导致预训练阶段和Fine-tuning阶段不一致，因为Fine-tuning阶段看不到[Mask]标记。</li>
-<li>独立假设问题：举个例子：比如”New York is a city”，假设我们Mask住”New”和”York”两个词，那么给定”is a city”的条件下”New”和”York”并不独立，因为”New York”是一个实体，看到”New”则后面出现”York”的概率要比看到”Old”后面出现”York”概率要大得多。所以同时Mask 15% 的词不是好的做法。</li>
+<li>独立假设问题：举个例子：比如”New York is a city”，假设我们Mask住”New”和”York”两个词，那么给定”is a city”的条件下”New”和”York”并不独立，因为”New York”是一个实体，看到”New”则后面出现”York”的概率要比看到”Old”后面出现”York”概率要大得多。所以同时Mask 15\% 的词不是好的做法。</li>
 </ul>
+<p>于是作者的想法是结合 AR 模型的优点（同下游任务一致）和AE的优点（利用上下文信息），提出了XLNet ：基于AR模型使用 <code>all possible permutations of the factorization order</code> 来学习上下文信息。并且结合了当下AR 模型中很多训练技巧，<code>reparameterize the Transformer(-XL) network</code>。</p>
+<p>一句话概括：XLNet 使用语言模型，但是为了解决双向上下文的问题，提出了排列语言模型。排列语言模型在预测的时候需要target 的位置信息，因此引入了 Two-Stream，Content 流编码到当前时刻的所有内容，而Query 流只是保留了位置信息。最后为了解决计算量过大的问题，对于一个句子，只是预测后面的 $\frac{1}{K}$的词语。</p>
 <p>（2）排列语言模型（Permutation Language Model）</p>
-<p>XLNet 也是学习到了双向信息，那么是怎么做到的呢？XLNet仍然遵循两阶段的过程，第一个阶段是语言模型预训练阶段；第二阶段是任务数据Fine-tuning阶段。这个可以理解为在自回归LM模式下，采取什么样的具体手段，融入双向语言模型。</p>
-<p>\begin{equation}<br>\max _{\theta} E _{z \sim Z_T} = \sum_{t=1} ^{T} \log p_{\theta} (x_{z_t}  | x_{z \le t})<br>\end{equation}</p>
+<p>排列（乱序）语言模型跟语言模型一样，都是做条件概率分解，但排列语言模型的分解顺序是随机的：</p>
+<p>\begin{equation}<br>\begin{aligned} p\left(x_{1}, x_{2}, x_{3}, \ldots, x_{n}\right) &amp;=p\left(x_{1}\right) p\left(x_{2} | x_{1}\right) p\left(x_{3} | x_{1}, x_{2}\right) \ldots p\left(x_{n} | x_{1}, \ldots, x_{n}\right) \\<br> &amp;=p\left(x_{3}\right) p\left(x_{1} | x_{3}\right) p\left(x_{2} | x_{1}, x_{3}\right) \ldots p\left(x_{n} | x_{1}, \ldots, x_{n}\right) \\ &amp;=\ldots \\ &amp;=p\left(x_{n-1}\right) p\left(x_{1} | x_{n-1}\right) p\left(x_{n} | x_{n-1}, x_{1}\right) \ldots p\left(x_{2} | x_{n-1}, x_{1}, \ldots, x_{3}\right) \end{aligned}<br>\end{equation}</p>
+<p>关于如何使用 attention机制实现 masked（当预测$t$时刻的词，无法看到下一个时刻的词）效果，可以看<a href="https://spaces.ac.cn/archives/6933" target="_blank" rel="noopener">这里</a>中<code>乱序语言模型</code>的解释。</p>
+<p>XLNet仍然遵循两阶段的过程，第一个阶段是语言模型预训练阶段；第二阶段是任务数据Fine-tuning阶段。这个可以理解为在自回归LM模式下，采取什么样的具体手段，融入双向语言模型。</p>
+<p>\begin{equation}<br>\max _{\theta} E _{z \sim Z_T} = \sum_{t=1} ^{T} \log p_{\theta} (x_{z_t}  | x_{z \le t})<br>\label{eq-1}<br>\end{equation}<br>\begin{equation}<br>\max _{\theta} E _{z \sim Z_T} = \sum_{t=1} ^{T} \log p_{\theta} (x_{z_t}  | x_{z \le t})<br>\tag{1.1}<br>\end{equation}</p>
 <p>从所有的排列中采样一种，然后根据这个排列来分解联合概率成条件概率的乘积，然后加起来。为了实现排列语言模型，论文采用了双流自注意力机制（Two-Stream Self-Attention）和Attention Mask。比如 $p(x_1| x_3)p(x_2|x_1 x_3)p(vx_3)$，我们可以在用Transformer编码 $x_1 $时候让它可以Attend to $x_3$，而把 $x_2$Mask掉 (意思就是算Attention score的时候只算 $x_3$对 $x_1$的影响，而 $x_2$的attention score为0)；编码 $x_3$的时候把 $x_1$, $x_2$都Mask掉。</p>
+<blockquote>
+<p> Intuitively, if model parameters are shared across all factorization orders, in expectation, the model will learn to gather information from all positions on both sides.<br>这个有没有类似权值共享的观点，然后权值共享能够基本表示所有的可能性。</p>
+</blockquote>
+<p>当时上述公式$(1.1)$有个问题：没有显性表示出$t$到底是什么。所以表示成以下的公式：</p>
+<p>p_{\theta}\left(X_{z_{t}}=x | \mathbf{x}_{z_{&lt;t}}\right)=\frac{\exp \left(e(x) ^{\top} g_{\theta}\left(\mathbf{x}<em>{\mathbf{z}&lt;t}, z</em>{t}\right)\right)}{\sum_{x^{\prime}} \exp \left(e\left(x^{\prime}\right)^{\top} g_{\theta}\left(\mathbf{x}<em>{\mathbf{z}</em>{&lt;t}}, z_{t}\right)\right)}</p>
+<p>在公式中显示表示出了 $z_t$。但是传统的transformer 第 $t$时候embedding 是既包含内容信息也包含位置信息的。所以作者提出了双流注意力机制。</p>
 <p>（3）双流注意力机制</p>
 <p>问题：当不同的排列组合如 $z_1 =[1, 3, 4, 2]$ 和$z_2 =[1, 3, 4, 5]$出现，$t =3$，则已知前三个状态，预测第四个状态，由于这两种排列当 $t \le 3$ 都是相同的，而 $t =4$的时候，信息是被 masked的，所以无法区别这两种信息。</p>
 <p>为了解决上述问题，论文中引入了两个 Stream，也就是两个隐状态：</p>
@@ -422,11 +439,16 @@
 <li>查询隐状态 $g_{\theta}\left(x_{z_{&lt;t}}, z_{t}\right)$， 简写为$g_{z_t}$，只是编码位置信息。</li>
 </ul>
 <p><img src="https://upload.cc/i1/2019/12/14/qIHEid.png" width="90%" height="90%">`</p>
+<p>所以在预测当前 $t$位置词语时候，$g_{\theta}\left(\mathbf{x}_{z_{&lt;t}}, z_{t}\right)$只能使用位置信息$z_t$而不能使用 $x_{z_t}$；为了预测$z_t$之后的词语，$g_{\theta}\left(\mathbf{x}_{z_{&lt;t}}, z_{t}\right)$ 必须编码了$x_{z_t}$ 的信息（语义）。</p>
+<blockquote>
+<p>so during finetuning, we can simply drop the query stream and use the content stream as a normal Transformer(-XL).<br>在predict的过程中，使用 <code>content stream</code>就可以。</p>
+</blockquote>
 <p>（3）部分预测</p>
 <p>排列语言模型排列很多，所以它的计算量很大，很难优化。因此我们只预测一个句子后面的一些词，为什么不预测前面的词呢？因为前面的词的上下文比较少，上下文信息相对较少。比如句子”I like New York”。预测I的时候没有任何上下文，因此可能的选择很多。而到最后一个词York的时候，如果New已经知道了，那么York的概率就非常大了。</p>
 <p>只是对句子后面的token进行预测，节省计算时间。<br>\begin{equation}<br>\frac{|z|-c}{|z|}=\frac{1}{K}<br>\end{equation}</p>
-<p>可以得出 $K \approx \frac{|z|-c}{|z|}$ ,所以前 $c$个不用预测的token。</p>
-<p>（4）Transformer-XL的思想</p>
+<p>可以得出 $K \approx \frac{|z|-c}{|z|}$ ,所以前 $c$个不用预测的token。从下图中也是可以发现：一个句子后面的词语相对于前面的词语在训练的时候可以得到更多的信息。</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/12/7bdfdac297efc4f6.png" alt=""></p>
+<p>（4）融入Transformer-XL的思想</p>
 <p>引入了Transformer-XL的主要思路：相对位置编码以及分段RNN机制。transformer要求输入是定长的词序列，太长的需要截断，不足的需要padding。这样的操作存在以下问题：</p>
 <ul>
 <li>由于定长的要求，我们不可能让输入太长。因此虽然Self-Attention机制虽然不太受长度的约束，但是Transformer的语言模型实际能够考虑的上下文就是输入的长度。</li>
@@ -435,7 +457,7 @@
 <p>1). 建模多个segment</p>
 <p>我们会把之前一个固定长度的词序列每一层的输出都放到一个cache里，比如把𝑥1,…,𝑥4的计算结果都存起来，那么在训练第二个Segment[𝑥5,…,𝑥8]的时候就可以让Self-Attention机制参考[𝑥1,…,𝑥4]的信息了。当然在反向计算梯度的时候，cache里的内容是不会参与梯度的计算的。</p>
 <p>2). 相对Segment编码</p>
-<p>BERT使用的是绝对的Segment编码，也就是第一个句子对于的Segment id是0，而第二个句子是1。这样如果把两个句子换一下顺序，那么输出是不一样的。XLNet 中使用的是Transformer-XL 中相对编码的思想。</p>
+<p>BERT使用的是绝对的Segment编码，也就是第一个句子对于的Segment id是0，而第二个句子是1。Transformer-XL使用到了上一个 segment的信息，如果使用绝对编码，那么无法通过向量判断它是来自当前segment 中第$i$位置还是前一个segment 中第$i$位置。所以Transformer-XL 使用的是相对位置编码。</p>
 <p>XLNet 效果好的原因：</p>
 <ul>
 <li>与Bert采取De-noising Autoencoder方式不同的新的预训练目标：Permutation Language Model(简称PLM)；这个可以理解为在自回归LM模式下，如何采取具体手段，来融入双向语言模型。这个是XLNet在模型角度比较大的贡献，确实也打开了NLP中两阶段模式潮流的一个新思路。</li>
@@ -443,8 +465,8 @@
 <li>加大增加了预训练阶段使用的数据规模；Bert使用的预训练数据是BooksCorpus和英文Wiki数据，大小13G。XLNet除了使用这些数据外，另外引入了Giga5，ClueWeb以及Common Crawl数据，并排掉了其中的一些低质量数据，大小分别是16G,19G和78G。可以看出，在预训练阶段极大扩充了数据规模，并对质量进行了筛选过滤。这个明显走的是GPT2.0的路线。</li>
 </ul>
 <p>但是和BERT不同，我们并没有增加一个预测下一个句子的Task，原因是通过实验分析这个Task加进去后并不是总有帮助。【注：其实很多做法都是某些作者的经验，后面很多作者一看某个模型好，那么所有的Follow，其实也不见得就一定好。有的时候可能只是对某个数据集有效果，或者效果好是其它因素带来的，一篇文章修改了5个因素，其实可能只是某一两个因素是真正带来提高的地方，其它3个因素可能并不有用甚至还是有少量副作用。】</p>
-<p>参考文献</p>
-<p><a href="http://fancyerii.github.io/2019/06/30/xlnet-theory/" target="_blank" rel="noopener">XLNet原理</a></p>
+<h2 id="UNILM"><a href="#UNILM" class="headerlink" title="UNILM"></a>UNILM</h2><p>参考文献</p>
+<p>1). <a href="https://arxiv.org/pdf/1906.08237.pdf" target="_blank" rel="noopener">XLNet: Generalized Autoregressive Pretraining for Language Understanding</a><br>2). <a href="http://fancyerii.github.io/2019/06/30/xlnet-theory/" target="_blank" rel="noopener">XLNet原理</a><br>3). <a href="https://spaces.ac.cn/archives/6933" target="_blank" rel="noopener">从语言模型到Seq2Seq：Transformer如戏，全靠Mask</a></p>
 <h2 id="DistilBERT-讲解"><a href="#DistilBERT-讲解" class="headerlink" title="DistilBERT 讲解"></a>DistilBERT 讲解</h2>
       
     </div>
@@ -469,8 +491,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/16/attention/" rel="next" title="注意力机制介绍">
-                <i class="fa fa-chevron-left"></i> 注意力机制介绍
+              <a href="/2019/06/09/lr/" rel="next" title="逻辑回归概念">
+                <i class="fa fa-chevron-left"></i> 逻辑回归概念
               </a>
             
           </div>
@@ -479,8 +501,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/06/17/tf-learning/" rel="prev" title="tensorflow learning">
-                tensorflow learning <i class="fa fa-chevron-right"></i>
+              <a href="/2019/06/16/attention/" rel="prev" title="注意力机制介绍">
+                注意力机制介绍 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -572,7 +594,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -594,7 +616,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -668,7 +690,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ALBERT"><span class="nav-number">1.</span> <span class="nav-text">ALBERT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对Embedding因式分解（Factorized-embedding-parameterization）"><span class="nav-number">1.1.</span> <span class="nav-text">对Embedding因式分解（Factorized embedding parameterization）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨层的参数共享（Cross-layer-parameter-sharing）"><span class="nav-number">1.2.</span> <span class="nav-text">跨层的参数共享（Cross-layer parameter sharing）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#句间连贯（sentence-order-prediction）"><span class="nav-number">1.3.</span> <span class="nav-text">句间连贯（sentence-order prediction）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除dropout"><span class="nav-number">1.4.</span> <span class="nav-text">移除dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XLNet-讲解"><span class="nav-number">2.</span> <span class="nav-text">XLNet 讲解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DistilBERT-讲解"><span class="nav-number">3.</span> <span class="nav-text">DistilBERT 讲解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ALBERT"><span class="nav-number">1.</span> <span class="nav-text">ALBERT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对Embedding因式分解（Factorized-embedding-parameterization）"><span class="nav-number">1.1.</span> <span class="nav-text">对Embedding因式分解（Factorized embedding parameterization）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨层的参数共享（Cross-layer-parameter-sharing）"><span class="nav-number">1.2.</span> <span class="nav-text">跨层的参数共享（Cross-layer parameter sharing）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#句间连贯（sentence-order-prediction）"><span class="nav-number">1.3.</span> <span class="nav-text">句间连贯（sentence-order prediction）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除dropout"><span class="nav-number">1.4.</span> <span class="nav-text">移除dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XLNet-讲解"><span class="nav-number">2.</span> <span class="nav-text">XLNet 讲解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UNILM"><span class="nav-number">3.</span> <span class="nav-text">UNILM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DistilBERT-讲解"><span class="nav-number">4.</span> <span class="nav-text">DistilBERT 讲解</span></a></li></ol></div>
             
 
           </div>
@@ -866,7 +888,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/06/16/improved_bert/';
           this.page.identifier = '2019/06/16/improved_bert/';
-          this.page.title = '后BERT时代';
+          this.page.title = '关于BERT改进的几篇论文';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

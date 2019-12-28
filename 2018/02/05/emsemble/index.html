@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。">
+<meta name="description" content="将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。  Ensemble models in machine learning operate on a similar idea. They combine the decisions from multiple models to improve the overall performance. This can be achi">
 <meta name="keywords" content="ensemble">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集成学习">
 <meta property="og:url" content="http://yoursite.com/2018/02/05/emsemble/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。">
+<meta property="og:description" content="将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。  Ensemble models in machine learning operate on a similar idea. They combine the decisions from multiple models to improve the overall performance. This can be achi">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-11T02:40:53.594Z">
+<meta property="og:updated_time" content="2019-12-22T09:07:16.409Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="集成学习">
-<meta name="twitter:description" content="将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。">
+<meta name="twitter:description" content="将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。  Ensemble models in machine learning operate on a similar idea. They combine the decisions from multiple models to improve the overall performance. This can be achi">
 
 
 
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-11T10:40:53+08:00">
-                2019-12-11
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-22T17:07:16+08:00">
+                2019-12-22
               </time>
             
           </span>
@@ -384,10 +384,10 @@
 
       
         <p>将集成学习分为基本集成学习方法、高级集成学习方法和基于集成学习的算法。</p>
-<a id="more"></a>
 <blockquote>
 <p>Ensemble models in machine learning operate on a similar idea. They combine the decisions from multiple models to improve the overall performance. This can be achieved in various ways, which you will discover in this article.</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="基本集成学习方法"><a href="#基本集成学习方法" class="headerlink" title="基本集成学习方法"></a>基本集成学习方法</h2><p>（1）Max Voting</p>
 <p>多人投票机制，使用所有的模型预测结果的多数，常用于分类问题。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">model1 = tree.DecisionTreeClassifier()</span><br><span class="line">model2 = KNeighborsClassifier()</span><br><span class="line">model3= LogisticRegression()</span><br><span class="line"></span><br><span class="line">model1.fit(x_train,y_train)</span><br><span class="line">model2.fit(x_train,y_train)</span><br><span class="line">model3.fit(x_train,y_train)</span><br><span class="line"></span><br><span class="line">pred1=model1.predict(x_test)</span><br><span class="line">pred2=model2.predict(x_test)</span><br><span class="line">pred3=model3.predict(x_test)</span><br><span class="line"></span><br><span class="line">final_pred = np.array([])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(x_test)):</span><br><span class="line">    final_pred = np.append(final_pred, mode([pred1[i], pred2[i], pred3[i]]))</span><br></pre></td></tr></table></figure>
@@ -428,9 +428,10 @@
 <p>第一层有两个基本的模型：决策树和K最近邻。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model1 = tree.DecisionTreeClassifier(random_state=<span class="number">1</span>)</span><br><span class="line">test_pred1 ,train_pred1=Stacking(model=model1,n_fold=<span class="number">10</span>, train=x_train,test=x_test,y=y_train)</span><br><span class="line">train_pred1=pd.DataFrame(train_pred1)</span><br><span class="line">test_pred1=pd.DataFrame(test_pred1)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model2 = KNeighborsClassifier()</span><br><span class="line">test_pred2 ,train_pred2=Stacking(model=model2,n_fold=<span class="number">10</span>,train=x_train,test=x_test,y=y_train)</span><br><span class="line">train_pred2=pd.DataFrame(train_pred2)</span><br><span class="line">test_pred2=pd.DataFrame(test_pred2)</span><br></pre></td></tr></table></figure>
-<p>第二层的结果</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df = pd.concat([train_pred1, train_pred2], axis=<span class="number">1</span>) <span class="comment"># 基本模型prediction 的结果当做训练的输入</span></span><br><span class="line">df_test = pd.concat([test_pred1, test_pred2], axis=<span class="number">1</span>)  <span class="comment"># 为了保证同分布，这里对test 数据集也做相同的转换</span></span><br><span class="line"></span><br><span class="line">model = LogisticRegression(random_state=<span class="number">1</span>)</span><br><span class="line">model.fit(df,y_train) <span class="comment"># 数据的label 还是作为第二层模型的label </span></span><br><span class="line">model.score(df_test, y_test) <span class="comment"># 最后是模型的输出</span></span><br></pre></td></tr></table></figure>
-<p>每一轮根据上一轮的分类结果动态调整每个样本在分类器中的权重，训练得到k个弱分类器，他们都有各自的权重，通过加权组合的方式得到最终的分类结果(综合所有的基模型预测结果)。主要算法有AdaBoost/GBDT/Xgboost/LightGBM。</p>
+<p>第一层的两个模型得到了predict的值，然后将结果拼接起来作为第二层模型的输入数据集，第二层模型的label 还是原始训练数据集的label。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df = pd.concat([train_pred1, train_pred2], axis=<span class="number">1</span>) <span class="comment"># 基本模型prediction 的结果当做训练的输入</span></span><br><span class="line">df_test = pd.concat([test_pred1, test_pred2], axis=<span class="number">1</span>)  <span class="comment"># 为了保证同分布，这里对test 数据集也做相同的转换</span></span><br><span class="line"></span><br><span class="line">model = LogisticRegression(random_state=<span class="number">1</span>)</span><br><span class="line">model.fit(df,y_train) <span class="comment"># 数据的label 还是作为第一层模型的label </span></span><br><span class="line">model.score(df_test, y_test) <span class="comment"># 最后是模型的输出</span></span><br></pre></td></tr></table></figure>
+<p>在 test 数据集上的预测，需要经过两层模型：首先输入到（决策树和k最近邻）的模型中，其结果再输入到第二层模型决策树中，决策树的预测值就是最后的结果。</p>
+<p>每一轮根据上一轮的分类结果动态调整每个样本在分类器中的权重，训练得到k个弱分类器，他们都有各自的权重，通过加权组合的方式得到最终的分类结果(综合所有的基模型预测结果)。</p>
 <p>（4）Blending</p>
 <p>Blending 相比于Stacking而言，Blending 是在训练集上train，在验证集和测试集上prediction，然后使用验证集和测试集的prediction作为 features 去学习下一个模型。</p>
 <p>算法步骤：</p>
@@ -450,13 +451,22 @@
 <p>（1）Random Forest</p>
 <p>Random Forest 的算法步骤：<br>1). Random subsets are created from the original dataset (bootstrapping).<br>2). At each node in the decision tree, only a random set of features are considered to decide the best split.<br>3). A decision tree model is fitted on each of the subsets.<br>4). The final prediction is calculated by averaging the predictions from all decision trees.</p>
 <p>总结来说，随机森林<strong>随机</strong> 选择数据点和特征，然后组成了多棵树的集合（森林）</p>
-<p>常见的超参数<br>1). n_estimators (子树的个数)</p>
+<p>常见的超参数<br>1 ). n_estimators (子树的个数)</p>
 <ul>
 <li>It defines the number of decision trees to be created in a random forest.</li>
-<li>Generally, a higher number makes the predictions stronger and more stable, but a very large number can result in higher training time.<br>2). max_features (使用最多特征的数量进行建立树)</li>
+<li>Generally, a higher number makes the predictions stronger and more stable, but a very large number can result in higher training time.</li>
+</ul>
+<p>2 ). max_features (使用最多特征的数量进行建立树)</p>
+<ul>
 <li>It defines the maximum number of features allowed for the split in each decision tree.</li>
-<li>Increasing max features usually improve performance but a very high number can decrease the diversity of each tree.<br>3). max_depth ( 是一个树的最大深度，也是所有树的最大深度)</li>
-<li>The maximum depth of the tree.<br>4). min_samples_leaf</li>
+<li>Increasing max features usually improve performance but a very high number can decrease the diversity of each tree.</li>
+</ul>
+<p>3 ). max_depth ( 是一个树的最大深度，也是所有树的最大深度)</p>
+<ul>
+<li>The maximum depth of the tree.</li>
+</ul>
+<p>4 ). min_samples_leaf</p>
+<ul>
 <li>This defines the minimum number of samples required to be at a leaf node.</li>
 <li>Smaller leaf size makes the model more prone to capturing noise in train data.</li>
 </ul>
@@ -504,8 +514,7 @@
 <p>Handling categorical variables is a tedious process, especially when you have a large number of such variables. When your categorical variables have too many labels (i.e. they are highly cardinal), performing one-hot-encoding on them exponentially increases the dimensionality and it becomes really difficult to work with the dataset.<br>CatBoost can automatically deal with categorical variables and does not require extensive data preprocessing like other machine learning algorithms. Here is an article that explains CatBoost in detail.</p>
 </blockquote>
 <p>从名字上就知道在处理类别信息很多的数据集中，不需要预处理，直接使用。</p>
-<p>参考文献</p>
-<p><a href="https://www.analyticsvidhya.com/blog/2018/06/comprehensive-guide-for-ensemble-models/" target="_blank" rel="noopener">A Comprehensive Guide to Ensemble Learning (with Python codes)</a></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>1). <a href="https://www.analyticsvidhya.com/blog/2018/06/comprehensive-guide-for-ensemble-models/" target="_blank" rel="noopener">A Comprehensive Guide to Ensemble Learning (with Python codes)</a>：关于集成学习全面的讲解。<br>2). <a href="https://machinelearningmastery.com/stacking-ensemble-for-deep-learning-neural-networks/" target="_blank" rel="noopener">How to Develop a Stacking Ensemble for Deep Learning Neural Networks in Python With Keras</a>：搭建的是CNN 的网络。<br>3). <a href="https://machinelearningmastery.com/implementing-stacking-scratch-python/" target="_blank" rel="noopener">How to Implement Stacked Generalization (Stacking) From Scratch With Python</a>： 仅仅使用了python，没有使用其他的各种机器学习的库。</p>
 
       
     </div>
@@ -639,7 +648,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -661,7 +670,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -735,7 +744,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本集成学习方法"><span class="nav-number">1.</span> <span class="nav-text">基本集成学习方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级集成学习方法"><span class="nav-number">2.</span> <span class="nav-text">高级集成学习方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于集成学习的算法"><span class="nav-number">3.</span> <span class="nav-text">基于集成学习的算法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本集成学习方法"><span class="nav-number">1.</span> <span class="nav-text">基本集成学习方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级集成学习方法"><span class="nav-number">2.</span> <span class="nav-text">高级集成学习方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于集成学习的算法"><span class="nav-number">3.</span> <span class="nav-text">基于集成学习的算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">4.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
             
 
           </div>

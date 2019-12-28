@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="介绍决策树的定义、三种不同的决策树和优劣等相关分析。">
+<meta name="description" content="介绍决策树的定义、分类，重点介绍决策树中特征选择的三种算法和决策树的优劣。">
 <meta name="keywords" content="decision_tree">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Decision Tree">
 <meta property="og:url" content="http://yoursite.com/2019/11/23/decision-tree/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="介绍决策树的定义、三种不同的决策树和优劣等相关分析。">
+<meta property="og:description" content="介绍决策树的定义、分类，重点介绍决策树中特征选择的三种算法和决策树的优劣。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://s2.ax1x.com/2019/07/20/Zzs1Vf.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/07/20/Zzs3a8.png">
-<meta property="og:updated_time" content="2019-11-25T14:33:49.210Z">
+<meta property="og:updated_time" content="2019-12-27T07:40:44.784Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Decision Tree">
-<meta name="twitter:description" content="介绍决策树的定义、三种不同的决策树和优劣等相关分析。">
-<meta name="twitter:image" content="https://s2.ax1x.com/2019/07/20/Zzs1Vf.png">
+<meta name="twitter:description" content="介绍决策树的定义、分类，重点介绍决策树中特征选择的三种算法和决策树的优劣。">
 
 
 
@@ -314,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-11-25T22:33:49+08:00">
-                2019-11-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-27T15:40:44+08:00">
+                2019-12-27
               </time>
             
           </span>
@@ -386,141 +383,92 @@
       
 
       
-        <p>介绍决策树的定义、三种不同的决策树和优劣等相关分析。</p>
+        <p>介绍决策树的定义、分类，重点介绍决策树中特征选择的三种算法和决策树的优劣。</p>
 <a id="more"></a>
+<blockquote>
+<p>Decision Trees (DTs) are a non-parametric supervised learning method used for classification and regression. The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from the data features.<br>决策树是有监督无参数的机器学习方法，可以用于分类和回归问题的求解。</p>
+</blockquote>
 <p>从数学上讲，决策树是一个分段函数。在机器学习中，是一种基本的分类和回归方法。决策树的学习通常包括三个步骤： 特征选择、决策树的生成和决策树的修建。主要有三种算法： ID3、C4.5生成算法和CART 算法。</p>
 <blockquote>
 <p>A learned binary tree is actually a partitioning of the input space. You can think of each input variable as a dimension on a p-dimensional space. The decision tree split this up into rectangles (when p=2 input variables) or some kind of hyper-rectangles with more inputs.</p>
 </blockquote>
 <p>当决策树训练完之后，就相当于把 $p$ 维空间分成了若干个子空间（数量是和叶子节点数量相同），然后predict 的过程就是把某个样本放到某个空间的过程。</p>
-<h2 id="决策树的定义"><a href="#决策树的定义" class="headerlink" title="决策树的定义"></a>决策树的定义</h2><h2 id="三种算法"><a href="#三种算法" class="headerlink" title="三种算法"></a>三种算法</h2><blockquote>
-<p>As we move further down the tree, the level of impurity or uncertainty decreases, thus leading to a better classification or best split at every node. To decide the same, splitting measures such as Information Gain, Gini Index, etc. are used.</p>
-</blockquote>
-<p>当沿着树的结构往下走的时候，样本的不确定性或者”impurity“应该是下降的。衡量的指标有 Gini Index或者Information Gain。</p>
-<h3 id="CART算法"><a href="#CART算法" class="headerlink" title="CART算法"></a>CART算法</h3><blockquote>
-<p>CART algorithm can be used for building both Classification and Regression Decision Trees. The impurity (or purity) measure used in building decision tree in CART is Gini Index. The decision tree built by CART algorithm is always a binary decision tree (each node will have only two child nodes).</p>
-</blockquote>
-<p>既可以使用在分类场景也可以使用在回归场景，基于二叉树构建。</p>
+<h2 id="决策树分类"><a href="#决策树分类" class="headerlink" title="决策树分类"></a>决策树分类</h2><p>分类树： 穷举每一个特征属性的每个阈值，然后按照 feature &lt; 阈值 和 feature &gt; 阈值选择熵和阈值。根据上述标准得到新的节点，用同样的方式继续分支直到将所有数据点都分入性别唯一的叶子节点，或达到了预设的终止条件，若最终叶子节点中的性别不唯一，那么以多数人的性别作为该叶子节点的性别。</p>
+<p>回归树： 在每个节点（不一定是叶子节点）都会得到一个预测值，以年龄为例，该预测值是这个节点所有人年龄的平均值。分支穷举每一个feature 的每个阈值找到最好的分割点，但是这个标准不是最大熵，而是最小化均方差。最终的结束条件是达到预设的终止条件或者每个叶子节点上人的年龄都一样（几乎不可能），如果不统一，则以该节点上所有人的平均年龄作为该叶子节点的预测年龄。</p>
+<h2 id="特征选择算法"><a href="#特征选择算法" class="headerlink" title="特征选择算法"></a>特征选择算法</h2><p>决策树的建立包含特征选择、决策树构建和剪枝三个过程。特征选择有很多算法，本文中介绍最常见的三种算法。</p>
+<ul>
+<li>Iterative Dichotimiser 3 (ID3) </li>
+<li>C4.5 </li>
+<li>CART - independently invented around the same time as C4.5, also still very popular</li>
+</ul>
+<h3 id="ID3-算法"><a href="#ID3-算法" class="headerlink" title="ID3 算法"></a>ID3 算法</h3><p>（1）算法流程</p>
+<p>计算数据集 $D$ 的熵 $H(D)$</p>
+<p>$$<br>IG(S, a) = H(S) – H(S | a)<br>$$<br>其中  $IG(S, a) $ 是数据集 $S$ 对于变量 $a$ 的信息增益， $H(S)$ 表示数据集整个熵， $H(S| a) $表示条件熵。</p>
+<p>（2）特点</p>
+<ul>
+<li>该算法是基于贪心实现，每次选取特征都是当前的最优解，并一定是全局的最优解。</li>
+<li>每次迭代时候，依据特征属性划分，然后计算信息增益。如果特征的取值较多（类别多），那么最后的信息增益大，容易被当做分裂点。但是基于取值多少进行划分的特征选择并不能保证分类效果好。当前特征使用过之后，接下来的树的分裂不能再次使用该特征。</li>
+<li>不能处理缺省值。</li>
+</ul>
+<h3 id="C4-5-算法"><a href="#C4-5-算法" class="headerlink" title="C4.5 算法"></a>C4.5 算法</h3><p>基于 ID3进行改进，ID3 一般会优先选择属性值比较多的特征（信息增益反应的是给定一个条件之后不确定性减少的程度，必然分得越细的数据集确定性越高，也就是条件熵越小，信息增益越大）。为了避免这个问题， C4.5 算法使用信息比率作为特征选择的方式。除此之外，C4.5 还弥补了ID3 中不能处理特征连续值的问题。</p>
+<p>首先还是计算信息增益<br>$$<br>IG(D, A) = H(D) – H(D | A)<br>$$<br>然后计算信息增益率<br>$$<br>GainRation(D, A) = \frac{IG(D, A)}{ IV(A)}<br>$$<br>其中 $IV(A)$ 表示如下：<br>$$<br>IV (A) = - \sum_{v=1}^{V} \frac{ |D^v|}{ |D|} \log _2 \frac{ |D^v|}{ |D|}<br>$$<br>其中 $A $被称为分支标准的固有值，作为分支标准的属性可取值越多，那么 $IV$ 值越大。信息增益率对于特征取值比较少的属性有偏向，所以在 C4.5 决策树中先从候选划分属性中找出信息增益高于均值的，然后在从其中选择信息增益率最高的。</p>
+<p>（1）处理连续值特征</p>
+<p>C4.5 算法中处理连续值是先将连续属性离散化，然后再处理。对于 $N$个样本，有 $N-1$中离散化方法，这种计算量是非常大的。通过以下的方式可以减少计算量：可以先按照连续属性排序，只有在分类发生改变的地方才需要将其切开。</p>
+<p>（2）C4.5 的提升点</p>
 <blockquote>
-<p>For regression predictive modeling problems the cost function that is minimized to choose split points is the sum squared error across all training samples that fall within the rectangle:<br>$$sum(y- prediction) ^2$$<br>For classification the Gini index function is used which provides an indication of how “pure” the leaf nodes are (how mixed the training data assigned to each node is).</p>
+<ul>
+<li>Handling both continuous and discrete attributes - In order to handle continuous attributes, C4.5 creates a threshold and then splits the list into those whose attribute value is above the threshold and those that are less than or equal to it.</li>
+<li>Handling training data with missing attribute values - C4.5 allows attribute values to be marked as ? for missing. Missing attribute values are simply not used in gain and entropy calculations.</li>
+<li>Handling attributes with differing costs.</li>
+<li>Pruning trees after creation - C4.5 goes back through the tree once it’s been created and attempts to remove branches that do not help by replacing them with leaf nodes.<br>相对于ID3的提升点：</li>
+<li>能够处理连续变量和离散变量</li>
+<li>能够处理缺省值（处理方式比较粗暴，直接在熵的计算过程中忽略）</li>
+<li>树建立之后剪枝，如果分支没有对最后的结果提升，那么就剪枝</li>
+</ul>
 </blockquote>
-<p>以 greedy splitting 为例，当然也有基于这种方式的优化，比如在xgboost 中使用桶的方式进行优化。greedy splittinig 简单说是对于样本中的每个特征和特征中的每个分裂点进行枚举。对于回归问题，使用均方差作为loss function；对于二分类问题，使用gini 系数作为loss function。</p>
-<blockquote>
-<p>Each root node represents a single input variable (x) and a split point on that variable (assuming the variable is numeric). The leaf nodes of the tree contain an output variable (y) which is used to make a prediction.</p>
+<h3 id="CART-算法"><a href="#CART-算法" class="headerlink" title="CART 算法"></a>CART 算法</h3><blockquote>
+<p>CART algorithm can be used for building both Classification and Regression Decision Trees. The impurity (or purity) measure used in building decision tree in CART is Gini Index. The decision tree built by CART algorithm is always a binary decision tree (each node will have only two child nodes).<br>既可以使用在分类场景也可以使用在回归场景，基于二叉树构建。对于分类问题使用 Gini 系数作为损失函数；对于回归问题使用均方误差作为损失函数。</p>
 </blockquote>
-<p>树的结构：根节点是数据的输入 $x$（$x$ 是可以包含若干个特征的）， 叶子节点是数值用于 make a prediciton.</p>
-<p>CART算法基于Gini 系数。下面介绍关于GIni系数的定义，计算的例子。</p>
-<ol>
-<li>第一种定义</li>
-</ol>
-<blockquote>
-<p>Gini index or Gini impurity measures the degree or probability of a particular variable being wrongly classified when it is randomly chosen.<br>Gini Index is a metric to measure how often a randomly chosen element would be incorrectly identified.</p>
-</blockquote>
-<p>基尼系数或者基尼不纯： 任意选择一个样本，该样本被错误分类的概率。表示为以下的形式</p>
-<p>$$<br>Gini =1-\sum _{i=1}  ^{C}(p _{i})  ^{2}<br>$$</p>
-<p>其中 $C$表示类别的个数。在xgboost 或者说在 boosted tree 中使用的是该指标。</p>
-<blockquote>
-<p>It means an attribute with lower Gini index should be preferred.</p>
-</blockquote>
-<p>数值越小，那么最后的结果是越好的</p>
-<blockquote>
-<p>The algorithm works as$ 1 – ( P(class1)^2 + P(class2)^2 + … + P(classN)^2)$</p>
-</blockquote>
-<p>详细情况看下面的例子。当选择一个分裂点之后，计算每个不同类的概率进而计算Gini 系数。</p>
-<ol start="2">
-<li>第二种定义</li>
-</ol>
-<blockquote>
-<p>Gini impurity is a measure of misclassification, which applies in a multiclass classifier context.<br>Gini coefficient applies to binary classification and requires a classifier that can in some way rank examples according to the likelihood of being in a positive class.</p>
-</blockquote>
-<ol start="3">
-<li>第三种定义</li>
-</ol>
+<p>（1）定义</p>
 <p>数据集合 𝐷 的纯度可用基尼指数来度量：<br>$$<br>Gini ( D ) = \sum _ { k = 1 } ^ { | \mathcal { Y } | } \sum _ { k ^ { \prime } \neq k } p _ { k } p _ { k ^ { \prime } } = 1 - \sum _ { k = 1 } ^ { \mathcal { V } } p _ { k } ^ { 2 }<br>$$<br>直观来看，$Gini(𝐷) $ 反映了从数据集 𝐷 中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(𝐷) $ 越小，则数据集 𝐷 的纯度越高。</p>
 <p>对特定属性 𝑎 的基尼指数定义如下：<br>$$<br>Gini  _{index}( D , a ) = \sum _ { v = 1 } ^ { V } \frac { | D _ { v } | } { | D | } \operatorname { Gini } ( D _ { v } )<br>$$<br>我们在候选属性集合 𝐴 中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
 <p>$$<br>a _ { * } = \arg \min _ { a \in A } Gini _{index } ( D , a )<br>$$</p>
 <p>采用基尼指数作为划分属性的判据的决策树是一种 CART 决策树。</p>
-<ol start="4">
-<li>例子</li>
-</ol>
-<p>选择最优分类点的整体思路：首先遍历特征，在每个特征内遍历可以分裂的点。比如</p>
+<p>（2）和C4.5 的比较</p>
 <blockquote>
-<p>Calculating Gini Index for Var A:<br>Value &gt;= 5: 12<br>Attribute A &gt;= 5 &amp; class = positive:  $\frac{5}{12}$<br>Attribute A &gt;= 5 &amp; class = negative:  $\frac{7}{12} $<br>$Gini(5, 7) =  1 –  [  ( \frac{5}{12}  ) ^{2} +  ( \frac{7}{12}  ) ^{2} ]    = 0.4860 $<br>Value &lt; 5: 4<br>Attribute A &lt; 5 &amp; class = positive:  $\frac{3}{4} $<br>Attribute A &lt; 5 &amp; class = negative:  $\frac{1}{4} $<br>$Gini(3, 1) = 1 –  [  ( \frac{3}{4}  ) ^{2} +  ( \frac{1}{4}  ) ^{2} ]      = 0.375 $<br>By adding weight and sum each of the gini indices:<br>$gini(Target, A) =  ( \frac{12}{16}  ) * (0.486) +  ( \frac{4}{16}  ) * (0.375) = 0.45825 $</p>
+<p>Gini Index, unlike information gain, isn’t computationally intensive as it doesn’t involve the logarithm function used to calculate entropy in information gain, which is why Gini Index is preferred over Information gain.<br>Gini index 的计算量相对于信息增益是要小，因为后者有log 运算。</p>
 </blockquote>
-<p>所以对于特征A 那么得到的基尼系数是 0.45825。 同理可以计算计算特征B，C… H. 然后选择基尼系数最小的特征作为当前的分类结点。</p>
 <p>关于例子介绍更加详细的内容，参看<a href="https://www.geeksforgeeks.org/decision-tree-introduction-example/" target="_blank" rel="noopener">Decision Tree Introduction with example</a></p>
-<h3 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h3><p>ID3 （Iterative Dichotomiser 3） 基于信息增益计算。</p>
-<ol>
-<li>信息增益的定义</li>
-</ol>
+<h2 id="剪枝"><a href="#剪枝" class="headerlink" title="剪枝"></a>剪枝</h2><p>剪枝分为预剪枝和后剪枝。</p>
 <blockquote>
-<p>This algorithm uses Information Gain to decide which attribute is to be used classify the current subset of the data. For each level of the tree, information gain is calculated for the remaining data recursively.</p>
+<p>The most common stopping procedure is to use a minimum count on the number of training instances assigned to each leaf node. If the count is less than some minimum then the split is not accepted and the node is taken as a final leaf node.<br>在决策树构造的过程中，许多分支反应的是训练数据集中的异常，预剪枝通过减去这样的分支，处理过分适应数据问题。常见的预剪枝策略如下：</p>
+<ul>
+<li>限制树的高度</li>
+<li>叶子节点中的最少样本数，如果叶子节点中包含适当大的样本数，那么可以防止过拟合</li>
+</ul>
 </blockquote>
-<p>是基于信息增益作为衡量的指标。熵公式表示为：<br>$$<br>E=\sum _{i=1}  ^{C}-p _{i} * \log  _{2}(p _{i})<br>$$</p>
-<p>信息增益的表示为：<br>$$<br>Gain(D, C_1) =H(D) - E _{C_1}<br>$$<br>其中 $H(D)$ 是划分前的信息熵，$E _{C_1}$ 是划分之后的信息熵。</p>
 <blockquote>
-<p>熵（entropy）： 熵指的是体系的混乱的程度<br>信息增益（information gain）： 在划分数据集前后信息发生的变化称为信息增益，信息增益越大，确定性越强。</p>
+<p>The fastest and simplest pruning method is to work through each leaf node in the tree and evaluate the effect of removing it using a hold-out test set. Leaf nodes are removed only if it results in a drop in the overall cost function on the entire test set. You stop removing nodes when no further improvements can be made.<br>后剪枝，当训练完成之后，自底向上对叶子节点进行检查，如果去掉不影响在 测试集上的loss，那么就去掉。方法也有很多，比如</p>
+<ul>
+<li>代价复杂剪枝</li>
+<li>最小误差剪枝</li>
+</ul>
 </blockquote>
-<p>对于Gini 系数是越小越好，但是对于信息增益来说是越大越好。</p>
-<ol start="2">
-<li>计算信息增益的例子</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">原始的数据集：</span><br><span class="line"></span><br><span class="line">编号	色泽	根蒂	敲声	纹理	脐部	触感	好瓜</span><br><span class="line">1	青绿	蜷缩	浊响	清晰	凹陷	硬滑	是</span><br><span class="line">2	乌黑	蜷缩	沉闷	清晰	凹陷	硬滑	是</span><br><span class="line">3	乌黑	蜷缩	浊响	清晰	凹陷	硬滑	是</span><br><span class="line">4	青绿	蜷缩	沉闷	清晰	凹陷	硬滑	是</span><br><span class="line">5	浅白	蜷缩	浊响	清晰	凹陷	硬滑	是</span><br><span class="line">6	青绿	稍蜷	浊响	清晰	稍凹	软粘	是</span><br><span class="line">7	乌黑	稍蜷	浊响	稍糊	稍凹	软粘	是</span><br><span class="line">8	乌黑	稍蜷	浊响	清晰	稍凹	硬滑	是</span><br><span class="line">9	乌黑	稍蜷	沉闷	稍糊	稍凹	硬滑	否</span><br><span class="line">10	青绿	硬挺	清脆	清晰	平坦	软粘	否</span><br><span class="line">11	浅白	硬挺	清脆	模糊	平坦	硬滑	否</span><br><span class="line">12	浅白	蜷缩	浊响	模糊	平坦	软粘	否</span><br><span class="line">13	青绿	稍蜷	浊响	稍糊	凹陷	硬滑	否</span><br><span class="line">14	浅白	稍蜷	沉闷	稍糊	凹陷	硬滑	否</span><br><span class="line">15	乌黑	稍蜷	浊响	清晰	稍凹	软粘	否</span><br><span class="line">16	浅白	蜷缩	浊响	模糊	平坦	硬滑	否</span><br><span class="line">17	青绿	蜷缩	沉闷	稍糊	稍凹	硬滑	否</span><br></pre></td></tr></table></figure>
-<p>使用上面的数据集进行说明。在决策树学习开始时，根结点包含 𝐷 中所有样例，正例占 $p _ { 1 } = \frac { 8 } { 17 }$，反例占$ p_2=\frac{9}{17}$。根结点的信息熵（下面我们都以比特为单位计算）为：</p>
-<p>$$<br>H ( D ) = - \sum _ { k = 1 } ^ { 2 } p ( k ) \log _ { 2 } p ( k ) = - ( \frac { 7 } { 17 } \log _ { 2 } \frac { 7 } { 17 } + \frac { 9 } { 17 } \log _ { 2 } \frac { 9 } { 17 } ) = 0.998<br>$$</p>
-<p>然后我们要计算出与当前属性集合 {色泽、根蒂、敲声、纹理、脐部、触感}中每个属性的<strong><em> 信息增益，也就是对应的互信息</em></strong>。以属性“色泽”为例，它有 3 个可能取值：{青绿、乌黑、浅白}。以该属性对数据集进行划分，可以得到 3 个子集，分别为：$D_1(色泽=青绿) $、$ D_2(色泽=乌黑)$ 、$D_3(色泽=浅白)$。</p>
-<p>对子集$ D_1$ 来说，包含了编号为 {1,4,6,10,13,17} 的 6 个样例，其中正例为 {1,4,6}，占$ p_1=36$ ；反例为 {10,13,17}，占 $p_1=36$。计算其熵为：<br>$$<br>H ( D _ { 1 } ) = - ( \frac { 3 } { 6 } \log _ { 2 } \frac { 3 } { 6 } + \frac { 3 } { 6 } \log _ { 2 } \frac { 3 } { 6 } ) = 1.000<br>$$</p>
-<p>依次可以计算另外两个子集的信息熵为：<br>$$<br>H ( D _ { 2 } ) = 0.918<br>$$<br>$$<br>H ( D _ { 3 } ) = 0.722<br>$$<br>最终可以计算数据集 $D$ 的类别信息在属性“色泽”熵的信息增益（也可以理解为类别与“色泽”属性之间的互信息）为：</p>
-<p>$$<br>\begin{split}<br>Gain(D, 色泽) &amp;= H ( D ) - \sum _ { v = 1 } ^ { 3 } p ( v ) H ( D _ { v } ) \\<br>&amp;= 0.998 - ( \frac { 6 } { 17 } \times 1.000 + \frac { 6 } { 17 } \times 0.918 + \frac { 5 } { 17 } \times 0.722 ) \\<br>&amp;= 0.109<br>\end{split}<br>$$<br>重复上述的计算步骤，我们可以计算出其他属性的信息增益：</p>
-<p>$$<br>\begin{split}<br>Gain(𝐷,根蒂)  &amp;=0.143 \\<br>Gain(𝐷,敲声) &amp;= 0.141 \\<br>Gain(𝐷,纹理) &amp;= 0.381\\<br>Gain(𝐷,脐部) &amp;= 0.289 \\<br>Gain(𝐷,触感) &amp;=0.006<br>\end{split}<br>$$</p>
-<p>经过比较，发现采用“纹理”进行划分得到的信息增益最大，于是它被选为划分属性。下图给出了根据“纹理”属性划分之后的数据子集：</p>
-<p><img src="https://s2.ax1x.com/2019/07/20/Zzs1Vf.png" alt="Zzs1Vf.png"></p>
-<p>对每一个数据子集按照上边的步骤继续划分下去就能得到最终的决策树（需要注意的是每次样例子集中的属性不包含父结点中划分所依赖的属性），如下图所示：</p>
-<p><img src="https://s2.ax1x.com/2019/07/20/Zzs3a8.png" alt="Zzs3a8.png"></p>
-<h3 id="C4-5"><a href="#C4-5" class="headerlink" title="C4.5"></a>C4.5</h3><blockquote>
-<p>This algorithm is the successor of the ID3 algorithm. This algorithm uses either Information gain or Gain ratio to decide upon the classifying attribute. It is a direct improvement from the ID3 algorithm as it can handle both continuous and missing attribute values.</p>
-</blockquote>
-<p>是基于ID3的改进，基于信息增益率，改进点在于支持连续性变量和缺省值。</p>
-<p>上一种方式缺点在于当使用信息增益划分时候，当某一个属性的取值类别非常多时，对应的属性的自己小，那么分类信息熵会比较小，最后的信息增益会比较大。</p>
-<p>原因：log 函数不是线性的， 信息量减少速度大于类别数量增加的速度。（虽然项数多了，但是每项减少的速度更大）</p>
-<p>（最后的选择策略还是比较牛逼的，各种情况都是可以考虑到的）<br>所以第二种策略采用信息增益率，简单来说就是归一化，将数据集的大小考虑在内。最后一点需要注意的是，增益率准则虽然减少了对取值数目较多的属性依赖，但是增加了对取值数目较少的属性偏好。因此， C4.5 并没有直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出 信息增益 高于 平均水平 的属性，再从中选择 增益率 最高的。</p>
-<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><blockquote>
-<p>Gini Index, unlike information gain, isn’t computationally intensive as it doesn’t involve the logarithm function used to calculate entropy in information gain, which is why Gini Index is preferred over Information gain.</p>
-</blockquote>
-<p>Gini index 的计算量相对于信息增益是要小，因为后者有log 运算。</p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><ol>
-<li>树形结构为什么不需要归一化？</li>
-</ol>
+<h2 id="优劣"><a href="#优劣" class="headerlink" title="优劣"></a>优劣</h2><p>优点：</p>
+<ul>
+<li>决策树建立的决策规则很容易被理解，可以比较容易的转换成规则</li>
+<li>应用范围广，可以用于回归和分类问题</li>
+<li>不需要进行数据的预处理；可以处理数值类型和连续类型的特征；适用于较大的数据集，因为树的规模和数据的规模是独立的</li>
+</ul>
+<p>为什么不需要进行预处理？</p>
 <ul>
 <li>数值缩放不影响分裂点位置，对树模型的结构不造成影响。 按照特征值进行排序的，排序的顺序不变，那么所属的分支以及分裂点就不会有不同。</li>
 <li>树模型是不能进行梯度下降的，因为构建树模型（回归树）寻找最优点时是通过寻找最优分裂点完成的，因此树模型是阶跃的，阶跃点是不可导的，并且求导没意义，也就不需要归一化。</li>
 </ul>
-<ol start="2">
-<li>决策树如何进行剪枝?</li>
-</ol>
-<p>基本上有预剪枝和后剪枝两种策略。</p>
-<blockquote>
-<p>The most common stopping procedure is to use a minimum count on the number of training instances assigned to each leaf node. If the count is less than some minimum then the split is not accepted and the node is taken as a final leaf node.</p>
-</blockquote>
-<p>预剪枝，在训练过程中，使用验证数据集验证，如果划分能够提高划分的准确性，阿么就划分，否则就标记为叶子节点。</p>
-<blockquote>
-<p>The fastest and simplest pruning method is to work through each leaf node in the tree and evaluate the effect of removing it using a hold-out test set. Leaf nodes are removed only if it results in a drop in the overall cost function on the entire test set. You stop removing nodes when no further improvements can be made.</p>
-</blockquote>
-<p>后剪枝，当训练完成之后，自底向上对叶子节点进行检查，如果去掉不影响在 测试集上的loss，那么就去掉</p>
-<ol start="3">
-<li>优缺点</li>
-</ol>
-<p>优点：</p>
-<ul>
-<li>决策树易于理解（能够写出判断的路径，逻辑表达式）和实现， 人们知道该如何去优化。</li>
-<li>可以处理缺省数据，意味着数据的准备工作是比较简单的。相对比其他的技术，往往需要一般化之类的操作。</li>
-<li>能够处理数值型和常规性属性。</li>
-<li>可以学习到特征的组合</li>
-</ul>
 <p>缺点：</p>
 <ul>
-<li>容易过拟合</li>
-<li>对于各个类别不一致的数据，决策树当中信息增益的结果偏向于那些具有更多数值的特征。</li>
+<li>很容易在训练过程中形成复杂的树结构，造成过拟合（overfitting）。通过剪枝是可以缓解过拟合的副作用</li>
+<li>处理缺省值比较困难（只是把缺省值ignore）</li>
 </ul>
 
       
@@ -552,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/11/17/optimizer/" rel="next" title="optimizer">
-                <i class="fa fa-chevron-left"></i> optimizer
+              <a href="/2019/11/17/optimizer/" rel="next" title="Optimizer">
+                <i class="fa fa-chevron-left"></i> Optimizer
               </a>
             
           </div>
@@ -655,7 +603,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -677,7 +625,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -751,7 +699,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树的定义"><span class="nav-number">1.</span> <span class="nav-text">决策树的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三种算法"><span class="nav-number">2.</span> <span class="nav-text">三种算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CART算法"><span class="nav-number">2.1.</span> <span class="nav-text">CART算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ID3"><span class="nav-number">2.2.</span> <span class="nav-text">ID3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C4-5"><span class="nav-number">2.3.</span> <span class="nav-text">C4.5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比较"><span class="nav-number">2.4.</span> <span class="nav-text">比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">3.</span> <span class="nav-text">分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树分类"><span class="nav-number">1.</span> <span class="nav-text">决策树分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征选择算法"><span class="nav-number">2.</span> <span class="nav-text">特征选择算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ID3-算法"><span class="nav-number">2.1.</span> <span class="nav-text">ID3 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C4-5-算法"><span class="nav-number">2.2.</span> <span class="nav-text">C4.5 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CART-算法"><span class="nav-number">2.3.</span> <span class="nav-text">CART 算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#剪枝"><span class="nav-number">3.</span> <span class="nav-text">剪枝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优劣"><span class="nav-number">4.</span> <span class="nav-text">优劣</span></a></li></ol></div>
             
 
           </div>

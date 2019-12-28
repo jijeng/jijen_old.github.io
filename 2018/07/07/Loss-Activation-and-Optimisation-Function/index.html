@@ -79,20 +79,19 @@
 
 
 
-<meta name="description" content="主要介绍 activation function， loss function 等等概念和分类。">
+<meta name="description" content="介绍激活函数（activation function）、损失函数（loss function）和在pytorch框架下的使用。">
 <meta name="keywords" content="loss function,Activation Function">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Activation Function and Loss Function">
 <meta property="og:url" content="http://yoursite.com/2018/07/07/Loss-Activation-and-Optimisation-Function/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="主要介绍 activation function， loss function 等等概念和分类。">
+<meta property="og:description" content="介绍激活函数（activation function）、损失函数（loss function）和在pytorch框架下的使用。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450tpr64tj20df083wee.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450uxt3ykj20df083a9y.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450wzrr2gj20df0830sl.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450y6qpe0j20df083745.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/15/5d2c371ec62f690070.png">
-<meta property="og:image" content="https://i.loli.net/2019/07/15/5d2c371ee553533628.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/19/A4CbxqHPifJ51ZY.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/15/5d2c39ac3289176404.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/1b14b874a9323ede.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/b181fa529616d69a.png">
@@ -100,10 +99,10 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g452awgfddj20fg0b1t91.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/07/24/5d37d9e627d1146288.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/24/5d37d9e61e96676671.png">
-<meta property="og:updated_time" content="2019-08-02T05:39:48.000Z">
+<meta property="og:updated_time" content="2019-12-19T15:46:19.873Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Activation Function and Loss Function">
-<meta name="twitter:description" content="主要介绍 activation function， loss function 等等概念和分类。">
+<meta name="twitter:description" content="介绍激活函数（activation function）、损失函数（loss function）和在pytorch框架下的使用。">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g450tpr64tj20df083wee.jpg">
 
 
@@ -325,8 +324,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-02T13:39:48+08:00">
-                2019-08-02
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-19T23:46:19+08:00">
+                2019-12-19
               </time>
             
           </span>
@@ -397,7 +396,7 @@
       
 
       
-        <p>主要介绍 activation function， loss function 等等概念和分类。</p>
+        <p>介绍激活函数（activation function）、损失函数（loss function）和在pytorch框架下的使用。</p>
 <a id="more"></a>
 <h2 id="Activation-Function"><a href="#Activation-Function" class="headerlink" title="Activation Function"></a>Activation Function</h2><h3 id="What"><a href="#What" class="headerlink" title="What?"></a>What?</h3><blockquote>
 <p>It’s just a thing (node) that you add to the output end of any neural network. It is also known as <strong>Transfer Function</strong>. It can also be attached in between two Neural Networks.</p>
@@ -407,7 +406,7 @@
 <blockquote>
 <p>Think of the activation function as a mathematical operation that normalises the input and produces an output. The output is then passed forward onto the neurons on the subsequent layer.</p>
 </blockquote>
-<p>作用：增加非线性</p>
+<p>激活函数的本质是增加网络的非线性。</p>
 <p>The thresholds are pre-defined numerical values in the function. This very nature of the activation functions can add non-linearity to the output. </p>
 <h3 id="Activation-Function-Types"><a href="#Activation-Function-Types" class="headerlink" title="Activation Function Types"></a>Activation Function Types</h3><p><strong> Linear Activation Function:</strong></p>
 <p>$$<br> output  = k * x<br>$$<br>where $k$ is a scalar value, as an instance 2, and $x$ is the input.</p>
@@ -416,6 +415,7 @@
 <p>The sigmoid activation function is “S” shaped. It can add non-linearity to the output and returns a binary value of 0 or 1.</p>
 <p>$$<br>Output  = \frac { 1 } { 1 + e ^ { - x } }<br>$$</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g450uxt3ykj20df083a9y.jpg" alt=""><br>这个函数有一个很好的导数形式，在反向传播的时候，效果比较明显。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F <span class="comment"># pytorch 大多数激活函数都是这里</span></span><br></pre></td></tr></table></figure>
 <p><strong>Tanh Activation Function</strong></p>
 <p>Tanh is an extension of the sigmoid activation function. Hence Tanh can be used to add non-linearity to the output. The output is within the range of -1 to 1. Tanh function shifts the result of the sigmoid activation function:</p>
 <p>$$<br>\text { Output } = \frac { 2 } { 1 + e ^ { - 2 x } } - 1<br>$$</p>
@@ -423,6 +423,18 @@
 <p><strong>Rectified Linear Unit Activation Function (RELU)</strong></p>
 <p>RELU is one of the most used activation functions. It is preferred to use RELU in the hidden layer. The concept is very straight forward. It also adds non-linearity to the output. However the result can range from 0 to infinity.</p>
 <p>$$<br> Output  = \max ( 0 , x )<br>$$<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g450y6qpe0j20df083745.jpg" alt=""><br>这个是很高的评价了。<br>If you are unsure of which activation function you want to use then use RELU.</p>
+<p>在pytorch<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line">relu = nn.Relu()</span><br></pre></td></tr></table></figure></p>
+<p>但是问题在于负值容易引起神经死亡，每次遇到负值部分，激活函数都是为0.</p>
+<p><strong>Leaky Relu</strong></p>
+<p>为了处理负值问题，Relu 有了变种，表达式为<br>$$<br> Output  = \max ( 0.01 *x , x )<br>$$</p>
+<p>解决了当 $x&lt;0$时候，网络死亡的问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line">relu = nn.leaky_relu()</span><br></pre></td></tr></table></figure>
+<p><strong>Pre Relu</strong></p>
+<p>为了处理负值问题，Relu 有了变种，表达式为<br>$$<br> Output  = \max ( a *x , x )<br>$$</p>
+<p>解决了当 $x&lt;0$时候，网络死亡的问题。其中的超参数$a$ 是可以调整的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line">relu = nn.PRelu()</span><br></pre></td></tr></table></figure>
+<p><strong>Elu Exponential Line Unit</strong></p>
+<p>$$<br>\text{ELU}(x) = \max(0,x) + \min(0, \alpha * (\exp(x) - 1))`.<br>$$<br><img src="https://i.loli.net/2019/12/19/A4CbxqHPifJ51ZY.png" alt="1.png"><br>继承了Relu的所有优点，but贵一点，均值为0的输出、而且处处一阶可导。</p>
 <p><strong>Softmax Activation Function </strong></p>
 <p>Softmax is an extension of the Sigmoid activation function. Softmax function adds non-linearity to the output, however it is mainly used for classification examples where multiple classes of results can be computed.</p>
 <p>$$<br>Output  = \frac { e ^ { x } } { \operatorname { sum } \left( e ^ { x } \right) }<br>$$</p>
@@ -472,6 +484,11 @@
 </blockquote>
 <p>好处:<br>It has the effect of relaxing the punishing effect of large differences in large predicted values.</p>
 <p>使用说明：<br>如果最后的结果的数值有大值，那么可以尝试一下。不是那么符合高斯分布，就可以尝试一下。</p>
+<p>均方差误差数学表达为：<br>\begin{equation}<br>\frac{1}{n} \sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}<br>\end{equation}<br>或者：<br>\begin{equation}<br> \frac{1}{n-1} \sum_{i=1}^{n}\left(X_{i}-\bar{X}\right)^{2}<br>\end{equation}</p>
+<p>其中 $\bar{X} = \frac{X_1 + \dots + X_n}{n}$。</p>
+<p>在pytorch 中使用<code>nn.MSELoss</code> 实现。首先定义了二维数组用于计算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">sample = Variable(torch.ones(<span class="number">2</span>,<span class="number">2</span>))</span><br><span class="line">a=torch.Tensor(<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">a[<span class="number">0</span>,<span class="number">0</span>]=<span class="number">0</span></span><br><span class="line">a[<span class="number">0</span>,<span class="number">1</span>]=<span class="number">1</span></span><br><span class="line">a[<span class="number">1</span>,<span class="number">0</span>]=<span class="number">2</span></span><br><span class="line">a[<span class="number">1</span>,<span class="number">1</span>]=<span class="number">3</span></span><br><span class="line">target = Variable (a)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.MSELoss()</span><br><span class="line">loss = criterion(sample, target)</span><br><span class="line">print(loss)</span><br></pre></td></tr></table></figure>
 <p><strong>Mean Absolute Error Loss</strong></p>
 <p>定义：<br>Mean Absolute Error (MAE) is a quantity used to measure how close forecasts or predictions are to the eventual outcomes, which is computed by</p>
 <p>$$<br>Loss = \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \left| y ^ { ( i ) } - \hat { y } ^ { ( i ) } \right|<br>$$</p>
@@ -481,24 +498,31 @@
 <blockquote>
 <p>The Mean Absolute Error, or MAE, loss is an appropriate loss function in this case as it is more robust to outliers. It is calculated as the average of the absolute difference between the actual and predicted values.</p>
 </blockquote>
-<h3 id="Binary-Classification-Loss-Function-二分"><a href="#Binary-Classification-Loss-Function-二分" class="headerlink" title="Binary Classification Loss Function (二分)"></a>Binary Classification Loss Function (二分)</h3><p>在二分类的网络结构中经常 出现 Dense() 网络层( 如果使用 keras 进行实现的话), 因为最后想要得到的是一个结点。</p>
-<p><strong>Binary Cross-Entropy Loss</strong></p>
+<p>在pytorch 中使用 <code>nn.L1Loss</code> 使用（因为绝对值损失又叫做L1 损失）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.L1Loss()</span><br><span class="line">loss = criterion(sample, target)</span><br><span class="line">print(loss)</span><br></pre></td></tr></table></figure></p>
+<p>基于绝对值损失改进的是SmoothL1Loss （也叫做 Huber Loss）， 其在(-1,1) 上是平方损失，其他情况是 L1 损失。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.SmoothL1Loss()</span><br><span class="line">loss = criterion(sample, target)</span><br><span class="line">print(loss)</span><br></pre></td></tr></table></figure></p>
+<h3 id="Binary-Classification-Loss-Function-二分"><a href="#Binary-Classification-Loss-Function-二分" class="headerlink" title="Binary Classification Loss Function (二分)"></a>Binary Classification Loss Function (二分)</h3><p><strong>Binary Cross-Entropy Loss</strong></p>
 <p>Cross-entropy loss is often simply referred to as “cross-entropy,” “logarithmic loss,” “logistic loss,” or “log loss” for short.</p>
 <p>Cross-entropy is the default loss function to use for binary classification problems. 如果没有更好的二分类的选择（理由），那么这个就是首选。</p>
 <p>数学定义：</p>
+<blockquote>
 <p>Cross-entropy will calculate a score that summarizes the average difference between the actual and predicted probability distributions for predicting class 1. The score is minimized and a perfect cross-entropy value is 0.</p>
-<p>二分类问题的交叉熵 loss 主要是有两种形式。第一种是输出的label 是 {0, 1}，也是最为常见的。<br>$$<br>Loss= - [ y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } ) ]<br>$$</p>
-<p>这个公式可以先从一个分段函数推导，然后从最大似然的角度出发，预测类别的概率是:<br>$$<br>P ( y | x ) = \hat { y } ^ { y } \cdot ( 1 - \hat { y } ) ^ { ( 1 - y ) }<br>$$<br>然后取对数：<br>$$<br>log(loss)= - [ y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } ) ]<br>$$</p>
-<p>当 $y =1$ 的时候，<br>$$<br>L = - \log \hat { y }<br>$$<br>因为，<br>$$<br>\hat { y } = \frac { 1 } { 1 + e ^ { - s } }<br>$$<br>所以得到<br>$$<br>L = \log \left( 1 + e ^ { - s } \right)<br>$$<br>loss 的曲线如下图所示：</p>
-<p><img src="https://i.loli.net/2019/07/15/5d2c371ec62f690070.png" alt="11-1.png"><br>从图中明显能够看出，s 越大于零，L 越小，函数的变化趋势也完全符合实际需要的情况。（y =1 是这个时候的目标）</p>
-<p>当 $y =0$ 的时候：<br>同理可以得到，<br>$$<br>log(loss)= \log \left( 1 + e ^ { s } \right)<br>$$</p>
-<p><img src="https://i.loli.net/2019/07/15/5d2c371ee553533628.png" alt="14.png"></p>
-<p>从图中明显能够看出，s 越小于零，L 越小，函数的变化趋势也完全符合实际需要的情况。</p>
-<p>第二种情况是基于输出label 表示方式 {-1, 1}，这个时候的loss  表达式为:</p>
-<p>$$<br>loss = \log \left( 1 + e ^ { - y s } \right)<br>$$</p>
-<p>这个时候只不过使用 $ys$ 代替上面的s ，实际上的分析还是一样的。其中 y 表示真实的标签，s 表示 sigmoid 中的s，见下面的公式。<br>$$<br>g ( s ) = \frac { 1 } { 1 + e ^ { - s } }<br>$$<br>当 ys &gt;0 的时候，表示的预测正确，否则是预测错误。</p>
-<p>交叉熵损失函数经常使用sigmoid 函数作为激活函数，因为这个可以完美解决平方损失函数中权重更新比较慢点的情况。</p>
-<p>使用说明：<br>Mathematically, it is the preferred loss function under the inference framework of maximum likelihood. It is the loss function to be evaluated first and only changed if you have a good reason.<br>It is intended for use with binary classification where the target values are in the set {0, 1}.</p>
+</blockquote>
+<p>使用说明：</p>
+<blockquote>
+<p>Mathematically, it is the preferred loss function under the inference framework of maximum likelihood. It is the loss function to be evaluated first and only changed if you have a good reason. It is intended for use with binary classification where the target values are in the set {0, 1}.</p>
+</blockquote>
+<p>在pytorch 中 <code>nn.CrossEntropyLoss()</code>是<code>nn.logSoftmax()</code>和 <code>nn.NLLLoss()</code>的整合。损失函数计算如下：</p>
+<p>\begin{equation}<br>\operatorname{loss}(x, \text { class })=-\log \left(\frac{\exp (x[\text { class }])}{\sum_{j} \exp (x[j])}\right)=-x[\text { class }]+\log \left(\sum_{j} \exp (x[j])\right)<br>\end{equation}</p>
+<p>其中 $C$ 表示类别数。损失函数中也有权重weight参数设置，针对样本不均衡的情况下，是有优化效果的。</p>
+<p>\begin{equation}<br>\operatorname{loss}(x, \text { class })= \text{weight}[\text{class}] (-x[\text { class }]+\log \left(\sum_{j} \exp (x[j])\right))<br>\end{equation}</p>
+<p>需要注意的是，target输入必须是 tensor long 类型（int64位)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mport torch </span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line">loss = nn.CrossEntropyLoss()</span><br><span class="line"><span class="comment"># input, NxC=2x3</span></span><br><span class="line">input = torch.randn(<span class="number">2</span>, <span class="number">3</span>, requires_grad=<span class="keyword">True</span>)</span><br><span class="line"><span class="comment"># target, N</span></span><br><span class="line">target = torch.empty(<span class="number">2</span>, dtype=torch.long).random_(<span class="number">3</span>)</span><br><span class="line">output = loss(input, target)</span><br></pre></td></tr></table></figure>
+<p>其中这里的 <code>input</code> 在实际的模型中是 $y_{pred}$， 而 <code>target</code> 是是标签类比的index。上面的代码等价于<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m = nn.LogSoftmax()</span><br><span class="line">loss = nn.NLLLoss()</span><br><span class="line">input=m(input)</span><br><span class="line">output = loss(input, target)</span><br><span class="line">print(<span class="string">'output:'</span>,output)</span><br></pre></td></tr></table></figure></p>
+<p>在pytorch 中使用该损失函数，前面是不需要加 softmax 层。</p>
+<p><strong>负对数似然损失函数（Negative Log Likelihood）</strong></p>
+<p>同样适用于多类分类器，使用 <code>nn.NLLLoss</code> 实现，如果最后一层使用了log softmax 处理，那么就直接使用 <code>nn.NLLLoss</code>。经过了logSoftmax 得到的结果和</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">m = nn.LogSoftmax(dim=<span class="number">1</span>)</span><br><span class="line">loss = nn.NLLLoss()</span><br><span class="line"><span class="comment"># input is of size N x C = 3 x 5</span></span><br><span class="line">input = torch.randn(<span class="number">3</span>, <span class="number">5</span>, requires_grad=<span class="keyword">True</span>)</span><br><span class="line"><span class="comment"># each element in target has to have 0 &lt;= value &lt; C</span></span><br><span class="line">target = torch.tensor([<span class="number">1</span>, <span class="number">0</span>, <span class="number">4</span>])</span><br><span class="line">output = loss(m(input), target)</span><br><span class="line">output.backward()</span><br></pre></td></tr></table></figure>
+<p>和下面是等价的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">loss_fn = torch.nn.CrossEntropyLoss(reduce=False, size_average=False)</span><br><span class="line">input=torch.autograd.Variable(torch.randn(3,4))</span><br><span class="line">target=torch.autograd.Variable(torch.LongTensor(3).random_(4))</span><br><span class="line">loss = loss_fn(input, target)</span><br></pre></td></tr></table></figure></p>
 <p><strong> Hinge Loss</strong></p>
 <p>An alternative to cross-entropy for binary classification problems is the hinge loss function, primarily developed for use with Support Vector Machine (SVM) models.</p>
 <p>Hinge Loss，又称合页损失，其表达式如下：</p>
@@ -592,6 +616,11 @@
 <p>接下来引入 log 函数<br>$$<br>\log P ( y | x ) = \log \left( \hat { y } ^ { y } \cdot ( 1 - \hat { y } ) ^ { 1 - y } \right) = y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } )<br>$$<br>我们希望公式越大越好，反过来，希望 $\log \mathrm { P } ( \mathrm { y } | \mathrm { x } )$ 越小越好，于是得到了最终的 损失函数：<br>$$<br>L = - [ y \log \hat { y } + ( 1 - y ) \log ( 1 - \hat { y } ) ]<br>$$</p>
 <p>上面是 单个样本的损失函数，计算N 个样本，只需要将上面的公式叠加起来。<br>$$<br>L = - \sum _ { i = 1 } ^ { N } y ^ { ( i ) } \log \hat { y } ^ { ( i ) } + \left( 1 - y ^ { ( i ) } \right) \log \left( 1 - \hat { y } ^ { ( i ) } \right)<br>$$</p>
 <p>ok，这个就是交叉熵损失函数完整的推导过程。</p>
+<h3 id="自定义损失函数"><a href="#自定义损失函数" class="headerlink" title="自定义损失函数"></a>自定义损失函数</h3><p>（1） 继承<code>nn.Module</code></p>
+<p>定义：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My_loss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> torch.mean(torch.pow((x - y), <span class="number">2</span>))</span><br></pre></td></tr></table></figure></p>
+<p>使用:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">criterion = My_loss()</span><br><span class="line">loss = criterion(outputs, targets)</span><br></pre></td></tr></table></figure></p>
+<p>（2）自定义函数</p>
+<p>注意要所有的数学操作要使用 tensor完成。不需要维护参数，梯度等信息。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_mse_loss</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> torch.mean(torch.pow((x - y), <span class="number">2</span>))</span><br></pre></td></tr></table></figure></p>
 <h2 id="二分类、多分类和多标签问题的区别"><a href="#二分类、多分类和多标签问题的区别" class="headerlink" title="二分类、多分类和多标签问题的区别"></a>二分类、多分类和多标签问题的区别</h2><p>二分类、多分类与多标签分类问题使用不同的激活函数和损失函数。</p>
 <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>二分类：判别这个水果是苹果还是香蕉。<br>多分类：对于一堆水果，辨别是苹果、梨还是橘子。一个样本只能有一个标签。<br>多标签分类： 给每一个样本一系列的目标标签。比如一个文档有不同的相关话题，需要加上不同的tag 如宗教、政治和教育。</p>
 <p>多分类问题常常是可以转换成二分类问题进行处理的，常见有两种策略。</p>
@@ -681,8 +710,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/29/特征工程相关概念/" rel="next" title="特征工程">
-                <i class="fa fa-chevron-left"></i> 特征工程
+              <a href="/2018/06/29/dimensionality_reduction/" rel="next" title="降维（Dimensionality Reduction）">
+                <i class="fa fa-chevron-left"></i> 降维（Dimensionality Reduction）
               </a>
             
           </div>
@@ -784,7 +813,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -806,7 +835,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -880,7 +909,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-Function"><span class="nav-number">1.</span> <span class="nav-text">Activation Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What"><span class="nav-number">1.1.</span> <span class="nav-text">What?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Activation-Function-Types"><span class="nav-number">1.2.</span> <span class="nav-text">Activation Function Types</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loss-Function-Error-Function"><span class="nav-number">2.</span> <span class="nav-text">Loss Function(Error Function)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Regression-Loss-Function-回归"><span class="nav-number">2.1.</span> <span class="nav-text">Regression  Loss Function (回归)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Binary-Classification-Loss-Function-二分"><span class="nav-number">2.2.</span> <span class="nav-text">Binary Classification Loss Function (二分)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Class-Classification-Loss-Functions"><span class="nav-number">2.3.</span> <span class="nav-text">Multi-Class Classification Loss Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交叉熵函数是怎么来的？"><span class="nav-number">2.4.</span> <span class="nav-text">交叉熵函数是怎么来的？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二分类、多分类和多标签问题的区别"><span class="nav-number">3.</span> <span class="nav-text">二分类、多分类和多标签问题的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">3.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数的选择"><span class="nav-number">3.2.</span> <span class="nav-text">损失函数的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activation-Function"><span class="nav-number">1.</span> <span class="nav-text">Activation Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What"><span class="nav-number">1.1.</span> <span class="nav-text">What?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Activation-Function-Types"><span class="nav-number">1.2.</span> <span class="nav-text">Activation Function Types</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loss-Function-Error-Function"><span class="nav-number">2.</span> <span class="nav-text">Loss Function(Error Function)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Regression-Loss-Function-回归"><span class="nav-number">2.1.</span> <span class="nav-text">Regression  Loss Function (回归)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Binary-Classification-Loss-Function-二分"><span class="nav-number">2.2.</span> <span class="nav-text">Binary Classification Loss Function (二分)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Class-Classification-Loss-Functions"><span class="nav-number">2.3.</span> <span class="nav-text">Multi-Class Classification Loss Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交叉熵函数是怎么来的？"><span class="nav-number">2.4.</span> <span class="nav-text">交叉熵函数是怎么来的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义损失函数"><span class="nav-number">2.5.</span> <span class="nav-text">自定义损失函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二分类、多分类和多标签问题的区别"><span class="nav-number">3.</span> <span class="nav-text">二分类、多分类和多标签问题的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">3.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数的选择"><span class="nav-number">3.2.</span> <span class="nav-text">损失函数的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
 
           </div>

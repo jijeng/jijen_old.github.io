@@ -93,8 +93,7 @@
 <meta property="og:image" content="https://upload.cc/i1/2019/07/02/dP2n86.png">
 <meta property="og:image" content="https://i.postimg.cc/KYJB8Xxr/image.png">
 <meta property="og:image" content="https://i.postimg.cc/283DHMHb/2.jpg">
-<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/f679cd0e83891f4e.png">
-<meta property="og:updated_time" content="2019-09-23T02:22:13.582Z">
+<meta property="og:updated_time" content="2019-12-18T04:05:20.729Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP中的碎碎念(1)">
 <meta name="twitter:description" content="顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。">
@@ -319,8 +318,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-23T10:22:13+08:00">
-                2019-09-23
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-18T12:05:20+08:00">
+                2019-12-18
               </time>
             
           </span>
@@ -669,54 +668,6 @@
 </blockquote>
 <p><strong> 参考文献</strong></p>
 <p><a href="https://www.52cs.com/archives/3011" target="_blank" rel="noopener">放弃幻想，全面拥抱Transformer</a></p>
-<h2 id="BLEU"><a href="#BLEU" class="headerlink" title="BLEU"></a>BLEU</h2><p>BLEU   (bilingual evaluation understudy) 读音:波勒 not blue. 完美匹配的得分为1.0，而完全不匹配则得分为0.0。 虽然是为机器翻译提出，但后来也广泛用于NLP其他领域。</p>
-<p>可以根据一个数值指标来衡量其与一个或多个人工参考翻译的接近程度。</p>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>介绍下面三个概念： N-gram， 惩罚因子和Bleu 算法。</p>
-<p><strong> N-gram</strong></p>
-<blockquote>
-<p>N-gram是一种统计语言模型，该模型可以将一句话表示n个连续的单词序列，利用上下文中相邻词间的搭配信息，计算出句子的概率，从而判断一句话是否通顺。</p>
-</blockquote>
-<p>通过例子学习</p>
-<blockquote>
-<p>原文： 猫坐在垫子上<br>机器翻译：The cat sat on the mat.<br>人工翻译：The cat is on the mat.</p>
-</blockquote>
-<p>1 gram</p>
-<p><img src="https://b2.bmp.ovh/imgs/2019/07/f679cd0e83891f4e.png" alt=""></p>
-<p>匹配度是 5/6</p>
-<p>同理可以得到 2 gram, 3 gram, 4 gram 分别是 3/5, 1/4 和 0.</p>
-<p>处理一些特殊的情况：</p>
-<blockquote>
-<p>原文：猫坐在垫子上<br>机器译文： the the the the the the the.<br>参考译文：The cat is on the mat.</p>
-</blockquote>
-<p>所以当 1 gram 的时候，匹配度是 7/7，不合理的。</p>
-<p>BLEU修正了这个算法，提出取机器翻译译文N-gram的出现次数和参考译文中N-gram最大出现次数中的最小值的算法，具体如下：</p>
-<p>$$<br>Count_{clip} =min(Count, Max_Ref_Count)<br>$$</p>
-<p>那么修正之后的 1 gram 的匹配度就是 2/7</p>
-<p>论文中 N-gram 的计算公式：</p>
-<p> $$P_n =\frac{ \sum_{C \in {Candidates} } \sum_{n-gram \in C} Count_{clip}(n-gram)}{\sum_{C \in {Candidates} } \sum_{n-gram \in C^{‘}} Count_{clip}(n-gram^{‘})} $$</p>
-<p>分子表示翻译译文（机器翻译），然后分母表示参考译文（人工翻译）</p>
-<p><strong> 惩罚因子</strong></p>
-<p>如果出现了这样的情况：</p>
-<blockquote>
-<p>机器译文：The cat<br>参考译文：The cat is on the mat.</p>
-</blockquote>
-<p>如果出现这种短句子，你会发现计算n-gram的精度会得很高分，很显然这次的得分为1，但实际上它的得分应该是比较低的。针对翻译译文长度比参考译文要短的情况，就需要一个惩罚的机制去控制。BP 主要是处理句子长度的问题。</p>
-<p>$$ BP = \begin{cases}<br>1 &amp; c &gt;r \\<br>e ^ { ( 1 - r / c ) } &amp; c &lt;= r<br>\end{cases}$$</p>
-<p>这里的c是机器译文的词数，r是参考译文的词数</p>
-<p>所以计算得：<br>$ BP = e^(1- 6 / 2) = 7.38905609893065 $</p>
-<p><strong>BLEU 算法</strong></p>
-<p>$$<br>\mathrm { B } \mathrm { LEU } = \mathrm { BP } \cdot \exp \left( \sum _ { n = 1 } ^ { N } w _ { n } \log p _ { n } \right)<br>$$</p>
-<p>对于BP 已经知道，后面的其实就是一些数学运算，它的作用就是让各阶n-gram取权重服从均匀分布，就是说不管是1-gram、2-gram、3-gram还是4-gram它们的作用都是同等重要的。由于随着n-gram的增大，总体的精度得分是呈指数下降的，所以一般N-gram最多取到4-gram.</p>
-<p>计算</p>
-<p>第一步：计算各阶n-gram的精度<br>第二步：加权求和 (一般就是平均)<br>第三步：求BP<br>最后求BLEU.</p>
-<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>BLEU原理其实并不是很复杂，BLEU容易陷入常用词和短译句的陷阱中， 所以更多的是基于n-gram 基础上的优化。BLEU本身就不追求百分之百的准确性，也不可能做到百分之百，它的目标只是给出一个快且不差的自动评估解决方案。</p>
-<p>优点： 计算速度快；容易理解；已经被广泛使用</p>
-<p>缺点：</p>
-<ul>
-<li>短译句的测评精度有时会较高</li>
-<li>它没有考虑句子意义</li>
-</ul>
-<p><strong> 参考文献</strong><br><a href="https://cloud.tencent.com/developer/article/1159767" target="_blank" rel="noopener">机器翻译质量评测算法-BLEU</a></p>
 <p>复习记录：</p>
 <p>分词两大问题：歧义词和oov。后者对于最后的效果影响更大。<br>处理OOV 常用的方法：subword；使用多个word embedding（transfer learning）； 使用context embedding进行<br>分词常用的算法：基于规则的逆向最大匹配（中文的特点），频数；基于信息熵的内部凝固度和自由运用程度（分别考虑词语内部的紧密程度和外部搭配的丰富程度）；深度学习+NER进行的词性标注，条件随机场CRF之类的。</p>
 <p>中英文语料预处理的区别：中文需要分词，英文需要处理时态，对于名词和形容词处理成标准名词，对于动词进行词性还原。</p>
@@ -864,7 +815,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">107</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -886,7 +837,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">79</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -960,7 +911,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件"><span class="nav-number">3.</span> <span class="nav-text">分词软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#中文分词"><span class="nav-number">3.1.</span> <span class="nav-text">中文分词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词粒度"><span class="nav-number">3.2.</span> <span class="nav-text">分词粒度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OOV"><span class="nav-number">4.</span> <span class="nav-text">OOV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新词发现"><span class="nav-number">5.</span> <span class="nav-text">新词发现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NLP-中的三类特征提取器"><span class="nav-number">6.</span> <span class="nav-text">NLP 中的三类特征提取器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN"><span class="nav-number">6.1.</span> <span class="nav-text">RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN-特征提取器"><span class="nav-number">6.2.</span> <span class="nav-text">CNN 特征提取器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transformer"><span class="nav-number">6.3.</span> <span class="nav-text">Transformer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BLEU"><span class="nav-number">7.</span> <span class="nav-text">BLEU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">7.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优缺点"><span class="nav-number">7.2.</span> <span class="nav-text">优缺点</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词提取"><span class="nav-number">1.</span> <span class="nav-text">关键词提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TF-IDF"><span class="nav-number">1.1.</span> <span class="nav-text">TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方分布"><span class="nav-number">1.2.</span> <span class="nav-text">卡方分布</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW和skip-gram"><span class="nav-number">2.</span> <span class="nav-text">CBOW和skip-gram</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词软件"><span class="nav-number">3.</span> <span class="nav-text">分词软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#中文分词"><span class="nav-number">3.1.</span> <span class="nav-text">中文分词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分词粒度"><span class="nav-number">3.2.</span> <span class="nav-text">分词粒度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OOV"><span class="nav-number">4.</span> <span class="nav-text">OOV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新词发现"><span class="nav-number">5.</span> <span class="nav-text">新词发现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NLP-中的三类特征提取器"><span class="nav-number">6.</span> <span class="nav-text">NLP 中的三类特征提取器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN"><span class="nav-number">6.1.</span> <span class="nav-text">RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN-特征提取器"><span class="nav-number">6.2.</span> <span class="nav-text">CNN 特征提取器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transformer"><span class="nav-number">6.3.</span> <span class="nav-text">Transformer</span></a></li></ol></li></ol></div>
             
 
           </div>
