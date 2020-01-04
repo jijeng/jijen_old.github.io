@@ -89,7 +89,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://i.loli.net/2019/12/01/MAXQtk9CcGDEUmR.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/12/01/kC2Zc8.png">
-<meta property="og:updated_time" content="2019-12-01T05:45:43.261Z">
+<meta property="og:updated_time" content="2020-01-01T08:32:26.328Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="可迭代对象 vs. 迭代器 vs. 生成器">
 <meta name="twitter:description" content="在python 中经常遇到以下的概念：容器（container）、可迭代（iterable）、迭代器（iterator）和生成器（generator）。上述概念经常混淆，整理一下，总结为图：">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-01T13:45:43+08:00">
-                2019-12-01
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-01T16:32:26+08:00">
+                2020-01-01
               </time>
             
           </span>
@@ -381,7 +381,7 @@
 <ol start="3">
 <li>迭代器（iterators）</li>
 </ol>
-<p>任何具有<code>__next__()</code> 方法的物体都是迭代器，使用 <code>next()</code>方法或者 ‘for’循环可以获取下一个元素。python中的模块 <code>itertools</code> 可以用于构建高效的迭代器。迭代的特点是惰性求值（lazy evaluation），即只要当迭代到该值的时候，才会被计算，非常适合于大文件或者无限集合的遍历，不用一次性存储在内存中。该模块中的迭代器类型分为以下三种：</p>
+<p>任何具有<code>__next__()</code> 方法的物体都是迭代器，使用 <code>next()</code>方法或者 <code>for</code>循环可以获取下一个元素。python中的模块 <code>itertools</code> 可以用于构建高效的迭代器。迭代的特点是惰性求值（lazy evaluation），即只要当迭代到该值的时候，才会被计算，非常适合于大文件或者无限集合的遍历，不用一次性存储在内存中。该模块中的迭代器类型分为以下三种：</p>
 <ul>
 <li>无限迭代器</li>
 <li>有限迭代器</li>
@@ -405,7 +405,8 @@
 <li>dropwhile()</li>
 <li>groupby()</li>
 </ul>
-<p>chain的使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from itertools import chain</span><br><span class="line">for item in chain([1, 2, 3], [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]):</span><br><span class="line">	print item</span><br></pre></td></tr></table></figure></p>
+<p>chain的使用 (字面意思，将两个相同或者不同的可迭代object 连接起来)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from itertools import chain</span><br><span class="line">for item in chain([1, 2, 3], [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]):</span><br><span class="line">	print item</span><br></pre></td></tr></table></figure>
 <p>dropwhile的使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dropwhile(predicate, iterable)</span><br></pre></td></tr></table></figure></p>
 <p>其中，predicate 是函数，iterable 是可迭代对象。对于 iterable 中的元素，如果 predicate(item) 为 true，则丢弃该元素，否则返回该项及所有后续项。（这种逻辑还是比较有意思的，只是进行一次的筛选）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> dropwhile</span><br><span class="line">list(dropwhile(<span class="keyword">lambda</span> x: x &lt; <span class="number">5</span>, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">1</span>])) <span class="comment">#[6, 2, 1]</span></span><br><span class="line">list(dropwhile(<span class="keyword">lambda</span> x: x &gt; <span class="number">3</span>, [<span class="number">2</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>])) <span class="comment">#[2, 1, 6, 5, 4]</span></span><br></pre></td></tr></table></figure></p>
 <p>(3) 组合生成器<br>itertools 模块还提供了多个组合生成器函数，用于求序列的排列、组合等：</p>
@@ -433,7 +434,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">numbers = list()</span><br><span class="line"><span class="comment"># range()</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    numbers.append(i + <span class="number">1</span>)</span><br><span class="line">total = sum(numbers)</span><br><span class="line"><span class="comment"># (2) Using a generator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_numbers</span><span class="params">(n)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> num &lt; n:</span><br><span class="line">        <span class="keyword">yield</span> num</span><br><span class="line">        <span class="comment"># 这个yield 之后，函数并没有结束，不像 return 那种函数</span></span><br><span class="line">        num += <span class="number">1</span></span><br><span class="line">total = sum(generate_numbers(<span class="number">1000</span>))</span><br><span class="line">print(total)</span><br><span class="line">total = sum(range(<span class="number">1000</span> + <span class="number">1</span>))</span><br><span class="line">print(total)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># generator 的第一种实现 ()</span></span><br><span class="line">g =(x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</span><br><span class="line"></span><br><span class="line">print(next(g))</span><br><span class="line">print(next(g))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实现一个 image loader</span></span><br><span class="line"><span class="comment"># generator的第二种实现 yield 关键字实现，</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_data</span><span class="params">(file1)</span>:</span></span><br><span class="line">    f =open(file1)</span><br><span class="line">    x =[]</span><br><span class="line">    y =[]</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        line =f.readline()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line: <span class="keyword">break</span></span><br><span class="line">        line =line.split()</span><br><span class="line">        x =line[:<span class="number">-1</span>]</span><br><span class="line">        y =line[<span class="number">-1</span>]</span><br><span class="line">        y =map(float, y)</span><br><span class="line">        data.append(line)</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_data</span><span class="params">(file1, batch_size)</span>:</span></span><br><span class="line">    train_x, train_y =read_data(file1)</span><br><span class="line">    num_batch =len(datas) //batch_size</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_batch):</span><br><span class="line">        x = train_x[batch_size*i: batch_size*(i+<span class="number">1</span>)]</span><br><span class="line">        y =train_y[batch_size*i: batch_size*(i+<span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">yield</span> np.array(x), np.array(y)</span><br><span class="line"></span><br><span class="line">next(train_data(file1, batch_size))</span><br></pre></td></tr></table></figure>
 <p>参考文献</p>
-<p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs. Iterators vs. Generators</a><br><a href="https://gg2.chn.moe/extdomains/en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="noopener">Bloom filter - Wikipedia</a></p>
+<p><a href="https://nvie.com/posts/iterators-vs-generators/" target="_blank" rel="noopener">Iterables vs. Iterators vs. Generators</a><br><a href="">Bloom filter - Wikipedia</a></p>
 
       
     </div>
@@ -476,8 +477,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/12/17/graph_algorithms/" rel="prev" title="图相关算法">
-                图相关算法 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/12/01/functional_programming/" rel="prev" title="函数式编程（Python）">
+                函数式编程（Python） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -560,7 +561,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -582,7 +583,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -660,7 +661,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

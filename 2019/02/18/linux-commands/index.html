@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍linux 中常见的命令 和github 中常用的命令">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-26T14:37:17.494Z">
+<meta property="og:updated_time" content="2020-01-03T06:33:59.547Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux commands">
 <meta name="twitter:description" content="介绍linux 中常见的命令 和github 中常用的命令">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-26T22:37:17+08:00">
-                2019-12-26
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-03T14:33:59+08:00">
+                2020-01-03
               </time>
             
           </span>
@@ -606,6 +606,16 @@
 <p><code>netstat</code>用来查看系统当前系统网络状态信息，包括端口，连接情况等，常用方式如下：</p>
 <p><code>netstat -atunlp</code>,各参数含义如下:<br>-t : 指明显示TCP端口<br>-u : 指明显示UDP端口<br>-l : 仅显示监听套接字(LISTEN状态的套接字)<br>-p : 显示进程标识符和程序名称，每一个套接字/端口都属于一个程序<br>-n : 不进行DNS解析<br>-a 显示所有连接的端口</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:端口号</span><br><span class="line">netstat -nltp | grep 进程号</span><br><span class="line"></span><br><span class="line">netstat -tunlp | grep 22</span><br><span class="line">netstat -tunlp | grep  端口号</span><br><span class="line"></span><br><span class="line">ps -ef | grep 进程名</span><br></pre></td></tr></table></figure>
+<p>Mac OS/Linux命令查询网络端口占用情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -an | grep 3306</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:80</span><br></pre></td></tr></table></figure>
+<p>-i参数表示网络链接，:80指明端口号，该命令会同时列出PID，方便kill</p>
+<p>查看所有进程监听的端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lsof -i -P | grep -i &quot;listen&quot;</span><br></pre></td></tr></table></figure>
+<p>两者的区别</p>
+<blockquote>
+<p>netstat无权限控制，lsof有权限控制，只能看到本用户<br>losf能看到pid和用户，可以找到哪个进程占用了这个端口</p>
+</blockquote>
 <h3 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h3><p>该命令和管道的命令是类似的，不同点在于， xargs 是把 <code>|</code> 左边的输出当做后面命令的一个参数来运行。而如果只是使用<code>|</code>， 是把其左边的输出当做右边命令的输入。xargs命令是给其他命令传递参数的一个过滤器，也是组合多个命令的一个工具。它擅长将标准输入数据转换成命令行参数，xargs能够处理管道或者stdin并将其转换成特定命令的命令参数。</p>
 <h3 id="Linux-中脚本执行的四种方式"><a href="#Linux-中脚本执行的四种方式" class="headerlink" title="Linux 中脚本执行的四种方式"></a>Linux 中脚本执行的四种方式</h3><p>（1）切换到shell脚本所在的目录（此时，称为工作目录）执行shell脚本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./hello.sh</span><br></pre></td></tr></table></figure>
@@ -615,6 +625,7 @@
 <p>上述三种（(1),(2), (3)）都是在父shell中开启了一个子shell，执行的脚本是在子shell 中执行，当执行完成之后，子shell就关闭，然后回到父shell 中。<br>（4）使用<code>source</code>命令执行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source hello.sh</span><br></pre></td></tr></table></figure>
 <p><code>source</code>命令是作用于整个父进程，这个是和上述三者的最大区别。比如说，如果不想注销系统的，但是想让全局配置文件生效，那么就使用<code>source</code>命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+<h3 id="未归类"><a href="#未归类" class="headerlink" title="未归类"></a>未归类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">last # 表示登录成功的user</span><br><span class="line">lastb  # 表示登录不成功user</span><br></pre></td></tr></table></figure>
 <h2 id="git-常见的命令"><a href="#git-常见的命令" class="headerlink" title="git 常见的命令"></a>git 常见的命令</h2><p><strong>git命令</strong></p>
 <p>git 命令清单</p>
 <p><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></p>
@@ -860,7 +871,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -882,7 +893,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -956,7 +967,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-常见命令"><span class="nav-number">1.</span> <span class="nav-text">Linux 常见命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-取列数据"><span class="nav-number">1.1.</span> <span class="nav-text">awk 取列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-命令"><span class="nav-number">1.2.</span> <span class="nav-text">grep 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-行编辑器"><span class="nav-number">1.3.</span> <span class="nav-text">sed 行编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于上述三个命令的练习"><span class="nav-number">1.4.</span> <span class="nav-text">关于上述三个命令的练习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">1.5.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他小命令"><span class="nav-number">1.6.</span> <span class="nav-text">其他小命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看端口"><span class="nav-number">1.7.</span> <span class="nav-text">查看端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xargs"><span class="nav-number">1.8.</span> <span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-中脚本执行的四种方式"><span class="nav-number">1.9.</span> <span class="nav-text">Linux 中脚本执行的四种方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-常见的命令"><span class="nav-number">2.</span> <span class="nav-text">git 常见的命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash相关快捷键"><span class="nav-number">2.1.</span> <span class="nav-text">bash相关快捷键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-常见命令和配置"><span class="nav-number">3.</span> <span class="nav-text">vi 常见命令和配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-常见命令"><span class="nav-number">1.</span> <span class="nav-text">Linux 常见命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-取列数据"><span class="nav-number">1.1.</span> <span class="nav-text">awk 取列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-命令"><span class="nav-number">1.2.</span> <span class="nav-text">grep 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-行编辑器"><span class="nav-number">1.3.</span> <span class="nav-text">sed 行编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于上述三个命令的练习"><span class="nav-number">1.4.</span> <span class="nav-text">关于上述三个命令的练习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">1.5.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他小命令"><span class="nav-number">1.6.</span> <span class="nav-text">其他小命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看端口"><span class="nav-number">1.7.</span> <span class="nav-text">查看端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xargs"><span class="nav-number">1.8.</span> <span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-中脚本执行的四种方式"><span class="nav-number">1.9.</span> <span class="nav-text">Linux 中脚本执行的四种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#未归类"><span class="nav-number">1.10.</span> <span class="nav-text">未归类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-常见的命令"><span class="nav-number">2.</span> <span class="nav-text">git 常见的命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash相关快捷键"><span class="nav-number">2.1.</span> <span class="nav-text">bash相关快捷键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-常见命令和配置"><span class="nav-number">3.</span> <span class="nav-text">vi 常见命令和配置</span></a></li></ol></div>
             
 
           </div>
@@ -976,7 +987,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

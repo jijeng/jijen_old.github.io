@@ -81,14 +81,14 @@
 
 <meta name="description" content="python 学习笔记，之前有两篇笔记，因为太多了，所以新开一篇。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python learning 学习笔记3">
+<meta property="og:title" content="Python 学习笔记3">
 <meta property="og:url" content="http://yoursite.com/2019/11/04/python-learning3/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="python 学习笔记，之前有两篇笔记，因为太多了，所以新开一篇。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-23T08:20:23.932Z">
+<meta property="og:updated_time" content="2020-01-02T13:39:49.960Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python learning 学习笔记3">
+<meta name="twitter:title" content="Python 学习笔记3">
 <meta name="twitter:description" content="python 学习笔记，之前有两篇笔记，因为太多了，所以新开一篇。">
 
 
@@ -138,7 +138,7 @@
 	})();
 </script>
 
-  <title>python learning 学习笔记3 | Jijeng's blog</title>
+  <title>Python 学习笔记3 | Jijeng's blog</title>
   
 
 
@@ -282,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">python learning 学习笔记3</h1>
+          <h1 class="post-title" itemprop="name headline">Python 学习笔记3</h1>
         
 
         <div class="post-meta">
@@ -310,8 +310,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-23T16:20:23+08:00">
-                2019-12-23
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-02T21:39:49+08:00">
+                2020-01-02
               </time>
             
           </span>
@@ -523,6 +523,54 @@
 <p>总结：<br>随机数的生成需要设置 <code>seed</code>，如果生成number，那么使用 <code>python standard library</code>； 如果是生成array, 那么使用 <code>NumPy library</code>。</p>
 <p>参考文献</p>
 <p><a href="https://machinelearningmastery.com/how-to-generate-random-numbers-in-python/" target="_blank" rel="noopener">How to Generate Random Numbers in Python</a></p>
+<h2 id="python-中的import-函数"><a href="#python-中的import-函数" class="headerlink" title="python 中的import 函数"></a>python 中的import 函数</h2><p>（1）搜索路径</p>
+<p>首先是当前的路径，然后是一些内置函数的路径，重要的是如果加上 <code>sys.path.append(path)</code> ，可以添加自定义的路径, path可以是相对路径或者是绝对路径。其中 <code>.</code> 表示当前目录（同一级别的）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.path)</span><br><span class="line">sys.path.append(<span class="string">".."</span>) </span><br><span class="line">print(sys.path)</span><br></pre></td></tr></table></figure>
+<p>输出结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[&apos;/home/jeng/projects/named_entity_recognition&apos;, &apos;/home/jeng/anaconda3/lib/python37.zip&apos;, &apos;/home/jeng/anaconda3/lib/python3.7&apos;, &apos;/home/jeng/anaconda3/lib/python3.7/lib-dynload&apos;, &apos;/home/jeng/anaconda3/lib/python3.7/site-packages&apos;]</span><br><span class="line">[&apos;/home/jeng/projects/named_entity_recognition&apos;, &apos;/home/jeng/anaconda3/lib/python37.zip&apos;, &apos;/home/jeng/anaconda3/lib/python3.7&apos;, &apos;/home/jeng/anaconda3/lib/python3.7/lib-dynload&apos;, &apos;/home/jeng/anaconda3/lib/python3.7/site-packages&apos;, &apos;..&apos;]</span><br></pre></td></tr></table></figure></p>
+<p>（2）import语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import os, sys, time   # 虽然可以一次导入多个，但是不建议这样做，不是python 风格</span><br><span class="line">import sys as system # 建议一条语句导入一个</span><br><span class="line">import solongname as shortname # 这个也是可以的</span><br></pre></td></tr></table></figure>
+<p>（2）<code>from ... import *</code></p>
+<p>from-import 是导入指定模块中指定方法的方式。将一个模块中所有内容全部导入到当前的命名空间，只需要使用如下的声明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> modname <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
+<p>一般不建议这样写，太消耗内存，不要过多这样使用。唯一推荐全部导入的只有 <code>Tkinter</code>（是python 中的一个gui 框架）。可以选择一个折中的方案， 从 <code>os</code>中导入5 个函数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path, walk, unlink, uname, remove, rename</span><br></pre></td></tr></table></figure></p>
+<p>（3）reload() 函数</p>
+<p>当一个模块被导入到一个脚本，模块顶层部分的代码只会被执行一次。因此，如果你想重新执行模块里顶层部分的代码，可以用 reload() 函数。该函数会重新导入之前导入过的模块。语法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reload(module_name)</span><br></pre></td></tr></table></figure>
+<p>（4）导入顺序</p>
+<p>1). python 标准库模块<br>2). python 第三方模块<br>3). 自定义模块</p>
+<p>（5）可选导入</p>
+<p>可以使用该方式去处理版本问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># For Python 3</span></span><br><span class="line">    <span class="keyword">from</span> http.client <span class="keyword">import</span> responses</span><br><span class="line"><span class="keyword">except</span> ImportError:  <span class="comment"># For Python 2.5-2.7</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">from</span> httplib <span class="keyword">import</span> responses  <span class="comment"># NOQA</span></span><br><span class="line">    <span class="keyword">except</span> ImportError:  <span class="comment"># For Python 2.4</span></span><br><span class="line">        <span class="keyword">from</span> BaseHTTPServer <span class="keyword">import</span> BaseHTTPRequestHandler <span class="keyword">as</span> _BHRH</span><br><span class="line">        responses = dict([(k, v[<span class="number">0</span>]) <span class="keyword">for</span> k, v <span class="keyword">in</span> _BHRH.responses.items()])</span><br></pre></td></tr></table></figure>
+<p>（6）局部导入</p>
+<p>当再次需要使用 <code>math</code> 模块的时候，还是需要再次导入，所以平衡好是全局导入还是局部导入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import sys # 全局导入</span><br><span class="line"></span><br><span class="line">def square_root(a):</span><br><span class="line">	import math # 局部</span><br><span class="line">	return math.sqrt(a)</span><br></pre></td></tr></table></figure>
+<p>（7）python 中的 <code>-m</code> 参数</p>
+<p>如果在运行的时候，加上了 <code>-m</code> 参数，那么将导入的包先运行，然后再运行本脚本</p>
+<p><code>__main__.py</code>文件与python -m<br>Python的-m参数用于将一个模块或者包作为一个脚本运行，而<strong>main</strong>.py文件相当于是一个包的“入口程序“。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-m module-name：Searches sys.path for the named module and runs the corresponding .py file as a script.</span><br></pre></td></tr></table></figure>
+<p>比如下面的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">package</span><br><span class="line">├── __init__.py</span><br><span class="line">└── __main__.py</span><br></pre></td></tr></table></figure>
+<p>其中 <code>__init__.py</code> 文件内容：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"__init__"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>其中 <code>__main__.py</code> 文件内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"__main__"</span>)</span><br></pre></td></tr></table></figure>
+<p>当使用 <code>python -m</code>执行，先是执行了init 函数，然后是main 函数。输出是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__init__</span><br><span class="line">__main__</span><br></pre></td></tr></table></figure></p>
+<p>当使用 <code>python</code>执行的时候，直接执行 main, 输出是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__main__</span><br></pre></td></tr></table></figure></p>
+<p>所以不管加不加 <code>-m</code>，最后的 main函数都是会被执行。加上 <code>-m</code> 会将模块或者包导入之后才执行</p>
+<p>（8）<code>__name__ ==&quot;__main__&quot;</code>的作用</p>
+<p>很多编程语言都有一个入口，比如C++、C 和Java中都需要一个 <code>main</code> 函数作为程序的入口。但是和上述的编译语言不同，Python属于脚本语言，不需要编译成二进制执行，而是动态逐行解释运行，可以没有统一的入口。所以可以没有 <code>main</code>函数入口。</p>
+<p>但是除了作为脚本语言直接被运行外，还是可以作为模块（库）被其他 <code>.py</code> 文件导入。所有的模块中都有一个内置的属性 <code>__name__</code>，表示当前模块的名字。如果被当做脚本运行，<code>__name__</code>值为<code>__main__</code>。而被别的模块引用的时候， <code>__name__</code>值为模块的名字。</p>
+<p>总结：</p>
+<p><code>__name__</code> 可以用于调试代码：当脚本执行，在 <code>if __name__ == &#39;__main__</code> 中的代码会被执行；而被别的模块所引用的时候，因为这个时候的 <code>__name__</code> 不是 main ，所以该函数不会被执行。</p>
+<p>在Python中，使用单引号(‘)和双引号(“)定义的字符串没有区别。</p>
+<h2 id="Python多线程和多进程"><a href="#Python多线程和多进程" class="headerlink" title="Python多线程和多进程"></a>Python多线程和多进程</h2><p>多线程和多进程问题是可以对应到 并发 （cncurrency）和并行(parallelism)上的。 并发，就是一个单核cpu同时开始了多个任务，但是这个任务并不是同时独立进行的，而是通过cpu的不断切换，保存现场，然后重启这样的快速的切换，给用户的感觉是并发，但是实际上是cpu的计算能力受到了限制，用户体验比较好一些。如果在多核cpu （比如我的mac 是一cpu 6核）这样的话完全是可以达到并行的，这个是真正的独立操作(parallelism)，对应的是多进程的。对应python 中的实现多线程是使用threading，处理的是io 响应；多进程是Concurrency，使用multiprocessing包，处理的是多核cpu的操作。</p>
+<p>Take off: 如果处理io 响应，那么使用多线程；如果是计算，那么使用多进程。</p>
+<blockquote>
+<p>So, before we go deeper into the multiprocessing module, it’s worthwhile ensuring you know the advantages of using multiprocessing over multithreading. The general rule of thumb is that, if you are trying to improve the performance of CPU-bound tasks, multiprocessing is what you want to use. However, if your particular task is Input/Output bound, then you’ll generally want to use multithreading to improve the performance of your applications.</p>
+</blockquote>
+<p>这个是多线程的demo 响应的io 请求。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span><span class="params">(threading.Thread)</span>:</span></span><br><span class="line">    <span class="comment"># Our workers constructor, note the super() method which is vital if we want this</span></span><br><span class="line">    <span class="comment"># to function properly</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(Worker, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">            print(i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    thread1 = Worker()</span><br><span class="line">    thread1.start()</span><br><span class="line"></span><br><span class="line">    thread2 = Worker()</span><br><span class="line">    thread2.start()</span><br><span class="line"></span><br><span class="line">    thread3 = Worker()</span><br><span class="line">    thread3.start()</span><br><span class="line"></span><br><span class="line">    thread4 = Worker()</span><br><span class="line">    thread4.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>下面是多进程的demo响应的计算请求。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing <span class="keyword">as</span> mp</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_func</span><span class="params">(x)</span>:</span></span><br><span class="line">    print(mp.current_process())</span><br><span class="line">    <span class="keyword">return</span> x ** x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    pool = mp.Pool(mp.cpu_count())</span><br><span class="line">    <span class="comment"># 这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的</span></span><br><span class="line">    result = pool.map(my_func, [<span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">    result_set_2 = pool.map(my_func, [<span class="number">4</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">23</span>, <span class="number">4</span>, <span class="number">6</span>])</span><br><span class="line">    print(result)</span><br><span class="line">    print(result_set_2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -650,7 +698,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -672,7 +720,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -746,7 +794,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#python2-和python3-的差异"><span class="nav-number">1.</span> <span class="nav-text">python2 和python3 的差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中-的使用"><span class="nav-number">2.</span> <span class="nav-text">python中*的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机数"><span class="nav-number">3.</span> <span class="nav-text">随机数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-with-Python"><span class="nav-number">3.1.</span> <span class="nav-text">Random with Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Numbers-with-Numpy"><span class="nav-number">3.2.</span> <span class="nav-text">Random Numbers with Numpy</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#python2-和python3-的差异"><span class="nav-number">1.</span> <span class="nav-text">python2 和python3 的差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中-的使用"><span class="nav-number">2.</span> <span class="nav-text">python中*的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机数"><span class="nav-number">3.</span> <span class="nav-text">随机数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-with-Python"><span class="nav-number">3.1.</span> <span class="nav-text">Random with Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Numbers-with-Numpy"><span class="nav-number">3.2.</span> <span class="nav-text">Random Numbers with Numpy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-中的import-函数"><span class="nav-number">4.</span> <span class="nav-text">python 中的import 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python多线程和多进程"><span class="nav-number">5.</span> <span class="nav-text">Python多线程和多进程</span></a></li></ol></div>
             
 
           </div>
@@ -766,7 +814,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -944,7 +992,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/11/04/python-learning3/';
           this.page.identifier = '2019/11/04/python-learning3/';
-          this.page.title = 'python learning 学习笔记3';
+          this.page.title = 'Python 学习笔记3';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="functional_programming,decorator," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍函数式编程、闭包、装饰器和单例模式。（Python版本）">
+<meta name="keywords" content="functional_programming,decorator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数式编程（Python）">
+<meta property="og:url" content="http://yoursite.com/2019/12/01/functional_programming/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍函数式编程、闭包、装饰器和单例模式。（Python版本）">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-01-01T09:27:06.694Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="函数式编程（Python）">
+<meta name="twitter:description" content="介绍函数式编程、闭包、装饰器和单例模式。（Python版本）">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/01/functional_programming/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>函数式编程（Python） | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/01/functional_programming/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">函数式编程（Python）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-01T12:58:28+08:00">
+                2019-12-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-01T17:27:06+08:00">
+                2020-01-01
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/01/functional_programming/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/12/01/functional_programming/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍函数式编程、闭包、装饰器和单例模式。（Python版本）</p>
+<a id="more"></a>
+<p>在计算机的层次上，CPU执行的是加减乘除的指令代码，以及各种条件判断和跳转指令，所以，汇编语言是最贴近计算机的语言。而计算则指数学意义上的计算，越是抽象的计算，离计算机硬件越远。对应到编程语言，就是越低级的语言，越贴近计算机，抽象程度低，执行效率高，比如C语言；越高级的语言，越贴近计算，抽象程度高，执行效率低，比如Lisp语言。</p>
+<p>在面向过程编程中，我们见到过函数(function)；在面向对象编程中，我们见过对象(object)。函数和对象的根本目的是以某种逻辑方式组织代码，并提高代码的可重复使用性(reusability)。函数式编程也是一种编程范式，其中闭包(closure)是函数式编程的重要的语法结构。闭包是一种组织代码的结构，它提高了代码的可重复使用性，可以简单地把闭包理解成轻量级的接口封装。</p>
+<p>（1）闭包</p>
+<p>要形成闭包，首先得有一个嵌套的函数，即函数中定义了另一个函数，闭包则是一个集合，它包括了外部函数的局部变量，这些局部变量在外部函数返回后也继续存在，并能被内部函数引用。按变量的作用域进行分类，Python 中的变量可分为「全局变量」、「局部变量」以及「自由变量」。一般而言，Python 中使用变量前不需要声明变量，但假定在函数体中赋值的变量为局部变量，除非显式使用 global 将在函数中赋值的变量声明为全局变量！而自由变量则是存在于嵌套函数中的一个概念：定义在其他函数内部的函数被称之为嵌套函数 nested function ，嵌套函数可以访问封闭范围内（外部函数）的变量。嵌套函数不可以在函数外直接访问。</p>
+<p>闭包的最大特点是可以将父函数的变量与内部函数绑定，并返回绑定变量后的函数（也即闭包），此时即便生成闭包的环境（父函数）已经释放，闭包仍然存在，这个过程很像类（父函数）生成实例（闭包），不同的是父函数只在调用时执行，执行完毕后其环境就会释放，而类则在文件执行时创建，一般程序执行完毕后作用域才释放，因此对一些需要重用的功能且不足以定义为类的行为，使用闭包会比使用类占用更少的资源，且更轻巧灵活。闭包在爬虫以及web应用中都有很广泛的应用，并且闭包也是装饰器的基础。</p>
+<p>但是需要注意的是：闭包只能访问，无法修改外部函数的局部变量。比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">line_conf</span><span class="params">()</span>:</span></span><br><span class="line">    b = <span class="number">15</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">line</span><span class="params">(x)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>*x-b</span><br><span class="line">    <span class="keyword">return</span> line       <span class="comment"># return a function object</span></span><br><span class="line">my_line = line_conf()</span><br><span class="line">print(my_line(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p>在 Python 中，非本地变量默认仅可读取，在修改时必须显式指出其为非本地变量～自由变量 nonlocal，全局变量 global。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">something =<span class="number">0</span> <span class="comment"># 这个是函数外部的变量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_avg</span><span class="params">()</span>:</span></span><br><span class="line">    scores = <span class="number">0</span>  <span class="comment"># 将外部临时变量由 list 改为一个 整型数值</span></span><br><span class="line">    count = <span class="number">0</span>   <span class="comment"># 同时新增一个变量，记录个数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_count_avg</span><span class="params">(val)</span>:</span>  <span class="comment"># 内部函数，用于计算平均值</span></span><br><span class="line">        <span class="keyword">nonlocal</span> count, scores <span class="comment"># 这个表示想要修改子函数外面的变量</span></span><br><span class="line">        scores += val  <span class="comment"># 使用外部函数的临时变量</span></span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> scores / count  <span class="comment"># 返回计算出的平均值</span></span><br><span class="line">    <span class="keyword">return</span> inner_count_avg  <span class="comment"># 外部函数返回内部函数引用</span></span><br><span class="line">avg = get_avg()</span><br><span class="line">print(avg(<span class="number">10</span>))  <span class="comment"># 报错</span></span><br></pre></td></tr></table></figure>
+<p>（2）函数式编程</p>
+<p>函数式编程的特点：</p>
+<ul>
+<li>函数式编程无副作用。所谓”副作用”（side effect），指的是函数内部与外部互动（最典型的情况，就是修改全局变量的值），产生运算以外的其他结果。函数式编程强调没有”副作用”，意味着函数要保持独立，所有功能就是返回一个新的值，没有其他行为，尤其是不得修改外部变量的值。</li>
+<li>引用透明（Referential transparency），指的是函数的运行不依赖于外部变量或”状态”，只依赖于输入的参数，任何时候只要参数相同，引用函数所得到的返回值总是相同的。有了前面的第三点和第四点，这点是很显然的。其他类型的语言，函数的返回值往往与系统状态有关，不同的状态之下，返回值是不一样的。这就叫”引用不透明”，很不利于观察和理解程序的行为。</li>
+</ul>
+<p>非函数式的例子：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cnt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cnt++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>函数式的例子：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">increment</span><span class="params">(<span class="keyword">int</span> cnt)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> cnt+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>函数式编程的技术：</p>
+<ul>
+<li>map &amp; reduce ：这个技术不用多说了，函数式编程最常见的技术就是对一个集合做Map和Reduce操作，重点在于描述问题。</li>
+<li>pipeline：这个技术的意思是，把函数实例成一个一个的action，然后，把一组action放到一个数组或是列表中，然后把数据传给这个action list，数据就像一个pipeline一样顺序地被各个函数所操作，最终得到我们想要的结果。</li>
+</ul>
+<p>把函数当成变量来用，关注于描述问题而不是怎么实现，这样可以让代码更易读。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name_len = map(len, [<span class="string">"hao"</span>, <span class="string">"chen"</span>, <span class="string">"coolshell"</span>])</span><br><span class="line"><span class="keyword">print</span> name_len</span><br><span class="line"><span class="comment"># 输出 [3, 4, 9]</span></span><br></pre></td></tr></table></figure>
+<p>Python对函数式编程提供部分支持。由于Python允许使用变量，因此，Python不是纯函数式编程语言。尽管 Python 算不上是一门纯函数式编程语言，但它本身提供了很多函数式编程的特性，像 map、reduce、filter、sorted 这些函数都支持函数作为参数，lambda 函数就可以应用在函数式编程中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1 =[<span class="number">3</span>, <span class="number">4</span>, <span class="number">-4</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">-2</span>, <span class="number">-6</span>]</span><br><span class="line">list1.sort(key =<span class="keyword">lambda</span> x: abs(x))</span><br><span class="line">print(list1)</span><br></pre></td></tr></table></figure>
+<p>当使用传统的方式书写的时候，就不够pythonic</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_add</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">lambda</span> x: x-n</span><br><span class="line">add_3 =my_add(<span class="number">3</span>) <span class="comment"># add_3 是一种 lambda 函数</span></span><br><span class="line">print(add_3) <span class="comment"># 定义的时候把 n初始化为了3</span></span><br><span class="line">print(<span class="string">"*****"</span>)</span><br><span class="line">print(add_3(<span class="number">4</span>)) <span class="comment"># 4对应着x 输出是1，</span></span><br></pre></td></tr></table></figure>
+<p>（当处理简单逻辑时候，可以使用lambda 函数，当处理复杂逻辑时候，不建议使用）</p>
+<p>（3）Decorator装饰器</p>
+<p>python 中函数的”人设“, function 也是一种对象，内部函数可以访问外部的 function的变量，但是权限是”只读“。一个函数可以输入一个函数也可以返回一个函数。装饰器使得代码可以复用。调用的时候，先调用装饰器，然后调用函数，执行的时候，先执行内层函数，最后是装饰器，类似递归的过程，深度优先，最后返回的是一个函数。总的来说，Decorator在你希望在不修改函数本身代码的前提下扩展函数的功能时非常有用。</p>
+<p>例子说明。下面代码和上面是相同的功能，p_decorate 就像是 function get_text() 的一个外套， 其作为一种输入到 p_decorate() 中。装饰器首先执行的是装饰器部分，本函数作为一个变量使用，最后返回的是结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">p_decorate</span><span class="params">(func)</span>:</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">func_wrapper</span><span class="params">(name)</span>:</span></span><br><span class="line">       <span class="keyword">return</span> <span class="string">"&lt;p&gt;&#123;0&#125;&lt;/p&gt;"</span>.format(func(name))</span><br><span class="line">   <span class="keyword">return</span> func_wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@p_decorate</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_text</span><span class="params">(name)</span>:</span></span><br><span class="line">   <span class="keyword">return</span> <span class="string">"lorem ipsum, &#123;0&#125; dolor sit amet"</span>.format(name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (get_text(<span class="string">"John"</span>))</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;lorem ipsum, John dolor sit amet&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<p>在给个例子，理解调用过程。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_decorator</span><span class="params">(original_fn)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorator_fn</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"Hello from new"</span>)</span><br><span class="line">        original_fn()   <span class="comment"># original function must be invoked</span></span><br><span class="line">    <span class="keyword">return</span> decorator_fn</span><br><span class="line"></span><br><span class="line"><span class="meta">@hello_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">   print(<span class="string">"Hello from original"</span>)</span><br></pre></td></tr></table></figure>
+<p>输出结果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hello <span class="keyword">from</span> new</span><br><span class="line">Hello <span class="keyword">from</span> original</span><br></pre></td></tr></table></figure></p>
+<p>另外，一个函数是可以添加多个 修饰器的，并且修饰器的顺序也是有关系的。一个函数还可以同时定义多个装饰器，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@a</span></span><br><span class="line"><span class="meta">@b</span></span><br><span class="line"><span class="meta">@c</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span> <span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>它的执行顺序是从里到外，最先调用最里层的装饰器，最后调用最外层的装饰器，它等效于<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f = a(b(c(f)))</span><br></pre></td></tr></table></figure></p>
+<p>执行顺序是先执行里面的，但是里面的func 作为一种输入到下一个函数中，所以最后先执行的还是“外面”函数。类似不断的递归进去的感觉。</p>
+<p>感觉装饰器很难的原因在于没有理清它的逻辑关系，本质上装饰器也是函数，但它是对核心程序的闭包封装，在原有的基础上增加更多的功能。细细回顾几遍上面的例子能够加深对装饰器的理解。</p>
+<p>（4）使用修饰器实现单例模式</p>
+<p>设计模式分成单例模式和多例模式，对于单例模式对于一个类只能实现一个实例；多例模式可以实现多个实例。单例是一种设计模式，应用该模式的类只会生成一个实例。这种方式是可以代替全局变量的。比如一些配置、日志等只需要初始化一次的文件，就可以使用这种方式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 函数修饰器实现单例</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">singleton</span><span class="params">(cls)</span>:</span></span><br><span class="line">    _instance =&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> _instance:</span><br><span class="line">            _instance[cls] =cls</span><br><span class="line">        <span class="keyword">return</span> _instance[cls]</span><br><span class="line">    <span class="comment"># 函数调用</span></span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="meta">@singleton</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cls</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">cls1 =Cls()</span><br><span class="line">cls2 =Cls()</span><br><span class="line">print(id(cls1) ==id(cls2))</span><br></pre></td></tr></table></figure>
+<p>常见的自带的修饰器。</p>
+<p><a href="https://www.ziiai.com/blog/770" target="_blank" rel="noopener">Python中 的 @classmethod 和 @staticmethod</a></p>
+<p>在对象的实例方法中，self 参数是类实例对象本身，我们可以用它来对实例数据进行一些操作。@classmethod 方法也有一个强制性的第一个参数，它表示的是未实例化的类本身，而非类的实例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">from_string</span><span class="params">(cls, name_str)</span>:</span></span><br><span class="line">        first_name, last_name = map(str, name_str.split(<span class="string">' '</span>))</span><br><span class="line">        student = cls(first_name, last_name)</span><br><span class="line">        <span class="keyword">return</span> student</span><br><span class="line">scott = Student.from_string(<span class="string">'Scott Robinson'</span>)</span><br></pre></td></tr></table></figure>
+<p>@staticmethod 装饰器</p>
+<p>@staticmethod 装饰类似于@classmethod ，它能够从一个非实例类对象被调用，但是没有传递 cls 参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_full_name</span><span class="params">(name_str)</span>:</span></span><br><span class="line">        names = name_str.split(<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">return</span> len(names) &gt; <span class="number">1</span></span><br><span class="line">Student.is_full_name(<span class="string">'Scott Robinson'</span>)   <span class="comment"># True  </span></span><br><span class="line">Student.is_full_name(<span class="string">'Scott'</span>)            <span class="comment"># False</span></span><br></pre></td></tr></table></figure>
+<p>由于没有 self 传递任何对象，这意味着此装饰器方法无法访问任何实例数据，并且也无法在实例化对象上调用此方法。这些类型的方法通常不是为了创建/实例化对象，它们是为了处理一些与类本身有关的逻辑。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/functional-programming/" rel="tag"># functional_programming</a>
+          
+            <a href="/tags/decorator/" rel="tag"># decorator</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/01/iterable-python/" rel="next" title="可迭代对象 vs. 迭代器 vs. 生成器">
+                <i class="fa fa-chevron-left"></i> 可迭代对象 vs. 迭代器 vs. 生成器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/17/graph_algorithms/" rel="prev" title="图相关算法">
+                图相关算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script src="//cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+  <script>
+      var gitalk = new Gitalk({
+        clientID: '8c6403951ee3eab4e420',
+        clientSecret: 'd842e48ca0c28ec41200f973ba52f96ba975b441',
+        repo: 'jijeng.github.io',
+        owner: 'jia1509309698@163.com',
+        admin: 'jia1509309698@163.com',
+        id: md5(location.pathname),
+        distractionFreeMode: 'true'
+      });
+      var div = document.createElement('div');
+      div.setAttribute("id", "gitalk_comments");
+      div.setAttribute("class", "post-nav");
+      var bro = document.getElementById('posts').getElementsByTagName('article');
+      bro = bro[0].getElementsByClassName('post-block');
+      bro = bro[0].getElementsByTagName('footer');
+      bro = bro[0];
+      bro.appendChild(div);
+      gitalk.render('gitalk_comments');
+  </script>
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/12/01/functional_programming/';
+          this.page.identifier = '2019/12/01/functional_programming/';
+          this.page.title = '函数式编程（Python）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '',
+          clientSecret: '',
+          repo: 'jijeng.github.io',
+          owner: '',
+          admin: [''],
+          id: location.pathname,
+          distractionFreeMode: ''
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

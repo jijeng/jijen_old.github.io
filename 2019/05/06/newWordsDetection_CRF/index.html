@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="crf," />
+  <meta name="keywords" content="新词发现,crf," />
 
 
 
@@ -79,25 +79,22 @@
 
 
 
-<meta name="description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
-<meta name="keywords" content="crf">
+<meta name="description" content="新词发现的四种途径，条件随机场（Conditional Random Field, CRF )介绍。">
+<meta name="keywords" content="新词发现,crf">
 <meta property="og:type" content="article">
-<meta property="og:title" content="新词发现">
-<meta property="og:url" content="http://yoursite.com/2019/05/06/hmm_bak/index.html">
+<meta property="og:title" content="新词发现和条件随机场">
+<meta property="og:url" content="http://yoursite.com/2019/05/06/newWordsDetection_CRF/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
+<meta property="og:description" content="新词发现的四种途径，条件随机场（Conditional Random Field, CRF )介绍。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://i.loli.net/2019/10/06/tK3C7vhwJVfgry4.png">
 <meta property="og:image" content="https://i.loli.net/2019/10/06/hYUIJn4WBewdGxi.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/18a585b8bf2b6eb2.png">
-<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/2ee1d361a3b03f25.jpg">
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/06/ugejln.png">
-<meta property="og:image" content="https://i.loli.net/2019/10/10/sQ79N2dwJxjH3GV.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/10/10/5tNl7M4ERpoiAK8.jpg">
-<meta property="og:updated_time" content="2019-11-29T05:49:07.014Z">
+<meta property="og:updated_time" content="2019-12-29T02:13:09.118Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="新词发现">
-<meta name="twitter:description" content="介绍隐马尔科夫模型（HMM） 和新词发现。">
+<meta name="twitter:title" content="新词发现和条件随机场">
+<meta name="twitter:description" content="新词发现的四种途径，条件随机场（Conditional Random Field, CRF )介绍。">
 <meta name="twitter:image" content="https://i.loli.net/2019/10/06/tK3C7vhwJVfgry4.png">
 
 
@@ -128,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/05/06/hmm_bak/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/05/06/newWordsDetection_CRF/"/>
 
 
 
@@ -147,7 +144,7 @@
 	})();
 </script>
 
-  <title>新词发现 | Jijeng's blog</title>
+  <title>新词发现和条件随机场 | Jijeng's blog</title>
   
 
 
@@ -274,7 +271,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/06/hmm_bak/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/06/newWordsDetection_CRF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -291,7 +288,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">新词发现</h1>
+          <h1 class="post-title" itemprop="name headline">新词发现和条件随机场</h1>
         
 
         <div class="post-meta">
@@ -319,8 +316,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-11-29T13:49:07+08:00">
-                2019-11-29
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-29T10:13:09+08:00">
+                2019-12-29
               </time>
             
           </span>
@@ -356,9 +353,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/05/06/hmm_bak/#comments" itemprop="discussionUrl">
+                <a href="/2019/05/06/newWordsDetection_CRF/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/05/06/hmm_bak/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/05/06/newWordsDetection_CRF/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -391,21 +388,17 @@
       
 
       
-        <p>介绍隐马尔科夫模型（HMM） 和新词发现。</p>
+        <p>新词发现的四种途径，条件随机场（Conditional Random Field, CRF )介绍。</p>
 <a id="more"></a>
-<h2 id="HMM"><a href="#HMM" class="headerlink" title="HMM"></a>HMM</h2><p>网络新词充分应用了英语、汉语、数字和符号等相互结合的方式，结构新颖自由。</p>
-<ol>
-<li>基于规则</li>
-</ol>
+<h2 id="新词发现"><a href="#新词发现" class="headerlink" title="新词发现"></a>新词发现</h2><p>网络新词充分应用了英语、汉语、数字和符号等相互结合的方式，结构新颖自由。</p>
+<p>（1）基于规则</p>
 <p>基于规则的方法是从语言学的角度对新词的构词规则进行归纳总结并建立正则表达式规则库。该方法对于高频新词有很好的识别效果，对特定的领域有很好的准确率，但是人工制定规则需要大量人力成本，存在规则领域适应能力下降等问题。</p>
 <p>比如在微博中的新词发现的一种规则：</p>
 <p><img src="https://i.loli.net/2019/10/06/tK3C7vhwJVfgry4.png" alt="Screen Shot 2019-10-06 at 9.47.01 AM.png"></p>
 <p>可以提取相应的规则：</p>
 <p><img src="https://i.loli.net/2019/10/06/hYUIJn4WBewdGxi.png" alt="Screen Shot 2019-10-06 at 9.48.06 AM.png"></p>
 <p><a href="http://www.joca.cn/CN/volumn/home.shtml" target="_blank" rel="noopener">来源</a></p>
-<ol start="2">
-<li>基于信息熵</li>
-</ol>
+<p>（2）基于信息熵</p>
 <p>使用词频,内部凝固程度,自由程度三个考察纬度进行新词筛选. </p>
 <ol>
 <li>词频很好理解，词的出现频率一般比较高，需要设置一个阈值，如果高于这个阈值那么就判定为一个新词。</li>
@@ -422,9 +415,7 @@
 <p>jieba分词会依照这个字典,将出现在词典中的词生成一个无向图DAG:</p>
 <p><img src="https://ftp.bmp.ovh/imgs/2019/10/18a585b8bf2b6eb2.png" alt=""></p>
 <p>统计方法有很强的领域适应能力和可扩展性，但存在需要大规模语料库和数据稀疏等问题。</p>
-<ol start="3">
-<li>基于分词的热词挖掘</li>
-</ol>
+<p>（3）基于分词的热词挖掘</p>
 <p>一个问题摆在了我们面前：我们如何去量化一个词的“当日热度”？第一想法当然是简单地看一看每个词的当日频数和昨日频数之间的倍数关系，不过细想一下你就发现问题了：它不能解决样本过少带来的偶然性。</p>
 <p>忽略所有样本过少的词？这似乎也不太好，样本少的词也有可能真的是热词。</p>
 <p>让计算机也能聪明地排除偶然因素，这是我们在数据挖掘过程中经常遇到的问题。我们经常需要对样本过少的项目进行“平滑”操作，以避免分母过小带来的奇点。这里，我采用的是一个非常容易理解的方法：一个词的样本太少，就给这个词的热度打折扣。</p>
@@ -437,9 +428,7 @@
 <p>从全国范围来看，不同区域的人也有明显的用词区别。我们可以将全国地图划分成网格，统计出所有签到信息在各个小格内出现的频数，作为标准分布；然后对于每一个抽出来的词，统计出包含该词的签到信息在各个小格内出现的频数，并与标准分布进行对比（可以采用余弦距离等公式），从而找出那些分布最反常的词。程序运行后发现，这样的词还真不少。一些明显具有南北差异的词，分布就会与整个背景相差甚远。例如，在节假日的时候，“滑雪”一词主要在北方出现，“登山”一词则主要在南方出现。地方特色也是造成词语分布差异的一大原因，例如“三里屯”一词几乎只在北京出现，“热干面”一词集中出现在武汉地区，“地铁”一词明显只有个别城市有所涉及。这种由当地人的用词特征反映出来的真实的地方特色，很可能是许多旅游爱好者梦寐以求的信息。另外，方言也会导致用词分布差异，例如“咋这么”主要分布在北方地区，“搞不懂”主要分布在南方城市，“伐”则非常集中地出现在上海地区。当数据规模足够大时，或许我们能通过计算的方法，自动对中国的方言区进行划分。</p>
 <p> 其实，不仅仅是发布时间、用户年龄、用户性别、地理位置这四个维度，我们还可以对浏览器、用户职业、用户活跃度、用户行为偏好等各种各样的维度进行分析，甚至可以综合考虑以上维度，在某个特定范围内挖掘热点事件，或者根据语言习惯去寻找出某个特定的人群。或许这听上去太过理想化，不过我坚信，有了合适的算法，这些想法终究会被一一实现。</p>
 <p>上面的称述只是抛转引玉，详细的<a href="http://www.matrix67.com/blog/archives/5044" target="_blank" rel="noopener">基于SNS的文本数据挖掘</a></p>
-<ol start="4">
-<li>基于HMM</li>
-</ol>
+<p>（4）基于HMM</p>
 <p>对于未登录词,词典中没有,所以使用上述方法会被分为单字词,还是上面的例子:</p>
 <blockquote>
 <p>结婚／的／和／尚未／结婚／的 </p>
@@ -447,28 +436,6 @@
 <p>对于jieba分词来说,这里的连续单字词”的和”就很有可能是一个新词,会被送入隐马尔科夫模型来做进一步的识别.</p>
 <p>实际上当我们把dict.txt中的词语全部删除，jieba依然能够进行分词，其实这个时候使用的就是HMM来进行分词了。</p>
 <p>自然语言处理中的序列标注问题, 在目前, 比较主流的技术是语言模型(如LSTM, BERT)+CRF(条件随机场)。为什么单单使用语言模型是不可以的，后面需要加上概率图模型？<br>比如说”自贸区”对应的标注是: 自(B-LOC)贸(I-LOC)区(I-LOC), 这三个字都对应一个”地名”的标签, 但是第一个字属于实体开头的字, 所以使用”B”开头的标签, 后面两个字的标签都是”I”开头. 比如说搭建好模型之后，使用交叉熵来训练模型，很有可能得到argmax 是上面的组合；上面的原因就是我们要从语言模型(例如BERT, LSTM)后面再加上概率图模型, 例如条件随机场, 用来约束模型的输出, 防止出现不合规的标注输出. 如果使用条件随机场，那么条件随机场的损失是可以反传到模型中去，帮助模型做更好的建立序列之间的依赖关系。</p>
-<p>什么是HMM？</p>
-<p>HMM模型是概率图模型的一种, 属于生成模型, 笼统的说, 我们上面说的”BIO”的实体标签, 就是一个不可观测的隐状态, 而HMM模型描述的就是由这些隐状态序列(实体标记)生成可观测状态(可读文本)的过程.</p>
-<p><img src="https://ftp.bmp.ovh/imgs/2019/10/2ee1d361a3b03f25.jpg" alt=""></p>
-<p><strong>HMM模型有两个基本假设(非常重要)</strong>:   </p>
-<ol>
-<li>第$t$个隐状态(实体标签)只跟前一时刻的$t-1$隐状态(实体标签)有关, 与除此之外的其他隐状态(如$t-2,\  t+3$)无关.<br>例如上图中: 蓝色的部分指的是$i_t$只与$i_{t-1}$有关, 而与蓝色区域之外的所有内容都无关, 而$P(i_{t}|i_{t-1})$指的是隐状态$i$从$t-1$时刻转向$t$时刻的概率, 具体转换方式下面会细讲.</li>
-<li>观测独立的假设, 我们上面说过, HMM模型中是由<strong>隐状态序列(实体标记)生成可观测状态(可读文本)的过程</strong>,<br>观测独立假设是指在任意时刻观测$o_t$只依赖于当前时刻的隐状态$i_t$, 与其他时刻的隐状态无关.<br>例如上图中: 粉红色的部分指的是$i_{t+1}$只与$o_{t+1}$有关, 跟粉红色区域之外的所有内容都无关.</li>
-</ol>
-<p>我们现在已经了解了HMM的三大参数$A, \ B, \ \pi$, 假设我们已经通过建模学习, 学到了这些参数, 得到了模型的概率, 我们怎么使用这些参数来解决序列标注问题呢?<br>设目前在时刻$t$, 我们有当前时刻的观测到的一个汉字$o_t=v_k$(指的第$t$时刻观测到$v_k$), 假设我们还知道在$t-1$时刻(前一时刻)对应的实体标记类型$i_{t-1} = \hat{q}^{t-1}_i$(指的$t-1$时刻标记为$\hat{q}^{t-1}<em>i$). 我们要做的仅仅是列举所有$i</em>{t}$可能的实体标记$\hat{q}^{t}<em>{j}$, 并求可以使下式输出值最大的那个实体类型$q^{t}</em>{j}$(也就是隐状态类型):<br>$$\hat{q}<em>j^{t} = argmax</em>{\hat{q}<em>j^{t} \in Q</em>{hidden}}<br>P(i_t = \hat{q}<em>j^{t} | i</em>{t-1} = \hat{q}^{t-1}_i) P(o_t=v_k| i_t = \hat{q}_j^{t})$$<br>将所有$t$时刻<strong>当前可取的实体标签</strong>带入下式中, 找出一个可以使下式取值最大的那个实体标签作为当前字的标注:<br>$$P(当前可取实体标签|上一时刻实体标签)P(测到的汉字|当前可取实体标签)$$<br><strong>注意</strong>: 我们这里只讲到了怎样求第$t$时刻的最优标注, 但是在每一时刻进行这样的计算, 并不一定能保证最后能得出全局最优序列路径, 例如在第$t$时刻最优实体标签是$q_j$, 但到了下一步, 由于从$q_j$转移到其他某些实体标签的转移概率比较低, 而降低了经过$q_j$的路径的整体概率, 所以到了下一时刻最优路径就有可能在第$t$时刻不经过$q_j$了, 所以每一步的局部最优并不一定可以达成全局最优, 所以我们之后会用到<strong>维特比算法</strong>来找到全局最优的标注序列, 这个后面会有详细讲解.</p>
-<p><strong>HMM参数学习(监督学习)</strong>:   </p>
-<p>我们今天要用HMM解决的是序列标注问题, 所以我们解决的是监督学习的问题. 也就是说我们现在有一些文本和与之对应的标注数据, 我们要训练一个HMM来拟合这些数据, 以便之后用这个模型进行数据标注任务, 最简单的方式是直接用<strong>极大似然估计</strong>来估计参数:</p>
-<ol>
-<li><p>初始隐状态概率$\pi$的参数估计:<br>$$\hat{\pi}_{q_i}=\frac{count(q^{1}_{i})}{count(o_1)}$$<br>上式指的是, 计算在第$1$时刻, 也就是文本中第一个字, $q^{1}_{i}$出现的次数占总第一个字$o_1$观测次数的比例, $q^{1}_{i}$上标1指的是第1时刻, 下标$i$指的是第$i$种标签(隐状态), $count$是的是记录次数.</p>
-</li>
-<li><p>转移概率矩阵$A$的参数估计:<br>我们之前提到过$transition \ matrix$里面$A_{ij}$(矩阵的第i行第j列)指的是在$t$时刻实体标签为$q_i$, 而在$t+1$时刻实体标签转换到$q_j$的概率, 则转移概率矩阵的参数估计相当与一个二元模型$bigram$, 也就是把所有的标注序列中每相邻的两个实体标签分成一组, 统计他们出现的概率:<br>$$\hat{A}<em>{ij}=P(i</em>{t+1}= q_j | i_{t} = q_i)=\frac{count(q_i后面出现q_j的次数)}{count(q_i的次数)}$$</p>
-</li>
-</ol>
-<p>联合概率 除以边缘概率</p>
-<ol start="3">
-<li>发射概率矩阵$B$的参数估计:<br>我们提到过$emission \ matrix$中的$B_{jk}$(矩阵第j行第k列)指的是在$t$时刻由实体标签(隐状态)$q_j$生成汉字(观测结果)$v_k$的概率.<br>$$\hat{B}<em>{jk}=P(o</em>{t}= v_k | i_{t} = q_j)=\frac{count(q_j与v_k同时出现的次数)}{count(q_j出现的次数)}$$<br>到此为止, 我们就可以遍历所有语料, 根据上面的方式得到模型的参数$A, \ B, \ \pi$的估计.</li>
-</ol>
-<p><a href="https://search.bilibili.com/all?keyword=%E6%B1%89%E8%AF%AD%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86&amp;from_source=banner_search" target="_blank" rel="noopener">视频讲解</a></p>
 <p><strong>基于隐马尔科夫模型的新词发现</strong></p>
 <p>互联网中经常会出现很多网红词,比如最近的”佛系青年”,“食草男”.这些词并不在词典中,被称为未登录词,前面写过一篇文章信息熵在新词发现中的运用利用简单的概率知识就可以识别这种新词,不过jieba分词并没有采用这种方法,而是用更为强大的隐马尔科夫模型进行新词发现.</p>
 <p>对于未登录词,词典中没有,所以使用上述方法会被分为单字词,还是上面的例子:</p>
@@ -482,128 +449,45 @@
 <p>新词发现和分词同样的道理,估计每个字的隐状态就可以判断是否为一个词.</p>
 <p>挖掘新词的传统方法是，先对文本进行分词，然后猜测未能成功匹配的剩余片段就是新词。这似乎陷入了一个怪圈：分词的准确性本身就依赖于词库的完整性，如果词库中根本没有新词，我们又怎么能信任分词结果呢？此时，一种大胆的想法是，首先不依赖于任何已有的词库，仅仅根据词的共同特征，将一段大规模语料中可能成词的文本片段全部提取出来，不管它是新词还是旧词。然后，再把所有抽出来的词和已有词库进行比较，不就能找出新词了吗？</p>
 <p><a href="http://www.matrix67.com/blog/archives/5044" target="_blank" rel="noopener">互联网时代的社会语言学：基于SNS的文本数据挖掘</a></p>
-<p> hmm 的过程是由隐状态生成可观测状态的过程。比如是由标签生成文本。</p>
-<p> hmm 的假设<br> 两大假设<br> <strong>HMM模型有两个基本假设(非常重要)</strong>:   </p>
-<ol>
-<li>第$t$个隐状态(实体标签)只跟前一时刻的$t-1$隐状态(实体标签)有关, 与除此之外的其他隐状态(如$t-2,\  t+3$)无关.<br>例如上图中: 蓝色的部分指的是$i_t$只与$i_{t-1}$有关, 而与蓝色区域之外的所有内容都无关, 而$P(i_{t}|i_{t-1})$指的是隐状态$i$从$t-1$时刻转向$t$时刻的概率, 具体转换方式下面会细讲.</li>
-<li>观测独立的假设, 我们上面说过, HMM模型中是由<strong>隐状态序列(实体标记)生成可观测状态(可读文本)的过程</strong>,<br>观测独立假设是指在任意时刻观测$o_t$只依赖于当前时刻的隐状态$i_t$, 与其他时刻的隐状态无关.<br>例如上图中: 粉红色的部分指的是$i_{t+1}$只与$o_{t+1}$有关, 跟粉红色区域之外的所有内容都无关.</li>
-</ol>
-<p> hmm 的参数</p>
-<p> 三大参数</p>
-<ol>
-<li><p>转移概率</p>
-<p>是 $n * n$ 的矩阵， $n$ 表示标签的数量。</p>
-<p><img src="https://i.loli.net/2019/10/10/sQ79N2dwJxjH3GV.jpg" alt="transition.jpg"></p>
-</li>
-<li><p>发射概率</p>
-<p>是 $n * m$ 的概率，其中 $n$ 表示标签的数量， $m$ 表示字典的大小，共有$m $ 中可能性。<br><img src="https://i.loli.net/2019/10/10/5tNl7M4ERpoiAK8.jpg" alt="emission.jpg"></p>
-</li>
-</ol>
-<ol start="3">
-<li><strong>HMM的初始隐状态概率:</strong> 又称为$initial \ probabilities$, 我们通常用$\pi$来表示, 注意这里可不是圆周率:<br>$$\pi=P(i_1=q_i) \quad q_i \in Q_{hidden} = { q_0, q_1, … , q_{N-1}}$$<br>上式指的是<strong>自然语言序列中第一个字</strong>$o_1$的实体标记是$q_i$的概率, 也就是初始隐状态概率.   </li>
-</ol>
-<p>有监督的学习，使用hmm 来拟合这些数据，然后使用这个模型进行数据标注任务，最简单的方式是直接用极大似然估计来估计这些参数。</p>
-<p>使用 argmax 得到的每一步的局部最优解不一定是 lead to 全局最优解。</p>
-<p> 训练很快，2 -3s，因为做的是一个概率统计，极大似然，很简单的。</p>
-<p>维特比算法是用来求解全局最优的标注序列。</p>
-<p>实际的运算，都是求解log，从乘法转成加法，防止因为概率过小而造成下溢。</p>
-<p>维特比算法使用了动态规划算法来解决类似HMM 和CRF 的预测问题。使用维特比算法可以找到概率最大路径，也就是最优路径。</p>
-<p>一个表格记录最大的概率， 另一个表格记录最大概率是从哪个隐状态转移过来的。</p>
-<p>最优路径的特点：<br>最优路径有以下特性: 假设我们有一条最优路径在$t$时刻通过一个隐状态$i_t$, 那么这一路径从$i_t$到最优路径的终点$i_T$相对于<strong>在这段距离里所有可能出现的路径里</strong>, 也必须是最优的. 否则从$i_t$到$i_T$就会有更优的一条路径, 如果把他和从$i_1$到$i_t$的路径(最优路径$i_t$之前的部分)连起来, 等于我们又有一条更优路径, 这是矛盾的.    </p>
-<p>时间复杂度分析：假设我们有 $N$ 中隐状态，在每个时刻之间，一共可能的路径有 $N^2$ 中，假设我们有$T$ 个时刻，那么维特比算法的时间复杂度是 $O(TN^2)$</p>
-<p><strong>ner</strong></p>
-<p>HMM  可以使用在 有监督的学习中（知道了隐状态 和观测状态， 未知变量是模型的参数），和无监督学习中（只是知道观测状态，需要求解 模型的参数和隐状态，这个时候需要使用类似 EM 算法的思想）</p>
-<p><strong>命名实体识别（Name Entity Recognition,NER）</strong></p>
-<p>命名实体识别（Name Entity Recognition,NER）,也称作“专名识别”，是指识别<br>文本中具有特定意义的实体，包括人名、地名、机构名、专有名词等。</p>
-<p>NER 的评价指标， acc precision, recall 和F1值</p>
-<p> 命名实体识别是将文本中的元素分成预先定义的类，如人名、地名、 机构名、时间、货币等等。作为自然语言的承载信息单位，命名实体识别 属于文本信息处理的基础的研究领域，是信息抽取、信息检索、机器翻译、 问答系统等多种自然语言处理技术中必不可少的组成部分。</p>
-<p> 命名实体识别主要分类，一般包括 3 大类（实体类、时间类和数字类）和 7 小类（人名、地名、组织名、机构名、时间、日期、货币和百分比）。但随着 NLP 任务的不断扩充，在特定领域中会出现特定的类别，比如医药领域中，药名、疾病等类别。</p>
-<p>主流的方法：</p>
-<p>这个是之前一个人回答的，大概谈了NER 中模型发展的历史：有一些，大致如下：MLP-&gt;LSTM-&gt;LSTM/CNN+CRF-&gt;BiLSTM+CRF- &gt;BiLSTM+CNN+CRF。提到技术，是不是大家都是用的 CRF，除了目前最新的深度学习。（<strong>CRF+ 深度学习</strong>）</p>
-<p>词性需要有一定的规范，如将词分为名词、形容词、动词，然后用’n’ ‘adj’ ‘v’来表示。北大词性标注集部分标注词性如下表所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Ag     形语素     形容词性语素。形容词代码为a，语素代码ｇ前面置以A。</span><br><span class="line">   a       形容词      取英语形容词adjective的第1个字母。</span><br><span class="line">　ad     副形词 直接作状语的形容词。形容词代码a和副词代码d并在一起。</span><br><span class="line">　an     名形词 具有名词功能的形容词。形容词代码a和名词代码n并在一起。</span><br><span class="line">   b       区别词      取汉字“别”的声母。</span><br><span class="line">   c       连词        取英语连词conjunction的第1个字母。</span><br><span class="line">   Dg     副语素     副词性语素。副词代码为d，语素代码ｇ前面置以D。</span><br><span class="line">   d       副词     取adverb的第2个字母，因其第1个字母已用于形容词。</span><br><span class="line">   e       叹词     取英语叹词exclamation的第1个字母。</span><br><span class="line">   f        方位词      取汉字“方” 的声母。</span><br><span class="line">　g       语素    绝大多数语素都能作为合成词的“词根”，取汉字“根”的声母。</span><br><span class="line">   h       前接成分   取英语head的第1个字母。</span><br><span class="line">   i        成语        取英语成语idiom的第1个字母。</span><br><span class="line">   j        简称略语  取汉字“简”的声母。</span><br><span class="line">   k       后接成分</span><br><span class="line">   l        习用语     习用语尚未成为成语，有点“临时性”，取“临”的声母。</span><br><span class="line">   m       数词     取英语numeral的第3个字母，n，u已有他用。</span><br><span class="line">   Ng      名语素     名词性语素。名词代码为n，语素代码ｇ前面置以N。</span><br><span class="line">   n        名词        取英语名词noun的第1个字母。</span><br><span class="line">   nr      人名        名词代码n和“人(ren)”的声母并在一起。</span><br><span class="line">   ns      地名     名词代码n和处所词代码s并在一起。</span><br><span class="line">   nt      机构团体    “团”的声母为t，名词代码n和t并在一起。</span><br><span class="line">   nz     其他专名    “专”的声母的第1个字母为z，名词代码n和z并在一起。 </span><br><span class="line">   o       拟声词     取英语拟声词onomatopoeia的第1个字母。</span><br><span class="line">   p       介词     取英语介词prepositional的第1个字母。</span><br><span class="line">   q       量词        取英语quantity的第1个字母。</span><br><span class="line">   r       代词        取英语代词pronoun的第2个字母,因p已用于介词。</span><br><span class="line">   s       处所词     取英语space的第1个字母。</span><br><span class="line">   Tg     时语素      时间词性语素。时间词代码为t,在语素的代码g前面置以T。</span><br><span class="line">   t        时间词      取英语time的第1个字母。</span><br><span class="line">   u       助词        取英语助词auxiliary 的第2个字母,因a已用于形容词。</span><br><span class="line">   Vg     动语素      动词性语素。动词代码为v。在语素的代码g前面置以V。</span><br><span class="line">   v       动词        取英语动词verb的第一个字母。</span><br><span class="line">   vd     副动词      直接作状语的动词。动词和副词的代码并在一起。</span><br><span class="line">   vn     名动词      指具有名词功能的动词。动词和名词的代码并在一起。</span><br><span class="line">   w      标点符号   </span><br><span class="line">   x       非语素字    非语素字只是一个符号，字母x通常用于代表未知数、符号。</span><br><span class="line">   y       语气词      取汉字“语”的声母。</span><br><span class="line">   z       状态词      取汉字“状”的声母的前一个字母。</span><br></pre></td></tr></table></figure>
-<p>NER 的应用场景：</p>
-<ol>
-<li><strong>新闻标注：</strong>和文本分类不同, 这里可以使用NER技术将与文章相关的人物, 地点都以标签的形式标注出来, 方便用户对某个人物或地点进行索引。</li>
-<li><strong>搜索引擎：</strong>可以通过使用命名实体识别来抽取web页面中的实体, 后续可以使用这些信息来提高搜索效率和准确度。</li>
-<li><strong>从商品描述中自动提取商品类别, 品牌等信息</strong>, 提高货物上架效率, 在咸鱼等应用上已经实现了类似功能。</li>
-<li><strong>工具易用性提升</strong>, 例如从短信息或邮件中提取时间和地点等实体, 从而实现点击时间直接创建日历, 点击地址直接跳转到地图App等便捷操作。</li>
-</ol>
-<p><strong>一般来说 NER 是不使用在文本分类领域的。</strong></p>
-<p>视频讲解</p>
-<p><a href="https://www.bilibili.com/video/av52626653/?p=3" target="_blank" rel="noopener">HMM与CRF隐形马尔可夫链与条件随机场</a><br><a href="https://www.bilibili.com/video/av58239477" target="_blank" rel="noopener">-attention is all you need</a></p>
-<h2 id="CRF-conditional-random-field"><a href="#CRF-conditional-random-field" class="headerlink" title="CRF (conditional random field )"></a>CRF (conditional random field )</h2><p><strong>定义和intuition</strong><br>CRF 利用了label (在HMM 中的hidden layer) 的信息，因为上一个标签是有助于下一个标签的预测。比如上一个是动词，那么下一个词语的label 也是动词的概率是非常小的。</p>
+<h2 id="CRF"><a href="#CRF" class="headerlink" title="CRF"></a>CRF</h2><p>（1）定义和intuition</p>
+<blockquote>
+<p>Conditional random fields (CRFs) are a class of statistical modeling method often applied in pattern recognition and machine learning and used for structured prediction. Whereas a classifier predicts a label for a single sample without considering “neighboring” samples, a CRF can take context into account.<br>随机场可以看成一组随机变量的集合，这些集合中可能存在某种相互依赖关系，当我为每个位置的随机变量根据分布赋予值的时候，其全体就叫做随机场。CRF 考虑了上下文的信息（通过特征函数），HMM是没有考虑到的。</p>
+</blockquote>
+<p>比如说，CRF 可以利用了label (在HMM 中的hidden layer) 的信息，因为上一个标签是有助于下一个标签的预测。比如上一个是动词，那么下一个词语的label 也是动词的概率是非常小的。</p>
 <blockquote>
 <p> we should incorporate the labels of nearby photos, and this is precisely what a conditional random field does.</p>
 </blockquote>
-<p><strong>特征函数</strong></p>
-<p>特征函数的输入：</p>
+<p>（2） CRF 计算流程</p>
+<p>1).选择特征模板：抽取文本中的字符组合或具有其他意义的标记组成特征，作为特征函数的参数。<br>2).构造特征函数：通过一组函数来完成由特征向数值转换的过程，使特征和一个权值对应。<br>3).进行前向计算：每个状态特征函数（0-1二值特征函数）对应一个多维的向量，最终状态特征函数权值的和即该位置上激活了的状态特征函数对应的多维向量之和。<br>4).解码：利用维特比算法解码出最优标注序列。</p>
+<p>（3）和 HMM 的关系</p>
+<p>CRF 算法和 HMM 一样用于解决序列标注的问题，HMM一般用来解决有时间序列关系的数据，但是由于HMM 模型的局限性，比如当前状态仅依赖于上一状态这种苛刻的条件，CRF 模型采用特征函数解放了HMM 的假设条件局限性。任何一种HMM 都是可以看做某个CRF。</p>
+<p>相同点是都需要学习网络中的weights，当模型预测的时候，都使用 Viterbi algorithm。</p>
+<p>（4）寻找某种模式</p>
+<blockquote>
+<p>Regular expressions: Regular expressions (RegEx) are a form of finite state automaton. They are very helpful in identifying patterns that follow a certain structure. For example, email ID, phone number, etc. can be identified well using RegEx. However, the downside of this approach is that one needs to be aware of all the possible exact words that occur before the claim number. This is not a learning approach, but rather a brute force one<br>CRF 也是寻找某种 pattern。从这个意义上说，和正则匹配是没有什么区别的。</p>
+</blockquote>
+<h2 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h2><p>sklearn-crfsuite是基于CRFsuite库的一款轻量级的CRF库。该库兼容sklearn的算法，因此可以结合sklearn库的算法设计实体识别系统。sklearn-crfsuite不仅提供了条件随机场的训练和预测方法还提供了评测方法。</p>
+<p>（1）准备数据<br>（下面的步骤最好是能够填充一下，使其更加饱满）</p>
+<p>（2）抽取特征</p>
+<p>英文构造函数</p>
+<p>在英文中最小的单位是字节，而不是单词。所以字节是单词的重要的特征，因为考虑到前后缀的问题，所以经常有 <code>word[-3:]</code>和 <code>word[-2:]</code> 构造特征的方式。英文中其他的构造函数：</p>
 <ul>
-<li>a sentence s</li>
 <li>the position $i $of a word in the sentence</li>
 <li>the label $l_i$ of the current word</li>
 <li>the label $l_i−1$ of the previous word</li>
-</ul>
-<p>这里约束的是 <em>linear-chain CRF</em></p>
-<p>(Note: by restricting our features to depend on only the current and previous labels, rather than arbitrary labels throughout the sentence, I’m actually building the special case of a linear-chain CRF. For simplicity, I’m going to ignore general CRFs in this post.)</p>
-<p><strong>特征的概率</strong></p>
-<ol>
-<li>计算某个 feature function的条件下得到的score：<br>$$<br>score (l | s)=\sum_{j=1}^{m} \sum_{i=1}^{n} \lambda_{j} f_{j}\left(s, i, l_{i}, l_{i-1}\right)<br>$$</li>
-<li>正则化到区间 $[0, 1]$<br>$$<br>p(l | s)=\frac{\exp [ {scorells})]}{\sum_{l^{\prime}} \exp \left[\operatorname{score}\left(l^{\prime} | s\right)\right]}=\frac{\exp \left[\sum_{j=1}^{m} \sum_{i=1}^{n} \lambda_{i} f_{j}\left(s, i, l_{i-1}\right)\right]}{\sum_{l^{\prime}} \exp \left[\sum_{j=1}^{m} \sum_{i=1}^{n} \lambda_{i} f_{j}\left(s, i_{l}^{\prime} l_{i-1}^{\prime}\right)\right]}<br>$$</li>
-</ol>
-<p><strong>feature functions例子</strong>（这个就类似人工的提取特征）</p>
-<ul>
-<li>$f1(s,i,l_i,l_{i−1})=1 $if$ l_i= ADVERB $and the ith word ends in “-ly”; 0 otherwise. ** If the weight λ1 associated with this feature is large and positive, then this feature is essentially saying that we prefer labelings where words ending in -ly get labeled as ADVERB.<br>如果以 <code>-ly</code> 结尾，并且权重比较大，那么就是 adj</li>
+<li>如果以 <code>-ly</code> 结尾，并且权重比较大，那么就是 adj</li>
 <li>如果句子的结尾是 <code>?</code>，那么开头的单词就可能是一个动词</li>
 </ul>
-<p><strong>和 HMM 的比较</strong></p>
-<p>CRF 更加强大，任何一个    HMM 都是可以看做是某个 CRF。这个是因为：</p>
-<ul>
-<li>CRFs can define a much larger set of features. </li>
-<li>CRFs can have arbitrary weights. </li>
-</ul>
-<p><strong>learning weights</strong></p>
-<p>当然是使用 gradient descent 的思想。</p>
-<p><strong>Finding the optimal labeling</strong></p>
-<p>和HMM 一样， 使用 Viterbi algorithm。</p>
-<p>理论讲解<a href="https://blog.echen.me/2012/01/03/introduction-to-conditional-random-fields/" target="_blank" rel="noopener">Introduction to Conditional Random Fields</a></p>
-<p>To identify entities in text, one must be able to identify the pattern. For example, if we need to identify the claim number, we can look at the words around it such as “my id is” or “my number is”, etc. Let us examine a few approaches mentioned below for identifying the patterns.</p>
-<ol>
-<li>Regular expressions: Regular expressions (RegEx) are a form of finite state automaton. They are very helpful in identifying patterns that follow a certain structure. For example, email ID, phone number, etc. can be identified well using RegEx. However, the downside of this approach is that one needs to be aware of all the possible exact words that occur before the claim number. This is not a learning approach, but rather a brute force one</li>
-<li>Hidden Markov Model (HMM): This is a sequence modelling algorithm that identifies and learns the pattern. Although HMM considers the future observations around the entities for learning a pattern, it assumes that the features are independent of each other. This approach is better than regular expressions as we do not need to model the exact set of word(s). But in terms of performance, it is not known to be the best method for entity recognition</li>
-<li>MaxEnt Markov Model (MEMM): This is also a sequence modelling algorithm. This does not assume that features are independent of each other and also does not consider future observations for learning the pattern. In terms of performance, it is not known to be the best method for identifying entity relationships either</li>
-<li>Conditional Random Fields (CRF): This is also a sequence modelling algorithm. This not only assumes that features are dependent on each other, but also considers the future observations while learning a pattern. This combines the best of both HMM and MEMM. In terms of performance, it is considered to be the best method for entity recognition problem</li>
-</ol>
-<p>The bag of words (BoW) approach works well for multiple text classification problems. This approach assumes that presence or absence of word(s) matter more than the sequence of the words. However, there are problems such as entity recognition, part of speech identification where word sequences matter as much, if not more. Conditional Random Fields (CRF) comes to the rescue here as it uses word sequences as opposed to just words.</p>
-<p>Broadly speaking, there are 2 components to the CRF formula:</p>
-<ol>
-<li>Normalization: You may have observed that there are no probabilities on the right side of the equation where we have the weights and features. However, the output is expected to be a probability and hence there is a need for normalization. The normalization constant Z(x) is a sum of all possible state sequences such that the total becomes 1. You can find more details in the reference section of this article to understand how we arrived at this value.</li>
-<li>Weights and Features: This component can be thought of as the logistic regression formula with weights and the corresponding features. The weight estimation is performed by maximum likelihood estimation and the features are defined by us.</li>
-</ol>
-<p><a href="https://www.analyticsvidhya.com/blog/2018/08/nlp-guide-conditional-random-fields-text-classification/" target="_blank" rel="noopener">Complete tutorial on Text Classification using Conditional Random Fields Model (in Python)</a></p>
-<h2 id="发展的脉络"><a href="#发展的脉络" class="headerlink" title="发展的脉络"></a>发展的脉络</h2><ol>
-<li><p>隐马尔可夫模型（Hidden Markov Model，HMM）</p>
-<p>NER本质上可以看成是一种序列标注问题（预测每个字的BIOES标记），在使用HMM解决NER这种序列标注问题的时候，我们所能观测到的是字组成的序列（观测序列），观测不到的是每个字对应的标注（状态序列）。</p>
-</li>
-</ol>
-<p>解码问题，我们使用的是维特比（viterbi）算法。</p>
-<ol start="2">
-<li>条件随机场（Conditional Random Field, CRF)</li>
-</ol>
-<p>上面讲的HMM模型中存在两个假设，一是输出观察值之间严格独立，二是状态转移过程中当前状态只与前一状态有关。也就是说，在命名实体识别的场景下，HMM认为观测到的句子中的每个字都是相互独立的，而且当前时刻的标注只与前一时刻的标注相关。但实际上，命名实体识别往往需要更多的特征，比如词性，词的上下文等等，同时当前时刻的标注应该与前一时刻以及后一时刻的标注都相关联。由于这两个假设的存在，显然HMM模型在解决命名实体识别的问题上是存在缺陷的。</p>
-<p>而条件随机场就没有这种问题，它通过引入自定义的特征函数，不仅可以表达观测之间的依赖，还可表示当前观测与前后多个状态之间的复杂依赖，可以有效克服HMM模型面临的问题。</p>
-<p>解码的时候与HMM类似，也可以采用维特比算法。</p>
-<ol start="3">
-<li>Bi-LSTM</li>
-</ol>
-<p>除了以上两种基于概率图模型的方法，LSTM也常常被用来解决序列标注问题。和HMM、CRF不同的是，LSTM是依靠神经网络超强的非线性拟合能力，在训练时将样本通过高维空间中的复杂非线性变换，学习到从样本到标注的函数，之后使用这个函数为指定的样本预测每个token的标注。</p>
-<p>LSTM比起CRF模型最大的好处就是简单粗暴，不需要做繁杂的特征工程，直接训练即可，同时比起HMM，LSTM的准确率也比较高。</p>
-<ol start="4">
-<li>Bi-LSTM+CRF</li>
-</ol>
-<p>简单的LSTM的优点是能够通过双向的设置学习到观测序列（输入的字）之间的依赖，在训练过程中，LSTM能够根据目标（比如识别实体）自动提取观测序列的特征，但是缺点是无法学习到状态序列（输出的标注）之间的关系，要知道，在命名实体识别任务中，标注之间是有一定的关系的，比如B类标注（表示某实体的开头）后面不会再接一个B类标注，所以LSTM在解决NER这类序列标注任务时，虽然可以省去很繁杂的特征工程，但是也存在无法学习到标注上下文的缺点。</p>
-<p>相反，CRF的优点就是能对隐含状态建模，学习状态序列的特点，但它的缺点是需要手动提取序列特征。所以一般的做法是，在LSTM后面再加一层CRF，以获得两者的优点。</p>
-<p><a href="https://zhuanlan.zhihu.com/p/61227299" target="_blank" rel="noopener">NLP实战-中文命名实体识别</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">word2features</span><span class="params">(sent, i)</span>:</span></span><br><span class="line">    word= sent[i][<span class="number">0</span>]</span><br><span class="line">    postag= sent[i][<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    features= &#123;</span><br><span class="line">        <span class="string">'bias'</span>:<span class="number">1.0</span>,</span><br><span class="line">        <span class="string">'word.lower()'</span>: word.lower(),</span><br><span class="line">        <span class="string">'word[-3:]'</span>: word[<span class="number">-3</span>:],</span><br><span class="line">        <span class="string">'word[-2:]'</span>: word[<span class="number">-2</span>:],</span><br><span class="line">        <span class="string">'word.isupper()'</span>: word.isupper(),</span><br><span class="line">        <span class="string">'word.istitle()'</span>: word.istitle(),</span><br><span class="line">        <span class="string">'word.isdigit()'</span>: word.isdigit(),</span><br><span class="line">        <span class="string">'postag'</span>: postag,</span><br><span class="line">        <span class="string">'postag[:2]'</span>: postag[:<span class="number">2</span>],</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> i &gt;<span class="number">0</span>:</span><br><span class="line">        word1= sent[i<span class="number">-1</span>][<span class="number">0</span>]</span><br><span class="line">        postag1= sent[i<span class="number">-1</span>][<span class="number">1</span>]</span><br><span class="line">        features.update(&#123;</span><br><span class="line">            <span class="string">'-1:word.lower()'</span>: word1.lower(),</span><br><span class="line">            <span class="string">'-1:word.istitle()'</span>: word1.istitle(),</span><br><span class="line">            <span class="string">'-1:word.isupper()'</span>: word1.isupper(),</span><br><span class="line">            <span class="string">'-1:postag'</span>: postag1,</span><br><span class="line">            <span class="string">'-1:postag[:2]'</span>: postag1[:<span class="number">2</span>],</span><br><span class="line">        &#125;)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        features[<span class="string">'BOS'</span>]= <span class="keyword">True</span></span><br><span class="line">    <span class="keyword">if</span> i &lt;len(sent)<span class="number">-1</span>:</span><br><span class="line">        word1= sent[i+<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">        postag1= sent[i+<span class="number">1</span>][<span class="number">1</span>]</span><br><span class="line">        features.update(&#123;</span><br><span class="line">            <span class="string">'+1:word.lower()'</span>: word1.lower(),</span><br><span class="line">            <span class="string">'+1:word.istitle()'</span>: word1.istitle(),</span><br><span class="line">            <span class="string">'+1:word.isupper()'</span>: word1.isupper(),</span><br><span class="line">            <span class="string">'+1:postag'</span>: postag1,</span><br><span class="line">            <span class="string">'+1:postag[:2]'</span>: postag1[:<span class="number">2</span>],</span><br><span class="line">        &#125;)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        features[<span class="string">'EOS'</span>]= <span class="keyword">True</span></span><br><span class="line"><span class="keyword">return</span> features</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sent2features</span><span class="params">(sent)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [word2features(sent, i)<span class="keyword">for</span> iin range(len(sent))]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sent2labels</span><span class="params">(sent)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [labelfor token, postag, labelin sent]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sent2tokens</span><span class="params">(sent)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [tokenfor token, postag, labelin sent]</span><br></pre></td></tr></table></figure>
+<p>中文构造函数</p>
+<p>中文简历NER 问题</p>
+<p>对于中文中，只是使用bias（窗口大小为1）组成的一个特征。相对来说这个上下文比较小<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;w&apos;: &apos;高&apos;, &apos;w-1&apos;: &apos;&lt;s&gt;&apos;, &apos;w+1&apos;: &apos;勇&apos;, &apos;w-1:w&apos;: &apos;&lt;s&gt;高&apos;, &apos;w:w+1&apos;: &apos;高勇&apos;, &apos;bias&apos;: 1&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://www.jianshu.com/p/613ea47e98e7" target="_blank" rel="noopener">资料一</a></p>
+<p>[资料二] 现在看的代码</p>
+<p>（3）训练</p>
+<p>（4）评测</p>
+<p>参考文献</p>
+<p><a href="https://sklearn-crfsuite.readthedocs.io/en/latest/tutorial.html#features" target="_blank" rel="noopener">sklearn-crfsuite Tutorial</a></p>
 
       
     </div>
@@ -620,6 +504,8 @@
     <footer class="post-footer">
       
         <div class="post-tags">
+          
+            <a href="/tags/新词发现/" rel="tag"># 新词发现</a>
           
             <a href="/tags/crf/" rel="tag"># crf</a>
           
@@ -737,7 +623,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -759,7 +645,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -833,7 +719,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HMM"><span class="nav-number">1.</span> <span class="nav-text">HMM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRF-conditional-random-field"><span class="nav-number">2.</span> <span class="nav-text">CRF (conditional random field )</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发展的脉络"><span class="nav-number">3.</span> <span class="nav-text">发展的脉络</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#新词发现"><span class="nav-number">1.</span> <span class="nav-text">新词发现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRF"><span class="nav-number">2.</span> <span class="nav-text">CRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码部分"><span class="nav-number">3.</span> <span class="nav-text">代码部分</span></a></li></ol></div>
             
 
           </div>
@@ -853,7 +739,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -1029,9 +915,9 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/05/06/hmm_bak/';
-          this.page.identifier = '2019/05/06/hmm_bak/';
-          this.page.title = '新词发现';
+          this.page.url = 'http://yoursite.com/2019/05/06/newWordsDetection_CRF/';
+          this.page.identifier = '2019/05/06/newWordsDetection_CRF/';
+          this.page.title = '新词发现和条件随机场';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-17T03:42:34.543Z">
+<meta property="og:updated_time" content="2019-12-29T08:48:32.068Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pytorch">
 <meta name="twitter:description" content="pytorch 学习笔记 不理解的地方，一个是关于 nn包搭建网络的部分。">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-17T11:42:34+08:00">
-                2019-12-17
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-29T16:48:32+08:00">
+                2019-12-29
               </time>
             
           </span>
@@ -475,6 +475,14 @@
 <li><p>control flow and weight sharing<br>这个权值共享在RNN 中使用比较多，但是不是很多呀，多看例子把~</p>
 </li>
 </ol>
+<ol start="7">
+<li>pytorch  中 <code>model.train()</code> 和 <code>model.eval()</code> 的区别</li>
+</ol>
+<p>在图像中影响比较大。如果模型中出现了BatchNormalization 和Dropout，必须要区分训练和验证模式。两种模式在计算上是不同的。当 eval 的时候，模型会自动把 BN和DropOut固定住，使用已经训练好的值，否则容易出现异常的结果。 </p>
+<ol start="8">
+<li>contiguous 关键词</li>
+</ol>
+<p>contiguous  使用空间换取时间，保证语义上相邻的元素在内存上也是连续的。这样访问的时候，可以减少cpu 对内存的请求的次数。</p>
 <p>参考文献</p>
 <p><a href="https://www.jianshu.com/p/9779683ffa58" target="_blank" rel="noopener">介绍PyTorch的简单示例</a><br><a href="https://pytorch.org/tutorials/beginner/pytorch_with_examples.html#examples" target="_blank" rel="noopener">LEARNING PYTORCH WITH EXAMPLES</a></p>
 
@@ -601,7 +609,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -623,7 +631,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -701,7 +709,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

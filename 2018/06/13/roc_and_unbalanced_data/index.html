@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/01/5d421f9678f9649303.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/08/01/5d422029970c282991.png">
 <meta property="og:image" content="https://i.loli.net/2019/12/23/DTOJRVtwd5x1MlU.png">
-<meta property="og:updated_time" content="2019-12-23T08:49:51.824Z">
+<meta property="og:updated_time" content="2020-01-02T01:26:43.406Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习中的常见的评价指标">
 <meta name="twitter:description" content="介绍机器学习中分类模型常用的评价指标：AUC、Precision-Recall, ACC和KS值。">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-23T16:49:51+08:00">
-                2019-12-23
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-02T09:26:43+08:00">
+                2020-01-02
               </time>
             
           </span>
@@ -422,7 +422,7 @@
 <p>对于AUC 有两类解释：</p>
 <ul>
 <li>从ROC 线下面积理解：AUC量化了ROC曲线表达的分类能力；</li>
-<li>从概率角度理解：AUC就是从所有正样本（1）中随机选取一个样本， 从所有负样本（0）样本中随机选取一个样本，然后根据你的分类器对两个随机样本进行预测，把1样本预测为1的概率为$p_1$，把0样本预测为1的概率为 $p_0$，$p1&gt;p0 $的概率就等于AUC。所以AUC 反应的是分类器的排序能力。例如0.7的AUC，其含义可以大概理解为：给定一个正样本和一个负样本，在70\%的情况下，模型对正样本的打分高于对负样本的打分。可以看出在这个解释下，我们关心的只有正负样本之间的分数高低，而具体的分值则无关紧要。</li>
+<li>从概率角度理解：AUC就是从所有正样本（类别1）中随机选取一个样本， 从所有负样本（类别0）样本中随机选取一个样本，然后根据你的分类器对两个随机样本进行预测，把1样本预测为1的概率为$p_1$，把0样本预测为1的概率为 $p_0$，$p1&gt;p0 $的概率就等于AUC。所以AUC 反应的是分类器的排序能力。例如0.7的AUC，其含义可以大概理解为：给定一个正样本和一个负样本，在70%的情况下，模型对正样本的打分高于对负样本的打分。可以看出在这个解释下，我们关心的只有正负样本之间的分数高低，而具体的分值则无关紧要。</li>
 </ul>
 <p>AUC 的优点：不关注具体得分，只关注排序结果，这使得它特别适用于排序问题的效果评估，例如推荐排序的评估，CTR的线下评估</p>
 <p>AUC的缺点： AUC只关注正负样本之间的排序，并不关心正样本内部，或者负样本内部的排序。这也体现了AUC的本质：任意个正样本的概率都大于负样本的概率的能力。</p>
@@ -452,14 +452,17 @@
 </ul>
 <h2 id="PR和ROC联系和区别"><a href="#PR和ROC联系和区别" class="headerlink" title="PR和ROC联系和区别"></a>PR和ROC联系和区别</h2><p>（1）联系<br>1). 对于一个给定的的数据集，ROC空间和PR空间存在一一对应的关系，因为二者包含完全一致的混淆矩阵。我们可以将ROC曲线转化为PR曲线，反之亦然。<br>2). 都有一个曲线和一个数值进行衡量：F1对于PRC就好象AUC对于ROC一样。<br>（2）区别<br>1). 最大的区别：在正负样本分布得极不均匀(highly skewed datasets)的情况下，PRC比ROC能更有效地反应分类器的好坏。<br>2). 图像上区别</p>
 <ul>
-<li>PR 曲线是以 Recall 为横轴，Precision 为纵轴；而 ROC曲线则是以 FPR 为横轴，TPR 为纵轴。</li>
-<li>“曲线A优于曲线B” 是指曲线 B 的所有部分与曲线 A 重合或在曲线 A 之下。而在ROC空间，ROC曲线越凸向左上方向效果越好。与ROC曲线左上凸不同的是，PR曲线是右上凸效果越好。<br>3). 代码实现上 </li>
+<li>PR 曲线是以Precision 为纵轴，Recall 为横轴；而 ROC曲线则是以TPR 为纵轴，FPR 为横轴。</li>
+<li>“曲线A优于曲线B” 是指曲线 B 的所有部分与曲线 A 重合或在曲线 A 之下。而在ROC空间，ROC曲线越凸向左上方向效果越好。与ROC曲线左上凸不同的是，PR曲线是右上凸效果越好。</li>
 </ul>
+<p>3). 代码实现上 </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">x = np.arange(<span class="number">0</span>, <span class="number">5</span>, <span class="number">0.1</span>)</span><br><span class="line">y = np.sin(x)</span><br><span class="line">plt.plot(x, y)</span><br></pre></td></tr></table></figure>
 <p>ROC 曲线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fpr, tpr, thresholds = roc_curve(testy, probs)</span><br><span class="line">pyplot.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], linestyle=<span class="string">'--'</span>)</span><br><span class="line">pyplot.plot(fpr, tpr, marker=<span class="string">'.'</span>)</span><br><span class="line">pyplot.show()</span><br><span class="line">auc_score = roc_auc_score(testy, probs)</span><br><span class="line">print(<span class="string">'AUC: %.3f'</span> % auc_score)</span><br></pre></td></tr></table></figure></p>
 <p>P-R曲线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pyplot.plot([<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0.5</span>, <span class="number">0.5</span>], linestyle=<span class="string">'--'</span>)</span><br><span class="line">pyplot.plot(recall, precision, marker=<span class="string">'.'</span>)</span><br><span class="line">pyplot.show()</span><br><span class="line">print(<span class="string">'AUC: %.3f'</span> % auc_score)</span><br></pre></td></tr></table></figure></p>
 <p>当正负样本的分布发生变化时，ROC曲线的形状能够基本保持不变，而P-R曲线的形状一般会发生较剧烈的变化。ROC能够尽量降低不同测试集带来的干扰，更加客观的衡量模型本身的性能。如果在实际应用中更加关注正样本的表现，那么P-R曲线更加适合。</p>
 <p>总体来说ROC曲线的适用场景更多，被广泛用于排序、推荐、广告等领域。但需要注意的是，选择P-R曲线还是ROC曲线是因实际问题而异的，如果研究者希望更多地看到模型在特定数据集上的表现，P-R曲线则能够更直观地反映其性能。</p>
+<p>（4）针对样本不均衡问题</p>
+<p>当样本不均衡时候，使用ACC 肯定是bad choice，这个时候可以尝试使用ROC。当样本极大不均衡且更加关注正样本（正样本少）时候，P-R曲线是更好的选择。</p>
 <h2 id="其他指标"><a href="#其他指标" class="headerlink" title="其他指标"></a>其他指标</h2><p>（1） ACC</p>
 <p>ACC 是在分类中熟悉的，但是不是那么常用。缺点主要有以下两点：</p>
 <ul>
@@ -467,16 +470,16 @@
 <li>很多机器学习模型分类的结果都是概率，如果要计算ACC，那么需要手动设置阈值，该超参数的设置很大程度上影响了 accuracy的计算。</li>
 </ul>
 <p>（2）logloss</p>
-<p>logloss衡量的是预测概率分布和真实概率分布的差异性，取值越小越好。与AUC不同，logloss对预测概率敏感。</p>
+<p>logloss衡量的是预测概率分布和真实概率分布的差异性，取值越小越好。与AUC不同，logloss对预测概率本身敏感。从比较的意义上，logloss 主要评估预测是否准确，auc用来评估把正样本排到负样本前面的能力。举个例子：真实值是1 1 0 1 预测值 为 0.5 0.5 0.3 0.5，另外提升之后的预测值是 0.7 0.7 0.4 0.7。两个版本的auc 都是1，但是logloss 有了很大的提升。总结为：预测值乘以一个倍数，这种相互的排序关系没有改变，但是logloss 会改变。</p>
 <p>（3）KS曲线</p>
 <p>KS值是在模型中用于区分预测正负样本分隔程度的评价指标，一般应用于金融风控领域。KS曲线以阈值作为横坐标，以FPR和TPR作为纵坐标，KS曲线则为TPR-FPR，KS曲线的最大值通常为KS值。与ROC曲线相似，通过改变不同阈值可以得到曲线。</p>
 <p>如何求解KS值呢？我们知道，当阈值减小时，TPR和FPR会同时减小，当阈值增大时，TPR和FPR会同时增大。而在实际工程中，我们希望TPR更大一些，FPR更小一些，即TPR-FPR越大越好，即ks值越大越好。</p>
 <p>KS值的取值范围是[0，1]。通常来说，值越大，模型区分正负样本的能力越强（一般0.3以上，说明模型的效果比较好）。</p>
 <p>（4）马修斯相关系数 （Matthews Correlation Coefficient，MCC）</p>
 <p>可以看出该指标也是根据混淆矩阵计算得来的。</p>
-<p>\begin{equation}<br>M C C=\frac{t p <em> t n-f p </em> f n}{(t p+f p)(t p+f n)(t n+f p)(t n+f n)}<br>\end{equation}</p>
+<p>\begin{equation}<br>MCC= \frac{ tp * tn - fp * fn}{( tp +fp)( tp + fn )( tn + fp)( tn + fn)}<br>\end{equation}</p>
 <p><img src="https://i.loli.net/2019/12/23/DTOJRVtwd5x1MlU.png" alt="mcc_by_thres.png"></p>
-<p>如果接近+1 ，表示完美屁屁额；如果接近0，那么相当于随机猜测；如果接近于-1，那么说明预测和观察之间的完全不一样。</p>
+<p>如果接近+1 ，表示完美预测；如果接近0，那么相当于随机猜测；如果接近于-1，那么说明预测和观察之间的完全不一样。</p>
 <p>计算<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> matthews_corrcoef</span><br><span class="line">y_pred_class = y_pred_pos &gt; threshold</span><br><span class="line">matthews_corrcoef(y_true, y_pred_class)</span><br></pre></td></tr></table></figure></p>
 <p>使用场景：</p>
 <ul>
@@ -495,7 +498,10 @@
 <p>The Receiver Operating Characteristic (ROC) curves plot FPR vs. TPR as shown below. Because TPR only depends on positives, ROC curves do not measure the effects of negatives. <strong>The area under the ROC curve (AUC) assesses overall classification performance </strong>. AUC does not place more emphasis on one class over the other, so it does not reflect the minority class well.</p>
 <p>Davis and Goadrich in this paper propose that Precision-Recall (PR) curves will be more informative than ROC when dealing with highly skewed datasets. The PR curves plot precision vs. recall (FPR). Because Precision is directly influenced by class imbalance so the Precision-recall curves are better to highlight differences between models for highly imbalanced data sets. When you compare different models with imbalanced settings, the area under the Precision-Recall curve will be more sensitive than the area under the ROC curve.</p>
 <p>参考文献</p>
-<p> <a href="http://www.davidsbatista.net/blog/2018/08/19/NLP_Metrics/" target="_blank" rel="noopener">Evaluation Metrics, ROC-Curves and imbalanced datasets</a><br> <a href="https://neptune.ml/blog/evaluation-metrics-binary-classification" target="_blank" rel="noopener">24 Evaluation Metrics for Binary Classification (And When to Use Them)</a></p>
+<ul>
+<li><a href="http://www.davidsbatista.net/blog/2018/08/19/NLP_Metrics/" target="_blank" rel="noopener">Evaluation Metrics, ROC-Curves and imbalanced datasets</a></li>
+<li><a href="https://neptune.ml/blog/evaluation-metrics-binary-classification" target="_blank" rel="noopener">24 Evaluation Metrics for Binary Classification (And When to Use Them)</a></li>
+</ul>
 
       
     </div>
@@ -631,7 +637,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -653,7 +659,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -747,7 +753,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care. 变量（特征个数）和解的关系多变量和最后target的关系是可以使用 matrices 进">
+<meta name="description" content="线性代数、统计学中有很多概念作为机器学习中的基础，比如说矩阵运算、相关系数等。ML 中的一个难点就是由原来概率中的线性变换直接过渡到了矩阵和网络，这其中的过程却没有人铺垫。于是，本文持续更新和 ML 相关的线性代数、统计学知识和相关的实现。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linear Algebra in ML">
 <meta property="og:url" content="http://yoursite.com/2019/03/25/Linear-Algebra-in-ML/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care. 变量（特征个数）和解的关系多变量和最后target的关系是可以使用 matrices 进">
+<meta property="og:description" content="线性代数、统计学中有很多概念作为机器学习中的基础，比如说矩阵运算、相关系数等。ML 中的一个难点就是由原来概率中的线性变换直接过渡到了矩阵和网络，这其中的过程却没有人铺垫。于是，本文持续更新和 ML 相关的线性代数、统计学知识和相关的实现。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1etf4u36aj20q00dutdk.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1eu88lj31j20ao048jrl.jpg">
-<meta property="og:updated_time" content="2019-09-25T02:29:07.634Z">
+<meta property="og:updated_time" content="2019-12-28T09:45:12.056Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linear Algebra in ML">
-<meta name="twitter:description" content="我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care. 变量（特征个数）和解的关系多变量和最后target的关系是可以使用 matrices 进">
+<meta name="twitter:description" content="线性代数、统计学中有很多概念作为机器学习中的基础，比如说矩阵运算、相关系数等。ML 中的一个难点就是由原来概率中的线性变换直接过渡到了矩阵和网络，这其中的过程却没有人铺垫。于是，本文持续更新和 ML 相关的线性代数、统计学知识和相关的实现。">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1etf4u36aj20q00dutdk.jpg">
 
 
@@ -313,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-09-25T10:29:07+08:00">
-                2019-09-25
+              <time title="Post modified" itemprop="dateModified" datetime="2019-12-28T17:45:12+08:00">
+                2019-12-28
               </time>
             
           </span>
@@ -385,7 +385,44 @@
       
 
       
-        <p>我觉得到 ML 中的一个难点：就是由原来简单的 linear equations 直接过渡到了 matrics and vectors。这个过程是没有人跟你说的。网络结构可以当作是一个complicated 并且是无法表示的函数，于是很多使用者把它当作黑匣子，关心于输入和输出，中间过程 don’t care.</p>
+        <p>线性代数、统计学中有很多概念作为机器学习中的基础，比如说矩阵运算、相关系数等。ML 中的一个难点就是由原来概率中的线性变换直接过渡到了矩阵和网络，这其中的过程却没有人铺垫。于是，本文持续更新和 ML 相关的线性代数、统计学知识和相关的实现。</p>
+<a id="more"></a>
+<h2 id="三大相关系数"><a href="#三大相关系数" class="headerlink" title="三大相关系数"></a>三大相关系数</h2><p>（1）Person correlation coefficient（皮尔森相关性系数）</p>
+<blockquote>
+<p>The Pearson’s correlation coefficient is calculated as the covariance of the two variables divided by the product of the standard deviation of each data sample. It is the normalization of the covariance between the two variables to give an interpretable score.<br>Person 相关系数等于各自的协方差除以各自的标准差的乘积。</p>
+</blockquote>
+<p>\begin{equation}<br>\begin{aligned}<br>\rho (X, Y) &amp;=\frac{\operatorname{cov}(X, Y)}{\sigma X \sigma Y}<br>=\frac{E\left(\left(X-\mu_{X}\right)(Y-\mu Y)\right)}{\sigma X \sigma Y} \\<br>&amp;=\frac{E(X Y-E(X) E(Y)}{\sqrt{E\left(X^{2}\right)-E^{2}(X)} \sqrt{E\left(Y^{2}\right)-E^{2}(Y)}}<br>\end{aligned}<br>\end{equation}</p>
+<blockquote>
+<p>The coefficient returns a value between -1 and 1 that represents the limits of correlation from a full negative correlation to a full positive correlation. A value of 0 means no correlation. The value must be interpreted, where often a value below -0.5 or above 0.5 indicates a notable correlation, and values below those values suggests a less notable correlation.<br>结果的绝对值表示相关程度的大小，越接近1 那么相关性越大，越接近0，相关性越小。正负号表示正相关或负相关。正相关性意味着同增同减，负相关性意味着两个变量增减性质相反，数值为0 （从公式中知道实际上是协方差矩阵为0）意味着两者没有线性相关性。</p>
+</blockquote>
+<p>代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># calculate the Pearson's correlation between two variables</span></span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> randn</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> pearsonr</span><br><span class="line"><span class="comment"># seed random number generator</span></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># prepare data</span></span><br><span class="line">data1 = <span class="number">20</span> * randn(<span class="number">1000</span>) + <span class="number">100</span></span><br><span class="line">data2 = data1 + (<span class="number">10</span> * randn(<span class="number">1000</span>) + <span class="number">50</span>)</span><br><span class="line"><span class="comment"># calculate Pearson's correlation</span></span><br><span class="line">corr, _ = pearsonr(data1, data2)</span><br><span class="line">print(<span class="string">'Pearsons correlation: %.3f'</span> % corr)</span><br><span class="line"><span class="comment"># 0.88</span></span><br></pre></td></tr></table></figure>
+<p>使用的要求和范围</p>
+<ul>
+<li>计算公式中使用到了均值和方差，所以该洗漱需要满足 Gaussian or Gaussian-like distribution.（严格说这条约束是协方差矩阵所需要的）</li>
+<li>只能检测到数据之间的线性关系</li>
+</ul>
+<p>（2）Spearman correlation coefficient（斯皮尔曼相关性系数）</p>
+<p>Spearman相关性系数是一种秩相关系数，“秩”可以理解为一种顺序或者排序。同样值域也是在 $[1, 1] $之间，含义和Person 系数是一致的。</p>
+<p>计算流程<br>Spearman 相关系数的计算和 Person 相关系数基本一致，只是使用特征的排序结果代替了原始的值。比如给定三个值：30，50，10，它们的等级就分别是2，3，1，则计算时用2，3，1。当变量为离散变量的时候，可以表示为以下的形式：</p>
+<p>\begin{equation}<br>\rho_{S}=\frac{\sum_{i=1}^{N}\left(R_{i}-\bar{R}\right)\left(S_{i}-\bar{S}\right)}{\left[\sum_{i=1}^{N}\left(R_{i}-\bar{R}\right)^{2} \sum_{i=1}^{N}\left(S_{i}-\bar{S}\right)^{2}\right]^{\frac{1}{2}}}<br>\end{equation}</p>
+<p>其中 $R_i$  和$S_i$分别是观测值 $i$取值的等级，$ \bar{R} $ 和$\bar{S} $是变量 $x$ 和变量 $y$ 的平均等级，$N$ 是观测值的总数量。</p>
+<p>使用范围</p>
+<ul>
+<li>当数据之间不满足高斯分布也可以使用，比如数据错误或者极端值（因为计算的是排序之后的结果而不是数据本身）</li>
+<li>当数据之间不具备线性相关性</li>
+</ul>
+<p>可以发现Spearman 相关性的使用场景正好和Person 相关系数相反。那么Spearman 是否可以使用在线性场景呢？ 答案是效果并不好。所以Person 相关系数的使用范围并不是 Spearman的子集，两者更像是一种并集。</p>
+<p>调用 api 实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># calculate the spearmans's correlation between two variables</span></span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> randn</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> spearmanr</span><br><span class="line"><span class="comment"># seed random number generator</span></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># prepare data</span></span><br><span class="line">data1 = <span class="number">20</span> * randn(<span class="number">1000</span>) + <span class="number">100</span></span><br><span class="line">data2 = data1 + (<span class="number">10</span> * randn(<span class="number">1000</span>) + <span class="number">50</span>)</span><br><span class="line"><span class="comment"># calculate spearman's correlation</span></span><br><span class="line">corr, _ = spearmanr(data1, data2)</span><br><span class="line">print(<span class="string">'Spearmans correlation: %.3f'</span> % corr)</span><br><span class="line"><span class="comment"># 0.872</span></span><br></pre></td></tr></table></figure>
+<p>（3）Kendall correlation coefficient（肯德尔相关性系数）</p>
+<p>Kendall 相关系数也会是一种秩相关。排序一致，取值为1， 排序完全相反则为-1. 无序分类变量：比如性别（男、女）、血型（A、B、O、AB）；有序分类变量：比如肥胖等级（重度肥胖，中度肥胖、轻度肥胖、不肥胖）。Kendall 相关系数是针对有序分类变量的。</p>
+<p>比如评委对选手的评分（优、中、差等），我们想看两个（或者多个）评委对几位选手的评价标准是否一致；或者医院的尿糖化验报告，想检验各个医院对尿糖的化验结果是否一致，这时候就可以使用肯德尔相关性系数进行衡量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment">#原始数据</span></span><br><span class="line">x= pd.Series([<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>])</span><br><span class="line">y= pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">r = x.corr(y,method=<span class="string">"kendall"</span>) <span class="comment">#-0.2611165</span></span><br></pre></td></tr></table></figure>
+<p>可以发现两个评委对选手的的看法是相反的，但是这种程度不大。</p>
+<p>使用场景：用于反映分类变量相关性的指标，即对有序序列的相关系数，非正太分布的数据</p>
+<p>（4） 观点</p>
+<p>数据经过标准化（$ \mu =0, \sigma =1$）之后，Pearson相关性系数、cosine 相关度和欧氏距离的平方可以认为是等价的。个人经验：一般在低维度优先使用标准化之后的欧氏距离，在高维度使用Pearson相关系数更合适。</p>
 <h2 id="变量（特征个数）和解的关系"><a href="#变量（特征个数）和解的关系" class="headerlink" title="变量（特征个数）和解的关系"></a>变量（特征个数）和解的关系</h2><p>多变量和最后target的关系是可以使用 matrices 进行表示的，这就是一种数学公式化。</p>
 <blockquote>
 <p>Broadly speaking, in linear algebra data is represented in the form of linear equations. These linear equations are in turn represented in the form of matrices and vectors.</p>
@@ -524,7 +561,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -546,7 +583,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -620,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#变量（特征个数）和解的关系"><span class="nav-number">1.</span> <span class="nav-text">变量（特征个数）和解的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#terms-in-related-to-matrix"><span class="nav-number">2.</span> <span class="nav-text">terms in related to matrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征值和奇异值"><span class="nav-number">3.</span> <span class="nav-text">特征值和奇异值</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#三大相关系数"><span class="nav-number">1.</span> <span class="nav-text">三大相关系数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量（特征个数）和解的关系"><span class="nav-number">2.</span> <span class="nav-text">变量（特征个数）和解的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#terms-in-related-to-matrix"><span class="nav-number">3.</span> <span class="nav-text">terms in related to matrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征值和奇异值"><span class="nav-number">4.</span> <span class="nav-text">特征值和奇异值</span></a></li></ol></div>
             
 
           </div>
@@ -640,7 +677,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
