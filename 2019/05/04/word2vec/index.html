@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/16/QhqT0A.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/16/Qhqbkt.png">
 <meta property="og:image" content="https://upload.cc/i1/2019/12/14/qIHEid.png">
-<meta property="og:updated_time" content="2019-12-16T03:46:05.780Z">
+<meta property="og:updated_time" content="2020-01-06T06:05:08.044Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Word2vec 介绍">
 <meta name="twitter:description" content="介绍Word2vec 的两种训练模式（DBOW和Skip-gram）和两种优化策略（Hierarchical Softmax 和Negative Sampling）。">
@@ -315,8 +315,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-16T11:46:05+08:00">
-                2019-12-16
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-06T14:05:08+08:00">
+                2020-01-06
               </time>
             
           </span>
@@ -402,6 +402,9 @@
 <blockquote>
 <p>Because there are multiple contextual words, we average their corresponding word vectors, constructed by the multiplication of the input vector and the matrix W. </p>
 </blockquote>
+<blockquote>
+<p>In the “skip-gram” mode alternative to “CBOW”, rather than averaging the context words, each is used as a pairwise training example. That is, in place of one CBOW example such as [predict ‘ate’ from average(‘The’, ‘cat’, ‘the’, ‘mouse’)], the network is presented with four skip-gram examples [predict ‘ate’ from ‘The’], [predict ‘ate’ from ‘cat’], [predict ‘ate’ from ‘the’], [predict ‘ate’ from ‘mouse’]. (The same random window-reduction occurs, so half the time that would just be two examples, of the nearest words.)</p>
+</blockquote>
 <p>（3）损失函数</p>
 <p>skip-gram 和CBOW 都是采用的交叉熵损失函数。</p>
 <p>\begin{equation}<br>L_{\theta}=-\sum_{i=1}^{V} y_{i} \log p\left(w_{i} | w_{I}\right)=-\log p\left(w_{O} | w_{I}\right)<br>\end{equation}</p>
@@ -453,8 +456,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/27/paper-reading-bert/" rel="next" title="NLP Papers Reading- BERT">
-                <i class="fa fa-chevron-left"></i> NLP Papers Reading- BERT
+              <a href="/2019/05/04/lstm/" rel="next" title="从RNN到LSTM">
+                <i class="fa fa-chevron-left"></i> 从RNN到LSTM
               </a>
             
           </div>
@@ -463,8 +466,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/04/lstm/" rel="prev" title="从RNN到LSTM">
-                从RNN到LSTM <i class="fa fa-chevron-right"></i>
+              <a href="/2019/05/06/newWordsDetection_CRF/" rel="prev" title="新词发现和条件随机场">
+                新词发现和条件随机场 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -556,7 +559,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">112</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

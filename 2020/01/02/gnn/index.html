@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="两个博客 + 两个本地的文件需要阅读。">
+<meta name="description" content="Graph neural networks (GNN), deep learning architectures for graph-structured data.（待补充代码实践）">
 <meta name="keywords" content="gnn">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GNN">
 <meta property="og:url" content="http://yoursite.com/2020/01/02/gnn/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="两个博客 + 两个本地的文件需要阅读。">
+<meta property="og:description" content="Graph neural networks (GNN), deep learning architectures for graph-structured data.（待补充代码实践）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-04T09:41:38.922Z">
+<meta property="og:image" content="https://i.loli.net/2020/01/06/HZcsMIV1TQFzGW5.png">
+<meta property="og:image" content="https://upload.cc/i1/2020/01/06/ruaIz0.png">
+<meta property="og:updated_time" content="2020-01-06T06:11:10.045Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GNN">
-<meta name="twitter:description" content="两个博客 + 两个本地的文件需要阅读。">
+<meta name="twitter:description" content="Graph neural networks (GNN), deep learning architectures for graph-structured data.（待补充代码实践）">
+<meta name="twitter:image" content="https://i.loli.net/2020/01/06/HZcsMIV1TQFzGW5.png">
 
 
 
@@ -130,8 +133,8 @@
 
 <script>
 	(function(){
-		if('hexo149'){
-			if (prompt('请输入文章密码','') !== 'hexo149'){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
 				alert('密码错误！');
 				history.back();
 			}
@@ -311,8 +314,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-01-04T17:41:38+08:00">
-                2020-01-04
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-06T14:11:10+08:00">
+                2020-01-06
               </time>
             
           </span>
@@ -361,9 +364,67 @@
       
 
       
-        <p>两个博客 + 两个本地的文件需要阅读。</p>
+        <p>Graph neural networks (GNN), deep learning architectures for graph-structured data.（待补充代码实践）</p>
 <a id="more"></a>
-<h2 id="两种基本的算法"><a href="#两种基本的算法" class="headerlink" title="两种基本的算法"></a>两种基本的算法</h2><h3 id="DeepWalk"><a href="#DeepWalk" class="headerlink" title="DeepWalk"></a>DeepWalk</h3><h3 id="GraphSage"><a href="#GraphSage" class="headerlink" title="GraphSage"></a>GraphSage</h3><p>参考文献</p>
+<p>GNN 出现的背景</p>
+<blockquote>
+<p> There is an increasing number of applications where data are generated from non-Euclidean do-mains and are represented as graphs with complex relationships and interdependency between objects.</p>
+<ul>
+<li>基于图网络的结构的应用：比如社交网络、推荐系统中的商品和用户</li>
+<li>上述图结构之间的距离不是基于欧氏距离</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>The success of deep learning in many domains is partially attributed to the rapidly developing computational resources (e.g., GPU), the availability of big training data, and the effectiveness of deep learning to extract latent representations from Euclidean data (e.g., images, text, and videos)<br>过往机器学习/ 深度学习成功的原因。</p>
+</blockquote>
+<blockquote>
+<p>Furthermore, a core assumption of existing machine learning algorithms is that instances are independent of each other.<br>深度学习/ 机器学习依赖的条件是样本相互独立，但是很多问题（社交网络）不是这样的。</p>
+</blockquote>
+<p>GNN 的目标：</p>
+<blockquote>
+<p>Goal is to encode nodes so that similarity in the embedding space (e.g., dot product) approximates similarity in the original network.<br>embedding之后得到的相似度和原始图网络结构中的距离相近。</p>
+</blockquote>
+<p><img src="https://i.loli.net/2020/01/06/HZcsMIV1TQFzGW5.png" width="80%" height="80%"></p>
+<h2 id="两种基本的算法"><a href="#两种基本的算法" class="headerlink" title="两种基本的算法"></a>两种基本的算法</h2><h3 id="DeepWalk"><a href="#DeepWalk" class="headerlink" title="DeepWalk"></a>DeepWalk</h3><blockquote>
+<p>DeepWalk is the first algorithm proposing node embedding learned in an unsupervised manner. It highly resembles word embedding in terms of the training process. The motivation is that the distribution of both nodes in a graph and words in a corpus follow a power law as shown in the following figure:<br>把 Deep Walk（游走）和NLP 任务结合起来的motivation 就是：前者的分布规律和NLP 中的句子序列在语料库中出现的规律有着类似的规律。</p>
+</blockquote>
+<p><img src="https://upload.cc/i1/2020/01/06/ruaIz0.png" width="80%" height="80%"></p>
+<p>在图结构中，随机游走中节点的频率在极其稀疏的图结构中服从幂法则，这一点与语言模型中的词频相似。</p>
+<p>（1）算法步骤</p>
+<p>主要分为两个步骤</p>
+<ul>
+<li>Perform random walks on nodes in a graph to generate node sequences</li>
+<li>Run skip-gram to learn the embedding of each node based on the node sequences generated in step 1<br>随机选择一个起始点和规定的路径长度，昌盛一个序列；一条路径上临近点和点之间必然是有着共同的特征，使用skip-gram 的思路进行训练</li>
+</ul>
+<p>（2）随机游走的序列有如下几个特点：</p>
+<ul>
+<li>捕捉了图中的局部特征</li>
+<li>容易进行并行运算，同时选择 N 个节点进行遍历</li>
+</ul>
+<p>（3）缺点</p>
+<blockquote>
+<p>However, the main issue with DeepWalk is that it lacks the ability of generalization. Whenever a new node comes in, it has to re-train the model in order to represent this node (transductive). Thus, such GNN is not suitable for dynamic graphs where the nodes in the graphs are ever-changing.<br>当图发生变化的时候，需要重新计算整个图</p>
+</blockquote>
+<h3 id="GraphSage"><a href="#GraphSage" class="headerlink" title="GraphSage"></a>GraphSage</h3><p>（待补充）</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>可以看出，GNN 的应用场景比较偏向于数据内部之间的关系，无论是CV 中的 <code>scene graph generation</code>还是NLP 中的句子关系抽取。比较关注在文本分类或者泛NLP 中的应用。</p>
+<p>（1）CV</p>
+<blockquote>
+<p>Computer vision Applications of GNNs in computer vision include scene graph generation, point clouds classification, and action recognition.</p>
+</blockquote>
+<p>（2）NLP</p>
+<blockquote>
+<p>Natural language processing A common application of GNNs in natural language processing is text classification. GNNs utilize the inter-relations of documents or words to infer document labels.<br>Generating a semantic or knowledge graph given a sentence is very useful in knowledge discovery.</p>
+</blockquote>
+<p>（3）推荐系统</p>
+<blockquote>
+<p>Graph-based recommender systems take items and users as nodes. By leveraging the relations between items and items, users and users, users and items, as well as content information, graph-based recommender systems are able to produce high-quality recommendations. The key to a recommender system is to score the importance of an item to a user. As a result, it can be cast as a link prediction problem. </p>
+</blockquote>
+<p>（3）开源框架</p>
+<ul>
+<li>Noticeably, Fey et al. [92] published a geometric learning library in PyTorch named PyTorch Geometric 4, which implements many GNNs. </li>
+<li>Most recently, the Deep Graph Library (DGL) 5 [133] is released which provides a fast implementation of many GNNs on top of popular deep learning platforms such as PyTorch and MXNet.</li>
+</ul>
+<p>参考文献</p>
 <p><a href="https://www.cnblogs.com/SivilTaram/p/graph_neural_network_1.htmld" target="_blank" rel="noopener">从图(Graph)到图卷积(Graph Convolution)：漫谈图神经网络模型</a><br><a href="https://towardsdatascience.com/hands-on-graph-neural-networks-with-pytorch-pytorch-geometric-359487e221a8" target="_blank" rel="noopener">Hands-on Graph Neural Networks with PyTorch &amp; PyTorch Geometric</a><br><a href="http://snap.stanford.edu/proj/embeddings-www/files/nrltutorial-part2-gnns.pdf" target="_blank" rel="noopener">nrltutorial</a><br><a href="https://arxiv.org/pdf/1901.00596.pdf" target="_blank" rel="noopener">A Comprehensive Survey on Graph Neural Networks</a></p>
 
       
@@ -404,6 +465,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/08/hexo相关优化/" rel="prev" title="Hexo博客的相关优化">
+                Hexo博客的相关优化 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -494,7 +559,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">112</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -590,7 +655,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#两种基本的算法"><span class="nav-number">1.</span> <span class="nav-text">两种基本的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DeepWalk"><span class="nav-number">1.1.</span> <span class="nav-text">DeepWalk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GraphSage"><span class="nav-number">1.2.</span> <span class="nav-text">GraphSage</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#两种基本的算法"><span class="nav-number">1.</span> <span class="nav-text">两种基本的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DeepWalk"><span class="nav-number">1.1.</span> <span class="nav-text">DeepWalk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GraphSage"><span class="nav-number">1.2.</span> <span class="nav-text">GraphSage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景"><span class="nav-number">2.</span> <span class="nav-text">应用场景</span></a></li></ol></div>
             
 
           </div>

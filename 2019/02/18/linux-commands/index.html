@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍linux 中常见的命令 和github 中常用的命令">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-04T13:49:22.093Z">
+<meta property="og:updated_time" content="2020-01-06T15:32:39.564Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux">
 <meta name="twitter:description" content="介绍linux 中常见的命令 和github 中常用的命令">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-01-04T21:49:22+08:00">
-                2020-01-04
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-06T23:32:39+08:00">
+                2020-01-06
               </time>
             
           </span>
@@ -616,6 +616,16 @@
 <blockquote>
 <p>netstat无权限控制，lsof有权限控制，只能看到本用户<br>losf能看到pid和用户，可以找到哪个进程占用了这个端口</p>
 </blockquote>
+<h3 id="进程相关"><a href="#进程相关" class="headerlink" title="进程相关"></a>进程相关</h3><p>Linux上进程有5种状态:</p>
+<ol>
+<li>运行(正在运行或在运行队列中等待)</li>
+<li>中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)</li>
+<li>不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)</li>
+<li>僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)</li>
+<li>停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行)</li>
+</ol>
+<p>ps工具标识进程的5种状态码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">D 不可中断 uninterruptible sleep (usually IO) </span><br><span class="line">R 运行 runnable (on run queue) </span><br><span class="line">S 中断 sleeping </span><br><span class="line">T 停止 traced or stopped </span><br><span class="line">Z 僵死 a defunct (&quot;zombie&quot;) process</span><br></pre></td></tr></table></figure></p>
+<p>使用下面的命令查看进程状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -aux</span><br></pre></td></tr></table></figure></p>
 <h3 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h3><p>该命令和管道的命令是类似的，不同点在于， xargs 是把 <code>|</code> 左边的输出当做后面命令的一个参数来运行。而如果只是使用<code>|</code>， 是把其左边的输出当做右边命令的输入。xargs命令是给其他命令传递参数的一个过滤器，也是组合多个命令的一个工具。它擅长将标准输入数据转换成命令行参数，xargs能够处理管道或者stdin并将其转换成特定命令的命令参数。</p>
 <h3 id="Linux-中脚本执行的四种方式"><a href="#Linux-中脚本执行的四种方式" class="headerlink" title="Linux 中脚本执行的四种方式"></a>Linux 中脚本执行的四种方式</h3><p>（1）切换到shell脚本所在的目录（此时，称为工作目录）执行shell脚本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./hello.sh</span><br></pre></td></tr></table></figure>
@@ -625,6 +635,14 @@
 <p>上述三种（(1),(2), (3)）都是在父shell中开启了一个子shell，执行的脚本是在子shell 中执行，当执行完成之后，子shell就关闭，然后回到父shell 中。<br>（4）使用<code>source</code>命令执行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source hello.sh</span><br></pre></td></tr></table></figure>
 <p><code>source</code>命令是作用于整个父进程，这个是和上述三者的最大区别。比如说，如果不想注销系统的，但是想让全局配置文件生效，那么就使用<code>source</code>命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+<h3 id="解压缩命令"><a href="#解压缩命令" class="headerlink" title="解压缩命令"></a>解压缩命令</h3><p> <code>.tar</code>，<code>.gz</code> ，<code>.rar</code>和<code>.zip</code> 等扩展名的比较</p>
+<p> <code>.zip</code> 和<code>.rar</code> 经常见于windows系统，不对文件名进行压缩，所以容易造成乱码； <code>.tar</code>和<code>.gz</code> 经常见于linux 系统，默认在linux 环境下无法使用 <code>.zip</code> 和<code>.rar</code> ，所以需要<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install rar</span><br></pre></td></tr></table></figure></p>
+<p><code>.tar</code> 是归档或者说打包，将多个文件或者目录变成一个文件并不会使得总的体积减少，比如</p>
+<blockquote>
+<p>如果你 tar 100 个 50kb 的文件得到的 tar 归档文件大小应该为 5000kb 左右。<br>使用 Tar 进行文件归档的唯一好处就是减少某种粒度磁盘空间的分配。(例如在簇大小为 4kb 的磁盘上 1 字节的文件也要占用 4kb 磁盘空间，若有 1000 个 1 字节的文件分散在此磁盘上的话，则会占用 4MB 大小，而使用 Tar 归档之后则只占用 1MB 左右大小。)</p>
+</blockquote>
+<p>所以更加常见的文件后缀是 <code>.tar.gz</code>。该种压缩方式其实上是2个过程。tar是打包工具，把很多文件打包成一个文件，gz是压缩格式。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf ×××.tar.gz</span><br></pre></td></tr></table></figure>
 <h3 id="未归类"><a href="#未归类" class="headerlink" title="未归类"></a>未归类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">last # 表示登录成功的user</span><br><span class="line">lastb  # 表示登录不成功user</span><br></pre></td></tr></table></figure>
 <h2 id="git-常见的命令"><a href="#git-常见的命令" class="headerlink" title="git 常见的命令"></a>git 常见的命令</h2><p><strong>git命令</strong></p>
 <p>git 命令清单</p>
@@ -743,6 +761,23 @@
 <p>跳转到指定的行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:n # 当 n=88 ，则跳转到 88 行</span><br></pre></td></tr></table></figure></p>
 <p>到达本文件的最开始和最后的位置</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[  # 表示最开始的位置</span><br><span class="line">]]  # 表示最后的位置</span><br></pre></td></tr></table></figure>
+<p>（1）代码补全</p>
+<p>代码自动补全，这个只限于本文中已经出现过的字符串可以自动补全。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CTRL-N是向下查找以进行补全，在不同场合使用不同的快捷键可以加速补全的速度。</span><br><span class="line">CTRL-P一般的含义是向上，因此CTRL-P补全是向上查找以进行补全，</span><br></pre></td></tr></table></figure></p>
+<p>更加普世的代码补全</p>
+<p>常用的有三种方式进行代码补全</p>
+<ul>
+<li>python-mode：页面太丑</li>
+<li>YouCompleteMe：功能过于强大，支持多种编程语言，加载繁琐</li>
+<li>jedi-vim：对于python 的提醒足以</li>
+</ul>
+<p>环境是 Ubuntu</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vim-python-jedi</span><br><span class="line">vim-addons install python-jedi</span><br></pre></td></tr></table></figure>
+<p>有了自动补全之后，就是语法检测，一般选择 <code>w0rp/ale</code>，<a href="https://github.com/w0rp/ale" target="_blank" rel="noopener">链接</a></p>
+<p>其实不用麻烦，直接使用该<a href="https://github.com/rapphil/vim-python-ide" target="_blank" rel="noopener">博主</a>写好的脚本即可。</p>
+<p>\begin{table}[]<br>\begin{tabular}{lll}<br>Action          &amp; Mode          &amp; key binding  \\<br>Toogle Nerdtree &amp; Normal        &amp; crtl + n     \\<br>toogle Tagbar   &amp; Normal        &amp; f8           \\<br>Look for file   &amp; Normal        &amp; crtl + p     \\<br>Goto definition &amp; Normal        &amp; crtl + {]}   \\<br>Show docstring  &amp; Normal        &amp; K            \\<br>Extract method  &amp; Normal/Visual &amp; crlt + c r m \\<br>Auto complete   &amp; Insert        &amp; crtl + space \\<br>Expand snippet  &amp; Insert        &amp; tab<br>\end{tabular}<br>\end{table}</p>
+<p>使用vim-plug安装vim插件 </p>
+<p>常用的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PlugInstall [name ...] [#threads]	安装插件</span><br><span class="line">PlugUpdate [name ...] [#threads]	安装或更新vim插件</span><br><span class="line">PlugClean[!]	卸装未使用的目录 (bang version will clean without prompt)</span><br><span class="line">PlugUpgrade	更新vim-plug自身</span><br><span class="line">PlugStatus	查看vim插件的状态</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://vimjc.com/vim-plug.html" target="_blank" rel="noopener">https://vimjc.com/vim-plug.html</a></p>
 
       
     </div>
@@ -878,7 +913,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">112</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -974,7 +1009,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-常见命令"><span class="nav-number">1.</span> <span class="nav-text">Linux 常见命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-取列数据"><span class="nav-number">1.1.</span> <span class="nav-text">awk 取列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-命令"><span class="nav-number">1.2.</span> <span class="nav-text">grep 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-行编辑器"><span class="nav-number">1.3.</span> <span class="nav-text">sed 行编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于上述三个命令的练习"><span class="nav-number">1.4.</span> <span class="nav-text">关于上述三个命令的练习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">1.5.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他小命令"><span class="nav-number">1.6.</span> <span class="nav-text">其他小命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看端口"><span class="nav-number">1.7.</span> <span class="nav-text">查看端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xargs"><span class="nav-number">1.8.</span> <span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-中脚本执行的四种方式"><span class="nav-number">1.9.</span> <span class="nav-text">Linux 中脚本执行的四种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#未归类"><span class="nav-number">1.10.</span> <span class="nav-text">未归类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-常见的命令"><span class="nav-number">2.</span> <span class="nav-text">git 常见的命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash相关快捷键"><span class="nav-number">2.1.</span> <span class="nav-text">bash相关快捷键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-常见命令和配置"><span class="nav-number">3.</span> <span class="nav-text">vi 常见命令和配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-常见命令"><span class="nav-number">1.</span> <span class="nav-text">Linux 常见命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-取列数据"><span class="nav-number">1.1.</span> <span class="nav-text">awk 取列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-命令"><span class="nav-number">1.2.</span> <span class="nav-text">grep 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed-行编辑器"><span class="nav-number">1.3.</span> <span class="nav-text">sed 行编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于上述三个命令的练习"><span class="nav-number">1.4.</span> <span class="nav-text">关于上述三个命令的练习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">1.5.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他小命令"><span class="nav-number">1.6.</span> <span class="nav-text">其他小命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看端口"><span class="nav-number">1.7.</span> <span class="nav-text">查看端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程相关"><span class="nav-number">1.8.</span> <span class="nav-text">进程相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xargs"><span class="nav-number">1.9.</span> <span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-中脚本执行的四种方式"><span class="nav-number">1.10.</span> <span class="nav-text">Linux 中脚本执行的四种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解压缩命令"><span class="nav-number">1.11.</span> <span class="nav-text">解压缩命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#未归类"><span class="nav-number">1.12.</span> <span class="nav-text">未归类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-常见的命令"><span class="nav-number">2.</span> <span class="nav-text">git 常见的命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bash相关快捷键"><span class="nav-number">2.1.</span> <span class="nav-text">bash相关快捷键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vi-常见命令和配置"><span class="nav-number">3.</span> <span class="nav-text">vi 常见命令和配置</span></a></li></ol></div>
             
 
           </div>

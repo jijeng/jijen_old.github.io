@@ -83,7 +83,7 @@
 <meta name="keywords" content="roc,precision-recall">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习中的常见的评价指标">
-<meta property="og:url" content="http://yoursite.com/2018/06/13/roc_and_unbalanced_data/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/06/13/evaluation_metrics/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍机器学习中分类模型常用的评价指标：AUC、Precision-Recall, ACC和KS值。">
 <meta property="og:locale" content="default">
@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/01/5d421f9678f9649303.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/08/01/5d422029970c282991.png">
 <meta property="og:image" content="https://i.loli.net/2019/12/23/DTOJRVtwd5x1MlU.png">
-<meta property="og:updated_time" content="2020-01-02T01:26:43.406Z">
+<meta property="og:updated_time" content="2020-01-09T15:36:17.169Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习中的常见的评价指标">
 <meta name="twitter:description" content="介绍机器学习中分类模型常用的评价指标：AUC、Precision-Recall, ACC和KS值。">
@@ -126,7 +126,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/13/roc_and_unbalanced_data/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/13/evaluation_metrics/"/>
 
 
 
@@ -272,7 +272,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/13/roc_and_unbalanced_data/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/13/evaluation_metrics/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jijeng Jia">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-01-02T09:26:43+08:00">
-                2020-01-02
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-09T23:36:17+08:00">
+                2020-01-09
               </time>
             
           </span>
@@ -354,9 +354,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/13/roc_and_unbalanced_data/#comments" itemprop="discussionUrl">
+                <a href="/2018/06/13/evaluation_metrics/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/13/roc_and_unbalanced_data/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/06/13/evaluation_metrics/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -463,6 +463,71 @@
 <p>总体来说ROC曲线的适用场景更多，被广泛用于排序、推荐、广告等领域。但需要注意的是，选择P-R曲线还是ROC曲线是因实际问题而异的，如果研究者希望更多地看到模型在特定数据集上的表现，P-R曲线则能够更直观地反映其性能。</p>
 <p>（4）针对样本不均衡问题</p>
 <p>当样本不均衡时候，使用ACC 肯定是bad choice，这个时候可以尝试使用ROC。当样本极大不均衡且更加关注正样本（正样本少）时候，P-R曲线是更好的选择。</p>
+<h2 id="三大相关系数"><a href="#三大相关系数" class="headerlink" title="三大相关系数"></a>三大相关系数</h2><p>（1）Person correlation coefficient（皮尔森相关性系数）</p>
+<p>Covariance</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cov(X, Y) = (sum (x - mean(X)) * (y - mean(Y)) ) * 1/(n-1)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>The use of the mean in the calculation suggests the need for each data sample to have a Gaussian or Gaussian-like distribution.</p>
+</blockquote>
+<blockquote>
+<p>The Pearson’s correlation coefficient is calculated as the covariance of the two variables divided by the product of the standard deviation of each data sample. It is the normalization of the covariance between the two variables to give an interpretable score.<br>Person 相关系数等于各自的协方差除以各自的标准差的乘积。</p>
+</blockquote>
+<p>\begin{equation}<br>\begin{aligned}<br>\rho (X, Y) &amp;=\frac{\operatorname{cov}(X, Y)}{\sigma X \sigma Y}<br>=\frac{E\left(\left(X-\mu_{X}\right)(Y-\mu Y)\right)}{\sigma X \sigma Y} \\<br>&amp;=\frac{E(X Y-E(X) E(Y)}{\sqrt{E\left(X^{2}\right)-E^{2}(X)} \sqrt{E\left(Y^{2}\right)-E^{2}(Y)}}<br>\end{aligned}<br>\end{equation}</p>
+<blockquote>
+<p>The coefficient returns a value between -1 and 1 that represents the limits of correlation from a full negative correlation to a full positive correlation. A value of 0 means no correlation. The value must be interpreted, where often a value below -0.5 or above 0.5 indicates a notable correlation, and values below those values suggests a less notable correlation.<br>结果的绝对值表示相关程度的大小，越接近1 那么相关性越大，越接近0，相关性越小。正负号表示正相关或负相关。正相关性意味着同增同减，负相关性意味着两个变量增减性质相反，数值为0 （从公式中知道实际上是协方差矩阵为0）意味着两者没有线性相关性。</p>
+</blockquote>
+<p>代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># calculate the Pearson's correlation between two variables</span></span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> randn</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> pearsonr</span><br><span class="line"><span class="comment"># seed random number generator</span></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># prepare data</span></span><br><span class="line">data1 = <span class="number">20</span> * randn(<span class="number">1000</span>) + <span class="number">100</span></span><br><span class="line">data2 = data1 + (<span class="number">10</span> * randn(<span class="number">1000</span>) + <span class="number">50</span>)</span><br><span class="line"><span class="comment"># calculate Pearson's correlation</span></span><br><span class="line">corr, _ = pearsonr(data1, data2)</span><br><span class="line">print(<span class="string">'Pearsons correlation: %.3f'</span> % corr)</span><br><span class="line"><span class="comment"># 0.88</span></span><br></pre></td></tr></table></figure>
+<p>使用的要求和范围</p>
+<ul>
+<li>计算公式中使用到了均值和方差，所以该洗漱需要满足 Gaussian or Gaussian-like distribution.（严格说这条约束是协方差矩阵所需要的）</li>
+<li>只能检测到数据之间的线性关系</li>
+</ul>
+<p>（2）Spearman correlation coefficient（斯皮尔曼相关性系数）</p>
+<p>Spearman相关性系数是一种秩相关系数，“秩”可以理解为一种顺序或者排序。同样值域也是在 $[1, 1] $之间，含义和Person 系数是一致的。</p>
+<p>计算流程<br>Spearman 相关系数的计算和 Person 相关系数基本一致，只是使用特征的排序结果代替了原始的值。比如给定三个值：30，50，10，它们的等级就分别是2，3，1，则计算时用2，3，1。当变量为离散变量的时候，可以表示为以下的形式：</p>
+<p>\begin{equation}<br>\rho_{S}=\frac{\sum_{i=1}^{N}\left(R_{i}-\bar{R}\right)\left(S_{i}-\bar{S}\right)}{\left[\sum_{i=1}^{N}\left(R_{i}-\bar{R}\right)^{2} \sum_{i=1}^{N}\left(S_{i}-\bar{S}\right)^{2}\right]^{\frac{1}{2}}}<br>\end{equation}</p>
+<p>其中 $R_i$  和$S_i$分别是观测值 $i$取值的等级，$ \bar{R} $ 和$\bar{S} $是变量 $x$ 和变量 $y$ 的平均等级，$N$ 是观测值的总数量。</p>
+<p>使用范围</p>
+<ul>
+<li>当数据之间不满足高斯分布也可以使用，比如数据错误或者极端值（因为计算的是排序之后的结果而不是数据本身）</li>
+<li>当数据之间不具备线性相关性</li>
+</ul>
+<p>可以发现Spearman 相关性的使用场景正好和Person 相关系数相反。那么Spearman 是否可以使用在线性场景呢？ 答案是效果并不好。所以Person 相关系数的使用范围并不是 Spearman的子集，两者更像是一种并集。</p>
+<p>调用 api 实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> rand</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> spearmanr</span><br><span class="line"><span class="comment"># seed random number generator</span></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># prepare data</span></span><br><span class="line">data1 = rand(<span class="number">1000</span>) * <span class="number">20</span></span><br><span class="line">data2 = data1 + (rand(<span class="number">1000</span>) * <span class="number">10</span>)</span><br><span class="line"><span class="comment"># calculate spearman's correlation</span></span><br><span class="line">coef, p = spearmanr(data1, data2)</span><br><span class="line">print(<span class="string">'Spearmans correlation coefficient: %.3f'</span> % coef)</span><br><span class="line"><span class="comment"># interpret the significance</span></span><br><span class="line">alpha = <span class="number">0.05</span></span><br><span class="line"><span class="keyword">if</span> p &gt; alpha:</span><br><span class="line">	print(<span class="string">'Samples are uncorrelated (fail to reject H0) p=%.3f'</span> % p)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	print(<span class="string">'Samples are correlated (reject H0) p=%.3f'</span> % p)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Running the example calculates the Spearman’s correlation coefficient between the two variables in the test dataset.<br>The statistical test reports a strong positive correlation with a value of 0.9. The p-value is close to zero, which means that the likelihood of observing the data given that the samples are uncorrelated is very unlikely (e.g. 95% confidence) and that we can reject the null hypothesis that the samples are uncorrelated.</p>
+</blockquote>
+<p>···<br>Spearmans correlation coefficient: 0.900<br>Samples are correlated (reject H0) p=0.000<br>···<br>返回两个值： Spearmans 相关系数和拒绝原假设的可能性p</p>
+<p>（3）上述两个指标的的联系和区别</p>
+<p>联系：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> scipy.stats</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create two lists of random values</span></span><br><span class="line">x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]</span><br><span class="line">y = [<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4.5</span>,<span class="number">7</span>,<span class="number">6.5</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">9.5</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a function that takes in x's and y's</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spearmans_rank_correlation</span><span class="params">(xs, ys)</span>:</span></span><br><span class="line">    <span class="comment"># Calculate the rank of x's</span></span><br><span class="line">    xranks = pd.Series(xs).rank()</span><br><span class="line">    <span class="comment"># Caclulate the ranking of the y's</span></span><br><span class="line">    yranks = pd.Series(ys).rank()</span><br><span class="line">    <span class="comment"># Calculate Pearson's correlation coefficient on the ranked versions of the data</span></span><br><span class="line">    <span class="keyword">return</span> scipy.stats.pearsonr(xranks, yranks)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Run the function</span></span><br><span class="line">spearmans_rank_correlation(x, y)[<span class="number">0</span>]</span><br><span class="line"><span class="comment"># 0.90377360145618091</span></span><br><span class="line"><span class="comment"># Just to check our results, here it Spearman's using Scipy</span></span><br><span class="line">scipy.stats.spearmanr(x, y)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#0.90377360145618102</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Spearman’s rank correlation is the Pearson’s correlation coefficient of the ranked version of the variables.<br>可以看出 Spearman’s 是Pearson’s rank 之后的结果</p>
+</blockquote>
+<p>区别：</p>
+<blockquote>
+<p>The Spearman’s rank correlation is a non-parametric test so there are no requirements of the distributions of the variables to be tested.<br>On the other hand, in a Pearson’s correlation test, there is assumed to be a linear relationship between two variables. However, the Spearman’s rank correlation test can identify non-linear relationships between two variables.<br>如果原来的分布不符合高斯分布，那么使用Spearmans看看。</p>
+</blockquote>
+<p>（4）Kendall correlation coefficient（肯德尔相关性系数）</p>
+<p>Kendall 相关系数也会是一种秩相关。排序一致，取值为1， 排序完全相反则为-1. 无序分类变量：比如性别（男、女）、血型（A、B、O、AB）；有序分类变量：比如肥胖等级（重度肥胖，中度肥胖、轻度肥胖、不肥胖）。Kendall 相关系数是针对有序分类变量的。</p>
+<p>比如评委对选手的评分（优、中、差等），我们想看两个（或者多个）评委对几位选手的评价标准是否一致；或者医院的尿糖化验报告，想检验各个医院对尿糖的化验结果是否一致，这时候就可以使用肯德尔相关性系数进行衡量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment">#原始数据</span></span><br><span class="line">x= pd.Series([<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>])</span><br><span class="line">y= pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">r = x.corr(y,method=<span class="string">"kendall"</span>) <span class="comment">#-0.2611165</span></span><br></pre></td></tr></table></figure>
+<p>可以发现两个评委对选手的的看法是相反的，但是这种程度不大。</p>
+<p>使用场景：用于反映分类变量相关性的指标，即对有序序列的相关系数，非正太分布的数据</p>
+<p>（4） 观点</p>
+<p>数据经过标准化（$ \mu =0, \sigma =1$）之后，Pearson相关性系数、cosine 相关度和欧氏距离的平方可以认为是等价的。个人经验：一般在低维度优先使用标准化之后的欧氏距离，在高维度使用Pearson相关系数更合适。</p>
+<blockquote>
+<p>Correlation quantifies this association, often as a measure between the values -1 to 1 for perfectly negatively correlated and perfectly positively correlated. The calculated correlation is referred to as the “correlation coefficient.” This correlation coefficient can then be interpreted to describe the measures.<br>相关系数值的定义</p>
+</blockquote>
+<blockquote>
+<p>The correlation between two variables that each have a Gaussian distribution can be calculated using standard methods such as the Pearson’s correlation. This procedure cannot be used for data that does not have a Gaussian distribution. Instead, rank correlation methods must be used.<br>当不符合高斯分布的时候，就不能使用Pearson’s 相关系数，可以尝试使用 rank correlation。</p>
+</blockquote>
+<p>Spearman’s Rho 和 </p>
+<p>The correlation between two variables that each have a Gaussian distribution can be calculated using standard methods such as the Pearson’s correlation. </p>
+<p>The correlation between two variables that each have a Gaussian distribution can be calculated using standard methods such as the Pearson’s correlation. This procedure cannot be used for data that does not have a Gaussian distribution. Instead, rank correlation methods must be used.</p>
+<p><a href="https://machinelearningmastery.com/how-to-calculate-nonparametric-rank-correlation-in-python/" target="_blank" rel="noopener">How to Calculate Nonparametric Rank Correlation in Python</a></p>
 <h2 id="其他指标"><a href="#其他指标" class="headerlink" title="其他指标"></a>其他指标</h2><p>（1） ACC</p>
 <p>ACC 是在分类中熟悉的，但是不是那么常用。缺点主要有以下两点：</p>
 <ul>
@@ -637,7 +702,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">112</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -733,7 +798,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC曲线和AUC值"><span class="nav-number">1.</span> <span class="nav-text">ROC曲线和AUC值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Precision-Recall"><span class="nav-number">2.</span> <span class="nav-text">Precision-Recall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PR和ROC联系和区别"><span class="nav-number">3.</span> <span class="nav-text">PR和ROC联系和区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他指标"><span class="nav-number">4.</span> <span class="nav-text">其他指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">5.</span> <span class="nav-text">结论</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC曲线和AUC值"><span class="nav-number">1.</span> <span class="nav-text">ROC曲线和AUC值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Precision-Recall"><span class="nav-number">2.</span> <span class="nav-text">Precision-Recall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PR和ROC联系和区别"><span class="nav-number">3.</span> <span class="nav-text">PR和ROC联系和区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三大相关系数"><span class="nav-number">4.</span> <span class="nav-text">三大相关系数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他指标"><span class="nav-number">5.</span> <span class="nav-text">其他指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">6.</span> <span class="nav-text">结论</span></a></li></ol></div>
             
 
           </div>
@@ -929,8 +994,8 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/06/13/roc_and_unbalanced_data/';
-          this.page.identifier = '2018/06/13/roc_and_unbalanced_data/';
+          this.page.url = 'http://yoursite.com/2018/06/13/evaluation_metrics/';
+          this.page.identifier = '2018/06/13/evaluation_metrics/';
           this.page.title = '机器学习中的常见的评价指标';
         };
         var d = document, s = d.createElement('script');
