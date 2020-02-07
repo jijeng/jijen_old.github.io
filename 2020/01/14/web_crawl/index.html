@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="记录爬虫项目的经历。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫（web crawl）项目过程记录">
+<meta property="og:url" content="http://yoursite.com/2020/01/14/web_crawl/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="记录爬虫项目的经历。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-01-18T05:19:27.626Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="爬虫（web crawl）项目过程记录">
+<meta name="twitter:description" content="记录爬虫项目的经历。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/14/web_crawl/">
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if('hexo149'){
+			if (prompt('请输入文章密码','') !== 'hexo149'){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>爬虫（web crawl）项目过程记录 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/14/web_crawl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">爬虫（web crawl）项目过程记录</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-14T22:47:40+08:00">
+                2020-01-14
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-18T13:19:27+08:00">
+                2020-01-18
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/14/web_crawl/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/14/web_crawl/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>记录爬虫项目的经历。</p>
+<a id="more"></a>
+<p>项目目的：方便自己阅读感兴趣的内容。</p>
+<p>步骤：</p>
+<ul>
+<li>想要爬取bbc learning 中的英文和相应音频，</li>
+<li>存储到数据库（如MongoDB）</li>
+<li>使用邮件推送 or 显示到特定的网站（只需要ip，不需要域名即可）</li>
+</ul>
+<p><del>后来发现：使用收藏夹既可以完成，可能没有那么具有筛选性。</del></p>
+<h2 id="The-components-of-a-web-page"><a href="#The-components-of-a-web-page" class="headerlink" title="The components of a web page"></a>The components of a web page</h2><ul>
+<li>HTML — contain the main content of the page.</li>
+<li>CSS — add styling to make the page look nicer.</li>
+<li>JS — Javascript files add interactivity to web pages.</li>
+<li>Images — image formats, such as JPG and PNG allow web pages to show pictures.</li>
+</ul>
+<blockquote>
+<p>When we perform web scraping, we’re interested in the main content of the web page, so we look at the HTML.<br>当我们进行 web scrape 的时候，主要处理的是HTML </p>
+</blockquote>
+<p>（1）HTML</p>
+<blockquote>
+<p>HyperText Markup Language (HTML) is a language that web pages are created in. HTML isn’t a programming language, like Python — instead, it’s a markup language that tells a browser how to layout content. HTML allows you to do similar things to what you do in a word processor like Microsoft Word — make text bold, create paragraphs, and so on.<br>HTML 是一种超文本标记语言，用于展示内容的。</p>
+</blockquote>
+<p>HTML 中重要的是tag标记。其中 <code>head</code>表示的标题内容。<code>body</code>是主体信息， <code>p</code>表示段落</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">Here&apos;s a paragraph of text!</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">Here&apos;s a second paragraph of text!</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>方法一：</p>
+<p> BeautifulSoup with Requests</p>
+<p>（1）下载网页使用 <code>requests</code></p>
+<blockquote>
+<p> We can download pages using the Python requests library. The requests library will make a GET request to a web server, which will download the HTML contents of a given web page for us.</p>
+</blockquote>
+<p>（2）解析网页使用 <code>BeautifulSoup</code></p>
+<p>（3）Using CSS Selectors</p>
+<p>（4）Exploring page structure with Chrome DevTools</p>
+<p>（5）Combining our data into a Pandas Dataframe</p>
+<p>Frequent appearance of the status codes like 404 (Not Found), 403 (Forbidden), 408 (Request Timeout) might indicate that you got blocked. </p>
+<h3 id="Check-robots-txt"><a href="#Check-robots-txt" class="headerlink" title="Check robots.txt"></a>Check robots.txt</h3><blockquote>
+<p>The scraping rules of the websites can be found in the robots.txt file. You can find it by writing robots.txt after the main domain, e.g <a href="http://www.website_to_scrape.com/robots.txt" target="_blank" rel="noopener">www.website_to_scrape.com/robots.txt</a>. These rules identify which parts of the websites are not allowed to be automatically extracted or how frequently a bot is allowed to request a page. Most people don’t care about it, but try to be respectful and at least look at the rules even if you don’t plan to follow them.</p>
+</blockquote>
+<p>（1）robots.txt文件的路径</p>
+<p>robots.txt文件固定是在网站根目录下，就是网站域名的下一级，文件名称就是robots.txt</p>
+<p>（2）robots.txt文件网站必须要有</p>
+<p>robost.txt文件会影响到服务器的设置方面，如果robots.txt文件不存在，服务器会返回200状态码及一些错误信息，而不是404状态码，这很有可能让搜索引擎的蜘蛛误读robots.txt文件内容。</p>
+<p>（3）robots.txt文件的基本格式</p>
+<p>此robots.txt文件不建议使用，因为这个是禁止所有搜索引擎抓取任何内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent: *</span><br><span class="line">Disallow: /</span><br></pre></td></tr></table></figure>
+<p>允许所有搜索引擎抓取任何内容的robots.txt为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent: *</span><br><span class="line">Disallow:</span><br></pre></td></tr></table></figure>
+<p>（4）robots.txt文件的编写方法</p>
+<p>指定下面的规则适用于哪个蜘蛛，通配符星号<em>代表所有搜索引擎。<br>以下规则适用于所有搜索引擎：User-agent: </em><br>只适用于百度：User-agent: Baiduspider</p>
+<p>（5）Disallow</p>
+<p>告诉蜘蛛不要去抓取某些文件或目录，写法：每禁止一个抓取一个文件或目录，都必须另起一行，同一行不能禁止抓取两个文件或两个目录或一个文件一个目录。</p>
+<p>（6）Allow</p>
+<p>告诉蜘蛛应该抓取某些文件或目录,由于不指定则是允许抓取，故Allow必须和Disallow一起用。</p>
+<h2 id="数据的存储"><a href="#数据的存储" class="headerlink" title="数据的存储"></a>数据的存储</h2><p>MongoDB</p>
+<p>MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。 在高负载的情况下，添加更多的节点，可以保证服务器性能。</p>
+<p>文档是一个键值(key-value)对(即BSON)。MongoDB 的文档不需要设置相同的字段，并且相同的字段不需要相同的数据类型，这与关系型数据库有很大的区别，也是 MongoDB 非常突出的特点。</p>
+<p>注意：</p>
+<p>·文档中的键/值对是有序的。</p>
+<p>·文档中的值不仅可以是在双引号里面的字符串，还可以是其他几种数据类型（甚至可以是整个嵌入的文档)。</p>
+<p>·MongoDB区分类型和大小写。</p>
+<p>·MongoDB的文档不能有重复的键。</p>
+<p>·文档的键是字符串。除了少数例外情况，键可以使用任意UTF-8字符。</p>
+<p>文档键命名规范：</p>
+<p>·键不能含有\0 (空字符)。这个字符用来表示键的结尾。</p>
+<p>·.和$有特别的意义，只有在特定环境下才能使用。</p>
+<p>·以下划线”_”开头的键是保留的(不是严格要求的)。</p>
+<h2 id="爬虫原理"><a href="#爬虫原理" class="headerlink" title="爬虫原理"></a>爬虫原理</h2><p>（1） 爬虫的分类</p>
+<p>根据使用场景，网络爬虫可分为 通用爬虫和聚焦爬虫两种。搜索引擎蜘蛛在抓取页面时，也做一定的重复内容检测，一旦遇到访问权重很低的网站上有大量抄袭、采集或者复制的内容，很可能就不再爬行。</p>
+<p>通用性爬虫</p>
+<p>搜索引擎如何获取一个新网站的URL</p>
+<p>1). 新网站向搜索引擎主动提交网址：（如百度<a href="http://zhanzhang.baidu.com/linksubmit/url）" target="_blank" rel="noopener">http://zhanzhang.baidu.com/linksubmit/url）</a><br>2). 在其他网站上设置新网站外链（尽可能处于搜索引擎爬虫爬取范围）<br>3). 搜索引擎和DNS解析服务商(如DNSPod等）合作，新网站域名将被迅速抓取。</p>
+<p>提供检索服务，网站排名</p>
+<p>搜索引擎在对信息进行组织和处理后，为用户提供关键字检索服务，将用户检索相关的信息展示给用户。同时会根据页面的PageRank值（链接的访问量排名）来进行网站排名，这样Rank值高的网站在搜索结果中会排名较前，当然也可以直接使用 Money 购买搜索引擎网站排名，简单粗暴。</p>
+<p>通用性搜索引擎也存在着一定的局限性</p>
+<ul>
+<li>通用搜索引擎所返回的结果都是网页，而大多情况下，网页里90%的内容对用户来说都是无用的。</li>
+<li>通用搜索引擎大多提供基于关键字的检索，难以支持根据语义信息提出的查询，无法准确理解用户的具体需求。</li>
+</ul>
+<p>聚焦爬虫</p>
+<p>聚焦爬虫，是”面向特定主题需求”的一种网络爬虫程序，它与通用搜索引擎爬虫的区别在于： 聚焦爬虫在实施网页抓取时会对内容进行处理筛选，尽量保证只抓取与需求相关的网页信息。</p>
+<p>（2）爬取百度首页（代码）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入urllib 库</span></span><br><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> ssl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消代理验证</span></span><br><span class="line">ssl._create_default_https_context = ssl._create_unverified_context</span><br><span class="line"><span class="comment"># User-Agent, 伪装成一个真实的服务器</span></span><br><span class="line">headers = &#123;<span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="comment"># url 作为Request()方法的参数，构造并返回一个Request对象</span></span><br><span class="line">request = urllib.request.Request(<span class="string">"http://www.baidu.com"</span>,headers=headers)</span><br><span class="line"><span class="comment"># Request对象作为urlopen()方法的参数，发送给服务器并接收响应</span></span><br><span class="line">response = urllib.request.urlopen(request)</span><br><span class="line"><span class="comment"># 类文件对象支持 文件对象的操作方法，如read()方法读取文件全部内容，返回字符串</span></span><br><span class="line">html = response.read().decode(<span class="string">"utf-8"</span>)</span><br><span class="line"><span class="comment"># 打印字符串</span></span><br><span class="line">print(html)</span><br></pre></td></tr></table></figure>
+<p>代码中注意点</p>
+<ul>
+<li>由于现在百度使用的是 https 协议，进入页面需要代理验证，为了不必要的麻烦，我们干脆取消代理验证，所以用到了 ssl 模块。</li>
+<li>我们用一个合法的身份去请求别人网站，显然人家就是欢迎的，所以我们就应该给我们的这个代码加上一个身份，就是所谓的User-Agent头。</li>
+<li>在python3 中使用  <code>urllib.request</code>去模拟访问一个网站</li>
+</ul>
+<p>（3）urllib中Get和Post请求</p>
+<p>HTTP中GET与POST 的区别</p>
+<p>最直观的区别就是GET把参数包含在URL中，POST通过request body传递参数。</p>
+<p>GET产生一个TCP数据包；POST产生两个TCP数据包。而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。</p>
+<blockquote>
+<p>据研究，在网络环境好的情况下，发一次包的时间和发两次包的时间差别基本可以无视。而在网络环境差的情况下，两次包的TCP在验证数据包完整性上，有非常大的优点。</p>
+</blockquote>
+<p>HTTP的底层是TCP/IP。所以GET和POST的底层也是TCP/IP，也就是说，GET/POST都是TCP链接。GET和POST能做的事情是一样一样的。你要给GET加上request body，给POST带上url参数，技术上是完全行的通的。 HTTP 只是把不同的运输进行了分类，当执行GET 请求的时候，要标识（method 为GET， 传输的数据放到 url 中标识）；当使用POST 时候，在车上设置标签（数据放到 request body里面）。</p>
+<p>urllib 默认的是 get 请求，urllib.request.Request() 里第一个参数为 url 地址，第二个参数为请求报头 headers，请求包头可以不写。</p>
+<p>urllib 默认的是 post 请求，urllib.request.Request() 里第一个参数为 url 地址，第二个参数为请求数据 data，第三个参数为请求报头 headers，请求包头可以不写。</p>
+<p>使用GET 方式发送请求</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"><span class="keyword">import</span> ssl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消代理验证</span></span><br><span class="line">ssl._create_default_https_context = ssl._create_unverified_context</span><br><span class="line"></span><br><span class="line"><span class="comment"># url 地址</span></span><br><span class="line">url = <span class="string">"http://www.baidu.com/s"</span></span><br><span class="line">word = &#123;<span class="string">"wd"</span>: <span class="string">"贴吧"</span>&#125;</span><br><span class="line">word = urllib.parse.urlencode(word)  <span class="comment"># 转换成url编码格式（字符串）</span></span><br><span class="line">url = url + <span class="string">"?"</span> + word  <span class="comment"># url首个分隔符就是 ?</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># User-Agent</span></span><br><span class="line">headers = &#123;<span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># url 作为Request()方法的参数，构造并返回一个Request对象</span></span><br><span class="line">request = urllib.request.Request(url, headers=headers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Request对象作为urlopen()方法的参数，发送给服务器并接收响应</span></span><br><span class="line">response = urllib.request.urlopen(request)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 类文件对象支持 文件对象的操作方法，如read()方法读取文件全部内容，返回字符串</span></span><br><span class="line">html = response.read().decode(<span class="string">"utf-8"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印字符串</span></span><br><span class="line">print(html)</span><br></pre></td></tr></table></figure>
+<p>使用post 的方式进行访问</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"><span class="keyword">import</span> ssl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消代理验证</span></span><br><span class="line">ssl._create_default_https_context = ssl._create_unverified_context</span><br><span class="line"></span><br><span class="line"><span class="comment"># User-Agent</span></span><br><span class="line">headers = &#123;<span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="comment"># post 请求参数</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">"type"</span>: <span class="string">"11"</span>,</span><br><span class="line">    <span class="string">"interval_id"</span>: <span class="string">"100:90"</span>,</span><br><span class="line">    <span class="string">"start"</span>: <span class="string">"0"</span>,</span><br><span class="line">    <span class="string">"limit"</span>: <span class="string">"10"</span></span><br><span class="line">&#125;</span><br><span class="line">data = urllib.parse.urlencode(data).encode(<span class="string">"utf-8"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># url 作为Request()方法的参数，构造并返回一个Request对象</span></span><br><span class="line">request = urllib.request.Request(<span class="string">"https://movie.douban.com/j/chart/top_list?"</span>, data=data, headers=headers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Request对象作为urlopen()方法的参数，发送给服务器并接收响应</span></span><br><span class="line">response = urllib.request.urlopen(request)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 类文件对象支持 文件对象的操作方法，如read()方法读取文件全部内容，返回字符串</span></span><br><span class="line">html = response.read().decode(<span class="string">"utf-8"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印字符串</span></span><br><span class="line">print(html)</span><br></pre></td></tr></table></figure>
+<p>（4）使用<code>opener</code>处理更加高级的访问</p>
+<p>在简单的例子爬取了百度首页的 html，我们用到的是 urlopen 来打开请求，它是一个特殊的opener（也就是模块帮我们构建好的）。但是基本的 urlopen() 方法不支持代理、cookie等其他的HTTP/HTTPS高级功能，所以我们需要用到 Python 的 opener 来自定义我们的请求内容。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建一个HTTPHandler 处理器对象，支持处理HTTP请求</span></span><br><span class="line">http_handler = request.HTTPHandler(debuglevel=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建一个HTTPHandler 处理器对象，支持处理HTTPS请求</span></span><br><span class="line"><span class="comment"># http_handler = request.HTTPSHandler(debuglevel=1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用 request.build_opener()方法，创建支持处理HTTP请求的opener对象</span></span><br><span class="line">opener = request.build_opener(http_handler)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建 Request请求</span></span><br><span class="line">request = request.Request(<span class="string">"http://www.baidu.com/"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用自定义opener对象的open()方法，发送request请求</span></span><br><span class="line">response = opener.open(request)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取服务器响应内容</span></span><br><span class="line">html = response.read().decode(<span class="string">"utf-8"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印字符串</span></span><br><span class="line">print(html)</span><br></pre></td></tr></table></figure>
+<p>（5）使用 <code>opener</code> 设置代理</p>
+<p>设置代理是有三个代码版本：不使用；使用公开短期的IP代理；使用私密的IP代理，需要处理用户名和密码。下面给出的使用公开短期的IP代理，更多可以<a href="https://www.cnblogs.com/weijiutao/p/10749802.html" target="_blank" rel="noopener">访问这里</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 代理列表</span></span><br><span class="line">proxy_list = [</span><br><span class="line">    &#123;<span class="string">"http"</span>: <span class="string">"27.191.234.69:9999"</span>&#125;,</span><br><span class="line">    &#123;<span class="string">"http"</span>: <span class="string">"27.191.234.69:9999"</span>&#125;,</span><br><span class="line">    &#123;<span class="string">"http"</span>: <span class="string">"27.191.234.69:9999"</span>&#125;,</span><br><span class="line">    &#123;<span class="string">"http"</span>: <span class="string">"27.191.234.69:9999"</span>&#125;,</span><br><span class="line">]</span><br><span class="line"><span class="comment"># 随机选择一个代理</span></span><br><span class="line">proxy = random.choice(proxy_list)</span><br><span class="line"><span class="comment"># 使用选择的代理构建代理处理器对象</span></span><br><span class="line">httpproxy_handler = urllib.request.ProxyHandler(proxy)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过 urllib.request.build_opener()方法使用这些代理Handler对象，创建自定义opener对象</span></span><br><span class="line">opener = urllib.request.build_opener(httpproxy_handler)</span><br><span class="line"></span><br><span class="line">request = urllib.request.Request(<span class="string">"http://www.baidu.com/"</span>)</span><br><span class="line">response = opener.open(request)</span><br><span class="line">html = response.read().decode(<span class="string">"utf-8"</span>)</span><br><span class="line">print(html)</span><br></pre></td></tr></table></figure>
+<p>（6）使用 cookielib库 和 HTTPCookieProcessor处理cookie</p>
+<p>HTTP协议中的无状态</p>
+<p>无状态是指协议对于事务处理没有记忆能力，服务器不知道客户端是什么状态。对于静态网页没有什么问题，但对于动态网页（需要和服务器进行交互），缺少状态意味如果后续需要处理前面的信息，则必须重传，这样可能导致每次的传输量比较大，并且很大可能传输相同的信息。</p>
+<p>用于保存HTTP 连接状态的有两种方式：一种是cookie，另一种是session。cookie 可以用来保持登录信息到用户下次与服务器的回话（用户下次访问同一个网站不用输入用户名和密码，简化登录手续）。cookie 最典型的应用就是判定注册用户是否已经登录网站；另一个重要场景“购物车”，用户在同一时间在同一网站的不同页面选择了不同的商品，这些信息写在cookie，最后在款的时候提取信息。</p>
+<p>cookie是通过浏览器来保持状态，而session 是通过服务器来保持状态，服务器会根据需求设置session id，将会话信息保存在服务器上，以后浏览器每次请求都会加上这个参数，服务器会根据这个sessionid，获得客户端的数据信息。session的实现也是需要借助浏览器本地cookie的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"><span class="keyword">from</span> http <span class="keyword">import</span> cookiejar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 构建一个CookieJar对象实例来保存cookie</span></span><br><span class="line">cookie = cookiejar.CookieJar()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 使用HTTPCookieProcessor()来创建cookie处理器对象，参数为CookieJar()对象</span></span><br><span class="line">cookie_handler = urllib.request.HTTPCookieProcessor(cookie)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 通过 build_opener() 来构建opener</span></span><br><span class="line">opener = urllib.request.build_opener(cookie_handler)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. addheaders 接受一个列表，里面每个元素都是一个headers信息的元祖, opener将附带headers信息</span></span><br><span class="line">opener.addheaders = [(<span class="string">"User-Agent"</span>,</span><br><span class="line">                      <span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 需要登录的账户和密码</span></span><br><span class="line">data = &#123;<span class="string">"email"</span>: <span class="string">"562352353@qq.com"</span>, <span class="string">"password"</span>: <span class="string">"chen562352353"</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 通过urlencode()转码</span></span><br><span class="line">postdata = urllib.parse.urlencode(data).encode(<span class="string">"utf-8"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 7. 构建Request请求对象，包含需要发送的用户名和密码</span></span><br><span class="line">request = urllib.request.Request(<span class="string">"http://www.renren.com/PLogin.do"</span>, data=postdata)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 8. 通过opener发送这个请求，并获取登录后的Cookie值，</span></span><br><span class="line">opener.open(request)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 9. opener包含用户登录后的Cookie值，可以直接访问那些登录后才可以访问的页面</span></span><br><span class="line">response = opener.open(<span class="string">"http://www.renren.com/485439163"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 10. 打印响应内容</span></span><br><span class="line">print(response.read().decode(<span class="string">"utf-8"</span>))</span><br></pre></td></tr></table></figure>
+<p>（7）使用Requests 开源包</p>
+<p>之前的文章中我们一直用到的库是 <code>urllib.request</code>，该库已经包含了平常我们使用的大多数功能，但是它的 API 使用起来让人感觉不太好，而 Requests 自称 “HTTP for Humans”，说明使用更简洁方便。</p>
+<p>基本GET请求（headers参数 和 parmas参数）<br>基本POST请求（data参数）<br>代理（proxies参数）<br>私密代理验证（特定格式） 和 Web客户端验证（auth 参数）<br>Cookies 和 Sission<br>处理HTTPS请求 SSL证书验证</p>
+<p>（8）python爬虫的正则表达式 re 的使用</p>
+<p>爬虫的四个主要的步骤：</p>
+<ul>
+<li>明确目标 (要知道你准备在哪个范围或者网站去搜索)</li>
+<li>爬 (将所有的网站的内容全部爬下来)</li>
+<li>取 (去掉对我们没用处的数据)</li>
+<li>处理数据（按照我们想要的方式存储和使用）</li>
+</ul>
+<p>python 中re 模块的使用</p>
+<ul>
+<li>使用 compile() 函数将正则表达式的字符串形式编译为一个 Pattern 对象</li>
+<li>过 Pattern 对象提供的一系列方法对文本进行匹配查找，获得匹配结果，一个 Match 对象</li>
+<li>最后使用 Match 对象提供的属性和方法获得信息，根据需要进行其他的操作</li>
+</ul>
+<p>compile 函数<br>match 方法<br>search 方法<br>findall 方法：需要搜索整个字符串，获取所有匹配的结果<br>finditer 方法: 返回的是一个顺序访问每个匹配结构的迭代器<br>split 方法：按照能够匹配的子串将字符串分割返回成一个列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">pattern = re.compile(r&apos;[\s\,\;]+&apos;) # 匹配至少一个空格和 ;</span><br><span class="line">str = &apos;a,b;; c   d&apos;</span><br><span class="line">p = pattern.split(str)</span><br><span class="line">print(p)  # [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;]</span><br></pre></td></tr></table></figure></p>
+<p>sub 方法：表示替换</p>
+<p>（9）爬取《糗事百科》的糗事并存储到本地</p>
+<p>不能运行了，因糗事百科网站的问题。解析html 语言，需要使用到正则表达式。</p>
+<p>（10）另一种爬取数据的方式 XPath</p>
+<p>解析html 语言比较复杂，还需要比较好的掌握正则表达式。还有更加简洁的方式，先将 HTML文件 转换成 XML文档，然后用 XPath 查找 HTML 节点或元素。</p>
+<p>xml 和html 的区别</p>
+<table>
+<thead>
+<tr>
+<th>数据格式</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:right">设计目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XML</td>
+<td style="text-align:center">Extensible Markup Language （可扩展标记语言）</td>
+<td style="text-align:right">被设计为传输和存储数据，其焦点是数据的内容。</td>
+</tr>
+<tr>
+<td>HTML</td>
+<td style="text-align:center">HyperText Markup Language （超文本标记语言）</td>
+<td style="text-align:right">显示数据以及如何更好显示数据。</td>
+</tr>
+</tbody>
+</table>
+<p>（11）使用xpath 模块来解析html 数据</p>
+<p>Xpath Helper 的谷歌插件。这种方式应该是比较简单的。使用的开源库是 <code>lxml</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="keyword">import</span> ssl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消代理验证</span></span><br><span class="line">ssl._create_default_https_context = ssl._create_unverified_context</span><br><span class="line"></span><br><span class="line">url = <span class="string">"https://www.qiushibaike.com/text/page/1/"</span></span><br><span class="line"><span class="comment"># User-Agent头</span></span><br><span class="line">user_agent = <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36'</span></span><br><span class="line">headers = &#123;<span class="string">'User-Agent'</span>: user_agent&#125;</span><br><span class="line">req = urllib.request.Request(url, headers=headers)</span><br><span class="line">response = urllib.request.urlopen(req)</span><br><span class="line"><span class="comment"># 获取每页的HTML源码字符串</span></span><br><span class="line">html = response.read().decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="comment"># 解析html 为 HTML 文档</span></span><br><span class="line">selector = etree.HTML(html)</span><br><span class="line">content_list = selector.xpath(<span class="string">'//div[@class="content"]/span[1]/text()'</span>)</span><br><span class="line">print(content_list)</span><br></pre></td></tr></table></figure>
+<p>（12）使用bs4 模块来做爬虫</p>
+<p>和 lxml 一样，Beautiful Soup 也是一个HTML/XML的解析器，主要的功能也是如何解析和提取 HTML/XML 数据。</p>
+<blockquote>
+<p>lxml 只会局部遍历，而Beautiful Soup 是基于HTML DOM的，会载入整个文档，解析整个DOM树，因此时间和内存开销都会大很多，所以性能要低于lxml。<br>BeautifulSoup 用来解析 HTML 比较简单，API非常人性化，支持CSS选择器、Python标准库中的HTML解析器，也支持 lxml 的 XML解析器。<br>Beautiful Soup 3 目前已经停止开发，推荐现在的项目使用Beautiful Soup 4。使用 pip 安装即可：pip install beautifulsoup4<br>官方文档：<a href="http://beautifulsoup.readthedocs.io/zh_CN/v4.4.0" target="_blank" rel="noopener">http://beautifulsoup.readthedocs.io/zh_CN/v4.4.0</a></p>
+</blockquote>
+<p>\begin{table}[]<br>\begin{tabular}{llll}<br>抓取工具          &amp; 速度 &amp; 使用难度 &amp; 安装难度  \\<br>正则            &amp; 最快 &amp; 困难   &amp; 无（内置） \\<br>BeautifulSoup &amp; 慢  &amp; 最简单  &amp; 简单    \\<br>lxml          &amp; 快  &amp; 简单   &amp; 一般<br>\end{tabular}<br>\end{table}</p>
+<p>Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构,每个节点都是Python对象,所有对象可以归纳为4种:</p>
+<ul>
+<li>Tag</li>
+<li>NavigableString</li>
+<li>BeautifulSoup</li>
+<li>Comment</li>
+</ul>
+<p>Tag</p>
+<p>Tag 通俗点讲就是 HTML 中的一个个标签。我们可以利用 soup 加标签名轻松地获取这些标签的内容，这些对象的类型是bs4.element.Tag。但是注意，它查找的是在所有内容中的第一个符合要求的标签。如果要查询所有的标签，后面会进行介绍。对于 Tag，它有两个重要的属性，是 name 和 attrs</p>
+<p>NavigableString</p>
+<p>既然我们已经得到了标签的内容，那么问题来了，我们要想获取标签内部的文字怎么办呢？很简单，用 .string 即可，例如</p>
+<p>BeautifulSoup</p>
+<p>BeautifulSoup 对象表示的是一个文档的内容。大部分时候,可以把它当作 Tag 对象，是一个特殊的 Tag，我们可以分别获取它的类型，名称，以及属性来感受一下</p>
+<p>遍历文档树</p>
+<ol>
+<li>直接子节点 ：.contents .children 属性</li>
+</ol>
+<p>搜索文档树</p>
+<p>1.find_all(name, attrs, recursive, text, **kwargs)</p>
+<p>CSS选择器</p>
+<p>（13，14）存储格式JSON </p>
+<p>之前是直接保存成txt 文档，这里说保存成json 脚本可能是更好的选择。</p>
+<p>JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式，它使得人们很容易的进行阅读和编写。同时也方便了机器进行解析和生成。适用于进行数据交互的场景，比如网站前台与后台之间的数据交互。JSON简单说就是javascript中的对象和数组，所以这两种结构就是对象和数组两种结构，通过这两种结构可以表示各种复杂的结构</p>
+<p>Python中 json 模块提供了四个功能：dumps、dump、loads、load，用于字符串 和 python数据类型间进行转换。</p>
+<p>json.loads()</p>
+<p>将JSON 格式字符串解码成python对象格式</p>
+<p>\begin{table}[]<br>\begin{tabular}{ll}<br>JSON         &amp; Python    \\<br>object       &amp; dict      \\<br>array        &amp; list      \\<br>string       &amp; unicode   \\<br>number(int)  &amp; int, long \\<br>number(real) &amp; float     \\<br>true         &amp; True      \\<br>false        &amp; False     \\<br>null         &amp; None<br>\end{tabular}<br>\end{table}</p>
+<p>json.dumps()</p>
+<p>实现 python 类型转化为 json 字符串，返回一个str对象 把一个 Python 对象编码转换成 Json 字符串</p>
+<p>json.dump()</p>
+<p>将Python内置类型序列化为json对象后写入文件</p>
+<p>json.load()</p>
+<p>读取文件中json形式的字符串元素 转化成python类型</p>
+<p>JsonPath</p>
+<p>JsonPath与XPath语法对比：</p>
+<p>Json结构清晰，可读性高，复杂度低，非常容易匹配。</p>
+<p>（15）将读取的信息json 的形式存储到本地</p>
+<p>（通过这种点选的方式，可以查看到自己真正想要的东西）</p>
+<p>我们通过 <code>Xpath Helper</code> 的谷歌插件经过分析获取到我们想要的内容为： <code>//div[contains(@id,&quot;qiushi_tag&quot;)]</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> ssl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消代理验证</span></span><br><span class="line">ssl._create_default_https_context = ssl._create_unverified_context</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Spider</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 初始化起始页位置</span></span><br><span class="line">        self.page = <span class="number">2</span></span><br><span class="line">        <span class="comment"># 爬取开关，如果为True继续爬取</span></span><br><span class="line">        self.switch = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">loadPage</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">           作用：打开页面</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        url = <span class="string">"https://www.qiushibaike.com/text/page/"</span> + str(self.page) + <span class="string">"/"</span></span><br><span class="line">        <span class="comment"># User-Agent头</span></span><br><span class="line">        user_agent = <span class="string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36'</span></span><br><span class="line">        headers = &#123;<span class="string">'User-Agent'</span>: user_agent&#125;</span><br><span class="line">        req = urllib.request.Request(url, headers=headers)</span><br><span class="line">        response = urllib.request.urlopen(req)</span><br><span class="line">        <span class="comment"># 获取每页的HTML源码字符串</span></span><br><span class="line">        html = response.read().decode(<span class="string">'utf-8'</span>)</span><br><span class="line">        <span class="comment"># 解析html 为 HTML 文档</span></span><br><span class="line">        selector = etree.HTML(html)</span><br><span class="line">        content_list = selector.xpath(<span class="string">'//div[contains(@id,"qiushi_tag")]'</span>)</span><br><span class="line">        <span class="comment"># 调用dealPage() 处理糗事里的杂七杂八</span></span><br><span class="line">        self.dealPage(content_list)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dealPage</span><span class="params">(self, item_list)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">            @brief 处理得到的糗事列表</span></span><br><span class="line"><span class="string">            @param item_list 得到的糗事列表</span></span><br><span class="line"><span class="string">            @param page 处理第几页</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">for</span> site <span class="keyword">in</span> item_list:</span><br><span class="line">            <span class="comment"># 根据查询发现匿名用户和非匿名用户的标签不一样</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 非匿名用户</span></span><br><span class="line">                imgUrl = site.xpath(<span class="string">'./div/a/img/@src'</span>)[<span class="number">0</span>]  <span class="comment"># 头像</span></span><br><span class="line">                username = site.xpath(<span class="string">'./div/a/img/@alt'</span>)[<span class="number">0</span>]  <span class="comment"># 作者</span></span><br><span class="line">            <span class="keyword">except</span> Exception:</span><br><span class="line">                <span class="comment"># 匿名用户</span></span><br><span class="line">                imgUrl = site.xpath(<span class="string">'./div/span/img/@src'</span>)[<span class="number">0</span>]  <span class="comment"># 头像</span></span><br><span class="line">                username = site.xpath(<span class="string">'./div/span/img/@alt'</span>)[<span class="number">0</span>]  <span class="comment"># 作者</span></span><br><span class="line">            content = site.xpath(<span class="string">'.//div[@class="content"]/span[1]/text()'</span>)</span><br><span class="line">            items = &#123;</span><br><span class="line">                <span class="string">"imgUrl"</span>: <span class="string">"https:"</span> + imgUrl,</span><br><span class="line">                <span class="string">"username"</span>: username,</span><br><span class="line">                <span class="string">"content"</span>: content,</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            self.writePage(items)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">writePage</span><span class="params">(self, items)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">            @brief 将数据追加写进文件中</span></span><br><span class="line"><span class="string">            @param text 文件内容</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        myFile = open(<span class="string">"./qiushi.json"</span>, <span class="string">'a'</span>)  <span class="comment"># 追加形式打开文件</span></span><br><span class="line">        myFile.write(json.dumps(items, ensure_ascii=<span class="keyword">False</span>) + <span class="string">",\n"</span>)</span><br><span class="line">        myFile.close()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">startWork</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">            控制爬虫运行</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 循环执行，直到 self.switch == False</span></span><br><span class="line">        <span class="keyword">while</span> self.switch:</span><br><span class="line">            <span class="comment"># 用户确定爬取的次数</span></span><br><span class="line">            self.loadPage()</span><br><span class="line">            command = input(<span class="string">"如果继续爬取，请按回车（退出输入quit)"</span>)</span><br><span class="line">            <span class="keyword">if</span> command == <span class="string">"quit"</span>:</span><br><span class="line">                <span class="comment"># 如果停止爬取，则输入 quit</span></span><br><span class="line">                self.switch = <span class="keyword">False</span></span><br><span class="line">            <span class="comment"># 每次循环，page页码自增1</span></span><br><span class="line">            self.page += <span class="number">1</span></span><br><span class="line">        print(<span class="string">"爬取结束！"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 定义一个Spider对象</span></span><br><span class="line">    qiushiSpider = Spider()</span><br><span class="line">    qiushiSpider.startWork()</span><br></pre></td></tr></table></figure>
+<p>（16）网站的信息的框架 Scrapy</p>
+<p>（17）使用Scrapy 中的CrawlSpider 类</p>
+<p>在之前的文章我们通过 scrapy 框架 及 scrapy.Spider 类做了一个《糗事百科》的糗百爬虫，本章我们再来看一下相较于 scrapy.Spider 类更为强大的 CrawlSpider 类。</p>
+<p>CrawlSpider 是Spider的派生类，Spider 类的设计原则是只爬取start_url列表中的网页，而 CrawlSpider 类定义了一些规则 (rule) 来提供跟进link的方便的机制，从爬取的网页中获取link并继续爬取的工作更适合。</p>
+<h2 id="反爬虫"><a href="#反爬虫" class="headerlink" title="反爬虫"></a>反爬虫</h2><p>反爬虫措施的措施：</p>
+<p>（1）验证码的方式：图片验证码，拖动验证码。</p>
+<p>（2）频率、IP 限制：如果同一个IP在短时间内爬取大量内容，那么就会进行限制，比如豆瓣网页。</p>
+<p>（3）全局动态加载：开始的时候静态加载一个JS 文件，然后使用JS 去加载其他的内容，比如微博。</p>
+<p>常用的策略：</p>
+<p>（1）如果是图片验证码，可以将图片传输到第三方系统中或者使用工人人工识别这些验证码</p>
+<p>（2）如果对方限制频率，那么可以采用分布式爬虫，多购买一些VPS，将任务分散开。如果限制了IP，那么使用国外出售的代理，比如<a href="http://www.freeproxylists.net/zh/" target="_blank" rel="noopener">freeproxylists</a></p>
+<h2 id="conda-笔记（乱入）"><a href="#conda-笔记（乱入）" class="headerlink" title="conda 笔记（乱入）"></a>conda 笔记（乱入）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source .bashrc # 表示进行了 (base) 这个目录</span><br><span class="line">conda deactivate # 这个表示退出了这个目录</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/12/multi-task_learning/" rel="next" title="Multi-Task Learning（多任务学习）">
+                <i class="fa fa-chevron-left"></i> Multi-Task Learning（多任务学习）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/16/leetcode-mysql/" rel="prev" title="LeetCode- datasets">
+                LeetCode- datasets <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="Jijeng Jia">
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-components-of-a-web-page"><span class="nav-number">1.</span> <span class="nav-text">The components of a web page</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Check-robots-txt"><span class="nav-number">1.1.</span> <span class="nav-text">Check robots.txt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据的存储"><span class="nav-number">2.</span> <span class="nav-text">数据的存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爬虫原理"><span class="nav-number">3.</span> <span class="nav-text">爬虫原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反爬虫"><span class="nav-number">4.</span> <span class="nav-text">反爬虫</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conda-笔记（乱入）"><span class="nav-number">5.</span> <span class="nav-text">conda 笔记（乱入）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/01/14/web_crawl/';
+          this.page.identifier = '2020/01/14/web_crawl/';
+          this.page.title = '爬虫（web crawl）项目过程记录';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

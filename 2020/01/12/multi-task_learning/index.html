@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="多任务学习介绍和代码实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Multi-Task Learning（多任务学习）">
+<meta property="og:url" content="http://yoursite.com/2020/01/12/multi-task_learning/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="多任务学习介绍和代码实现。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.niupic.com/images/2020/01/12/6hh6.jpg">
+<meta property="og:image" content="https://i.ibb.co/1Qwp9XH/Screen-Shot-2020-01-12-at-10-43-53-AM.png">
+<meta property="og:image" content="https://i.postimg.cc/C5kXsqTx/basic-task-op.png">
+<meta property="og:image" content="https://i.postimg.cc/fW9GN6tQ/joint-op.png">
+<meta property="og:updated_time" content="2020-01-12T05:11:26.491Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Multi-Task Learning（多任务学习）">
+<meta name="twitter:description" content="多任务学习介绍和代码实现。">
+<meta name="twitter:image" content="https://i.niupic.com/images/2020/01/12/6hh6.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/12/multi-task_learning/">
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>Multi-Task Learning（多任务学习） | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/12/multi-task_learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Multi-Task Learning（多任务学习）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-12T17:23:46+08:00">
+                2020-01-12
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-12T13:11:26+08:00">
+                2020-01-12
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/12/multi-task_learning/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/12/multi-task_learning/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>多任务学习介绍和代码实现。</p>
+<a id="more"></a>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>（1）定义</p>
+<blockquote>
+<p>Multi-task learning (MTL) is a subfield of machine learning in which multiple learning tasks are solved at the same time, while exploiting commonalities and differences across tasks. This can result in improved learning efficiency and prediction accuracy for the task-specific models, when compared to training the models separately.<br>多任务学习是同时学习多个任务，简单说就是有多个loss 同时训练。相比于单个模型单个loss，该方式能够提高模型的performance，当然使用的条件是任务之间具有相关性。多任务学习有很多别名，如联合学习（Joint Learning），自主学习（Learning to Learn），借助辅助任务学习（Learning with Auxiliary Tasks）。</p>
+</blockquote>
+<p>（2）多任务学习的分类</p>
+<p>1). 参数的硬共享机制</p>
+<p>多任务学习中最常见的一种形式。在所有任务的隐藏层共享参数，保留任务相关的输出层，硬共享机制降低了过拟合的风险，越多任务同时学习，过拟合的风险越低。</p>
+<p>2). 参数的软共享机制</p>
+<p><img src="https://i.niupic.com/images/2020/01/12/6hh6.jpg" width="80%" height="80%"></p>
+<p>（3）和其他学习方法的关系</p>
+<p>迁移学习是从source domain到target domain的学习方式，比如在NLP中，使用预训练的BERT 模型进行下游任务的训练；而多任务学习是迁移算法的一种；多标签学习是建模多个label之间的相关性，多个类别之间共享数据和特征；多类别学习是多标签学习任务的一种，是对对多个相互独立的类别进行建模。上述学习方式之间的关系可以表示为：</p>
+<p><img src="https://i.ibb.co/1Qwp9XH/Screen-Shot-2020-01-12-at-10-43-53-AM.png" width="80%" height="80%"></p>
+<p>（4）多任务学习的优势</p>
+<p>1). 多个相关的任务，有相通的地方有不同的部分。当学习一个任务的时候，容易学习到数据的噪声（过拟合），但是添加新的任务，能够加强任务之间的共性，减少过拟合的程度，提高泛化性能。</p>
+<p>2). &gt; It’s one of the most interesting and exciting areas of research for Machine Learning in coming years, radically reducing the amount of data required to learn new concepts. One of the great promises of Deep Learning is that, with the power of the models and simple ways to share parameters between tasks, we should be able to make significant progress in multi-task learning.<br>对于特定的一个细分领域，减少训练数据量的需求</p>
+<h2 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h2><p>（1） tensorflow 中的计算图</p>
+<blockquote>
+<p>The Computation Graph is a template for computation (re: algorithm) you are going to run. It doesn’t perform any calculations, but it means that your computer can conduct backpropagation far more quickly.<br>tensorflow 中的计算图是计算中大的模板，并不会完全执行，会根据当期的任务（loss）选择部分图计算。如果想要run 起来，需要写在一个session 内，</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Import Tensorflow and Numpy</span></span><br><span class="line"><span class="keyword">import</span> Tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create Placeholders For X And Y (for feeding in data)</span></span><br><span class="line">X = tf.placeholder(<span class="string">"float"</span>,[<span class="number">10</span>, <span class="number">10</span>],name=<span class="string">"X"</span>) <span class="comment"># Our input is 10x10</span></span><br><span class="line">Y = tf.placeholder(<span class="string">"float"</span>, [<span class="number">10</span>, <span class="number">1</span>],name=<span class="string">"Y"</span>) <span class="comment"># Our output is 10x1</span></span><br><span class="line"><span class="comment"># Create a Trainable Variable, "W", our weights for the linear transformation</span></span><br><span class="line">initial_W = np.zeros((<span class="number">10</span>,<span class="number">1</span>))</span><br><span class="line">W = tf.Variable(initial_W, name=<span class="string">"W"</span>, dtype=<span class="string">"float32"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果run 上述代码，那么是没有输出结果，计算图只是一种模板</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define Your Loss Function</span></span><br><span class="line">Loss = tf.pow(tf.add(Y,-tf.matmul(X,W)),<span class="number">2</span>,name=<span class="string">"Loss"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess: <span class="comment"># set up the session</span></span><br><span class="line">    sess.run(tf.initialize_all_variables())</span><br><span class="line">    Model_Loss = sess.run(</span><br><span class="line">                Loss, <span class="comment"># the first argument is the name of the Tensorflow variabl you want to return</span></span><br><span class="line">                &#123; <span class="comment"># the second argument is the data for the placeholders</span></span><br><span class="line">                  X: np.random.rand(<span class="number">10</span>,<span class="number">10</span>),</span><br><span class="line">                  Y: np.random.rand(<span class="number">10</span>).reshape(<span class="number">-1</span>,<span class="number">1</span>)</span><br><span class="line">                &#125;)</span><br><span class="line">    print(Model_Loss)</span><br></pre></td></tr></table></figure>
+<p>（2）Alternate Training</p>
+<p><img src="https://i.postimg.cc/C5kXsqTx/basic-task-op.png" width="80%" height="80%"></p>
+<p>Alternate Training 是轮流训练不同的任务</p>
+<div><div class="fold_hider"><div class="close hider_title">开/合</div></div><div class="fold">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  GRAPH CODE</span></span><br><span class="line"><span class="comment"># ============</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Import Tensorflow and Numpy</span></span><br><span class="line"><span class="keyword">import</span> Tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># ======================</span></span><br><span class="line"><span class="comment"># Define the Graph</span></span><br><span class="line"><span class="comment"># ======================</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define the Placeholders</span></span><br><span class="line">X = tf.placeholder(<span class="string">"float"</span>, [<span class="number">10</span>, <span class="number">10</span>], name=<span class="string">"X"</span>)</span><br><span class="line">Y1 = tf.placeholder(<span class="string">"float"</span>, [<span class="number">10</span>, <span class="number">20</span>], name=<span class="string">"Y1"</span>)</span><br><span class="line">Y2 = tf.placeholder(<span class="string">"float"</span>, [<span class="number">10</span>, <span class="number">20</span>], name=<span class="string">"Y2"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Define the weights for the layers</span></span><br><span class="line">initial_shared_layer_weights = np.random.rand(<span class="number">10</span>,<span class="number">20</span>)</span><br><span class="line">initial_Y1_layer_weights = np.random.rand(<span class="number">20</span>,<span class="number">20</span>)</span><br><span class="line">initial_Y2_layer_weights = np.random.rand(<span class="number">20</span>,<span class="number">20</span>)</span><br><span class="line">shared_layer_weights = tf.Variable(initial_shared_layer_weights, name=<span class="string">"share_W"</span>, dtype=<span class="string">"float32"</span>)</span><br><span class="line">Y1_layer_weights = tf.Variable(initial_Y1_layer_weights, name=<span class="string">"share_Y1"</span>, dtype=<span class="string">"float32"</span>)</span><br><span class="line">Y2_layer_weights = tf.Variable(initial_Y2_layer_weights, name=<span class="string">"share_Y2"</span>, dtype=<span class="string">"float32"</span>)</span><br><span class="line"><span class="comment"># Construct the Layers with RELU Activations</span></span><br><span class="line">shared_layer = tf.nn.relu(tf.matmul(X,shared_layer_weights))</span><br><span class="line">Y1_layer = tf.nn.relu(tf.matmul(shared_layer,Y1_layer_weights))</span><br><span class="line">Y2_layer = tf.nn.relu(tf.matmul(shared_layer,Y2_layer_weights))</span><br><span class="line"><span class="comment"># Calculate Loss</span></span><br><span class="line">Y1_Loss = tf.nn.l2_loss(Y1-Y1_layer)</span><br><span class="line">Y2_Loss = tf.nn.l2_loss(Y2-Y2_layer)</span><br><span class="line"><span class="comment"># optimisers</span></span><br><span class="line">Y1_op = tf.train.AdamOptimizer().minimize(Y1_Loss)</span><br><span class="line">Y2_op = tf.train.AdamOptimizer().minimize(Y2_Loss)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># open the session 体现了 alternative training</span></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> session:</span><br><span class="line">    session.run(tf.initialize_all_variables())</span><br><span class="line">    <span class="keyword">for</span> iters <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">        <span class="keyword">if</span> np.random.rand() &lt; <span class="number">0.5</span>:</span><br><span class="line">            _, Y1_loss = session.run([Y1_op, Y1_Loss],</span><br><span class="line">                            &#123;</span><br><span class="line">                              X: np.random.rand(<span class="number">10</span>,<span class="number">10</span>)*<span class="number">10</span>,</span><br><span class="line">                              Y1: np.random.rand(<span class="number">10</span>,<span class="number">20</span>)*<span class="number">10</span>,</span><br><span class="line">                              Y2: np.random.rand(<span class="number">10</span>,<span class="number">20</span>)*<span class="number">10</span></span><br><span class="line">                              &#125;)</span><br><span class="line">            print(Y1_loss)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            _, Y2_loss = session.run([Y2_op, Y2_Loss],</span><br><span class="line">                            &#123;</span><br><span class="line">                              X: np.random.rand(<span class="number">10</span>,<span class="number">10</span>)*<span class="number">10</span>,</span><br><span class="line">                              Y1: np.random.rand(<span class="number">10</span>,<span class="number">20</span>)*<span class="number">10</span>,</span><br><span class="line">                              Y2: np.random.rand(<span class="number">10</span>,<span class="number">20</span>)*<span class="number">10</span></span><br><span class="line">                              &#125;)</span><br><span class="line">            print(Y2_loss)</span><br></pre></td></tr></table></figure>
+
+</div></div>
+<p>Tips: When is Alternate Training Good?</p>
+<blockquote>
+<p>For example, in vision, you might want one of your tasks to predict the rotation of an object, the other what the object would look like if you changed the camera angle. These two tasks are obviously related - in fact the rotation probably comes before the image generation.<br>预测图片中物品的角度和物体（if you changed the camera angle），这两个任务是相关的。</p>
+</blockquote>
+<p>Tips: When is Alternate Training Less Good?</p>
+<blockquote>
+<p>Alternate training can easily become biased towards a specific task. The first way is obvious - if one of your tasks has a far larger dataset than the other, then if you train in proportion to the dataset sizes your shared layer will contain more information about the more significant task.<br>当两个任务包含的数据集大小比例相差比较大的时候，模型对于大数据集的信息包含更多。</p>
+</blockquote>
+<p>（3）Training at the Same Time - Joint Training</p>
+<p><img src="https://i.postimg.cc/fW9GN6tQ/joint-op.png" width="80%" height="80%"></p>
+<div><div class="fold_hider"><div class="close hider_title">开/合</div></div><div class="fold">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Import Tensorflow and Numpy</span></span><br><span class="line"><span class="keyword">import</span> Tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># ======================</span></span><br><span class="line"><span class="comment"># Define the Graph</span></span><br><span class="line"><span class="comment"># ======================</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define the Placeholders</span></span><br><span class="line">X = tf.placeholder(<span class="string">"float"</span>, [<span class="number">10</span>, <span class="number">10</span>], name=<span class="string">"X"</span>)</span><br><span class="line">Y1 = tf.placeholder(<span class="string">"float"</span>, [<span class="number">10</span>, <span class="number">20</span>], name=<span class="string">"Y1"</span>)</span><br><span class="line">Y2 = tf.placeholder(<span class="string">"float"</span>, [<span class="number">10</span>, <span class="number">20</span>], name=<span class="string">"Y2"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Define the weights for the layers</span></span><br><span class="line"></span><br><span class="line">initial_shared_layer_weights = np.random.rand(<span class="number">10</span>,<span class="number">20</span>)</span><br><span class="line">initial_Y1_layer_weights = np.random.rand(<span class="number">20</span>,<span class="number">20</span>)</span><br><span class="line">initial_Y2_layer_weights = np.random.rand(<span class="number">20</span>,<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">shared_layer_weights = tf.Variable(initial_shared_layer_weights, name=<span class="string">"share_W"</span>, dtype=<span class="string">"float32"</span>)</span><br><span class="line">Y1_layer_weights = tf.Variable(initial_Y1_layer_weights, name=<span class="string">"share_Y1"</span>, dtype=<span class="string">"float32"</span>)</span><br><span class="line">Y2_layer_weights = tf.Variable(initial_Y2_layer_weights, name=<span class="string">"share_Y2"</span>, dtype=<span class="string">"float32"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Construct the Layers with RELU Activations</span></span><br><span class="line">shared_layer = tf.nn.relu(tf.matmul(X,shared_layer_weights))</span><br><span class="line">Y1_layer = tf.nn.relu(tf.matmul(shared_layer,Y1_layer_weights))</span><br><span class="line">Y2_layer = tf.nn.relu(tf.matmul(shared_layer,Y2_layer_weights))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Calculate Loss</span></span><br><span class="line">Y1_Loss = tf.nn.l2_loss(Y1-Y1_layer)</span><br><span class="line">Y2_Loss = tf.nn.l2_loss(Y2-Y2_layer)</span><br><span class="line">Joint_Loss = Y1_Loss + Y2_Loss</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Calculate Loss</span></span><br><span class="line">Y1_Loss = tf.nn.l2_loss(Y1-Y1_layer)</span><br><span class="line">Y2_Loss = tf.nn.l2_loss(Y2-Y2_layer)</span><br><span class="line">Joint_Loss = Y1_Loss + Y2_Loss</span><br><span class="line"></span><br><span class="line"><span class="comment"># optimisers</span></span><br><span class="line">Optimiser = tf.train.AdamOptimizer().minimize(Joint_Loss)</span><br><span class="line">Y1_op = tf.train.AdamOptimizer().minimize(Y1_Loss)</span><br><span class="line">Y2_op = tf.train.AdamOptimizer().minimize(Y2_Loss)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Joint Training</span></span><br><span class="line"><span class="comment"># Calculation (Session) Code</span></span><br><span class="line"><span class="comment"># ==========================</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># open the session</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> session:</span><br><span class="line">    session.run(tf.initialize_all_variables())</span><br><span class="line">    _, Joint_Loss = session.run([Optimiser, Joint_Loss],</span><br><span class="line">                    &#123;</span><br><span class="line">                      X: np.random.rand(<span class="number">10</span>,<span class="number">10</span>)*<span class="number">10</span>,</span><br><span class="line">                      Y1: np.random.rand(<span class="number">10</span>,<span class="number">20</span>)*<span class="number">10</span>,</span><br><span class="line">                      Y2: np.random.rand(<span class="number">10</span>,<span class="number">20</span>)*<span class="number">10</span></span><br><span class="line">                      &#125;)</span><br><span class="line">    print(Joint_Loss)</span><br></pre></td></tr></table></figure>
+
+</div></div>
+<p>Tips: When is Alternate Training Less Good?</p>
+<blockquote>
+<p>The first thing we tried was simply to sum the different losses. Soon enough we could see that while one task converges to good results, the others look pretty bad. When taking a closer look, we could easily see why. The losses’ scales were so different, that one task dominated the overall loss, while the rest of the tasks didn’t have a chance to affect the learning process of the shared layers.<br>简单相加容易发生一个model 主导了整个的情况<br>A quick fix was replacing the sum of losses with a weighted sum, that brought all losses to approximately the same scale. However, this solution involves another hyperparameter that might need to be tuned every once in a while.<br>一种解决方案是有权重相加，但是引入了超参数<br>Luckily, we found a great <a href="https://arxiv.org/abs/1705.07115" target="_blank" rel="noopener">paper</a> proposing to use uncertainty to weigh losses in MTL. The way it is done, is by learning another noise parameter that is integrated in the loss function for each task. This allows having multiple tasks, possibly regression and classification, and bringing all losses to the same scale. Now we could go back to simply summing our losses.<br>更近一步连超参数都不用了<br>Not only did we get better results than with a weighted sum, we could forget about the additional weights hyperparameters. Here is a Keras implementation provided by the authors of the paper.</p>
+</blockquote>
+<p>（3）Tuning learning rates</p>
+<p>简单的方法是使用一个learning rate<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">optimizer = tf.train.AdamOptimizer(learning_rate).minimize(loss)</span><br></pre></td></tr></table></figure></p>
+<p>可能对于不同的loss，使用不同的learning rate 是更加好的方式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">all_variables = shared_vars + a_vars + b_vars</span><br><span class="line">all_gradients = tf.gradients(loss, all_variables)</span><br><span class="line"> </span><br><span class="line">shared_subnet_gradients = all_gradients[:len(shared_vars)]</span><br><span class="line">a_gradients = all_gradients[len(shared_vars):len(shared_vars + a_vars)]</span><br><span class="line">b_gradients = all_gradients[len(shared_vars + a_vars):]</span><br><span class="line"> </span><br><span class="line">shared_subnet_optimizer = tf.train.AdamOptimizer(shared_learning_rate)</span><br><span class="line">a_optimizer = tf.train.AdamOptimizer(a_learning_rate)</span><br><span class="line">b_optimizer = tf.train.AdamOptimizer(b_learning_rate)</span><br><span class="line"> </span><br><span class="line">train_shared_op = shared_subnet_optimizer.apply_gradients(zip(shared_subnet_gradients, shared_vars))</span><br><span class="line">train_a_op = a_optimizer.apply_gradients(zip(a_gradients, a_vars))</span><br><span class="line">train_b_op = b_optimizer.apply_gradients(zip(b_gradients, b_vars))</span><br><span class="line"> </span><br><span class="line">train_op = tf.group(train_shared_op, train_a_op, train_b_op)</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>Multi-task learning is helpful when you want to perform similar tasks using same network. This not only reduces training time but also reduces inference time as compared with performing prediction with two different models.<br>相比于多个单任务的训练和预测，多任务学习在时间和使用gpu空间上都是优于前者的。</p>
+</blockquote>
+<blockquote>
+<p>It can be generalized to more complex problems like recognizing facial expressions and determining person face attributes.<br>对于任务相关的模型，可以防止过拟合，得到更好的训练模型的效果。</p>
+</blockquote>
+<p>参考文献</p>
+<p>1). <a href="https://www.kdnuggets.com/2016/07/multi-task-learning-tensorflow-part-1.html" target="_blank" rel="noopener">Multi-Task Learning in Tensorflow:</a><br>2). <a href="https://engineering.taboola.com/deep-multi-task-learning-3-lessons-learned/" target="_blank" rel="noopener">Deep Multi-Task Learning – 3 Lessons Learned</a><br>3). <a href="https://medium.com/@kajalgupta/multi-task-learning-with-deep-neural-networks-7544f8b7b4e3" target="_blank" rel="noopener">Multi-Task Learning with Deep Neural Networks</a><br>4). <a href="https://en.wikipedia.org/wiki/Multi-task_learning" target="_blank" rel="noopener">Multi-task learning</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/08/hexo相关优化/" rel="next" title="Hexo博客的相关优化">
+                <i class="fa fa-chevron-left"></i> Hexo博客的相关优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/14/web_crawl/" rel="prev" title="爬虫（web crawl）项目过程记录">
+                爬虫（web crawl）项目过程记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="Jijeng Jia">
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码部分"><span class="nav-number">2.</span> <span class="nav-text">代码部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/01/12/multi-task_learning/';
+          this.page.identifier = '2020/01/12/multi-task_learning/';
+          this.page.title = 'Multi-Task Learning（多任务学习）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

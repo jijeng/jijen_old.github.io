@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="LeetCode 刷题笔记，数据库专题，使用mysql 实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode- datasets">
+<meta property="og:url" content="http://yoursite.com/2020/01/16/leetcode-mysql/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="LeetCode 刷题笔记，数据库专题，使用mysql 实现。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-02-01T04:28:47.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode- datasets">
+<meta name="twitter:description" content="LeetCode 刷题笔记，数据库专题，使用mysql 实现。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/16/leetcode-mysql/">
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>LeetCode- datasets | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/16/leetcode-mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">LeetCode- datasets</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-16T23:17:04+08:00">
+                2020-01-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-02-01T12:28:47+08:00">
+                2020-02-01
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/16/leetcode-mysql/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/16/leetcode-mysql/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>LeetCode 刷题笔记，数据库专题，使用mysql 实现。</p>
+<a id="more"></a>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><p><a href="https://leetcode.com/problems/rising-temperature/" target="_blank" rel="noopener">197. Rising Temperature</a></p>
+<p>主要使用了 <code>built-in</code> 的函数 <code>subdate</code>。DATE_SUB() 和 SUBDATE() 函数接受两个参数：</p>
+<ul>
+<li>date 是 DATE 或 DATETIME 的起始值。</li>
+<li>expr 是一个字符串，用于确定从起始日期减去的间隔值。type 是 expr 可解析的间隔单位，例如 DAY，HOUR 等</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"># 一个表可以读两次</span><br><span class="line"><span class="keyword">select</span> w1.Id <span class="keyword">from</span> Weather <span class="keyword">as</span> w1, Weather <span class="keyword">as</span> w2 <span class="keyword">where</span> w1.Temperature &gt; w2.Temperature <span class="keyword">and</span> <span class="keyword">subdate</span>(w1.RecordDate, <span class="number">1</span>) =w2.RecordDate</span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode.com/problems/department-highest-salary/" target="_blank" rel="noopener">184. Department Highest Salary</a></p>
+<p>基本的框架很明确， <code>select.. join where condition order by</code>： 首先是选择，然后是不同表之间的连接，最后是以某种顺序进行排列。 mysql 中默认是按照升序排列，所以 <code>select * from t1 order by col1</code> 和 <code>select * from t1 order by col1 asc</code> 是等价的。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"><span class="keyword">select</span> d.Name <span class="keyword">as</span> Department, e.Name <span class="keyword">as</span> Employee, e.Salary <span class="keyword">from</span> Employee <span class="keyword">as</span> e <span class="keyword">inner</span> <span class="keyword">join</span> Department <span class="keyword">as</span> d <span class="keyword">on</span> e.DepartmentId =d.Id <span class="keyword">where</span></span><br><span class="line">(<span class="keyword">select</span> <span class="keyword">Max</span>(Salary) <span class="keyword">from</span> Employee <span class="keyword">as</span> e1 <span class="keyword">where</span> e1.DepartmentId = e.DepartmentId) = e.Salary <span class="keyword">order</span> <span class="keyword">by</span> d.Name</span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode.com/problems/customers-who-never-order/" target="_blank" rel="noopener">183. Customers Who Never Order</a><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"># 这个涉及到的是减法操作</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">Name</span> <span class="keyword">as</span> Customers <span class="keyword">from</span> Customers <span class="keyword">where</span> <span class="keyword">Id</span> <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> CustomerId <span class="keyword">from</span> Orders)</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://leetcode.com/problems/employees-earning-more-than-their-managers/" target="_blank" rel="noopener">181. Employees Earning More Than Their Managers</a></p>
+<p>对于 SELF JOIN 这类题目，直接看成两个表是比较理想的。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"><span class="keyword">select</span> e1.Name <span class="keyword">as</span> Employee <span class="keyword">from</span> Employee e1, Employee e2 <span class="keyword">where</span> e1.Salary &gt; e2.Salary <span class="keyword">and</span> e1.ManagerId =e2.Id</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"># 这个涉及到的是减法操作</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">Name</span> <span class="keyword">as</span> Customers <span class="keyword">from</span> Customers <span class="keyword">where</span> <span class="keyword">Id</span> <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> CustomerId <span class="keyword">from</span> Orders)</span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode.com/problems/duplicate-emails/" target="_blank" rel="noopener">182. Duplicate Emails</a></p>
+<p>group by 搭配聚合函数使用，比如max min sum avg cout 五个函数；group by 还可以搭配 having 进行过滤。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"><span class="keyword">select</span> Email <span class="keyword">from</span> Person <span class="keyword">group</span> <span class="keyword">by</span> Email <span class="keyword">having</span> <span class="keyword">count</span>(Email) &gt;<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode.com/problems/consecutive-numbers/" target="_blank" rel="noopener">180. Consecutive Numbers</a></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"># 这个是连续的三个num，所以需要申请三个表；</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> l1.Num <span class="keyword">as</span> ConsecutiveNums <span class="keyword">from</span> <span class="keyword">Logs</span> <span class="keyword">as</span> l1, <span class="keyword">Logs</span> <span class="keyword">as</span> l2, <span class="keyword">Logs</span> <span class="keyword">as</span> l3 <span class="keyword">where</span> l1.Id + <span class="number">1</span> =l2.ID <span class="keyword">and</span> l2.Id + <span class="number">1</span> =l3.Id <span class="keyword">and</span> l1.Num =l2.Num <span class="keyword">and</span> l2.Num  =l3.Num</span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode.com/problems/rank-scores/" target="_blank" rel="noopener">178. Rank Scores</a></p>
+<p>这个解题思路是非常棒的：通过查找比其大的个数，然后判断其排名，是一种非常nice 的选择。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> S1.Score, (<span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">distinct</span> Score) <span class="keyword">from</span> Scores <span class="keyword">as</span> S2 <span class="keyword">where</span> S2.Score &gt;= S1.Score ) <span class="keyword">as</span> <span class="keyword">Rank</span> <span class="keyword">from</span> Scores <span class="keyword">as</span> S1 <span class="keyword">order</span> <span class="keyword">by</span> Score <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode.com/problems/nth-highest-salary/submissions/" target="_blank" rel="noopener">177. Nth Highest Salary</a></p>
+<p>mysql 中 <code>limit</code> 和 <code>offset</code> 的用法：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">语句1：<span class="keyword">select</span> * <span class="keyword">from</span> student <span class="keyword">limit</span> <span class="number">9</span>,<span class="number">4</span></span><br><span class="line">语句<span class="number">2</span>：slect * <span class="keyword">from</span> student <span class="keyword">limit</span> <span class="number">4</span> <span class="keyword">offset</span> <span class="number">9</span></span><br><span class="line">// 语句<span class="number">1</span>和<span class="number">2</span>均返回表student的第<span class="number">10</span>、<span class="number">11</span>、<span class="number">12</span>、<span class="number">13</span>行  </span><br><span class="line">//语句<span class="number">2</span>中的<span class="number">4</span>表示返回<span class="number">4</span>行，<span class="number">9</span>表示从表的第十行开始</span><br></pre></td></tr></table></figure></p>
+<p>写sql 语句都是作为 shell 语句的一部分。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT</span><br><span class="line">BEGIN</span><br><span class="line">  SET n =N -1;</span><br><span class="line">  RETURN (</span><br><span class="line">      <span class="comment"># Write your MySQL query statement below.</span></span><br><span class="line">      select distinct Salary from Employee order by Salary desc <span class="built_in">limit</span> n, 1</span><br><span class="line">  );</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode.com/problems/second-highest-salary/" target="_blank" rel="noopener">176. Second Highest Salary</a></p>
+<p>所谓的第二大就是比 <code>max</code> 小的元素，这种思路是没有问题的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line">select max(Salary) as SecondHighestSalary from Employee where Salary &lt; (select max(Salary) from Employee)</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://leetcode.com/problems/combine-two-tables/" target="_blank" rel="noopener">175. Combine Two Tables</a></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"><span class="keyword">select</span> p.FirstName, p.LastName, a.City, a.State <span class="keyword">from</span> Person <span class="keyword">as</span> p <span class="keyword">left</span> <span class="keyword">join</span> Address <span class="keyword">as</span> a <span class="keyword">on</span> p.PersonId = a.PersonId</span><br></pre></td></tr></table></figure>
+<h2 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h2><h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p><a href="https://leetcode.com/problems/delete-duplicate-emails/" target="_blank" rel="noopener">196. Delete Duplicate Emails</a></p>
+<p>非常得直观，一个表可以重复读入两次。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"><span class="keyword">delete</span> q <span class="keyword">from</span> Person  p, Person  q <span class="keyword">where</span> p.Email =q.Email <span class="keyword">and</span> p.Id &lt; q.Id</span><br></pre></td></tr></table></figure></p>
+<p>下面使用 <code>select</code>语句的是不行的。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">min</span>(<span class="keyword">Id</span>) ,Email <span class="keyword">from</span> Person <span class="keyword">group</span> <span class="keyword">by</span> Email</span><br></pre></td></tr></table></figure>
+<h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/14/web_crawl/" rel="next" title="爬虫（web crawl）项目过程记录">
+                <i class="fa fa-chevron-left"></i> 爬虫（web crawl）项目过程记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/16/seafile/" rel="prev" title="Seafile搭建个人网盘">
+                Seafile搭建个人网盘 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="Jijeng Jia">
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-number">1.</span> <span class="nav-text">查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增加"><span class="nav-number">2.</span> <span class="nav-text">增加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除"><span class="nav-number">3.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改"><span class="nav-number">4.</span> <span class="nav-text">修改</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/01/16/leetcode-mysql/';
+          this.page.identifier = '2020/01/16/leetcode-mysql/';
+          this.page.title = 'LeetCode- datasets';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
