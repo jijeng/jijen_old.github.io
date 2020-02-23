@@ -391,82 +391,82 @@
       
         <p>顾名思义，主要整理一下自己在文本处理中遇到的小的知识点，比如关键词提取技术，分词软件包的原理。</p>
 <a id="more"></a>
+
 <h2 id="关键词提取"><a href="#关键词提取" class="headerlink" title="关键词提取"></a>关键词提取</h2><h3 id="TF-IDF"><a href="#TF-IDF" class="headerlink" title="TF-IDF"></a>TF-IDF</h3><p>这个是可以参看之前自己写的一个<a href="https://jijeng.github.io/2018/08/23/%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%AF%94%E8%BE%83%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" target="_blank" rel="noopener">博客</a></p>
 <h3 id="卡方分布"><a href="#卡方分布" class="headerlink" title="卡方分布"></a>卡方分布</h3><p>卡方检验是以χ2分布为基础的一种常用假设检验方法。该检验的基本思想是：首先假设$H_0$成立，基于此前提计算出χ2值，它表示观察值与理论值之间的偏离程度。</p>
 <p>官方定义：</p>
 <p>若k 个随机变量$Z_1$、……、$Z_k $相互独立，且数学期望为0、方差为 1(即服从标准正态分布)，则随机变量X<br>$$<br>X = \sum _ { n = 1 } ^ { k } Z _ { n } ^ { 2 }<br>$$<br>被称为服从自由度为 k 的卡方分布，记作<br>$$<br>X \sim \chi ^ { 2 } ( k )<br>$$</p>
 <p>从直观的角度感受一下自由度k 和图像形状的关系，自由度越大卡方分布越接近正太分布。<br><a href="https://imgchr.com/i/ZttIoD" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/07/03/ZttIoD.png" alt="ZttIoD.png"></a></p>
-<p><strong> 用于特征选择</strong></p>
+<p>** 用于特征选择**</p>
 <p>如果文章是否包含“篮球“与文章是否属于体育类别是独立无关的。且一个新闻文章属于体育类别的概率是0.609，那么可以得到下面的表格。假设文章是否包含“篮球“与文章是否属于体育类别是独立无关的，所以不管文章中是不是包含”篮球“，其属于体育类别的概率都是0.609。</p>
 <p>  <strong><em>列联表</em></strong></p>
 <table>
 <thead>
 <tr>
 <th>组别</th>
-<th style="text-align:center">体育</th>
-<th style="text-align:right">非体育</th>
+<th align="center">体育</th>
+<th align="right">非体育</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>包含”篮球“</td>
-<td style="text-align:center">44 * 0.609 = 26.8</td>
-<td style="text-align:right">44 * 0.391 = 17.2</td>
+<td align="center">44 * 0.609 = 26.8</td>
+<td align="right">44 * 0.391 = 17.2</td>
 </tr>
 <tr>
 <td>不包含”篮球“</td>
-<td style="text-align:center">43 * 0.609 = 26.2</td>
-<td style="text-align:right">43 * 0.391 = 16.8</td>
+<td align="center">43 * 0.609 = 26.2</td>
+<td align="right">43 * 0.391 = 16.8</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>如果两个分类变量真的是独立无关的，那么四格表的实际值与理论值得差值应该非常小（有差值的原因是因为抽样误差）。那么如何衡量实际值与理论值得差值呢？</p>
 <p><strong><em>步骤</em></strong></p>
 <ul>
-<li>统计每个词的正文档出现频率（A）、负文档出现频率（B）、正文档不出现频率）、负文档不出现频率。<br>-计算每个词的卡方值</li>
+<li>统计每个词的正文档出现频率（A）、负文档出现频率（B）、正文档不出现频率）、负文档不出现频率。</li>
+<li>计算每个词的卡方值</li>
 <li>将每个词按卡方值从大到小排序，选取前k个词作为特征，k即特征维数。<br>$$<br>\operatorname { CHI } ( \mathrm { x } , \mathrm { y } ) = \chi ^ { 2 } ( x , y ) = \sum \frac { ( A - T ) ^ { 2 } } { T }<br>$$<br>该公式可以进一步简化成 （其中 x 表示一个特征，y 表示的target）<br>$$<br>\mathrm { CHI } ( \mathrm { x } , \mathrm { y } ) = \chi ^ { 2 } ( x , y ) = \frac { N ( A D - B C ) } { ( A + B ) ( A + C ) ( B + D ) ( C + D ) }<br>$$</li>
 </ul>
 <table>
 <thead>
 <tr>
 <th>组别</th>
-<th style="text-align:center">体育</th>
-<th style="text-align:right">非体育</th>
+<th align="center">体育</th>
+<th align="right">非体育</th>
 <th>合计</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>包含”篮球“</td>
-<td style="text-align:center">34  (A)</td>
-<td style="text-align:right">10 (B)</td>
+<td align="center">34  (A)</td>
+<td align="right">10 (B)</td>
 <td>44 (A+B)</td>
 </tr>
 <tr>
 <td>不包含”篮球“</td>
-<td style="text-align:center">19 (C)</td>
-<td style="text-align:right">24 (D)</td>
+<td align="center">19 (C)</td>
+<td align="right">24 (D)</td>
 <td>43 (C+D)</td>
 </tr>
 <tr>
 <td>合计</td>
-<td style="text-align:center">53(A +C)</td>
-<td style="text-align:right">34 (B+D)</td>
+<td align="center">53(A +C)</td>
+<td align="right">34 (B+D)</td>
 <td>87 (N)</td>
 </tr>
-</tbody>
-</table>
-<p><strong><em> 卡方分布的临界值</em></strong></p>
+</tbody></table>
+<p><strong>* 卡方分布的临界值*</strong></p>
 <p>自由度F = （行数 - 1） * （列数 - 1） = 1，对于四格表，F = 1。</p>
 <p><img src="https://i.bmp.ovh/imgs/2019/07/1580a69c2c0a91d8.png" alt></p>
 <p> 由于自由度F = 1，所以只需要看分布表的第一行。可以看到，随着CHI的增大，原假设成立的概率就越小。因为10.10 &gt; 6.64，所以原假设成立是概率是小于1%。反之，也就是说，原假设不成立（即两个分类变量不是独立无关）的概率大于99%</p>
-<p> <strong><em> 如何应用于特征选择</em></strong><br> CHI值越大，说明两个变量越不可能是独立无关的，也就是说X2越大，两个变量的相关程序也就越高。对于特征变量x1,x2,…,xn，以及分类变量y。只需要计算CHI(x1, y)、CHI(x2, y)、…、CHI(xn, y)，并按照CHI的值从大到小将特征排序，然后选择阈值，大于阈值的特征留下，小于阈值的特征删除。这样就筛选出一组特征子集了，接着使用这组特征子集去训练分类器，然后评估分类器的性能。</p>
+<p> <strong>* 如何应用于特征选择*</strong><br> CHI值越大，说明两个变量越不可能是独立无关的，也就是说X2越大，两个变量的相关程序也就越高。对于特征变量x1,x2,…,xn，以及分类变量y。只需要计算CHI(x1, y)、CHI(x2, y)、…、CHI(xn, y)，并按照CHI的值从大到小将特征排序，然后选择阈值，大于阈值的特征留下，小于阈值的特征删除。这样就筛选出一组特征子集了，接着使用这组特征子集去训练分类器，然后评估分类器的性能。</p>
 <p>因为只要比较CHI值得相对大小，所以上述的分布表就没用了。</p>
 <p>使用范围：一般是在离散变量上进行使用。</p>
-<p><strong> 另外一个例子</strong></p>
+<p>** 另外一个例子**</p>
 <p>In the case of classification problems where input variables are also categorical, we can use statistical tests to determine whether the output variable is dependent or independent of the input variables. If independent, then the input variable is a candidate for a feature that may be irrelevant to the problem and removed from the dataset.</p>
 <p>The Pearson’s chi-squared statistical hypothesis is an example of a test for independence between categorical variables.</p>
-<p>Contingency Table<br>For example, the Sex=rows and Interest=columns table with contrived counts might look as follows:<br>下面是一个列联表<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">        Science,	Math,	Art</span><br><span class="line">Male         <span class="number">20</span>,      <span class="number">30</span>,    <span class="number">15</span></span><br><span class="line">Female       <span class="number">20</span>,      <span class="number">15</span>,    <span class="number">30</span></span><br></pre></td></tr></table></figure></p>
+<p>Contingency Table<br>For example, the Sex=rows and Interest=columns table with contrived counts might look as follows:<br>下面是一个列联表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">        Science,	Math,	Art</span><br><span class="line">Male         <span class="number">20</span>,      <span class="number">30</span>,    <span class="number">15</span></span><br><span class="line">Female       <span class="number">20</span>,      <span class="number">15</span>,    <span class="number">30</span></span><br></pre></td></tr></table></figure>
+
 <p>The Pearson’s Chi-Squared test, or just Chi-Squared test for short, is named for Karl Pearson, although there are variations on the test.</p>
 <p>如何去解读这种信息？</p>
 <p>We can interpret the test statistic in the context of the chi-squared distribution with the requisite number of degress of freedom as follows:</p>
@@ -478,6 +478,7 @@
 <p>Chi-square Test for feature selection</p>
 <p>$$<br>X ^ { 2 } = \frac{  {(Observed frequency - Expected frequency)} ^  2  } {  Expected frequency }<br>$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Load libraries </span></span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris </span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectKBest </span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> chi2 </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Load iris data </span></span><br><span class="line">iris_dataset = load_iris() </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Create features and target </span></span><br><span class="line">X = iris_dataset.data </span><br><span class="line">y = iris_dataset.target </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Convert to categorical data by converting data to integers </span></span><br><span class="line">X = X.astype(int) </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Two features with highest chi-squared statistics are selected </span></span><br><span class="line">chi2_features = SelectKBest(chi2, k = <span class="number">2</span>) </span><br><span class="line">X_kbest_features = chi2_features.fit_transform(X, y) </span><br><span class="line">  </span><br><span class="line"><span class="comment"># Reduced features </span></span><br><span class="line">print(<span class="string">'Original feature number:'</span>, X.shape[<span class="number">1</span>]) </span><br><span class="line">print(<span class="string">'Reduced feature number:'</span>, X_kbest.shape[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>Original feature number: 4<br>Reduced feature number : 2</p>
 </blockquote>
@@ -486,54 +487,7 @@
 <h2 id="CBOW和skip-gram"><a href="#CBOW和skip-gram" class="headerlink" title="CBOW和skip-gram"></a>CBOW和skip-gram</h2><p>举一个简单的小例子说明 CBOW和skip-gram的区别：skip-gram 是根据中心词汇然后预测上下文词汇，这个不是一下子输入上下文词汇的，而是一个过程，中心词汇和上下文词汇1 ，中心词汇和上下文词汇2，这样的进行输入。 cbow 和其的区别，在于简单相加了上下文词汇作为一个整体，然后和中心词汇进行输入，所以最后是这样的结果。</p>
 <p>使用skip gram训练的时间更长，但是对于出现频率不高的词汇，效果比较好。但CBOW的训练速度是相对来说比较快一些。</p>
 <h2 id="分词软件"><a href="#分词软件" class="headerlink" title="分词软件"></a>分词软件</h2><p>常见的中文分词服务</p>
-<table>
-<thead>
-<tr>
-<th>分词服务</th>
-<th style="text-align:center">开源/商业</th>
-<th style="text-align:right">支持语言</th>
-<th>词性标注</th>
-<th>命名实体识别</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jieba</td>
-<td style="text-align:center">开源</td>
-<td style="text-align:right">Python, Java, C++</td>
-<td>无</td>
-<td>无</td>
-</tr>
-<tr>
-<td>HanLP</td>
-<td style="text-align:center">开源</td>
-<td style="text-align:right">Python，Java， C++</td>
-<td>有</td>
-<td>有</td>
-</tr>
-<tr>
-<td>StandFord CoreNLP</td>
-<td style="text-align:center">开源</td>
-<td style="text-align:right">Java</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>百度NLP</td>
-<td style="text-align:center">商业</td>
-<td style="text-align:right"></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>阿里NLP</td>
-<td style="text-align:center">商业</td>
-<td style="text-align:right"></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<p>| 分词服务        | 开源/商业          | 支持语言  | 词性标注| 命名实体识别 |<br>| ————- |:————-:| —–:| —–| —-|—–| —–|<br>| jieba | 开源 |Python, Java, C++| 无 | 无|<br>| HanLP | 开源 |Python，Java， C++ | 有 |有|<br>| StandFord CoreNLP | 开源 |Java | | |<br>| 百度NLP | 商业 | | | |<br>| 阿里NLP | 商业 | | | | |</p>
 <p>Stanford NLP是由斯坦福大学的 NLP 小组开源的 Java 实现的 NLP 工具包。可以使用python 调用 Stanford NLP 进行中文分词</p>
 <p>HanLP是由一系列模型与算法组成的Java工具包。也可以使用Python调用HanLP进行中文分词。</p>
 <p>结巴分词的算法策略</p>
@@ -547,16 +501,16 @@
 <p>中文分词的困难主要体现在：歧义词的切分和未登录词识别。其中后者的影响要远远大于前者的影响。</p>
 <p><img src="https://s2.ax1x.com/2019/07/02/ZYVtrq.png" alt="ZYVtrq.png"></p>
 <p>下面是常见的分词方式，但是并没有说明哪个软件是什么分词方法。<br>（需要掌握两种分词的方式，一种是基于词典的逆向最大匹配，一种是后面新词发现中的基于统计的信息熵算法）</p>
-<p><strong> 基于规则的分词方法</strong></p>
+<p>** 基于规则的分词方法**</p>
 <p>这种方法又叫作机械分词方法、基于字典的分词方法，它是按照一定的策略将待分析的汉字串与一个“充分大的”机器词典中的词条进行匹配，比如说正向最大匹配法、逆向最大匹配法</p>
-<p><strong> 基于统计的分词方法</strong></p>
+<p>** 基于统计的分词方法**</p>
 <p>该方法的主要思想：词是稳定的组合，因此在上下文中，相邻的字同时出现的次数越多，就越有可能构成一个词。因此字与字相邻出现的概率或频率能较好地反映成词的可信度。可以对训练文本中相邻出现的各个字的组合的频度进行统计，计算它们之间的互现信息。互现信息体现了汉字之间结合关系的紧密程度。当紧密程 度高于某一个阈值时，便可以认为此字组可能构成了一个词。该方法又称为无字典分词。 比如说CRF 算法。</p>
-<p><strong> 基于语义的分词方法</strong></p>
+<p>** 基于语义的分词方法**</p>
 <p>语义分词法引入了语义分析，对自然语言自身的语言信息进行更多的处理，如扩充转移网络法、知识分词语义分析法、邻接约束法、综合匹配法、后缀分词法、特征词库法、矩阵约束法、语法分析法等。</p>
-<p> <strong> 逆向最大匹配</strong>分词是中文分词基本算法之一，因为是机械切分，所以它也有分词速度快的优点，且逆向最大匹配分词比起正向最大匹配分词更符合人们的语言习惯。逆向最大匹配分词需要在已有词典的基础上，从被处理文档的末端开始匹配扫描，每次取最末端的i个字符（分词所确定的阈值i）作为匹配字段，若匹配失败，则去掉匹配字段最前面的一个字，继续匹配。而且选择的阈值越大，分词越慢，但准确性越好。这种方法经常被用来解决歧义词的问题，所以单独说一下。</p>
+<p> ** 逆向最大匹配**分词是中文分词基本算法之一，因为是机械切分，所以它也有分词速度快的优点，且逆向最大匹配分词比起正向最大匹配分词更符合人们的语言习惯。逆向最大匹配分词需要在已有词典的基础上，从被处理文档的末端开始匹配扫描，每次取最末端的i个字符（分词所确定的阈值i）作为匹配字段，若匹配失败，则去掉匹配字段最前面的一个字，继续匹配。而且选择的阈值越大，分词越慢，但准确性越好。这种方法经常被用来解决歧义词的问题，所以单独说一下。</p>
 <p>算法：<br>事先设置一个k值，下面的程序k值设为5，然后从最后一个字开始向前截取k个字，先把这k个字和字典匹配，看能否找到匹配的词语，若不能，则剔除这k个字最左边的字，然后再把这k-1个字与字典匹配…一直到匹配成功，或者前k-1个字都没匹配成功，那就把第k个字当成一个独立的词，然后再向前移动分出来的词的长度，再截取k个字……一直到全部分好词为止。<br>“我爱北京天安门”</p>
 <p>先从后面开始截取k(这里是5)个字，然后把”北京天安门”五个字与字典匹配，字典中没有这个词，然后就去掉”北”字，把剩下的”京天安门”与字典匹配，字典中还是没有这个词，再去掉”京”，然后再把”天安门”与字典匹配，发现匹配到了这个词，于是就把”天安门”划为一个词语，然后指针向前移动三个字。再截取k个字，这里因为就剩下4个字了，所以就截取4个字，把”我爱北京”与字典匹配，没成功，去掉”我”，再把”爱北京”与字典匹配，还是没成功，再去掉”爱”，然后发现”北京”匹配成功，把”北京”划为一个词语，再把指针向前移动两个字，</p>
-<p><strong> CRF算法</strong><br>基本思路是对汉字进行标注训练，不仅考虑了词语出现的频率，还考虑上下文，具备较好的学习能力，因此其对歧义词和未登录词的识别都具有良好的效果。</p>
+<p>** CRF算法**<br>基本思路是对汉字进行标注训练，不仅考虑了词语出现的频率，还考虑上下文，具备较好的学习能力，因此其对歧义词和未登录词的识别都具有良好的效果。</p>
 <p>近年来，随着硬件计算能力的发展以及词的分布式表示（word embedding）的提出，神经网络可以有效处理许多NLP任务。这类方法对于序列标注任务（如CWS、POS、NER）的处理方式是类似的：将token从离散one-hot表示映射到低维空间中成为稠密的embedding，随后将句子的embedding序列输入到RNN中，用神经网络自动提取特征，Softmax来预测每个token的标签。这种方法使得模型的训练成为一个端到端的过程，而非传统的pipeline （管道，指的是一个包含多步骤的流水式的工作），不依赖于特征工程，是一种数据驱动的方法，但网络种类繁多、对参数设置依赖大，模型可解释性差。</p>
 <p>推荐博客讲解 CRF算法，反正我是没有看懂，哈哈哈。<a href="https://www.cnblogs.com/en-heng/p/6214023.html" target="_blank" rel="noopener">【中文分词】条件随机场CRF</a>, <a href="https://www.cnblogs.com/xlturing/p/10161840.html" target="_blank" rel="noopener">浅谈分词算法（4）基于字的分词方法（CRF）</a> 和 <a href="https://www.unclewang.info/learn/machine-learning/753/" target="_blank" rel="noopener">CRF算法学习——自己动手实现一个简单的CRF分词</a></p>
 <h3 id="分词粒度"><a href="#分词粒度" class="headerlink" title="分词粒度"></a>分词粒度</h3><p>目前，分词主要包含细粒度分词和粗粒度分词两种，在不同的应用场景需要用到不同的粒度。细粒度分词是指将原始语句切分成最基本的词语，而粗粒度分词是指将原始语句中的多个基本词组合起来切成一个词，进而组成语义相对明确的实体。</p>
@@ -580,7 +534,7 @@
 <p>新词对最后结果的影响程度是大于歧义词（20倍左右吧）。</p>
 </blockquote>
 <p>so，这里主要讲的是新词的发现 而非处理歧义词的识别。</p>
-<p><strong> 中英文分词的区别 </strong></p>
+<p>** 中英文分词的区别 **</p>
 <ul>
 <li>分词 / 词干提取和词形还原。 中文和英文的nlp各有各的难点，中文的难点在于需要进行分词，将一个个句子分解成一个单词数组。而英文虽然不需要分词，但是要处理各种各样的时态，所以要进行词干提取和词形还原。比如 词干提取主要采取“缩减”的方式，“cats” 处理为 “cat”， 将“effective” 处理为“effect”； 词性还原主要采取转变的方式，“drove” 处理成“drive”， 将“driving” 处理成“drive”。</li>
 <li>对于中文，一个Word可以是一个单词，也可以是一个词。</li>
@@ -596,7 +550,7 @@
 </ol>
 <p>后者可以有对应的专家 handle，但涉及到商用这种人力成本也是比较高的了，所以一般使用基础词汇+ 各领域的常用词汇。即使这样的方案仍然是无法可持续的，所以需要一种算法去判断是否是新词。在当下的互联网时代，人们还会不断的创造出一些新词出来，比如：“神马”、“不明觉厉”等。未登录词辨别未登录词包括是种类繁多，形态组合各异，规模宏大的一个领域。对这些词语的自动辨识，是一件非常困难的事。比如，“美的”、“快的”、“英雄联盟”应该被作为一个词，却被切成了两个词，失去了原有的语义。未登录词（out-of-vocabulary, OOV）笼统地之未在词典中出现的词， 人工标注可以解决很好识别，比如最典型的未登录词就是人名，尤其是明星，然后最简单的是手动的维护，但是人力成本也是比较高昂的。</p>
 <p>从分词的角度来看，新词一般表现为细粒度切分后相邻词的组合。</p>
-<p><strong> 基于统计的新词发现</strong></p>
+<p>** 基于统计的新词发现**</p>
 <p>这里有三个阈值（都是越大越好）：<br>第一是最小互信息，因为互信息越大说明相关度越大，将n-gram分好的词计算互信息，如果低于阈值，则说明不能成词。<br>第二是最小熵值，因为熵也是越大说明周边词越丰富，计算其左熵和右熵的最小值，如果最小值低于阈值，则说明不能成词。<br>第三个是最少出现次数，为什么有这个数呢？假设前后两个词是完全相关的，出现400次，总共8000词，那么互信息=log((400/8000)/(400/8000)<em>(400/8000))，约掉之后剩下log(8000/400)。但是一个词如果从头到尾出现了一次，但是并不是单词，则互信息为=log((1/8000)/(1/8000)</em>(1/8000))=log(8000/1)，那么它的互信息会更大。取最少出现次数也会出现问题，就是一些低频率的词不能发现。</p>
 <p>基于信息熵的新词发现算法，从互信息和左右信息熵入手，成词的标准有两个：</p>
 <ul>
@@ -630,9 +584,9 @@
 <li>自由度</li>
 </ul>
 <p>基于上述分词进行挑选。</p>
-<h2 id="NLP-中的三类特征提取器"><a href="#NLP-中的三类特征提取器" class="headerlink" title="NLP 中的三类特征提取器"></a>NLP 中的三类特征提取器</h2><p><strong> NLP 和图像中数据的特征</strong></p>
+<h2 id="NLP-中的三类特征提取器"><a href="#NLP-中的三类特征提取器" class="headerlink" title="NLP 中的三类特征提取器"></a>NLP 中的三类特征提取器</h2><p>** NLP 和图像中数据的特征**</p>
 <p>NLP的输入往往是一句话或者一篇文章，所以它有几个特点：首先，输入是个一维线性序列，这个好理解；其次，输入是不定长的，有的长有的短，而这点其实对于模型处理起来也会增加一些小麻烦；再次，单词或者子句的相对位置关系很重要，两个单词位置互换可能导致完全不同的意思。</p>
-<p><strong> NLP 中的四大任务 </strong></p>
+<p>** NLP 中的四大任务 **</p>
 <ul>
 <li>序列标注： 分词/ POS Tag /NER /语义标注</li>
 <li>分类任务： 文本分类/ 情感计算</li>
@@ -665,7 +619,7 @@
 <blockquote>
 <p>我个人意见是：这说明Transformer之所以能够效果这么好，不仅仅multi-head attention在发生作用，而是几乎所有构件都在共同发挥作用，是一个小小的系统工程。</p>
 </blockquote>
-<p><strong> 参考文献</strong></p>
+<p>** 参考文献**</p>
 <p><a href="https://www.52cs.com/archives/3011" target="_blank" rel="noopener">放弃幻想，全面拥抱Transformer</a></p>
 <p>复习记录：</p>
 <p>分词两大问题：歧义词和oov。后者对于最后的效果影响更大。<br>处理OOV 常用的方法：subword；使用多个word embedding（transfer learning）； 使用context embedding进行<br>分词常用的算法：基于规则的逆向最大匹配（中文的特点），频数；基于信息熵的内部凝固度和自由运用程度（分别考虑词语内部的紧密程度和外部搭配的丰富程度）；深度学习+NER进行的词性标注，条件随机场CRF之类的。</p>
@@ -812,7 +766,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

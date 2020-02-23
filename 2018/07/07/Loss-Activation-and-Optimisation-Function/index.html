@@ -397,6 +397,7 @@
       
         <p>介绍激活函数（activation function）、损失函数（loss function）和在pytorch框架下的使用。</p>
 <a id="more"></a>
+
 <h2 id="Activation-Function"><a href="#Activation-Function" class="headerlink" title="Activation Function"></a>Activation Function</h2><h3 id="What"><a href="#What" class="headerlink" title="What?"></a>What?</h3><blockquote>
 <p>It’s just a thing (node) that you add to the output end of any neural network. It is also known as <strong>Transfer Function</strong>. It can also be attached in between two Neural Networks.</p>
 </blockquote>
@@ -407,14 +408,15 @@
 </blockquote>
 <p>激活函数的本质是增加网络的非线性。</p>
 <p>The thresholds are pre-defined numerical values in the function. This very nature of the activation functions can add non-linearity to the output. </p>
-<h3 id="Activation-Function-Types"><a href="#Activation-Function-Types" class="headerlink" title="Activation Function Types"></a>Activation Function Types</h3><p><strong> Linear Activation Function:</strong></p>
+<h3 id="Activation-Function-Types"><a href="#Activation-Function-Types" class="headerlink" title="Activation Function Types"></a>Activation Function Types</h3><p>** Linear Activation Function:**</p>
 <p>$$<br> output  = k * x<br>$$<br>where $k$ is a scalar value, as an instance 2, and $x$ is the input.</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g450tpr64tj20df083wee.jpg" alt></p>
-<p><strong>Sigmoid or Logistic Activation Function </strong></p>
+<p>*<em>Sigmoid or Logistic Activation Function *</em></p>
 <p>The sigmoid activation function is “S” shaped. It can add non-linearity to the output and returns a binary value of 0 or 1.</p>
 <p>$$<br>Output  = \frac { 1 } { 1 + e ^ { - x } }<br>$$</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g450uxt3ykj20df083a9y.jpg" alt><br>这个函数有一个很好的导数形式，在反向传播的时候，效果比较明显。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F <span class="comment"># pytorch 大多数激活函数都是这里</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>Tanh Activation Function</strong></p>
 <p>Tanh is an extension of the sigmoid activation function. Hence Tanh can be used to add non-linearity to the output. The output is within the range of -1 to 1. Tanh function shifts the result of the sigmoid activation function:</p>
 <p>$$<br>\text { Output } = \frac { 2 } { 1 + e ^ { - 2 x } } - 1<br>$$</p>
@@ -422,19 +424,23 @@
 <p><strong>Rectified Linear Unit Activation Function (RELU)</strong></p>
 <p>RELU is one of the most used activation functions. It is preferred to use RELU in the hidden layer. The concept is very straight forward. It also adds non-linearity to the output. However the result can range from 0 to infinity.</p>
 <p>$$<br> Output  = \max ( 0 , x )<br>$$<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g450y6qpe0j20df083745.jpg" alt><br>这个是很高的评价了。<br>If you are unsure of which activation function you want to use then use RELU.</p>
-<p>在pytorch<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line">relu = nn.Relu()</span><br></pre></td></tr></table></figure></p>
+<p>在pytorch </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line">relu = nn.Relu()</span><br></pre></td></tr></table></figure>
+
 <p>但是问题在于负值容易引起神经死亡，每次遇到负值部分，激活函数都是为0.</p>
 <p><strong>Leaky Relu</strong></p>
 <p>为了处理负值问题，Relu 有了变种，表达式为<br>$$<br> Output  = \max ( 0.01 *x , x )<br>$$</p>
 <p>解决了当 $x&lt;0$时候，网络死亡的问题。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line">relu = nn.leaky_relu()</span><br></pre></td></tr></table></figure>
+
 <p><strong>Pre Relu</strong></p>
 <p>为了处理负值问题，Relu 有了变种，表达式为<br>$$<br> Output  = \max ( a *x , x )<br>$$</p>
 <p>解决了当 $x&lt;0$时候，网络死亡的问题。其中的超参数$a$ 是可以调整的。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line">relu = nn.PRelu()</span><br></pre></td></tr></table></figure>
+
 <p><strong>Elu Exponential Line Unit</strong></p>
 <p>$$<br>\text{ELU}(x) = \max(0,x) + \min(0, \alpha * (\exp(x) - 1))`.<br>$$<br><img src="https://i.loli.net/2019/12/19/A4CbxqHPifJ51ZY.png" alt="1.png"><br>继承了Relu的所有优点，but贵一点，均值为0的输出、而且处处一阶可导。</p>
-<p><strong>Softmax Activation Function </strong></p>
+<p>*<em>Softmax Activation Function *</em></p>
 <p>Softmax is an extension of the Sigmoid activation function. Softmax function adds non-linearity to the output, however it is mainly used for classification examples where multiple classes of results can be computed.</p>
 <p>$$<br>Output  = \frac { e ^ { x } } { \operatorname { sum } \left( e ^ { x } \right) }<br>$$</p>
 <p>这个一般使用在最后，作为多分类的结束。</p>
@@ -455,7 +461,7 @@
 </ol>
 <h3 id="Regression-Loss-Function-回归"><a href="#Regression-Loss-Function-回归" class="headerlink" title="Regression  Loss Function (回归)"></a>Regression  Loss Function (回归)</h3><p> 如何进行选择？</p>
 <p>对于回归问题，一个baseline 的loss function 是可以选择平方损失函数。从数据的角度进行分析，如果数据服从正太分布，那么平方损失函数没有问题，如果数据有一些 outlier，可以使用 mean squared logarithmic error loss， 先进行   $\hat { y } $然后再计算平方和。如果 outlier 比较多的话，那么使用 mean absolute error loss，计算差值的时候换成绝对值函数。</p>
-<p><strong> 平方损失函数</strong></p>
+<p>** 平方损失函数**</p>
 <p>定义：</p>
 <blockquote>
 <p>Mean Squared Error (MSE), or quadratic, loss function is widely used in linear regression as the performance measure, and the method of minimizing MSE is called Ordinary Least Squares (OSL)。</p>
@@ -487,7 +493,9 @@
 <p>其中 $\bar{X} = \frac{X_1 + \dots + X_n}{n}$。</p>
 <p>在pytorch 中使用<code>nn.MSELoss</code> 实现。首先定义了二维数组用于计算：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">sample = Variable(torch.ones(<span class="number">2</span>,<span class="number">2</span>))</span><br><span class="line">a=torch.Tensor(<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">a[<span class="number">0</span>,<span class="number">0</span>]=<span class="number">0</span></span><br><span class="line">a[<span class="number">0</span>,<span class="number">1</span>]=<span class="number">1</span></span><br><span class="line">a[<span class="number">1</span>,<span class="number">0</span>]=<span class="number">2</span></span><br><span class="line">a[<span class="number">1</span>,<span class="number">1</span>]=<span class="number">3</span></span><br><span class="line">target = Variable (a)</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.MSELoss()</span><br><span class="line">loss = criterion(sample, target)</span><br><span class="line">print(loss)</span><br></pre></td></tr></table></figure>
+
 <p><strong>Mean Absolute Error Loss</strong></p>
 <p>定义：<br>Mean Absolute Error (MAE) is a quantity used to measure how close forecasts or predictions are to the eventual outcomes, which is computed by</p>
 <p>$$<br>Loss = \frac { 1 } { n } \sum _ { i = 1 } ^ { n } \left| y ^ { ( i ) } - \hat { y } ^ { ( i ) } \right|<br>$$</p>
@@ -497,8 +505,12 @@
 <blockquote>
 <p>The Mean Absolute Error, or MAE, loss is an appropriate loss function in this case as it is more robust to outliers. It is calculated as the average of the absolute difference between the actual and predicted values.</p>
 </blockquote>
-<p>在pytorch 中使用 <code>nn.L1Loss</code> 使用（因为绝对值损失又叫做L1 损失）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.L1Loss()</span><br><span class="line">loss = criterion(sample, target)</span><br><span class="line">print(loss)</span><br></pre></td></tr></table></figure></p>
-<p>基于绝对值损失改进的是SmoothL1Loss （也叫做 Huber Loss）， 其在(-1,1) 上是平方损失，其他情况是 L1 损失。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.SmoothL1Loss()</span><br><span class="line">loss = criterion(sample, target)</span><br><span class="line">print(loss)</span><br></pre></td></tr></table></figure></p>
+<p>在pytorch 中使用 <code>nn.L1Loss</code> 使用（因为绝对值损失又叫做L1 损失）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.L1Loss()</span><br><span class="line">loss = criterion(sample, target)</span><br><span class="line">print(loss)</span><br></pre></td></tr></table></figure>
+
+<p>基于绝对值损失改进的是SmoothL1Loss （也叫做 Huber Loss）， 其在(-1,1) 上是平方损失，其他情况是 L1 损失。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.SmoothL1Loss()</span><br><span class="line">loss = criterion(sample, target)</span><br><span class="line">print(loss)</span><br></pre></td></tr></table></figure>
+
 <h3 id="Binary-Classification-Loss-Function-二分"><a href="#Binary-Classification-Loss-Function-二分" class="headerlink" title="Binary Classification Loss Function (二分)"></a>Binary Classification Loss Function (二分)</h3><p><strong>Binary Cross-Entropy Loss</strong></p>
 <p>Cross-entropy loss is often simply referred to as “cross-entropy,” “logarithmic loss,” “logistic loss,” or “log loss” for short.</p>
 <p>Cross-entropy is the default loss function to use for binary classification problems. 如果没有更好的二分类的选择（理由），那么这个就是首选。</p>
@@ -516,13 +528,19 @@
 <p>\begin{equation}<br>\operatorname{loss}(x, \text { class })= \text{weight}[\text{class}] (-x[\text { class }]+\log \left(\sum_{j} \exp (x[j])\right))<br>\end{equation}</p>
 <p>需要注意的是，target输入必须是 tensor long 类型（int64位)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mport torch </span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line">loss = nn.CrossEntropyLoss()</span><br><span class="line"><span class="comment"># input, NxC=2x3</span></span><br><span class="line">input = torch.randn(<span class="number">2</span>, <span class="number">3</span>, requires_grad=<span class="keyword">True</span>)</span><br><span class="line"><span class="comment"># target, N</span></span><br><span class="line">target = torch.empty(<span class="number">2</span>, dtype=torch.long).random_(<span class="number">3</span>)</span><br><span class="line">output = loss(input, target)</span><br></pre></td></tr></table></figure>
-<p>其中这里的 <code>input</code> 在实际的模型中是 $y_{pred}$， 而 <code>target</code> 是是标签类比的index。上面的代码等价于<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m = nn.LogSoftmax()</span><br><span class="line">loss = nn.NLLLoss()</span><br><span class="line">input=m(input)</span><br><span class="line">output = loss(input, target)</span><br><span class="line">print(<span class="string">'output:'</span>,output)</span><br></pre></td></tr></table></figure></p>
+
+<p>其中这里的 <code>input</code> 在实际的模型中是 $y_{pred}$， 而 <code>target</code> 是是标签类比的index。上面的代码等价于</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m = nn.LogSoftmax()</span><br><span class="line">loss = nn.NLLLoss()</span><br><span class="line">input=m(input)</span><br><span class="line">output = loss(input, target)</span><br><span class="line">print(<span class="string">'output:'</span>,output)</span><br></pre></td></tr></table></figure>
+
 <p>在pytorch 中使用该损失函数，前面是不需要加 softmax 层。</p>
 <p><strong>负对数似然损失函数（Negative Log Likelihood）</strong></p>
 <p>同样适用于多类分类器，使用 <code>nn.NLLLoss</code> 实现，如果最后一层使用了log softmax 处理，那么就直接使用 <code>nn.NLLLoss</code>。经过了logSoftmax 得到的结果和</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">m = nn.LogSoftmax(dim=<span class="number">1</span>)</span><br><span class="line">loss = nn.NLLLoss()</span><br><span class="line"><span class="comment"># input is of size N x C = 3 x 5</span></span><br><span class="line">input = torch.randn(<span class="number">3</span>, <span class="number">5</span>, requires_grad=<span class="keyword">True</span>)</span><br><span class="line"><span class="comment"># each element in target has to have 0 &lt;= value &lt; C</span></span><br><span class="line">target = torch.tensor([<span class="number">1</span>, <span class="number">0</span>, <span class="number">4</span>])</span><br><span class="line">output = loss(m(input), target)</span><br><span class="line">output.backward()</span><br></pre></td></tr></table></figure>
-<p>和下面是等价的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">loss_fn = torch.nn.CrossEntropyLoss(reduce=False, size_average=False)</span><br><span class="line">input=torch.autograd.Variable(torch.randn(3,4))</span><br><span class="line">target=torch.autograd.Variable(torch.LongTensor(3).random_(4))</span><br><span class="line">loss = loss_fn(input, target)</span><br></pre></td></tr></table></figure></p>
-<p><strong> Hinge Loss</strong></p>
+
+<p>和下面是等价的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">loss_fn = torch.nn.CrossEntropyLoss(reduce=False, size_average=False)</span><br><span class="line">input=torch.autograd.Variable(torch.randn(3,4))</span><br><span class="line">target=torch.autograd.Variable(torch.LongTensor(3).random_(4))</span><br><span class="line">loss = loss_fn(input, target)</span><br></pre></td></tr></table></figure>
+
+<p>** Hinge Loss**</p>
 <p>An alternative to cross-entropy for binary classification problems is the hinge loss function, primarily developed for use with Support Vector Machine (SVM) models.</p>
 <p>Hinge Loss，又称合页损失，其表达式如下：</p>
 <p>$$<br>Loss = \max ( 0,1 - y s )<br>$$<br>其中 y 和 s 的取值范围都是 [-1, 1]. 想想 SVM 中最大化间隔的内容就理解了。图像如下：</p>
@@ -536,22 +554,25 @@
 <blockquote>
 <p>The hinge loss function encourages examples to have the correct sign, assigning more error when there is a difference in the sign between the actual and predicted class values.</p>
 </blockquote>
-<p><strong>Squared Hinge Loss </strong></p>
+<p>*<em>Squared Hinge Loss *</em></p>
 <p>(通常上讲，最后的结果更加光滑是没有什么劣势的)<br>A popular extension is called the squared hinge loss that simply calculates the square of the score hinge loss. It has the effect of smoothing the surface of the error function and making it numerically easier to work with.</p>
 <p>需要从 {0, 1} -&gt; {-1, 1} 这样target 的转换, 非常容易实现。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># change y from &#123;0,1&#125; to &#123;-1,1&#125;</span></span><br><span class="line">y[where(y == <span class="number">0</span>)] = <span class="number">-1</span></span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+
 <p>使用说明：</p>
 <p>（很强的相关性了）<br>If using a hinge loss does result in better performance on a given binary classification problem, is likely that a squared hinge loss may be appropriate.</p>
 <h3 id="Multi-Class-Classification-Loss-Functions"><a href="#Multi-Class-Classification-Loss-Functions" class="headerlink" title="Multi-Class Classification Loss Functions"></a>Multi-Class Classification Loss Functions</h3><p>对于多类问题的定义：</p>
 <p>The problem is often framed as predicting an integer value, where each class is assigned a unique integer value from 0 to (num_classes – 1). The problem is often implemented as predicting the probability of the example belonging to each known class.</p>
-<p><strong>Multi-Class Cross-Entropy Loss </strong></p>
+<p>*<em>Multi-Class Cross-Entropy Loss *</em></p>
 <p>Cross-entropy is the default loss function to use for multi-class classification problems. （可见 交叉熵对于分类问题的重要性）</p>
 <p>同理，如果是最大似然，概率模型，donot hesitate.( 数学基础就是在这里)<br>Mathematically, it is the preferred loss function under the inference framework of maximum likelihood. It is the loss function to be evaluated first and only changed if you have a good reason.</p>
 <p>Cross-entropy will calculate a score that summarizes the average difference between the actual and predicted probability distributions for all classes in the problem. The score is minimized and a perfect cross-entropy value is 0.</p>
-<p>基于 keras实现的时候需要先把 target (label) 转成 one-hot 类型的，当然这个可能造成 loss 曲线的波动（后话）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># one hot encode output variable</span></span><br><span class="line">y = to_categorical(y)</span><br></pre></td></tr></table></figure></p>
+<p>基于 keras实现的时候需要先把 target (label) 转成 one-hot 类型的，当然这个可能造成 loss 曲线的波动（后话）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># one hot encode output variable</span></span><br><span class="line">y = to_categorical(y)</span><br></pre></td></tr></table></figure>
+
 <p><strong>Sparse Multiclass Cross-Entropy Loss</strong></p>
 <p>和上面的区别主要在于 label 是不需要转成 one-hot 类型的，保持这原来的 number 形式。<br>Sparse cross-entropy addresses this by performing the same cross-entropy calculation of error, without requiring that the target variable be one hot encoded prior to training.</p>
-<p><strong> Kullback Leibler Divergence Loss</strong></p>
+<p>** Kullback Leibler Divergence Loss**</p>
 <p>Kullback Leibler Divergence, or KL Divergence for short, is a measure of how one probability distribution differs from a baseline distribution.</p>
 <p>数学原理：(以 bit 为单位的 信息熵)</p>
 <p>A KL divergence loss of 0 suggests the distributions are identical. In practice, the behavior of KL Divergence is very similar to cross-entropy. It calculates how much information is lost (in terms of bits) if the predicted probability distribution is used to approximate the desired target probability distribution.</p>
@@ -559,9 +580,9 @@
 <p>As such, the KL divergence loss function is more commonly used when using models that learn to approximate a more complex function than simply multi-class classification, such as in the case of an autoencoder used for learning a dense feature representation under a model that must reconstruct the original input. In this case, KL divergence loss would be preferred. Nevertheless, it can be used for multi-class classification, in which case it is functionally equivalent to multi-class cross-entropy.</p>
 <p>参考文献：</p>
 <p><a href="https://machinelearningmastery.com/how-to-choose-loss-functions-when-training-deep-learning-neural-networks/" target="_blank" rel="noopener">How to Choose Loss Functions When Training Deep Learning Neural Networks</a></p>
-<p><strong> log 对数损失函数 </strong></p>
+<p>** log 对数损失函数 **</p>
 <p>在逻辑回归的推导中，它假设样本服从伯努利分布（0-1分布），然后求得满足该分布的似然函数，接着取对数求极值等等。</p>
-<p><strong> 指数损失函数 </strong></p>
+<p>** 指数损失函数 **</p>
 <p>公式如下：<br>$$<br>loss = e ^ { - y s }<br>$$</p>
 <p>曲线如下：<br><img src="https://i.bmp.ovh/imgs/2019/07/1b14b874a9323ede.png" alt></p>
 <p>Exponential Loss 与交叉熵 Loss 类似，但它是指数下降的，因此梯度较其它 Loss 来说，更大一些。 Exponential Loss 一般多用于AdaBoost 中。因为使用 Exponential Loss 能比较方便地利用加法模型推导出 AdaBoost算法。</p>
@@ -573,7 +594,7 @@
 <p><img src="https://i.bmp.ovh/imgs/2019/07/1f6fc8f2b951d570.png" alt></p>
 <p>显然，这时候 Exponential Loss 会远远大于其它 Loss。从训练的角度来看，模型会更加偏向于惩罚较大的点，赋予其更大的权重。如果样本中存在离群点，Exponential Loss 会给离群点赋予更高的权重，但却可能是以牺牲其他正常数据点的预测效果为代价，可能会降低模型的整体性能，使得模型不够健壮（robust）。</p>
 <p>相比 Exponential Loss，其它四个 Loss，包括 Softmax Loss，都对离群点有较好的“容忍性”，受异常点的干扰较小，模型较为健壮。</p>
-<p><strong> Softmax loss </strong></p>
+<p>** Softmax loss **</p>
 <p>对于多分类问题，可以使用 softmax loss。</p>
 <p>其中，C 为类别个数，小写字母 s 是正确类别对应的 Softmax 输入，大写字母 S 是正确类别对应的 Softmax 输出。</p>
 <p>由于 log 运算符不会影响函数的单调性，我们对 S 进行 log 操作。另外，我们希望 log(S) 越大越好，即正确类别对应的相对概率越大越好，那么就可以对 log(S) 前面加个负号，来表示损失函数：</p>
@@ -584,7 +605,7 @@
 <blockquote>
 <p>At its core, a loss function is incredibly simple: it’s a method of evaluating how well your algorithm models your dataset. If your predictions are totally off, your loss function will output a higher number. If they’re pretty good, it’ll output a lower number. As you change pieces of your algorithm to try and improve your model, your loss function will tell you if you’re getting anywhere.</p>
 </blockquote>
-<p><strong> Log Loss (Cross Entropy Loss)</strong></p>
+<p>** Log Loss (Cross Entropy Loss)**</p>
 <p>Cross-entropy loss, or log loss, measures the performance of a classification model whose output is a probability value between 0 and 1. Cross-entropy loss increases as the predicted probability diverges from the actual label. So predicting a probability of .012 when the actual observation label is 1 would be bad and result in a high loss value. A perfect model would have a log loss of 0.</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g452awgfddj20fg0b1t91.jpg" alt></p>
 <p>The graph above shows the range of possible loss values given a true observation (isDog = 1). As the predicted probability approaches 1, log loss slowly decreases. As the predicted probability decreases, however, the log loss increases rapidly. Log loss penalizes both types of errors, but especially those predictions that are confident and wrong!</p>
@@ -597,7 +618,7 @@
 <p>M - number of classes (dog, cat, fish)<br>log - the natural log<br>y - binary indicator (0 or 1) if class label c is the correct classification for observation o</p>
 </blockquote>
 <p>想要表达的是 log loss 是从 Likelihood Loss，改进过来的，有没有发现最大似然的痕迹。<br>log loss 表达式如下：<br>$$<br>\begin{split}<br>P(Y | X)  &amp;= P(X_1 | Y)  \times P(X_2 | Y)  \times  \dots \times P(X_n | Y)  \times P(Y) = P(Y) \prod_{i}^{n} P(X_i | Y) \\<br>&amp;\Rightarrow log(P(Y | X)) = log(\prod_{i}^{n} P(X_i | Y) \Rightarrow \sum_{i}^{n} log(P(X_i | Y))<br>\end{split}<br>$$<br>交叉熵表达式：<br>$$CE(\hat{y}, y) = - \sum_{i=1}^{n} y_i log(\hat{y}) + (1 - y_i) log(1 - \hat{y})$$</p>
-<p><strong> L2</strong></p>
+<p>** L2**</p>
 <p>这两个loss function 在<a href="https://jijeng.github.io/2018/07/21/differences-between-l1-and-l2-as-loss-function-and-regularization/" target="_blank" rel="noopener">这里</a>介绍过，所以本博客中简单说一下。</p>
 <p>L2 loss function is the square of the L2 norm of the difference between actual value and predicted value. It is mathematically similar to MSE, only do not have division by<br>n, it is computed by</p>
 <p>$$<br> Loss = \sum _ { i = 1 } ^ { n } \left( y ^ { ( i ) } - \hat { y } ^ { ( i ) } \right) ^ { 2 }<br>$$</p>
@@ -616,10 +637,16 @@
 <p>上面是 单个样本的损失函数，计算N 个样本，只需要将上面的公式叠加起来。<br>$$<br>L = - \sum _ { i = 1 } ^ { N } y ^ { ( i ) } \log \hat { y } ^ { ( i ) } + \left( 1 - y ^ { ( i ) } \right) \log \left( 1 - \hat { y } ^ { ( i ) } \right)<br>$$</p>
 <p>ok，这个就是交叉熵损失函数完整的推导过程。</p>
 <h3 id="自定义损失函数"><a href="#自定义损失函数" class="headerlink" title="自定义损失函数"></a>自定义损失函数</h3><p>（1） 继承<code>nn.Module</code></p>
-<p>定义：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My_loss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> torch.mean(torch.pow((x - y), <span class="number">2</span>))</span><br></pre></td></tr></table></figure></p>
-<p>使用:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">criterion = My_loss()</span><br><span class="line">loss = criterion(outputs, targets)</span><br></pre></td></tr></table></figure></p>
+<p>定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My_loss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> torch.mean(torch.pow((x - y), <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<p>使用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">criterion = My_loss()</span><br><span class="line">loss = criterion(outputs, targets)</span><br></pre></td></tr></table></figure>
+
 <p>（2）自定义函数</p>
-<p>注意要所有的数学操作要使用 tensor完成。不需要维护参数，梯度等信息。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_mse_loss</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> torch.mean(torch.pow((x - y), <span class="number">2</span>))</span><br></pre></td></tr></table></figure></p>
+<p>注意要所有的数学操作要使用 tensor完成。不需要维护参数，梯度等信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_mse_loss</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> torch.mean(torch.pow((x - y), <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
 <h2 id="二分类、多分类和多标签问题的区别"><a href="#二分类、多分类和多标签问题的区别" class="headerlink" title="二分类、多分类和多标签问题的区别"></a>二分类、多分类和多标签问题的区别</h2><p>二分类、多分类与多标签分类问题使用不同的激活函数和损失函数。</p>
 <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>二分类：判别这个水果是苹果还是香蕉。<br>多分类：对于一堆水果，辨别是苹果、梨还是橘子。一个样本只能有一个标签。<br>多标签分类： 给每一个样本一系列的目标标签。比如一个文档有不同的相关话题，需要加上不同的tag 如宗教、政治和教育。</p>
 <p>多分类问题常常是可以转换成二分类问题进行处理的，常见有两种策略。</p>
@@ -635,7 +662,7 @@
 <p>如何计算精度</p>
 <p>计算出一张图片各个标签的精度，然后取平均值。</p>
 <p>该处理方法的本质：把一个多标签问题，转化为了在每个标签上的二分类问题。</p>
-<h3 id="损失函数的选择"><a href="#损失函数的选择" class="headerlink" title="损失函数的选择"></a>损失函数的选择</h3><p><strong> 基于逻辑回归的二分类问题</strong>：<br>使用逻辑回归二分类loss function的推导，上面的一小节是有详细的介绍的。</p>
+<h3 id="损失函数的选择"><a href="#损失函数的选择" class="headerlink" title="损失函数的选择"></a>损失函数的选择</h3><p>** 基于逻辑回归的二分类问题**：<br>使用逻辑回归二分类loss function的推导，上面的一小节是有详细的介绍的。</p>
 <p><strong>基于 Softmax 的多分类问题</strong></p>
 <p>softmax层中的softmax 函数是logistic函数在多分类问题上的推广，它将一个N维的实数向量压缩成一个满足特定条件的N维实数向。压缩后的向量满足两个条件：</p>
 <ol>
@@ -655,28 +682,26 @@
 <thead>
 <tr>
 <th>分类问题名称</th>
-<th style="text-align:center">输出层使用激活函数</th>
-<th style="text-align:right">对应的损失函数</th>
+<th align="center">输出层使用激活函数</th>
+<th align="right">对应的损失函数</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>二分类</td>
-<td style="text-align:center">sigmoid</td>
-<td style="text-align:right">二分类交叉熵损失函数（binary_crossentropy）</td>
+<td align="center">sigmoid</td>
+<td align="right">二分类交叉熵损失函数（binary_crossentropy）</td>
 </tr>
 <tr>
 <td>多分类</td>
-<td style="text-align:center">softmax</td>
-<td style="text-align:right">多类别交叉熵损失函数（categorical_crossentropy）</td>
+<td align="center">softmax</td>
+<td align="right">多类别交叉熵损失函数（categorical_crossentropy）</td>
 </tr>
 <tr>
 <td>多标签分类</td>
-<td style="text-align:center">sigmoid函数</td>
-<td style="text-align:right">二分类交叉熵损失函数（binary_crossentropy）</td>
+<td align="center">sigmoid函数</td>
+<td align="right">二分类交叉熵损失函数（binary_crossentropy）</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 
       
     </div>
@@ -810,7 +835,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

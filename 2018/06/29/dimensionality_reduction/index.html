@@ -387,6 +387,8 @@
       
         <p>降维分为以PCA为代表的线性降维和T-SNE为代表非线性降维。本文主要介绍这两种降维方式和代码实现，当然也会提及其他的降维算法比如LDA。</p>
 <a id="more"></a>
+
+
 <h2 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h2><blockquote>
 <p>Principal component analysis (PCA) is a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables (entities each of which takes on various numerical values) into a set of values of linearly uncorrelated variables called principal components.<br>PCA（principal component analysis）主成分分析是一种通过正交变换，将原来可能相关的变量转换成线性不相关的变量。</p>
 </blockquote>
@@ -401,13 +403,13 @@
 <p>解读协方差值：</p>
 <blockquote>
 <p>Exact value is not as important as its sign.</p>
+</blockquote>
 <ul>
 <li>数值的符号的意义大于具体数值意义</li>
 <li>如果是正值，那么说明两个维度特征是同增同减</li>
 <li>如果是负值，那么说明两个维度特征是异步，一增一减</li>
 <li>如果是0，两个维度是线性独立</li>
 </ul>
-</blockquote>
 <p>线性无关<br>数学表达为：</p>
 <p>\begin{equation}<br>c_{1} x_{1}+c_{2} x_{2}+\ldots+c_{k} x_{k}=0<br>\end{equation}<br>当且仅当 $c_1 =c_2= \dots =c_k =0$<br>图形表达为：<br><a href="https://imgse.com/i/Q3a12D" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/12/05/Q3a12D.md.png" alt="Q3a12D.md.png"></a><br>可以发现，PCA消除的真的只是线性的相关性。</p>
 <p>协方差矩阵（Covariance Matrix）将协方差矩阵话。该矩阵具有对称性。其中主对角线是方差。</p>
@@ -437,8 +439,10 @@
 <p>（4）代码实现</p>
 <p>1). 基于numpy实现PCA</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> array</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> mean</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> cov</span><br><span class="line"><span class="keyword">from</span> numpy.linalg <span class="keyword">import</span> eig</span><br><span class="line"><span class="comment"># define a matrix</span></span><br><span class="line">A = array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">print(A)</span><br><span class="line"><span class="comment"># calculate the mean of each column</span></span><br><span class="line">M = mean(A.T, axis=<span class="number">1</span>)</span><br><span class="line">print(M)</span><br><span class="line"><span class="comment"># center columns by subtracting column means</span></span><br><span class="line">C = A - M</span><br><span class="line">print(C)</span><br><span class="line"><span class="comment"># calculate covariance matrix of centered matrix</span></span><br><span class="line">V = cov(C.T)</span><br><span class="line">print(V)</span><br><span class="line"><span class="comment"># eigendecomposition of covariance matrix</span></span><br><span class="line">values, vectors = eig(V)</span><br><span class="line">print(vectors)</span><br><span class="line">print(values)</span><br><span class="line"><span class="comment"># project data</span></span><br><span class="line">P = vectors.T.dot(C.T)</span><br><span class="line">print(P.T)</span><br></pre></td></tr></table></figure>
+
 <p>2). Sklearn实现</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Principal Component Analysis</span></span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> array</span><br><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"><span class="comment"># define a matrix</span></span><br><span class="line">A = array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">print(A)</span><br><span class="line"><span class="comment"># create the PCA instance</span></span><br><span class="line">pca = PCA(<span class="number">2</span>)</span><br><span class="line"><span class="comment"># fit on data</span></span><br><span class="line">pca.fit(A)</span><br><span class="line"><span class="comment"># access values and vectors</span></span><br><span class="line">print(pca.components_)</span><br><span class="line">print(pca.explained_variance_)</span><br><span class="line"><span class="comment"># transform data</span></span><br><span class="line">B = pca.transform(A)</span><br><span class="line">print(B)</span><br></pre></td></tr></table></figure>
+
 <h2 id="t-SNE"><a href="#t-SNE" class="headerlink" title="t-SNE"></a>t-SNE</h2><p>（1）PCA和 t-SNE的background：</p>
 <p>我们有一堆数据并且想要知道这些数据 “looks like”， 然后建立了一个”map”，使这些数据投影到了二维或者三维平面上。但是PCA 是线性 mapping，</p>
 <blockquote>
@@ -489,7 +493,7 @@
 <p>为什么? （必要性分析）</p>
 <p>时间角度，空间（内存）角度。减少冗余信息，就减少了模型去拟合”噪声“数据的可能性。</p>
 <p>常见的有以下几种方式：</p>
-<p><strong> 可以归结成几类：特征本身（数据缺省值比较大，数据的波动性比较小），特征和特征之间（特征具有较高的相关性，使用PCA 进行降维），特征和最后的target的关系（机器学习模型的 feature importance，卡方分布检测特征和target 的重要性，Pearson 相关系数：-1 表示负相关，0 表示不相关，1表示正相关）。</strong></p>
+<p>** 可以归结成几类：特征本身（数据缺省值比较大，数据的波动性比较小），特征和特征之间（特征具有较高的相关性，使用PCA 进行降维），特征和最后的target的关系（机器学习模型的 feature importance，卡方分布检测特征和target 的重要性，Pearson 相关系数：-1 表示负相关，0 表示不相关，1表示正相关）。**</p>
 <p>可以划分成三类：</p>
 <p>一、独立于模型的特征选择（没有在入模时候进行的特征选择）或者叫做 filter：</p>
 <ol>
@@ -655,7 +659,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

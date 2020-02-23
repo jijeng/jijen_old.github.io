@@ -384,6 +384,9 @@
       
         <p>从损失函数角度分析GAN和WGAN等经典的网络模型；分析GAN评价的两个指标Inception Score 和Frechet Inception Distance（FID）。</p>
 <a id="more"></a>
+
+
+
 <h2 id="损失函数角度分析GAN模型"><a href="#损失函数角度分析GAN模型" class="headerlink" title="损失函数角度分析GAN模型"></a>损失函数角度分析GAN模型</h2><p>对抗生成网络是尝试使用无监督的方式学习原数据的概率分布。在GAN的训练过程中，使用损失函数反映真实图像分布和生成图像分布之间的差异。本文主要介绍两种GAN损失函数：</p>
 <ul>
 <li>最大最小化损失函数（minmax loss）</li>
@@ -414,6 +417,7 @@
 <p>在最后softmax层中计算两个分布之间的距离<br>\begin{equation}<br>    IS=exp[E_xD_{KL}(p(y|x)||p(y))]<br>\end{equation}</p>
 <p>原作者认为$p(y|x)$ 是图像真实度的衡量，$p(y)$是由前者积分得到， 是图像多样性的衡量。所以IS是计算的$p(y|x)$和$p(y)$两个分布之间的KL 散度。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> inception_v3</span><br><span class="line">net = inception_v3(pretrained=<span class="keyword">True</span>).cuda()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inception_score</span><span class="params">(images, batch_size=<span class="number">5</span>)</span>:</span></span><br><span class="line">    scores = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(int(math.ceil(float(len(images)) / float(batch_size)))):</span><br><span class="line">        batch = Variable(torch.cat(images[i * batch_size: (i + <span class="number">1</span>) * batch_size], <span class="number">0</span>))</span><br><span class="line">        s, _ = net(batch)  <span class="comment"># skipping aux logits</span></span><br><span class="line">        scores.append(s)</span><br><span class="line">    p_yx = F.softmax(torch.cat(scores, <span class="number">0</span>), <span class="number">1</span>)</span><br><span class="line">    p_y = p_yx.mean(<span class="number">0</span>).unsqueeze(<span class="number">0</span>).expand(p_yx.size(<span class="number">0</span>), <span class="number">-1</span>)</span><br><span class="line">    KL_d = p_yx * (torch.log(p_yx) - torch.log(p_y))</span><br><span class="line">    final_score = KL_d.mean()</span><br><span class="line">    <span class="keyword">return</span> final_score</span><br></pre></td></tr></table></figure>
+
 <p>使用Inception Score进行评价的时候，只需要输入一个生成图像路径即可。</p>
 <p>（2）Frechet Inception Distance</p>
 <p>在特征维度计算两个分布的距离</p>
@@ -421,6 +425,7 @@
 <p>其中$m$ 和$m_w$表示真实图像和生成图像在特征空间的均值，$C$和$C_w$表示真实图像和生成图像在特征空间向量的协方差矩阵中的协方差（在二维中就是方差）。$Tr$表示矩阵中的迹（主对角线元素之和）。</p>
 <p>基于numpy的代码实现。两个正太分布之间的距离。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># calculate frechet inception distance</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate_fid</span><span class="params">(act1, act2)</span>:</span></span><br><span class="line">	<span class="comment"># calculate mean and covariance statistics</span></span><br><span class="line">	mu1, sigma1 = act1.mean(axis=<span class="number">0</span>), cov(act1, rowvar=<span class="keyword">False</span>)</span><br><span class="line">	mu2, sigma2 = act2.mean(axis=<span class="number">0</span>), cov(act2, rowvar=<span class="keyword">False</span>)</span><br><span class="line">	ssdiff = numpy.sum((mu1 - mu2)**<span class="number">2.0</span>)</span><br><span class="line">	covmean = sqrtm(sigma1.dot(sigma2))</span><br><span class="line">	<span class="keyword">if</span> iscomplexobj(covmean):</span><br><span class="line">		covmean = covmean.real</span><br><span class="line">	fid = ssdiff + trace(sigma1 + sigma2 - <span class="number">2.0</span> * covmean)</span><br><span class="line">	<span class="keyword">return</span> fid</span><br></pre></td></tr></table></figure>
+
 <p>使用FID进行GAN的评价时候，需要给定两个路径分别指向真实的图像和生成的图像。</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://danieltakeshi.github.io/2017/03/05/understanding-generative-adversarial-networks/" target="_blank" rel="noopener">Understanding Generative Adversarial Networks</a><br><a href="https://gg1.chn.moe/extdomains/developers.google.com/machine-learning/gan/loss" target="_blank" rel="noopener">Loss Functions</a></p>
 
@@ -453,8 +458,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/06/The-evaluation-of-sentence-similarity/" rel="next" title="The Evaluation of Sentence Similarity">
-                <i class="fa fa-chevron-left"></i> The Evaluation of Sentence Similarity
+              <a href="/2019/04/09/inverted_index/" rel="next" title="倒排索引实现搜索功能">
+                <i class="fa fa-chevron-left"></i> 倒排索引实现搜索功能
               </a>
             
           </div>
@@ -463,8 +468,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/04/09/inverted_index/" rel="prev" title="倒排索引实现搜索功能">
-                倒排索引实现搜索功能 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/04/10/basics_of_cs/" rel="prev" title="计算机基础">
+                计算机基础 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -554,7 +559,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

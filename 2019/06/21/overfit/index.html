@@ -389,6 +389,7 @@
       
         <p>分析机器学习 和深度学习中出现的过拟合现象，从不同的角度简述常用的处理手段。</p>
 <a id="more"></a>
+
 <h2 id="什么是过拟合"><a href="#什么是过拟合" class="headerlink" title="什么是过拟合?"></a>什么是过拟合?</h2><p>训练数据集规模小是导致过拟合的原因，而网络足够的复杂（有能力）记住了所有的样本，然后在train sets 表现要远远好于 test sets。 还有一种说法是网络拟合了噪声数据。</p>
 <h2 id="如何处理过拟合"><a href="#如何处理过拟合" class="headerlink" title="如何处理过拟合"></a>如何处理过拟合</h2><p>处理该问题可以从数据和模型两个方面去考虑。</p>
 <h3 id="模型角度"><a href="#模型角度" class="headerlink" title="模型角度"></a>模型角度</h3><p>简化模型，通过不断降低模型的复杂度（比如随机森林中的估计量，神经网络中的参数），最终达到一个平衡状态：模型足够简单到不产生过拟合，又足够复杂到能从数据中学习。这样操作时一个比较方便的方法是根据模型的复杂程度查看模型在所有数据集上的误差。如 <span id="jump"> 图 1 </span> 所示。</p>
@@ -407,7 +408,7 @@
 <p>（最初对于输入data 的normalization， 是属于神经元的 normalization）</p>
 <p>虽然上述方法分别对神经元和weights 进行了规范化，但本质上都实现了对数据的规范化，只是 scale 的参数的来源是不同的。</p>
 <p>使用L1 or L2 在 loss function (error function) 中添加正则项，对损失函数中的weights 进行限制其变大。</p>
-<p>对于神经元的激活值来说，不管哪种方式，其目标都是一样的，将激活值规范到均值为0，方差为1 的正太分布。<br><strong> BN </strong></p>
+<p>对于神经元的激活值来说，不管哪种方式，其目标都是一样的，将激活值规范到均值为0，方差为1 的正太分布。<br>** BN **</p>
 <p>定义：<br>BN针对一个minibatch的输入样本，计算均值和方差，基于计算的均值和方差来对某一层神经网络的输入X中每一个case进行归一化操作。</p>
 <p>BN 的优点：</p>
 <ul>
@@ -420,8 +421,9 @@
 <li>高度依赖 mini-batch 的大小，当batch size 比较小的时候，效果不好。因为数据样本少，得不到有效的统计量，也可以说噪声比较大。<br>当然是可以通过调整 batch size 的大小规避这种问题，但是有的任务要求 batch size 不能太大；并且BN 是无法应用到 online learning 中的，因为online 都是单实例更新模型，很难组织起 mini-batch 的结构。</li>
 <li>对于相似级别的图像生成任务，BN 效果不佳<br>对于图片分类等任务，只要能够找出关键特征，就能正确分类，这算是一种粗粒度的任务，在这种情形下通常 BN 是有积极效果的。但是对于有些输入输出都是图片的像素级别图片生成任务，比如图片风格转换等应用场景，使用 BN 会带来负面效果，这很可能是因为在 Mini-Batch 内多张无关的图片之间计算统计量，弱化了单张图片本身特有的一些细节信息。</li>
 <li>因为输入的 Sequence 序列是不定长的，这源自同一个 Mini-Batch 中的训练实例有长有短。对于类似 RNN 这种动态网络结构，BN 使用起来不方便</li>
-<li>训练时和推理时统计量不一致<br>对于 BN 来说，采用 Mini-Batch 内实例来计算统计量，这在训练时没有问题，但是在模型训练好之后，在线推理的时候会有麻烦。因为在线推理或预测的时候，是单实例的，不存在 Mini-Batch。<br>虽说实际使用并没大问题，但是确实存在训练和推理时刻统计量计算方法不一致的问题。<br><strong> Layer normalization </strong> 也是一种正则化手段</li>
+<li>训练时和推理时统计量不一致<br>对于 BN 来说，采用 Mini-Batch 内实例来计算统计量，这在训练时没有问题，但是在模型训练好之后，在线推理的时候会有麻烦。因为在线推理或预测的时候，是单实例的，不存在 Mini-Batch。<br>虽说实际使用并没大问题，但是确实存在训练和推理时刻统计量计算方法不一致的问题。</li>
 </ul>
+<p>** Layer normalization ** 也是一种正则化手段</p>
 <p>BN vs LN ：</p>
 <p><img src="https://i.loli.net/2019/08/03/gkYd5AIiXlqeu2V.jpg" alt="1.jpg"></p>
 <p>从图中看可以知道 batch是“竖”着来的，各个维度做归一化，所以与batch size有关系。 layer是“横”着来的，对一个样本，不同的神经元neuron间做归一化。显示了同一层的神经元的情况。假设这个mini-batch一共有N个样本，则Batch Normalization是对每一个维度进行归一。而Layer Normalization对于单个的样本就可以处理。</p>
@@ -429,7 +431,7 @@
 <p>实践证明， LN 更加适合 RNN ，BN 更加适合CNN</p>
 <p>至于各种 Normalization 的适用场景，可以简洁归纳如下：对于 RNN 的神经网络结构来说，目前只有 LayerNorm 是相对有效的；如果是 GAN 等图片生成或图片内容改写类型的任务，可以优先尝试 InstanceNorm；如果使用场景约束 BatchSize 必须设置很小，无疑此时考虑使用 GroupNorm；而其它任务情形应该优先考虑使用 BatchNorm。</p>
 <p>参考文献：<a href="https://www.jiqizhixin.com/articles/2018-08-29-7" target="_blank" rel="noopener">深度学习中的Normalization模型</a></p>
-<h3 id="四种不同的normalization"><a href="#四种不同的normalization" class="headerlink" title="四种不同的normalization"></a>四种不同的normalization</h3><p><strong> 四种 normalization 时间轴</strong></p>
+<h3 id="四种不同的normalization"><a href="#四种不同的normalization" class="headerlink" title="四种不同的normalization"></a>四种不同的normalization</h3><p>** 四种 normalization 时间轴**</p>
 <p>BN（Batch Normalization）于2015年由 Google 提出，开创了Normalization 先河；2016年出了LN（layer normalization）和IN（Instance Normalization）；2018年也就是今年，Kaiming提出了GN（Group normalization），成为了ECCV 2018最佳论文提名。</p>
 <p>正则化的本质是为了减少数据的复杂程度和减少模型的复杂程度，这样就可以设置更大的学习率，更快的进行收敛。</p>
 <p><img src="https://ftp.bmp.ovh/imgs/2019/09/24205c5cadebe345.png" alt></p>
@@ -456,7 +458,7 @@
 <p>就像作者自己比较的说法：LN和IN只是GN的两种极端形式。我们对channel进行分组，分组数为G，即一共分G组。 当G=1时，GN就是LN了；当G=C时，GN就是IN了。这也是一个有趣的比较，类似于GN是LN和IN的一个tradeoff。文章里对G的默认值是32。</p>
 <p><a href="https://blog.csdn.net/ft_sunshine/article/details/99203548#Instance_Normalization___121" target="_blank" rel="noopener">深度学习中的Normalization总结</a><br><a href="https://zhuanlan.zhihu.com/p/72589565" target="_blank" rel="noopener">常用的 Normalization 方法</a></p>
 <h3 id="深度学习中的模型"><a href="#深度学习中的模型" class="headerlink" title="深度学习中的模型"></a>深度学习中的模型</h3><p>Dropout 或者Dropconnect. 其理念就是在训练中随机让神经元无效（即dropout）或让网络中的连接无效（即dropconnect）。这个有点类似集成学习，提高网络模型的泛化性能，减少过拟合的问题。（类似bagging 的思想，使用不同的网络结构在不同的训练集上进行训练）.如果从集成学习角度理解dropout，那么resnet 网络是不是也有点集成学习的味道。</p>
-<p><strong> Dropout 的具体流程</strong></p>
+<p>** Dropout 的具体流程**</p>
 <ol>
 <li>首先随机（临时）删掉网络中一半的隐藏神经元，输入输出神经元保持不变（图3中虚线为部分临时被删除的神经元）</li>
 <li>然后把输入x通过修改后的网络前向传播，然后把得到的损失结果通过修改的网络反向传播。一小批训练样本执行完这个过程后，在没有被删除的神经元上按照随机梯度下降法更新对应的参数（w，b）。</li>
@@ -606,7 +608,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

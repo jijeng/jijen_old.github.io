@@ -87,7 +87,7 @@
 <meta property="og:description" content="消息通信的基本方式有两种：  同步方式 两个通信应用服务之间必须要进行同步，两个服务之间必须都是正常运行的。发送程序和接收程序都必须一直处于运行状态，并且随时做好相互通信的准备。 发送程序首先向接收程序发起一个请求，称之为发送消息，发送程序紧接着就会堵塞当前自身的进程，不与其他应用进行任何的通信以及交互，等待接收程序的响应，待发送消息得到接收程序的返回消息之后会继续向下运行，进行下一步的业务处理">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://i.loli.net/2019/10/09/UdkYnoshEc2HJDC.jpg">
-<meta property="og:updated_time" content="2019-10-10T01:36:13.838Z">
+<meta property="og:updated_time" content="2020-02-21T07:12:21.171Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="笔试总结">
 <meta name="twitter:description" content="消息通信的基本方式有两种：  同步方式 两个通信应用服务之间必须要进行同步，两个服务之间必须都是正常运行的。发送程序和接收程序都必须一直处于运行状态，并且随时做好相互通信的准备。 发送程序首先向接收程序发起一个请求，称之为发送消息，发送程序紧接着就会堵塞当前自身的进程，不与其他应用进行任何的通信以及交互，等待接收程序的响应，待发送消息得到接收程序的返回消息之后会继续向下运行，进行下一步的业务处理">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-10-10T09:36:13+08:00">
-                2019-10-10
+              <time title="Post modified" itemprop="dateModified" datetime="2020-02-21T15:12:21+08:00">
+                2020-02-21
               </time>
             
           </span>
@@ -407,7 +407,10 @@
 <li>多态的代码题目</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt;<span class="string">"Base 1"</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt;<span class="string">"Base 2"</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base1, <span class="keyword">public</span> Base2</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt;<span class="string">"Derived"</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Base1 bs1, *p1;</span><br><span class="line">    Base2 bs2, *p2;</span><br><span class="line">    Derived dv;</span><br><span class="line">    p1 =&amp;bs1;</span><br><span class="line">    p1-&gt; fun();</span><br><span class="line">    p1 =&amp;dv;</span><br><span class="line">    p1-&gt; fun();</span><br><span class="line">    </span><br><span class="line">    p2 =&amp;bs2;</span><br><span class="line">    p2-&gt; fun();</span><br><span class="line">    p2 =&amp;dv;</span><br><span class="line">    p2-&gt; fun();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Base 1</span><br><span class="line">Derived</span><br><span class="line">Base 2</span><br><span class="line">Base 2</span><br></pre></td></tr></table></figure></p>
+
+<p>输出是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Base 1</span><br><span class="line">Derived</span><br><span class="line">Base 2</span><br><span class="line">Base 2</span><br></pre></td></tr></table></figure>
+
 <p>逻辑量和真假值是相同的意思。</p>
 <ol start="5">
 <li>常见的数据校验方法</li>
@@ -417,11 +420,9 @@
 <p>例如：信息字段代码为: 1011001；对应m(x)=x6+x4+x3+1 </p>
 <pre><code>假设生成多项式为：g(x)=x4+x3+1；则对应g(x)的代码为: 11001
 
- x4m(x)=x10+x8+x7+x4 对应的代码记为：10110010000；
-</code></pre><p>采用多项式除法:  得余数为: 1010     (即校验字段为：1010）</p>
+ x4m(x)=x10+x8+x7+x4 对应的代码记为：10110010000；</code></pre><p>采用多项式除法:  得余数为: 1010     (即校验字段为：1010）</p>
 <p>发送方：发出的传输字段为: 1 0 1 1 0 0 11 0 10</p>
-<pre><code>信息字段      校验字段
-</code></pre><ol start="6">
+<pre><code>信息字段      校验字段</code></pre><ol start="6">
 <li>tcp </li>
 </ol>
 <p>服务器端启动进程，调用Socket创建一个基于TCP协议的流套接字描述符。 其次，服务进程调用bind命名套接字，将套接字描述符绑定到本地地址和本地端口上。 再次，服务器端调用listen，开始侦听客户端的Socket连接请求。 接下来阻塞，直到收到了客户端的connect请求，调用accept进行相应。 因此，不阻塞bind和listen<br><img src="https://i.loli.net/2019/10/09/UdkYnoshEc2HJDC.jpg" alt="1.jpeg"></p>
@@ -469,6 +470,7 @@
 </ol>
 <p>只有错误可预知时才用try。所有不可预知的错误用try都是不负责任的写法</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    语句组</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(异常类型) &#123;</span><br><span class="line">    异常处理代码</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">catch</span>(异常类型) &#123;</span><br><span class="line">    异常处理代码</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ol start="15">
 <li>UML类图中的六大关系：关联、聚合、组合、依赖、继承、实现</li>
 </ol>
@@ -484,10 +486,7 @@
 <p>char,short int(short),int,long int(long),float,double, long double大小分别是：1，2，4，4，4，8, 10。</p>
 <p> 不懂函数中的那个为什么是 sizeof 是8 呀。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">char</span> str[<span class="number">100</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(str)&lt;&lt;<span class="built_in">endl</span>; <span class="comment">// 8</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[<span class="number">200</span>];</span><br><span class="line">    func(str);</span><br><span class="line">    <span class="keyword">char</span> ch; <span class="comment">//1</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(str)&lt;&lt;<span class="built_in">endl</span>; <span class="comment">//200</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="16">
-<li>常见的生成模型和判别模型</li>
-</ol>
-<p>生成模型：hmm，朴素贝叶斯<br>判别模型：条件随机场crf， </p>
+
 <ol start="17">
 <li>下面哪些优化算法和动量相关</li>
 </ol>
@@ -629,7 +628,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

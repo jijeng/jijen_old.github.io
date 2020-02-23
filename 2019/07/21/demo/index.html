@@ -88,7 +88,7 @@
 <meta property="og:description" content="记录总结 Latex、Markdown 和 Hexo 中的使用模板。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg">
-<meta property="og:updated_time" content="2020-02-05T02:30:41.605Z">
+<meta property="og:updated_time" content="2020-02-07T09:10:29.814Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Markdown 写作中模板">
 <meta name="twitter:description" content="记录总结 Latex、Markdown 和 Hexo 中的使用模板。">
@@ -313,8 +313,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-02-05T10:30:41+08:00">
-                2020-02-05
+              <time title="Post modified" itemprop="dateModified" datetime="2020-02-07T17:10:29+08:00">
+                2020-02-07
               </time>
             
           </span>
@@ -386,68 +386,83 @@
       
         <p>记录总结 Latex、Markdown 和 Hexo 中的使用模板。</p>
 <a id="more"></a>
+
+
+
 <h2 id="latex-模板"><a href="#latex-模板" class="headerlink" title="latex 模板"></a>latex 模板</h2><p>（1）多行公式对齐</p>
 <p>源码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">\begin&#123;split&#125;</span><br><span class="line">a &amp;= b \\\\</span><br><span class="line">c &amp;= d \\\\</span><br><span class="line">e &amp;= f  </span><br><span class="line">\end&#123;split&#125;\tag&#123;1.3&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+
 <p>效果如下：<br>$$<br>\begin{split}<br>a &amp;= b \\<br>c &amp;= d \\<br>e &amp;= f<br>\end{split}\tag{1.1}<br>$$</p>
 <p>（2）分段函数</p>
-<p>源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$$ BP = \begin&#123;cases&#125;</span><br><span class="line">1 &amp; c &gt;r \\\\</span><br><span class="line">e ^ &#123; ( 1 - r / c ) &#125; &amp; c &lt;= r</span><br><span class="line">\end&#123;cases&#125;$$</span><br></pre></td></tr></table></figure></p>
+<p>源码一</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$$ BP = \begin&#123;cases&#125;</span><br><span class="line">1 &amp; c &gt;r \\\\</span><br><span class="line">e ^ &#123; ( 1 - r / c ) &#125; &amp; c &lt;= r</span><br><span class="line">\end&#123;cases&#125;$$</span><br></pre></td></tr></table></figure>
+
 <p>效果如下：<br>$$ BP = \begin{cases}<br>1 &amp; c &gt;r \\<br>e ^ { ( 1 - r / c ) } &amp; c &lt;= r<br>\end{cases}\tag{1.2}<br>$$</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;equation&#125;</span><br><span class="line">\begin&#123;aligned&#125; H(p, q) &amp;=-\sum_&#123;x&#125; p(x) \log q(x) \\\\</span><br><span class="line"> &amp;=-\sum_&#123;x&#125; p(x) \log p(x)-\sum_&#123;x&#125; p(x) \log \frac&#123;q(x)&#125;&#123;p(x)&#125; \\\\</span><br><span class="line">  &amp;=H(p)+K L(p \| q) \end&#123;aligned&#125;</span><br><span class="line">\end&#123;equation&#125;</span><br></pre></td></tr></table></figure>
+
 <p>效果如下</p>
 <p>\begin{equation}<br>\begin{aligned} H(p, q) &amp;=-\sum_{x} p(x) \log q(x) \\<br> &amp;=-\sum_{x} p(x) \log p(x)-\sum_{x} p(x) \log \frac{q(x)}{p(x)} \\<br>  &amp;=H(p)+K L(p | q) \end{aligned}<br>\end{equation}</p>
 <p>（3）markdown 页内跳转</p>
-<p>源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;center&gt;  &lt;span id=&apos;jump&apos;&gt; 图 1 &lt;/span&gt;&lt;/center&gt;</span><br><span class="line"> </span><br><span class="line">如[图 1](#jump) ，当 test error 增加的时候，那么模型就应该停止了。</span><br></pre></td></tr></table></figure></p>
+<p>源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;center&gt;  &lt;span id=&apos;jump&apos;&gt; 图 1 &lt;/span&gt;&lt;/center&gt;</span><br><span class="line"> </span><br><span class="line">如[图 1](#jump) ，当 test error 增加的时候，那么模型就应该停止了。</span><br></pre></td></tr></table></figure>
+
 <p>（4）表格 table</p>
-<p>源码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| Tables        | Are           | Cool  |</span><br><span class="line">| ------------- |:-------------:| -----:|</span><br><span class="line">| col 3 is      | right-aligned | $1600 |</span><br><span class="line">| col 2 is      | centered      |   $12 |</span><br><span class="line">| zebra stripes | are neat      |    $1 |</span><br></pre></td></tr></table></figure></p>
+<p>源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| Tables        | Are           | Cool  |</span><br><span class="line">| ------------- |:-------------:| -----:|</span><br><span class="line">| col 3 is      | right-aligned | $1600 |</span><br><span class="line">| col 2 is      | centered      |   $12 |</span><br><span class="line">| zebra stripes | are neat      |    $1 |</span><br></pre></td></tr></table></figure>
+
 <p>效果如下：</p>
 <table>
 <thead>
 <tr>
 <th>Tables</th>
-<th style="text-align:center">Are</th>
-<th style="text-align:right">Cool</th>
+<th align="center">Are</th>
+<th align="right">Cool</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>col 3 is</td>
-<td style="text-align:center">right-aligned</td>
-<td style="text-align:right">$1600</td>
+<td align="center">right-aligned</td>
+<td align="right">$1600</td>
 </tr>
 <tr>
 <td>col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
+<td align="center">centered</td>
+<td align="right">$12</td>
 </tr>
 <tr>
 <td>zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
+<td align="center">are neat</td>
+<td align="right">$1</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>（5）矩阵书写</p>
 <p>$${<br>\left[ \begin{matrix} v_{1}^{T} \ v_{2}^{T} \end{matrix} \right] \cdot<br>v_{1} =<br>\left[ \begin{matrix} v_{1}^{T} \cdot v_{1} \ v_{2}^{T} \cdot v_{1} \end{matrix} \right] =<br>\left[ \begin{matrix} 1 \ 0 \end{matrix} \right] \quad<br>\left[ \begin{matrix} v_{1}^{T} \ v_{2}^{T} \end{matrix} \right] \cdot<br>v_{2} =<br>\left[ \begin{matrix} v_{1}^{T} \cdot v_{2} \ v_{2}^{T} \cdot v_{2} \end{matrix} \right] =<br>\left[ \begin{matrix} 0 \ 1 \end{matrix} \right]<br>}$$<br>对应的源码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$$&#123;</span><br><span class="line">\left[ \begin&#123;matrix&#125; v_&#123;1&#125;^&#123;T&#125; \\ v_&#123;2&#125;^&#123;T&#125; \end&#123;matrix&#125; \right] \cdot </span><br><span class="line">v_&#123;1&#125; = </span><br><span class="line">\left[ \begin&#123;matrix&#125; v_&#123;1&#125;^&#123;T&#125; \cdot v_&#123;1&#125; \\ v_&#123;2&#125;^&#123;T&#125; \cdot v_&#123;1&#125; \end&#123;matrix&#125; \right] =</span><br><span class="line">\left[ \begin&#123;matrix&#125; 1 \\ 0 \end&#123;matrix&#125; \right] \quad</span><br><span class="line">\left[ \begin&#123;matrix&#125; v_&#123;1&#125;^&#123;T&#125; \\ v_&#123;2&#125;^&#123;T&#125; \end&#123;matrix&#125; \right] \cdot </span><br><span class="line">v_&#123;2&#125; = </span><br><span class="line">\left[ \begin&#123;matrix&#125; v_&#123;1&#125;^&#123;T&#125; \cdot v_&#123;2&#125; \\ v_&#123;2&#125;^&#123;T&#125; \cdot v_&#123;2&#125; \end&#123;matrix&#125; \right] =</span><br><span class="line">\left[ \begin&#123;matrix&#125; 0 \\ 1 \end&#123;matrix&#125; \right]</span><br><span class="line">&#125;$$</span><br></pre></td></tr></table></figure>
+
 <p>关于矩阵书写更多的样式参考<a href="https://mercurixito.github.io/2019/09/23/Singular-Value-Decomposition/" target="_blank" rel="noopener">这里</a>。源码在本地。</p>
 <h2 id="markdown-模板"><a href="#markdown-模板" class="headerlink" title="markdown 模板"></a>markdown 模板</h2><p>（1）图像处理</p>
 <p>图像的压缩，hexo 中提供了对于 img 标签的支持，所以可以这样写</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;&quot; width=&quot;80%&quot; height=&quot;80%&quot;&gt;</span><br></pre></td></tr></table></figure>
+
 <p> 效果是这样的：<br> <img src="https://s2.ax1x.com/2019/07/15/ZoKN34.jpg" width="80%" height="80%"></p>
 <p>（2）文字设置</p>
 <p>删除线</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这是~~删除线~~</span><br></pre></td></tr></table></figure>
+
 <p>这是<del>删除线</del></p>
 <p>斜体写法：    <em>内容</em><br>粗体写法：    <strong>内容</strong><br>又粗又斜：    <strong><em>内容</em></strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">斜体写法：    *内容*</span><br><span class="line">粗体写法：    **内容**</span><br><span class="line">又粗又斜：    ***内容***</span><br></pre></td></tr></table></figure>
+
 <h2 id="hexo-模板"><a href="#hexo-模板" class="headerlink" title="hexo 模板"></a>hexo 模板</h2><p>（1）开合效果</p>
 <div><div class="fold_hider"><div class="close hider_title">开/合</div></div><div class="fold">
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">全是python代码</span><br><span class="line"></span><br><span class="line">什么都能放</span><br></pre></td></tr></table></figure>
 
 </div></div>
+
 <p>源码这样</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% fold 开/合 %&#125;</span><br><span class="line">任何东西都行</span><br><span class="line">&#123;% endfold %&#125;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -579,7 +594,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

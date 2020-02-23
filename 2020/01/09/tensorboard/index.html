@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍Tensorboard。（ongoing）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="介绍 Tensorboard">
+<meta property="og:url" content="http://yoursite.com/2020/01/09/tensorboard/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="介绍Tensorboard。（ongoing）">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i.loli.net/2020/02/09/qYhKby95cEQ3LFA.png">
+<meta property="og:updated_time" content="2020-02-09T09:10:09.995Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="介绍 Tensorboard">
+<meta name="twitter:description" content="介绍Tensorboard。（ongoing）">
+<meta name="twitter:image" content="https://i.loli.net/2020/02/09/qYhKby95cEQ3LFA.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/09/tensorboard/">
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>介绍 Tensorboard | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/09/tensorboard/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">介绍 Tensorboard</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-09T11:22:17+08:00">
+                2020-01-09
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-02-09T17:10:09+08:00">
+                2020-02-09
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/09/tensorboard/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/09/tensorboard/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍Tensorboard。（ongoing）</p>
+<a id="more"></a>
+
+
+<blockquote>
+<p>TensorBoard is a great tool to visualize such metrics and highlight potential issues. The neural network can take hours to weeks before they find a solution. TensorBoard updates the metrics very often. In this case, you don’t need to wait until the end to see if the model trains correctly. You can open TensorBoard check how the training is going and make the appropriate change if necessary.<br>使用 tensorboard 可视化的意义在于能够及早发现问题。</p>
+</blockquote>
+<blockquote>
+<p>One way to quickly detect problems with your model is to have a graphical visualization of what’s going on in your model in real time (for example, every 100 iterations). So if your model is behaving oddly, it will be clearly visible. That is exactly what TensorBoard provides you with. You can decide which values need to be displayed and it will maintain a real time visualization of those values during learning.<br>使用 tensorboard 观察loss 的意义在于及早的发现问题。</p>
+</blockquote>
+<p><img src="https://i.loli.net/2020/02/09/qYhKby95cEQ3LFA.png" alt="1.png"></p>
+<p>Tensorboard是tensorflow内置的一个可视化工具，它通过将tensorflow程序输出的日志文件的信息可视化使得tensorflow程序的理解、调试和优化更加简单高效。Tensorboard的可视化依赖于tensorflow程序运行输出的日志文件，因而tensorboard和tensorflow程序在不同的进程中运行。</p>
+<p>TensorBoard通过summary对数据进行汇总。常用操作如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tf.summary.FileWriter——用于将汇总数据写入磁盘</span><br><span class="line">tf.summary.scalar——对标量数据汇总和记录</span><br><span class="line">tf.summary.histogram——记录数据的直方图</span><br><span class="line">tf.summary.image——将图像写入summary</span><br><span class="line">tf.summary.merge——对各类的汇总进行一次合并</span><br><span class="line">tf.summary.merge_all——合并默认图像中的所有汇总</span><br></pre></td></tr></table></figure>
+
+<p>tensorboard 上不同功能</p>
+<ul>
+<li>Scalars - Visualize scalar values, such as classification accuracy.</li>
+<li>Graph - Visualize the computational graph of your model, such as the neural network model.</li>
+<li>Distributions - Visualize how data changes over time, such as the weights of a neural network.</li>
+<li>Histograms - A fancier view of the distribution that shows distributions in a 3-dimensional perspective</li>
+<li>Projector - Can be used to visualize word embeddings (that is, word embeddings are numerical representations of words that capture their semantic relationships)</li>
+<li>Image - Visualizing image data</li>
+<li>Audio - Visualizing audio data</li>
+<li>Text - Visualizing text (string) data</li>
+</ul>
+<p>主要的操作有以下三种：</p>
+<ul>
+<li>tf.summary.scalar: used to write a single scalar-valued tensor (like a classificaion loss or accuracy value)<br>使用 scalar 去保存loss 或者 acc 等指标</li>
+<li>tf.summary.histogram: used to plot histogram of all the values of a non-scalar tensor (can be used to visualize weight or bias matrices of a neural network)<br>使用 histogram 保存非scalar 类型的指标，比如说weight 或者 bias</li>
+<li>tf.summary.image: used to plot images (like input images of a network, or generated output images of an autoencoder or a GAN)<br>使用 image保存输入和输出图像相关的信息</li>
+</ul>
+<h3 id="tensorboad-的启动过程"><a href="#tensorboad-的启动过程" class="headerlink" title="tensorboad 的启动过程"></a>tensorboad 的启动过程</h3><p>（1）创建writer</p>
+<p>使用之前创建一个writer，将tensorboard summary写入文件夹/path/to/logs，然后运行上面的程序，在程序定义的日志文件夹/path/to/logs目录下，生成了一个新的日志文件events.out.tfevents.1524711020.bdi-172</p>
+<p>（2）启动tensorboard </p>
+<p>当找不到tensorboard 命令时候（可能是环境变量的问题），需要使用绝对路径调用tensorboard。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python tensorflow/tensorboard/tensorboard.py --logdir=path/to/log-directory</span><br></pre></td></tr></table></figure>
+
+<p>（3）在浏览器上打开服务器（当然可以是local，表示本地机器，即127.0.0.1）的访问端口（默认是 6006）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://xxx.xxx.xxx.xxx:6006</span><br></pre></td></tr></table></figure>
+
+<h3 id="案例学习"><a href="#案例学习" class="headerlink" title="案例学习"></a>案例学习</h3><p>（1）Hello World 案例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">tf.reset_default_graph()   <span class="comment"># To clear the defined variables and operations of the previous cell</span></span><br><span class="line"><span class="comment"># create graph</span></span><br><span class="line">a = tf.constant(<span class="number">2</span>)</span><br><span class="line">b = tf.constant(<span class="number">3</span>)</span><br><span class="line">c = tf.add(a, b)</span><br><span class="line"><span class="comment"># creating the writer out of the session</span></span><br><span class="line"><span class="comment"># writer = tf.summary.FileWriter('./graphs', tf.get_default_graph())</span></span><br><span class="line"><span class="comment"># launch the graph in a session</span></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="comment"># or creating the writer inside the session</span></span><br><span class="line">    writer = tf.summary.FileWriter(<span class="string">'./graphs'</span>, sess.graph)</span><br><span class="line">    print(sess.run(c))</span><br></pre></td></tr></table></figure>
+
+<p>需要创建 <code>tf.summary()</code> 来保存信息，需要有两个参数：保存位置和对应的graph</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">writer = tf.summary.FileWriter([logdir], [graph])</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Call the graph using tf.get_default_graph(), which returns the default graph of the program</li>
+<li>set it as sess.graph which returns the session’s graph (note that this requires us to have a session created).</li>
+</ul>
+<blockquote>
+<p>Lets take a look at both ways in the following example; however, the second way is more common. Either way, make sure to create a writer only after defining the graph. Otherwise, the graph visualized on TensorBoard would be incomplete.</p>
+</blockquote>
+<p>（2）Scalar 使用案例</p>
+<p>scalar（标量）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">tf.reset_default_graph()   <span class="comment"># To clear the defined variables and operations of the previous cell</span></span><br><span class="line"><span class="comment"># create the scalar variable</span></span><br><span class="line">x_scalar = tf.get_variable(<span class="string">'x_scalar'</span>, shape=[], initializer=tf.truncated_normal_initializer(mean=<span class="number">0</span>, stddev=<span class="number">1</span>))</span><br><span class="line"><span class="comment"># ____step 1:____ create the scalar summary</span></span><br><span class="line">first_summary = tf.summary.scalar(name=<span class="string">'My_first_scalar_summary'</span>, tensor=x_scalar) </span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line"><span class="comment"># launch the graph in a session</span></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="comment"># ____step 2:____ creating the writer inside the session</span></span><br><span class="line">    writer = tf.summary.FileWriter(<span class="string">'./graphs'</span>, sess.graph)</span><br><span class="line">    <span class="keyword">for</span> step <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">        <span class="comment"># loop over several initializations of the variable</span></span><br><span class="line">        sess.run(init)</span><br><span class="line">        <span class="comment"># ____step 3:____ evaluate the scalar summary</span></span><br><span class="line">        summary = sess.run(first_summary)</span><br><span class="line">        <span class="comment"># ____step 4:____ add the summary to the writer (i.e. to the event file)</span></span><br><span class="line">        writer.add_summary(summary, step)</span><br><span class="line">    print(<span class="string">'Done with writing the scalar summary'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>实现流程</p>
+<ul>
+<li><p>定义 scalar</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">first_summary = tf.summary.scalar(name=&apos;My_first_scalar_summary&apos;, tensor=x_scalar)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义 writer</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">writer = tf.summary.FileWriter(&apos;./graphs&apos;, sess.graph)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>writer 添加 summary</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">writer.add_summary(summary, step</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>（3）Histogram 使用案例</p>
+<blockquote>
+<p>The Distributions and Histograms dashboards show the distribution of a Tensor over time. This can be useful to visualize weights and biases and verify that they are changing in an expected way.</p>
+</blockquote>
+<blockquote>
+<p>It’s used for plotting the histogram of the values of a non-scalar tensor. This provides us a view of how the histogram (and the distribution) of the tensor values change over time or iterations.  In the case of neural networks, it’s commonly used to monitor the changes of weight and biases distributions. It’s very useful in detecting irregular behavior of the network parameters (for example, when our weights explode or shrink abnormally).<br>histogram 检测的对象是 non-scalar（其实对于这non-scalar 不是很理解，因为都是从 get_variable 中定义而来），比如weights，bias。</p>
+</blockquote>
+<blockquote>
+<p>Now, you’re going to see another useful view in TensorBoard; histograms or distributions.<br>Remember that a histogram is a collection of values represented by the frequency/density that the value has in the collection. You can use histograms to visualize the network weight values over time. Visualizing network weights is important, because if the weights are wildly jumping here and there during learning, it indicates something is wrong with the weight initialization or the learning rate.<br>使用 histograms 来表示网络中的 weights 和bias 的变化，如果这种变化是忽上忽下的，那么也是不合理的。weights 和bias 使用histogram 来表示，貌似已经是非常自然的事情。<br>Defining Histogram Summaries to Visualize Weights and Biases<br>Here you again define the tf.summary objects. However, now you are visualizing vectors of scalars so you need to define tf.summary.histogram objects.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">tf.reset_default_graph()   # To clear the defined variables and operations of the previous cell</span><br><span class="line"># create the variables</span><br><span class="line">x_scalar = tf.get_variable(&apos;x_scalar&apos;, shape=[], initializer=tf.truncated_normal_initializer(mean=0, stddev=1))</span><br><span class="line">x_matrix = tf.get_variable(&apos;x_matrix&apos;, shape=[30, 40], initializer=tf.truncated_normal_initializer(mean=0, stddev=1))</span><br><span class="line"># ____step 1:____ create the summaries</span><br><span class="line"># A scalar summary for the scalar tensor</span><br><span class="line">scalar_summary = tf.summary.scalar(&apos;My_scalar_summary&apos;, x_scalar)</span><br><span class="line"># A histogram summary for the non-scalar (i.e. 2D or matrix) tensor</span><br><span class="line">histogram_summary = tf.summary.histogram(&apos;My_histogram_summary&apos;, x_matrix)</span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line"># launch the graph in a session</span><br><span class="line">with tf.Session() as sess:</span><br><span class="line">    # ____step 2:____ creating the writer inside the session</span><br><span class="line">    writer = tf.summary.FileWriter(&apos;./graphs&apos;, sess.graph)</span><br><span class="line">    for step in range(100):</span><br><span class="line">        # loop over several initializations of the variable</span><br><span class="line">        sess.run(init)</span><br><span class="line">        # ____step 3:____ evaluate the merged summaries</span><br><span class="line">        summary1, summary2 = sess.run([scalar_summary, histogram_summary])</span><br><span class="line">        # s____step 4:____ add the summary to the writer (i.e. to the event file) to write on the disc</span><br><span class="line">        writer.add_summary(summary1, step)</span><br><span class="line">        # repeat steps 4 for the histogram summary</span><br><span class="line">        writer.add_summary(summary2, step)</span><br><span class="line">    print(&apos;Done writing the summaries&apos;)</span><br></pre></td></tr></table></figure>
+
+<p>其中有 “Distributions” 和 “Histograms” 两个分类。</p>
+<blockquote>
+<p>In the figure, the “Distributions” tab contains a plot that shows the distribution of the values of the tensor (y-axis) through steps (x-axis). You might ask what are the light and dark colors?<br>The answer is that each line on the chart represents a percentile in the distribution over the data. For example, the bottom line (the very light one) shows how the minimum value has changed over time, and the line in the middle shows how the median has changed. Reading from top to bottom, the lines have the following meaning: [maximum, 93%, 84%, 69%, 50%, 31%, 16%, 7%, minimum]<br>Distributions 表示的是百分比，最小的数值，25%的数值，中间的数值和最大的数值都是什么变化情况</p>
+</blockquote>
+<p>Histograms </p>
+<blockquote>
+<p>Similarly, in the histogram panel, each chart shows temporal “slices” of data, where each slice is a histogram of the tensor at a given step. It’s organized with the oldest timestep in the back, and the most recent timestep in front.<br>Histograms 则是按照时间序列（迭代次数）进行统计（x轴），表示某个指标随着迭代次数的变化情况，y轴是percen，最后的z 轴是时间的远近</p>
+</blockquote>
+<p>感觉对于同一个事情，是有不同的解读方式。这里说的y 轴表示 frequency，z轴表示时间的远近。那么迭代次数岂不是也表征这时间的远近，毕竟迭代数越大，等价于时间越近。</p>
+<blockquote>
+<p>Here’s what your weights and biases look like. First, you have 3 axes; time (x-axis), value (y-axis) and frequency/density of values (z-axis). Darker histograms represent older data and lighter histograms represent newer data. A higher value on the z axis means that the vector contains more values near that specific value.</p>
+</blockquote>
+<p>对于上述的案例，还可以在 summary 方面进行优化。使用  <code>tf.summary.merge_all()</code> 代替 <code>sess.run([scalar_summary, histogram_summary])</code> 单个的summary，这样可以一起run。</p>
+<p>（4）tf.summary.image</p>
+<p>参考文献</p>
+<p><a href="https://itnext.io/how-to-use-tensorboard-5d82f8654496" target="_blank" rel="noopener">How to Use TensorBoard?</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="comment"># 使用一维向量就可以表示棋盘，比如 board =[1, 3, 0, 2] 表示第(0, 1) (1, 3)  (2, 0) (3, 2) 位置放置皇后</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self )</span>:</span></span><br><span class="line">        self.board =[]</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">solveNQueens</span><span class="params">(self, n: int)</span> -&gt; List[List[str]]:</span></span><br><span class="line">        self.board = [<span class="number">-1</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]</span><br><span class="line">        res =[]</span><br><span class="line">        self.dfs(<span class="number">0</span>, [], n , res)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(self, k, path, n , res)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> k ==n:</span><br><span class="line">            res.append(path)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">if</span> self.check(k, i):</span><br><span class="line">                self.board[k] =i</span><br><span class="line">                s =<span class="string">'.'</span> *n</span><br><span class="line">                self.dfs(k +<span class="number">1</span>, path +[s[:i] +<span class="string">'Q'</span> + s[i+<span class="number">1</span>:]], n , res)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 表示第 k个queen  can be put in col </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">check</span><span class="params">(self, k, col)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">            <span class="keyword">if</span> self.board[i] ==col <span class="keyword">or</span> abs(k -i) ==abs(self.board[i] -col):</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/08/hexo相关优化/" rel="next" title="Hexo博客的相关优化">
+                <i class="fa fa-chevron-left"></i> Hexo博客的相关优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/11/progan_stylegan/" rel="prev" title="ProGAN & StyleGAN & StyleGAN2">
+                ProGAN & StyleGAN & StyleGAN2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="Jijeng Jia">
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorboad-的启动过程"><span class="nav-number">1.</span> <span class="nav-text">tensorboad 的启动过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例学习"><span class="nav-number">2.</span> <span class="nav-text">案例学习</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/01/09/tensorboard/';
+          this.page.identifier = '2020/01/09/tensorboard/';
+          this.page.title = '介绍 Tensorboard';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

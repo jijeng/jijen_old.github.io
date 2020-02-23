@@ -394,6 +394,7 @@
 <p>Text summarization is the process of distilling the most important information from a source (or sources) to produce an abridged version for a particular user (or users) and task (or tasks).</p>
 </blockquote>
 <a id="more"></a>
+
 <p>There are many reasons why Automatic Text Summarization is useful:</p>
 <ul>
 <li>Summaries reduce reading time.</li>
@@ -405,24 +406,24 @@
 <p>虽然是可以从不同的角度进行划分，但最常见的分类角度是 based on output type: extractive and abstractive.  All extractive summarization algorithms attempt to score the phrases or sentences in a document and return only the most highly informative blocks of text. Abstractive text summarization actually creates new text which doesn’t exist in that form in the document. Abstractive summarization is what you might do when explaining a book you read to your friend, and it is much more difficult for a computer to do than extractive summarization. </p>
 <p>extractive 是从源句子中找关键句的过程， abstractive 是概括，生成对于文章总结的过程。</p>
 <p>Computers just aren’t that great at the act of creation. To date, there aren’t any abstractive summarization techniques which work suitably well on long documents. The best performing ones merely create a sentence based upon a single paragraph, or cut the length of a sentence in half while maintaining as much information as possible. Often, grammar suffers horribly. They’re usually based upon neural network models. </p>
-<p><strong> What is ROUGE?</strong><br>To evaluate the goodness of the generated summary, the common metric in the Text Summarization space is called Rouge score.</p>
+<p>** What is ROUGE?**<br>To evaluate the goodness of the generated summary, the common metric in the Text Summarization space is called Rouge score.</p>
 <blockquote>
 <p>ROUGE stands for Recall-Oriented Understudy for Gisting Evaluation</p>
 </blockquote>
 <p>It works by comparing an automatically produced summary or translation against a set of reference summaries (typically human-produced). It works by matching overlap of n-grams of the generated and reference summary.</p>
-<h3 id="Extractive-Techniques"><a href="#Extractive-Techniques" class="headerlink" title="Extractive Techniques"></a>Extractive Techniques</h3><p><strong> LexRank Summarizer</strong><br>LexRank is an unsupervised approach that gets its inspiration from the same ideas behind Google’s PageRank algorithm. It finds the relative importance of all words in a document and selects the sentences which contain the most of those high-scoring words.</p>
+<h3 id="Extractive-Techniques"><a href="#Extractive-Techniques" class="headerlink" title="Extractive Techniques"></a>Extractive Techniques</h3><p>** LexRank Summarizer**<br>LexRank is an unsupervised approach that gets its inspiration from the same ideas behind Google’s PageRank algorithm. It finds the relative importance of all words in a document and selects the sentences which contain the most of those high-scoring words.</p>
 <p><strong>NLTK Summarizer</strong></p>
 <p>将句子的重要程度下放到词语 word 的关键程度。先是文本的预处理，然后挑选关键词，然后挑选关键句。</p>
 <p><img src="https://i.bmp.ovh/imgs/2019/06/22c679cb23964d87.png" alt></p>
 <p>Although the technique is basic, we found that it did a good job at <strong><em>creating large summaries.</em></strong> </p>
 <p><strong>Gensim Summarizer</strong></p>
-<p>（pagerank 的思想很简单，每一个网页都是一种投票，然后被投票的重要程度越高，那么这个网页或者网站的重要性就越高，最后的排名就越靠前）<br>TextRank is based on PageRank algorithm that is used on Google Search Engine. <strong><em>In simple words, it prefers pages which has higher number of pages hitting it. </em></strong> TextRank is a bit more simplistic than LexRank; although both algorithms are very similar, LexRank applies a heuristic post-processing step to remove sentences with highly duplicitous.</p>
+<p>（pagerank 的思想很简单，每一个网页都是一种投票，然后被投票的重要程度越高，那么这个网页或者网站的重要性就越高，最后的排名就越靠前）<br>TextRank is based on PageRank algorithm that is used on Google Search Engine. <strong>*In simple words, it prefers pages which has higher number of pages hitting it. *</strong> TextRank is a bit more simplistic than LexRank; although both algorithms are very similar, LexRank applies a heuristic post-processing step to remove sentences with highly duplicitous.</p>
 <p>The gensim algorithm does a good job at creating both long and short summaries. Another cool feature of gensim is that we can get a list of top keywords chosen by the algorithm. This feature can come in handy for other NLP tasks, where we want to use “TextRank” to select words from a document instead of “Bag of Words” or “TF-IDF”. Gensim also has a well-maintained repository and has an active community which is an added asset to using this algorithm.</p>
 <p><strong>Sentence Embeddings</strong><br>（当源文本比较短的时候，比如 review 或者email， sentence embedding ，然后使用聚类的方式，得到不同的簇之后，每个簇可以选择一个句子，类似于降维的思想）</p>
 <p>We wanted to evaluate how text summarization works on shorter documents like reviews, emails etc.  We used K-means clustering to summarize the types of documents following the aforementioned structure.</p>
 <p>Then, all of the sentences in a document are clustered in k = sqrt(length of document) clusters. Each cluster of sentence embeddings can be interpreted as a set of semantically similar sentences whose meaning can be expressed by just one candidate sentence in the summary.</p>
 <p>Candidate sentences corresponding to each cluster are then ordered to form a summary for an email. The order of the candidate sentences in the summary is determined by the positions of the sentences in their corresponding clusters in the original document. </p>
-<h3 id="Abstraction-techniques"><a href="#Abstraction-techniques" class="headerlink" title="Abstraction techniques"></a>Abstraction techniques</h3><p><strong> Pointer — Generator Networks</strong></p>
+<h3 id="Abstraction-techniques"><a href="#Abstraction-techniques" class="headerlink" title="Abstraction techniques"></a>Abstraction techniques</h3><p>** Pointer — Generator Networks**</p>
 <p>Compared to the sequence-to-sequence-with-attention system, the pointer-generator network does a better job at copying words from the source text. Additionally it also is able to copy out-of-vocabulary words allowing the algorithm to handle unseen words even if the corpus has a smaller vocabulary.</p>
 <p>Hence we can think of pointer generator as a combination approach combining both extraction (pointing) and abstraction (generating).</p>
 <p>Drawbacks of Abstractive summarization</p>
@@ -457,14 +458,13 @@ Customer Support
 
 1600 Amphitheatre Parkway
 Mountain View, CA
-United States
-</code></pre><p>Step-2: Language Detection</p>
-<p>As the emails to be summarized can be of any language, the first thing one needs to do is to determine which language an email is in. I used <strong> langdetect</strong> for my purpose and it supports 55 different languages. </p>
+United States</code></pre><p>Step-2: Language Detection</p>
+<p>As the emails to be summarized can be of any language, the first thing one needs to do is to determine which language an email is in. I used ** langdetect** for my purpose and it supports 55 different languages. </p>
 <p>Step-3: Sentence Tokenization<br>Once the languages identification is performed for every email, we can use this information to split each email into its constituent sentences using specific rules for sentence delimiters (分隔符) for each language.</p>
 <p>Step-4: Skip-Thought Encoder<br>We need a way to generate fixed length vector representations for each sentence in our emails.</p>
 <p>Step-5: Clustering<br>（对于 最后summary 的长度，这个是一个很好的baseline，给出了一个定量的结果，使用 $ \sqrt{N}$, N 表示原始段落或者文章的长度）<br>The number of clusters will be equal to desired number of sentences in the summary. I chose the numbers of sentences in the summary to be equal to the square root of the total number of sentence in the email. </p>
 <p>Step-6: Summarization<br>Each cluster of sentence embeddings can be interpreted as a set of semantically similar sentences whose meaning can be expressed by just one candidate sentence in the summary. The candidate sentence is chosen to be the sentence whose vector representation is closest to the cluster center. Candidate sentences corresponding to each cluster are then ordered to form a summary for an email.</p>
-<h3 id="PageRank-算法和TextRank-介绍"><a href="#PageRank-算法和TextRank-介绍" class="headerlink" title="PageRank 算法和TextRank 介绍"></a>PageRank 算法和TextRank 介绍</h3><p><strong> PageRank 算法</strong></p>
+<h3 id="PageRank-算法和TextRank-介绍"><a href="#PageRank-算法和TextRank-介绍" class="headerlink" title="PageRank 算法和TextRank 介绍"></a>PageRank 算法和TextRank 介绍</h3><p>** PageRank 算法**</p>
 <p>PageRank通过互联网中的超链接关系来确定一个网页的排名，其公式是通过一种投票的思想来设计的。整个互联网可以看作是一张有向图，网页是图中的节点，网页之间的链接就是图中的边。如果网页 A 存在到网页 B 的链接，那么就有一条从网页 A 指向网页 B 的有向边。构造完图后，使用下面的公式来计算网页$ i$的重要性（PR值）：</p>
 <p>$$<br>S \left( V _ { i } \right) = ( 1 - d ) + d \cdot \sum _ { j \in I n \left( V _ { i } \right) } \frac { 1 } { \left| O u t \left( V _ { j } \right) \right| } S \left( V _ { j } \right)<br>$$</p>
 <p>$d$ 是阻尼系数，一般设置为0.85. $\operatorname { In } \left( V _ { i } \right)$ 是指向网页 $i$ 的链接的网页集合。 $\operatorname { Out } \left( V _ { j } \right)$ 是网页 $j$ 中的链接指向的网页的集合。 $\left| O u t \left( V _ { j } \right) \right|$ 是集合中元素的个数。 PageRank 需要多次迭代才能得到最后的结果。</p>
@@ -477,8 +477,7 @@ United States
 <th>Links</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>w1</td>
 <td>[w4, 22]</td>
 </tr>
@@ -494,11 +493,10 @@ United States
 <td>w4</td>
 <td>[w1]</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>在本例中初始化成这样：<br><img src="https://upload.cc/i1/2019/07/01/xFyTtn.png" alt></p>
 <p>最后，这个矩阵中的值将以迭代的方式更新，以获得网页排名。</p>
-<p>（上面的pageranking 的讲解是为了 下面的textranking 的理解）<br><strong> TextRank 关键词提取</strong></p>
+<p>（上面的pageranking 的讲解是为了 下面的textranking 的理解）<br>** TextRank 关键词提取**</p>
 <p>两者的相似之处：</p>
 <ul>
 <li>In place of web pages, we use sentences</li>
@@ -518,9 +516,13 @@ United States
 <li>The similarity matrix is then converted into a graph, with sentences as vertices and similarity scores as edges, for sentence rank calculation</li>
 <li>Finally, a certain number of top-ranked sentences form the final summary</li>
 </ul>
-<p>这里使用的 cosine similarity scores，计算句子之间的相似度，句子embedding 是通过 word embedding 相加而成。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(sentences)):</span><br><span class="line">  <span class="keyword">for</span> j <span class="keyword">in</span> range(len(sentences)):</span><br><span class="line">    <span class="keyword">if</span> i != j:</span><br><span class="line">      sim_mat[i][j] = cosine_similarity(sentence_vectors[i].reshape(<span class="number">1</span>,<span class="number">100</span>), sentence_vectors[j].reshape(<span class="number">1</span>,<span class="number">100</span>))[<span class="number">0</span>,<span class="number">0</span>]</span><br></pre></td></tr></table></figure></p>
-<p>Applying PageRank Algorithm<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> networkx <span class="keyword">as</span> nx</span><br><span class="line">nx_graph = nx.from_numpy_array(sim_mat)</span><br><span class="line">scores = nx.pagerank(nx_graph)</span><br></pre></td></tr></table></figure></p>
-<p><strong> TF-IDF 和 TextRank 对比总结：</strong></p>
+<p>这里使用的 cosine similarity scores，计算句子之间的相似度，句子embedding 是通过 word embedding 相加而成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(sentences)):</span><br><span class="line">  <span class="keyword">for</span> j <span class="keyword">in</span> range(len(sentences)):</span><br><span class="line">    <span class="keyword">if</span> i != j:</span><br><span class="line">      sim_mat[i][j] = cosine_similarity(sentence_vectors[i].reshape(<span class="number">1</span>,<span class="number">100</span>), sentence_vectors[j].reshape(<span class="number">1</span>,<span class="number">100</span>))[<span class="number">0</span>,<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<p>Applying PageRank Algorithm</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> networkx <span class="keyword">as</span> nx</span><br><span class="line">nx_graph = nx.from_numpy_array(sim_mat)</span><br><span class="line">scores = nx.pagerank(nx_graph)</span><br></pre></td></tr></table></figure>
+
+<p>** TF-IDF 和 TextRank 对比总结：**</p>
 <ul>
 <li>TextRank与TFIDF均严重依赖于分词结果——如果某词在分词时被切分成了两个词，那么在做关键词提取时无法将两个词黏合在一起（TextRank有部分黏合效果，但需要这两个词均为关键词）。因此是否添加标注关键词进自定义词典，将会造成准确率、召回率大相径庭。</li>
 <li>TextRank的效果并不优于TFIDF。</li>
@@ -668,7 +670,7 @@ United States
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -449,7 +449,7 @@
 <p>在实践中经验之谈， 不是要求分类器去判别 positive / negative, 只是要求分类器对于 ground-truth contexts than contrastive contexts more plausible。这个比前者在实验结果上是好的。</p>
 <p>论文中的一些观点：<br>encoder-decoder based sequence models 虽然效果好，但是 slow to train on large amounts of data. 另一方面, bag-of-words 虽然高效，但是无法捕捉到 word order 信息。</p>
 <p>2018年发表的论文<a href="https://arxiv.org/pdf/1803.02893.pdf" target="_blank" rel="noopener">An efficient framework for learning sentence representations</a>提出了一种简单且有效的框架用于学习句子表示。和常规的编码解码类模型（如skip-thoughts和SDAE）不同的是，本文采用一种分类器的方式学习句子表示。具体地，模型的输入为一个句子$s$以及一个候选句子集合$S_{cand}$，其中$S_{cand}$包含一个句子$s_{ctxt}$是$s$的上下文句子（也就是$s $)的前一个句子或后一个句子）以及其他不是$s$上下文的句子。模型通过对$s$以及$S_{cand}$中的每个句子进行编码，然后输入到一个分类器中，让分类器选出$S_{cand}$中的哪个句子是$s_{ctxt}$。实验设置候选句子集合大小为3，即$S_{cand}$包含1个上下文句子和两个无关句子。模型结构如下：</p>
-<p>模型有如下两个细节需要注意：<br>模型使用的分类器（得分函数）$c$非常简单，是两个向量内积，即$c(u, v)=u^Tv$，计算$s$的embedding与所有$S_{cand}$中的句子向量内积得分后，输入到softmax层进行分类。使用简单分类器是为了引导模型着重训练句子编码器，因为我们的目的是为了得到好的句子向量表示而不是好的分类器。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lq4allnfj20gk0ji0th.jpg" alt><br>虽然某些监督任务模型如文本蕴含模型是参数共享的，$s$的编码器参数和候选句子编码器参数是不同的（不共享），<strong>因为句子表示学习往往是在大规模语料上进行训练，不必担心参数学习不充分的问题 </strong>。测试时，给定待编码句子$s$，通过该模型得到的句子表示是两种编码器的连结 $[ f ( s ) ;g ( s ) ]$。</p>
+<p>模型有如下两个细节需要注意：<br>模型使用的分类器（得分函数）$c$非常简单，是两个向量内积，即$c(u, v)=u^Tv$，计算$s$的embedding与所有$S_{cand}$中的句子向量内积得分后，输入到softmax层进行分类。使用简单分类器是为了引导模型着重训练句子编码器，因为我们的目的是为了得到好的句子向量表示而不是好的分类器。<br><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3lq4allnfj20gk0ji0th.jpg" alt><br>虽然某些监督任务模型如文本蕴含模型是参数共享的，$s$的编码器参数和候选句子编码器参数是不同的（不共享），*<em>因为句子表示学习往往是在大规模语料上进行训练，不必担心参数学习不充分的问题 *</em>。测试时，给定待编码句子$s$，通过该模型得到的句子表示是两种编码器的连结 $[ f ( s ) ;g ( s ) ]$。</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3klfpv0g9j20k0083go0.jpg" alt><br>看上去，Skip-thought和Skip-gram挺象。唯一的遗憾是Skip-thought的decoder那部分，它是作为language modeling来处理的。QT针对这个问题，对decoder部分做了大的调整，它直接把decoder拿掉，取而代之的是一个classifier。这个classifier负责预测哪些句子才是context sentences。</p>
 <p>QT的classifier取代了Skip-thought的Decoder。这样做的好处是运行的速度大大提升了，<strong>用判别问题取代了生成式问题</strong>（这个是才是速度提升的原因）。有趣的是，虽然QT出现的比Skip-thought更晚，但是方法更简单，也更加接近Word2Vec算法。</p>
 <p>QT是一种新的state-of-art的算法。它不光效果好，而且训练时间要远小于其他算法。在算法方法上和效果上，都可称为是句子表征界的Word2Vec一般的存在。和前面几篇介绍的不同算法放在一起比较，同样都是为了找到好的句子表征，它们采取了不同的路径：InferSent在寻找NLP领域的ImageNet, 它的成功更像是在寻找数据集和任务上的成功，当然它成功的找到了SNLI; Concatenated p-means在寻找NLP领域的convolutional filter; QT则是直接在算法层面上，寻找句子级别的Word2Vec, 算法上的改进让它受益。我们看到不同的方法在不同的方向上都作出了努力和取得了成效，很难讲哪种努力会更有效或者更有潜力。</p>
@@ -593,7 +593,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

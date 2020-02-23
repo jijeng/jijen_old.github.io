@@ -414,6 +414,7 @@
       
         <p>总结 GPT, ELMO 和BERT 模型。</p>
 <a id="more"></a>
+
 <h2 id="attention-is-all-you-need"><a href="#attention-is-all-you-need" class="headerlink" title="attention is all you need"></a>attention is all you need</h2><p>Self-attention, sometimes called intra-attention is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence.</p>
 <p>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed cy a compatibility function of the query with the corresponding key.</p>
 <p>中文的理解：<br>深度学习里的Attention model其实模拟的是人脑的注意力模型，举个例子来说，当我们观赏一幅画时，虽然我们可以看到整幅画的全貌，但是在我们深入仔细地观察时，其实眼睛聚焦的就只有很小的一块，这个时候人的大脑主要关注在这一小块图案上，也就是说这个时候人脑对整幅图的关注并不是均衡的，是有一定的权重区分的。这就是深度学习里的AttentionModel的核心思想。所谓注意力机制，就是说在生成每个词的时候，对不同的输入词给予不同的关注权重。通过注意力机制，我们将输入句子编码为一个向量序列，并自适应地选择这些向量的一个子集，同时对译文进行译码，例如where are you——&gt;你在哪？现在我们在翻译“你”的时候给”you”更多的权重，那么就可以有效的解决对齐问题。</p>
@@ -430,17 +431,17 @@
 <p>论文中encoder层由6个encoder堆叠在一起，decoder层也一样。</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3eo7eiu73j20rs0i342d.jpg" alt></p>
 <p>每一个 encoder 和 decoder 的内部简图如下：<br><img src="https://i.bmp.ovh/imgs/2019/07/cc9c0e4d7401f315.png" alt></p>
-<p><strong> encoder 部分</strong></p>
+<p>** encoder 部分**</p>
 <p>对于encoder，包含两层，一个self-attention层和一个前馈神经网络，self-attention能帮助当前节点不仅仅只关注当前的词，从而能获取到上下文的语义。decoder也包含encoder提到的两层网络，但是在这两层中间还有一层attention层，帮助当前节点获取到当前需要关注的重点内容。</p>
-<p><strong> self-attention</strong></p>
+<p>** self-attention**</p>
 <p>先说一下 attention 机制的实现：</p>
 <p><img src="https://i.loli.net/2019/07/19/5d31a365bd27877659.png" alt="20190322151729943.png"></p>
 <p>当使用 self的时候，query, key and value 这三个就都是相同的。经过softmax() 得到就是一个权重，用于标记和 当前处理的词语的关系。self-attention是Transformer用来将其他相关单词的“理解”转换成我们正在处理的单词的一种思路，attention 就是一种加权平均数，self-attention 可以进一步下放，当前句子中对当前处理的词语最重要的是哪些部分。</p>
 <p><strong>Multi-Headed Attention</strong></p>
 <p>我的理解就是 在CNN中使用多个filter 的类似产物。该机制理解起来很简单，就是说不仅仅只初始化一组Q、K、V的矩阵，而是初始化多组，tranformer是使用了8组，所以最后得到的结果是8个矩阵。</p>
-<p><strong> 这样做的主要目的是从不同的语义空间投射原文本，能够从更多的角度表征，并且能够拓展模型对不同位置的关注能力。</strong></p>
+<p>** 这样做的主要目的是从不同的语义空间投射原文本，能够从更多的角度表征，并且能够拓展模型对不同位置的关注能力。**</p>
 <p>这给我们留下了一个小的挑战，前馈神经网络没法输入8个矩阵呀，这该怎么办呢？所以我们需要一种方式，把8个矩阵降为1个，首先，我们把8个矩阵连在一起，这样会得到一个大的矩阵，再随机初始化一个矩阵和这个组合好的矩阵相乘，最后得到一个最终的矩阵。这个就是 multi-head attention 机制的全部的流程了。<br><img src="https://i.loli.net/2019/07/19/5d31a58f26ba185562.png" alt="2019032215173034.png"></p>
-<p><strong>Positional Encoding </strong></p>
+<p>*<em>Positional Encoding *</em></p>
 <p>transformer给encoder层和decoder层的输入添加了一个额外的向量Positional Encoding，维度和embedding的维度一样，这个向量采用了一种很独特的方法来让模型学习到这个值，这个向量能决定当前词的位置，或者说在一个句子中不同的词之间的距离。这个位置向量的具体计算方法有很多种，论文中的计算方法如下：</p>
 <p>$$<br>P E ( p o s , 2 i ) = \sin \left( p o s / 10000 ^ { 2 i } / d _ { m } \text {odel} \right)<br>$$</p>
 <p>$$<br>P E ( p o s , 2 i + 1 ) = \cos \left( p o s / 10000 ^ { 2 i } / d _ { m } o d e l \right)<br>$$<br>其中pos是指当前词在句子中的位置，i是指向量中每个值的index，可以看出，在偶数位置，使用正弦编码，在奇数位置，使用余弦编码.</p>
@@ -450,13 +451,13 @@
 <p>batch normalization 和layer normalization 的区别，简单来说前者依赖于 batch size，是在不同的样本的同一个特征上进行归一化，在CNN 上的效果更好，后者在一个样本上进行归一化， 在 RNN的网络结果中效果更好。更多详细的内容可以参考<a href="https://jijeng.github.io/2019/07/21/overfit/" target="_blank" rel="noopener">这篇博客</a>.</p>
 <p>BN的主要思想就是：在每一层的每一批数据上进行归一化。我们可能会对输入数据进行归一化，但是经过该网络层的作用后，我们的数据已经不再是归一化的了。随着这种情况的发展，数据的偏差越来越大，我的反向传播需要考虑到这些大的偏差，这就迫使我们只能使用较小的学习率来防止梯度消失或者梯度爆炸。<br><img src="https://i.loli.net/2019/07/19/5d31b16df013d57040.png" alt="1.png"><br>可以看到，右半边求均值是沿着数据 batch_size的方向进行的</p>
 <p><img src="https://i.loli.net/2019/07/19/5d31b16de13f475380.png" alt><br>不过 LN 是在每一个样本上计算均值和方差，而不是BN那种在批方向计算均值和方差！</p>
-<p><strong> decoder  部分</strong></p>
+<p>** decoder  部分**</p>
 <p>decoder部分其实和encoder部分大同小异，不过在最下面额外多了一个masked mutil-head attetion，这里的mask也是transformer一个很关键的技术。</p>
 <p>Transformer 模型里面涉及两种 mask，分别是 padding mask 和 sequence mask。其中 padding mask 在所有的 scaled dot-product attention 里面都需要用到，而 sequence mask 只有在 decoder 的 self-attention 里面用到。前者就是一种填充技术，使得 不定长的sequence 变成定长的sequence之后做出的一些处理。</p>
-<p><strong> Padding Mask </strong></p>
+<p>** Padding Mask **</p>
 <p>什么是 padding mask 呢？因为每个批次输入序列长度是不一样的也就是说，我们要对输入序列进行对齐。具体来说，就是给在较短的序列后面填充 0。但是如果输入的序列太长，则是截取左边的内容，把多余的直接舍弃。因为这些填充的位置，其实是没什么意义的，所以我们的attention机制不应该把注意力放在这些位置上，所以我们需要进行一些处理。<br>具体的做法是，把这些位置的值加上一个非常大的负数(负无穷)，这样的话，经过 softmax，这些位置的概率就会接近0！</p>
-<p><strong> Sequence mask</strong><br>sequence mask 是为了使得 decoder 不能看见未来的信息。也就是对于一个序列，在 time_step 为 t 的时刻，我们的解码输出应该只能依赖于 t 时刻之前的输出，而不能依赖 t 之后的输出。因此我们需要想一个办法，把 t 之后的信息给隐藏起来。那么具体怎么做呢？也很简单：产生一个上三角矩阵，上三角的值全为1。把这个矩阵作用在每一个序列上，就可以达到我们的目的。</p>
-<p><strong> 缺点：</strong></p>
+<p>** Sequence mask**<br>sequence mask 是为了使得 decoder 不能看见未来的信息。也就是对于一个序列，在 time_step 为 t 的时刻，我们的解码输出应该只能依赖于 t 时刻之前的输出，而不能依赖 t 之后的输出。因此我们需要想一个办法，把 t 之后的信息给隐藏起来。那么具体怎么做呢？也很简单：产生一个上三角矩阵，上三角的值全为1。把这个矩阵作用在每一个序列上，就可以达到我们的目的。</p>
+<p>** 缺点：**</p>
 <p>问题一： 长输入</p>
 <p>在文本只要等篇章级别的任务重， transformer 因为计算量的复杂性，所以速度回急速变慢。所以短期内，这些方面仍然是RNN 或者CNN的应用场景（虽然两者做的也不是很好）。</p>
 <p>transformer 的改进思路：</p>
@@ -566,8 +567,7 @@
 <th>模型(编码器)</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>CV</td>
 <td>ImageNet</td>
 <td>image classification</td>
@@ -579,8 +579,7 @@
 <td>NLI</td>
 <td>?</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>基于监督学习方法学习sentence embeddings可以归纳为两个步骤：<br>第一步选择监督训练数据，设计相应的包含句子编码器Encoder的模型框架；<br>第二步选择（设计）具体的句子编码器，包括DAN、基于LSTM、基于CNN和Transformer等。</p>
 <p>数据集：</p>
 <p>本文采用的是Stanford Natural Language Inference Datasets，简称SNLI （NLP领域的ImageNet ）。SNLI包含570K个人类产生的句子对，每个句子对都已经做好了标签，标签总共分为三类：蕴含、矛盾和中立（Entailment、contradiction and neutral）。下面是这些数据集的一个例子：</p>
@@ -611,42 +610,7 @@
 </ul>
 <p>DAN<br>其实DAN(Deep Averaging Networks)应该属于Bag of Words类的算法。因为比较特殊，单独列出来。 它是在对所有词语取平均后，在上面加上几层神经网络。特殊的地方在于它在sentiment analysis中表现也不错，这在BOW类方法中比较罕见。</p>
 <p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g3esxw2nilj20dh08ujth.jpg" alt></p>
-<table>
-<thead>
-<tr>
-<th>新方法</th>
-<th>类型</th>
-<th>基于的旧算法</th>
-<th>贡献</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SIF</td>
-<td>无监督</td>
-<td>BOW</td>
-<td>一个简单而有效的baseline算法</td>
-</tr>
-<tr>
-<td>InferSent</td>
-<td>监督</td>
-<td>NA</td>
-<td>找到了NLP领域的ImageNet – SNLI， 并给出了一个state-of-art 算法</td>
-</tr>
-<tr>
-<td>P-mean</td>
-<td>无监督</td>
-<td>BOW</td>
-<td>比SIF更简单且有效的一个算法且适用于cross-lingual</td>
-</tr>
-<tr>
-<td>Universal-sentence-encoder</td>
-<td>监督</td>
-<td>InferSent</td>
-<td>更加简单的encoder</td>
-</tr>
-</tbody>
-</table>
+<p>|新方法    |类型|基于的旧算法|    贡献|<br>| —| —| —| —| —|<br>|SIF    |无监督|    BOW|    一个简单而有效的baseline算法<br>|InferSent|    监督|NA|    找到了NLP领域的ImageNet – SNLI， 并给出了一个state-of-art 算法<br>|P-mean    |无监督    |BOW|    比SIF更简单且有效的一个算法且适用于cross-lingual<br>|Universal-sentence-encoder|    监督|    InferSent|    更加简单的encoder</p>
 <p>文章共提出两种基于不同网络架构的Universal Sentence Encoder：Transformer and Deep Averaging Network (DAN).<br>Our two encoders have different design goals. One based on the transformer architecture targets high accuracy at the cost of greater model complexity and resource consumption. The other targets efficient inference with slightly reduced accuracy.</p>
 <p>NLP 是如何体现了多任务训练的？</p>
 <p>该篇论文在前人的研究基础上，综合利用无监督训练数据和有监督训练数据，进行多任务训练，从而学习一个通用的句子编码器。无监督训练数据包括问答(QA)型网页和论坛，Wikipedia, web news，有监督训练数据为SNLI。多任务模型设计如下图所示，其中灰色的encoder为共享参数的句子编码器。</p>
@@ -681,7 +645,7 @@
 <p>解决方案：<br>在BERT之前，LM 通常是单向的，常见的做法是分别训练正向和反向的LM，然后再做一个ensemble得到的上下文相关表示。这样的做法是会有信息缺失的问题的。</p>
 <p>BERT  是 “Bidirectional Encoder Representations from Transformers” 的缩写，B表示模型能够同时利用前后两个方向的信息，而ELMo和GPT 只能是单个方向的。</p>
 <p>而bert 仍然使用的是 transformer模型，那么是如何解决语言模型中的只利用一个方向的问题呢？因为bert 不是普通的语言模型，而是一种mask 语言模型。</p>
-<p><strong> bert 的输入表示：</strong><br>输入是两个句子，然后是对于每个token 进行3 个embedding：词的embedding， 位置的embedding和segment 的embedding。词语的embedding 是非常常见的，位置embedding引入了词语的顺序信息，segment 的embedding可以学习到不同的segment的信息。<br><img src="https://i.bmp.ovh/imgs/2019/07/6c304cd1ba04192c.png" alt><br>位置向量是因为transformer 不像传统的RNN 那样能够很好的处理时序，所以人为加入了表示位置的向量。</p>
+<p>** bert 的输入表示：**<br>输入是两个句子，然后是对于每个token 进行3 个embedding：词的embedding， 位置的embedding和segment 的embedding。词语的embedding 是非常常见的，位置embedding引入了词语的顺序信息，segment 的embedding可以学习到不同的segment的信息。<br><img src="https://i.bmp.ovh/imgs/2019/07/6c304cd1ba04192c.png" alt><br>位置向量是因为transformer 不像传统的RNN 那样能够很好的处理时序，所以人为加入了表示位置的向量。</p>
 <p>这种海量数据还是很重要的。</p>
 <p>bert 模型是需要有一个固定的sequence的长度，比如说是128，如果不够了会padding，如果多了会进行裁剪。</p>
 <p>Mask LM 和NSP 分别对应的是词级别和句子级别的任务，效果很好。bert也是一种语言模型，在语料训练过程中，是把这两个任务的损失函数相加，同时学习这两个任务。所以这个就是一种多任务学习方式。BERT是通过两个辅助任务训练语言模型。</p>
@@ -746,6 +710,7 @@
 <p>Diff_1：Decoder SubLayer-1 使用的是 “masked” Multi-Headed Attention 机制，防止为了模型看到要预测的数据，防止泄露。<br>Diff_2：SubLayer-2 是一个 encoder-decoder multi-head attention。<br>Diff_3：LinearLayer 和 SoftmaxLayer 作用于 SubLayer-3 的输出后面，来预测对应的 word 的 probabilities 。</p>
 <p>encoder-decoder multi-head attention 中</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecoderLayer</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="string">"Decoder is made of self-attn, src-attn, and feed forward (defined below)"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, size, self_attn, src_attn, feed_forward, dropout)</span>:</span></span><br><span class="line">        super(DecoderLayer, self).__init__()</span><br><span class="line">        self.size = size</span><br><span class="line">        self.self_attn = self_attn</span><br><span class="line">        self.src_attn = src_attn</span><br><span class="line">        self.feed_forward = feed_forward</span><br><span class="line">        self.sublayer = clones(SublayerConnection(size, dropout), <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x, memory, src_mask, tgt_mask)</span>:</span></span><br><span class="line">        m = memory</span><br><span class="line">        x = self.sublayer[<span class="number">0</span>](x, <span class="keyword">lambda</span> x: self.self_attn(x, x, x, tgt_mask))</span><br><span class="line">        x = self.sublayer[<span class="number">1</span>](x, <span class="keyword">lambda</span> x: self.src_attn(x, m, m, src_mask))</span><br><span class="line">        <span class="keyword">return</span> self.sublayer[<span class="number">2</span>](x, self.feed_forward)</span><br></pre></td></tr></table></figure>
+
 <p>重点在于 x = self.sublayer1 self.src_attn 是 MultiHeadedAttention 的一个实例。query = x，key = m, value = m, mask = src_mask，这里x来自上一个 DecoderLayer，m来自 Encoder的输出。<br>（m 是encoder的输出， x 树decoder 中的输出，主线还是跟着m 走，attention是求解的 m 和x 的相关性）</p>
 <p>到目前位置 transformer 中三种不同的attention 都已经介绍完毕。</p>
 <p>最后还有一个全连接加上一个softmax 求probably，用来看哪些词出现的概率是最大的。</p>
@@ -755,24 +720,22 @@
 <thead>
 <tr>
 <th>网络结构</th>
-<th style="text-align:center">时间复杂度</th>
+<th align="center">时间复杂度</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Self-Attention</td>
-<td style="text-align:center">$O(length^2 \cdot dim^2) $</td>
+<td align="center">$O(length^2 \cdot dim^2) $</td>
 </tr>
 <tr>
 <td>RNN(LSTM)</td>
-<td style="text-align:center">$O(length \cdot dim^2)$</td>
+<td align="center">$O(length \cdot dim^2)$</td>
 </tr>
 <tr>
 <td>Convolution</td>
-<td style="text-align:center">$O(length \cdot dim^2 \cdot kernel_width)$</td>
+<td align="center">$O(length \cdot dim^2 \cdot kernel_width)$</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>其中 $length$ 是处理的句子的长度， $dim$ 是隐藏层的长度，$kernel_width$ 表示CNN 中kernel 的宽度。可以发现当隐藏层的长度远远大于处理的句子长度的时候，RNN 的计算效率非常低；相反，当处理的句子长度（文章）远远大于隐藏层的长度时候，选择RNN 可能是更好的选择。</p>
 
       
@@ -808,8 +771,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/04/word2vec/" rel="prev" title="Word2vec 介绍">
-                Word2vec 介绍 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/05/04/lstm/" rel="prev" title="从RNN到LSTM">
+                从RNN到LSTM <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -899,7 +862,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

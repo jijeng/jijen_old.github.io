@@ -388,16 +388,20 @@
       
         <p>介绍Word2vec 的两种训练模式（DBOW和Skip-gram）和两种优化策略（Hierarchical Softmax 和Negative Sampling）。</p>
 <a id="more"></a>
+
+
 <h2 id="两种训练模式"><a href="#两种训练模式" class="headerlink" title="两种训练模式"></a>两种训练模式</h2><p>（1）Context-Based: Continuous Bag-of-Words (CBOW)</p>
 <blockquote>
 <p>For example, the target word “swing” in the above case produces four training samples: (“swing”, “sentence”), (“swing”, “should”), (“swing”, “the”), and (“swing”, “sword”).</p>
 </blockquote>
-<p><img src="https://s2.ax1x.com/2019/12/16/QhqT0A.png" width="90%" height="90%"></p>
+<img src="https://s2.ax1x.com/2019/12/16/QhqT0A.png" width="90%" height="90%">
+
 <p>（2）Skip-Gram Model</p>
 <blockquote>
 <p>The Continuous Bag-of-Words (CBOW) is another similar model for learning word vectors. It predicts the target word (i.e. “swing”) from source context words (i.e., “sentence should the sword”).</p>
 </blockquote>
-<p><img src="https://s2.ax1x.com/2019/12/16/Qhqbkt.png" width="90%" height="90%"></p>
+<img src="https://s2.ax1x.com/2019/12/16/Qhqbkt.png" width="90%" height="90%">
+
 <blockquote>
 <p>Because there are multiple contextual words, we average their corresponding word vectors, constructed by the multiplication of the input vector and the matrix W. </p>
 </blockquote>
@@ -416,7 +420,10 @@
 <h2 id="优化策略"><a href="#优化策略" class="headerlink" title="优化策略"></a>优化策略</h2><p>（1）Hierarchical Softmax</p>
 <p>层次softmax （Hierarchical softmax）是在最后一层softmax中计算上的优化，从原来的$O(V)$ 优化成$O(log_2V)$，其中 $V$表示字典的大小。</p>
 <p>当词典 V = {this, battle, will, be, my, masterpiece, the, unseen, blade, is, deadliest}, ||V|| = 11，那么最后的softmax层可以表示为以下的结构：</p>
-<p><img src="https://upload.cc/i1/2019/12/14/qIHEid.png" width="98%" height="98%"><br>每个叶子节点表示一个单词。那么 $p(unseen) = p(left) * p(right) * p(right) * p(right)$。其中 $sigmoid(x * w +b) $ 得到了相应概率。</p>
+<img src="https://upload.cc/i1/2019/12/14/qIHEid.png" width="98%" height="98%">
+每个叶子节点表示一个单词。那么 $p(unseen) = p(left) \* p(right) \* p(right) \* p(right)$。其中 $sigmoid(x \* w +b) $ 得到了相应概率。
+
+
 <p>并且由于左右子树的概率相加之和为1，所以当已知左子树的概率时候，右子树的概率是不用重新计算的，即 $p(left) + p(right) =1$。</p>
 <p>（2）Negative Sampling (NEG)</p>
 <p>1). Simple Sampling<br>该采样方式是根据数据随机采样，那么出现频率高的数据被采样中的次数多，而频率少的那么被计算的机会少。</p>
@@ -455,8 +462,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/27/paper-reading-bert/" rel="next" title="NLP Papers Reading- BERT">
-                <i class="fa fa-chevron-left"></i> NLP Papers Reading- BERT
+              <a href="/2019/05/04/lstm/" rel="next" title="从RNN到LSTM">
+                <i class="fa fa-chevron-left"></i> 从RNN到LSTM
               </a>
             
           </div>
@@ -465,8 +472,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/04/lstm/" rel="prev" title="从RNN到LSTM">
-                从RNN到LSTM <i class="fa fa-chevron-right"></i>
+              <a href="/2019/05/06/newWordsDetection_CRF/" rel="prev" title="新词发现和条件随机场">
+                新词发现和条件随机场 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -556,7 +563,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

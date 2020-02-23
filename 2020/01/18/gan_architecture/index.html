@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="工作记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAN in Interior Design">
+<meta property="og:url" content="http://yoursite.com/2020/01/18/gan_architecture/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="工作记录">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2020/01/de514a2905eb0039.png">
+<meta property="og:image" content="https://upload.cc/i1/2020/01/20/X9omJL.png">
+<meta property="og:image" content="https://img.vim-cn.com/7f/ea256f51cdb7a113c07a103111e4bbc686cd46.jpg">
+<meta property="og:image" content="https://img.vim-cn.com/8c/1d02cb422d41f88a15edd193e9e2e24e5f8067.jpg">
+<meta property="og:updated_time" content="2020-02-01T03:29:08.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GAN in Interior Design">
+<meta name="twitter:description" content="工作记录">
+<meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2020/01/de514a2905eb0039.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/18/gan_architecture/">
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>GAN in Interior Design | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/18/gan_architecture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">GAN in Interior Design</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-18T17:23:46+08:00">
+                2020-01-18
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-02-01T11:29:08+08:00">
+                2020-02-01
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/18/gan_architecture/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/18/gan_architecture/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>工作记录</p>
+<a id="more"></a>
+
+
+
+<h2 id="第一周任务"><a href="#第一周任务" class="headerlink" title="第一周任务"></a>第一周任务</h2><p>找到paper生成整体设计风格图/风景图（且有开源代码）    调研        贾继征    北京时间23号下午2点<br>找到paper生成单个物件的图案（且有开源代码）    调研        冯博远    北京时间23号下午2点<br>拿整体设计风格图类似的网络跑一下，生成一些结果，判断需要的数据量    调研        贾继征    北京时间23号下午2点<br>拿生成单个物件的网络跑一下，生成一些结果，判断需要的数据量    调研        冯博远    北京时间23号下午2点</p>
+<ol>
+<li>1.16会议<br>有三个目标：</li>
+<li>GAN生成整体设计风格图</li>
+<li>GAN生成单个家具</li>
+<li>有了房间的layout，通过conditional GAN生成房间内的桌椅摆放（参考这个介绍：<a href="https://devblogs.nvidia.com/archigan-generative-stack-apartment-building-design/）" target="_blank" rel="noopener">https://devblogs.nvidia.com/archigan-generative-stack-apartment-building-design/）</a></li>
+</ol>
+<p>2.第一周进展<br>冯博远：</p>
+<p>贾继征：</p>
+<p>张霄：</p>
+<h2 id="调研关键词"><a href="#调研关键词" class="headerlink" title="调研关键词"></a>调研关键词</h2><p>Architecture &amp; Interior Design</p>
+<p>design  AI design horses and even, interior and exterior AI designs.</p>
+<p>已经尝试调研渠道：<br>google 搜索相关关键词<br>github 搜索相关关键词</p>
+<p>之后尝试调研渠道（相关会议）：</p>
+<p>计算机视觉目前比较认可的顶会主要是CVPR、ICCV、ECCV、NIPS（第一档），AAAI、IJCAI、ACM MM（第二档）。</p>
+<p>A类CVPR: International Conference on Computer Vision and Pattern RecognitionICCV: International Conference on Computer VisionAAAI: AAAI Conference on Artificial IntelligenceICML: International Conference on Machine LearningNIPS: Annual Conference on Neural Information Processing SystemsACM MM: ACM International Conference on MultimediaIJCAI: International Joint Conference on Artificial IntelligenceB类ECCV: European Conference on Computer VisionC类ACCV: Asian Conference on Computer VisionICPR: International Conference on Pattern RecognitionBMVC: British Machine Vision Conference</p>
+<p>condition-gan，cycle-gan<br>progressive gan 也是有这方面的应用的，生成高清图像</p>
+<p>deepfake</p>
+<h2 id="调研结果"><a href="#调研结果" class="headerlink" title="调研结果"></a>调研结果</h2><p>一、生成整体的layout 的调研</p>
+<ul>
+<li><a href="https://towardsdatascience.com/drawing-architecure-building-deep-convolutional-gans-in-pytorch-5ed60348d43c" target="_blank" rel="noopener">建筑外表面生成介绍</a></li>
+</ul>
+<blockquote>
+<p>use a deep convolutional GAN to create architecture (exteriors of buildings)</p>
+</blockquote>
+<p>框架: pytorch, <a href="https://github.com/emilyelia/Architecture-DCGAN" target="_blank" rel="noopener">源码</a>， <a href="https://www.kaggle.com/wwymak/architecture-dataset" target="_blank" rel="noopener">数据集</a></p>
+<p><img src="https://ftp.bmp.ovh/imgs/2020/01/de514a2905eb0039.png" alt></p>
+<p>大概是每类200 张，大概是有30 多个类别。</p>
+<p>二、<a href>Wasserstein GAN</a></p>
+<p>论文：<a href="https://arxiv.org/pdf/1701.07875.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1701.07875.pdf</a><br>pytorch源码：<a href="https://github.com/martinarjovsky/WassersteinGAN" target="_blank" rel="noopener">https://github.com/martinarjovsky/WassersteinGAN</a><br>数据集 LSUN: Construction of a Large-scale Image Dataset using Deep Learning with Humans in the Loop</p>
+<blockquote>
+<p>LSUN. It contains around one million labeled images for each of 10 scene categories and 20 object categories<br><a href="http://dl.yf.io/lsun/objects/" target="_blank" rel="noopener">http://dl.yf.io/lsun/objects/</a> 其中有一些是可以直接使用的比如说 chair，dining table，sofa， tv-monitor等。</p>
+</blockquote>
+<p><a href="https://upload.cc/i1/2020/01/20/fQ35eS.png" target="_blank" rel="noopener"></a></p>
+<p>生成的效果图：</p>
+<p><img src="https://upload.cc/i1/2020/01/20/X9omJL.png" alt></p>
+<p><a href="https://github.com/martinarjovsky/WassersteinGAN" target="_blank" rel="noopener">更多</a></p>
+<p>三、<a href>DCGAN</a></p>
+<p>论文：<a href="https://arxiv.org/abs/1511.06434" target="_blank" rel="noopener">https://arxiv.org/abs/1511.06434</a><br>tensorflow源码：<a href="https://github.com/carpedm20/DCGAN-tensorflow" target="_blank" rel="noopener">https://github.com/carpedm20/DCGAN-tensorflow</a><br>比较经典的gan 网络模型，该模型的<a href="https://gist.github.com/shagunsodhani/aa79796c70565e3761e86d0f932a3de5" target="_blank" rel="noopener">改进点</a></p>
+<p>数据集</p>
+<ul>
+<li>Large-Scale Scene Understanding.</li>
+<li>Imagenet-1K.</li>
+<li>Faces dataset</li>
+</ul>
+<p>四、BigGAN </p>
+<p>论文：<a href="https://arxiv.org/abs/1809.11096" target="_blank" rel="noopener">https://arxiv.org/abs/1809.11096</a><br>pytorch版本：<a href="https://github.com/ajbrock/BigGAN-PyTorch" target="_blank" rel="noopener">https://github.com/ajbrock/BigGAN-PyTorch</a><br>数据集：128* 128 ImageNet</p>
+<p>2019 ICLR (International Conference on Learning Representations) 深度学习顶会，生成的图像更加高清。相关改进直接看对应的github 就行。</p>
+<ul>
+<li><a href="https://github.com/taki0112/BigGAN-Tensorflow" target="_blank" rel="noopener">BigGAN-Tensorflow</a></li>
+</ul>
+<p>可以参考用来 从头开始训练。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py --phase train --dataset celebA-HQ --gan_type hinge</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://github.com/huggingface/pytorch-pretrained-BigGAN" target="_blank" rel="noopener">PyTorch pretrained BigGAN</a></li>
+</ul>
+<p>我觉得这个是能够产生单个的 物体，比如说给定了 chair bed 等家具。因为实例中给出了一个样例。</p>
+<p>biggan2 这样的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python run_generator.py generate-images --network=/data/stylegan2-church-config-f.pkl --seeds=662303891518 --truncation-psi=1.0</span><br></pre></td></tr></table></figure>
+
+<p>BigGAN的理解</p>
+<blockquote>
+<p>The result is the routine generation of both high-resolution (large) and high-quality (high-fidelity) images. The BigGAN is designed for class-conditional image generation.<br>能够生成高分辨率（256 * 256 和 512 * 512） 和高质量（语义信息完整，可信度高）。有监督的，可以生成特点类别的图像。</p>
+</blockquote>
+<blockquote>
+<p>This includes GAN models with:</p>
+</blockquote>
+<ul>
+<li>More model parameters (e.g. more feature maps).</li>
+<li>Larger Batch Sizes</li>
+<li>Architectural changes</li>
+</ul>
+<blockquote>
+<p>The BigGAN architecture also introduces a “truncation trick” used during image generation that results in an improvement in image quality, and a corresponding regularizing technique to better support this trick.<br>The result is an approach capable of generating larger and higher-quality images, such as 256×256 and 512×512 images.<br>除了以上三点，还使用了 “truncation trick” 来加强最后图像生成的质量</p>
+</blockquote>
+<p>（1）框架结构</p>
+<blockquote>
+<p>The base for the model is the Self-Attention GAN, or SAGAN for short, described by Han Zhang, et al. in the 2018 paper tilted “Self-Attention Generative Adversarial Networks.” This involves introducing an attention map that is applied to feature maps, allowing the generator and discriminator models to focus on different parts of the image.<br>BigGAN 是基于 self-attention gan 进行改进的。</p>
+</blockquote>
+<blockquote>
+<p>Additionally, the model is trained via hinge loss, commonly used for training support vector machines.<br>在BigGAN 中为什么使用 hinge loss 呢？ </p>
+</blockquote>
+<p>（2）Class Conditional Information</p>
+<blockquote>
+<p>The class information is provided to the generator model via class-conditional batch normalization. Class information is provided to the discriminator via projection.<br>类别信息加入到了 generator 网络中。</p>
+</blockquote>
+<p>（3）Spectral Normalization</p>
+<p>The weights of the generator are normalized using spectral normalization.</p>
+<blockquote>
+<p>Spectral normalization for use in GANs was described by Takeru Miyato, et al. in their 2018 paper titled “Spectral Normalization for Generative Adversarial Networks.” Specifically, it involves normalizing the spectral norm of the weight matrix.</p>
+</blockquote>
+<p>（4）Update Discriminator More Than Generator</p>
+<blockquote>
+<p>In the GAN training algorithm, it is common to first update the discriminator model and then to update the generator model.<br>The BigGAN slightly modifies this and updates the discriminator model twice before updating the generator model in each training iteration.<br>D 网络多更新一次</p>
+</blockquote>
+<p>（5）Larger Batch Size</p>
+<blockquote>
+<p>Very large batch sizes were tested and evaluated. This includes batch sizes of 256, 512, 1024, and 2,048 images. Larger batch sizes generally resulted in better quality images, with the best image quality achieved with a batch size of 2,048 images.<br>batch size 是需要尽可能地大</p>
+</blockquote>
+<p><a href="https://machinelearningmastery.com/a-gentle-introduction-to-the-biggan/" target="_blank" rel="noopener">A Gentle Introduction to BigGAN the Big Generative Adversarial Network</a></p>
+<p>五、Progressive Growing GAN</p>
+<p>论文：<a href="https://arxiv.org/abs/1710.10196" target="_blank" rel="noopener">https://arxiv.org/abs/1710.10196</a><br>tensorflow实现：<a href="https://github.com/tkarras/progressive_growing_of_gans" target="_blank" rel="noopener">https://github.com/tkarras/progressive_growing_of_gans</a><br>数据集：使用的数据集比较多，其中比较贴近的有 create_lsun</p>
+<p><a href="https://drive.google.com/drive/folders/1gAb3oqpaQFHZTwPUXHPIfBIP8eIeWNrI" target="_blank" rel="noopener">视频介绍</a></p>
+<p>（SVHN 自然场景下的数字识别数据集）</p>
+<p>六、StyleGAN</p>
+<p>关于 stylegan 的讲解：<a href="https://machinelearningmastery.com/introduction-to-style-generative-adversarial-network-stylegan/" target="_blank" rel="noopener">A Gentle Introduction to StyleGAN the Style Generative Adversarial Network</a></p>
+<p>相对于版本1 的改进：<a href="https://github.com/NVlabs/stylegan2" target="_blank" rel="noopener">StyleGAN2 - Official TensorFlow Implementation </a> 想的是基于该版本进行改进。现在已经有了预训练的模型，然后基于该模型如果能够跑出来东西，那么再使用该模型训练也是完全ok的。</p>
+<blockquote>
+<p>Most improvement has been made to discriminator models in an effort to train more effective generator models, although less effort has been put into improving the generator models.<br>论文主要是从 G 网络方面进行改进</p>
+</blockquote>
+<blockquote>
+<p>The Style Generative Adversarial Network, or StyleGAN for short, is an extension to the GAN architecture that proposes large changes to the generator model, including </p>
+</blockquote>
+<ul>
+<li>the use of a mapping network to map points in latent space to an intermediate latent space, </li>
+<li>the use of the intermediate latent space to control style at each point in the generator model, </li>
+<li>and the introduction to noise as a source of variation at each point in the generator model.<br>可以概括为以上三点的改进</li>
+</ul>
+<blockquote>
+<p>The StyleGAN is an extension of the progressive growing GAN that is an approach for training generator models capable of synthesizing very large high-quality images via the incremental expansion of both discriminator and generator models from small to large images during the training process.<br>StyleGAN 是对于 progressive gan 的改进（所以如果该框架得到比较好的评价，那么 progressive gan 的意义是不大的）</p>
+</blockquote>
+<p> 既然命名为style gan，那么这个 style 一定是改进的重点。</p>
+<p>可以进行数据增强来补充数据集</p>
+<p><a href="https://machinelearningmastery.com/introduction-to-style-generative-adversarial-network-stylegan/" target="_blank" rel="noopener">A Gentle Introduction to StyleGAN the Style Generative Adversarial Network</a></p>
+<ul>
+<li><a href="https://blog.bricsys.com/ai-design-gan/" target="_blank" rel="noopener">从二维图像到三维物体</a><br>生成的三维物体比较模糊，需要进一步调研.</li>
+</ul>
+<p>（2）家具推荐整个pipeline 的调研</p>
+<p><a href="https://devblogs.nvidia.com/archigan-generative-stack-apartment-building-design/" target="_blank" rel="noopener">ArchiGAN: a Generative Stack for Apartment Building Design</a><br>生成家具设计的pipeline，主要分成三个步骤：</p>
+<ul>
+<li>用户的自定义室内的设备（窗户，门，地板） building footprint massing</li>
+<li>程序进行修缮，program repartition</li>
+<li>生成最终的layout，furniture layout</li>
+</ul>
+<p>其中涉及到的论文是需要重点关注的（是一个很好的pipeline）</p>
+<p>If GANs’ application to architectural design is still in its infancy, a handful of precedents inspired our work and drove our intuition. Hao Zheng’s and Weixin Huang offered at the ACADIA conference in 2018 a first publication, demonstrating the potential of GAN for floorplans recognition and furniture layout generation. Using patches of color, their model would draw the infill of rooms, based on the room program, and its openings position. The same year, Nathan Peters in his thesis at the Harvard GSD, proposed to use GANs (pix2pix) to tackle program repartition in single-family modular homes, based on the house footprint.<br>Regarding GANs as design assistants, Hao Zheng’s (Drawing with Bots: Human-computer Collaborative Drawing Experiments, 2018) and Nono Martinez’ thesis at the GSD (2017) inspired our investigations. Both authors tackled the idea of a loop between the machine and the designer to refine the very notion of “design process”.<br>Our work expands on these precedents and offers to nest 3 models (footprint, program, and furnishing) to create a full “generation stack” while improving results quality at each step. By automating multi-units processing, our work then scales to entire buildings generation, and masterplan layouts. We further offer an array of models dealing with style transfer. Finally, our contribution adds a rigorous framework to parse and classify resulting outputs, enabling users to “browse” consistently through generated options.</p>
+<p>主要是针对的是任务中第三个步骤。Harvard graduate Stanislas Chaillou 的<a href="https://medium.com/@sfjchaillou" target="_blank" rel="noopener">博客</a></p>
+<p>在调研的时候，可以着重说一个 方案，也可以给出一个 overview，两者都是可以的。如果是前者，那么是需要从数据集，模型等角度比较详细的阐述，但因为是调研阶段，知道模型的大概思路即可，不要求深知，因为方案还没有完全确定。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>（1）GPU 常见的版本</p>
+<p>谷歌TPU把它看做打包在一起的多个专用GPU，它只有一个目的——进行快速矩阵乘法。TPU具有高性能，最适合在训练阶段使用。在原型设计和推理阶段，应该依靠GPU来降低成本。总而言之，目前TPU最适合用于训练CNN或大型Transformer，并且应该补充其他计算资源而不是主要的深度学习资源。</p>
+<p>目前，云GPU过于昂贵，且无法单独使用，Tim建议在云GPU上进行最后的训练之前，先使用一些廉价GPU进行原型开发。</p>
+<p>服务器设备 Tesla<br><img src="https://img.vim-cn.com/7f/ea256f51cdb7a113c07a103111e4bbc686cd46.jpg" alt><br>这个是 1080Ti<br><img src="https://img.vim-cn.com/8c/1d02cb422d41f88a15edd193e9e2e24e5f8067.jpg" alt></p>
+<p>百度云配置</p>
+<p>NVIDIA-SMI 430.50       Driver Version: 430.50       CUDA Version: 10.1</p>
+<p>1.15.2<br>tensorflow           1.15.2</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/16/seafile/" rel="next" title="Seafile搭建个人网盘">
+                <i class="fa fa-chevron-left"></i> Seafile搭建个人网盘
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/31/rich-dad/" rel="prev" title="富爸爸穷爸爸 (Rich Dad)">
+                富爸爸穷爸爸 (Rich Dad) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="Jijeng Jia">
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一周任务"><span class="nav-number">1.</span> <span class="nav-text">第一周任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调研关键词"><span class="nav-number">2.</span> <span class="nav-text">调研关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调研结果"><span class="nav-number">3.</span> <span class="nav-text">调研结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/01/18/gan_architecture/';
+          this.page.identifier = '2020/01/18/gan_architecture/';
+          this.page.title = 'GAN in Interior Design';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

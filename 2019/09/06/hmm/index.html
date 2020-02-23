@@ -390,6 +390,9 @@
       
         <p>介绍自然语言处理中的命名实体识别（Named Entity Recognition，NER ）相关概念，主要介绍基于HMM 的NER，包括HMM中的两大假设，三大参数和Viterbi 算法。</p>
 <a id="more"></a>
+
+
+
 <h2 id="命名实体识别"><a href="#命名实体识别" class="headerlink" title="命名实体识别"></a>命名实体识别</h2><p>序列标注简单来说就是给定一个序列， 然后对序列中的每一个元素做一个标记或者打一个标签，这是一个比较宽泛的概念。中文命名实体识别（NER）、中文分词和词性标注（part-of-speech tag, POS）等这些基本的NLP 任务都属于序列标注的范畴。中文命名实体识别问题就是将一段文本序列中包含我们感兴趣的实体识别出来，比如说人名、地名、机构名和时间等。</p>
 <p>（1）定义</p>
 <blockquote>
@@ -425,6 +428,7 @@
 <p>BIOES<br>B: 命名实体的起始标注（Only哦）<br>I: 命名实体的中间标注（Only哦）<br>E: 命名实体的结尾标注（Only哦）<br>O: 非命名实体<br>S: 单个字命名实体</p>
 <p>（6）北大词性标注集部分标注词性如下表所示：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Ag     形语素     形容词性语素。形容词代码为a，语素代码ｇ前面置以A。</span><br><span class="line">   a       形容词      取英语形容词adjective的第1个字母。</span><br><span class="line">　ad     副形词 直接作状语的形容词。形容词代码a和副词代码d并在一起。</span><br><span class="line">　an     名形词 具有名词功能的形容词。形容词代码a和名词代码n并在一起。</span><br><span class="line">   b       区别词      取汉字“别”的声母。</span><br><span class="line">   c       连词        取英语连词conjunction的第1个字母。</span><br><span class="line">   Dg     副语素     副词性语素。副词代码为d，语素代码ｇ前面置以D。</span><br><span class="line">   d       副词     取adverb的第2个字母，因其第1个字母已用于形容词。</span><br><span class="line">   e       叹词     取英语叹词exclamation的第1个字母。</span><br><span class="line">   f        方位词      取汉字“方” 的声母。</span><br><span class="line">　g       语素    绝大多数语素都能作为合成词的“词根”，取汉字“根”的声母。</span><br><span class="line">   h       前接成分   取英语head的第1个字母。</span><br><span class="line">   i        成语        取英语成语idiom的第1个字母。</span><br><span class="line">   j        简称略语  取汉字“简”的声母。</span><br><span class="line">   k       后接成分</span><br><span class="line">   l        习用语     习用语尚未成为成语，有点“临时性”，取“临”的声母。</span><br><span class="line">   m       数词     取英语numeral的第3个字母，n，u已有他用。</span><br><span class="line">   Ng      名语素     名词性语素。名词代码为n，语素代码ｇ前面置以N。</span><br><span class="line">   n        名词        取英语名词noun的第1个字母。</span><br><span class="line">   nr      人名        名词代码n和“人(ren)”的声母并在一起。</span><br><span class="line">   ns      地名     名词代码n和处所词代码s并在一起。</span><br><span class="line">   nt      机构团体    “团”的声母为t，名词代码n和t并在一起。</span><br><span class="line">   nz     其他专名    “专”的声母的第1个字母为z，名词代码n和z并在一起。 </span><br><span class="line">   o       拟声词     取英语拟声词onomatopoeia的第1个字母。</span><br><span class="line">   p       介词     取英语介词prepositional的第1个字母。</span><br><span class="line">   q       量词        取英语quantity的第1个字母。</span><br><span class="line">   r       代词        取英语代词pronoun的第2个字母,因p已用于介词。</span><br><span class="line">   s       处所词     取英语space的第1个字母。</span><br><span class="line">   Tg     时语素      时间词性语素。时间词代码为t,在语素的代码g前面置以T。</span><br><span class="line">   t        时间词      取英语time的第1个字母。</span><br><span class="line">   u       助词        取英语助词auxiliary 的第2个字母,因a已用于形容词。</span><br><span class="line">   Vg     动语素      动词性语素。动词代码为v。在语素的代码g前面置以V。</span><br><span class="line">   v       动词        取英语动词verb的第一个字母。</span><br><span class="line">   vd     副动词      直接作状语的动词。动词和副词的代码并在一起。</span><br><span class="line">   vn     名动词      指具有名词功能的动词。动词和名词的代码并在一起。</span><br><span class="line">   w      标点符号   </span><br><span class="line">   x       非语素字    非语素字只是一个符号，字母x通常用于代表未知数、符号。</span><br><span class="line">   y       语气词      取汉字“语”的声母。</span><br><span class="line">   z       状态词      取汉字“状”的声母的前一个字母。</span><br></pre></td></tr></table></figure>
+
 <h2 id="HMM"><a href="#HMM" class="headerlink" title="HMM"></a>HMM</h2><p>（1）定义</p>
 <p>马尔科夫模型（markov model）</p>
 <blockquote>
@@ -435,7 +439,8 @@
 <p>A hidden Markov model is a Markov chain for which the state is only partially observable. In other words, observations are related to the state of the system, but they are typically insufficient to precisely determine the state. Several well-known algorithms for hidden Markov models exist. For example, given a sequence of observations, the Viterbi algorithm will compute the most-likely corresponding sequence of states, the forward algorithm will compute the probability of the sequence of observations, and the Baum–Welch algorithm will estimate the starting probabilities, the transition function, and the observation function of a hidden Markov model.<br>隐马尔科夫模型描述的是由不可观测的隐状态序列（实体标注）生成可观测状态（可读文本）的过程。使用前向传递算法计算观测序列的概率，使用viterbi 算法得到最优的标注徐磊，使用Baum-Welch 算法估计初始的状态，转移概率矩阵和发射矩阵。”隐”表示标注状态是不可见的。</p>
 </blockquote>
 <p>（2）两大基本假设</p>
-<p><img src="https://ftp.bmp.ovh/imgs/2019/10/2ee1d361a3b03f25.jpg" alt><br>1) 第$t$个隐状态(实体标签)只跟前一时刻的$t-1$隐状态(实体标签)有关, 与除此之外的其他隐状态(如$t-2,\  t+3$)无关.<br>例如上图中: 蓝色的部分指的是$i_t$只与$i_{t-1}$有关, 而与蓝色区域之外的所有内容都无关, 而$P(i_{t}|i_{t-1})$指的是隐状态$i$从$t-1$时刻转向$t$时刻的概率, 具体转换方式下面会细讲.<br>2) 观测独立的假设, HMM模型中是由<strong>隐状态序列(实体标记)生成可观测状态(可读文本)的过程</strong>, 观测独立假设是指在任意时刻观测$o_t$只依赖于当前时刻的隐状态$i_t$, 与其他时刻的隐状态无关. 例如上图中: 粉红色的部分指的是$i_{t+1}$只与$o_{t+1}$有关, 跟粉红色区域之外的所有内容都无关.</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/2ee1d361a3b03f25.jpg" alt></p>
+<p>1) 第$t$个隐状态(实体标签)只跟前一时刻的$t-1$隐状态(实体标签)有关, 与除此之外的其他隐状态(如$t-2,\  t+3$)无关.<br>例如上图中: 蓝色的部分指的是$i_t$只与$i_{t-1}$有关, 而与蓝色区域之外的所有内容都无关, 而$P(i_{t}|i_{t-1})$指的是隐状态$i$从$t-1$时刻转向$t$时刻的概率, 具体转换方式下面会细讲.<br>2) 观测独立的假设, HMM模型中是由<strong>隐状态序列(实体标记)生成可观测状态(可读文本)的过程</strong>, 观测独立假设是指在任意时刻观测$o_t$只依赖于当前时刻的隐状态$i_t$, 与其他时刻的隐状态无关. 例如上图中: 粉红色的部分指的是$i_{t+1}$只与$o_{t+1}$有关, 跟粉红色区域之外的所有内容都无关.</p>
 <p>（3）三大参数</p>
 <p>1) HMM的转移概率矩阵（transition probabilities）</p>
 <p><img src="https://i.loli.net/2019/10/10/sQ79N2dwJxjH3GV.jpg" alt="transition.jpg"></p>
@@ -459,15 +464,19 @@
 </ul>
 <p>3). 计算过程</p>
 <p>假设我们通过HMM建模并学习, 得到了模型所估计的参数$(A, B, \pi)$, 注意下面的$A, B$矩阵按行求和为$1$;<br><img src="https://ftp.bmp.ovh/imgs/2019/11/a486241f73ebf648.jpg" alt></p>
-<p>需要申请$T1, T2$两个表格：如果$T1, T2$表格是$i*j$的矩阵, 则矩阵中第$j$列指的是第$j$时刻, 第$i$行指的是第$i$种隐状态, $T1[i, \ j]$指的是在第$j$时刻, 落到隐状态$i$的最大可能的概率是多少(不要着急, 到了下一个时刻就会明白<strong>最大</strong>是什么意思), 而$T2[i, \ j]$记录的是这个<strong>最大可能的概率</strong>是从第$j-1$时刻(上一时刻)的哪一种隐状态$i$转移过来的, 也就是说我们记录的是<strong>最大可能的概率的转移路径</strong>.<br>我们现在将第一时刻的计算结果填入$T1, T2$表格, 注意在第$0$时刻的隐状态是由初始隐状态概率矩阵提供的, 而不是从上一时刻的隐状态转移过来的, 所以我们直接在$T2$表格上记为$NAN(not \ a \ number)$。然后计算表格上每个位置的最大概率。</p>
+<p>需要申请$T1, T2$两个表格：如果$T1, T2$表格是$i<em>j$的矩阵, 则矩阵中第$j$列指的是第$j$时刻, 第$i$行指的是第$i$种隐状态, $T1[i, \ j]$指的是在第$j$时刻, 落到隐状态$i$的最大可能的概率是多少(不要着急, 到了下一个时刻就会明白*</em>最大<strong>是什么意思), 而$T2[i, \ j]$记录的是这个</strong>最大可能的概率<strong>是从第$j-1$时刻(上一时刻)的哪一种隐状态$i$转移过来的, 也就是说我们记录的是</strong>最大可能的概率的转移路径**.<br>我们现在将第一时刻的计算结果填入$T1, T2$表格, 注意在第$0$时刻的隐状态是由初始隐状态概率矩阵提供的, 而不是从上一时刻的隐状态转移过来的, 所以我们直接在$T2$表格上记为$NAN(not \ a \ number)$。然后计算表格上每个位置的最大概率。</p>
 <p><img src="https://ftp.bmp.ovh/imgs/2019/11/0f22b049e5783bc3.jpg" alt></p>
 <p>4). 时间复杂度</p>
 <p>假设有$N$种隐状态，在每个时刻之间，一共可能有 $N^2$种方式，假设有$T$时刻，那么viterbi 算法的时间复杂度$O(TN^2)$</p>
 <h2 id="分析代码"><a href="#分析代码" class="headerlink" title="分析代码"></a>分析代码</h2><p>（1）数据处理部分</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.tag_size = len(self.tag2idx) <span class="comment"># 对于tag标签是len 取得长度</span></span><br><span class="line">self.vocab_size = max([v <span class="keyword">for</span> _, v <span class="keyword">in</span> self.char2idx.items()]) + <span class="number">1</span> <span class="comment"># 对于vocab 是需要求解index的最大值，有可能vocab中空着一些，以备后用</span></span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">self.pi = np.log(self.pi) <span class="comment"># 在计算矩阵相乘的时候，log 运算转换成了矩阵加法，防止下溢出</span></span><br><span class="line">self.transition = np.log(self.transition)</span><br><span class="line">self.emission = np.log(self.emission)</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T1_table[i, :] = np.max(curr_score, axis=<span class="number">0</span>) <span class="comment"># 使用viterbi 算法时候，t1 table存储概率最大值，t2 table 存储最大值所属于上一个隐状态的序号</span></span><br><span class="line">T2_table[i, :] = np.argmax(curr_score, axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval() <span class="comment"># 执行一个字符串表达式，然后返回运行的结果；一般来说可能不安全</span></span><br></pre></td></tr></table></figure>
+
 <p>参考文献</p>
 <p>1.<a href="https://gg2.chn.moe/extdomains/en.wikipedia.org/wiki/Hidden_Markov_model" target="_blank" rel="noopener">Hidden Markov model</a><br>2.<a href="https://github.com/aespresso/a_journey_into_math_of_ml" target="_blank" rel="noopener">NER_hidden_markov_model</a></p>
 
@@ -603,7 +612,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

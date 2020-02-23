@@ -393,6 +393,7 @@
       
         <p>介绍深度网络中小的基本概念，比如权重初始化、激活函数和优化器 和常见的技术比如 dropout。</p>
 <a id="more"></a>
+
 <h2 id="Weights-Initialization"><a href="#Weights-Initialization" class="headerlink" title="Weights Initialization"></a>Weights Initialization</h2><p>weights 的初始化在网络的训练起到重要的作用，初始化的好坏能够直接影响到网络是否可以正常收敛。这里的初始化都是指的是weights初始化。bias 表示偏差，噪声，作用在于企图去描述真实的分布（高斯分布），通过引入随机性来表示这个是具有推广性的。主要介绍常见的三种初始化方法和选择方法。</p>
 <blockquote>
 <p>Here’s another trick — before squishing our scalar value (called an activation) into the sigmoid function, we can add a little number called the bias, b. There will be two biases, one for each user and one for each movie.</p>
@@ -402,22 +403,28 @@
 <p>a) If weights are initialized with very high values the term np.dot(W,X)+becomes significantly higher and if an activation function like sigmoid() is applied, the function maps its value near to 1 where slope of gradient changes slowly and learning takes a lot of time.<br>b) If weights are initialized with low values it gets mapped to 0, where the case is same as above.</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w =np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+
 <p>另外的表述方式：</p>
 <blockquote>
 <p>If the weights start too small, then the signal shrinks as it passes through each layer until it’s too small to be useful.<br>If the weights start too large, then the signal grows as it passes through each layer until it’s too massive to be useful (big value in sigmoid function).</p>
 </blockquote>
 <h3 id="Xavier-initialization-ˈzeɪvjər-s"><a href="#Xavier-initialization-ˈzeɪvjər-s" class="headerlink" title="Xavier initialization /ˈzeɪvjər/s"></a>Xavier initialization /ˈzeɪvjər/s</h3><p>For deep networks, we can use a heuristic to initialize the weights depending on the non-linear activation function. This applies to Xavier and He initialization. Xavier/Glorot Initialization initializes the weights in your network by drawing them from a distribution with zero mean and a specific variance.<br>$$ { var } ( w _ { i } ) = \frac { 1 } { layer_{l-1}}$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">1</span>/layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+
+
 <p>In practice, it works better for layers with sigmoid or tanh function. </p>
 <p>总的思想原则：<br>They set the weights neither too much bigger that 1, nor too much less than 1.<br>就是本来就是在 (0,1) 标准正太分布出来，然后进行了进一步的约束条件。思想当特征数量越大的时候，weights 的波动情况是成反比的，最后的weights 数值越接近于均值附近。</p>
 <h3 id="He-Initialization"><a href="#He-Initialization" class="headerlink" title="He Initialization"></a>He Initialization</h3><p>Using RELU or Leaky RELU is relatively robust to the vanishing/ exploding gradient issues compared with sigmoid function especially for networks that are not too deep. And it the case of Leaky RELU, it never has zero gradients. For RELU, we multiply the randomly generated values of $w$ by:</p>
-<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } } }$$<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">2</span>/layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></p>
+<p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } } }$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">2</span>/layer_size[l<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+
 <p>Sometimes, we combine the idea of Xavier initialization and He initializaiton so the variance becomes the following:</p>
 <p>$$\sqrt { \frac { 2 } { layer _ { [ l - 1 ] } + \operatorname { layer } _ { [ l ] } } }$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">w=np.random.randn(layer_size[l],layer_size[l<span class="number">-1</span>])*np.sqrt(<span class="number">2</span>/(layer_size[l<span class="number">-1</span>]+layer_size[l]))</span><br><span class="line"><span class="comment"># 代码中 random() 中的两个参数是 shape，最后的np.sqrt 标准差</span></span><br></pre></td></tr></table></figure>
+
 <p>The idea behind this is that we set the weights neither too much bigger than 1 nor too much less than 1 so the gradients do not vanish or explode too quickly.</p>
 <p>所以上述的初始化从数学的角度去理解： 从(0,1) 标准正太分布 转换成了 (0, np.sqrt(2/ size_l -1)) 这样的分布，就是你网络结构是越宽，那么这个方差就是越小的，最后的结果是越集中的，就越集中的 均值 u 左右。从图像的角度看，方差越大，图像越矮胖；方差越小，图像越瘦高。</p>
-<p><strong> Takeoff</strong></p>
+<p>** Takeoff**</p>
 <p>In summary, the main difference in machine learning is the following:</p>
 <ul>
 <li>He initialization works better for layers with ReLu(s) activation.</li>
@@ -459,28 +466,28 @@
 <p>不同点：<br>pooling 是没有 weights 或者 parameter 更新，仅仅是下采样<br>convolution layer 则不一样，提取了特征并且进行了下采样。</p>
 <h3 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h3><p>连接所有的特征，将输出值送给分类器（如softmax分类器）</p>
 <p>比如说上一层（池化层）的输出为：$(111 \times 111 \times 16) $，从第一层到第二层，只是图片大小发生了变化，深度没有发生变化，而Dense对应的神经元个数为133个，那么还是根据公式：$weight \times x + bias$，计算得：$133 \times16+133=2261$</p>
-<h3 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h3><p><strong> 概念</strong></p>
+<h3 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h3><p>** 概念**</p>
 <p>dropout 是指在深度学习网络的训练过程中，按照一定的概率将一部分神经网络单元暂时从网络中丢弃，相当于从原始的网络中找到一个更瘦的网络。</p>
-<p><strong> why</strong></p>
+<p>** why**</p>
 <p>我们在训练神经网络的时候，会遇到两大缺点：</p>
 <ul>
 <li>容易过拟合</li>
 <li>费时</li>
 </ul>
 <p>dropout 主要是为了在一定程度上减少过拟合。</p>
-<p><strong> 工作原理</strong></p>
+<p>** 工作原理**</p>
 <ul>
 <li>首先随机（临时）删掉网络中一半的隐藏神经元，输入输出神经元保持不变（图中虚线为部分临时被删除的神经元）</li>
 <li>然后把输入x通过修改后的网络前向传播，然后把得到的损失结果通过修改的网络反向传播。一小批训练样本执行完这个过程后，在没有被删除的神经元上按照随机梯度下降法更新对应的参数（w，b）</li>
 <li>继续重复这一过程：恢复被删掉的神经元（此时被删除的神经元保持原样，而没有被删除的神经元已经有所更新）。从隐藏层神经元中随机选择一个一半大小的子集临时删除掉（备份被删除神经元的参数）。</li>
 <li>不断的重复着一过程</li>
 </ul>
-<p><strong>怎么理解测试时权重参数w要乘以概率p？ </strong></p>
+<p>*<em>怎么理解测试时权重参数w要乘以概率p？ *</em></p>
 <p> 假设总共有100个神经元，训练的时候我们加上dropout，p=0.5，那么我们就有50个神经元参与训练，那么我们每次50个神经元训练出来的模型参数w是要比直接100个神经元要小的，因为它更新的次数会更少。我们测试的时候100个神经元是都会参与计算的，这就跟训练的时候我们使用50个神经元产生差异了，如果要保证测试的时候每个神经元的关联计算不能少，只能从通过改变w来达到跟训练时一样输出，所以才会有权重参数w乘以p。</p>
-<p><strong> 为什么 dropout 可以有效的减少过拟合？</strong><br>（类似取平均的活动）<br>因为不同的网络可能产生不同的过拟合，取平均则有可能让一些“相反的”拟合互相抵消。dropout掉不同的隐藏神经元就类似在训练不同的网络，随机删掉一半隐藏神经元导致网络结构已经不同，整个dropout过程就相当于对很多个不同的神经网络取平均。</p>
+<p>** 为什么 dropout 可以有效的减少过拟合？**<br>（类似取平均的活动）<br>因为不同的网络可能产生不同的过拟合，取平均则有可能让一些“相反的”拟合互相抵消。dropout掉不同的隐藏神经元就类似在训练不同的网络，随机删掉一半隐藏神经元导致网络结构已经不同，整个dropout过程就相当于对很多个不同的神经网络取平均。</p>
 <h3 id="梯度消失-梯度爆炸"><a href="#梯度消失-梯度爆炸" class="headerlink" title="梯度消失/ 梯度爆炸"></a>梯度消失/ 梯度爆炸</h3><p> 首先一个观点，梯度消失和梯度爆炸本质上一回事。</p>
 <p> 理由：sigmoid 导数的最大值为0.25，通常 abs(w) &lt; 1,则上述分析中的激活函数的导数与权重的积小于0.25，前面的层比后面的层梯度变化更小，故变化更慢，从而引起了梯度消失问题。当权值过大，前面层比后面层梯度变化更快，则引起梯度爆炸问题。所以后面的梯度消失和梯度爆炸只是前面初始化值的一种蝴蝶效应，只是数值问题。</p>
-<p> <strong> 解决方法</strong></p>
+<p> ** 解决方法**</p>
 <ol>
 <li>重新设计网络结构</li>
 </ol>
@@ -501,7 +508,7 @@
 </ul>
 <p>ps:</p>
 <p>CONV / FC - &gt; BatchNorm - &gt; ReLu（或其他激活） - &gt; Dropout - &gt; CONV / FC<br>对于 cnn 还有一种常见的结构：<br>先卷积，再batchnorm, 然后激活函数，最后pooling<br>在fully connection中的应用，用在全连接层之后激活函数之前</p>
-<p> <strong> 理解 正则化如何减少模型过拟合程度</strong></p>
+<p> ** 理解 正则化如何减少模型过拟合程度**</p>
 <p> High Bias（高偏差）就是欠拟合，High Variance（高方差）就是过拟合。<br> <img src="https://i.bmp.ovh/imgs/2019/07/619bdec3f9b8bffb.png" alt></p>
 <p> 简单来说，正则化就是在原来的 cost function 中添加 正则项。</p>
 <p> 正则化项能减少模型的非线性程度，从而降低模型的过拟合。从图中来看，正则化项能将过拟合的模型（蓝色）变为Just Right的模型（粉红色）。</p>
@@ -528,14 +535,18 @@
 <h3 id="为什么使用奇数小尺寸的卷积核"><a href="#为什么使用奇数小尺寸的卷积核" class="headerlink" title="为什么使用奇数小尺寸的卷积核"></a>为什么使用奇数小尺寸的卷积核</h3><blockquote>
 <p>For an odd-sized filter, all the previous layer pixels would be symmetrically around the output pixel. Without this symmetry, we will have to account for distortions across the layers which happens when using an even sized kernel. Therefore, even sized kernel filters are mostly skipped to promote implementation simplicity.<br>选择奇数个数的filter 是因为前后的filter 是有对称性的。下图所示。</p>
 </blockquote>
-<p><img src="https://ftp.bmp.ovh/imgs/2019/12/a730dba1a8f29659.png" width="80%" height="60%"></p>
+<img src="https://ftp.bmp.ovh/imgs/2019/12/a730dba1a8f29659.png" width="80%" height="60%">
+
+
 <p>$3x3$ 是最小的能够捕获像素八邻域信息的尺寸。</p>
 <p>1). 参数量<br>多个 $3x3 $的卷积层比一个大尺寸的 filter 有更少的参数，假设卷基层的输入和输出的特征图大小相同为$ C$，那么三个 $3x3$ 的卷积层参数个数 $3x（3x3xCxC）=27C^2$；一个$7x7 $的卷积层参数为 $49C^2$；所以可以把三个 $3x3 $的filter看成是一个$7x7 $filter的分解。<br>2). 增加非线性<br>多个 $3x3 $的卷基层比一个大尺寸 filter卷基层有更多的非线性（更多层的非线性函数），使得判决函数更加具有判决性。</p>
 <h3 id="1-1-的卷积核特点"><a href="#1-1-的卷积核特点" class="headerlink" title="$1 * 1$的卷积核特点"></a>$1 * 1$的卷积核特点</h3><p>1). 降维/升维</p>
 <p>2). 增加非线性</p>
 <p>$1 *1 $卷积核，可以在保持feature map尺度不变的（即不损失分辨率）的前提下大幅增加非线性特性（利用后接的非线性激活函数），把网络做的很deep。</p>
 <p>3). 从全连接层的角度理解 $1 * 1$卷积操作</p>
-<p><img src="https://upload.cc/i1/2019/12/12/PHKs1c.png" width="60%" height="40%"></p>
+<img src="https://upload.cc/i1/2019/12/12/PHKs1c.png" width="60%" height="40%">
+
+
 <p>左边6个神经元，分别是a1—a6，通过全连接之后变成5个，分别是b1—b5</p>
 <p>左边6个神经元相当于输入特征里面的channels：6</p>
 <p>右边5个神经元相当于$1 *1$卷积之后的新的特征channels：5</p>
@@ -665,7 +676,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

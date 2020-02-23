@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="Hexo博客的相关优化：包括本地搜索功能的实现。（持续更新）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-30T11:31:48.352Z">
+<meta property="og:updated_time" content="2020-02-17T10:17:27.576Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo博客的相关优化">
 <meta name="twitter:description" content="Hexo博客的相关优化：包括本地搜索功能的实现。（持续更新）">
@@ -310,8 +310,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-01-30T19:31:48+08:00">
-                2020-01-30
+              <time title="Post modified" itemprop="dateModified" datetime="2020-02-17T18:17:27+08:00">
+                2020-02-17
               </time>
             
           </span>
@@ -361,6 +361,9 @@
       
         <p>Hexo博客的相关优化：包括本地搜索功能的实现。（持续更新）</p>
 <a id="more"></a>
+
+
+
 <h2 id="Hexo本地搜索功能的实现"><a href="#Hexo本地搜索功能的实现" class="headerlink" title="Hexo本地搜索功能的实现"></a>Hexo本地搜索功能的实现</h2><p>随着文章篇幅的增多，tag 和 category 已经不能满足快速检索的要求。因此，提供搜索功能势在必行。对于大型的搜索引擎而言，需要建立倒排索引。倒排索引就是以检索词为key，然后包含所有该 key 的文章列表为value， 我们输入的query 经过分词之后，得到检索词中的各个 term， 然后这些term 求交集就得到了包含检索词中所有term 的文章。</p>
 <p>但在个人网站上使用 markdown书写，属于静态博客，对于这种类型的博客的搜索方案一般有两种：</p>
 <ul>
@@ -370,11 +373,18 @@
 <p>基于搜索引擎的提供的搜索功能，如Google 和百度，除了<code>众所周知</code>的原因造成的无法使用，搜索的结果还取决于该搜索引擎对本站点的收录情况。</p>
 <p>So，这里是第二种方式：基于本站的数据源，然后提供搜索功能。</p>
 <p>（1）使用 hexo-generator-search 生成索引文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-generator-search</span><br><span class="line">npm install hexo-generator-search --save</span><br></pre></td></tr></table></figure>
-<p>（2）修改站点配置文件 <code>_config.yml</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-search --save</span><br></pre></td></tr></table></figure>
+
+<p>npm short for node package manager，被称为node 包管理器。<br>（2）修改站点配置文件 <code>_config.yml</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br></pre></td></tr></table></figure>
+
 <p>hexo-generator-search 会为全站所有 post 类型生成结构化数据，如果 <code>field: all</code> 那么page 类型的页面也会被纳入索引（会变卡）</p>
 <p>（3）修改主题配置文件<code>themes/next/_config.yml</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Dependencies: https://github.com/flashlab/hexo-generator-search</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br><span class="line">  # if auto, trigger search by changing input</span><br><span class="line">  # if manual, trigger search by pressing enter key or search button</span><br><span class="line">  trigger: auto</span><br><span class="line">  # show top n results per article, show all results by setting to -1</span><br><span class="line">  top_n_per_article: 10</span><br></pre></td></tr></table></figure>
+
+<p>当再次生成结构化数据时候的步骤：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">npm install hexo-generator-search --save <span class="comment"># 注意安装更新，修bug</span></span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br><span class="line">hexo d  <span class="comment"># 这个不使用，不用push 到线上</span></span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -399,8 +409,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/02/gnn/" rel="next" title="GNN">
-                <i class="fa fa-chevron-left"></i> GNN
+              <a href="/2020/01/07/nginx/" rel="next" title="介绍 nginx">
+                <i class="fa fa-chevron-left"></i> 介绍 nginx
               </a>
             
           </div>
@@ -409,8 +419,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/01/12/multi-task_learning/" rel="prev" title="Multi-Task Learning（多任务学习）">
-                Multi-Task Learning（多任务学习） <i class="fa fa-chevron-right"></i>
+              <a href="/2020/01/09/tensorboard/" rel="prev" title="介绍 Tensorboard">
+                介绍 Tensorboard <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -500,7 +510,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

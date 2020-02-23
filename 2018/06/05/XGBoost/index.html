@@ -390,6 +390,10 @@
       
         <p>介绍 xgboost 原理, xgboost+ lr 模型和 决策树。</p>
 <a id="more"></a>
+
+
+
+
 <h2 id="提升树简介"><a href="#提升树简介" class="headerlink" title="提升树简介"></a>提升树简介</h2><h3 id="监督学习的要素"><a href="#监督学习的要素" class="headerlink" title="监督学习的要素"></a>监督学习的要素</h3><ol>
 <li>model and parameters</li>
 </ol>
@@ -500,11 +504,8 @@
 </li>
 </ul>
 <p>（1） Basic Exact Greedy Algorithm</p>
-<p>暴力解法就是exact greedy algorithm。做法：在所有可能的分裂点上遍历所有的features 的值。效果虽然好，但是时间效率不高。<br>（2）approximate algorithm<br>exact greedy algorithm的缺点除了时间成本，还有内存上方面的考虑。当数据无法一次性读入内存，那么就不能使用。approximate algorithm：</p>
-<pre><code>- 根据feature 的分布选择候选分裂点
-- 根据分裂点划分连续数值的feature，分成不同的桶
-- 根据桶find 最好的结果（遍历成本就小了）
-</code></pre><ol start="5">
+<p>暴力解法就是exact greedy algorithm。做法：在所有可能的分裂点上遍历所有的features 的值。效果虽然好，但是时间效率不高。<br>（2）approximate algorithm<br>exact greedy algorithm的缺点除了时间成本，还有内存上方面的考虑。当数据无法一次性读入内存，那么就不能使用。approximate algorithm：<br>    - 根据feature 的分布选择候选分裂点<br>    - 根据分裂点划分连续数值的feature，分成不同的桶<br>    - 根据桶find 最好的结果（遍历成本就小了）</p>
+<ol start="5">
 <li>sparsity-aware split finding</li>
 </ol>
 <p>有三种来源：</p>
@@ -516,11 +517,11 @@
 <p>类别变量是第三种情况：</p>
 <blockquote>
 <p>Actually it is not necessary to handle categorical separately</p>
+</blockquote>
 <ul>
 <li>We can encode the categorical variables into numerical vector using one-hot encoding. Allocate a #categorical length vector</li>
 <li>The vector will be sparse if there are lots of categories, the learning algorithm is preferred to handle sparse data</li>
 </ul>
-</blockquote>
 <p>把类别变量进行one-hot 转换成数值类型，那么最后就可以使用树的模型进行计算；算法比较擅长处理稀疏数据</p>
 <ol start="6">
 <li>Shrinkage and Column Subsampling</li>
@@ -768,7 +769,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

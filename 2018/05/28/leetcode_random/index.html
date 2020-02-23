@@ -383,6 +383,9 @@
       
         <p>Leetcode刷题笔记- random.</p>
 <a id="more"></a>
+
+
+
 <p>（1）rand3() -&gt; rand7()</p>
 <blockquote>
 <p>给定一个可以等概率生成1-3的rand3()函数生成器，求解可以随机等概率生成1-7的rand7()函数生成器。</p>
@@ -397,8 +400,7 @@
 <th>9</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>1</td>
 <td>4</td>
 <td>7</td>
@@ -416,8 +418,7 @@
 <td>9</td>
 <td>12</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>转成这种样子：    </p>
 <table>
 <thead>
@@ -428,8 +429,7 @@
 <th>9</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>1</td>
 <td>1</td>
 <td>4</td>
@@ -447,16 +447,17 @@
 <td>6</td>
 <td>9</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>从以上的两个例子中，这种随机数的套路应该是掌握了吧。如果是 randx() 那么这个生成式子 就是 randx() + randx() *x</p>
 <p>这个乘数必须是 x ，要不然就重复生成了一个数字，那么最后就没有办法达到等概率，至于最后的减去的数字则是根据实际情况选择。一定要生成连续不重复的数字，这样才能是等概率的。</p>
 <p>减去的数字保证了取余能够整除的。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rand3_to_rand7</span><span class="params">()</span>:</span></span><br><span class="line">    value =<span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">4</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>):</span><br><span class="line">            value =i + j*<span class="number">3</span> <span class="number">-3</span></span><br><span class="line">            <span class="keyword">if</span> value &gt;<span class="number">7</span>:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">return</span> value% <span class="number">7</span></span><br></pre></td></tr></table></figure>
+
 <p>（2）rand2() -&gt; rand5()</p>
 <p>Given rand2(), you should get rand5()</p>
 <p>如果只是使用两个 rand2() 那么只能得到四种可能性，不足以生成 rand5() ，所以要使用3 个rand2() ，这个时候得到了 8种可能性，减去3 种，那么就OK 了。( 从这个例题中可以得到是使用多个 randx() 的倍数是 x)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int rand7() &#123;</span><br><span class="line">     int x = rand2() * <span class="number">4</span> + rand2() * <span class="number">2</span> + rand2();</span><br><span class="line">     <span class="keyword">if</span> (x == <span class="number">7</span>) <span class="keyword">return</span> rand7(); // restart</span><br><span class="line">     <span class="keyword">else</span> <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>（3）<a href="https://leetcode.com/problems/implement-rand10-using-rand7/" target="_blank" rel="noopener">470. Implement Rand10() Using Rand7()</a></p>
 <p>基本的思路：首先构造生成器randN，N 是10的倍数，这样 randN % 10 就可以得到结果。 更加具体的操作步骤：</p>
 <ul>
@@ -466,7 +467,9 @@
 <li>将上一步骤中产生的结构 mod 10 +1 ，然后等概率随机产生了 [1, 10]的数字</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// The rand7() API <span class="keyword">is</span> already defined <span class="keyword">for</span> you.</span><br><span class="line">// int rand7();</span><br><span class="line">// @<span class="keyword">return</span> a random integer <span class="keyword">in</span> the range <span class="number">1</span> to <span class="number">7</span></span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int rand10() &#123;</span><br><span class="line">        <span class="keyword">return</span> rand40() % <span class="number">10</span> +<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    int rand49()&#123;</span><br><span class="line">        <span class="keyword">return</span> (rand7() <span class="number">-1</span>) * <span class="number">7</span> + (rand7() <span class="number">-1</span>);</span><br><span class="line">    &#125;  </span><br><span class="line">    int rand40()&#123;</span><br><span class="line">        int r =rand49();</span><br><span class="line">        <span class="keyword">while</span>(r &gt;= <span class="number">40</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            r =rand49();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> r;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># The rand7() API is already defined for you.</span></span><br><span class="line"><span class="comment"># def rand7():</span></span><br><span class="line"><span class="comment"># @return a random integer in the range 1 to 7</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="comment"># 首先是 rand49() 然后是 rand40() 最后是 rand10()</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rand10</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.rand40() %<span class="number">10</span> +<span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rand40</span><span class="params">(self)</span>:</span></span><br><span class="line">        t =self.rand49()</span><br><span class="line">        <span class="keyword">while</span> t &gt;= <span class="number">40</span>:</span><br><span class="line">            t =self.rand49()</span><br><span class="line">        <span class="keyword">return</span> t</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rand49</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> (rand7()<span class="number">-1</span>) *<span class="number">7</span> + rand7() <span class="number">-1</span> <span class="comment"># 这个是两次random， 不能简单的说把两者给合并起来</span></span><br></pre></td></tr></table></figure>
+
 <p>（4）一个返回[0, 1] 浮点数的随机函数 random() ，请利用该函数，完成一个从52 张扑克牌中不放回抽取 3张牌的函数，要求每张牌被抽取的概率一致。</p>
 <p>这个暂时没有很好的思路。。。。。</p>
 
@@ -585,7 +588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

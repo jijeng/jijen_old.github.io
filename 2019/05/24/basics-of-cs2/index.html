@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://upload.cc/i1/2019/09/20/F1yRb0.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/10/25/1oTQRZhi75arLqM.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/10/25/ypnCU28dqm6fLOi.jpg">
-<meta property="og:updated_time" content="2020-02-02T02:40:22.118Z">
+<meta property="og:updated_time" content="2020-02-10T06:27:07.052Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机基础（2）">
 <meta name="twitter:description" content="计算机中的基础知识，比如计算机网络、软件工程。">
@@ -318,8 +318,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-02-02T10:40:22+08:00">
-                2020-02-02
+              <time title="Post modified" itemprop="dateModified" datetime="2020-02-10T14:27:07+08:00">
+                2020-02-10
               </time>
             
           </span>
@@ -391,6 +391,12 @@
       
         <p>计算机中的基础知识，比如计算机网络、软件工程。</p>
 <a id="more"></a>
+
+
+
+
+
+
 <h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><p>常用的命令</p>
 <ol>
 <li>ping<br>ping 命令式用来测试TCP/IP 网络是否畅通或者网络连接速度的命令。</li>
@@ -437,7 +443,7 @@
 <li>nslookup</li>
 </ol>
 <p>nslookup命令用于查询DNS的记录，查看域名解析是否正常，在网络故障的时候用来诊断网络问题。</p>
-<p><strong> Http和Https的区别</strong></p>
+<p>** Http和Https的区别**</p>
 <p>Http协议运行在TCP之上，明文传输，客户端与服务器端都无法验证对方的身份；Https是身披SSL(Secure Socket Layer)外壳的Http，运行于SSL上，SSL运行于TCP之上，是添加了加密和认证机制的HTTP。二者之间存在如下不同：</p>
 <ul>
 <li>端口不同：Http与Http使用不同的连接方式，用的端口也不一样，http是80，https是443；</li>
@@ -445,7 +451,7 @@
 <li>开销：Https通信需要证书，而证书一般需要向认证机构购买；　</li>
 </ul>
 <p>Https的加密机制是一种共享密钥加密和公开密钥加密并用的混合加密机制。</p>
-<p><strong> 对称加密与非对称加密</strong></p>
+<p>** 对称加密与非对称加密**</p>
 <p>对称密钥加密是指加密和解密使用同一个密钥的方式，这种方式存在的最大问题就是密钥发送问题，即如何安全地将密钥发给对方；而非对称加密是指使用一对非对称密钥，即公钥和私钥，公钥可以随意发布，但私钥只有自己知道。发送密文的一方使用对方的公钥进行加密处理，对方接收到加密信息后，使用自己的私钥进行解密。</p>
 <p>由于非对称加密的方式不需要发送用来解密的私钥，所以可以保证安全性；但是和对称加密比起来，它非常的慢，所以我们还是要用对称加密来传送消息，但对称加密所使用的密钥我们可以通过非对称加密的方式发送出去。</p>
 <p><strong>三次握手和四次握手</strong></p>
@@ -477,14 +483,14 @@
 <li><p>流量控制：TCP连接的每一方都有固定大小的缓冲空间。TCP的接收端只允许另一端发送接收端缓冲区所能接纳的数据，这可以防止较快主机致使较慢主机的缓冲区溢出，这就是流量控制。TCP使用的流量控制协议是可变大小的滑动窗口协议。</p>
 </li>
 </ul>
-<p><strong> Get与POST的区别</strong></p>
+<p>** Get与POST的区别**</p>
 <p>GET与POST是我们常用的两种HTTP Method，二者之间的区别主要包括如下五个方面：</p>
 <p>(1). 从功能上讲，GET一般用来从服务器上获取资源，POST一般用来更新服务器上的资源；</p>
 <p>(2). 从REST服务角度上说，GET是幂等的，即读取同一个资源，总是得到相同的数据，而POST不是幂等的，因为每次请求对资源的改变并不是相同的；进一步地，GET不会改变服务器上的资源，而POST会对服务器资源进行改变；</p>
 <p>(3). 从请求参数形式上看，GET请求的数据会附在URL之后，即将请求数据放置在HTTP报文的 请求头 中，以?分割URL和传输数据，参数之间以&amp;相连。特别地，如果数据是英文字母/数字，原样发送；否则，会将其编码为 application/x-www-form-urlencoded MIME 字符串(如果是空格，转换为+，如果是中文/其他字符，则直接把字符串用BASE64加密，得出如：%E4%BD%A0%E5%A5%BD，其中％XX中的XX为该符号以16进制表示的ASCII)；而POST请求会把提交的数据则放置在是HTTP请求报文的 请求体 中。</p>
 <p>(4). 就安全性而言，POST的安全性要比GET的安全性高，因为GET请求提交的数据将明文出现在URL上，而且POST请求参数则被包装到请求体中，相对更安全。</p>
 <p>(5). 从请求的大小看，GET请求的长度受限于浏览器或服务器对URL长度的限制，允许发送的数据量比较小，而POST请求则是没有大小限制的。</p>
-<p><strong> TCP与UDP的区别</strong></p>
+<p>** TCP与UDP的区别**</p>
 <ul>
 <li><p>TCP (Transmission Control Protocol)和UDP(User Datagram Protocol)协议属于传输层协议，它们之间的区别包括：</p>
 </li>
@@ -518,7 +524,7 @@
 <li>快恢复：快重传配合使用的还有快恢复算法，当发送方连续收到三个重复确认时，就执行“乘法减小”算法，把ssthresh门限减半，但是接下去并不执行慢开始算法：因为如果网络出现拥塞的话就不会收到好几个重复的确认，所以发送方现在认为网络可能没有出现拥塞。所以此时不执行慢开始算法，而是将cwnd设置为ssthresh的大小，然后执行拥塞避免算法。</li>
 </ol>
 <p>ARP是地址解析协议</p>
-<p><strong> DNS（Domain Name System）域名系统</strong></p>
+<p>** DNS（Domain Name System）域名系统**</p>
 <p>当DNS客户机需要在程序中使用名称时，它会查询DNS服务器来解析该名称。客户机发送的每条查询信息包括三条信息：包括：指定的DNS域名，指定的查询类型，DNS域名的指定类别。基于UDP服务，端口53.该应用一般不直接为用户使用，而是为其他应用服务，如HTTP，SMTP等在其中需要完成主机名到IP地址的转换。</p>
 <p><strong>TCP和UDP分别对应的常见应用层协议</strong></p>
 <p>TCP对应的应用层协议</p>
@@ -557,6 +563,7 @@
 <p>举例来说，TCP协议可以为各种各样的程序传递数据，比如Email、WWW、FTP等等。那么，必须有不同协议规定电子邮件、网页、FTP数据的格式，这些应用程序协议就构成了”应用层”。</p>
 <p>用户的上网设置</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">　　* 本机的IP地址</span><br><span class="line">　　* 子网掩码</span><br><span class="line">　　* 网关的IP地址</span><br><span class="line">　　* DNS的IP地址</span><br></pre></td></tr></table></figure>
+
 <p>所谓”动态IP地址”，指计算机开机后，会自动分配到一个IP地址，不用人为设定。它使用的协议叫做DHCP协议。首先，它是一种应用层协议，建立在UDP协议之上。</p>
 <p>我们知道，发送数据包，必须要知道对方的IP地址。但是，现在，我们只知道网址<a href="http://www.google.com，不知道它的IP地址。DNS协议可以帮助我们，将这个网址转换成IP地址。已知DNS服务器为8.8.8.8，于是我们向这个地址发送一个DNS数据包（53端口）。TCP数据包的标头长度为20字节，加上嵌入HTTP的数据包，总长度变为4980字节。" target="_blank" rel="noopener">www.google.com，不知道它的IP地址。DNS协议可以帮助我们，将这个网址转换成IP地址。已知DNS服务器为8.8.8.8，于是我们向这个地址发送一个DNS数据包（53端口）。TCP数据包的标头长度为20字节，加上嵌入HTTP的数据包，总长度变为4980字节。</a></p>
 <p>浏览网页用的是HTTP协议</p>
@@ -598,6 +605,55 @@
 <p>外（共）网ip 用于域名解析，服务器远程登录。内网ip 不能用于域名解析，其主要作用是跟当前账号下的其他机器（同集群）的机器通信。小型企业或者学校都会申请一个固定ip（公网），然后学校的其他机器使用内网ip，主要是考虑到ip 资源有限。内网ip 地址形式： 10.x.x.x, 172.16.x.x - 172.31.x.x 和 192.168.x.x 等。</p>
 <p>内网机器想要访问外网时候，首先需要通过 NAT（Network Address Translation，网络地址转换）功能，将内部计算机中的ip 设置成公共ip 地址，然后和外网通信。</p>
 <p>实例：申请购买的阿里云得到的公网ip 地址，可以ssh，但是机器本身的ip 是内网地址，不可以 ssh。</p>
+<p>（3）hosts 文件</p>
+<p>hosts 的概念</p>
+<p>一般来说，当用户在电脑浏览器里输网址后，系统需要通过查询网络上的DNS服务器，才能将域名解析成对应的IP地址，浏览器通过IP地址才能找到该网站所在的服务器进行访问。</p>
+<p>而操作系统中的hosts文件则是有着类似“本地DNS服务器”的作用，而且比网络上的DNS具有更高的优先级。如果你在hosts里面配置了某个域名和IP的对应关系，比如127.0.0.1 -&gt; localhost，那么当你在本机访问localhost时，系统首先会从hosts里面解析出127.0.0.1这个IP，而不会再去查询网络上的DNS服务器。</p>
+<p>localhost 和 127.0.0.1 的区别？</p>
+<p>localhost：也叫做local称为（本地服务器）<br>127.0.0.1：在windows系统下称之为：本机地址（本机服务器）</p>
+<p>两者的区别？</p>
+<p>localhost：是不经网卡传输！并且不受防火墙和网卡相关的限制</p>
+<p>127.0.0.1：是通过网卡传输，依赖网卡，并且受到网卡和防火墙的限制</p>
+<p>localhost是本地DNS解析的127.0.0.1的域名，在打开本机host文件可看到。而这个localhost是可以随意更改的，比如改成baidu.com。</p>
+<p>修改hosts 文件的作用？</p>
+<p>为局域网某些IP的机器配置一个“网址别名”，方便自己记忆和访问。比如配置 gongsi.com 访问公司网站；配置mail.com 访问自己常用的邮箱等。当然前提是要知道目标网站服务器的IP地址。<br>将域名指向到不可访问的IP地址，达到屏蔽不健康网站、屏蔽垃圾广告网址的效果；同理也能禁止系统、软件、网站访问某些指定的网址；<br>开发或测试应用时，利用Hosts将域名临时指向到测试服务器IP，可以方便自己测试，同时又不影响他人和线上的应用。</p>
+<p>Mac系统hosts跟Linux一样位于<code>/etc/hosts</code></p>
+<p>（1）加快对于某个网站的访问速度，加快域名解析，防止DNS 污染和劫持</p>
+<p>没有修改之前的访问速度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">round-trip min/avg/max/stddev = 2.094/2.697/4.953/0.798 ms</span><br></pre></td></tr></table></figure>
+
+<p>加上对于百度的解析之后的访问速度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">round-trip min/avg/max/stddev = 1.721/2.504/3.474/0.607 ms</span><br></pre></td></tr></table></figure>
+
+<p>整体上是有提升的。</p>
+<p>（2）自动屏蔽网页恶意插件</p>
+<p>比如说打开某个网站之后，一直弹出广告 or 下载连接。假设该网址是 <code>http://www.123.com/aa.exe</code>，那么修改系统的hosts 文件，增加一行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.0.0.0 http://www.123.com/aa.exe，</span><br></pre></td></tr></table></figure>
+
+<p>所以当访问 <code>http://www.123.com/aa.exe</code>时候，系统自动解析为 <code>0.0.0.0</code> 这样一个不可能存在的地址上，也就屏蔽了该网页插件。</p>
+<p>Hosts写上以下内容： </p>
+<p>127.0.0.1 #屏蔽的网站<br>0.0.0.0 #屏蔽的网站 </p>
+<p>这样计算机解析域名就解析到本机或错误的IP，达到了屏蔽的目的。 </p>
+<p>（3）对于局域网内的服务器设置别名</p>
+<p>局域网内没有DNS 服务器，使用长长的ip 地址太麻烦，所以对</p>
+<p>一般在linux 下修改完 <code>/etc/hosts</code> 文件后会立即生效，但是在windows 中有时候会出现 修改 hosts 后不生效的现象，那怎么解决？</p>
+<p>原因可能有两种</p>
+<p>（1）服务器设置了 <code>keep-alive</code></p>
+<p>keep-alive 相关知识：</p>
+<div><div class="fold_hider"><div class="close hider_title">开/合</div></div><div class="fold">
+<p>我们知道HTTP协议采用“请求-应答”模式，当使用普通模式，即非KeepAlive模式时，每个请求/应答客户和服务器都要新建一个连接，完成之后立即断开连接（HTTP协议为无连接的协议）；当使用Keep-Alive模式（又称持久连接、连接重用）时，Keep-Alive功能使客户端到服务器端的连接持续有效，当出现对服务器的后继请求时，Keep-Alive功能避免了建立或者重新建立连接。</p>
+<p>启用Keep-Alive模式肯定更高效，性能更高。因为避免了建立/释放连接的开销。</p>
+<p>但是设置的时间比较长的话，那么消耗的资源也是比较大的。</p>
+
+</div></div>
+
+
+<p>（2）DNS缓存</p>
+<p>这个一般是由于DNS 缓存的原因。因为系统为了加快用户访问速度，在首次访问成功之后，会把DNS 解析的结果暂时保存在本地缓存（浏览器缓存 or 系统缓存）里一段时间，如果在”这段时间内“再次访问同样的网址，那么就自动会从DNS 缓存中取出结果，而不会远程请求DNS 服务器，也不会查询hosts 文件。</p>
+<p>可以使用以下命令刷新 DNS 缓存。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig /flushdns</span><br></pre></td></tr></table></figure>
+
+<p>所以访问网站的先后顺序是：DNS缓存（浏览器DNS 缓存 和系统DNS 缓存），本地hosts文件和DNS 服务器。</p>
 <h2 id="软件工程"><a href="#软件工程" class="headerlink" title="软件工程"></a>软件工程</h2><p><strong>黑盒测试 白盒测试 和灰盒测试</strong></p>
 <p>黑盒测试：也称功能测试、数据驱动测试，它将被测软件看作一个打不开的黑盒，主要根据功能需求设计测试用例，进行测试。</p>
 <p>常用的方法：</p>
@@ -736,7 +792,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

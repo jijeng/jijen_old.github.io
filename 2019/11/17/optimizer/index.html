@@ -389,6 +389,7 @@
       
         <p>深度学习中优化器 （optimizer）讲解。根据学习率的情况分成三个阶段，基础版本Gradient Descent，然后是人工设置学习率阶段和自适应学习率阶段。最后对应pytorch，说明常用的几种学习率优化策略。</p>
 <a id="more"></a>
+
 <h3 id="vanilla"><a href="#vanilla" class="headerlink" title="vanilla"></a>vanilla</h3><p>(1 ) Gradient Descent</p>
 <p>针对整个数据集</p>
 <p>$$<br>\theta = \theta - \eta \cdot \nabla _ { \theta } J ( \theta )<br>$$<br>特点：</p>
@@ -416,6 +417,7 @@
 </ul>
 <p>在pytorch中的实现：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">torch</span>.<span class="title">optim</span>.<span class="title">SGD</span><span class="params">(params, lr=&lt;required parameter&gt;, momentum=<span class="number">0</span>, dampening=<span class="number">0</span>, weight_decay=<span class="number">0</span>, nesterov=False)</span></span></span><br></pre></td></tr></table></figure>
+
 <p>功能： pytorch中实现的是带有动量优化的SGD，其中常见的参数：</p>
 <ul>
 <li>params (iterable) 待优化的参数或者定义了参数组的dict</li>
@@ -481,6 +483,7 @@
 <p>$$<br>\begin{split}<br>E[g ^2] _t &amp;=\gamma E[ g ^2] _{t-1}+(1-\gamma) g _t ^2 \\<br>\theta _{t+1} &amp;= \theta _t-\frac{\eta}{\sqrt{E\left[g^{2}\right] _{t}+\epsilon}} g _{t}<br>\end{split}<br>$$<br>其中 Hinton推荐超参数 $\gamma =0.9$， $\epsilon =0.001$。（ps RMSprop 和 Adadelta解决的方案叫做： exponentially decaying average of past squared gradients）</p>
 <p>特点：解决了 Adagrad 中出现的梯度为0的情况</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">torch</span>.<span class="title">optim</span>.<span class="title">RMSprop</span><span class="params">(params, lr=<span class="number">0.01</span>, alpha=<span class="number">0.99</span>, eps=<span class="number">1e-08</span>, weight_decay=<span class="number">0</span>, momentum=<span class="number">0</span>, centered=False)</span></span></span><br></pre></td></tr></table></figure>
+
 <p>参数：</p>
 <ul>
 <li>params (iterable) 待优化参数的iterable 或者是低你够了参数组的dict</li>
@@ -502,6 +505,7 @@
 <p>于是进行了 <code>bias-corrected</code><br>$$<br>\begin{split}<br>\hat{m} _{t} &amp;=\frac{m _{t}}{1-\beta _{1} ^{t}} \\<br>\hat{v} _{t} &amp;=\frac{v _{t}}{1-\beta _{2} ^{t}}<br>\end{split}<br>$$<br>最后进行了梯度的更新：<br>$$<br>\theta _{t+1}=\theta _{t}-\frac{\eta}{\sqrt{\hat{v} _{t}}+\epsilon} \hat{m} _{t}<br>$$<br>作者推荐的超参数 $\beta_1 =0.9$， $\beta_2 =0.999$, $\epsilon =10 ^{-8}$</p>
 <p>特点：从实践的角度，Adam是优于上述几种的。所以就不用选择了。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">torch</span>.<span class="title">optim</span>.<span class="title">Adam</span><span class="params">(params, lr=<span class="number">0.001</span>, betas=<span class="params">(<span class="number">0.9</span>, <span class="number">0.999</span>)</span>, eps=<span class="number">1e-08</span>, weight_decay=<span class="number">0</span>, amsgrad=False)</span></span></span><br></pre></td></tr></table></figure>
+
 <p>参数</p>
 <ul>
 <li>params (iterable) 待优化参数的iterable 或者是定义了参数组的dict</li>
@@ -517,6 +521,7 @@
 <p>参数组（param groups）</p>
 <p>optimizer 是通过 <code>param_group</code> 来管理参数组， <code>param_group</code>  中保存了参数组和相应的学习率，动量等。可以针对不同的参数设置不同的学习率。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有两个`param_group`即,len(optim.param_groups)==2</span></span><br><span class="line">optim.SGD([</span><br><span class="line">                &#123;<span class="string">'params'</span>: model.base.parameters()&#125;,</span><br><span class="line">                &#123;<span class="string">'params'</span>: model.classifier.parameters(), <span class="string">'lr'</span>: <span class="number">1e-3</span>&#125;</span><br><span class="line">            ], lr=<span class="number">1e-2</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#一个参数组</span></span><br><span class="line">optim.SGD(model.parameters(), lr=<span class="number">1e-2</span>, momentum=<span class="number">.9</span>)</span><br><span class="line"><span class="comment"># 获得学习率</span></span><br><span class="line">print(<span class="string">'learning rate: &#123;&#125;'</span>.format(optimizer.param_groups[<span class="number">0</span>][<span class="string">'lr'</span>]))</span><br><span class="line">print(<span class="string">'weight decay: &#123;&#125;'</span>.format(optimizer.param_groups[<span class="number">0</span>][<span class="string">'weight_decay'</span>]))</span><br></pre></td></tr></table></figure>
+
 <p>（2） pytorch中学习率调整策略</p>
 <p>PyTorch提供的学习率调整策略分为三大类，分别是</p>
 <ul>
@@ -525,14 +530,18 @@
 <li>自定义调整：自定义调整学习率 LambdaLR。</li>
 </ul>
 <p>有序调整</p>
-<p>1). 等间隔调整学习率 StepLR<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.optim.lr_scheduler.StepLR(optimizer, step_size, gamma=<span class="number">0.1</span>, last_epoch=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure></p>
+<p>1). 等间隔调整学习率 StepLR</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.optim.lr_scheduler.StepLR(optimizer, step_size, gamma=<span class="number">0.1</span>, last_epoch=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+
 <p>参数</p>
 <ul>
 <li>step_size(int) - 学习率下降间隔数，若为 30，则会在 30、 60、 90…个 step 时，将学习率调整为 lr*gamma。</li>
 <li>gamma(float)- 学习率调整倍数，默认为 0.1 倍，即下降 10 倍。</li>
 <li>last_epoch(int)- 上一个 epoch 数，这个变量用来指示学习率是否需要调整。当last_epoch 符合设定的间隔时，就会对学习率进行调整。当为-1 时，学习率设置为初始值。</li>
 </ul>
-<p>2) 指数衰减调整学习率<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma, last_epoch=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure></p>
+<p>2) 指数衰减调整学习率</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma, last_epoch=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+
 <p>参数</p>
 <ul>
 <li>gamma- 学习率调整倍数的底，指数为 epoch，即 gamma**epoch</li>
@@ -542,15 +551,18 @@
 <p>1). 按照指标调整学习率（ ReduceLROnPlateau）</p>
 <p>当某指标不再变化（下降或升高），调整学习率，这是非常实用的学习率调整策略。 例如，当验证集的 loss 不再下降时，进行学习率调整；或者监测验证集的 accuracy，当accuracy 不再上升时，则调整学习率。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode=&apos;min&apos;, factor=0.1, patience=10, verbose=False, threshold=0.0001, threshold_mode=&apos;rel&apos;, cooldown=0, min_lr=0, eps=1e-08)</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>mode(str)- 模式选择，有 min 和 max 两种模式， min 表示当指标不再降低(如监测loss)， max 表示当指标不再升高(如监测 accuracy)。</li>
 <li>factor(float)- 学习率调整倍数(等同于其它方法的 gamma)，即学习率更新为 lr = lr * factor</li>
 <li>patience(int)- 忍受该指标多少个 step 不变化，当忍无可忍时，调整学习率。</li>
-<li>threshold_mode(str)- 选择判断指标是否达最优的模式，有两种模式， rel 和 abs。当 threshold_mode == rel，并且 mode == max 时， dynamic_threshold = best <em> ( 1 +threshold )；当 threshold_mode == rel，并且 mode == min 时， dynamic_threshold = best </em> ( 1 -threshold )；当 threshold_mode == abs，并且 mode== max 时， dynamic_threshold = best + threshold ；当 threshold_mode == rel，并且 mode == max 时， dynamic_threshold = best - threshold；</li>
+<li>threshold_mode(str)- 选择判断指标是否达最优的模式，有两种模式， rel 和 abs。当 threshold_mode == rel，并且 mode == max 时， dynamic_threshold = best * ( 1 +threshold )；当 threshold_mode == rel，并且 mode == min 时， dynamic_threshold = best * ( 1 -threshold )；当 threshold_mode == abs，并且 mode== max 时， dynamic_threshold = best + threshold ；当 threshold_mode == rel，并且 mode == max 时， dynamic_threshold = best - threshold；</li>
 <li>eps(float)- 学习率衰减的最小值，当学习率变化小于 eps 时，则不调整学习率。</li>
 </ul>
 <p>自定义调整</p>
-<p>自定义调整学习率 LambdaLR<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda, last_epoch=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure></p>
+<p>自定义调整学习率 LambdaLR</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda, last_epoch=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>lr_lambda(function or list)- 一个计算学习率调整倍数的函数，输入通常为 step，当有多个参数组时，设为 list.</li>
 <li>last_epoch (int) – 上一个 epoch 数，这个变量用来指示学习率是否需要调整。当<br>last_epoch 符合设定的间隔时，就会对学习率进行调整。当为-1 时，学习率设置为初始<br>值。</li>
@@ -587,8 +599,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/11/17/entropy/" rel="next" title="Entropy 相关的概念">
-                <i class="fa fa-chevron-left"></i> Entropy 相关的概念
+              <a href="/2019/11/04/python-learning3/" rel="next" title="Python 学习笔记3">
+                <i class="fa fa-chevron-left"></i> Python 学习笔记3
               </a>
             
           </div>
@@ -597,8 +609,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/11/23/decision-tree/" rel="prev" title="Decision Tree">
-                Decision Tree <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/17/entropy/" rel="prev" title="Entropy 相关的概念">
+                Entropy 相关的概念 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -688,7 +700,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

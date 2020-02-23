@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="学习笔记- Git 相关的命令。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git 相关命令介绍">
+<meta property="og:url" content="http://yoursite.com/2020/01/11/git_command/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="学习笔记- Git 相关的命令。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img.vim-cn.com/d4/47fd01c7f5a484b6d7a2fc5cfe1600cbf99aa7.png">
+<meta property="og:updated_time" content="2020-02-13T09:38:59.047Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git 相关命令介绍">
+<meta name="twitter:description" content="学习笔记- Git 相关的命令。">
+<meta name="twitter:image" content="https://img.vim-cn.com/d4/47fd01c7f5a484b6d7a2fc5cfe1600cbf99aa7.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/11/git_command/">
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if('hexo149'){
+			if (prompt('请输入文章密码','') !== 'hexo149'){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>Git 相关命令介绍 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/11/git_command/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git 相关命令介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-11T15:22:17+08:00">
+                2020-01-11
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-02-13T17:38:59+08:00">
+                2020-02-13
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/11/git_command/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/11/git_command/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>学习笔记- Git 相关的命令。</p>
+<a id="more"></a>
+
+
+
+
+<p>Git 是分布式版本管理系统，SCN 是集中式（服务器挂了就没有了），Git 跟踪并管理的是修改，而非文件。</p>
+<p><img src="https://img.vim-cn.com/d4/47fd01c7f5a484b6d7a2fc5cfe1600cbf99aa7.png" alt></p>
+<ul>
+<li>Workspace 工作区是我们平时编辑文件的地方</li>
+<li>Index / Stage 暂存区， 使用 <code>git add</code>将编辑好的命令放到一个临时地方，叫做Index，如果加入了不希望加入的文件，那么使用 <code>git rm --cache</code> 移除</li>
+<li>local repo 本地仓库</li>
+<li>remote repo 远程仓库</li>
+</ul>
+<h2 id="一、新建代码块"><a href="#一、新建代码块" class="headerlink" title="一、新建代码块"></a>一、新建代码块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init # 在当前目录下新建代码库</span><br><span class="line">git init project_name # 新建一个目录 初始化为git 代码库</span><br><span class="line">git clone url # 下载一个项目和整个代码的历史</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、-配置"><a href="#二、-配置" class="headerlink" title="二、 配置"></a>二、 配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git config --list # 显示当前 git 配置</span><br><span class="line">git config -e [--global] # 编辑git 配置文件，如果没有 `--global` 那么是当前仓库的配置；否则是整个用户的</span><br><span class="line"></span><br><span class="line">git config [--global] user.name &quot;name&quot; </span><br><span class="line">git config [--global] user.email &quot;email_address&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、增加-删除文件"><a href="#三、增加-删除文件" class="headerlink" title="三、增加/ 删除文件"></a>三、增加/ 删除文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add [file1] [file2] [dir] # 将指定的文件放到暂存区，文件夹包括子目录</span><br><span class="line">git add . # 将当前目录的所有文件放到暂存区</span><br><span class="line"></span><br><span class="line">git rm --cached [file] # 文件保留在工作局，但是从暂存区删除了</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、代码提交"><a href="#四、代码提交" class="headerlink" title="四、代码提交"></a>四、代码提交</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git commit -m [message] # 从暂存区 提交到仓库， 并加上message</span><br><span class="line">git commit [file1] [file2] -m [message] # 指定文件从暂存到 仓库</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、分支"><a href="#五、分支" class="headerlink" title="五、分支"></a>五、分支</h2><ul>
+<li>每一次git commit，都会生成一个commit id记录该次提交，Git都会将它们串成一条时间线，这条时间线就是一个分支。</li>
+<li>因为创建、合并、删除分支都很快，所以git鼓励你使用分支完成某个任务，合并后再删除分支。过程比直接在master分支工作更安全，且效果一样。</li>
+<li>分支策略：master分支应该是非常稳定的，仅用来发布新版本，平时不能在上面干活，干活都在dev分支，dev是不稳定的，到1.0发布时，再将dev合并到master上，由master发布新版本。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">git branch # 列出所有本地分支</span><br><span class="line">git branch -r  # 列出所有远程分支</span><br><span class="line">git branch -a # 列出所有本地分支和远程分支</span><br><span class="line"></span><br><span class="line">git branch [branch_name] # 新建分支，但是依然留在当前分支</span><br><span class="line">git checkout [branch_name] # 切换到指定分支</span><br><span class="line"></span><br><span class="line">git checkout -b [branch_name] #新建分支，并切换到 branch_name 分支 </span><br><span class="line">git checkout -  # 切换到上一个分支</span><br><span class="line"></span><br><span class="line">git merge [branch_name] #合并指定分支到当前分支</span><br><span class="line"></span><br><span class="line">git branch -d [branch_name] # 删除本地分支</span><br><span class="line">git branch -D [branch_name] #  -d 只能删除已经参与合并的分支，但对于未参与合并的分支是无法删除的，如果想要强制删除，那么使用-D</span><br><span class="line"></span><br><span class="line">#删除远程分支</span><br><span class="line">git push origin --delete [branch_name] </span><br><span class="line">git branch -dr [remote/branch]</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、标签版本（tag）操作"><a href="#六、标签版本（tag）操作" class="headerlink" title="六、标签版本（tag）操作"></a>六、标签版本（tag）操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git tag # 查看版本</span><br><span class="line">git tag [name] # 创建版本</span><br><span class="line">git tag -d [name] # 删除版本</span><br><span class="line">git tag -r # 查看远程版本</span><br></pre></td></tr></table></figure>
+
+<p>为什么有了 commit id 还需要tag呢？ 因为tag 是有意义的名字，比较好找，可以和commit 绑定在一起。</p>
+<h2 id="六、查看信息"><a href="#六、查看信息" class="headerlink" title="六、查看信息"></a>六、查看信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git status # 显示所有有变更的文件</span><br><span class="line">git log # 显示当前分支的版本历史</span><br><span class="line"></span><br><span class="line">git diff # 显示暂存区和工作区的差异</span><br><span class="line">git diff README.md # 查看具体修改了什么内容</span><br><span class="line">git diff --cached [file] # 显示暂存和上一个 commit 的差异</span><br></pre></td></tr></table></figure>
+
+<h2 id="七、远程同步"><a href="#七、远程同步" class="headerlink" title="七、远程同步"></a>七、远程同步</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git remote show []</span><br><span class="line"></span><br><span class="line">git push [remote] [branch] # 上传本地指定的分支到远程仓库</span><br><span class="line">git push [remote]  --force # 强行推送当前分支到远程仓库，即使有冲突</span><br><span class="line">git push [remote] --all # 推送所有分支到远程仓库</span><br></pre></td></tr></table></figure>
+
+<h2 id="八、撤销"><a href="#八、撤销" class="headerlink" title="八、撤销"></a>八、撤销</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout [file] # 恢复暂存区的指定文件到工作区</span><br><span class="line">git checkout . # 恢复暂存区的所有文件到工作区</span><br></pre></td></tr></table></figure>
+
+<p>通常git将（每个branch中的）文件分成了4个区域。</p>
+<ol>
+<li>我们平时编辑的文件在workspace区。</li>
+<li>当文件编辑完成，我们需要将文件备份到git的时候，我们把这些文件选择出来，放到一个临时的区域，叫index. </li>
+</ol>
+<ul>
+<li>添加这个过程是通过git add 命令来实现的。</li>
+<li>如果不小心添加了不想要的文件，通过git rm –cache命令来移除</li>
+</ul>
+<ol start="3">
+<li>当想提交的文件都放入到index临时区之后，可以进行正式的提交</li>
+</ol>
+<ul>
+<li>正式提交需要用git commit这个命令。</li>
+<li>在使用git commit的时候，需要写一段提交程序的更改说明。通常说明的第一行是一个很简短的介绍。然后是内容的正文。在正文中，可以利用github提供的一些关键字，将commit同github上面的issue和pull request联系起来。比如我们可以写 “fix #32”，那么当这个commit被提交到github上去之后，第32号bug也就会自动关闭。这样后面的人看到这个commit的时候，也比较方便找到它对应的bug是什么。</li>
+</ul>
+<ol start="4">
+<li>一旦commit成功，本次更改就写进了git的历史了。但是这时候还没有和github同步(remote branch)。同步是通过git push 命令完成的。一般是git push 远程的git repo名称 本地要提交的branch名。比如git push origin shiy_dev 就是说把我本地的shiy_dev 这个branch里的commit都推送到远端的叫做origin的这个repo</li>
+</ol>
+<ul>
+<li>我们可以有很多个远端的repo。比如可以同时拥有gitlab和github的远端repo。需要查看目前有哪些远端的repo，我们可以用git remote -v命令。</li>
+<li>需要添加新的远端repo，可以用git remote add 命令。</li>
+</ul>
+<ol start="5">
+<li>很多时候git push命令会失败。原因是有其他的人对同样的branch进行了改动。这时候我们需要先把对方提交的文件取到本机，看看是不是有矛盾的地方。这是通过git pull 远端git repo名称 远端的branch名 来实现的。<br>远端的文件取到之后，git会尝试自动和本地的文件进行整合。整合成功的话，叫fastforward merge。通常当大家改动了不同的文件的时候，merge都会比较容易。如果大家改动的文件有冲突，就会有merge conflict。这时候git会报告有conflict的文件，需要我们打开查看，并且纠正。当纠正完成之后，需要重新用git add 命令将纠正过的文件添加到index然后再次git commit，和git push。</li>
+<li>当很多人同时在改一个git repo的相同branch下的文件的时候，会频繁出现merge conflict。再有就是代码需要经过充分的测试才好提交到正式的branch (master)，这样不会影响到其他的开发者。所以建议大家在文件进行改动的时候全部都在单独的branch中进行。</li>
+</ol>
+<ul>
+<li>建立一个新的branch，使用git checkout -b branch名称 这个命令。</li>
+<li>通常会有很多branch。如果需要切换，可以用git checkout branch名称</li>
+<li>如果一个branch已经提交，不再需要了，可以用git branch -d branch名称 来操作</li>
+</ul>
+<ol start="7">
+<li>如何查看文件更改历史</li>
+</ol>
+<ul>
+<li>可以用git log来查看commit的历史</li>
+<li>用git blame 来查看每一行文件的改动记录</li>
+<li>在Linux下，我用gitk这个图形工具来查看</li>
+</ul>
+<ol start="8">
+<li>当文件被push到远端(github)的branch的时候，还需要经过code review，然后才正式可以master branch合并。这时候需要提交一个pull request. 这一步可以直接通过网站上点选完成。</li>
+</ol>
+<p>参考文献</p>
+<p>更多命令的详解，参考以下链接：</p>
+<p><a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">Git Book</a></p>
+<p><a href="https://segmentfault.com/a/1190000011673663" target="_blank" rel="noopener">常用Git命令使用教程</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/11/progan_stylegan/" rel="next" title="ProGAN & StyleGAN & StyleGAN2">
+                <i class="fa fa-chevron-left"></i> ProGAN & StyleGAN & StyleGAN2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/12/multi-task_learning/" rel="prev" title="Multi-Task Learning（多任务学习）">
+                Multi-Task Learning（多任务学习） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="Jijeng Jia">
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、新建代码块"><span class="nav-number">1.</span> <span class="nav-text">一、新建代码块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、-配置"><span class="nav-number">2.</span> <span class="nav-text">二、 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、增加-删除文件"><span class="nav-number">3.</span> <span class="nav-text">三、增加/ 删除文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、代码提交"><span class="nav-number">4.</span> <span class="nav-text">四、代码提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、分支"><span class="nav-number">5.</span> <span class="nav-text">五、分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、标签版本（tag）操作"><span class="nav-number">6.</span> <span class="nav-text">六、标签版本（tag）操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、查看信息"><span class="nav-number">7.</span> <span class="nav-text">六、查看信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、远程同步"><span class="nav-number">8.</span> <span class="nav-text">七、远程同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、撤销"><span class="nav-number">9.</span> <span class="nav-text">八、撤销</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/01/11/git_command/';
+          this.page.identifier = '2020/01/11/git_command/';
+          this.page.title = 'Git 相关命令介绍';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

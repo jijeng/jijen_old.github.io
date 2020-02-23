@@ -393,6 +393,7 @@
       
         <p>L1 和L2 既可以作为 loss function 也可以作为 reguarization，分别介绍了一下两者，最后介绍 overfitting 的概念。</p>
 <a id="more"></a>
+
 <h2 id="As-loss-function"><a href="#As-loss-function" class="headerlink" title="As loss function"></a>As loss function</h2><p>loss function or error function 是用来衡量真实$y$ 和生成的$ f(x)$ 之间差距的函数。在模型训练中我们一般情况下不断训练模型使得loss function不断下降（如果task要求loss function是增大，这时候一般加上符号或者转换成 1- loss fucntion，最后实现的还是loss function下降）。好的回到L1 loss function和L2 loss function. </p>
 <p>概括：从鲁棒性（对待异常值）的角度看，L1 是比L2 具有更好的性质，因为L2 是把误差进行了平方处理，误差回放大；从稳定性角度（数据集的一个小的移动），L2 是比L1 具有更好的性质，这个是可以从实验的角度进行总结。</p>
 <p><img src="https://upload.cc/i1/2019/07/15/Tb2BI3.png" alt="img"></p>
@@ -417,8 +418,7 @@
 <th>特征选择</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>L1</td>
 <td>在稀疏解 上效率比较高，在非稀疏解上效率比较低</td>
 <td>产生稀疏解</td>
@@ -430,8 +430,7 @@
 <td>不产生稀疏解</td>
 <td>没有特征选择的功能</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>首先理解为什么要正则化？</p>
 <p>如果网络足够的强大，数据量不是那么充足，那么网络完全是可以通过“记住” 这些样本，然后得到很高的 training acc，但是这个 test error 会比较大，这个时候就出现了过拟合。正则化就类似减轻了数据的复杂程度。关于过拟合是可以从两个维度进行解决：网络和数据。</p>
 <p>常常使用的 dropout 就是减弱网络复杂性的一种手段，随机减少了某些网络中的节点，那么网络就没有那么强的“记忆”功能，但是最后的loss（要求）还是不变的，所以只能去寻找数据更加“简单普遍”的规律；正则化是对数据和weights 两种类型的，前者是对于数据的操作，然后weights 更加倾向于对于网络结构的操作，使得系数更加“光滑”。</p>
@@ -598,7 +597,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

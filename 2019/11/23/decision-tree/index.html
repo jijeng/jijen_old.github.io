@@ -384,6 +384,8 @@
       
         <p>介绍决策树的定义、分类，重点介绍决策树中特征选择的三种算法和决策树的优劣。</p>
 <a id="more"></a>
+
+
 <blockquote>
 <p>Decision Trees (DTs) are a non-parametric supervised learning method used for classification and regression. The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from the data features.<br>决策树是有监督无参数的机器学习方法，可以用于分类和回归问题的求解。</p>
 </blockquote>
@@ -417,6 +419,9 @@
 <blockquote>
 <ul>
 <li>Handling both continuous and discrete attributes - In order to handle continuous attributes, C4.5 creates a threshold and then splits the list into those whose attribute value is above the threshold and those that are less than or equal to it.</li>
+</ul>
+</blockquote>
+<ul>
 <li>Handling training data with missing attribute values - C4.5 allows attribute values to be marked as ? for missing. Missing attribute values are simply not used in gain and entropy calculations.</li>
 <li>Handling attributes with differing costs.</li>
 <li>Pruning trees after creation - C4.5 goes back through the tree once it’s been created and attempts to remove branches that do not help by replacing them with leaf nodes.<br>相对于ID3的提升点：</li>
@@ -424,7 +429,6 @@
 <li>能够处理缺省值（处理方式比较粗暴，直接在熵的计算过程中忽略）</li>
 <li>树建立之后剪枝，如果分支没有对最后的结果提升，那么就剪枝</li>
 </ul>
-</blockquote>
 <h3 id="CART-算法"><a href="#CART-算法" class="headerlink" title="CART 算法"></a>CART 算法</h3><blockquote>
 <p>CART algorithm can be used for building both Classification and Regression Decision Trees. The impurity (or purity) measure used in building decision tree in CART is Gini Index. The decision tree built by CART algorithm is always a binary decision tree (each node will have only two child nodes).<br>既可以使用在分类场景也可以使用在回归场景，基于二叉树构建。对于分类问题使用 Gini 系数作为损失函数；对于回归问题使用均方误差作为损失函数。</p>
 </blockquote>
@@ -441,18 +445,18 @@
 <h2 id="剪枝"><a href="#剪枝" class="headerlink" title="剪枝"></a>剪枝</h2><p>剪枝分为预剪枝和后剪枝。</p>
 <blockquote>
 <p>The most common stopping procedure is to use a minimum count on the number of training instances assigned to each leaf node. If the count is less than some minimum then the split is not accepted and the node is taken as a final leaf node.<br>在决策树构造的过程中，许多分支反应的是训练数据集中的异常，预剪枝通过减去这样的分支，处理过分适应数据问题。常见的预剪枝策略如下：</p>
+</blockquote>
 <ul>
 <li>限制树的高度</li>
 <li>叶子节点中的最少样本数，如果叶子节点中包含适当大的样本数，那么可以防止过拟合</li>
 </ul>
-</blockquote>
 <blockquote>
 <p>The fastest and simplest pruning method is to work through each leaf node in the tree and evaluate the effect of removing it using a hold-out test set. Leaf nodes are removed only if it results in a drop in the overall cost function on the entire test set. You stop removing nodes when no further improvements can be made.<br>后剪枝，当训练完成之后，自底向上对叶子节点进行检查，如果去掉不影响在 测试集上的loss，那么就去掉。方法也有很多，比如</p>
+</blockquote>
 <ul>
 <li>代价复杂剪枝</li>
 <li>最小误差剪枝</li>
 </ul>
-</blockquote>
 <h2 id="优劣"><a href="#优劣" class="headerlink" title="优劣"></a>优劣</h2><p>优点：</p>
 <ul>
 <li>决策树建立的决策规则很容易被理解，可以比较容易的转换成规则</li>
@@ -499,8 +503,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/11/17/optimizer/" rel="next" title="Optimizer">
-                <i class="fa fa-chevron-left"></i> Optimizer
+              <a href="/2019/11/17/entropy/" rel="next" title="Entropy 相关的概念">
+                <i class="fa fa-chevron-left"></i> Entropy 相关的概念
               </a>
             
           </div>
@@ -600,7 +604,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
