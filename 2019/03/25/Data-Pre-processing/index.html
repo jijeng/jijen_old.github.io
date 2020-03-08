@@ -81,15 +81,15 @@
 
 <meta name="description" content="主要介绍机器学习中的数据预处理（这里主要讲的是数值型数据的预处理，而非中文数据预处理），包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。   数据预处理的时候需要注意 missing values、noisy">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Data Pre-processing 学习笔记">
+<meta property="og:title" content="数据预处理（Data Pre-processing）">
 <meta property="og:url" content="http://yoursite.com/2019/03/25/Data-Pre-processing/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="主要介绍机器学习中的数据预处理（这里主要讲的是数值型数据的预处理，而非中文数据预处理），包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。   数据预处理的时候需要注意 missing values、noisy">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/07/b34a196be64960bd.png">
-<meta property="og:updated_time" content="2019-12-23T10:37:23.257Z">
+<meta property="og:updated_time" content="2020-03-05T15:04:53.315Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Data Pre-processing 学习笔记">
+<meta name="twitter:title" content="数据预处理（Data Pre-processing）">
 <meta name="twitter:description" content="主要介绍机器学习中的数据预处理（这里主要讲的是数值型数据的预处理，而非中文数据预处理），包括 data cleaning、data integration、 data transformation、data reduction、data imbalanced 和一些概念。 data normalization 是经常用到的。   数据预处理的时候需要注意 missing values、noisy">
 <meta name="twitter:image" content="https://b2.bmp.ovh/imgs/2019/07/b34a196be64960bd.png">
 
@@ -140,7 +140,7 @@
 	})();
 </script>
 
-  <title>Data Pre-processing 学习笔记 | Jijeng's blog</title>
+  <title>数据预处理（Data Pre-processing） | Jijeng's blog</title>
   
 
 
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Data Pre-processing 学习笔记</h1>
+          <h1 class="post-title" itemprop="name headline">数据预处理（Data Pre-processing）</h1>
         
 
         <div class="post-meta">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-23T18:37:23+08:00">
-                2019-12-23
+              <time title="Post modified" itemprop="dateModified" datetime="2020-03-05T23:04:53+08:00">
+                2020-03-05
               </time>
             
           </span>
@@ -388,7 +388,11 @@
 
 <p>数据预处理的时候需要注意 missing values、noisy data (outlier) ，对于这种现象应该分成要不要处理和如何处理两个问题。</p>
 <p>数据清洗 (缺省值、异常值的处理)、数据整合 (子表 合并到 or 成主表)、数据转换 (one-hot or label encoding， 连续数值离散化)、和数据降维 (可以单独的成一章)。这个几个步骤应该是熟记于心的。</p>
-<h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning"></a>Data Cleaning</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier).<br>对于<strong>missing values</strong> ，可以分成两个问题，要不要处理 和如何处理，具体说来有以下处理手段：</p>
+<h3 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning"></a>Data Cleaning</h3><p>这个步骤主要处理 missing values 和 noisy data (outlier). </p>
+<blockquote>
+<p>Before starting handling missing values it is important to identify the missing values and know with which value they are replaced. You should be able to find this out by combining the metadata information with exploratory analysis.<br>If they are completely at random, they don’t give any extra information and can be omitted. On the other hand, if they’re not at random, the fact that a value is missing is itself information and can be expressed as an extra binary feature.<br>在处理 missing values 之前需要判断一下，该missing values 的分布，如果是random （给不了任何信息，那么可以omitted）；如果有一定的规律，那么可以当做是一种 extra feature。</p>
+</blockquote>
+<p>对于<strong>missing values</strong> ，可以分成两个问题，要不要处理和如何处理，弄清楚了上述问题。那么现在是可以解决如何处理 missing values 这个问题。首先指出，一些算法和库函数，比如XGBoost 是能够handle missing vlaues的。具体说来有以下处理手段：</p>
 <ul>
 <li>ignore the tuple; </li>
 <li>fill in the missing value manually</li>
@@ -398,21 +402,112 @@
 <li>有时候就是根据某几个特征然后弄一个简单的回归模型，根据模型进行predict</li>
 </ul>
 <p>关于这几种方法如何去选择，我如果说 “it depends”，那么其他人不认为这是一个具有说服力的答案，他们更像知道 it depends what, and when and why to use specific method? 我认为应该是根据缺省值程度和重要性进行经验性的选择，这也去就是 empirical study吧。</p>
+<p>如果选择使用填充策略，那么有以下几种形式：</p>
+<blockquote>
+<p>For filling up missing values with common strategies, sklearn provides a SimpleImputer. The four main strategies are mean, most_frequent, median and constant (don’t forget to set the fill_value parameter). </p>
+</blockquote>
+<p>除了sklearn 自带的函数，还可以使用以下的方式</p>
+<blockquote>
+<p>Other popular ways to impute missing data are clustering the data with the k-nearest neighbor (KNN) algorithm or interpolating the values using a wide range of interpolation methods. Both techniques are not implemented in sklearn’s preprocessing library and won’t be discussed here.</p>
+</blockquote>
 <p>接着是 <strong>noisy data (outlier)</strong>，我的观点是首先得认识到这个是错误的数据（使用 $3\sigma$定理去筛选异常值），不是真实的数据来源，可能是来自人为的笔误 或者仪器记录的问题，这个是需要修改的。可以使用聚类 (clustering) 进行noisy data 的检测，找到之后这个就类似 missing value了，可以采取以上的手段进行操作，应该注意到的这个 noisy data 所占比例不会很高，否则就成了主要的数据分布了。</p>
 <h3 id="Data-Integration"><a href="#Data-Integration" class="headerlink" title="Data Integration"></a>Data Integration</h3><p>处理数据库数据，经常是需要处理子表信息的，那么必然存在着主表，而子表系信息往往是主表信息的某一方面的细化。所以有必要将两者连接起来。如何连接？一般使用聚合函数（mean, variance, std, max, min，median, mode ）等方式得到子表的统计信息，然后将两者连接。</p>
+<h3 id="Polynomial-features"><a href="#Polynomial-features" class="headerlink" title="Polynomial features"></a>Polynomial features</h3><p>多项式 feature</p>
+<blockquote>
+<p>Polynomial features are often created when we want to include the notion that there exists a nonlinear relationship between the features and the target. They are mostly used to add complexity to linear models with little features, or when we suspect the effect of one feature is dependent on another feature.<br>多项式 feature 基本的假设是特征和 target 之间存在非线性关系。</p>
+</blockquote>
+<h3 id="Categorical-features"><a href="#Categorical-features" class="headerlink" title="Categorical features"></a>Categorical features</h3><blockquote>
+<p>Unfortunately, sklearn’s machine learning library does not support handling categorical data. Even for tree-based models, it is necessary to convert categorical features to a numerical representation.<br>即使是树模型，那么也是需要将 分类的feature 转换成数值的表示形式。</p>
+</blockquote>
+<p>Nominal data 与Ordinal data均指向类别数据；如果类别数据不存在排序问题就是norminal data；如果存在 排序就是ordinal data</p>
+<blockquote>
+<p>An ordinal feature is best described as a feature with natural, ordered categories and the distances between the categories is not known.</p>
+</blockquote>
+<p>对于存在排序数据 (ordinal data)的关键是可以转换成有大小关系的数字表示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> OrdinalEncoder</span><br><span class="line">encoder = OrdinalEncoder()</span><br><span class="line">X.edu_level = encoder.fit_transform(X.edu_level.values.reshape(<span class="number">-1</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码不能处理missing values 的问题，可以使用以下的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cat = pd.Categorical(X.edu_level, </span><br><span class="line">                     categories=[<span class="string">'missing'</span>, <span class="string">'low'</span>, </span><br><span class="line">                                 <span class="string">'medium'</span>, <span class="string">'high'</span>], </span><br><span class="line">                     ordered=<span class="keyword">True</span>)</span><br><span class="line">cat.fillna(<span class="string">'missing'</span>)</span><br><span class="line">labels, unique = pd.factorize(cat, sort=<span class="keyword">True</span>)</span><br><span class="line">X.edu_level = labels</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>put it in the most common category or to put it in the category of the value in the middle when the feature is sorted.</p>
+</blockquote>
+<p>对于无序的数据（nominal features）最长使用的方法是 one-hot</p>
+<blockquote>
+<p>The most popular way to encode nominal features is one-hot-encoding. Essentially, each categorical feature with n categories is transformed into n binary features.</p>
+</blockquote>
+<h3 id="Numerical-features"><a href="#Numerical-features" class="headerlink" title="Numerical features"></a>Numerical features</h3><blockquote>
+<p>Just like categorical data can be encoded, numerical features can be ‘decoded’ into categorical features. The two most common ways to do this are discretization and binarization.<br>连续值特征可以转化成 category特征，有两种最常见的方式去转换 （discretization 和 binarization）</p>
+</blockquote>
+<p>Discretization</p>
+<blockquote>
+<p>Discretization, also known as quantization or binning, divides a continuous feature into a pre-specified number of categories (bins), and thus makes the data discrete.</p>
+</blockquote>
+<p>Binarization</p>
+<blockquote>
+<p>Feature binarization is the process of tresholding numerical features to get boolean values. Or in other words, assign a boolean value (True or False) to each sample based on a threshold. Note that binarization is an extreme form of two-bin discretization.<br>Binarization 是 Discretization 的极端化的例子</p>
+</blockquote>
+<blockquote>
+<p>In general binarization is useful as a feature engineering technique for creating new features that indicate something meaningful. Just like the above-mentioned MissingIndicator is used to mark meaningful missing values.<br>对于二值化，重大的意义就是用来标识 某个特征是否是 meaningful 的</p>
+</blockquote>
 <h3 id="Data-Transformation"><a href="#Data-Transformation" class="headerlink" title="Data Transformation"></a>Data Transformation</h3><p>In data transformation, the data are transformed or consolidated into forms appropriate for mining.<br>这里想要澄清的是很多相同的内容都可以用不同的方式表达，并且可以放在数据处理的不同阶段，并且这种工作不是一次性完成的，而是迭代的 until you run out your patience and time.<br>首先我接触的最常见的就是 discrete variables -&gt; continuous variables. 当然对于 discrete variables，基于树结构的机器学习模型是可以处理的，这里想说的是有这种方式。这种 transformation 常见的处理方式: one-hot 或者 label encoding. </p>
 <p>如果按照 data transformation的预设，那么 normalization 就也属于该模块的内容。 不论是在 machine learning 还是在 图像处理的时候，对于原始的数据经常采取 normalization. 一方面这个是可以预防梯度消失 或者 gradient exploding, 如果你采用了 Sigmoid的激活函数的话。另一方面我认为更加重要的原因是将 不同的数据放在了同一个尺度下，如果你采取了 normalization之后。</p>
+<p>非线性变换</p>
+<ol>
+<li>映射到均匀分布<br>通过执行一个排序变换(rank transformation), 它能够使 异常的分布(unusual distributions) 被平滑化， 并且能够做到 比使用缩放器(scalers)方法 更少地受到离群值的影响。 然而，它的确使 特征间 及 特征内 的 关联和距离 被打乱了。</li>
+</ol>
+<p>代码 example</p>
+<div><div class="fold_hider"><div class="close hider_title">开/合</div></div><div class="fold">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">df = pd.DataFrame(data=&#123;<span class="string">'Animal'</span>: [<span class="string">'cat'</span>, <span class="string">'penguin'</span>, <span class="string">'dog'</span>,</span><br><span class="line">                                   <span class="string">'spider'</span>, <span class="string">'snake'</span>],</span><br><span class="line">                        <span class="string">'Number_legs'</span>: [<span class="number">4</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>, np.nan]&#125;)</span><br><span class="line"></span><br><span class="line">df[<span class="string">'default_rank'</span>] = df[<span class="string">'Number_legs'</span>].rank()</span><br><span class="line">df[<span class="string">'max_rank'</span>] = df[<span class="string">'Number_legs'</span>].rank(method=<span class="string">'max'</span>)</span><br><span class="line">df[<span class="string">'NA_bottom'</span>] = df[<span class="string">'Number_legs'</span>].rank(na_option=<span class="string">'bottom'</span>)</span><br><span class="line">df[<span class="string">'pct_rank'</span>] = df[<span class="string">'Number_legs'</span>].rank(pct=<span class="keyword">True</span>)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+</div></div>
+
+
+
+
+
+
+
+<ol start="2">
+<li>MinMaxScaler</li>
+</ol>
+<p>计算过程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X_std = (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))</span><br><span class="line">X_scaled = X_std * (max - min) + min</span><br></pre></td></tr></table></figure>
+
+<p>适合场景</p>
+<blockquote>
+<p>The MinMaxScaler transforms features by scaling each feature to a given range. This range can be set by specifying the feature_range parameter (default at (0,1)). This scaler works better for cases where the distribution is not Gaussian or the standard deviation is very small. However, it is sensitive to outliers, so if there are outliers in the data, you might want to consider another scaler.<br>适合在非高斯分布的数据集上使用；不适合在有outlier的情况下使用。</p>
+</blockquote>
+<p>在sklearn 中是可以指定range() 范围的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line">scaler = MinMaxScaler(feature_range=(<span class="number">-3</span>,<span class="number">3</span>))</span><br><span class="line">scaler.fit_transform(X.f3.values.reshape(<span class="number">-1</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
 <h3 id="Data-Reduction"><a href="#Data-Reduction" class="headerlink" title="Data Reduction"></a>Data Reduction</h3><p>一般来说很少提及到到 data reduction的必要性，如果非要给出原因，那么可以从时间和空间的角度进行考虑。更加需要关注的是如何做的问题。 </p>
 <p>我的理解reduction 可以从两个维度进行考虑，假设一个 matrics A 是 m*n，这个是一个二维的矩阵，那么可以从 行列两方面入手。映射到机器学习中一般这样描述 从dimension 和 data两个角度去描述，分别称之为 dimension reduction 和 data compression. 前者指的是特征的选取，后者是数据size的减少。<br>dimension reduction: where irrelevant, weakly relevant, or redundant attributes or dimensions may be detected and removed.<br>data compression: PCA 线性降维 to reduce the data set size. 这个是针对某一个特征展开的。</p>
-<h3 id="Data-Normalization"><a href="#Data-Normalization" class="headerlink" title="Data Normalization"></a>Data Normalization</h3><p>** 是什么？**</p>
+<h3 id="Data-Standardization"><a href="#Data-Standardization" class="headerlink" title="Data Standardization"></a>Data Standardization</h3><p>** 是什么？**</p>
 <p>中心化： 均值为0，对方差没有要求</p>
 <p>$$<br>x ^ { \prime } = x - \mu<br>$$</p>
 <p>标准化：服从正太分布 (0, 1) </p>
 <p>$$<br>x ^ { \prime } = \frac { x - \overline { x } } { \sigma }<br>$$</p>
+<blockquote>
+<p>Sklearn its main scaler, the StandardScaler, uses a strict definition of standardization to standardize data. It purely centers the data by using the following formula, where u is the mean and s is the standard deviation.<br>就是将上述的数据聚集到mean 和std 附近，形成一个比较集中的分布。</p>
+</blockquote>
 <p>归一化有两种： mean normalization 和 min-max normalization</p>
 <p>mean  normalization<br>$$<br>x ^ { \prime } = \frac { x - \operatorname { mean } ( x ) } { \max ( x ) - \min ( x ) }<br>$$</p>
 <p>min-max normalization</p>
 <p>$$<br>x ^ { \prime } = \frac { x - \operatorname { min } ( x ) } { \max ( x ) - \min ( x ) }<br>$$</p>
+<p>使用场景</p>
+<blockquote>
+<p>The MinMaxScaler transforms features by scaling each feature to a given range. This range can be set by specifying the feature_range parameter (default at (0,1)). This scaler works better for cases where the distribution is not Gaussian or the standard deviation is very small. However, it is sensitive to outliers, so if there are outliers in the data, you might want to consider another scaler.<br>在非高斯分布或者 std 比较小的情况下。并且数据中不能有 outlier（因为公式中使用到了 outlieer）</p>
+</blockquote>
+<p>$$<br>x ^ { \prime } = \frac { x  } { \max ( abs(x) )  }<br>$$</p>
+<p>MaxAbs Scaler</p>
+<blockquote>
+<p>The MaxAbsScaler works very similarly to the MinMaxScaler but automatically scales the data to a [-1,1] range based on the absolute maximum. This scaler is meant for data that is already centered at zero or sparse data. It does not shift/center the data, and thus does not destroy any sparsity.</p>
+</blockquote>
+<p>Robust Scaler</p>
+<blockquote>
+<p>If your data contains many outliers, scaling using the mean and standard deviation of the data is likely to not work very well. In these cases, you can use the RobustScaler. It removes the median and scales the data according to the quantile range. </p>
+</blockquote>
 <p><strong>为什么？</strong></p>
 <ul>
 <li><p>提高模型的准确率<br>比如说两个特征，一个特征的范围是0-100， 另一个是-2000 到2000， 这个使用 欧式距离进行计算的时候，两个特征的差值很大，特征并没有站在同一个维度上。</p>
@@ -455,6 +550,22 @@
 <li>standardization</li>
 </ul>
 <p>$$<br>x ^ { \prime } = \frac { x - \overline { x } } { \sigma }<br>$$</p>
+<h3 id="Data-Normalization"><a href="#Data-Normalization" class="headerlink" title="Data Normalization"></a>Data Normalization</h3><blockquote>
+<p>Normalization is the process of scaling individual samples to have unit norm. In basic terms you need to normalize data when the algorithm predicts based on the weighted relationships formed between data points. Scaling inputs to unit norms is a common operation for text classification or clustering.<br>Normalization 是为了得到 unit norm。一般在 text classification or clustering 比较常见。</p>
+</blockquote>
+<blockquote>
+<p>One of the key differences between scaling (e.g. standardizing) and normalizing, is that normalizing is a row-wise operation, while scaling is a column-wise operation.<br>normalizing 是行为单位进行的； scaling 是列为单位进行的。</p>
+</blockquote>
+<p>（1）max</p>
+<p>The max norm uses the absolute maximum and does for samples what the MaxAbsScaler does for features.</p>
+<p>$$<br>x ^ { \prime } = \frac { x  } { \max ( x )  }<br>$$</p>
+<p>（2） l1</p>
+<p>The l1 norm uses the sum of all the values as and thus gives equal penalty to all parameters, enforcing sparsity. (增加了稀疏性)</p>
+<p>$$<br>x ^ { \prime } = \frac { x  } { \sum ( x )  }<br>$$</p>
+<p>（3）l2</p>
+<p>The l2 norm uses the square root of the sum of all the squared values. This creates smoothness and rotational invariance. Some models, like PCA, assume rotational invariance, and so l2 will perform better.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x_normalized = x / sqrt(sum((i**2) for i in X))</span><br></pre></td></tr></table></figure>
+
 <h3 id="data-imbalanced"><a href="#data-imbalanced" class="headerlink" title="data imbalanced"></a>data imbalanced</h3><p>机器学习中的特征工程是有一定技巧可言，其中我觉得最为有趣的是: generation or you can call it abstraction. 对于特征的泛的提取才是对于问题本身或者特征的理解，这不仅需要积累，更需要对于该问题领域的专业知识， that’s all.举个栗子，在 “Home Credit Default Risk” (kaggle 竞赛)中，原始的训练数据有信贷金额和客户的年收入，这个时候 “credit_income_percent” 就是类似这种性质的提取特征。</p>
 <h3 id="Data-Exploration-using-Numpy，Matplotlib-and-Pandas"><a href="#Data-Exploration-using-Numpy，Matplotlib-and-Pandas" class="headerlink" title="Data Exploration using Numpy，Matplotlib and Pandas"></a>Data Exploration using Numpy，Matplotlib and Pandas</h3><p>（1）柱状图（Histogram）</p>
 <p>柱状图需要有两个参数，一个是数据；一个是分成多少块（bins）</p>
@@ -468,6 +579,13 @@
 <p>箱形图使用seaborn 中的库函数。主要从图形上识别出 四分位线，二分位线。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns </span><br><span class="line">sns.boxplot(df[<span class="string">'Age'</span>]) </span><br><span class="line">sns.despine()</span><br></pre></td></tr></table></figure>
 
+<h2 id="Feature-scaling"><a href="#Feature-scaling" class="headerlink" title="Feature scaling"></a>Feature scaling</h2><blockquote>
+<p>The next logical step in our preprocessing pipeline is to scale our features. Before applying any scaling transformations it is very important to split your data into a train set and a test set.<br>在进行 scaling 操作的时候，首先要将train 和 test data 分割开来</p>
+</blockquote>
+<h3 id="Standardization"><a href="#Standardization" class="headerlink" title="Standardization"></a>Standardization</h3><blockquote>
+<p>Standardization is a transformation that centers the data by removing the mean value of each feature and then scale it by dividing (non-constant) features by their standard deviation.<br>标准化</p>
+</blockquote>
+<p>Depending on your needs and data, sklearn provides a bunch of scalers: StandardScaler, MinMaxScaler, MaxAbsScaler and RobustScaler.</p>
 <p>参考文献</p>
 <p>1). <a href="https://www.analyticsvidhya.com/blog/2015/04/comprehensive-guide-data-exploration-sas-using-python-numpy-scipy-matplotlib-pandas/" target="_blank" rel="noopener">Ultimate guide for Data Exploration in Python using NumPy, Matplotlib and Pandas</a><br>2). <a href="https://www.analyticsvidhya.com/blog/2015/04/comprehensive-guide-data-exploration-sas-using-python-numpy-scipy-matplotlib-pandas/" target="_blank" rel="noopener">Ultimate guide for Data Exploration in Python using NumPy, Matplotlib and Pandas</a></p>
 
@@ -595,7 +713,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">131</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -617,7 +735,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -667,7 +785,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">3.</span> <span class="nav-text">Data Transformation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Data Reduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Normalization"><span class="nav-number">5.</span> <span class="nav-text">Data Normalization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-imbalanced"><span class="nav-number">6.</span> <span class="nav-text">data imbalanced</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Exploration-using-Numpy，Matplotlib-and-Pandas"><span class="nav-number">7.</span> <span class="nav-text">Data Exploration using Numpy，Matplotlib and Pandas</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Cleaning"><span class="nav-number">1.</span> <span class="nav-text">Data Cleaning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Integration"><span class="nav-number">2.</span> <span class="nav-text">Data Integration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Polynomial-features"><span class="nav-number">3.</span> <span class="nav-text">Polynomial features</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Categorical-features"><span class="nav-number">4.</span> <span class="nav-text">Categorical features</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Numerical-features"><span class="nav-number">5.</span> <span class="nav-text">Numerical features</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Transformation"><span class="nav-number">6.</span> <span class="nav-text">Data Transformation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Reduction"><span class="nav-number">7.</span> <span class="nav-text">Data Reduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Standardization"><span class="nav-number">8.</span> <span class="nav-text">Data Standardization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Normalization"><span class="nav-number">9.</span> <span class="nav-text">Data Normalization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-imbalanced"><span class="nav-number">10.</span> <span class="nav-text">data imbalanced</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Exploration-using-Numpy，Matplotlib-and-Pandas"><span class="nav-number">11.</span> <span class="nav-text">Data Exploration using Numpy，Matplotlib and Pandas</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#Feature-scaling"><span class="nav-number"></span> <span class="nav-text">Feature scaling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Standardization"><span class="nav-number">1.</span> <span class="nav-text">Standardization</span></a></li></ol></li></div>
             
 
           </div>
@@ -865,7 +983,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/03/25/Data-Pre-processing/';
           this.page.identifier = '2019/03/25/Data-Pre-processing/';
-          this.page.title = 'Data Pre-processing 学习笔记';
+          this.page.title = '数据预处理（Data Pre-processing）';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="栈和队列数据结构的介绍，并以LeetCode习题为例刷题。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-02-22T12:31:21.094Z">
+<meta property="og:updated_time" content="2020-03-07T03:24:05.809Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Stack &amp; Queue Algorithm">
 <meta name="twitter:description" content="栈和队列数据结构的介绍，并以LeetCode习题为例刷题。">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-02-22T20:31:21+08:00">
-                2020-02-22
+              <time title="Post modified" itemprop="dateModified" datetime="2020-03-07T11:24:05+08:00">
+                2020-03-07
               </time>
             
           </span>
@@ -449,6 +449,10 @@
 <p><a href="https://leetcode.com/problems/validate-stack-sequences/submissions/" target="_blank" rel="noopener">Validate Stack Sequences   </a></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 使用一个stack 模拟过程, push进去 pushed 元素，然后和popped 中的元素做对比</span></span><br><span class="line">    <span class="comment">// 如果是可以 pop，那么就一直pop</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validateStackSequences</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; pushed, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; popped)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n =pushed.size();</span><br><span class="line">        <span class="keyword">int</span> i =<span class="number">0</span>, j =<span class="number">0</span>;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; st;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; n &amp;&amp; j &lt; n)</span><br><span class="line">        &#123;</span><br><span class="line">            st.push(pushed[i]);   </span><br><span class="line">            <span class="keyword">while</span>(st.size() &amp;&amp; st.top() == popped[j])</span><br><span class="line">            &#123;</span><br><span class="line">                st.pop();</span><br><span class="line">                j ++;</span><br><span class="line">            &#125;</span><br><span class="line">            i ++;       </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> j ==n;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+<p><a href="https://leetcode.com/problems/valid-parentheses/" target="_blank" rel="noopener">20. Valid Parentheses</a></p>
+<p>注意 stk 的弹出条件。 len() ==0 or stk[-1] != ‘’ </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 是栈 的应用</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isValid</span><span class="params">(self, s)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        stk =[]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> ch <span class="keyword">in</span> [<span class="string">'['</span>, <span class="string">'('</span>, <span class="string">'&#123;'</span>] :</span><br><span class="line">                stk.append(ch)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> ch ==<span class="string">']'</span>:</span><br><span class="line">                    <span class="keyword">if</span> len(stk)==<span class="number">0</span> <span class="keyword">or</span>  stk[<span class="number">-1</span>] != <span class="string">'['</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">                    stk.pop()</span><br><span class="line">                <span class="keyword">if</span> ch ==<span class="string">')'</span>:</span><br><span class="line">                    <span class="keyword">if</span> len(stk) ==<span class="number">0</span> <span class="keyword">or</span> stk[<span class="number">-1</span>] != <span class="string">'('</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">                    stk.pop()</span><br><span class="line">                <span class="keyword">if</span> ch ==<span class="string">'&#125;'</span>:</span><br><span class="line">                    <span class="keyword">if</span> len(stk) ==<span class="number">0</span> <span class="keyword">or</span> stk[<span class="number">-1</span>] != <span class="string">'&#123;'</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">                    stk.pop()</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> len(stk) ==<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
 <p><a href="https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/" target="_blank" rel="noopener">Minimum Remove to Make Valid Parentheses</a></p>
 <p>stack更像是一种过滤机制， 最后的 <code>v[i]</code> 记录了默写去掉的字符</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 使用 stack 做了一个标记</span></span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">minRemoveToMakeValid</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>  n =s.size();</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; st;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; v(n, <span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] ==<span class="string">')'</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> ( !st.size() ) v[i] =<span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">else</span> st.pop();</span><br><span class="line">                    </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(s[i] == <span class="string">'('</span>)</span><br><span class="line">                st.push(i); <span class="comment">// 存储的是index 下标，所以类型是int 而不是char</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(st.size())</span><br><span class="line">        &#123;</span><br><span class="line">            v[st.top()] =<span class="literal">false</span>;</span><br><span class="line">            st.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">string</span> ans ;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt; n; i++)</span><br><span class="line">            <span class="keyword">if</span>(v[i])</span><br><span class="line">                ans += s[i];</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -526,8 +530,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/06/newWordsDetection_CRF/" rel="next" title="新词发现和条件随机场">
-                <i class="fa fa-chevron-left"></i> 新词发现和条件随机场
+              <a href="/2019/05/06/cpp2/" rel="next" title="C++ 编程语言（2）">
+                <i class="fa fa-chevron-left"></i> C++ 编程语言（2）
               </a>
             
           </div>
@@ -536,8 +540,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/06/cpp2/" rel="prev" title="C++ 编程语言（2）">
-                C++ 编程语言（2） <i class="fa fa-chevron-right"></i>
+              <a href="/2019/05/16/leetcode-recursion/" rel="prev" title="LeetCode-Recursion">
+                LeetCode-Recursion <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -627,7 +631,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">131</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -649,7 +653,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

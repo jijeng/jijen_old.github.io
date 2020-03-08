@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="介绍容器（Docker）的原理和常见的命令。（ongoing）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-02-06T09:16:50.886Z">
+<meta property="og:updated_time" content="2020-03-01T11:27:50.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="容器（Docker）的原理和常见的命令">
 <meta name="twitter:description" content="介绍容器（Docker）的原理和常见的命令。（ongoing）">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-02-06T17:16:50+08:00">
-                2020-02-06
+              <time title="Post modified" itemprop="dateModified" datetime="2020-03-01T19:27:50+08:00">
+                2020-03-01
               </time>
             
           </span>
@@ -398,6 +398,35 @@
 <p>Docker 是一个用于开发，交付和运行应用程序的开放平台。Docker 使您能够将应用程序与基础架构分开，从而可以快速交付软件。借助 Docker，您可以与管理应用程序相同的方式来管理基础架构。通过利用 Docker 的方法来快速交付，测试和部署代码，您可以大大减少编写代码和在生产环境中运行代码之间的延迟。</p>
 <p>快速，一致地交付您的应用程序<br>响应式部署和扩展<br>在同一硬件上运行更多工作负载</p>
 <p>Docker 的缺点：对于开发者是非常友好的，但是对于运维人员，想要在已经封装好的容器上做一些调整，是很难的。</p>
+<p>（3）在Ubuntu 18 上的安装和使用</p>
+<p>安装比较简单，这种安装的Docker不是最新版本，不过对于学习够用了，依次执行下面命令进行安装。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install docker.io</span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">sudo systemctl <span class="built_in">enable</span> docker</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker -v</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo service docker start <span class="comment">#启动守护进程</span></span><br><span class="line"></span><br><span class="line">docker -v</span><br><span class="line"></span><br><span class="line">sudo service docker stop <span class="comment">#关闭守护进程</span></span><br></pre></td></tr></table></figure>
+
+<p>···sh<br>#【查】查看本地已有的镜像 Docker images<br>docker images</p>
+<h1 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h1><p>docker run docker_name<br>···</p>
+<p>测试是否安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<p>Docker 常用命令<br>启动docker<br>sudo service docker start</p>
+<p>停止docker<br>sudo service docker stop</p>
+<p>重启docker<br>sudo service docker restart</p>
+<p>列出Docker CLI命令<br>docker<br>docker container –help</p>
+<p>显示Docker版本和信息<br>docker –version<br>docker version<br>docker info</p>
+<p>Execute Docker image<br>docker run hello-world</p>
+<p>列出镜像列表<br>docker image ls</p>
+<p>列出docker容器 (running, all, all in quiet mode)<br>docker container ls<br>docker container ls –all<br>docker container ls -aq</p>
+<p>搜索：</p>
+<p>docker search ubuntu</p>
+<p>下载镜像</p>
+<p>docker pull ubuntu</p>
+<p>查看所有的镜像</p>
+<p>docker images</p>
+<p>删除docker 包</p>
+<p>sudo rm -rf /var/lib/docker</p>
+<p>待学习：<br><a href="https://www.jianshu.com/p/26f15063de7d" target="_blank" rel="noopener">迈出使用Docker的第一步，学习第一个Docker容器</a></p>
 <p>参考文献</p>
 <p><a href="https://mp.weixin.qq.com/s/zkStRgGaNwUr86YmpVWInw" target="_blank" rel="noopener">阿里云的docker 的使用</a></p>
 <p><a href="https://hijiangtao.github.io/2018/04/17/Docker-in-Action/" target="_blank" rel="noopener">Docker 学习新手笔记：从入门到放弃</a></p>
@@ -505,8 +534,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -523,7 +561,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">131</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -545,7 +583,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -585,6 +623,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#增加"><span class="nav-number">1.</span> <span class="nav-text">增加</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
