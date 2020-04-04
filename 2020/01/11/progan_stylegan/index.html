@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="阅读论文– 关于GAN 的一篇综述；介绍对比 ProGAN &amp; StyleGAN &amp; StyleGAN2。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ProGAN &amp; StyleGAN &amp; StyleGAN2">
+<meta property="og:url" content="http://yoursite.com/2020/01/11/progan_stylegan/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="阅读论文– 关于GAN 的一篇综述；介绍对比 ProGAN &amp; StyleGAN &amp; StyleGAN2。">
+<meta property="og:image" content="https://i.loli.net/2020/02/21/qQNFgKlwHEJ4Gc1.png">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2020/02/69e17ae45e915869.png">
+<meta property="og:image" content="https://files.catbox.moe/nspvxp.png">
+<meta property="og:image" content="https://i.loli.net/2020/02/11/XuyzvANSHwDVrhF.png">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2020/02/06e05cccd4bcfc57.png">
+<meta property="og:image" content="https://img.vim-cn.com/e8/3b74cbcc500141fb1879eadcfb9b37bbdbf74c.png">
+<meta property="og:image" content="https://i.niupic.com/images/2020/02/29/6X52.png">
+<meta property="article:published_time" content="2020-01-11T03:22:17.000Z">
+<meta property="article:modified_time" content="2020-03-04T04:12:44.652Z">
+<meta property="article:author" content="Jijeng Jia">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/02/21/qQNFgKlwHEJ4Gc1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/11/progan_stylegan/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>ProGAN & StyleGAN & StyleGAN2 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/11/progan_stylegan/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ProGAN & StyleGAN & StyleGAN2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-11T11:22:17+08:00">
+                2020-01-11
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-03-04T12:12:44+08:00">
+                2020-03-04
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/11/progan_stylegan/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/01/11/progan_stylegan/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>阅读论文– 关于GAN 的一篇综述；介绍对比 ProGAN &amp; StyleGAN &amp; StyleGAN2。</p>
+<p><img src="https://i.loli.net/2020/02/21/qQNFgKlwHEJ4Gc1.png" alt="Screen Shot 2020-02-21 at 5.32.45 PM.png"></p>
+<a id="more"></a>
+
+
+
+
+<h3 id="GAN-综述论文"><a href="#GAN-综述论文" class="headerlink" title="GAN 综述论文"></a>GAN 综述论文</h3><p><a href="https://arxiv.org/abs/2001.06937" target="_blank" rel="noopener">A Review on Generative Adversarial Networks: Algorithms, Theory, and Applications</a></p>
+<blockquote>
+<p>Generative algorithms and discriminative algorithms are two categories of machine learning algorithms. If a machine learning algorithm is based on a fully probabilistic model of the observed data, this algorithm is generative. </p>
+</blockquote>
+<p>关于 GANs 的training</p>
+<blockquote>
+<p>One difficulty is from the fact that optimal weights for GANs correspond to saddle points, and not minimizers, of the loss function.<br>是不是说最优点是在鞍点（G 网络不能辨雌雄），具体需要分析一下 Loss 是如何变化？</p>
+</blockquote>
+<h3 id="ProGAN"><a href="#ProGAN" class="headerlink" title="ProGAN"></a>ProGAN</h3><p>In Progressive GAN (PGGAN) , a new training methodology for GAN is proposed. The structure of Progressive GAN is based on progressive neural networks that is first proposed in . The key idea of Progressive GAN is to grow both the generator and discriminator progressively: starting from a low resolution, adding new layers that model increasingly fine details as training progresses.</p>
+<p>BigGANs successfully generates images with quite high resolution up to 512 by 512 pixels. If you do not have enough data, it can be a challenging task to replicate the BigGANs results from scratch. Lucic et al. [199] propose to train BigGANs quality model with fewer labels. BigBiGAN [200], based on BigGANs, extends it to representation learn- ing by adding an encoder and modifying the discriminator. BigBiGAN achieve the state of the art in both unsupervised representation learning on ImageNet and unconditional image generation.</p>
+<p>创新点：</p>
+<p>NVIDIA在2017年提出的ProGAN解决了生成高分辨率图像(如1024×1024)的问题。ProGAN的关键创新之处在于渐进式训练——从训练分辨率非常低的图像(如4×4)的生成器和判别器开始，每次都增加一个更高的分辨率层。</p>
+<p>存在的问题：</p>
+<p>ProGAN生成高质量的图像，但与大多数模型一样，它控制所生成图像的特定特征的能力非常有限。换句话说，这些特性是互相关联的，因此尝试调整一下输入，即使是一点儿，通常也会同时影响多个特性。一个很好的类比就是基因组，在其中改变一个基因可能影响多个特性。</p>
+<h3 id="从ProGAN-到-StyleGAN"><a href="#从ProGAN-到-StyleGAN" class="headerlink" title="从ProGAN 到 StyleGAN"></a>从ProGAN 到 StyleGAN</h3><p>StyleGAN 生成的图像非常逼真，它是一步一步地生成人工的图像，从非常低的分辨率开始，一直到高分辨率（1024×1024）。通过分别地修改网络中每个级别的输入，它可以控制在该级别中所表示的视觉特征，从粗糙的特征（姿势、面部形状）到精细的细节（头发颜色），而不会影响其它的级别。</p>
+<blockquote>
+<p>StyleGAN’s generator is a really high-quality generator for other generation tasks like generating faces. It is particular exciting because it allows to separate different factors such as hair, age and sex that are involved in controlling the appearance of the final example and we can then control them separately from each other. StyleGAN [37] has also been used in such as generating high-resolution fashion model images wearing custom outfits [201].<br>stylegan 能够把不同的factor 分割开来，然后生成图像。</p>
+</blockquote>
+<h3 id="从-StyleGAN-到-StyleGAN2"><a href="#从-StyleGAN-到-StyleGAN2" class="headerlink" title="从 StyleGAN 到 StyleGAN2"></a>从 StyleGAN 到 StyleGAN2</h3><p>改进点包括：</p>
+<ul>
+<li>提出了替代 ProGAN 的新方法，牙齿、眼睛等细节更完美</li>
+<li>改善了 Style-mixing </li>
+<li>更加平滑的插值（额外的正则化）</li>
+</ul>
+<p>（1）问题：斑点似的伪影（artifacts）问题</p>
+<p>StyleGAN 生成的大多数图像都有类似水滴的斑状伪影。如下图所示，即使当水滴在最终图像中并不明显时，它也会出现在生成器的中间特征图中。这种异常在大约 64×64 分辨率时开始出现，并会出现在所有特征图中，还会在分辨率增高时逐渐变强。这种总是存在的伪影很令人困惑，因为判别器本应该有检测它的能力的。</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2020/02/69e17ae45e915869.png" alt=""></p>
+<p>更多前后效果展示可以查看 <a href="http://finance.sina.com.cn/wm/2019-12-15/doc-iihnzahi7657860.shtml" target="_blank" rel="noopener">这里</a></p>
+<p>可能的原因和解决思路</p>
+<p>原因一：</p>
+<p>首先，我们研究了常见的斑点状artifacts的起源，并发现生成器创建它们是为了规避其架构中的设计缺陷。我们重新设计了生成器中使用的normalization，从而删除了artifacts。把归一化拿掉或者采用 lazy regularization 的方式，那么水滴就消失了。</p>
+<p>使用 Adaptive Instance Normalization （来自于 Style Transfer）</p>
+<p>（2）问题： 五官的姿态不同步</p>
+<p>StyleGAN 是采用的渐进增大（Progressive Growing）的训练方式。从 4* 4 图像开始，然后到 8* 8，到16 <em>16，一步步增大生成图像的分辨率，最后形成了1024</em> 1024. Progressive growing已被证明在稳定高分辨率图像合成方面非常成功。关键问题在于，渐进式增长的生成器在细节上似乎有很强的位置偏好，例如，当牙齿或眼睛等特征在图像上平滑移动时，它们可能会停留在原来的位置，然后跳到下一个首选位置。</p>
+<p><img src="https://files.catbox.moe/nspvxp.png" alt=""><br>（虽然脸发生了旋转，但是牙齿并没有及时跟着走）</p>
+<p>为了解决这些问题，我们提出一种替代的方法，在保留progressive growing优势的同时消除了缺陷。下图a展示了MSG-GAN[22]，它使用多个skip connections连接生成器和鉴别器的匹配分辨率。下图b中，我们通过对不同分辨率对应的RGB输出进行向上采样和求和来简化这种设计。在鉴别器中，我们同样向鉴别器的每个分辨率块提供下采样图像。我们在所有上采样和下采样操作中都使用了双线性滤波。下图c中，我们进一步修改了设计，以使用残差连接。这种设计类似于LAPGAN。</p>
+<p>一句话总结：Removing Progressive Growing，然后使用上采样和下采样去处理这个问题。</p>
+<p><img src="https://i.loli.net/2020/02/11/XuyzvANSHwDVrhF.png" alt="Screen Shot 2020-02-11 at 11.06.30 AM.png"></p>
+<p>（3）一些小的启发</p>
+<ul>
+<li>提出了一个新的指标 PPL<br>FID和P&amp;R都基于分类器网络，最近的研究表明，分类器网络侧重于纹理而不是形状，因此，这些指标不能准确地代表图像质量的所有方面。所以提出了一个新的指标：感知路径长度（PPL），用来量化从隐空间到输出图像的映射的平滑度。至于为什么，这一点并不直接和明显。猜想是该指标能够惩罚快速变化的隐藏空间。计算过程中涉及到正则化计算成本比较高，所以作者提出了懒惰式正则化（lazy regularization）。</li>
+<li>使用了斜坡下降噪声优化了生成器的随机噪声输入</li>
+<li>Deepfake Detection via Projection<br>这种思路的来源是 kaggle 比赛中，有人通过将图像projection 之后可以有效发现图像是来自GAN网络生成还是真实的图像。</li>
+</ul>
+<p>结果：</p>
+<p>训练速度更快</p>
+<p>生成的图像的质量更高（FID 分数更高, ~3%的提升 ，artifacts 减少）</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2020/02/06e05cccd4bcfc57.png" alt=""></p>
+<p>(4) 损失函数</p>
+<p>作为一篇很好的对比性质的论文（项目），loss 函数中提供了很多种类的loss 可供选择。 默认 config-e 和config-f 是下面的loss</p>
+<p>D 网络的loss</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># R1 and R2 regularizers from the paper</span></span><br><span class="line"><span class="comment"># "Which Training Methods for GANs do actually Converge?", Mescheder et al. 2018</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">D_logistic_r1</span><span class="params">(G, D, opt, training_set, minibatch_size, reals, labels, gamma=<span class="number">10.0</span>)</span>:</span></span><br><span class="line">    _ = opt, training_set</span><br><span class="line">    latents = tf.random_normal([minibatch_size] + G.input_shapes[<span class="number">0</span>][<span class="number">1</span>:])</span><br><span class="line">    fake_images_out = G.get_output_for(latents, labels, is_training=<span class="literal">True</span>)</span><br><span class="line">    real_scores_out = D.get_output_for(reals, labels, is_training=<span class="literal">True</span>)</span><br><span class="line">    fake_scores_out = D.get_output_for(fake_images_out, labels, is_training=<span class="literal">True</span>)</span><br><span class="line">    real_scores_out = autosummary(<span class="string">'Loss/scores/real'</span>, real_scores_out)</span><br><span class="line">    fake_scores_out = autosummary(<span class="string">'Loss/scores/fake'</span>, fake_scores_out)</span><br><span class="line">    loss = tf.nn.softplus(fake_scores_out) <span class="comment"># -log(1-sigmoid(fake_scores_out))</span></span><br><span class="line">    loss += tf.nn.softplus(-real_scores_out) <span class="comment"># -log(sigmoid(real_scores_out)) # pylint: disable=invalid-unary-operand-type</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'GradientPenalty'</span>):</span><br><span class="line">        real_grads = tf.gradients(tf.reduce_sum(real_scores_out), [reals])[<span class="number">0</span>]</span><br><span class="line">        gradient_penalty = tf.reduce_sum(tf.square(real_grads), axis=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">        gradient_penalty = autosummary(<span class="string">'Loss/gradient_penalty'</span>, gradient_penalty)</span><br><span class="line">        reg = gradient_penalty * (gamma * <span class="number">0.5</span>)</span><br><span class="line">    <span class="keyword">return</span> loss, reg</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">D_logistic_r2</span><span class="params">(G, D, opt, training_set, minibatch_size, reals, labels, gamma=<span class="number">10.0</span>)</span>:</span></span><br><span class="line">    _ = opt, training_set</span><br><span class="line">    latents = tf.random_normal([minibatch_size] + G.input_shapes[<span class="number">0</span>][<span class="number">1</span>:])</span><br><span class="line">    fake_images_out = G.get_output_for(latents, labels, is_training=<span class="literal">True</span>)</span><br><span class="line">    real_scores_out = D.get_output_for(reals, labels, is_training=<span class="literal">True</span>)</span><br><span class="line">    fake_scores_out = D.get_output_for(fake_images_out, labels, is_training=<span class="literal">True</span>)</span><br><span class="line">    real_scores_out = autosummary(<span class="string">'Loss/scores/real'</span>, real_scores_out)</span><br><span class="line">    fake_scores_out = autosummary(<span class="string">'Loss/scores/fake'</span>, fake_scores_out)</span><br><span class="line">    loss = tf.nn.softplus(fake_scores_out) <span class="comment"># -log(1-sigmoid(fake_scores_out))</span></span><br><span class="line">    loss += tf.nn.softplus(-real_scores_out) <span class="comment"># -log(sigmoid(real_scores_out)) # pylint: disable=invalid-unary-operand-type</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'GradientPenalty'</span>):</span><br><span class="line">        fake_grads = tf.gradients(tf.reduce_sum(fake_scores_out), [fake_images_out])[<span class="number">0</span>]</span><br><span class="line">        gradient_penalty = tf.reduce_sum(tf.square(fake_grads), axis=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">        gradient_penalty = autosummary(<span class="string">'Loss/gradient_penalty'</span>, gradient_penalty)</span><br><span class="line">        reg = gradient_penalty * (gamma * <span class="number">0.5</span>)</span><br><span class="line">    <span class="keyword">return</span> loss, reg</span><br></pre></td></tr></table></figure>
+
+
+<p>G 网络的loss</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">G_logistic_ns_pathreg</span><span class="params">(G, D, opt, training_set, minibatch_size, pl_minibatch_shrink=<span class="number">2</span>, pl_decay=<span class="number">0.01</span>, pl_weight=<span class="number">2.0</span>)</span>:</span></span><br><span class="line">    _ = opt</span><br><span class="line">    latents = tf.random_normal([minibatch_size] + G.input_shapes[<span class="number">0</span>][<span class="number">1</span>:])</span><br><span class="line">    labels = training_set.get_random_labels_tf(minibatch_size)</span><br><span class="line">    fake_images_out, fake_dlatents_out = G.get_output_for(latents, labels, is_training=<span class="literal">True</span>, return_dlatents=<span class="literal">True</span>)</span><br><span class="line">    fake_scores_out = D.get_output_for(fake_images_out, labels, is_training=<span class="literal">True</span>)</span><br><span class="line">    loss = tf.nn.softplus(-fake_scores_out) <span class="comment"># -log(sigmoid(fake_scores_out))</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Path length regularization.</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'PathReg'</span>):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Evaluate the regularization term using a smaller minibatch to conserve memory.</span></span><br><span class="line">        <span class="keyword">if</span> pl_minibatch_shrink &gt; <span class="number">1</span>:</span><br><span class="line">            pl_minibatch = minibatch_size // pl_minibatch_shrink</span><br><span class="line">            pl_latents = tf.random_normal([pl_minibatch] + G.input_shapes[<span class="number">0</span>][<span class="number">1</span>:])</span><br><span class="line">            pl_labels = training_set.get_random_labels_tf(pl_minibatch)</span><br><span class="line">            fake_images_out, fake_dlatents_out = G.get_output_for(pl_latents, pl_labels, is_training=<span class="literal">True</span>, return_dlatents=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Compute |J*y|.</span></span><br><span class="line">        pl_noise = tf.random_normal(tf.shape(fake_images_out)) / np.sqrt(np.prod(G.output_shape[<span class="number">2</span>:]))</span><br><span class="line">        pl_grads = tf.gradients(tf.reduce_sum(fake_images_out * pl_noise), [fake_dlatents_out])[<span class="number">0</span>]</span><br><span class="line">        pl_lengths = tf.sqrt(tf.reduce_mean(tf.reduce_sum(tf.square(pl_grads), axis=<span class="number">2</span>), axis=<span class="number">1</span>))</span><br><span class="line">        pl_lengths = autosummary(<span class="string">'Loss/pl_lengths'</span>, pl_lengths)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Track exponential moving average of |J*y|.</span></span><br><span class="line">        <span class="keyword">with</span> tf.control_dependencies(<span class="literal">None</span>):</span><br><span class="line">            pl_mean_var = tf.Variable(name=<span class="string">'pl_mean'</span>, trainable=<span class="literal">False</span>, initial_value=<span class="number">0.0</span>, dtype=tf.float32)</span><br><span class="line">        pl_mean = pl_mean_var + pl_decay * (tf.reduce_mean(pl_lengths) - pl_mean_var)</span><br><span class="line">        pl_update = tf.assign(pl_mean_var, pl_mean)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Calculate (|J*y|-a)^2.</span></span><br><span class="line">        <span class="keyword">with</span> tf.control_dependencies([pl_update]):</span><br><span class="line">            pl_penalty = tf.square(pl_lengths - pl_mean)</span><br><span class="line">            pl_penalty = autosummary(<span class="string">'Loss/pl_penalty'</span>, pl_penalty)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Apply weight.</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># Note: The division in pl_noise decreases the weight by num_pixels, and the reduce_mean</span></span><br><span class="line">        <span class="comment"># in pl_lengths decreases it by num_affine_layers. The effective weight then becomes:</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># gamma_pl = pl_weight / num_pixels / num_affine_layers</span></span><br><span class="line">        <span class="comment"># = 2 / (r^2) / (log2(r) * 2 - 2)</span></span><br><span class="line">        <span class="comment"># = 1 / (r^2 * (log2(r) - 1))</span></span><br><span class="line">        <span class="comment"># = ln(2) / (r^2 * (ln(r) - ln(2))</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        reg = pl_penalty * pl_weight</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loss, reg</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h3><p>运行环境</p>
+<ol>
+<li>显卡：官网要求有16GB内存的NVIDIA GPU（即：NVIDIA 特斯拉 Tesla V100），经实测，11GB内存的NVIDIA GeForce RTX 2080Ti也可以跑起来。如果只是简单的跑跑别人训练好的例子，那么使用配置比较低的也可以，但是训练的话，那么得使用比较高的配置。</li>
+<li>版本：使用 TensorFlow 1.14 而不要使用 TensorFlow 1.15； linux 环境</li>
+</ol>
+<h3 id="kaggle-中GAN生成图像的总结"><a href="#kaggle-中GAN生成图像的总结" class="headerlink" title="kaggle 中GAN生成图像的总结"></a>kaggle 中GAN生成图像的总结</h3><h3 id="比较好的代码"><a href="#比较好的代码" class="headerlink" title="比较好的代码"></a>比较好的代码</h3><div><div class="fold_hider"><div class="close hider_title">开/合</div></div><div class="fold">
+<ol>
+<li>图像预处理和数据增强</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">batch_size = <span class="number">32</span></span><br><span class="line">batchSize = <span class="number">64</span></span><br><span class="line">imageSize = <span class="number">64</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 64x64 images!</span></span><br><span class="line">transform = transforms.Compose([transforms.Resize(<span class="number">64</span>),</span><br><span class="line">                                transforms.CenterCrop(<span class="number">64</span>),</span><br><span class="line">                                transforms.ToTensor(),</span><br><span class="line">                                transforms.Normalize((<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), (<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>))])</span><br><span class="line"></span><br><span class="line">train_data = datasets.ImageFolder(<span class="string">'../input/all-dogs/'</span>, transform=transform)</span><br><span class="line"></span><br><span class="line">dataloader = torch.utils.data.DataLoader(train_data, shuffle=<span class="literal">True</span>,</span><br><span class="line">                                           batch_size=batch_size)</span><br><span class="line"></span><br><span class="line">imgs, label = next(iter(dataloader))</span><br><span class="line">imgs = imgs.numpy().transpose(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">image_size = <span class="number">64</span></span><br><span class="line"></span><br><span class="line">random_transforms = [transforms.ColorJitter(), transforms.RandomRotation(degrees=<span class="number">20</span>)]</span><br><span class="line">transform = transforms.Compose([transforms.Resize(<span class="number">64</span>),</span><br><span class="line">                                transforms.CenterCrop(<span class="number">64</span>),</span><br><span class="line">                                transforms.RandomHorizontalFlip(p=<span class="number">0.5</span>),</span><br><span class="line">                                transforms.RandomApply(random_transforms, p=<span class="number">0.2</span>),</span><br><span class="line">                                transforms.ToTensor(),</span><br><span class="line">                                transforms.Normalize((<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), (<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>))])</span><br><span class="line"></span><br><span class="line">train_data = datasets.ImageFolder(<span class="string">'../input/all-dogs/'</span>, transform=transform)</span><br><span class="line">train_loader = torch.utils.data.DataLoader(train_data, shuffle=<span class="literal">True</span>,</span><br><span class="line">                                           batch_size=batch_size)</span><br><span class="line">                                           </span><br><span class="line">imgs, label = next(iter(train_loader))</span><br><span class="line">imgs = imgs.numpy().transpose(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 水平旋转， 和常见的从中间 centercrop 这样的操作</span></span><br><span class="line">transform = albu.Compose([</span><br><span class="line">    albu.CenterCrop(<span class="number">64</span>, <span class="number">64</span>),</span><br><span class="line">    albu.HorizontalFlip(p=<span class="number">0.5</span>),</span><br><span class="line">    albu.Normalize((<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), (<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>)),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">dataset = DogDataset(</span><br><span class="line">    transform=transform,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">print(dataset)</span><br><span class="line">dataset.show_examples()</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>Crop images using bounding box</li>
+</ol>
+<p>想说的是，如果有了标注（bounding box），那么这个是可以做到更加精确，至少在数据预处理部分。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bounding_box</span><span class="params">(image)</span>:</span></span><br><span class="line">    bpath=root_annots+str(breed_map[image.split(<span class="string">"_"</span>)[<span class="number">0</span>]])+<span class="string">"/"</span>+str(image.split(<span class="string">"."</span>)[<span class="number">0</span>])</span><br><span class="line">    tree = ET.parse(bpath)</span><br><span class="line">    root = tree.getroot()</span><br><span class="line">    objects = root.findall(<span class="string">'object'</span>)</span><br><span class="line">    <span class="keyword">for</span> o <span class="keyword">in</span> objects:</span><br><span class="line">        bndbox = o.find(<span class="string">'bndbox'</span>) <span class="comment"># reading bound box</span></span><br><span class="line">        xmin = int(bndbox.find(<span class="string">'xmin'</span>).text)</span><br><span class="line">        ymin = int(bndbox.find(<span class="string">'ymin'</span>).text)</span><br><span class="line">        xmax = int(bndbox.find(<span class="string">'xmax'</span>).text)</span><br><span class="line">        ymax = int(bndbox.find(<span class="string">'ymax'</span>).text)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> (xmin,ymin,xmax,ymax)</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">10</span>))</span><br><span class="line"><span class="keyword">for</span> i,image <span class="keyword">in</span> enumerate(all_images):</span><br><span class="line">    bbox=bounding_box(image)</span><br><span class="line">    im=Image.open(os.path.join(root_images,image))</span><br><span class="line">    im=im.crop(bbox)</span><br><span class="line">    </span><br><span class="line">    plt.subplot(<span class="number">3</span>,<span class="number">3</span>,i+<span class="number">1</span>)</span><br><span class="line">    plt.axis(<span class="string">"off"</span>)</span><br><span class="line">    plt.imshow(im)    </span><br><span class="line">    <span class="keyword">if</span>(i==<span class="number">8</span>):</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+
+<p>（3）第三种对于数据的处理, <a href="https://www.kaggle.com/theoviel/conditional-progan-30-public/notebook" target="_blank" rel="noopener">Conditional ProGan </a></p>
+<p>Transforms</p>
+<ul>
+<li>RandomHorizontalFlip, p=0.5</li>
+<li>CenterCrop or RandomCrop</li>
+<li>A bit of ColorJitter</li>
+<li>Rescale between [-1, 1]</li>
+</ul>
+<p>Rotating is not used, and I also tried other normalization methods.</p>
+<p>（4） 在jupyter 中随机展示图像的技术，还是比较好的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np <span class="comment"># linear algebra</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd <span class="comment"># data processing, CSV file I/O (e.g. pd.read_csv)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> xml.etree.ElementTree <span class="keyword">as</span> ET</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch </span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"></span><br><span class="line"><span class="comment"># Input data files are available in the "../input/" directory.</span></span><br><span class="line"><span class="comment"># For example, running this (by clicking run or pressing Shift+Enter) will list the files in the input directory</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">print(os.listdir(<span class="string">"../input"</span>))</span><br><span class="line"></span><br><span class="line">img_base_path = <span class="string">"../input/all-dogs/all-dogs"</span></span><br><span class="line"><span class="comment"># Files</span></span><br><span class="line">images = os.listdir(img_base_path)</span><br><span class="line">print(<span class="string">"Number of Images: "</span>, len(images))</span><br><span class="line"></span><br><span class="line"><span class="comment"># choose 16 random images to display</span></span><br><span class="line">images_to_display = random.choices(images, k=<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">25</span>, <span class="number">16</span>))</span><br><span class="line"><span class="keyword">for</span> ii, img <span class="keyword">in</span> enumerate(images_to_display):</span><br><span class="line">    ax = fig.add_subplot(<span class="number">8</span>, <span class="number">8</span>, ii + <span class="number">1</span>, xticks=[], yticks=[])</span><br><span class="line">    </span><br><span class="line">    img = Image.open(os.path.join(img_base_path, img))</span><br><span class="line">    plt.imshow(img)</span><br></pre></td></tr></table></figure>
+
+
+<p>如何去判断 GAN 已经过拟合了？如果过拟合了（可以使用数据增强，但是对于gan 如何去判断过拟合了呢？）</p>
+<p>Data Augmentation help in training model better. Its like increasing size of your Dataset and prevents overfitting.</p>
+<p><strong>Crops will give be having only dogs in them, so model will be able to learn better and easier.</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Data Pre-procesing and Augmentation (Experiment on your own)</span></span><br><span class="line">random_transforms = [transforms.ColorJitter(), transforms.RandomRotation(degrees=<span class="number">20</span>)]</span><br><span class="line"></span><br><span class="line">transform = transforms.Compose([</span><br><span class="line">                                transforms.CenterCrop(<span class="number">64</span>),</span><br><span class="line">                                transforms.RandomHorizontalFlip(p=<span class="number">0.5</span>),</span><br><span class="line">                                transforms.RandomApply(random_transforms, p=<span class="number">0.3</span>),</span><br><span class="line">                                transforms.ToTensor(),</span><br><span class="line">                                transforms.Normalize((<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), (<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>))])</span><br><span class="line"></span><br><span class="line"><span class="comment"># The dataset (example)</span></span><br><span class="line">dataset = torchvision.datasets.ImageFolder(</span><br><span class="line">    <span class="string">'../input/all-dogs/'</span>,</span><br><span class="line">    loader=ImageLoader, <span class="comment"># THE CUSTOM LOADER</span></span><br><span class="line">    transform=transform</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>在pytorch 中固定 seed</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">seed_everything</span><span class="params">(seed=<span class="number">42</span>)</span>:</span></span><br><span class="line">    random.seed(seed)</span><br><span class="line">    os.environ[<span class="string">'PYTHONHASHSEED'</span>] = str(seed)</span><br><span class="line">    np.random.seed(seed)</span><br><span class="line">    torch.manual_seed(seed)</span><br><span class="line">    torch.cuda.manual_seed(seed)</span><br><span class="line">    torch.backends.cudnn.deterministic = <span class="literal">True</span></span><br><span class="line">    </span><br><span class="line">seed_everything()</span><br><span class="line">device = torch.device(<span class="string">"cuda"</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">"cpu"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>使用长宽比例进行筛选图像,<br><a href="https://www.kaggle.com/leonshangguan/dcgan-data-cleaning-sub-v1?scriptVersionId=18470145" target="_blank" rel="noopener">SUB of RaLSGAN-improved-parameters-ram-64</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_cleaned_data</span><span class="params">(image, annot, class_dict)</span>:</span></span><br><span class="line">    select_dogs = []</span><br><span class="line">    select_bbox = []</span><br><span class="line">    select_labels = []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(image)):</span><br><span class="line">        bbox = get_bbox(annot[i])</span><br><span class="line">        bbox = bbox[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        dog, dog_class = get_image(annot[i])</span><br><span class="line">        <span class="keyword">if</span> dog == <span class="string">'../input/all-dogs/all-dogs/n02105855_2933.jpg'</span>:   <span class="comment"># this jpg is not in the dataset</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        im = Image.open(dog)</span><br><span class="line">        </span><br><span class="line">        xdiff = abs(bbox[<span class="number">2</span>] - bbox[<span class="number">0</span>])</span><br><span class="line">        ydiff = abs(bbox[<span class="number">3</span>] - bbox[<span class="number">1</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> ((abs(ydiff - xdiff)/min(ydiff, xdiff)&lt;=<span class="number">0.25</span>) <span class="keyword">and</span> ((xdiff&gt;=<span class="number">64</span>) <span class="keyword">and</span> (ydiff&gt;=<span class="number">64</span>))):</span><br><span class="line"><span class="comment">#         if (0.8&lt;(ydiff/xdiff)&lt;1.25) and (min(xdiff, ydiff)&gt;=128):            </span></span><br><span class="line">            select_dogs.append(dog)</span><br><span class="line">            select_bbox.append(bbox)</span><br><span class="line">            select_labels.append(class_dict[dog_class])</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> select_dogs, select_bbox, select_labels</span><br><span class="line"></span><br><span class="line">select_dogs, select_bbox, select_labels = get_cleaned_data(image, annot, class_dict)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">transform1 = <span class="literal">None</span> <span class="comment">#transforms.Compose([transforms.RandomResizedCrop(64, (1.0, 1.0))])</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Data augmentation and converting to tensors</span></span><br><span class="line">transform2 = transforms.Compose([transforms.RandomResizedCrop(<span class="number">64</span>, (<span class="number">0.85</span>, <span class="number">1.0</span>)),</span><br><span class="line">                                 transforms.RandomHorizontalFlip(p=<span class="number">0.5</span>), </span><br><span class="line">                                 transforms.ToTensor(),</span><br><span class="line">                                 transforms.Normalize((<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), (<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>))])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_data = DogsDataset(</span><br><span class="line">    PATH,</span><br><span class="line">    transform1,</span><br><span class="line">    transform2</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">train_loader = torch.utils.data.DataLoader(train_data, shuffle=<span class="literal">True</span>,</span><br><span class="line">                                           batch_size=BATCH_SIZE, num_workers=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot some training images</span></span><br><span class="line">real_batch = next(iter(train_loader))</span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>,<span class="number">8</span>))</span><br><span class="line">plt.axis(<span class="string">"off"</span>)</span><br><span class="line">plt.title(<span class="string">"Training Images"</span>)</span><br><span class="line">plt.imshow(np.transpose(make_grid(real_batch.to(device)[:<span class="number">64</span>], padding=<span class="number">2</span>, normalize=<span class="literal">True</span>).cpu(),(<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>)))</span><br></pre></td></tr></table></figure>
+
+
+
+
+</div></div>
+
+<h3 id="图像数据预处理"><a href="#图像数据预处理" class="headerlink" title="图像数据预处理"></a>图像数据预处理</h3><blockquote>
+<p>The blue rectangles are the provided bounding boxes. I cropped all images to the yellow squares and resized them to 80x80 pixels. I chose a square that captures my best guess of where the dog head is and added padding beyond the bounding box to allow for random cropping during training.<br>如果你最后使用 64 *64 去跑实验，那么先resize 成80 *80，这样是是可以之后进行数据增强的。（很好的tips）</p>
+</blockquote>
+<blockquote>
+<p>Data Augmentation, Random Cropping<br>Each original image was cropped to a 80x80 square that included 25% extra image beyond bounding box (yellow squares below). This extra room allows us to randomly choose a 64x64 crop within (red squares below) and mostly stay outside the bounding box (blue rectangles).<br>上面的一步是为了下面的步骤做准备</p>
+</blockquote>
+<p><img src="https://img.vim-cn.com/e8/3b74cbcc500141fb1879eadcfb9b37bbdbf74c.png" alt=""></p>
+<p>使用上面两个步骤得到的图像如下。<br><img src="https://i.niupic.com/images/2020/02/29/6X52.png" alt=""></p>
+<p>三种图像的预处理：</p>
+<blockquote>
+<p>image processing<br>a) bounding box cropping only;<br>b) bounding box cropping for images with multiple objects, for images with single object and boxsize / imagesize &gt;= 0.75, use original images instead of bounding box.<br>c) bounding box cropping plus all original images</p>
+</blockquote>
+<p>Among the three processing methods, b) gets me the best private score, c) gets me the best public score 18, but did not go well with the private dataset.<br>如果有了 bounding box，那么最后的结果是是更好的的。</p>
+<p>常见的可能需要调整的超参数</p>
+<p>losses<br>I experimented with losses such as “standard-dcgan”, “wgan-gp”, “lsgan”, “lsgan-with-sigmoid”, “hinge”, “relative-hinge”. My experience is the best one for this problem with various models is the “standard dcgan” loss, the second best is “lsgan-with-sigmoid” loss.</p>
+<p>Attention at different stages<br>According to the paper “Self-Attention Generative Adversarial Networks”(<a href="https://arxiv.org/pdf/1805.08318v2.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1805.08318v2.pdf</a>), self-attention at middle-to-high level feature maps achieve better performance because it receives more evidence and more freedom to choose conditions with larger feature maps. My experiences mostly concur with the paper findings. I have attention at 32x32 feature map for the generator, but at 16x16 feature map for the discriminator.</p>
+<p>Training settings<br>The learning rate for the discriminator is 0.0004, and the learning rate for the generator is 0.0002;<br>batch size is 32(tried 64 but the result is not as stable as 32);<br>label smoothing; thanks the kernel <a href="https://www.kaggle.com/phoenix9032/gan-dogs-starter-24-jul-custom-layers" target="_blank" rel="noopener">https://www.kaggle.com/phoenix9032/gan-dogs-starter-24-jul-custom-layers</a> and its author Nirjhar Roy.<br>learning rate scheduler: CosineAnnealingWarmRestarts<br>number of epoch: 170</p>
+<p>the best latent space dimension size: 180</p>
+<blockquote>
+<p> 8th place solution(private 89)</p>
+</blockquote>
+<p>To be honest, there is no special technique in my solution.<br>I chose stylegan, then looked for good parameters.<br>My stylegan starts with public score 140, then tuning parameters, I got 35.</p>
+<p>for preprocessing: crop image by bounding box, random horizontal flip （从道理上讲，水平翻转还是有用的，因为90度翻转可能没有语义信息，但是水平翻转是有点语义的）<br>reduce input channel size of style generator to 256 because of resource limitation.<br>all hyper parameters are shown in below.</p>
+<p>stylegan 中的参数好好看：</p>
+<blockquote>
+<p>trials that didn’t work for me<br>Truncation trick from stylegan paper. I tried various truncation strength, but without truncation was the best.<br>Auxiliary Classifier<br>Data cleaning. I thought training data quality is quite important, so I did some procedure (dog face detection, manually picking good images..) but nothing worked.<br>Today, I read some kernels and learned there’s some good techniques.<br>This is one of the room for improvement of my solution, I guess.<br>It was really fun competition! Thanks for kaggle team!!</p>
+</blockquote>
+<p>Truncation trick in W， 这个数字是在0和1 之间，越是接近0，那么最后生成的图像越是趋同；越是接近1，最后的图像越是多样性。</p>
+<blockquote>
+<p>1st place solution</p>
+</blockquote>
+<p>Preprocessing&amp;Augmentations</p>
+<ul>
+<li>exclude images with extreme aspect ratio (y/x &lt; 0.2 and y/x &gt; 4.0)</li>
+<li>exclude images with intruders (thanks @korovai for sharing the kernel <a href="https://www.kaggle.com/korovai/dogs-images-intruders-extraction-tf-gan" target="_blank" rel="noopener">https://www.kaggle.com/korovai/dogs-images-intruders-extraction-tf-gan</a>)</li>
+<li>use BoundingBox (no modification)</li>
+<li>Resize 64 (one side) and then RandomCrop to image size (64,64)</li>
+<li>HorizontalFlip(p=0.5 以p=0.5 的概率)</li>
+</ul>
+<p>模型和参数相关</p>
+<p>・Model: BigGAN</p>
+<ul>
+<li>number of parameters G:10M, D:8M</li>
+<li>input noise from normal distribution (nz=120)</li>
+<li>use LeakyReLU</li>
+<li>attention on size 32 feature map</li>
+<li>use truncated trick (threshold=0.8)</li>
+<li>no EMA</li>
+</ul>
+<p>・Loss: BCE loss<br>・Optimizer: Adam (lrG=3e-4, lrD=3e-4, beta1=0.0, beta2=0.999)<br>・Batch Size: 32<br>・Epochs: 130 (maximum kernel time limit, i.e. 32400sec)<br>・Others</p>
+<ul>
+<li>label smoothing 0.9</li>
+</ul>
+<p>I made my kernel public <a href="https://www.kaggle.com/tikutiku/gan-dogs-starter-biggan" target="_blank" rel="noopener">https://www.kaggle.com/tikutiku/gan-dogs-starter-biggan</a><br>version32 is the 1st place solution （注意查看的是version 32 ）</p>
+<p>数据预处理方面</p>
+<p>Transforms</p>
+<ul>
+<li>RandomHorizontalFlip, p=0.5</li>
+<li>CenterCrop or RandomCrop</li>
+<li>A bit of ColorJitter</li>
+<li>Rescale between [-1, 1]</li>
+</ul>
+<ul>
+<li>I used dog boxes, but enlarge them by 10px on each side (这个的使用，是和上面的 centercrop 和randomcrop 相适应的)</li>
+<li>Dog races are also used</li>
+</ul>
+<p>ColorJitter类也比较常用，主要是修改输入图像的4大参数值：brightness, contrast and saturation，hue，也就是亮度，对比度，饱和度和色度。可以根据注释来合理设置这4个参数。</p>
+<p><a href="https://www.kaggle.com/theoviel/conditional-progan-30-public" target="_blank" rel="noopener"> medalConditional ProGan [30 public]</a></p>
+<p>数据预处理方面</p>
+<p>在使用 resize的时候， cv2.INTER_AREA 这个是关键。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># crop by square bounding box -&gt; resize and normalize.</span></span><br><span class="line"><span class="comment"># cv2.INTER_AREA is better than others.</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_bboxcrop_resized_image</span><span class="params">(file, bbox)</span>:</span></span><br><span class="line">    img = cv2.imread(os.path.join(root_images, file))</span><br><span class="line">    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</span><br><span class="line"></span><br><span class="line">    xmin, ymin, xmax, ymax = bbox</span><br><span class="line">    img = img[ymin:ymax,xmin:xmax]</span><br><span class="line"></span><br><span class="line">    transform = A.Compose([A.Resize(<span class="number">64</span>, <span class="number">64</span>, interpolation=cv2.INTER_AREA),</span><br><span class="line">                           A.Normalize((<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), (<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>))])</span><br><span class="line">    img = transform(image=img)[<span class="string">'image'</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> img</span><br></pre></td></tr></table></figure>
+
+<p>G 网络的noise 是不是也可以使用其他的方式，比如下面的Uniform input noise ？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">truncated_normal</span><span class="params">(size, threshold=<span class="number">2.0</span>, dtype=torch.float32, device=<span class="string">'cpu'</span>)</span>:</span></span><br><span class="line">    x = scipy.stats.truncnorm.rvs(-threshold, threshold, size=size)</span><br><span class="line">    x = torch.from_numpy(x).to(device, dtype)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<p>FID emphasizes sample diversity too much.</p>
+<p>Key points:</p>
+<p>Model: based on BigGAN<br>shared embedding of dog breed labels<br>hierarchical latent noise<br>projection<br>auxiliary classifier (ACGAN)<br>Loss: RaLS with weighted auxiliary classification loss<br>Batch size: 128<br>Exponential Moving Average of generator weights<br>Uniform input noise on real images</p>
+<p>数据处理方面</p>
+<p>My goal with image transformations at first was to keep as much usefull information as possible. Given how the FID metric is sensitive to missing modes, it’s reasonable to keep most of the images, even the unhandy ones.I focused mostly on geometric transformation. Pixel-level augmentation didn’t bring any improvements for me. </p>
+<p>超参数方面</p>
+<p>I found it a lot easier to use generator with less parameters than default settings. （使用更加简单的G 网络）</p>
+<p>cyclic learning rates with cosine annealing and soft/hard warmups. With some settings it has a positive impact but tend to lack consistency. （learning rate 的调度算法）</p>
+<p>other possible z distrubutions as described in the BigGAN paper (Appendix E). Bernoulli didn’t work at all, censored Gaussian gave a bit worse results than usual normal distribution.（z 的分布这个超参数）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.makedirs(annotation_outdir, exist_ok=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="调参部分"><a href="#调参部分" class="headerlink" title="调参部分"></a>调参部分</h3><p>大胆去尝试调参！！！</p>
+<p>To build a great GAN, you first build two great convolutional networks (Gen and Disc). Use either ResNet (BigGAN) or VGGNet (DCGAN) architecture. Next choose a loss function. Hinge loss is the current favorite. (Others are GAN, RaLSGAN, WGAN, ACGAN, etc) Then to prevent training from exploding, add normalization/regularization such as weight clipping, gradient penalty (WGAN-GP), batch norm, or spectral normalization (SN-GAN), etc. For best performance add modulation via batch norm using either class labels (CGAN), style labels (StyleGAN), or random noise labels (Self Mod). Next optimize your hyperparameters; alpha, beta1 and beta2 of your Adam optimizer. Choose if the discriminator will train extra epochs versus generator. Lastly choose a dataset, add more data with data augmentation, and start training on a fast GPU !</p>
+<p>After a few experiments, my BigGAN achieves LB 42 with the following changes from default. Batch size to 32 (from 64), learning rates to Adam alpha=0.0003, beta1=0.2, beta2=0.9 (from 0.0002, 0, 0.9). Discriminator channels to 48 (from 64), generator channels to 48 (from 64), train for 40,000 iterations with exponential decay beginning at 32,000.</p>
+<p> 11th place solution</p>
+<p>这两篇是使用stylegan 进行调参的经验，可以多看看。<br><a href="https://www.kaggle.com/c/generative-dog-images/discussion/106452" target="_blank" rel="noopener">https://www.kaggle.com/c/generative-dog-images/discussion/106452</a><br><a href="https://www.kaggle.com/c/generative-dog-images/discussion/104281" target="_blank" rel="noopener">https://www.kaggle.com/c/generative-dog-images/discussion/104281</a></p>
+<p>参考文献</p>
+<p><a href="https://towardsdatascience.com/stylegan2-ace6d3da405d" target="_blank" rel="noopener">StyleGAN2</a></p>
+<p><a href="https://www.kaggle.com/c/generative-dog-images/discussion/106305" target="_blank" rel="noopener">posted in Generative Dog Images</a></p>
+<p>其他：<a href="https://github.com/interviewBubble/Data-Science-Competitions" target="_blank" rel="noopener">https://github.com/interviewBubble/Data-Science-Competitions</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/09/tensorboard/" rel="next" title="介绍 Tensorboard">
+                <i class="fa fa-chevron-left"></i> 介绍 Tensorboard
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/11/git_command/" rel="prev" title="Git 相关命令介绍">
+                Git 相关命令介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">139</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#GAN-综述论文"><span class="nav-number">1.</span> <span class="nav-text">GAN 综述论文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ProGAN"><span class="nav-number">2.</span> <span class="nav-text">ProGAN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从ProGAN-到-StyleGAN"><span class="nav-number">3.</span> <span class="nav-text">从ProGAN 到 StyleGAN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从-StyleGAN-到-StyleGAN2"><span class="nav-number">4.</span> <span class="nav-text">从 StyleGAN 到 StyleGAN2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验环境"><span class="nav-number">5.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kaggle-中GAN生成图像的总结"><span class="nav-number">6.</span> <span class="nav-text">kaggle 中GAN生成图像的总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比较好的代码"><span class="nav-number">7.</span> <span class="nav-text">比较好的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像数据预处理"><span class="nav-number">8.</span> <span class="nav-text">图像数据预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调参部分"><span class="nav-number">9.</span> <span class="nav-text">调参部分</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/01/11/progan_stylegan/';
+          this.page.identifier = '2020/01/11/progan_stylegan/';
+          this.page.title = 'ProGAN & StyleGAN & StyleGAN2';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

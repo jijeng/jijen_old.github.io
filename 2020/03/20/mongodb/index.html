@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="MongoDB 相关学习介绍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB 介绍">
+<meta property="og:url" content="http://yoursite.com/2020/03/20/mongodb/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="MongoDB 相关学习介绍。">
+<meta property="article:published_time" content="2020-03-20T12:36:03.000Z">
+<meta property="article:modified_time" content="2020-04-01T03:00:35.454Z">
+<meta property="article:author" content="Jijeng Jia">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/20/mongodb/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>MongoDB 介绍 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/mongodb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MongoDB 介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-20T20:36:03+08:00">
+                2020-03-20
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-04-01T11:00:35+08:00">
+                2020-04-01
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/03/20/mongodb/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/03/20/mongodb/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>MongoDB 相关学习介绍。</p>
+<a id="more"></a>
+
+
+
+<p>关系型数据库遵循ACID规则</p>
+<p>事务在英文中是transaction，和现实世界中的交易很类似，它有如下四个特性：</p>
+<p>1、A (Atomicity) 原子性<br>2、C (Consistency) 一致性<br>3、I (Isolation) 独立性<br>4、D (Durability) 持久性</p>
+<p>为什么需要NoSQL？</p>
+<p>今天我们可以通过第三方平台（如：Google,Facebook等）可以很容易的访问和抓取数据。用户的个人信息，社交网络，地理位置，用户生成的数据和用户操作日志已经成倍的增加。我们如果要对这些用户数据进行挖掘，那SQL数据库已经不适合这些应用了, NoSQL 数据库的发展却能很好的处理这些大的数据。</p>
+<p>MongoDB是一个高性能，开源，无模式的文档型数据库，是当前NoSql数据库中比较热门的一种。NoSql，全称是 Not Only Sql,指的是非关系型的数据库。</p>
+<p>它的特点是高性能、易部署、易使用，存储数据非常方便。主要功能特性有：</p>
+<ul>
+<li>MongoDB是一个独立的服务器；</li>
+<li>它是基于文档的，而不是基于表格的；</li>
+<li>它是非结构化的；</li>
+<li>它具有强大的主流开发语言支持，如C#、C++、Java、PHP、Perl、Python、Ruby。</li>
+<li>可扩展性</li>
+<li>使用高效的二进制数据存储，包括大型对象（如视频等）。</li>
+<li>支持完全索引，包含内部对象。</li>
+<li>面向集合存储，易存储对象类型的数据。</li>
+</ul>
+<p>MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 将数据存储为一个文档，数据结构由键值(key=&gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。</p>
+<p>NoSQL，指的是非关系型的数据库。NoSQL有时也称作Not Only SQL的缩写，是对不同于传统的关系型数据库的数据库管理系统的统称。</p>
+<p>NoSQL用于超大规模数据的存储。（例如谷歌或Facebook每天为他们的用户收集万亿比特的数据）。这些类型的数据存储不需要固定的模式，无需多余操作就可以横向扩展。</p>
+<p>现在已经有很多公司使用了 NoSQL：<br>Google<br>Facebook<br>Mozilla<br>Adobe<br>Foursquare</p>
+<p>相对于传统的关系型数据库，优缺点表现如下。</p>
+<p>优点：</p>
+<ul>
+<li>面向文档存储(类JSON数据模式简单而强大)</li>
+<li>动态查询</li>
+<li>快速,就地更新</li>
+<li>高效存储二进制大对象 (比如照片和视频)</li>
+</ul>
+<p>缺点:</p>
+<ul>
+<li>不支持事务（进行开发时需要注意，哪些功能需要使用数据库提供的事务支持）</li>
+<li>MongoDB占用空间过大 （不过这个确定对于目前快速下跌的硬盘价格来说，也不算什么缺点了）</li>
+</ul>
+<p>MongoDB 是一个基于分布式文件存储的数据库。由 C++ 语言编写。旨在为 WEB 应用提供可扩展的高性能数据存储解决方案。</p>
+<p>Mongo查询可以分为2种：</p>
+<ul>
+<li>普通查询，类似于Sql中的 select where</li>
+<li>聚合查询，类似于Sql中的 group by</li>
+</ul>
+<h3 id="普通查询"><a href="#普通查询" class="headerlink" title="普通查询"></a>普通查询</h3><ol>
+<li>查询所有的结果</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Requires official MongoShell 3.6+</span><br><span class="line">use InteriorDesign;</span><br><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(&#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>对应的sql 语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from Multi_Quality_all</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>条件查询</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Requires official MongoShell 3.6+</span><br><span class="line">use InteriorDesign;</span><br><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">    &#123; </span><br><span class="line">        &quot;quality&quot; : &quot;Good&quot;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>返回在 <code>InteriorDesign</code> 数据库 <code>Multi_Quality_all</code> 中，满足 字段 <code>quality</code> 是Good 的条件查询。</p>
+<p>AND 条件查询</p>
+<p>实现类似 SQL 语句中 AND 的操作。 在mongodb 是在find 函数中指定多个字段，满足所需要的条件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Requires official MongoShell 3.6+</span><br><span class="line">use InteriorDesign;</span><br><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">    &#123; </span><br><span class="line">        &quot;quality&quot; : &quot;Good&quot;, </span><br><span class="line">        &quot;source&quot; : &quot;Room_Type&quot;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>OR 条件查询</p>
+<p>（从代码量上看，相比于SQL，mongodb实现 OR 查询操作是比较多的。 注意如果使用关键字，那么是需要加上 <code>{}</code> 进行嵌套处理的）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Requires official MongoShell 3.6+</span><br><span class="line">use InteriorDesign;</span><br><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">    &#123; </span><br><span class="line">        &quot;$or&quot; : [</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;process_count&quot; : &#123;</span><br><span class="line">                    &quot;$lt&quot; : 1.0</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, </span><br><span class="line">            &#123;</span><br><span class="line">                &quot;source&quot; : &quot;Room_Type&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>对应的sql 语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from Multi_Quality_all where process_count &lt;1 or source &#x3D;&quot;Room_Type&quot;</span><br></pre></td></tr></table></figure>
+
+
+<p>上面的查询都是返回全部字段，当然也是可以返回部分字段的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Requires official MongoShell 3.6+</span><br><span class="line">use InteriorDesign;</span><br><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">    &#123; </span><br><span class="line">        &quot;$or&quot; : [</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;process_count&quot; : &#123;</span><br><span class="line">                    &quot;$lt&quot; : 1.0</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, </span><br><span class="line">            &#123;</span><br><span class="line">                &quot;source&quot; : &quot;Room_Type&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;, </span><br><span class="line">    &#123; </span><br><span class="line">        &quot;_id&quot; : 1.0, </span><br><span class="line">        &quot;path&quot; : 1.0, </span><br><span class="line">        &quot;quality&quot; : 1.0, </span><br><span class="line">        &quot;source&quot; : 1.0</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>基本的语法形式</p>
+<p>显示字段时候 设置为1， 不显示字段的时候设置为0.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">&#123;&#125;,</span><br><span class="line">&#123;user_id :1, _id : 0&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>条件查询不等于</p>
+<p>设置字段 status 不为 ‘A’； 同理大于号， <code>$gt</code>, 小于号， <code>$lte</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">&#123; status : &#123;$ne : &quot;A&quot;&#125;&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>条件模糊查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">&#123; user_id : &#x2F;bc&#x2F; &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>或者写成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">&#123;user_id : &#123; $regex : &#x2F;bc&#x2F;&#125;&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>类别条件查询 like</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from Multi_Quality_all </span><br><span class="line">where user_id like &quot;%bc%&quot;</span><br></pre></td></tr></table></figure>
+<p>（有点类似正则表达式？）</p>
+<p>再来一个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find( &#123; user_id: &#x2F;^bc&#x2F; &#125; )</span><br><span class="line"># 对应的sql 语句</span><br><span class="line">SELECT *</span><br><span class="line">FROM people</span><br><span class="line">WHERE user_id like &quot;bc%&quot;</span><br></pre></td></tr></table></figure>
+
+<p>排序</p>
+<p>注意在设置 sort() 属性时候，选定的字段需要设置为1， 全部都是面向文档（json的格式）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Requires official MongoShell 3.6+</span><br><span class="line">use InteriorDesign;</span><br><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">    &#123; </span><br><span class="line">        &quot;$or&quot; : [</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;process_count&quot; : &#123;</span><br><span class="line">                    &quot;$lt&quot; : 1.0</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, </span><br><span class="line">            &#123;</span><br><span class="line">                &quot;source&quot; : &quot;Room_Type&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;, </span><br><span class="line">    &#123; </span><br><span class="line">        &quot;_id&quot; : 1.0, </span><br><span class="line">        &quot;path&quot; : 1.0, </span><br><span class="line">        &quot;quality&quot; : 1.0, </span><br><span class="line">        &quot;source&quot; : 1.0</span><br><span class="line">    &#125;</span><br><span class="line">).sort(</span><br><span class="line">    &#123; </span><br><span class="line">        &quot;_id&quot; : 1.0</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>统计数量</p>
+<p>在代码中还是可以使用的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find().count()</span><br></pre></td></tr></table></figure>
+
+<p>条件统计</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find(</span><br><span class="line">&#123;age : &#123;$gt : 30&#125;&#125;</span><br><span class="line">).count()</span><br><span class="line"></span><br><span class="line"># 或者使用</span><br><span class="line"></span><br><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).count(</span><br><span class="line">&#123;age : &#123;$ gt : 30&#125;&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>去掉重复的数据 distinct</p>
+<p>按照某个字段 <code>_id</code> 进行去重</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).distinct(&quot;_id&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>限制数量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).find().limit(1)</span><br><span class="line">或者 </span><br><span class="line">db.getCollection(&quot;Multi_Quality_all&quot;).findOne()</span><br></pre></td></tr></table></figure>
+
+<h3 id="聚合查询"><a href="#聚合查询" class="headerlink" title="聚合查询"></a>聚合查询</h3><p>普通查询使用 <code>find</code>函数即可，但是聚合查询使用另外一个函数<code>aggregate</code>。两者的区别在于是否使用聚合函数。</p>
+<p>这个是直接使用 pandas 进行数据分析，不使用 类似 sql语句了。</p>
+<p><a href="https://www.jianshu.com/p/dbf965f8d314" target="_blank" rel="noopener">MongoDB查询总结</a></p>
+<p><a href="https://www.runoob.com/mongodb/mongodb-query.html" target="_blank" rel="noopener">MongoDB 查询文档</a><br><a href="https://www.runoob.com/mongodb/mongodb-tutorial.html" target="_blank" rel="noopener">MongoDB 教程</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/08/pix2pixhd/" rel="next" title="Pix2PixHD  & ADE20k">
+                <i class="fa fa-chevron-left"></i> Pix2PixHD  & ADE20k
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/20/vim_tutorial/" rel="prev" title="VIM 常用的快捷键">
+                VIM 常用的快捷键 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">139</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通查询"><span class="nav-number">1.</span> <span class="nav-text">普通查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚合查询"><span class="nav-number">2.</span> <span class="nav-text">聚合查询</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/03/20/mongodb/';
+          this.page.identifier = '2020/03/20/mongodb/';
+          this.page.title = 'MongoDB 介绍';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
