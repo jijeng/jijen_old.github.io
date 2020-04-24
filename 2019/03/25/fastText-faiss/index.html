@@ -92,11 +92,8 @@
 <meta property="og:image" content="https://upload.cc/i1/2019/10/07/7jutsV.png">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g1faf2twaaj20ft0e3ae0.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/07/02/5d1b275bd20aa40709.png">
-<meta property="og:image" content="https://i.bmp.ovh/imgs/2019/07/8b4f6493ed14471b.png">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44zy5fny9j209i08sdh1.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/e9a223b5ly1g44zwyhj76j20fz0av3zf.jpg">
 <meta property="article:published_time" content="2019-03-25T13:13:52.000Z">
-<meta property="article:modified_time" content="2019-12-16T03:50:09.773Z">
+<meta property="article:modified_time" content="2020-04-21T01:00:29.673Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta property="article:tag" content="k-means">
 <meta property="article:tag" content="knn">
@@ -247,9 +244,43 @@
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
   
 </nav>
 
@@ -323,8 +354,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-16T11:50:09+08:00">
-                2019-12-16
+              <time title="Post modified" itemprop="dateModified" datetime="2020-04-21T09:00:29+08:00">
+                2020-04-21
               </time>
             
           </span>
@@ -576,116 +607,6 @@
 <p>Because there are only 256 centroids, we only need 8-bits to store a centroid id. Each vector, which initially was a vector of 1,024 32-bit floats (4,096 bytes) is now a sequence of eight 8-bit integers (8 bytes total per vector!).</p>
 <p>总的来说faiss 高效实现了<a href="">PCA 算法</a>, <a href="">k-means 算法</a> 和PQ 算法。</p>
 <p><a href="https://mccormickml.com/2017/10/13/product-quantizer-tutorial-part-1/" target="_blank" rel="noopener">ref 1</a><br><a href="http://mccormickml.com/2017/10/22/product-quantizer-tutorial-part-2/" target="_blank" rel="noopener">ref 2</a><br><a href="http://vividfree.github.io/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2017/08/05/understanding-product-quantization" target="_blank" rel="noopener">ref 3</a><br><a href="https://blog.easysol.net/machine-learning-algorithms-3/" target="_blank" rel="noopener">ref 4</a></p>
-<h2 id="K-means-算法"><a href="#K-means-算法" class="headerlink" title="K-means 算法"></a>K-means 算法</h2><p>K-means 是一种聚类算法，属于无监督学习算法，先说一下什么是聚类：聚类分析是在数据中发现数据对象之间的关系，将数据进行分组，组内的相似性越大，组间的差别越大，则聚类效果越好。</p>
-<p>K-Means算法思想：对给定的样本集，事先确定聚类簇数K （超参数），让簇内的样本尽可能紧密分布在一起，使簇间的距离尽可能大。该算法试图使集群数据分为n组独立数据样本，使n组集群间的方差相等，数学描述为最小化惯性或集群内的平方和。K-Means作为无监督的聚类算法，实现较简单，聚类效果好，因此被广泛使用。</p>
-<p>** 算法步骤**</p>
-<ol>
-<li>创建k个点作为k个簇的起始质心（经常随机选择）。</li>
-<li>分别计算剩下的元素到k个簇中心的相异度（距离），将这些元素分别划归到相异度最低的簇。</li>
-<li>根据聚类结果，重新计算k个簇各自的中心，计算方法是取簇中所有元素各自维度的算术平均值。</li>
-<li>将D中全部元素按照新的中心重新聚类。</li>
-<li>重复第4步，直到聚类结果不再变化。</li>
-<li>最后，输出聚类结果。</li>
-</ol>
-<p>** K-Means算法优缺点**</p>
-<p>优点</p>
-<ol>
-<li>原理易懂、易于实现；</li>
-<li>当簇间的区别较明显时，聚类效果较好；</li>
-<li>Trains quickly</li>
-</ol>
-<p>缺点</p>
-<ol>
-<li>当样本集规模大时，收敛速度会变慢；</li>
-<li>对噪声或者离群点比较敏感</li>
-<li>k的取值十分关键，对不同数据集，k选择没有参考性，需要大量实验</li>
-<li>初始质心的选择，不同的质心选择可能得到完全不同的结果，因为k-means 可以保证的是局部最优解，而不是全局最优解。针对该缺陷，可以使用 kmeans++ 算法解决。k-means++ 算法选择seeds的基本思路是：初始化聚类中心之间的相互距离要尽可能的远。</li>
-</ol>
-<p><strong>时间复杂度</strong><br>$O(mnkt)$， 其中$t$ 为迭代刺手， $k$ 为簇的数目， $m$ 为数据量, $n$ 为数据的维度。对于大数据来说，$t$，$k$和$n$ 都是可以看做常数，那么时间复杂度近似就是 $O(n)$，所以该算法是相当高效的。</p>
-<p><strong>空间复杂度</strong><br>$O(m+k)n$ 其中 $k$ 为簇的数目， $m$为数据量， $n$ 为数据的维度。同理对于空间复杂度也可以这样分析。<br>最后的结论可以简化为：时空复杂度是$O(n)$</p>
-<p><strong>Choosing K</strong></p>
-<p>The algorithm explained above finds clusters for the number k that we chose. So, how do we decide on that number?</p>
-<p>尝试法： 计算每个点到最近的簇的距离的总和，如果增加 k 导致的总和下降不明显，那么就接近临界点了。</p>
-<p>To find the best k we need to measure the quality of the clusters. The most traditional and straightforward method is to start with a random k, create centroids, and run the algorithm as we explained above. A sum is given based on the distances between each point and its closest centroid. As an increase in clusters correlates with smaller groupings and distances, this sum will always decrease when k increases; as an extreme example, if we choose a k value that is equal to the number of data points that we have, the sum will be zero.</p>
-<p>The goal with this process is to find the point at which increasing k will cause a very small decrease in the error sum, while decreasing k will sharply increase the error sum. This sweet spot is called the “elbow point.”  In the image below, it is clear that the “elbow” point is at k-3.­</p>
-<p><img src="https://i.bmp.ovh/imgs/2019/07/8b4f6493ed14471b.png" alt=""></p>
-<p>使用场景：一般在数据分析的前期使用，选择适当的 $K$，分析不同聚类数据下的特点。</p>
-<p>k-means 是以欧式距离作为相似度测量，要求某一初始化聚类中心分类效果最好。算法采用误差平方和作为准侧函数，优化的是该函数。</p>
-<p>欧式距离和曼哈顿距离（L1距离）都可以表示最近邻居之间的距离，如何进行选择？前者适合在归一化无量纲的情况下进行使用，两者不具有相互替代性。</p>
-<p><strong>代码实现</strong></p>
-<p>自己实现了一个 k-means 计算过程；然后使用 sklearn 中实现好的框架。没有比这个写得更好的了。代码<a href="http://benalexkeen.com/k-means-clustering-in-python/" target="_blank" rel="noopener">链接</a></p>
-<p>代码摘要</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Initialisation</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line">df = pd.DataFrame(&#123;</span><br><span class="line">    <span class="string">'x'</span>: [<span class="number">12</span>, <span class="number">20</span>, <span class="number">28</span>, <span class="number">18</span>, <span class="number">29</span>, <span class="number">33</span>, <span class="number">24</span>, <span class="number">45</span>, <span class="number">45</span>, <span class="number">52</span>, <span class="number">51</span>, <span class="number">52</span>, <span class="number">55</span>, <span class="number">53</span>, <span class="number">55</span>, <span class="number">61</span>, <span class="number">64</span>, <span class="number">69</span>, <span class="number">72</span>],</span><br><span class="line">    <span class="string">'y'</span>: [<span class="number">39</span>, <span class="number">36</span>, <span class="number">30</span>, <span class="number">52</span>, <span class="number">54</span>, <span class="number">46</span>, <span class="number">55</span>, <span class="number">59</span>, <span class="number">63</span>, <span class="number">70</span>, <span class="number">66</span>, <span class="number">63</span>, <span class="number">58</span>, <span class="number">23</span>, <span class="number">14</span>, <span class="number">8</span>, <span class="number">19</span>, <span class="number">7</span>, <span class="number">24</span>]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">np.random.seed(<span class="number">200</span>)</span><br><span class="line">k = <span class="number">3</span></span><br><span class="line"><span class="comment"># centroids[i] = [x, y]</span></span><br><span class="line"><span class="comment"># 学习开源代码，在于向别人学习，看人家是如何写代码的，怎么写得简单高效，漂亮</span></span><br><span class="line">centroids = &#123;</span><br><span class="line">    i+<span class="number">1</span>: [np.random.randint(<span class="number">0</span>, <span class="number">80</span>), np.random.randint(<span class="number">0</span>, <span class="number">80</span>)]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(k)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">fig = plt.figure(figsize=(<span class="number">5</span>, <span class="number">5</span>))</span><br><span class="line">plt.scatter(df[<span class="string">'x'</span>], df[<span class="string">'y'</span>], color=<span class="string">'k'</span>)</span><br><span class="line">colmap = &#123;<span class="number">1</span>: <span class="string">'r'</span>, <span class="number">2</span>: <span class="string">'g'</span>, <span class="number">3</span>: <span class="string">'b'</span>&#125;</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> centroids.keys():</span><br><span class="line">    plt.scatter(*centroids[i], color=colmap[i])</span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">80</span>)</span><br><span class="line">plt.ylim(<span class="number">0</span>, <span class="number">80</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">assignment</span><span class="params">(df, centroids)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> centroids.keys():</span><br><span class="line">        <span class="comment"># sqrt((x1 - x2)^2 - (y1 - y2)^2)</span></span><br><span class="line">        df[<span class="string">'distance_from_&#123;&#125;'</span>.format(i)] = (</span><br><span class="line">            np.sqrt(</span><br><span class="line">                (df[<span class="string">'x'</span>] - centroids[i][<span class="number">0</span>]) ** <span class="number">2</span></span><br><span class="line">                + (df[<span class="string">'y'</span>] - centroids[i][<span class="number">1</span>]) ** <span class="number">2</span></span><br><span class="line">            )</span><br><span class="line">        )</span><br><span class="line">    centroid_distance_cols = [<span class="string">'distance_from_&#123;&#125;'</span>.format(i) <span class="keyword">for</span> i <span class="keyword">in</span> centroids.keys()]</span><br><span class="line">    df[<span class="string">'closest'</span>] = df.loc[:, centroid_distance_cols].idxmin(axis=<span class="number">1</span>)<span class="comment">#得到的是id 标识</span></span><br><span class="line">    df[<span class="string">'closest'</span>] = df[<span class="string">'closest'</span>].map(<span class="keyword">lambda</span> x: int(x.lstrip(<span class="string">'distance_from_'</span>))) <span class="comment"># 这个转换成数字</span></span><br><span class="line">    df[<span class="string">'color'</span>] = df[<span class="string">'closest'</span>].map(<span class="keyword">lambda</span> x: colmap[x]) <span class="comment"># 注意lambda 函数 x 是输入参数，: 之后是处理的函数</span></span><br><span class="line">    <span class="keyword">return</span> df</span><br><span class="line"></span><br><span class="line">df = assignment(df, centroids)</span><br><span class="line">print(df.head())</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Update Stage</span></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">old_centroids = copy.deepcopy(centroids)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(k)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> centroids.keys():</span><br><span class="line">        centroids[i][<span class="number">0</span>] = np.mean(df[df[<span class="string">'closest'</span>] == i][<span class="string">'x'</span>])</span><br><span class="line">        centroids[i][<span class="number">1</span>] = np.mean(df[df[<span class="string">'closest'</span>] == i][<span class="string">'y'</span>])</span><br><span class="line">    <span class="keyword">return</span> k</span><br><span class="line"></span><br><span class="line">centroids = update(centroids)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这个可视化的箭头也是做得相当的棒</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">5</span>, <span class="number">5</span>))</span><br><span class="line">ax = plt.axes()</span><br><span class="line">plt.scatter(df[<span class="string">'x'</span>], df[<span class="string">'y'</span>], color=df[<span class="string">'color'</span>], alpha=<span class="number">0.5</span>, edgecolor=<span class="string">'k'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> centroids.keys():</span><br><span class="line">    plt.scatter(*centroids[i], color=colmap[i])</span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">80</span>)</span><br><span class="line">plt.ylim(<span class="number">0</span>, <span class="number">80</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> old_centroids.keys():</span><br><span class="line">    old_x = old_centroids[i][<span class="number">0</span>]</span><br><span class="line">    old_y = old_centroids[i][<span class="number">1</span>]</span><br><span class="line">    dx = (centroids[i][<span class="number">0</span>] - old_centroids[i][<span class="number">0</span>]) * <span class="number">0.75</span></span><br><span class="line">    dy = (centroids[i][<span class="number">1</span>] - old_centroids[i][<span class="number">1</span>]) * <span class="number">0.75</span></span><br><span class="line">    ax.arrow(old_x, old_y, dx, dy, head_width=<span class="number">2</span>, head_length=<span class="number">3</span>, fc=colmap[i], ec=colmap[i])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Continue until all assigned categories don't change any more</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    closest_centroids = df[<span class="string">'closest'</span>].copy(deep=<span class="literal">True</span>)</span><br><span class="line">    centroids = update(centroids)</span><br><span class="line">    df = assignment(df, centroids)</span><br><span class="line">    <span class="comment"># 不同的语言之间是相同的，要么是值比较，那么是引用比较，显然这里是值比较</span></span><br><span class="line">    <span class="keyword">if</span> closest_centroids.equals(df[<span class="string">'closest'</span>]):</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">5</span>, <span class="number">5</span>))</span><br><span class="line">plt.scatter(df[<span class="string">'x'</span>], df[<span class="string">'y'</span>], color=df[<span class="string">'color'</span>], alpha=<span class="number">0.5</span>, edgecolor=<span class="string">'k'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> centroids.keys():</span><br><span class="line">    plt.scatter(*centroids[i], color=colmap[i]) <span class="comment"># 如意可以传入一个list，表示两个参数</span></span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">80</span>)</span><br><span class="line">plt.ylim(<span class="number">0</span>, <span class="number">80</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="KNN"><a href="#KNN" class="headerlink" title="KNN"></a>KNN</h2><p>K最近邻(k-Nearest Neighbor，KNN) 是有监督分类学习，根据K 个最近邻的类别信息，通过投票的方式决定刚进来的数据点的类别。和KNN 容易相混淆的是K-means算法，具体可以参考上面的描述。KNN 中的K 表示K个最近邻是有投票权的，根据K 个最近邻的投票然后决定新加入的点类别信息。</p>
-<p>In short, the algorithms are trying to accomplish different goals. K-nearest neighbor is a subset of supervised learning classification (or regression) algorithms (it takes a bunch of labeled points and uses them to learn how to label other points). It is supervised because you are trying to classify a point based on the known classification of other points. In contrast, K-means is a subset of unsupervised learning clustering algorithms (it takes a bunch of unlabeled points and tries to group them into clusters). It is unsupervised because the points have no external classification.</p>
-<p>The $ k $ in each case mean different things. In K-NN, the $ k $ represents the number of neighbors who have a vote in determining a new player’s position. The $ k $ in K-means, determine the number of clusters we want to end up.</p>
-<p>In a K-NN algorithm, a test sample is given as the class of majority of its nearest neighbours. For example, if we have three classes and the goal is to find a class label for the unknown example $ x_j $ then, by using the Euclidean distance and a value of $ k=5 $ neighbors, the unknown sample is classified to the category of the most voted neighbors.</p>
-<blockquote>
-<p>How it works?<br>Step 1: Determine the value for K<br>Step 2: Calculate the distances between the new input (test data) and all the training data. The most commonly used metrics for calculating distance are Euclidean, Manhattan and Minkowski<br>Step 3: Sort the distance and determine k nearest neighbors based on minimum distance values<br>Step 4: Analyze the category of those neighbors and assign the category for the test data based on majority vote<br>Step 5: Return the predicted class</p>
-</blockquote>
-<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44zy5fny9j209i08sdh1.jpg" alt=""></p>
-<p>The situation with K-means is that, given some data you will cluster them in k-groups or clusters. The initial step of the algorithm is to randomly spawn $ k $ centroids (centers). At every iteration the center of each cluster is moved slightly to minimize the objective function. The algorithm will terminate if the iterations are maximized or if the centroids stop to move.</p>
-<p>The objective function of K-means is $ J = \sum_{j=1}^{k}\sum_{i=1}^{n}\left |x_i^{j}-c_j  \right |^{2} $</p>
-<blockquote>
-<p>How it works?<br>Step 1: Determine K value by Elbow method and specify the number of clusters K<br>Step 2: Randomly assign each data point to a cluster<br>Step 3: Determine the cluster centroid coordinates<br>Step 4: Determine the distances of each data point to the centroids and re-assign each point to the closest cluster centroid based upon minimum distance<br>Step 5: Calculate cluster centroids again<br>Step 6: Repeat steps 4 and 5 until we reach global optima where no improvements are possible and no switching of data points from one cluster to other.</p>
-</blockquote>
-<p><img src="http://ww1.sinaimg.cn/large/e9a223b5ly1g44zwyhj76j20fz0av3zf.jpg" alt=""></p>
-<p>　上图a表达了初始的数据集，假设k=2。在图b中，我们随机选择了两个k类所对应的类别质心，即图中的红色质心和蓝色质心，然后分别求样本中所有点到这两个质心的距离，并标记每个样本的类别为和该样本距离最小的质心的类别，如图c所示，经过计算样本和红色质心和蓝色质心的距离，我们得到了所有样本点的第一轮迭代后的类别。此时我们对我们当前标记为红色和蓝色的点分别求其新的质心，如图4所示，新的红色质心和蓝色质心的位置已经发生了变动。图e和图f重复了我们在图c和图d的过程，即将所有点的类别标记为距离最近的质心的类别并求新的质心。最终我们得到的两个类别如图f。</p>
-<h2 id="EM-算法"><a href="#EM-算法" class="headerlink" title="EM 算法"></a>EM 算法</h2><p><strong>先验概率和后验概率</strong></p>
-<p>事件发生前的预判概率。可以是基于历史数据的统计，可以由背景常识得出，也可以是人的主观观点给出。一般都是单独事件概率，如 $P(x) $, $P(y)$。事件发生后求的反向条件概率；或者说，基于先验概率求得的反向条件概率。条件概率：一个事件发生后另一个事件发生的概率。</p>
-<p>先验概率是指根据以往经验和分析得到的概率,它往往作为”由因求果”问题中的”因”出现，比如全概率公式。</p>
-<p>后验概率是指依据得到”结果”信息所计算出的最有可能是那种事件发生,如贝叶斯公式中的,是”执果寻因”问题中的”因”， 比如贝叶斯公式。</p>
-<p><strong>极大似然估计</strong></p>
-<p>极大似然估计是用来求解概率分布中参数值。为什么要求解参数值？因为大多数概率分布都是由关键的参数值， 得到分布就可以计算概率值，那么进行分类和回归就没有什么问题。常见的概率分布比如二项分布是由 $p $控制，正太分布是由 $\mu$  和$\sigma$控制。极大似然估计理论认为，概率越大，发生的可能性就越大。</p>
-<p>该算法背景：</p>
-<ol>
-<li>有一个独立同分布的样本集 D，且样本从数据分布 $p(x | \theta)$ 中抽取</li>
-<li>想要计算 $\theta$</li>
-</ol>
-<p>解决思路：</p>
-<ol>
-<li><p>假设 D 中所有的样本都是独立从 $ p(x | \theta)$ 中抽取，那么：<br>$$<br>P({X=x^{1}, X=x^{2}, \cdots, X=x^{n}})=\prod_{i=1}^{n} p(x^{i} | {\theta})<br>$$<br>记等号后面的式子为似然函数</p>
-</li>
-<li><p>因为乘积不方便处理，所以上面式子中左右两边求对数</p>
-</li>
-</ol>
-<p>$$<br>\ln l(\boldsymbol{\theta})=\ln \prod_{i=1}^{n} p\left(x^{i} | \boldsymbol{\theta}\right)=\sum_{i=1}^{n} \ln p\left(x^{i} | \boldsymbol{\theta}\right)<br>$$</p>
-<p>根据算法的思想，我们的目标就是最大化 $L(\theta)$， 最大化的 $\theta$ 就是我们要求的。如何最大化 $L(\theta)$？一般来说，如果如果只有一个参数，比如二项分布，那么求导令导数为0 就可以求$\theta$。如果有多个参数，比如正太分布，那么就需要求解偏导， 令偏导数为0.</p>
-<p>极大似然估计的局限性</p>
-<ul>
-<li>需要事先假定数据分布</li>
-<li>假定的数据分布和真实的数据分布不一致的时候，容易出现较大的误差</li>
-</ul>
-<p>介绍完了最大似然估计，那么后面是真正 EM （Expectation Maximization Algorithm）算法。</p>
-<p>EM算法解决这个的思路是使用启发式的迭代方法，既然我们无法直接求出模型分布参数，那么我们可以先猜想隐含数据（EM算法的E步），接着基于观察数据和猜测的隐含数据一起来极大化对数似然，求解我们的模型参数（EM算法的M步)。由于我们之前的隐藏数据是猜测的，所以此时得到的模型参数一般还不是我们想要的结果。不过没关系，我们基于当前得到的模型参数，继续猜测隐含数据（EM算法的E步），然后继续极大化对数似然，求解我们的模型参数（EM算法的M步)。以此类推，不断的迭代下去，直到模型分布参数基本无变化，算法收敛，找到合适的模型参数。从上面的描述可以看出，EM算法是迭代求解最大值的算法，同时算法在每一次迭代时分为两步，E步和M步。一轮轮迭代更新隐含数据和模型分布参数，直到收敛，即得到我们需要的模型参数。一个最直观了解EM算法思路的是K-Means算法，见之前写的K-Means聚类算法原理。在K-Means聚类时，每个聚类簇的质心是隐含数据。我们会假设$𝐾$个初始化质心，即EM算法的E步；然后计算得到每个样本最近的质心，并把样本聚类到最近的这个质心，即EM算法的M步。重复这个E步和M步，直到质心不再变化为止，这样就完成了K-Means聚类。</p>
-<ol>
-<li><p>EM算法能保证收敛吗？<br>有充分的理论说明，这个是能够保证收敛的。</p>
-</li>
-<li><p>EM算法如果收敛，那么能保证收敛到全局最大值吗？<br>不能保证，这个取决于初始化。初始值不同，那么最后的结果不同。所以这个是给定初始值，经过循环迭代，最终逼近真实值。</p>
-</li>
-</ol>
-<p>如果要讲解 EM 算法，可以认为 K-means 是其一个特例，那么进行理解。</p>
-<h2 id="复习笔记"><a href="#复习笔记" class="headerlink" title="复习笔记"></a>复习笔记</h2><ol>
-<li>使用二叉树的结构，时间复杂度从 $O(N) $ 优化到了$log_2(N)$，当使用huffman 树的时候，这种效果更加明显。层次softmax 不是fasttext 的首创，它的改进之处在实现的时候基于 huffman 树而不是普通的二叉树， 属于运算上的优化。利用了类别不均衡的特点，类别多的路径短，整体上的时间效率会提高。</li>
-<li>N-gram 一种是基于character-level 对于不常见单词的扩充，解决的是OOV问题；一种是word-level，考虑的是词语周边的信息，加入了context 的信息，local context 的信息。</li>
-<li>negative sampling 是解决最后softmax 层中，不更新所有的negative words，只是更新少部分单词，根据词频选择negative words，并且这种词频是经过约束，主要是使得低频词语也有出现的机会。</li>
-<li>调参分为字典相关的参数和训练相关参数</li>
-<li>fasttext 的和之前 CBOW的区别：网络结构中的输入层，CBOW是经过one-hot的上下文单词，而fasttext 是单词+ n-gram 的特征，在解决OOV效果比较好；另外在最后的输出层，基于huffman 树实现了层次softmax，对于类别不均衡的训练集来说，训练时间会变得更短。</li>
-<li>fasttext 的缺点，使用文本分类的时候，当类别比较多的时候提升效果比较明显，否则是容易过拟合的。</li>
-<li>faiss 三种模式或者说索引。一种简单模式在小的数据集上计算欧式距离；一种加快检索的速度，使用聚类算法，检索的时候只是检索id 所在的簇和周围的簇，不过这个过程是需要预训练的；一种是减少内存的时候，如果是求解近似解，那么不必存储完整的向量，使用pca 降维。还有比较通用的加快速度的方式，比如分段计算和使用gpu 进行计算。</li>
-<li>关于k-means中选择聚类簇k的个数的算法：尝试法。如果增大k，发现并不能使得指标明显的下降，这个时候就达到了阈值。指标：一个簇内所有的点到簇类中心的距离的总和。</li>
-<li>knn 和k-means 的区别，前者是有监督的分类算法，根据测试点周围k 个点的类别信息判断该点的信息；k-means 是无监督算法，属于聚类中的一种。</li>
-</ol>
 
       
     </div>
@@ -823,7 +744,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">139</span>
+                  <span class="site-state-item-count">147</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -895,7 +816,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fastText"><span class="nav-number">1.</span> <span class="nav-text">fastText</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型架构"><span class="nav-number">1.1.</span> <span class="nav-text">模型架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hierarchical-Softmax"><span class="nav-number">1.2.</span> <span class="nav-text">Hierarchical Softmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-gram-特征"><span class="nav-number">1.3.</span> <span class="nav-text">N-gram 特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Negative-Sampling"><span class="nav-number">1.4.</span> <span class="nav-text">Negative Sampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Positive-samples-and-Negative-samples"><span class="nav-number">1.5.</span> <span class="nav-text">Positive samples and  Negative samples</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.6.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fasttext-VS-CBOW"><span class="nav-number">1.7.</span> <span class="nav-text">fasttext VS. CBOW</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#faiss"><span class="nav-number">2.</span> <span class="nav-text">faiss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss的实现过程"><span class="nav-number">2.1.</span> <span class="nav-text">faiss的实现过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss-中的三种基本索引"><span class="nav-number">2.2.</span> <span class="nav-text">faiss 中的三种基本索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#product-quantization-算法"><span class="nav-number">2.3.</span> <span class="nav-text">product quantization 算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#K-means-算法"><span class="nav-number">3.</span> <span class="nav-text">K-means 算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KNN"><span class="nav-number">4.</span> <span class="nav-text">KNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EM-算法"><span class="nav-number">5.</span> <span class="nav-text">EM 算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复习笔记"><span class="nav-number">6.</span> <span class="nav-text">复习笔记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fastText"><span class="nav-number">1.</span> <span class="nav-text">fastText</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型架构"><span class="nav-number">1.1.</span> <span class="nav-text">模型架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hierarchical-Softmax"><span class="nav-number">1.2.</span> <span class="nav-text">Hierarchical Softmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-gram-特征"><span class="nav-number">1.3.</span> <span class="nav-text">N-gram 特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Negative-Sampling"><span class="nav-number">1.4.</span> <span class="nav-text">Negative Sampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Positive-samples-and-Negative-samples"><span class="nav-number">1.5.</span> <span class="nav-text">Positive samples and  Negative samples</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.6.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fasttext-VS-CBOW"><span class="nav-number">1.7.</span> <span class="nav-text">fasttext VS. CBOW</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#faiss"><span class="nav-number">2.</span> <span class="nav-text">faiss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss的实现过程"><span class="nav-number">2.1.</span> <span class="nav-text">faiss的实现过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#faiss-中的三种基本索引"><span class="nav-number">2.2.</span> <span class="nav-text">faiss 中的三种基本索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#product-quantization-算法"><span class="nav-number">2.3.</span> <span class="nav-text">product quantization 算法</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1130,6 +1051,323 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
 
 
   
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
 
 
 
