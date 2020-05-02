@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="深度学习模型部署">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习模型部署">
+<meta property="og:url" content="http://yoursite.com/2020/04/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="深度学习模型部署">
+<meta property="og:image" content="https://i.loli.net/2020/04/26/qAY3xlyDXfSJIiF.png">
+<meta property="article:published_time" content="2020-04-27T03:22:17.000Z">
+<meta property="article:modified_time" content="2020-04-30T07:32:56.122Z">
+<meta property="article:author" content="Jijeng Jia">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/04/26/qAY3xlyDXfSJIiF.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/27/深度学习模型部署/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>深度学习模型部署 | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深度学习模型部署</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-27T11:22:17+08:00">
+                2020-04-27
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-04-30T15:32:56+08:00">
+                2020-04-30
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/04/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/04/27/深度学习模型部署/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>深度学习模型部署</p>
+<a id="more"></a>
+
+
+
+<p>深度学习模型部署的问题</p>
+<p>为什么使用 flask 框架？</p>
+<blockquote>
+<p>a micro web framework written in Python 类似微服务那种( a micro framework because it doesn’t require particular tools or libraries)</p>
+</blockquote>
+<ul>
+<li>Easy to use.</li>
+<li>Built in development server and debugger.</li>
+<li>Integrated unit testing support.</li>
+<li>RESTful request dispatching.</li>
+<li>Extensively documented.</li>
+</ul>
+<h2 id="可以试一下"><a href="#可以试一下" class="headerlink" title="可以试一下"></a>可以试一下</h2><h3 id="优先级高"><a href="#优先级高" class="headerlink" title="优先级高"></a>优先级高</h3><ol start="5">
+<li>flask部署深度学习模型 </li>
+</ol>
+<p>解释说明：<a href="https://zhuanlan.zhihu.com/p/83894642" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/83894642</a><br>对应的代码: <a href="https://github.com/lxztju/flask_deployment" target="_blank" rel="noopener">flask_deployment</a></p>
+<p>关键词：</p>
+<p>tensorflow（keras）</p>
+<p>flask</p>
+<p>写得比较好的是： client.py 函数可直接调用，将result 打印输出，但是我想的是可以直接json 返回之后的图像 post-processing 这样的操作。</p>
+<ol>
+<li>demo </li>
+</ol>
+<p>如果你使用的神经网络框架是TensorFlow，那么TensorFlow Serving是你非常好的选择。目前本人用的是TensorFlow Serving + Docker + Tornado的组合，Docker非常易于部署任何模型，而Tornado负责处理高并发请求。具体可以看这个：<a href="https://zhuanlan.zhihu.com/p/52096200" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/52096200</a></p>
+<p>使用 docker 进行部署</p>
+<p>过（这个是没有代码的）</p>
+<ol start="6">
+<li><a href="https://www.kdnuggets.com/2019/03/deploy-pytorch-model-production.html" target="_blank" rel="noopener">Deploy your PyTorch model to Production </a></li>
+</ol>
+<p>使用到的软件和框架</p>
+<p>flask： web application</p>
+<p>pytorch： 深度学习框架</p>
+<p>使用clipper 进行图像的分类</p>
+<p>c++</p>
+<p>有利条件：</p>
+<p>pytorch model</p>
+<p>图像相关的应用</p>
+<p>还介绍了其他形式的部署方式，但是没有完整的代码。 暂时跳过。</p>
+<p>这种方式启发了我，我其实也是可以通过拼接字符串的形式，来达到传入 json的效果（功能）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl http://ec2-100-24-34-242.compute-1.amazonaws.com:8080/predict?url=https://media.minutouno.com/adjuntos/150/imagenes/028/853/0028853430.jpg</span><br><span class="line"><span class="comment"># "Choripan"</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li><a href="https://pytorch.org/tutorials/intermediate/flask_rest_api_tutorial.html" target="_blank" rel="noopener">DEPLOYING PYTORCH IN PYTHON VIA A REST API WITH FLASK</a></li>
+</ol>
+<p>有利条件：</p>
+<p>官方的文档真的是非常的好，当然还需要</p>
+<p>注意的事项：</p>
+<p>只能是针对pytorch 的代码进行修改，如果是 tensorflow，那么是不能修改的。</p>
+<p>结论：</p>
+<p>值得学习、进一步的修改。</p>
+<p>github源码：<a href="https://github.com/avinassh/pytorch-flask-api-heroku" target="_blank" rel="noopener">pytorch-flask-api-heroku</a> </p>
+<p>对应的demo展示： <a href="https://pytorch-imagenet.herokuapp.com/" target="_blank" rel="noopener">pytorch-imagenet demo</a></p>
+<p>（这个已经总结过了，具体内容可以看下面的）</p>
+<ol start="11">
+<li><a href="https://www.analyticsvidhya.com/blog/2020/03/tensorflow-serving-deploy-deep-learning-models/" target="_blank" rel="noopener">TensorFlow Serving: Deploying Deep Learning Models Just Got Easier!</a></li>
+</ol>
+<p>有利之处：</p>
+<p>讲解tensorflow 很好的教程</p>
+<p>注意事项：</p>
+<p>注意这个是针对 tensorflow的，使用google 自家的服务。</p>
+<p>结论：</p>
+<p>关于tensorflow deployment 很好的教程，值得学习一下 （这个也是已经整理过了）</p>
+<ol start="12">
+<li><a href="https://heartbeat.fritz.ai/brilliant-beginners-guide-to-model-deployment-133e158f6717" target="_blank" rel="noopener">The brilliant beginner’s guide to model deployment</a></li>
+</ol>
+<p>这个是非常好的starter 教程，</p>
+<p>使用的技术是：</p>
+<p>flash<br>pytorch</p>
+<p>image 方面深度学习model 的deployment</p>
+<p>结论：</p>
+<p>很好的关于pytorch 的学习教程，<br>对应的github 源码<a href="https://github.com/bonn0062/flask_model_deployment" target="_blank" rel="noopener">flask_model_deployment</a> （这个code 的内容和 pytorch 中的内容是一样的）</p>
+<p>flask_model_deployment关于处理 image 的方式很好， 是使用 request 得到 image之后，然后对file 进行read， 然后就可以input 到model 中了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, render_template</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> commons <span class="keyword">import</span> get_tensor</span><br><span class="line"><span class="keyword">from</span> inference <span class="keyword">import</span> get_flower_name</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/', methods=['GET', 'POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">if</span> request.method == <span class="string">'GET'</span>:</span><br><span class="line">		<span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, value=<span class="string">'hi'</span>)</span><br><span class="line">	<span class="keyword">if</span> request.method == <span class="string">'POST'</span>:</span><br><span class="line">		print(request.files)</span><br><span class="line">		<span class="keyword">if</span> <span class="string">'file'</span> <span class="keyword">not</span> <span class="keyword">in</span> request.files:</span><br><span class="line">			print(<span class="string">'file not uploaded'</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		file = request.files[<span class="string">'file'</span>]</span><br><span class="line">		image = file.read()</span><br><span class="line">		category, flower_name = get_flower_name(image_bytes=image)</span><br><span class="line">		get_flower_name(image_bytes=image)</span><br><span class="line">		tensor = get_tensor(image_bytes=image)</span><br><span class="line">		print(get_tensor(image_bytes=image))</span><br><span class="line">		<span class="keyword">return</span> render_template(<span class="string">'result.html'</span>, flower=flower_name, category=category)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	app.run(debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>关于json 和键值对的处理也是比较nice的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> commons <span class="keyword">import</span> get_model, get_tensor</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'cat_to_name.json'</span>) <span class="keyword">as</span> f:</span><br><span class="line">	cat_to_name = json.load(f)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'class_to_idx.json'</span>) <span class="keyword">as</span> f:</span><br><span class="line">	class_to_idx = json.load(f)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">idx_to_class = &#123;v:k <span class="keyword">for</span> k, v <span class="keyword">in</span> class_to_idx.items()&#125;</span><br><span class="line"></span><br><span class="line">model = get_model()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_flower_name</span><span class="params">(image_bytes)</span>:</span></span><br><span class="line">	tensor = get_tensor(image_bytes)</span><br><span class="line">	outputs = model.forward(tensor)</span><br><span class="line">	_, prediction = outputs.max(<span class="number">1</span>)</span><br><span class="line">	category = prediction.item()</span><br><span class="line">	class_idx = idx_to_class[category]</span><br><span class="line">	flower_name = cat_to_name[class_idx]</span><br><span class="line">	<span class="keyword">return</span> category, flower_name</span><br></pre></td></tr></table></figure>
+
+<p>话说这个 html 是真的比较简单， 实现的是上传图像的功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line"> &lt;title&gt;Flower App&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"> &lt;h2&gt;Upload your flower image&lt;&#x2F;h2&gt;</span><br><span class="line"> &lt;form method &#x3D;&#39;post&#39; enctype&#x3D;multipart&#x2F;form-data&gt;</span><br><span class="line">  &lt;input type&#x3D;&quot;file&quot; name&#x3D;&quot;file&quot;&gt;</span><br><span class="line">  &lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;upload&quot;&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>关于 flask 中的模板问题 render_template。</p>
+<p>模板：</p>
+<p>模板的位置放在templates文件夹下面，一般是html文件,我们把index.html改动成如下样式</p>
+<ol start="10">
+<li><a href="https://www.analyticsvidhya.com/blog/2020/03/tensorflow-serving-deploy-deep-learning-models/" target="_blank" rel="noopener">TensorFlow Serving: Deploying Deep Learning Models Just Got Easier!</a></li>
+</ol>
+<p>Here’s a quick summary of the currently available model deployment tools in the market. Of course there are other tools and this list is by no means exhaustive. But these are the most popular model deployment tools you should be aware of:</p>
+<ul>
+<li>Using Flask: Flask is a Python-based framework used for developing small scale websites. We have to create a wrapper around the model while deploying a model using it. Here, we need to write extra code to use the model. You can read more about deploying machine learning models using Flask here</li>
+<li>Deploy Models with Azure: Azure Machine Learning offers web interfaces Software Kits so that we can easily deploy our machine learning models and pipelines at scale</li>
+<li>Deploy using Kubernetes: Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications. It can scale without increasing your operations team</li>
+<li>TensorFlow Serving: It is a high-performance model deployment system that is already used by most Google Projects. We will look at how to deploy models using Tensorflow Serving in detail here</li>
+</ul>
+<p>除了使用命令行进行表达，还可以使用python 代码进行 predict。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># create a json string to ask query to the depoyed model</span></span><br><span class="line">data = json.dumps(&#123;<span class="string">"signature_name"</span>: <span class="string">"serving_default"</span>,</span><br><span class="line">                   <span class="string">"instances"</span>: test_images[<span class="number">0</span>:<span class="number">3</span>].tolist()&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># headers for the post request</span></span><br><span class="line">headers = &#123;<span class="string">"content-type"</span>: <span class="string">"application/json"</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># make the post request </span></span><br><span class="line">json_response = requests.post(<span class="string">'http://localhost:9000/v1/models/sample/versions/1:predict'</span>,</span><br><span class="line">                              data=data,</span><br><span class="line">                              headers=headers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># get the predictions</span></span><br><span class="line">predictions = json.loads(json_response.text)</span><br><span class="line">predictions</span><br></pre></td></tr></table></figure>
+
+
+<ol start="12">
+<li>pytorch-flask-api 和 pytorch-flask-api-heroku</li>
+</ol>
+<p>pytorch-flask-api 只是一个 api。</p>
+<p>pytorch-flask-api-heroku 是加上了前后端的样子，其实也都是差不多的。</p>
+<p>当使用命令行运行时候，可以参考这个， 然后就不容易出现 warning 的错误，是比较nice 的命令行选择。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FLASK_ENV=development FLASK_APP=app.py flask run</span><br></pre></td></tr></table></figure>
+
+<p>curl 在Linux中curl是一个利用URL规则在命令行下工作的文件传输工具,可以说是一款很强大的http命令行工具。常用于模拟提交web数据,与网站API交互(POST/GET）信息。</p>
+<p><a href="https://pytorch.org/tutorials/intermediate/flask_rest_api_tutorial.html" target="_blank" rel="noopener">https://pytorch.org/tutorials/intermediate/flask_rest_api_tutorial.html</a> 这个是上面项目对应的文档的解释。</p>
+<ol start="11">
+<li>flask-api</li>
+</ol>
+<p>项目说明：简单的机器学习模型 + flask 使用。</p>
+<p>目的： 热热身，理解一下这个 访问的过程。</p>
+<p>14.23, 1.71, 2.43, 15.6, 127.0, 2.80, 3.06, 0.28, 2.29, 5.64, 1.04, 3.92, 1065.0</p>
+<p>flask提供了jsonify函数供用户处理返回的序列化json数据，而python自带的json库中也有dumps方法可以序列化json对象</p>
+<p>python的flask框架为用户提供了直接返回包含json格式数据响应的方法，即jsonify</p>
+<p> json 模块4个方法<br>    json.loads() 把 json 字符串 转成 python 数据类型<br>    json.load(python数据类型,文件句柄) 把 json 文件 转成 python 数据类型<br>    json.dumps() 把 python 数据类型 转成 json 字符串<br>    json.dump(文件句柄) 把 python 数据类型 写入到 json 文件中</p>
+<p>requests.post()  方法的使用：</p>
+<p>二、post方法简单使用</p>
+<ul>
+<li>带数据的post</li>
+<li>带header的post</li>
+<li>带json的post</li>
+<li>带参数的post</li>
+<li>普通文件上传</li>
+<li>定制化文件上传</li>
+<li>多文件上传</li>
+</ul>
+<p>然后自动给返回的是 response，简写成 r。</p>
+<p>这个都没有使用 深度学习框架（比如 tensorflow，pytorch），直接是机器学习模型搞定的。</p>
+<h3 id="优先级低"><a href="#优先级低" class="headerlink" title="优先级低"></a>优先级低</h3><ol start="5">
+<li><a href="https://www.kdnuggets.com/2019/01/build-api-machine-learning-model-using-flask.html" target="_blank" rel="noopener">How to build an API for a machine learning model in 5 minutes using Flask </a> （这个已经过了）</li>
+</ol>
+<p>有利条件：</p>
+<p>这个是见到的最简单的 关于flask 的学习的教程，可以学习以下</p>
+<p>不利条件：</p>
+<p>这个是机器学习模型的应用，注定是不能使用在 图像方面，因为这个修改是比较难的。</p>
+<p>结论：</p>
+<p>是很好的学习资料，值得尝试学习（不能基于该模板进行扩展）</p>
+<p>总结：</p>
+<p>可以用来理解整个调用的过程，是很好的demo</p>
+<ol start="9">
+<li><a href="https://www.kdnuggets.com/2019/10/easily-deploy-machine-learning-models-using-flask.html" target="_blank" rel="noopener">How to Easily Deploy Machine Learning Models Using Flask</a></li>
+</ol>
+<p>有利条件：</p>
+<p>代码和讲解都是比较nice的，值得学习一下。</p>
+<p>不利条件：</p>
+<p>机器学习的 deployment， 比较难的扩展到图像中</p>
+<p>总结：</p>
+<p>这个pipeline 图像是可以写到周报里面的。</p>
+<img src="https://i.loli.net/2020/04/26/qAY3xlyDXfSJIiF.png" width="80%" height="80%">
+
+
+<p>可以学习一下整体的思路，流程。完整的代码：</p>
+<p><a href="https://github.com/abhinavsagar/Machine-Learning-Deployment" target="_blank" rel="noopener">https://github.com/abhinavsagar/Machine-Learning-Deployment</a></p>
+<p>这里关于 predict 和results 的这种功能实现还是很好的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, jsonify, render_template</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">model = pickle.load(open(<span class="string">'model.pkl'</span>, <span class="string">'rb'</span>))</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">home</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/predict',methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    int_features = [int(x) <span class="keyword">for</span> x <span class="keyword">in</span> request.form.values()]</span><br><span class="line">    final_features = [np.array(int_features)]</span><br><span class="line">    prediction = model.predict(final_features)</span><br><span class="line"></span><br><span class="line">    output = round(prediction[<span class="number">0</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, prediction_text=<span class="string">'Sales should be $ &#123;&#125;'</span>.format(output))</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/results',methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">results</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    data = request.get_json(force=<span class="literal">True</span>)</span><br><span class="line">    prediction = model.predict([np.array(list(data.values()))])</span><br><span class="line"></span><br><span class="line">    output = prediction[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> jsonify(output)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="放弃"><a href="#放弃" class="headerlink" title="放弃"></a>放弃</h2><ol start="2">
+<li>demo （放弃）</li>
+</ol>
+<p>如果你使用的是其它神经网络框架，例如caffe、pytorch，我会推荐Nvidia的TensorRT Inference Server，它支持所有模型的部署，包括TF系、ONNX系、mxnet等等，TRT会先对你的网络进行融合，合并可以同步计算的层，然后量化计算子图，让你的模型以float16、int8等精度进行推理，大大加速推理速度，而你只需要增加几行简单的代码就能实现。而且TRT Inference Server能够处理负载均衡，让你的GPU保持高利用率。</p>
+<ol start="3">
+<li>demo （放弃）</li>
+</ol>
+<p>MXNet （是亚马逊出的深度学习的框架），这个博客主要介绍基于该框架的部署。 暂时不用看。</p>
+<p><a href="https://zhuanlan.zhihu.com/p/55518951" target="_blank" rel="noopener">Mxnet Model Server（MMS）模型部署教程</a></p>
+<ol start="6">
+<li><a href="https://flask-restful.readthedocs.io/en/latest/" target="_blank" rel="noopener">flask api</a></li>
+</ol>
+<p>api 挺好的，但是没有demo，是不好进行仿照的。</p>
+<ol start="15">
+<li><a href="https://towardsdatascience.com/building-web-app-for-computer-vision-model-deploying-to-production-in-10-minutes-a-detailed-ec6ac52ec7e4" target="_blank" rel="noopener">Building Web App for Computer Vision Model &amp; Deploying to Production in 10 Minutes*: A Detailed Guide</a></li>
+</ol>
+<p>基于 aws 平台的 deployment，写的太复杂（太详细）</p>
+<p>结论：</p>
+<p>放弃</p>
+<ol start="16">
+<li><a href="https://towardsdatascience.com/building-a-web-application-to-deploy-machine-learning-models-e224269c1331" target="_blank" rel="noopener">Building a Web Application to Deploy Machine Learning Models</a></li>
+</ol>
+<p>结论：</p>
+<p>放弃</p>
+<ol start="17">
+<li><a href="https://towardsdatascience.com/deploying-a-keras-deep-learning-model-as-a-web-application-in-p-fc0f2354a7ff" target="_blank" rel="noopener">Deploying a Keras Deep Learning Model as a Web Application in Python</a></li>
+</ol>
+<p>特点</p>
+<p>RNN 算法</p>
+<p>web application with flask</p>
+<p>keras pretrained model</p>
+<p>结论：</p>
+<p>暂时不考虑，因为是关于 RNN 的。</p>
+<ol>
+<li><a href="https://blog.cambridgespark.com/deploying-a-machine-learning-model-to-the-web-725688b851c7" target="_blank" rel="noopener">Tutorial: Deploying a machine learning model to the web</a></li>
+</ol>
+<p>不利条件：</p>
+<p>需要注册一个三方网站（软件）</p>
+<p>是机器学习的model 而不是深度学习</p>
+<p>有利条件：</p>
+<ol>
+<li>create a web app with flask<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">webapp&#x2F;</span><br><span class="line">    ├── model&#x2F;</span><br><span class="line">    │   └── bike_model_xgboost.pkl</span><br><span class="line">    ├── templates&#x2F;</span><br><span class="line">    │   └── main.html</span><br><span class="line">    └── app.py</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>说明 flask 确实是一个非常常见的操作</p>
+<p>结论：</p>
+<p>没有进入下一轮</p>
+<ol start="3">
+<li><a href="https://developer.ibm.com/technologies/artificial-intelligence/tutorials/deploy-a-python-machine-learning-model-as-a-web-service/" target="_blank" rel="noopener">Deploy a Python machine learning model as a web service</a></li>
+</ol>
+<p>结论：<br>放弃</p>
+<ol start="2">
+<li><a href="https://blog.paperspace.com/deploying-deep-learning-models-flask-web-python/" target="_blank" rel="noopener">Deploying Deep Learning Models Part 1: Preparing the Model</a></li>
+</ol>
+<p><a href="https://blog.paperspace.com/deploying-deep-learning-models-flask-web-python/" target="_blank" rel="noopener">https://blog.paperspace.com/deploying-deep-learning-models-flask-web-python/</a><br><a href="https://blog.paperspace.com/deploying-deep-learning-models-part-ii-hosting-on-paperspace/" target="_blank" rel="noopener">https://blog.paperspace.com/deploying-deep-learning-models-part-ii-hosting-on-paperspace/</a></p>
+<p>不利条件：</p>
+<p>需要查看一下是否有完整的代码</p>
+<p>有利条件：</p>
+<ul>
+<li>CNN with mnist model, 基于 keras 的开发，save model to model.json and model.h5</li>
+<li>create a flask app for serving the model</li>
+</ul>
+<p>结论：</p>
+<p>这个使用到了第三方的软件 gradient，依赖有点多，所以直接pass</p>
+<ol start="4">
+<li><a href="https://medium.com/@pierre_guillou/deep-learning-web-app-by-fastai-v1-3ab4c20b7cac" target="_blank" rel="noopener">Deep Learning Web App by fastai v1</a> （过了一遍）</li>
+</ol>
+<p>内容：</p>
+<p>这三步走，至少从流程上讲，这个是 reasonable的</p>
+<ul>
+<li>Training a DL model and exporting it</li>
+<li>Testing locally the Web App</li>
+<li>Deploying the Web App on a server</li>
+</ul>
+<p>有利条件：</p>
+<p>文中的连接 和文末的连接貌似是还是不错的。 </p>
+<p>结论：</p>
+<p>中立，着重看一下文中的资源是否比较好。 （这个资源已经都看过了）</p>
+<ol start="7">
+<li><a href="https://mc.ai/deploying-a-pytorch-ml-model-in-a-flask-based-web-application/" target="_blank" rel="noopener">Deploying a Pytorch ML model in a Flask Based Web Application</a></li>
+</ol>
+<p>有利条件：</p>
+<p>从效果上看应该还行</p>
+<p>不利条件：</p>
+<p>该网站不是 original article，所以需要从 Medium 上找到相应的文章，最好是要有源码</p>
+<p>结论：</p>
+<p>中立，需要跳转到原始的文章中，看看。 （需要使用一个三方的服务，这样就变得比较复杂了）</p>
+<ol start="4">
+<li>demo </li>
+</ol>
+<p><a href="https://www.zhihu.com/question/65171922" target="_blank" rel="noopener">https://www.zhihu.com/question/65171922</a> 这个网站中找到以下关键字 “学历与定位”，进行学习</p>
+<p>模型算法的实用主义</p>
+<p>作为工程师，除了线下搞模型，要能够完整的展示，如果前后端的资源不够，或者优先级很低，那么久需要自己动手，搭建一个前后端完整的机器学习系统。</p>
+<p>后端使用的是flask，前端使用的vue，ml 使用的是flair， 可以大概的 overview 其过程。</p>
+<p><a href="https://kuhungio.me/2019/flask_vue_ml/?utm_source=github&utm_campaign=flask_vue_ml" target="_blank" rel="noopener">机器学习建模与部署–以垃圾消息识别为例</a><br>代码地址：<a href="https://github.com/kuhung/flask_vue_ML" target="_blank" rel="noopener">https://github.com/kuhung/flask_vue_ML</a></p>
+<ol start="18">
+<li><a href="https://towardsdatascience.com/deploying-a-machine-learning-model-as-a-rest-api-4a03b865c166" target="_blank" rel="noopener">Deploying a Machine Learning Model as a REST API</a> </li>
+</ol>
+<p>特点：</p>
+<p>rest api </p>
+<p>resquests</p>
+<p>讲解还算是比较清晰的</p>
+<p>结论：</p>
+<p>可以学习一下啊</p>
+<ol start="14">
+<li><a href="https://reshamas.github.io/deploying-deep-learning-models-on-web-and-mobile/" target="_blank" rel="noopener">Deploying Deep Learning Models On Web And Mobile</a></li>
+</ol>
+<p>这个应该是一个大合集。 有web app 和 mobile app 的deployment。</p>
+<p>特点：</p>
+<p>基于 fastai</p>
+<p>pytorch</p>
+<p>python</p>
+<p>结论</p>
+<p>很好的学习教程，但是目前可以先放放。</p>
+<p>借助的是第三方的服务， heroku ，放弃</p>
+<p>还有一个关于 deployment的合集，如果有时间，那么是可以参考以下的网站：</p>
+<p><a href="https://github.com/ahkarami/Deep-Learning-in-Production" target="_blank" rel="noopener">https://github.com/ahkarami/Deep-Learning-in-Production</a> （已经过）</p>
+<p><a href="https://www.analyticsvidhya.com/blog/2020/03/tensorflow-serving-deploy-deep-learning-models/" target="_blank" rel="noopener">TensorFlow Serving: Deploying Deep Learning Models Just Got Easier!</a></p>
+<p>没有完整的code，只是有讲解。</p>
+<p>如果再次搜索的时候，可以根据加上关键字 “gan deployment “ 或者是”spade deployment”</p>
+<h2 id="需要改进的地方"><a href="#需要改进的地方" class="headerlink" title="需要改进的地方"></a>需要改进的地方</h2><ol>
+<li>使用 post 的方式能够传回 image</li>
+</ol>
+<p>也可以将prediction 的结果以json 的方式返回到客户端。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PredictSentiment</span><span class="params">(Resource)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># use parser and find the user's query</span></span><br><span class="line">        args = parser.parse_args()</span><br><span class="line">        user_query = args[<span class="string">'query'</span>]</span><br><span class="line">        <span class="comment"># vectorize the user's query and make a prediction</span></span><br><span class="line">        uq_vectorized = model.vectorizer_transform(</span><br><span class="line">            np.array([user_query]))</span><br><span class="line">        prediction = model.predict(uq_vectorized)</span><br><span class="line">        pred_proba = model.predict_proba(uq_vectorized)</span><br><span class="line">        <span class="comment"># Output 'Negative' or 'Positive' along with the score</span></span><br><span class="line">        <span class="keyword">if</span> prediction == <span class="number">0</span>:</span><br><span class="line">            pred_text = <span class="string">'Negative'</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            pred_text = <span class="string">'Positive'</span></span><br><span class="line">            </span><br><span class="line">        <span class="comment"># round the predict proba value and set to new variable</span></span><br><span class="line">        confidence = round(pred_proba[<span class="number">0</span>], <span class="number">3</span>)</span><br><span class="line">        <span class="comment"># create JSON object</span></span><br><span class="line">        output = &#123;<span class="string">'prediction'</span>: pred_text, <span class="string">'confidence'</span>: confidence&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+
+
+<p>可以参考以下的代码进行学习和书写。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask_restful <span class="keyword">import</span> reqparse, abort, Api, Resource</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> model <span class="keyword">import</span> NLPModel</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">api = Api(app)</span><br><span class="line"></span><br><span class="line">model = NLPModel()</span><br><span class="line"></span><br><span class="line">clf_path = <span class="string">'lib/models/SentimentClassifier.pkl'</span></span><br><span class="line"><span class="keyword">with</span> open(clf_path, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    model.clf = pickle.load(f)</span><br><span class="line"></span><br><span class="line">vec_path = <span class="string">'lib/models/TFIDFVectorizer.pkl'</span></span><br><span class="line"><span class="keyword">with</span> open(vec_path, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    model.vectorizer = pickle.load(f)</span><br><span class="line"></span><br><span class="line"><span class="comment"># argument parsing</span></span><br><span class="line">parser = reqparse.RequestParser()</span><br><span class="line">parser.add_argument(<span class="string">'query'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PredictSentiment</span><span class="params">(Resource)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># use parser and find the user's query</span></span><br><span class="line">        args = parser.parse_args()</span><br><span class="line">        user_query = args[<span class="string">'query'</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># vectorize the user's query and make a prediction</span></span><br><span class="line">        uq_vectorized = model.vectorizer_transform(np.array([user_query]))</span><br><span class="line">        prediction = model.predict(uq_vectorized)</span><br><span class="line">        pred_proba = model.predict_proba(uq_vectorized)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Output either 'Negative' or 'Positive' along with the score</span></span><br><span class="line">        <span class="keyword">if</span> prediction == <span class="number">0</span>:</span><br><span class="line">            pred_text = <span class="string">'Negative'</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            pred_text = <span class="string">'Positive'</span></span><br><span class="line">            </span><br><span class="line">        <span class="comment"># round the predict proba value and set to new variable</span></span><br><span class="line">        confidence = round(pred_proba[<span class="number">0</span>], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># create JSON object</span></span><br><span class="line">        output = &#123;<span class="string">'prediction'</span>: pred_text, <span class="string">'confidence'</span>: confidence&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Setup the Api resource routing here</span></span><br><span class="line"><span class="comment"># Route the URL to the resource</span></span><br><span class="line">api.add_resource(PredictSentiment, <span class="string">'/'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>项目的目录结构也是可以参考的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sentiment-clf&#x2F;</span><br><span class="line">├── README.md</span><br><span class="line">├── app.py  # Flask REST API script</span><br><span class="line">├── build_model.py  # script to build and pickle the classifier</span><br><span class="line">├── model.py  # script for the classifier class object</span><br><span class="line">├── util.py  # helper functions</span><br><span class="line">├── requirements.txt</span><br><span class="line">└── lib&#x2F;</span><br><span class="line">    ├── data&#x2F;  # data from Kaggle</span><br><span class="line">    │   ├── sampleSubmission.csv</span><br><span class="line">    │   ├── test.tsv</span><br><span class="line">    │   └── train.tsv</span><br><span class="line">    └── models&#x2F;  # pickled models for import into API script</span><br><span class="line">        ├── SentimentClassifier.pkl</span><br><span class="line">        └── TFIDFVectorizer.pkl</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>不仅仅是本地（localhost） 能够访问，需要给定一个ip，然后能够访问，这种部署到云端的方式是如何做到的呢？</li>
+</ol>
+<p>其实我是可以写个本地的，因为我只是需要在一个机器上访问就ok的呀。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET http://127.0.0.1:5000/ -d query=<span class="string">'that movie was boring'</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这种是网页调用的方式，然后返回我的response</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Browser </span></span><br><span class="line">http://54.227.110.43:5000/predict?g1=1&amp;g2=0&amp;g3=0&amp;g4=0&amp;g5=0&amp;g6=0&amp;g7=0&amp;g8=0&amp;g9=0&amp;g10=0</span><br><span class="line"><span class="comment"># Response</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="string">"prediction"</span>:<span class="string">"0.04930059"</span>,</span><br><span class="line"> <span class="string">"success"</span>:<span class="literal">true</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>下面是命令行的方式</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Browser </span></span><br><span class="line">http://54.227.110.43:5000/predict?msg=HelloWorld</span><br><span class="line"><span class="comment"># Curl</span></span><br><span class="line">&gt;curl -X POST -H <span class="string">"Content-Type: application/json"</span> -d <span class="string">"&#123; \"msg\":</span></span><br><span class="line"><span class="string">\"Hello World\" &#125;"</span> http://54.227.110.43:5000/predict</span><br><span class="line"><span class="comment"># Response </span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"response"</span>: <span class="string">"Hello World"</span>,</span><br><span class="line">  <span class="string">"success"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">url = <span class="string">'http://127.0.0.1:5000/'</span></span><br><span class="line">params =&#123;<span class="string">'query'</span>: <span class="string">'that movie was boring'</span>&#125;</span><br><span class="line">response = requests.get(url, params)</span><br><span class="line">response.json()</span><br><span class="line">Output: &#123;<span class="string">'confidence'</span>: <span class="number">0.128</span>, <span class="string">'prediction'</span>: <span class="string">'Negative'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X GET http://127.0.0.1:5000/ -d query=<span class="string">'that movie was boring'</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"prediction"</span>: <span class="string">"Negative"</span>,</span><br><span class="line">    <span class="string">"confidence"</span>: 0.128</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+<p>这个是使用三方服务部署模型，之后可能使用到。<br><a href="https://towardsdatascience.com/fastest-way-to-serve-demo-and-test-your-deep-learning-model-with-a-mobile-web-app-and-rest-apis-38cfbbf90a52" target="_blank" rel="noopener">https://towardsdatascience.com/fastest-way-to-serve-demo-and-test-your-deep-learning-model-with-a-mobile-web-app-and-rest-apis-38cfbbf90a52</a></p>
+<p><a href="https://www.heroku.com/" target="_blank" rel="noopener">https://www.heroku.com/</a><br>heroku提供的免费网站可以用于构建个人网站，非常适用于实验性质或是简单的博客系统。</p>
+<p><a href="https://github.com/IBM/gan-toolkit-pattern" target="_blank" rel="noopener">https://github.com/IBM/gan-toolkit-pattern</a> </p>
+<p>这个只是把train 的model 放到云平台上，并不是生成图像之后通过json 返回了图像。</p>
+<h2 id="再次查找"><a href="#再次查找" class="headerlink" title="再次查找"></a>再次查找</h2><p>搜素关键词： deploy model to web，  aws （在国内可以对标 阿里云）</p>
+<p>var body ={<br>‘img_name’ : “0001”<br>‘objects’:”chair,dest,table”<br>}</p>
+<p>经验之谈： </p>
+<p>学习别人的开源代码时候，一定要搞清引用的包是从哪个库中导入的，这样学习起来更加有针对性。比如 request 在python 爬虫和 Flask后端 都有，两者的具体实现还是有一些差别，所以增加一些经验把。</p>
+<h3 id="api-接口"><a href="#api-接口" class="headerlink" title="api 接口"></a>api 接口</h3><p>api 调用传入的是json：<br>{“img_id” :”ADE_train_00000241”,<br>“objects”: “chair,table,ceiling”,<br>“diy”:”False”}</p>
+<p>img_id : 图片的id, name<br>objects: 需要替换的物件<br>diy: 替换的模式，可选值有两个 {“False”, “True”}, True 表示 使用DIY (Do it yourself), False 表示使用 自动替换</p>
+<p>api调用返回格式</p>
+<p>{<br>“are_you_ok”: “True”<br>“data”: data<br>}</p>
+<p>解释：<br>are_you_ok：返回一个状态， 表示是否替换成功？ 可选值是 {“True”, “False”}<br>imgs : 返回的图像数据 list of numy, len 为3</p>
+<p>object of type “ndarray” is not supported by JSON,  所以应该使用 numpy 转换成array 然后 tolist</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">arr=np.asarray([<span class="number">345</span>,<span class="number">45</span>])</span><br><span class="line">result=&#123;<span class="string">'name'</span>:<span class="string">'test'</span>,<span class="string">'num'</span>:ar&#125;</span><br><span class="line">result=&#123;<span class="string">'name'</span>:<span class="string">'text'</span>,<span class="string">'num'</span>:ar.tolist()&#125; <span class="comment"># 先转换成 numpy 然后转换成 tolist()</span></span><br></pre></td></tr></table></figure>
+
+
+<p>assert （断言函数）</p>
+<p>如果是假，那么就会触发异常；并且是可以添加异常参数（这个称述是和判断语句的描述是一致的，所以可以加上 要求 等词语）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lists =[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]</span><br><span class="line"><span class="keyword">assert</span> len(lists) &gt;= <span class="number">5</span>, <span class="string">"要求列表元素个数大于等于5"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="常用的命令"><a href="#常用的命令" class="headerlink" title="常用的命令"></a>常用的命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 开启服务器端</span><br><span class="line">FLASK_ENV&#x3D;development FLASK_APP&#x3D;app.py flask run -p 8787</span><br><span class="line"></span><br><span class="line"># 客户端进行post 请求</span><br><span class="line">curl -X POST -H &quot;Content-Type: application&#x2F;json&quot; -d &quot;&#123; \&quot;msg\&quot;: \&quot;Hello World\&quot; &#125;&quot; http:&#x2F;&#x2F;54.227.110.43:5000&#x2F;predict</span><br><span class="line">curl -X POST -F file&#x3D;@cat_pic.jpeg http:&#x2F;&#x2F;localhost:5000&#x2F;predict</span><br><span class="line"></span><br><span class="line">curl -X POST -H &quot;Content-Type: application&#x2F;json&quot;  -d   &quot;&#123; \&quot;msg\&quot;: \&quot;Hello World\&quot; &#125;&quot; http:&#x2F;&#x2F;127.0.0.1:8787&#x2F;predict</span><br><span class="line"></span><br><span class="line">112.126.63.128 </span><br><span class="line">curl -X POST -H &quot;Content-Type: application&#x2F;json&quot; -d &quot;&#123; \&quot;msg\&quot;: \&quot;Hello World\&quot; &#125;&quot; http:&#x2F;&#x2F;112.126.63.128 :8787&#x2F;predict</span><br><span class="line"></span><br><span class="line">curl -X POST -H &quot;Content-Type: application&#x2F;json&quot;  -d   &quot;&#123; \&quot;img_id\&quot;: \&quot;ADE_train_00000241\&quot;, \&quot;objects\&quot;:\&quot;chair,table,ceiling\&quot;, \&quot;diy\&quot;:\&quot;False\&quot; &#125;&quot; http:&#x2F;&#x2F;127.0.0.1:8787&#x2F;predict</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">python test.py --name exp_ade_novae_512  --dataset_mode ade20k --dataroot .&#x2F;datasets&#x2F;flair --gpu_ids 1 --batchSize 1</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/18/cluster_algorithm/" rel="next" title="聚类算法的总结">
+                <i class="fa fa-chevron-left"></i> 聚类算法的总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/29/image_segmentation/" rel="prev" title="介绍 Image segmentation">
+                介绍 Image segmentation <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#可以试一下"><span class="nav-number">1.</span> <span class="nav-text">可以试一下</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优先级高"><span class="nav-number">1.1.</span> <span class="nav-text">优先级高</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先级低"><span class="nav-number">1.2.</span> <span class="nav-text">优先级低</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#放弃"><span class="nav-number">2.</span> <span class="nav-text">放弃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需要改进的地方"><span class="nav-number">3.</span> <span class="nav-text">需要改进的地方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#再次查找"><span class="nav-number">4.</span> <span class="nav-text">再次查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#api-接口"><span class="nav-number">4.1.</span> <span class="nav-text">api 接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的命令"><span class="nav-number">4.2.</span> <span class="nav-text">常用的命令</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/04/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/';
+          this.page.identifier = '2020/04/27/深度学习模型部署/';
+          this.page.title = '深度学习模型部署';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -87,7 +87,7 @@
 <meta property="og:description" content="介绍nginx 。（ongoing）">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2020/02/63f15d3496180b3b.png">
 <meta property="article:published_time" content="2020-01-07T03:22:17.000Z">
-<meta property="article:modified_time" content="2020-04-22T03:28:28.963Z">
+<meta property="article:modified_time" content="2020-05-01T10:17:29.631Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2020/02/63f15d3496180b3b.png">
@@ -345,8 +345,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-04-22T11:28:28+08:00">
-                2020-04-22
+              <time title="Post modified" itemprop="dateModified" datetime="2020-05-01T18:17:29+08:00">
+                2020-05-01
               </time>
             
           </span>
@@ -446,6 +446,76 @@
 <p>在Nginx上部署静态网站项目</p>
 <p><a href="https://juejin.im/post/5c2496046fb9a049d13231ba" target="_blank" rel="noopener">如何将自己的网站部署到阿里云的服务器</a></p>
 <p>echo “<!doctype html><head>&lt;meta http-equiv=”Content-Type”content=”text/html; charset=utf-8” /&gt;<meta name="generator" content="Hexo 4.2.0"></head><body><p>恭喜你，部署静态项目成功啦<del>~</del></p></body></html>“ &gt; index.html</p>
+<p>在阿里云 Ubuntu 机器上搭建 nginx</p>
+<p>一： 安装软件</p>
+<p>（下面的yum 是 centos 的命令，在 Ubuntu 中需要安装对应的软件，但是使用不同的命令）</p>
+<p>1 SSL功能需要openssl库，直接通过yum安装: #yum install openssl</p>
+<p>2 gzip模块需要zlib库，直接通过yum安装: #yum install zlib</p>
+<p>3 rewrite模块需要pcre库，直接通过yum安装: #yum install pcre</p>
+<p><a href="https://blog.csdn.net/z920954494/article/details/52132125" target="_blank" rel="noopener">https://blog.csdn.net/z920954494/article/details/52132125</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen 80 default_server;            #监听端口，将来访问的端口</span><br><span class="line">        listen [::]:80 default_server;</span><br><span class="line"></span><br><span class="line">        root &#x2F;var&#x2F;www&#x2F;html;</span><br><span class="line"></span><br><span class="line">        # Add index.php to the list if you are using PHP</span><br><span class="line">        index index.html index.htm index.nginx-debian.html;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        server_name _;</span><br><span class="line"></span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">                include uwsgi_params;</span><br><span class="line">                uwsgi_pass 127.0.0.1:8000;    #uwsgi中配置的路径</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location &#x2F;static &#123;</span><br><span class="line">                alias &#x2F;apps&#x2F;xxx&#x2F;static;       #静态资源路径</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location &#x2F;resume.ico  &#123;</span><br><span class="line">                alias &#x2F;apps&#x2F;xxx&#x2F;static&#x2F;resume.ico;    #网页图标路径</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>安装的结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Ubuntu安装之后的文件结构大致为：</span><br><span class="line">    1）所有的配置文件都在&#x2F;etc&#x2F;nginx下，并且每个虚拟主机已经安排在了&#x2F;etc&#x2F;nginx&#x2F;sites-available下</span><br><span class="line"></span><br><span class="line">    2）程序文件在&#x2F;usr&#x2F;sbin&#x2F;nginx</span><br><span class="line"></span><br><span class="line">    3）日志放在了&#x2F;var&#x2F;log&#x2F;nginx中</span><br><span class="line"></span><br><span class="line">    4）并已经在&#x2F;etc&#x2F;init.d&#x2F;下创建了启动脚本nginx</span><br><span class="line"></span><br><span class="line">    5）默认的虚拟主机的目录设置在了&#x2F;var&#x2F;www&#x2F;nginx-default (有的版本默认的虚拟主机的目录设置在了&#x2F;var&#x2F;www, 请参考&#x2F;etc&#x2F;nginx&#x2F;sites-available里的配置)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>二：配置 nginx</p>
+<p>安装成了之后，需要开启相应的服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">service nginx start</span><br><span class="line"></span><br><span class="line">systemctl status nginx.service</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">修改文件之后，使用这个进行语法的检查</span><br><span class="line"></span><br><span class="line">Turns out I can test if the configuration file is OK with:</span><br><span class="line">nginx -t -c &#x2F;etc&#x2F;nginx&#x2F;nginx.conf</span><br><span class="line"></span><br><span class="line">nginx -t -c &#x2F;etc&#x2F;nginx&#x2F;nginx.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sudo rm &#x2F;etc&#x2F;nginx&#x2F;sites-enabled&#x2F;default</span><br><span class="line">sudo service nginx restart</span><br></pre></td></tr></table></figure>
+
+<p>报错原因：您已经有一个绑定到HTTP端口80的进程。您可以运行命令sudo lsof -i:80以使用该端口获取进程列表，然后停止/禁用Web服务器。<br>解决方案：您可以运行命令来停止使用端口80 sudo fuser -k 80 / tcp的进程</p>
+<p>查看Nginx服务状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service nginx status</span><br></pre></td></tr></table></figure>
+
+
+<p>在Nginx运行时，会查找/etc/sites-enabled目录下的所有配置文件用于显示对应内容。完成新的配置时，需要重启服务器:</p>
+<p>sudo service nginx reload</p>
+<p>检测配置文件是否有错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@[ESC实例]:~# nginx -t</span><br><span class="line">nginx: the configuration file &#x2F;etc&#x2F;nginx&#x2F;nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file &#x2F;etc&#x2F;nginx&#x2F;nginx.conf test is successful</span><br></pre></td></tr></table></figure>
+
+<p>然后reload 一下， 重启nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nginx -s reload</span><br></pre></td></tr></table></figure>
+
+<p>重启nginx 服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+
+<p>简单命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx start        <span class="comment">#启动</span></span><br><span class="line">sudo service nginx stop         <span class="comment">#停止</span></span><br><span class="line">sudo service nginx restart      <span class="comment">#重新启动</span></span><br><span class="line">sudo service nginx reload       <span class="comment">#重新启动</span></span><br><span class="line">sudo nginx -s start     <span class="comment">#启动</span></span><br><span class="line">sudo nginx -s stop      <span class="comment">#停止</span></span><br><span class="line">sudo nginx -s restart   <span class="comment">#重新启动</span></span><br><span class="line">sudo nginx -s reload    <span class="comment">#重新加载配置</span></span><br></pre></td></tr></table></figure>
+
+
+<p>最新版本nginx配置是由4个文件构成：</p>
+<ul>
+<li>conf.d：用户自己定义的conf配置文件</li>
+<li>sites-available：系统默认设置的配置文件</li>
+<li>sites-enabled：由sites-available中的配置文件转换生成</li>
+<li>nginx.conf：汇总以上三个配置文件的内容，同时配置我们所需要的参数</li>
+</ul>
+<p>在 Nginx 的默认配置文件 nginx.conf 中，最后一行写着 include /etc/nginx/conf.d/*.conf;说明只要是该目录下文件后缀为 conf 的文件都会被自动加载到 Nginx 配置中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scp -r jeng@112.126.63.128:&#x2F;home&#x2F;jeng&#x2F;notebook .&#x2F;</span><br><span class="line">ssh -oPort&#x3D;6001 jeng@123.56.8.10</span><br><span class="line">ssh -oPort&#x3D;6001 peiyi@123.56.8.10</span><br><span class="line">ssh -oPort&#x3D;6001 root@123.56.8.10</span><br><span class="line">ssh -oPort&#x3D;6001 shichao@123.56.8.10</span><br></pre></td></tr></table></figure>
+<p>112.126.63.128</p>
+<p>卸载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 删除nginx，使用-purge </span><br><span class="line">sudo apt-get --purge remove nginx</span><br><span class="line"></span><br><span class="line"># 移除全部不使用的软件</span><br><span class="line">sudo apt-get autoremove</span><br><span class="line"></span><br><span class="line"># 罗列和nginx 所有相关的软件，然后删除</span><br><span class="line">dpkg --get-selections|grep nginx</span><br><span class="line">sudo apt-get --purge remove nginx</span><br><span class="line">sudo apt-get --purge remove nginx-common</span><br><span class="line">sudo apt-get --purge remove nginx-core</span><br><span class="line"></span><br><span class="line"># 查看nginx 正在运行的进程，如果有那么久kill 掉</span><br><span class="line">ps -ef |grep nginx</span><br><span class="line">sudo kill -9 XXX</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">最新版本nginx配置是由4个文件构成：</span><br><span class="line"></span><br><span class="line">conf.d：用户自己定义的conf配置文件</span><br><span class="line">sites-available：系统默认设置的配置文件</span><br><span class="line">sites-enabled：由sites-available中的配置文件转换生成</span><br><span class="line">nginx.conf：汇总以上三个配置文件的内容，同时配置我们所需要的参数</span><br><span class="line">在部署需要的web服务时，我们可以拷贝sites-enabled中的default文件到conf.d并且修改名字为**.conf,然后进行配置</span><br></pre></td></tr></table></figure>
+
+<p>多看看这里的例子的解释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    #服务启动时监听的端口</span><br><span class="line">    listen 80 default_server;</span><br><span class="line">    listen [::]:80 default_server;</span><br><span class="line">    #服务启动时文件加载的路径</span><br><span class="line">    root &#x2F;var&#x2F;www&#x2F;html&#x2F;wordpress;</span><br><span class="line">    #默认加载的第一个文件</span><br><span class="line">    index index.php index.html index.htm index.nginx-debian.html;</span><br><span class="line">    #页面访问域名，如果没有域名也可以填写_</span><br><span class="line">    server_name www.xiexianbo.xin;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        #页面加载失败后所跳转的页面</span><br><span class="line">        try_files $uri $uri&#x2F; &#x3D;404;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">      </span><br><span class="line">    #以下配置只服务于php</span><br><span class="line">    # 将PHP脚本传递给在127.0.0.1:9000上监听的FastCGI服务器</span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        include snippets&#x2F;fastcgi-php.conf;</span><br><span class="line">        # With php7.0-cgi alone:</span><br><span class="line">        #fastcgi_pass 127.0.0.1:9000;</span><br><span class="line">        # With php7.0-fpm:</span><br><span class="line">        fastcgi_pass unix:&#x2F;run&#x2F;php&#x2F;php7.0-fpm.sock;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 如果Apache的文档为root，则拒绝访问.htaccess文件</span><br><span class="line">    location ~ &#x2F;\.ht &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">upstream drugHumanArchives &#123; </span><br><span class="line">        server 127.0.0.1:8213 weight&#x3D;1; </span><br><span class="line">    &#125;</span><br><span class="line">server &#123;</span><br><span class="line">        listen       8199;</span><br><span class="line">        server_name  localhost;</span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">            root   &#x2F;data&#x2F;test&#x2F;narcV3.1&#x2F;front;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        location &#x2F;drugHumanArchives</span><br><span class="line">        &#123;</span><br><span class="line">            proxy_set_header   Host             $host:8199;</span><br><span class="line">            proxy_set_header   X-Real-IP        $remote_addr;</span><br><span class="line">            proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</span><br><span class="line">            proxy_cookie_path  &#x2F;drugHumanArchives  &#x2F;drugHumanArchives;</span><br><span class="line">            proxy_set_header   Cookies          $http_cookies;</span><br><span class="line">            proxy_pass http:&#x2F;&#x2F;drugHumanArchives&#x2F;drugHumanArchives;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>1）upstream 配置后端服务本来的访问路径</p>
+<p>　　　2）server 配置代理端口  listen：统一端口号   server_name：域名   </p>
+<p>　　　　第一个location /   说明：访问<a href="http://10.196.10.50:8199/drugarchives" target="_blank" rel="noopener">http://10.196.10.50:8199/drugarchives</a>   即可访问到服务器静态资源/data/test/narcV3.1/front/drugarchives /index..html</p>
+<p>　　　　第二个location /drugHumanArchives  说明 proxy_pass  代理路径 <a href="http://drugHumanArchives/drugHumanArchives" target="_blank" rel="noopener">http://drugHumanArchives/drugHumanArchives</a>;  第一个drugHumanArchives代表上面配置的upstream ，即<a href="http://127.0.0.1:8213/drugHumanArchives" target="_blank" rel="noopener">http://127.0.0.1:8213/drugHumanArchives</a>;</p>
+<p>　　　　　　访问<a href="http://10.196.10.50:8199/drugHumanArchives" target="_blank" rel="noopener">http://10.196.10.50:8199/drugHumanArchives</a>    即可代理到路径<a href="http://10.196.10.50:8213/drugHumanArchives" target="_blank" rel="noopener">http://10.196.10.50:8213/drugHumanArchives</a></p>
+<p>关于location 的问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">location &#x3D; &#x2F; &#123;</span><br><span class="line"># 精确匹配 &#x2F; ，后面带任何字符串的地址都不符合</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">localtion &#x2F;api &#123;</span><br><span class="line"># 匹配任何 &#x2F;api 开头的URL，包括 &#x2F;api 后面任意的, 比如 &#x2F;api&#x2F;getList</span><br><span class="line"># 匹配符合以后，还要继续往下搜索</span><br><span class="line"># 只有后面的正则表达式没有匹配到时，这一条才会采用这一条</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">localtion ~ &#x2F;api&#x2F;abc &#123;</span><br><span class="line"># 匹配任何 &#x2F;api&#x2F;abc 开头的URL，包括 &#x2F;api&#x2F;abc 后面任意的, 比如 &#x2F;api&#x2F;abc&#x2F;getList</span><br><span class="line"># 匹配符合以后，还要继续往下搜索</span><br><span class="line"># 只有后面的正则表达式没有匹配到时，这一条才会采用这一条</span><br><span class="line">&#125;</span><br><span class="line">以&#x2F; 通用匹配, 如果没有其它匹配,任何请求都会匹配到</span><br><span class="line">&#x3D;开头表示精确匹配</span><br><span class="line">如 A 中只匹配根目录结尾的请求，后面不能带任何字符串。</span><br><span class="line">^~ 开头表示uri以某个常规字符串开头，不是正则匹配</span><br><span class="line">~ 开头表示区分大小写的正则匹配;</span><br><span class="line">~* 开头表示不区分大小写的正则匹配</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://link.juejin.im/?target=https%3A%2F%2Fsegmentfault.com%2Fa%2F1190000002797606">nginx配置location总结及rewrite规则写法</a></p>
 
       
     </div>
@@ -470,8 +540,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/02/gnn/" rel="next" title="GNN">
-                <i class="fa fa-chevron-left"></i> GNN
+              <a href="/2020/01/07/restful/" rel="next" title="介绍 restful api">
+                <i class="fa fa-chevron-left"></i> 介绍 restful api
               </a>
             
           </div>
@@ -564,7 +634,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">147</span>
+                  <span class="site-state-item-count">149</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
