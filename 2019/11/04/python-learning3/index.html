@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="python 学习笔记，之前有两篇笔记，因为太多了，所以新开一篇。">
 <meta property="article:published_time" content="2019-11-04T11:16:02.000Z">
-<meta property="article:modified_time" content="2020-03-10T06:05:56.310Z">
+<meta property="article:modified_time" content="2020-06-01T07:44:23.178Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 
@@ -343,8 +343,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-03-10T14:05:56+08:00">
-                2020-03-10
+              <time title="Post modified" itemprop="dateModified" datetime="2020-06-01T15:44:23+08:00">
+                2020-06-01
               </time>
             
           </span>
@@ -589,10 +589,17 @@
 <p>（5）Random Subsample From a List</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> sample</span><br><span class="line"></span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">sequence =[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>)]</span><br><span class="line">print(sequence)</span><br><span class="line"><span class="comment"># default without replacement，不放回抽样</span></span><br><span class="line">subset =sample(sequence, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
 
-<p>python 中的 <code>random.sample()</code> 是没有放回抽样的。如果想要实现，一种方式是基于 <code>randint()</code> 改造，一种是使用numpy 中的函数：<code>numpy.random.choice(replace =True)</code>。但是python自带的包中可以设置 <code>weight</code>权重，也就是有权重的sample。</p>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sample with replacement vs sample without replacement</span><br><span class="line"></span><br><span class="line">两者的区别： 前者是有放回的，所以两次sample 是独立的；后者是没有放回的，两次sample是不独立的。</span><br></pre></td></tr></table></figure>
+
+
+<p>python 中的 <code>random.sample()</code> 默认是没有放回抽样的。如果想要实现，一种方式是基于 <code>randint()</code> 改造，一种是使用numpy 中的函数：<code>numpy.random.choice(replace =True)</code>。但是python自带的包中可以设置 <code>weight</code>权重，也就是有权重的sample。</p>
 <p>（5） Randomly Shuffle a List</p>
 <p>shuffle 操作在python 中是 <code>in-place()</code> 的</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> seed</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> shuffle</span><br><span class="line">seed(<span class="number">1</span>)</span><br><span class="line">sequence =[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>)]</span><br><span class="line">print(sequence)</span><br><span class="line"></span><br><span class="line">shuffle(sequence)</span><br><span class="line">print(sequence)</span><br></pre></td></tr></table></figure>
+
+
+
 
 
 <h3 id="Random-Numbers-with-Numpy"><a href="#Random-Numbers-with-Numpy" class="headerlink" title="Random Numbers with Numpy"></a>Random Numbers with Numpy</h3><blockquote>
@@ -856,7 +863,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-count">156</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

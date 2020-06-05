@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2020/02/7e6c6031a87a932c.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/22/K3bmPU.png">
 <meta property="article:published_time" content="2019-04-10T05:17:03.000Z">
-<meta property="article:modified_time" content="2020-04-10T13:43:17.342Z">
+<meta property="article:modified_time" content="2020-05-06T13:41:31.386Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2019/09/3fc63bea8bb4816e.png">
@@ -348,8 +348,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-04-10T21:43:17+08:00">
-                2020-04-10
+              <time title="Post modified" itemprop="dateModified" datetime="2020-05-06T21:41:31+08:00">
+                2020-05-06
               </time>
             
           </span>
@@ -458,6 +458,7 @@
 <li><del>/.bash_profile:每个用户都可使用该文件输入专用于自己使用的shell信息,当用户登录时,该文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的.bashrc文件. 此文件类似于/etc/profile，也是需要需要重启才会生效，/etc/profile对所有用户生效，</del>/.bash_profile只对当前用户生效。</li>
 <li><del>/.bashrc:该文件包含专用于你的bash shell的bash信息,当登录时以及每次打开新的shell时,该文件被读取.（每个用户都有一个.bashrc文件，在用户目录下）<br>此文件类似于/etc/bashrc，不需要重启生效，重新打开一个bash即可生效，  /etc/bashrc对所有用户新打开的bash都生效，但</del>/.bashrc只对当前用户新打开的bash生效。</li>
 </ul>
+<p>当修改 <code>.bashrc</code> 文件之后，在当期窗口不能立马生效。有两种方式，一种是重新打开一个shell 窗口，一种是使用命令 <code>source ~/.bashrc</code></p>
 <p>~/.bash_profile 是交互式、login 方式进入bash 运行的；<br>~/.bashrc 是交互式 non-login 方式进入bash 运行的；<br>通常二者设置大致相同，所以通常前者会调用后者。</p>
 <p><img src="https://ftp.bmp.ovh/imgs/2020/02/7e6c6031a87a932c.png" alt=""></p>
 <h2 id="计算机组成原理"><a href="#计算机组成原理" class="headerlink" title="计算机组成原理"></a>计算机组成原理</h2><ol>
@@ -483,6 +484,32 @@
 <p>固态硬盘，英文名Solid State Disk或Solid State Drive，是一种以存储器作为永久性存储器的电脑存储设备。虽然SSD已不是使用“碟盘”来记存数据，也没有用于“驱动”的马达，但是人们依照命名习惯，仍然称为固态硬盘或固态驱动器。固态硬盘分易失性与非易失性两种，这里我们着重研究更适合作为传统硬盘替代品的非易失性固态硬盘</p>
 <p>现阶段，不少电脑极客们都会采用SSD+HDD的混合方案来提高电脑的性能，不过，随着固态硬盘的发展，越来越高的容量也会慢慢取代掉机械硬盘。所以一般使用 SSD 来存储程序+ 软件， 使用机械硬盘存储文件（图片，视频），这种混合方案是比较常见的。</p>
 <p>所以买个256GB的装系统、软件和游戏，而买个2TB/3TB的HDD用来放照片、音乐、电影这个才是目前性价比最好的组合。</p>
+<p>查看内存命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">free -h</span><br></pre></td></tr></table></figure>
+
+
+<p>查看已挂载磁盘信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br></pre></td></tr></table></figure>
+
+<p> 查看磁盘（包括挂载和未挂载）信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo fdisk -l</span><br></pre></td></tr></table></figure>
+
+<p> 查看<code>/mnt</code> 挂载在哪个磁盘下<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -h &#x2F;mnt</span><br></pre></td></tr></table></figure><br> 3.格式化磁盘</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 &#x2F;dev&#x2F;vdb</span><br></pre></td></tr></table></figure>
+<p>4.挂载磁盘</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount &#x2F;dev&#x2F;vdb &#x2F;mnt</span><br></pre></td></tr></table></figure>
+<p>5.实现自动挂载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;fstab</span><br></pre></td></tr></table></figure>
+<p> 添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;dev&#x2F;vdb &#x2F;mnt ext4 defaults 0 0</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>区分 ssh 和hdd</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk -d -o name,rota</span><br></pre></td></tr></table></figure>
+<p>对于其返回值，看rota值来判断，如果rota为1，则意味旋转，则为机械盘，若rota为0则意味着发该盘为固态</p>
 <h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><ol>
 <li>数据库事务的四大特性（ACID）以及事务的隔离级别<br>什么是数据库的事务？事务其实就是单个数据逻辑单元组成的对象操作集合，而数据库的终极目标就是使数据库从一个一致的状态转换到另一个一致的状态，这就是ACID中的一致性（Consistency），而原子性（Atomicity）、隔离性（Isolation）、持久性（Durability）是为了实现这个目标的手段。</li>
 </ol>
@@ -982,7 +1009,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-count">156</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

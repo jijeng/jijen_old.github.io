@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="题目都是来自牛客网在线刷题中的剑指offer。刷题记录，顺便从考察知识点的角度分类整理。主要分成以下四大类：  字符串、数组 链表、树 递归、回溯、动态规划 其他, 比如位运算、正则匹配等">
 <meta property="article:published_time" content="2019-03-17T12:31:43.000Z">
-<meta property="article:modified_time" content="2019-12-20T09:30:01.423Z">
+<meta property="article:modified_time" content="2020-05-27T07:07:44.318Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 
@@ -343,8 +343,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-20T17:30:01+08:00">
-                2019-12-20
+              <time title="Post modified" itemprop="dateModified" datetime="2020-05-27T15:07:44+08:00">
+                2020-05-27
               </time>
             
           </span>
@@ -662,7 +662,9 @@
 <blockquote>
 <p>在一个长度为n的数组里的所有数字都在0到n-1的范围内。 数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。请找出数组中任意一个重复的数字。 例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是第一个重复的数字2。</p>
 </blockquote>
+<p>(注意有的平台上的题目要求是不一样的，所以注意审题；当数字不在 [0, n-1] 的时候，题目要求是返回  -1)</p>
 <p>解法一：使用dictionary 存储，key 表示数字，value 表示频数，时间复杂度是$O(n)$，空间复杂度是$O(n)$。<br>解法二：因为数组中存储的是 $[0, n-1]$的数字，和index 是相对应的。所以如果不相同，那么修改其相等为止，如果发现 numbers[i] 和 numbers[numbers[i]] 相等了，那么就找到了重复的数字；最后返回false。</p>
+<p>如果有 [0, n-1]这种限制，那么是可以使用 for while 等结构，经常使用的。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="comment"># 这里要特别注意~找到任意重复的一个值并赋值到duplication[0]</span></span><br><span class="line">    <span class="comment"># 函数返回True/False</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">duplicate</span><span class="params">(self, numbers, duplication)</span>:</span></span><br><span class="line">        len_ =len(numbers)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len_):</span><br><span class="line">            <span class="keyword">while</span> i != numbers[i]:</span><br><span class="line">                <span class="keyword">if</span> numbers[numbers[i]] ==numbers[i]:</span><br><span class="line">                    duplication[<span class="number">0</span>] =numbers[i]</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    numbers[numbers[i]], numbers[i] =numbers[i], numbers[numbers[i]]</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
 
 
@@ -830,7 +832,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-count">156</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
