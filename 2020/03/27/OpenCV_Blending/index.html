@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://img.vim-cn.com/94/2c650e6f7e25b11fbf391d60570d48fed529f0.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2020/03/cfd831df8ff776c7.png">
 <meta property="article:published_time" content="2020-03-27T04:36:03.000Z">
-<meta property="article:modified_time" content="2020-05-04T03:38:26.764Z">
+<meta property="article:modified_time" content="2020-06-18T07:18:38.468Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img.vim-cn.com/ae/1c7e7b7bbc187528611616de13d97547053187.png">
@@ -350,8 +350,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-05-04T11:38:26+08:00">
-                2020-05-04
+              <time title="Post modified" itemprop="dateModified" datetime="2020-06-18T15:18:38+08:00">
+                2020-06-18
               </time>
             
           </span>
@@ -471,9 +471,8 @@
 </li>
 <li><p>模式“F”与模式“L”的转换公式是一样的，都是RGB转换为灰色值的公式，但模式“F”会保留小数部分.<br>模式“RGB”为24位彩色图像，它的每个像素用24个bit表示，分别表示红色、绿色和蓝色三个通道。<br>在PIL中，对于彩色图像，open后都会转换为“RGB”模式，然后该模式可以转换为其他模式，比如“1”、“L”、“P”和“RGBA”，这几种模式也可以转换为“RGB”模式。</p>
 </li>
-</ol>
-<ol start="10">
-<li>RGB 和灰白图的相互转换</li>
+<li><p>RGB 和灰白图的相互转换</p>
+</li>
 </ol>
 <p>PIL包中Image模块的convert()函数的具体使用：</p>
 <p>模式L为灰色图像，它的每个像素用8个bit表示，0表示黑，255表示白，其他数字表示不同的灰度。在PIL中，从模式“RGB”转换为“L”模式是按照下面的公式转换的：<br>L = R * 0.299 + G * 0.587+ B * 0.114</p>
@@ -482,6 +481,13 @@
 <p>对于彩色图像，不管其图像格式是PNG，还是BMP，或者JPG，在PIL中，使用Image模块的open()函数打开后，返回的图像对象的模式都是“RGB”。而对于灰度图像，不管其图像格式是PNG，还是BMP，或者JPG，打开后，其模式为“L”。</p>
 </blockquote>
 <p><a href="https://piazza.com/class_profile/get_resource/hz5ykuetdmr53k/i0zbj8uvcao7lp" target="_blank" rel="noopener">Alpha Blending</a></p>
+<p>openCV中的图像的通道可以是 1，2，3 和4。其中常见的是 1通道和 3通道，4通道，其中2通道不常见。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 通道是灰度图</span><br><span class="line">3 通道是彩色图，比如RGB图像</span><br><span class="line">4通道的图像是RGBA，是RGB加上一个A通道，也叫alpha通道，表示透明度。PNG图像是一种典型的4通道图像。alpha通道可以赋值0到1，或者0到255，表示透明到不透明。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 <h2 id="Histograms"><a href="#Histograms" class="headerlink" title="Histograms"></a>Histograms</h2><p>关于 opencv 中的histogram 的使用。</p>
 <blockquote>
 <p>So what is histogram ? You can consider histogram as a graph or plot, which gives you an overall idea about the intensity distribution of an image. It is a plot with pixel values (ranging from 0 to 255, not always) in X-axis and corresponding number of pixels in the image on Y-axis.<br>定义， 是关于pixel 密度分布的图像</p>
@@ -506,6 +512,100 @@
 </blockquote>
 <p><a href="https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_histograms/py_histogram_begins/py_histogram_begins.html" target="_blank" rel="noopener">Histograms - 1 : Find, Plot, Analyze !!!</a></p>
 <p>参考文献</p>
+<h2 id="图像类型"><a href="#图像类型" class="headerlink" title="图像类型"></a>图像类型</h2><p>在计算机中，按照颜色和灰度的多少可以将图像分为四种类型：</p>
+<ul>
+<li>二值图像</li>
+<li>灰度图像</li>
+<li>索引图像</li>
+<li>RGB图像</li>
+</ul>
+<ol>
+<li>二值图像（位图模式）</li>
+</ol>
+<p>一幅二值图像的二维矩阵仅由0、1两个值构成，“0”代表黑色，“1”代白色。由于每一像素（矩阵中每一元素）取值仅有0、1两种可能，所以计算机中二值图像的数据类型通常为1个二进制位。二值图像通常用于文字、线条图的扫描识别（OCR）和掩膜图像的存储。</p>
+<p>位图模式的图像也叫做黑白图像，它包含的信息最少，因而图像也最小。当一幅彩色图像要转换成黑白（位图）模式时，不能直接转换，必须先将图像转换成灰度模式。</p>
+<ol start="2">
+<li>灰度图像</li>
+</ol>
+<p>灰度图像矩阵元素的取值范围通常为[0，255]。因此其数据类型一般为8位无符号整数的（int8），这就是人们经常提到的256灰度图像。“0”表示纯黑色，“255”表示纯白色，中间的数字从小到大表示由黑到白的过渡色。二值图像可以看做是灰度图像的一个特例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">灰度模式：纯黑(00000000) ... 纯白(11111111)     # 单通道</span><br><span class="line">RGB模式：纯黑(0,0,0) ... 纯白(255,255,255)     # 三通道</span><br></pre></td></tr></table></figure>
+
+
+<p>灰度通常表示方法是百分比，范围从0％到100％。注意此百分比以纯黑为基准。<br>与RGB正好相反，百分比越高颜色越偏黑，百分比越低颜色越偏白。</p>
+<ol start="3">
+<li>RGB模式</li>
+</ol>
+<p>RGB模式是相加的模式，当R、G、B的值都达到最大值时，三色合成便成白色。</p>
+<p>图片也可以看作是三层二维数组的叠加，每一层二维数组都是一个通道。单通道的图像是灰色的，每个像素pixel只有一个value，数字越高，颜色越白，也就越亮。</p>
+<p>RGB 格式里(0,0,0)代表着黑色，(255,255,255)代表着白色。R channel数值越高，说明颜色中含有的红色分量越多。</p>
+<ol start="4">
+<li>图像通道</li>
+</ol>
+<p>PNG图像(便携式网络图形（Portable Network Graphics）)是一种典型的4通道图像。alpha通道可以赋值0到1，或者0到255，表示透明到不透明。其实任何一张彩图都是4通道图像，只是读不读的问题。Alpha通道是计算机图形学中的术语，指的是特别的通道，意思是“非彩色”通道，主要是用来保存选区和编辑选区。</p>
+<ol start="5">
+<li>GRAY颜色模型</li>
+</ol>
+<p>GRAY模型并不是一个彩色模型，他是一个灰度图像的模型，其命名使用的是英文单词gray的全字母大写。常用的RGB模型转成灰度图的方式如式中所示：</p>
+<p>\begin{equation}<br>\mathrm{Gray}=\mathrm{R} * 0.3+\mathrm{G} * 0.59+\mathrm{B} * 0.11<br>\end{equation}</p>
+<p>读取图片函数：</p>
+<p>Image.open()读取的通道顺序是RGB，cv2.imread()读取的通道顺序为BGR。</p>
+<p>显示的区别：</p>
+<p>cv2.imshow()采用BGR模式</p>
+<p>plt.imshow() 采用RGB模式</p>
+<p>Opencv转PIL.Image</p>
+<p>cv2_img = cv2.cvtColor(numpy.asarray(Img_img),cv2.COLOR_RGB2BGR)</p>
+<p>PIL.Image转Opencv</p>
+<p>pil_img = Image.fromarray(cv2.cvtColor(cv_img,cv2.COLOR_BGR2RGB))</p>
+<p>使用 cv2 处理图像的时候</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2  </span><br><span class="line"><span class="comment">#打开图片并显示</span></span><br><span class="line">img = cv2.imread(<span class="string">"./cat.png"</span>) </span><br><span class="line">cv2.imshow(<span class="string">"Image"</span>, img) </span><br><span class="line">cv2.waitKey (<span class="number">0</span>)</span><br><span class="line"><span class="comment">#将彩色图像转成灰度图像,利用opencv自带的cvtColor可以将彩色图像转成灰度图像</span></span><br><span class="line">gray_image = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) </span><br><span class="line"><span class="comment">#查看图片通道格式</span></span><br><span class="line">gray_image.shape</span><br><span class="line"><span class="comment">#img.shape 返回图像高（图像矩阵的行数）、宽（图像矩阵的列数）和通道数3个属性组成的元组，若图像是非彩色图，则只返回高和宽组成的元组。</span></span><br><span class="line"><span class="comment">#图像存储</span></span><br><span class="line">cv2.imwrite(<span class="string">'./new_img2.jpg'</span>,gray_image)</span><br><span class="line"></span><br><span class="line"><span class="comment"># （如果使用cv2 中的img.show() 那么使用 waitKey(0)）</span></span><br></pre></td></tr></table></figure>
+
+<p>cv2.imread()会默认以彩色模式读取图片，这样黑白图片读取后也成了三通道，想以图片原始模式读取使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">img = cv2.imread(<span class="string">"./cat.png"</span>,<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>使用PIL 处理图像</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1、显示图片</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">im = Image.open(<span class="string">'lena.png'</span>)</span><br><span class="line">im.show()</span><br><span class="line"><span class="comment">#2、将 PIL Image 图片转换为 numpy 数组</span></span><br><span class="line">im_array = np.array(im)</span><br><span class="line"><span class="comment">#3、保存 PIL 图片</span></span><br><span class="line"><span class="comment">#直接调用 Image 类的 save 方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">I = Image.open(<span class="string">'lena.png'</span>)</span><br><span class="line">I.save(<span class="string">'new_lena.png'</span>)</span><br><span class="line"><span class="comment">#5、RGB 转换为灰度图、二值化图</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">I = Image.open(<span class="string">'lena.png'</span>)</span><br><span class="line">I.show()</span><br><span class="line">L = I.convert(<span class="string">'L'</span>)   <span class="comment">#转化为灰度图</span></span><br><span class="line">L = I.convert(<span class="string">'1'</span>)   <span class="comment">#转化为二值化图</span></span><br><span class="line">L.show()</span><br><span class="line"><span class="comment">#查看图片模式</span></span><br><span class="line">lena=Image.open(<span class="string">'lena.png'</span>)</span><br><span class="line">lena.mode</span><br><span class="line"><span class="comment">#输出RGB为彩色图片，通道数为3，输出'L'者"1"为灰度及黑白图，通道数为1</span></span><br></pre></td></tr></table></figure>
+
+<p>重要的一点时图像只要经过转换及存储后，其模式就不会变，只是读取时以不同的模式读会有差异，不用担心</p>
+<p>读入图像通道</p>
+<p>对于Image.open()函数默认真彩图像读取通道顺序为RGB，而cv2.imread()则是BGR。同时，当图像格式为RGBA时，Image.open(‘—.jpg’)读取的格式为RGBA（其中A表示图像的alpha通道，即RGBA共四个通道），而cv2.imread(‘—.jpg’)读取的格式是BGR，只有三个通道。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">img = cv2.imread(<span class="string">r"F:\DailyPractice\AffectiveComputing\ck+_dataset\1_17_0.png"</span>)</span><br><span class="line">b, g, r = cv2.split(img)</span><br><span class="line">img = Image.open(<span class="string">r"F:\DailyPractice\AffectiveComputing\ck+_dataset\1_17_0.png"</span>)</span><br><span class="line">print(img.mode)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>OpenCV转换成PIL.Image格式</p>
+<p>OpenCV转换成PIL.Image格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2  </span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image  </span><br><span class="line"><span class="keyword">import</span> numpy  </span><br><span class="line">  </span><br><span class="line">img = cv2.imread(<span class="string">"plane.jpg"</span>)  </span><br><span class="line">cv2.imshow(<span class="string">"OpenCV"</span>,img)  </span><br><span class="line">image = Image.fromarray(cv2.cvtColor(img,cv2.COLOR_BGR2RGB))  </span><br><span class="line">image.show()  </span><br><span class="line">cv2.waitKey()</span><br></pre></td></tr></table></figure>
+
+
+<p>PIL.Image转换成OpenCV格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2  </span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image  </span><br><span class="line"><span class="keyword">import</span> numpy  </span><br><span class="line">  </span><br><span class="line">image = Image.open(<span class="string">"plane.jpg"</span>)  </span><br><span class="line">image.show()  </span><br><span class="line">img = cv2.cvtColor(numpy.asarray(image),cv2.COLOR_RGB2BGR)  </span><br><span class="line">cv2.imshow(<span class="string">"OpenCV"</span>,img)  </span><br><span class="line">cv2.waitKey()</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       
     </div>
@@ -633,7 +733,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -655,7 +755,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -705,7 +805,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Histograms"><span class="nav-number">1.</span> <span class="nav-text">Histograms</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Histograms"><span class="nav-number">1.</span> <span class="nav-text">Histograms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图像类型"><span class="nav-number">2.</span> <span class="nav-text">图像类型</span></a></li></ol></div>
             
 
           </div>

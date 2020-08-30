@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="介绍nginx 。（ongoing）">
+<meta name="description" content="介绍和使用nginx 的记录">
 <meta property="og:type" content="article">
-<meta property="og:title" content="介绍 nginx">
+<meta property="og:title" content="nginx 学习记录">
 <meta property="og:url" content="http://yoursite.com/2020/01/07/nginx/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="介绍nginx 。（ongoing）">
+<meta property="og:description" content="介绍和使用nginx 的记录">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2020/02/63f15d3496180b3b.png">
 <meta property="article:published_time" content="2020-01-07T03:22:17.000Z">
-<meta property="article:modified_time" content="2020-05-15T06:55:19.535Z">
+<meta property="article:modified_time" content="2020-07-24T00:46:17.517Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2020/02/63f15d3496180b3b.png">
@@ -139,7 +139,7 @@
 	})();
 </script>
 
-  <title>介绍 nginx | Jijeng's blog</title>
+  <title>nginx 学习记录 | Jijeng's blog</title>
   
 
 
@@ -317,7 +317,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">介绍 nginx</h1>
+          <h1 class="post-title" itemprop="name headline">nginx 学习记录</h1>
         
 
         <div class="post-meta">
@@ -345,8 +345,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-05-15T14:55:19+08:00">
-                2020-05-15
+              <time title="Post modified" itemprop="dateModified" datetime="2020-07-24T08:46:17+08:00">
+                2020-07-24
               </time>
             
           </span>
@@ -395,7 +395,7 @@
       
 
       
-        <p>介绍nginx 。（ongoing）</p>
+        <p>介绍和使用nginx 的记录</p>
 <a id="more"></a>
 
 
@@ -408,8 +408,7 @@
 <li>Nginx是一个跨平台服务器，可以运行在Linux，Windows，FreeBSD，Solaris，AIX，Mac OS等操作系统上</li>
 </ul>
 <p>这些优秀的设计带来的是极大的稳定性。</p>
-<p>功能</p>
-<p>nginx主要是做转发</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><p>nginx主要是做转发</p>
 <p>（1）反向代理（Reverse Proxy）：</p>
 <p>maybe是使用最多的用途。</p>
 <p>反向代理（Reverse Proxy）方式是指以代理服务器来接受internet上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给internet上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器。简单来说就是真实的服务器不能直接被外部网络访问，所以需要一台代理服务器，而代理服务器能被外部网络访问的同时又跟真实服务器在同一个网络环境，当然也可能是同一台服务器，端口不同而已。</p>
@@ -448,8 +447,7 @@
 <p>在Nginx上部署静态网站项目</p>
 <p><a href="https://juejin.im/post/5c2496046fb9a049d13231ba" target="_blank" rel="noopener">如何将自己的网站部署到阿里云的服务器</a></p>
 <p>echo “<!doctype html><head>&lt;meta http-equiv=”Content-Type”content=”text/html; charset=utf-8” /&gt;<meta name="generator" content="Hexo 4.2.0"></head><body><p>恭喜你，部署静态项目成功啦<del>~</del></p></body></html>“ &gt; index.html</p>
-<p>在阿里云 Ubuntu 机器上搭建 nginx</p>
-<p>一： 安装软件</p>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><h3 id="在阿里云-Ubuntu-机器上搭建-nginx"><a href="#在阿里云-Ubuntu-机器上搭建-nginx" class="headerlink" title="在阿里云 Ubuntu 机器上搭建 nginx"></a>在阿里云 Ubuntu 机器上搭建 nginx</h3><p>一： 安装软件</p>
 <p>（下面的yum 是 centos 的命令，在 Ubuntu 中需要安装对应的软件，但是使用不同的命令）</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -l | grep zlib</span><br></pre></td></tr></table></figure>
 
@@ -544,8 +542,7 @@
 
 
 <p><a href="https://www.cnblogs.com/zbzhm3728/articles/10407489.html" target="_blank" rel="noopener">彻底删除CentOS上的Nginx方法</a></p>
-<p>nginx 实现上传功能</p>
-<ol>
+<h3 id="nginx-实现上传功能"><a href="#nginx-实现上传功能" class="headerlink" title="nginx 实现上传功能"></a>nginx 实现上传功能</h3><ol>
 <li>安装 nginx-upload-module</li>
 </ol>
 <p>Nginx有一个Upload模块，可以非常简单的实现文件上传功能。此模块的原理是先把用户上传的文件保存到临时文件，然后在交由后台页面处理，并且把文件的原名，上传后的名称，文件类型，文件大小set到页面。</p>
@@ -567,6 +564,36 @@
 </ol>
 <p>上传file 功能的具体配置参考如下的代码</p>
 <p><a href="https://blog.csdn.net/zzhongcy/article/details/88863037" target="_blank" rel="noopener">Nginx Upload Module 上传文件功能</a></p>
+<p>在 <code>public/index.html</code> 文件中添加如下的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;&lt;body&gt;Hello World From The Frontend Container&lt;&#x2F;body&gt;&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用的命令"><a href="#常用的命令" class="headerlink" title="常用的命令"></a>常用的命令</h3><p>How to Start, Stop, or Restart Nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">start: Starts the Nginx service.</span><br><span class="line">stop: Terminates the Nginx service.</span><br><span class="line">restart: Stops and then starts the Nginx service.</span><br><span class="line">reload: Gracefully restarts the Nginx service. On reload, the main Nginx process shuts down the child processes, loads the new configuration, and starts new child processes.</span><br><span class="line">status: Shows the service status.</span><br></pre></td></tr></table></figure>
+
+<p>使用 Ubuntu 操作命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br><span class="line"></span><br><span class="line">sudo /usr/sbin/nginx -s reload</span><br><span class="line">sudo systemctl start nginx</span><br><span class="line">sudo systemctl stop nginx</span><br></pre></td></tr></table></figure>
+
+
+
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看进程</span></span><br><span class="line">ps aux | grep nginx</span><br><span class="line"></span><br><span class="line"><span class="comment">#  杀死进程</span></span><br><span class="line">sudo killall nginx</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       
     </div>
@@ -591,8 +618,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/02/gnn/" rel="next" title="GNN">
-                <i class="fa fa-chevron-left"></i> GNN
+              <a href="/2020/01/07/elasticsearch_improvement/" rel="next" title="Elasticsearch 的使用优化">
+                <i class="fa fa-chevron-left"></i> Elasticsearch 的使用优化
               </a>
             
           </div>
@@ -601,8 +628,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/01/07/restful/" rel="prev" title="介绍 restful api">
-                介绍 restful api <i class="fa fa-chevron-right"></i>
+              <a href="/2020/01/08/hexo%E7%9B%B8%E5%85%B3%E4%BC%98%E5%8C%96/" rel="prev" title="Hexo博客的相关优化">
+                Hexo博客的相关优化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -665,8 +692,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -685,7 +721,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -707,7 +743,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -747,6 +783,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#功能"><span class="nav-number">1.1.</span> <span class="nav-text">功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实战"><span class="nav-number">2.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在阿里云-Ubuntu-机器上搭建-nginx"><span class="nav-number">2.1.</span> <span class="nav-text">在阿里云 Ubuntu 机器上搭建 nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-实现上传功能"><span class="nav-number">2.2.</span> <span class="nav-text">nginx 实现上传功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的命令"><span class="nav-number">2.3.</span> <span class="nav-text">常用的命令</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -939,7 +991,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2020/01/07/nginx/';
           this.page.identifier = '2020/01/07/nginx/';
-          this.page.title = '介绍 nginx';
+          this.page.title = 'nginx 学习记录';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

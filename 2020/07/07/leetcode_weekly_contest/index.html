@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="leetcode weekly contest 记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode weekly contest">
+<meta property="og:url" content="http://yoursite.com/2020/07/07/leetcode_weekly_contest/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="leetcode weekly contest 记录">
+<meta property="article:published_time" content="2020-07-07T03:22:17.000Z">
+<meta property="article:modified_time" content="2020-08-30T02:47:22.427Z">
+<meta property="article:author" content="Jijeng Jia">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/07/07/leetcode_weekly_contest/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>leetcode weekly contest | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/07/leetcode_weekly_contest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">leetcode weekly contest</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-07T11:22:17+08:00">
+                2020-07-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-08-30T10:47:22+08:00">
+                2020-08-30
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/07/leetcode_weekly_contest/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/07/07/leetcode_weekly_contest/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>leetcode weekly contest 记录</p>
+<a id="more"></a>
+
+
+<h3 id="leetcode第194场周赛"><a href="#leetcode第194场周赛" class="headerlink" title="leetcode第194场周赛"></a>leetcode第194场周赛</h3><p><a href="https://leetcode.com/contest/weekly-contest-194/problems/xor-operation-in-an-array/" target="_blank" rel="noopener">1486. XOR Operation in an Array</a></p>
+<p>python 实现，时间和空间复杂度都是 $O(n)$, $n$ 是数组的长度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">xorOperation</span><span class="params">(self, n: int, start: int)</span> -&gt; int:</span></span><br><span class="line">        arr =[]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            arr.append(start + <span class="number">2</span>*i)</span><br><span class="line">        res =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> arr:</span><br><span class="line">            res ^= num</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+
+<p>python 实现，时间复杂度是 $O(n)$， 空间复杂度是 $O(1)$。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">xorOperation</span><span class="params">(self, n: int, start: int)</span> -&gt; int:</span></span><br><span class="line">        res =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            t = start + <span class="number">2</span>*i</span><br><span class="line">            res ^= t</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+
+<p>c++ 实现，时间复杂度是 $O(n)$ 空间复杂度是$O(1)$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">xorOperation</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> start)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">            res ^=  start+ i*<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">return</span> res;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><a href="https://leetcode.com/contest/weekly-contest-194/problems/making-file-names-unique/" target="_blank" rel="noopener">1487. Making File Names Unique</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 思路：暴力求解。每次判断一下当前的已经新建的文件名，如果有那么进行某种操作，否则直接新建</span></span><br><span class="line">    <span class="comment">// 这种操作 k+=1</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">getFolderNames</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; names)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; hash;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> name :names)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> k =<span class="number">0</span>;</span><br><span class="line">            <span class="built_in">string</span> suf;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span>(hash.count(name+suf))</span><br><span class="line">            &#123;</span><br><span class="line">                k ++;</span><br><span class="line">                suf =<span class="string">"("</span> +to_string(k) +<span class="string">")"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            hash.insert(name+ suf);</span><br><span class="line">            res.push_back(name+suf);</span><br><span class="line">                </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>优化的版本：如果之前已经枚举过，那么就不必重新枚举。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 时间复杂度主要在for while 循环，那么减少while循环次数，如果之前已经枚举过，那么直接枚举下一个</span></span><br><span class="line">    <span class="comment">// cnt map中存储的是当前已经枚举到的最大的值</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">getFolderNames</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; names)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; cnt;</span><br><span class="line">        <span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; hash;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> name :names)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> k =<span class="number">0</span>;</span><br><span class="line">            <span class="built_in">string</span> suf;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(cnt[name]) k =cnt[name];</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span>(hash.count(name+suf))</span><br><span class="line">            &#123;</span><br><span class="line">                k ++;</span><br><span class="line">                suf =<span class="string">"("</span> +to_string(k) +<span class="string">")"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            cnt[name] =k;</span><br><span class="line">            hash.insert(name+ suf);</span><br><span class="line">            res.push_back(name+suf);</span><br><span class="line">                </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="leetcode第28场双周赛"><a href="#leetcode第28场双周赛" class="headerlink" title="leetcode第28场双周赛"></a>leetcode第28场双周赛</h3><p><a href="https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/" target="_blank" rel="noopener">1475. Final Prices With a Special Discount in a Shop</a></p>
+<p>c++ 解法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 通过查看数据范围，那么是可以通过暴力的方式求解的， n^2 的时间复杂度</span></span><br><span class="line">    <span class="comment">//  找到最近一个比他小的数字，可以使用单调栈的思路解题，这个是一个模板题， 时间复杂 O(n)</span></span><br><span class="line">    <span class="comment">// 单调栈，栈顶元素是比后面的元素要大，建立的过程是从后往前遍历的</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">finalPrices</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; stk;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =prices.<span class="built_in">size</span>() <span class="number">-1</span>; i &gt;=<span class="number">0</span>; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> t =prices[i];</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span>(stk.<span class="built_in">size</span>() &amp;&amp; stk.top() &gt; t) stk.pop();</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(stk.<span class="built_in">size</span>() ) res.push_back(t - stk.top());</span><br><span class="line">            <span class="keyword">else</span> res.push_back(t);</span><br><span class="line">            <span class="keyword">while</span>(stk.<span class="built_in">size</span>() &amp;&amp; stk.top() ==t) stk.pop();</span><br><span class="line">            stk.push(t);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&#123;res.rbegin(), res.rend()&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>python 解法： 比较完全还原上面 c++ 的算法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">finalPrices</span><span class="params">(self, prices)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type prices: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># reverse for easier processing</span></span><br><span class="line">        </span><br><span class="line">        prices = prices[::<span class="number">-1</span>]</span><br><span class="line">        stk =[]</span><br><span class="line">        res =[<span class="number">0</span>] *len(prices)</span><br><span class="line">        <span class="keyword">for</span> (index, p) <span class="keyword">in</span> enumerate(prices):</span><br><span class="line">            <span class="keyword">while</span> stk <span class="keyword">and</span> stk[<span class="number">-1</span>] &gt; p: stk.pop()</span><br><span class="line">            <span class="keyword">if</span> stk:</span><br><span class="line">                res[index] = p- stk[<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                res[index] =p</span><br><span class="line">            </span><br><span class="line">            stk.append(p)</span><br><span class="line">        <span class="keyword">return</span> res[::<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><a href="https://leetcode-cn.com/problems/subrectangle-queries/" target="_blank" rel="noopener">1476. 子矩形查询</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubrectangleQueries</span> &#123;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 一定要从解决当前问题的角度出发，当前的数据范围 500 100 100 这样是500 w，那么暴力解法是可以接受的</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; q;</span><br><span class="line">    </span><br><span class="line">    SubrectangleQueries(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; rectangle) &#123;</span><br><span class="line">        q =rectangle;   </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">updateSubrectangle</span><span class="params">(<span class="keyword">int</span> row1, <span class="keyword">int</span> col1, <span class="keyword">int</span> row2, <span class="keyword">int</span> col2, <span class="keyword">int</span> newValue)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 做事情一定要想想最笨的方法</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = row1; i &lt;= row2; i++)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j =col1; j &lt;= col2; j++)</span><br><span class="line">                q[i][j]  =newValue;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getValue</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> col)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> q[row][col];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your SubrectangleQueries object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * SubrectangleQueries* obj = new SubrectangleQueries(rectangle);</span></span><br><span class="line"><span class="comment"> * obj-&gt;updateSubrectangle(row1,col1,row2,col2,newValue);</span></span><br><span class="line"><span class="comment"> * int param_2 = obj-&gt;getValue(row,col);</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>思路二</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubrectangleQueries</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 还有一种思路：维护修改记录</span></span><br><span class="line">    <span class="comment">// 这个表示的是二维数组</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; q;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; updates;</span><br><span class="line">    </span><br><span class="line">    SubrectangleQueries(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; rectangle) &#123;</span><br><span class="line">        q =rectangle;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">updateSubrectangle</span><span class="params">(<span class="keyword">int</span> row1, <span class="keyword">int</span> col1, <span class="keyword">int</span> row2, <span class="keyword">int</span> col2, <span class="keyword">int</span> newValue)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 给出的是 某个范围的 newValue</span></span><br><span class="line">        <span class="comment">// 这个是无脑的加入，最后会使 updates 越来越大。</span></span><br><span class="line">        updates.push_back(&#123;row1, col1, row2, col2, newValue&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getValue</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> col)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 记录表 越往后面越是新的数据, 所以从后往前进行遍历</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =updates.<span class="built_in">size</span>() <span class="number">-1</span>; i &gt;=<span class="number">0</span> ; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (row &gt;= updates[i][<span class="number">0</span>] &amp;&amp; row &lt;= updates[i][<span class="number">2</span>] &amp;&amp; col &gt;= updates[i][<span class="number">1</span>] &amp;&amp; col&lt;= updates[i][<span class="number">3</span>])</span><br><span class="line">                <span class="keyword">return</span> updates[i][<span class="number">4</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> q[row][col];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your SubrectangleQueries object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * SubrectangleQueries* obj = new SubrectangleQueries(rectangle);</span></span><br><span class="line"><span class="comment"> * obj-&gt;updateSubrectangle(row1,col1,row2,col2,newValue);</span></span><br><span class="line"><span class="comment"> * int param_2 = obj-&gt;getValue(row,col);</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+
+<p>python 实现的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubrectangleQueries</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, rectangle: List[List[int]])</span>:</span></span><br><span class="line">        self.q =rectangle</span><br><span class="line">        self.updates =[]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">updateSubrectangle</span><span class="params">(self, row1: int, col1: int, row2: int, col2: int, newValue: int)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        self.updates.append([row1, col1, row2, col2, newValue])</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getValue</span><span class="params">(self, row: int, col: int)</span> -&gt; int:</span></span><br><span class="line"></span><br><span class="line">        size =len(self.updates)  <span class="keyword">if</span> self.updates <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(size <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> row&gt;= self.updates[i][<span class="number">0</span>] <span class="keyword">and</span> row &lt;= self.updates[i][<span class="number">2</span>] <span class="keyword">and</span> col &gt;= self.updates[i][<span class="number">1</span>] <span class="keyword">and</span> col &lt;=self.updates[i][<span class="number">3</span>]:</span><br><span class="line">                <span class="keyword">return</span> self.updates[i][<span class="number">4</span>] </span><br><span class="line">        <span class="keyword">return</span> self.q[row][col]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Your SubrectangleQueries object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"># obj = SubrectangleQueries(rectangle)</span></span><br><span class="line"><span class="comment"># obj.updateSubrectangle(row1,col1,row2,col2,newValue)</span></span><br><span class="line"><span class="comment"># param_2 = obj.getValue(row,col)</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="leetcode第195场周赛"><a href="#leetcode第195场周赛" class="headerlink" title="leetcode第195场周赛"></a>leetcode第195场周赛</h3><p><a href="https://leetcode.com/problems/path-crossing/" target="_blank" rel="noopener">1496. Path Crossing</a></p>
+<p>主要的问题：没有思路</p>
+<p>c++ 解法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用hash 表存储走过的路径，如果发现当前遍历的点在 hash表中，那么就return false。</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isPathCrossing</span><span class="params">(<span class="built_in">string</span> path)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; hash;</span><br><span class="line">        hash.insert(<span class="string">"0.0"</span>);</span><br><span class="line">        <span class="keyword">int</span> row =<span class="number">0</span>, col =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">char</span> ch : path)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (ch ==<span class="string">'N'</span>) row +=<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (ch ==<span class="string">'E'</span>) col +=<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(ch ==<span class="string">'S'</span>) row -=<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (ch ==<span class="string">'W'</span>) col -=<span class="number">1</span>;</span><br><span class="line">            <span class="built_in">string</span> t =to_string(row) +<span class="string">"."</span>+to_string(col);</span><br><span class="line">            <span class="keyword">if</span>(hash.<span class="built_in">find</span>(t) != hash.<span class="built_in">end</span>()) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            hash.insert(t);</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>python 解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPathCrossing</span><span class="params">(self, path)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type path: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        points =[]</span><br><span class="line">        points.append(<span class="string">"00"</span>)</span><br><span class="line">        row, col =<span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> path:</span><br><span class="line">            <span class="keyword">if</span> ch ==<span class="string">'N'</span>:</span><br><span class="line">                row +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> ch ==<span class="string">'E'</span>: col +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> ch ==<span class="string">'S'</span>: row -=<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> ch ==<span class="string">'W'</span>: col -=<span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            t =str(row)+ str(col)</span><br><span class="line">            <span class="keyword">if</span> t <span class="keyword">in</span> points:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            points.append(t)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>上述算法时间复杂度 $O(n)$，空间复杂度$O(n)$</p>
+<p><a href="https://leetcode.com/problems/check-if-array-pairs-are-divisible-by-k/" target="_blank" rel="noopener">1497. 检查数组对是否可以被 k 整除</a></p>
+<p>自己的想法：首先需要枚举各种组合的数组对，然后判断各个数组对是否能被 k整除。</p>
+<p>更好的想法： 整除转换为余数，如果余数为0，那么就可以被整除。</p>
+<p>题意： 判断一个数组中的数组对是否可以被 k 整除。可以任意组成一个数组对。</p>
+<p>思路： 整除问题转换成余数问题，如果余数为0，那么可以被整除。如果两个数字组成的和可以被整除，那么这两个数的余数是$i$ 和$k-i$，其中$k$ 是这数字.</p>
+<blockquote>
+<p>Note: the elements in arr can be negative, therefore in Java the remainder may be negative too; In order to get positive remainder for any element a, use (a % k + k) % k;<br>如果一个数组中可能含有负数，那么使用  (a%k +k )%k 是可以得到余数的结果</p>
+</blockquote>
+<p>c++ 解法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">canArrange</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">r</span><span class="params">(k, <span class="number">0</span>)</span></span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> a: arr)</span><br><span class="line">            r[ (a%k +k) %k] +=<span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(r[<span class="number">0</span>] %<span class="number">2</span> != <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// 这个是偶数个直接能被整除，不是说非要等于0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>, j =k <span class="number">-1</span>; i&lt;j; i++, j--)</span><br><span class="line">            <span class="keyword">if</span>(i ==j)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(r[i] %<span class="number">2</span> != <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(r[i] != r[j]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>python 解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">canArrange</span><span class="params">(self, arr, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type arr: List[int]</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        r = [<span class="number">0</span>] *k</span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> arr:</span><br><span class="line">            r[ (num %k +k)%k] +=<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> r[<span class="number">0</span>] %<span class="number">2</span> ==<span class="number">0</span> <span class="keyword">and</span> all(r [i] ==r[k -i] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, k))</span><br></pre></td></tr></table></figure>
+
+<p>python 可以使用更加简洁的语句，all 中所有的判断，如果全部符合条件，那么return True，只有有一个False 那么return False</p>
+<p><a href="https://leetcode.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/" target="_blank" rel="noopener">LeetCode 1498. 满足条件的子序列数目 </a></p>
+<p>分析：自己能够想到的是先排序，然后就没有思路了。忘记了不去重的进行排列组合的数学公式，hhh。</p>
+<p>比如这里例子中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: nums &#x3D; [2,3,3,4,6,7], target &#x3D; 12</span><br><span class="line">Output: 61</span><br><span class="line">Explanation: There are 63 non-empty subsequences, two of them don&#39;t satisfy the condition ([6,7], [7]).</span><br><span class="line">Number of valid subsequences (63 - 2 &#x3D; 61).</span><br></pre></td></tr></table></figure>
+
+<p>解题思路：</p>
+<ul>
+<li>排序</li>
+<li>双指针算法找出 两个满足 target 的两个元素，根据index 计算结果</li>
+</ul>
+<p>编程 tips： 对于去余，那么凡是相加的情况下都是要取余。</p>
+<p>c++ 代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// </span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numSubseq</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> mod =<span class="number">1000000007</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> n =nums.<span class="built_in">size</span>();</span><br><span class="line">        sort(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>());</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">power</span><span class="params">(n)</span></span>;</span><br><span class="line">        power[<span class="number">0</span>] =<span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>; i&lt; n; i++)</span><br><span class="line">            power[i] = power[i <span class="number">-1</span>] * <span class="number">2</span> %mod;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> l =<span class="number">0</span>, r =n<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">int</span> ans =<span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(l &lt;=r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>( nums[l] +nums[r] &lt;= target)</span><br><span class="line">            &#123;</span><br><span class="line">                ans = (ans + power[r-l]) %mod;</span><br><span class="line">                l +=<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                r -=<span class="number">1</span>;   </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">python 代码</span><br><span class="line">```python</span><br><span class="line"><span class="function">class <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="function">    def <span class="title">numSubseq</span><span class="params">(self, nums, target)</span>:</span></span><br><span class="line">        """</span><br><span class="line">        :type nums: List[<span class="keyword">int</span>]</span><br><span class="line">        :type target: <span class="keyword">int</span></span><br><span class="line">        :rtype: <span class="keyword">int</span></span><br><span class="line">        <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">        mod = 1000000007</span></span><br><span class="line"><span class="string">        nums.sort()</span></span><br><span class="line"><span class="string">        n =len(nums)</span></span><br><span class="line"><span class="string">        power =[1] * n</span></span><br><span class="line"><span class="string">        for i in range(1,n):</span></span><br><span class="line"><span class="string">            power[i] =power[i-1] * 2 % mod;</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        l, r =0, n-1</span></span><br><span class="line"><span class="string">        res =0</span></span><br><span class="line"><span class="string">        while l&lt;=r:</span></span><br><span class="line"><span class="string">            if nums[l] +nums[r] &lt;= target:</span></span><br><span class="line"><span class="string">                res = (res +power[r -l]) %mod</span></span><br><span class="line"><span class="string">                l +=1</span></span><br><span class="line"><span class="string">            else:</span></span><br><span class="line"><span class="string">                r -=1</span></span><br><span class="line"><span class="string">        return res</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="7月第四周（完成了两道）"><a href="#7月第四周（完成了两道）" class="headerlink" title="7月第四周（完成了两道）"></a>7月第四周（完成了两道）</h3><p>leetcode第29场双周赛</p>
+<p><a href="https://leetcode.com/problems/average-salary-excluding-the-minimum-and-maximum-salary/submissions/" target="_blank" rel="noopener">1491. Average Salary Excluding the Minimum and Maximum Salary</a></p>
+<p>python 实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">average</span><span class="params">(self, salary)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type salary: List[int]</span></span><br><span class="line"><span class="string">        :rtype: float</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># python 中初始化最大和最小值</span></span><br><span class="line">        <span class="comment">#min_s, max_s, sum_s = max(salary), min(salary), 0</span></span><br><span class="line">        min_s, max_s, sum_s =float(<span class="string">'inf'</span>), -float(<span class="string">'inf'</span>), <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> salary:</span><br><span class="line">            <span class="keyword">if</span> item &lt; min_s: min_s =item</span><br><span class="line">            <span class="keyword">if</span> item &gt; max_s: max_s =item</span><br><span class="line">            sum_s += item</span><br><span class="line">        <span class="keyword">return</span> (sum_s -min_s- max_s)*<span class="number">1.0</span>/(len(salary) <span class="number">-2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>无论是在python2 还是在python3 中，都是可以使用 <code>float(&#39;inf&#39;)</code> 进行初始化最值的。</p>
+<p>c++ 实现</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">average</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; salary)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> max_s =INT_MIN, min_s =INT_MAX, sum =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> s: salary)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(s &gt; max_s) max_s =s;</span><br><span class="line">            <span class="keyword">if</span>( s&lt; min_s) min_s =s;</span><br><span class="line">            sum += s;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (sum -max_s -min_s)*<span class="number">1.0</span> /( salary.<span class="built_in">size</span>() <span class="number">-2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a href="https://leetcode.com/problems/the-kth-factor-of-n/" target="_blank" rel="noopener">1492. The kth Factor of n</a></p>
+<p>难点：</p>
+<p>求解数字的因数（这个应该是基本功），然后排序，找到第 k 个。</p>
+<p>c++ 解法一： 时间复杂度大概是 $nlog(n)$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 计算因数的时间复杂度是 O(sqrt(n)) ，这个是常识</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">kthFactor</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>; i*i &lt;=n; i++)</span><br><span class="line">            <span class="keyword">if</span>( n %i ==<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                res.push_back(i) ;<span class="comment">// 这个是符合因数的定义的</span></span><br><span class="line">                <span class="keyword">if</span>( i *i != n) res.push_back(n /i); <span class="comment">//一对因数中相对比较大的数字</span></span><br><span class="line">            &#125;</span><br><span class="line">        sort(res.<span class="built_in">begin</span>(), res.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">if</span>(k &lt;= res.<span class="built_in">size</span>()) <span class="keyword">return</span> res[k<span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>c++ 解法二： 时间复杂度是 $O(\sqrt(n))$。注意 beg 和 end 的数字 <code>push_back</code> 和获取的方式还是很精妙的，好好体会。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">kthFactor</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; beg, <span class="built_in">end</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>; i*i &lt;= n; i++)</span><br><span class="line">            <span class="keyword">if</span>( n %i ==<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                beg.push_back(i);</span><br><span class="line">                <span class="keyword">if</span> (i *i != n) <span class="built_in">end</span>.push_back(n/i);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">if</span>(k &lt;= beg.<span class="built_in">size</span>()) <span class="keyword">return</span> beg[k <span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">if</span>(k &lt;= beg.<span class="built_in">size</span>() + <span class="built_in">end</span>.<span class="built_in">size</span>()) <span class="keyword">return</span> <span class="built_in">end</span>[ beg.<span class="built_in">size</span>() + <span class="built_in">end</span>.<span class="built_in">size</span>() -k];</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;      </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>python 解法 (基本上就是按照 c++ 解法二进行的复写)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthFactor</span><span class="params">(self, n: int, k: int)</span> -&gt; int:</span></span><br><span class="line">        </span><br><span class="line">        beg, end =[], []</span><br><span class="line">        i =<span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> i*i &lt;= n:</span><br><span class="line">            <span class="keyword">if</span> n%i ==<span class="number">0</span>:</span><br><span class="line">                beg.append(i)</span><br><span class="line">                <span class="keyword">if</span> (i *i != n):</span><br><span class="line">                    end.append(n //i)</span><br><span class="line">            i +=<span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> k &lt;= len(beg): <span class="keyword">return</span> beg[k <span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">if</span> k &lt;= len(beg) +len(end): <span class="keyword">return</span> end[len(beg) +len(end) -k];</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="八月第一周-完成三道"><a href="#八月第一周-完成三道" class="headerlink" title="八月第一周 (完成三道)"></a>八月第一周 (完成三道)</h3><p>leetcode第29场双周赛</p>
+<p><a href="https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/" target="_blank" rel="noopener">1493. Longest Subarray of 1’s After Deleting One Element</a></p>
+<p>没有思路，知道和最长子序列有关。最长子序列一般和双指针有关。</p>
+<p>给定的是二进制数组 binary array</p>
+<p>思路： 可以使用双指针求解，也可以使用动态规划求解（需要两个函数 $f$ 和$g$），相对来说双指针算法比较难想，比较好写。问题可以转换成<code>最多包含一个0的最长的1的序列</code> 。每个数字最多被访问两次，所以时间复杂度是 $O(n)$</p>
+<p>滑动窗口是一种特殊的双指针算法</p>
+<p>难点： 将问题转换成双指针算法。<br>c++ 实现</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">longestSubarray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> res =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> zeros =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>, j =<span class="number">0</span>; j &lt; nums.<span class="built_in">size</span>(); j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[j] ==<span class="number">0</span>) zeros ++;</span><br><span class="line">            <span class="comment">// [i,j] 闭区间中 0 的个数最多1</span></span><br><span class="line">            <span class="keyword">while</span>( zeros &gt;<span class="number">1</span> &amp;&amp; i&lt;= j)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(nums[i] ==<span class="number">0</span>) zeros -=<span class="number">1</span>;</span><br><span class="line">                i ++;</span><br><span class="line">            &#125;</span><br><span class="line">            res =<span class="built_in">max</span>(res, j -i +<span class="number">1</span> <span class="number">-1</span>);   </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>python 实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestSubarray</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span></span><br><span class="line">        <span class="comment"># 双指针算法，[i,j] 闭区间0的个数最多为1</span></span><br><span class="line">        res =<span class="number">0</span></span><br><span class="line">        n =len(nums)</span><br><span class="line">        i =<span class="number">0</span></span><br><span class="line">        zeros =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">if</span> nums[j] ==<span class="number">0</span>: zeros +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> i&lt;=j <span class="keyword">and</span> zeros &gt;<span class="number">1</span>:</span><br><span class="line">                <span class="keyword">if</span> nums[i] ==<span class="number">0</span>: zeros -=<span class="number">1</span></span><br><span class="line">                i +=<span class="number">1</span></span><br><span class="line">            res =max(res, j -i)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+
+
+<p>leetcode第196场周赛</p>
+<p><a href="https://leetcode.com/problems/can-make-arithmetic-progression-from-sequence/" target="_blank" rel="noopener">1502. Can Make Arithmetic Progression From Sequence</a></p>
+<p>（看题目的时候，可以看看数据范围，根据数据范围，也能大概猜出使用什么算法是ok的）<br>python 解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">canMakeArithmeticProgression</span><span class="params">(self, arr: List[int])</span> -&gt; bool:</span></span><br><span class="line">        <span class="comment"># 从数据范围可以知道，时间复杂度是$O(n^2)$或者 $O(nlogn)$ 做法</span></span><br><span class="line">        <span class="comment"># 所以可以使用先排序，然后再判断</span></span><br><span class="line">        arr.sort()</span><br><span class="line">        diff =arr[<span class="number">0</span>] -arr[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(arr)<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> diff != arr[i] -arr[i+<span class="number">1</span>]:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>c++ 解法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">canMakeArithmeticProgression</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">        sort(arr.<span class="built_in">begin</span>(), arr.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">int</span> diff =arr[<span class="number">0</span>] -arr[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>; i&lt; arr.<span class="built_in">size</span>()<span class="number">-1</span>; i++)</span><br><span class="line">            <span class="keyword">if</span> (diff !=arr[i] -arr[i+<span class="number">1</span>])</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a href="https://leetcode.com/problems/the-kth-factor-of-n/" target="_blank" rel="noopener">1492. The kth Factor of n</a></p>
+<p>leetcode第29场双周赛 （复习）</p>
+<p>以 $n *n $作为中点，能够被整除的数字是左右各有一个的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># sqrt(n) 的时间复杂度在于，左右两个值是比较对称的</span></span><br><span class="line">    <span class="comment"># 使用 beg 和end 两个就不用重新排序，因为是有序的</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthFactor</span><span class="params">(self, n: int, k: int)</span> -&gt; int:</span></span><br><span class="line">        </span><br><span class="line">        i =<span class="number">1</span></span><br><span class="line">        beg, end =[], []</span><br><span class="line">        <span class="keyword">while</span> i * i &lt;=n:</span><br><span class="line">            <span class="keyword">if</span> n%i ==<span class="number">0</span>: </span><br><span class="line">                beg.append(i)</span><br><span class="line">                <span class="keyword">if</span> i*i !=n:</span><br><span class="line">                    end.append( n//i)</span><br><span class="line">            i +=<span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> k&lt;=len(beg):</span><br><span class="line">            <span class="keyword">return</span> beg[k<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">if</span> k &lt;= len(beg) +len(end):</span><br><span class="line">            <span class="keyword">return</span> end[len(beg)+len(end) -k] <span class="comment"># 在end中数字越大，但index 越小</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+
+<p><a href="https://leetcode.com/problems/last-moment-before-all-ants-fall-out-of-a-plank/" target="_blank" rel="noopener">1503. Last Moment Before All Ants Fall Out of a Plank</a></p>
+<p>leetcode第196场周赛</p>
+<p>模拟题。时间复杂度是 $O(n)$</p>
+<p>c++解题思路。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 场景很丰富，是一道模拟题</span></span><br><span class="line">    <span class="comment">// 两个方向相反的蚂蚁相遇之后，方向转变，不会花销时间，如果不考虑编号实际上是没有交换（求解max 时间也是不用考虑编号的）</span></span><br><span class="line">    <span class="comment">// 向左做的时间是 index，向右走的时间是 len -index</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getLastMoment</span><span class="params">(<span class="keyword">int</span> n, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; left, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; right)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> num : left)</span><br><span class="line">            res =<span class="built_in">max</span>(res, num);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> num :right)</span><br><span class="line">            res =<span class="built_in">max</span>(res, n-num);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>python 解题思路</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getLastMoment</span><span class="params">(self, n, left, right)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :type left: List[int]</span></span><br><span class="line"><span class="string">        :type right: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        res =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> left:</span><br><span class="line">            res =max(res, num)</span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> right:</span><br><span class="line">            res =max(res, n-num)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="八月第二周（完成三道）"><a href="#八月第二周（完成三道）" class="headerlink" title="八月第二周（完成三道）"></a>八月第二周（完成三道）</h3><p><a href="https://leetcode.com/problems/count-submatrices-with-all-ones/" target="_blank" rel="noopener">1504. Count Submatrices With All Ones</a></p>
+<p>从数据范围，可以看出 是$O(n^3)$ 做法</p>
+<p>属于技术性问题（枚举），一定要保证不重复。</p>
+<p>枚举的顺序：以当前的格子作为右下角进行枚举，先往左枚举宽度，同时向上枚举高度，所以是三重循环。</p>
+<p>每个格子往上数 1 的个数，需要进行预处理得到，是$O(n^2)$ 的过程。</p>
+<p>找到左边第一个比他小的数字：单调栈类型的模板</p>
+<p>c++ 实现</p>
+<p>还是看不懂呀，这个是需要多看几遍视频才能弄懂。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[统计全 <span class="number">1</span> 子矩形 视频教程](https:<span class="comment">//www.acwing.com/video/1453/)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">leetcode第<span class="number">30</span>场双周赛</span><br><span class="line"></span><br><span class="line">c++ 实现</span><br><span class="line"></span><br><span class="line">```c++</span><br><span class="line">class Solution &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> numSubmat(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; mat) &#123;</span><br><span class="line">        <span class="keyword">int</span> n =mat.<span class="built_in">size</span>(), m =mat[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; f(n, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(m) );</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 预处理，f(i,j) 表示该点上面有几个连续的1</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j =<span class="number">0</span>; j&lt; m; j++)</span><br><span class="line">                <span class="keyword">if</span>(mat[i][j])</span><br><span class="line">                &#123;</span><br><span class="line">                    f[i][j] =<span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">if</span>(i ) f[i][j] += f[i<span class="number">-1</span>][j];</span><br><span class="line">                &#125;</span><br><span class="line">        <span class="keyword">int</span> res =<span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 单调栈, 找到左边第一个比当前数小的数字，这个是模板题目</span></span><br><span class="line">            <span class="built_in">stack</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; stk; <span class="comment">// 不仅存储index 还要存储总和</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j =<span class="number">0</span>; j&lt; m; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 如果发现栈顶元素比较大，那么就弹出</span></span><br><span class="line">                <span class="keyword">while</span>( stk.<span class="built_in">size</span>() &amp;&amp; f[i][stk.top().first] &gt;= f[i][j]) stk.pop();</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// 找到了第一个比当前元素小的元素</span></span><br><span class="line">                <span class="keyword">int</span> s =<span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span>(stk.<span class="built_in">size</span>())</span><br><span class="line">                &#123;</span><br><span class="line">                    s += stk.top().second;</span><br><span class="line">                    s += (j -stk.top().first) * f[i][j];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    s += (j +<span class="number">1</span>) * f[i][j];</span><br><span class="line">                </span><br><span class="line">                stk.push(&#123;j, s&#125;);</span><br><span class="line">                res += s;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>python 实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numSubmat</span><span class="params">(self, dp)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type mat: List[List[int]]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        sums, n, m = <span class="number">0</span>, len(dp), len(dp[<span class="number">0</span>])</span><br><span class="line">        cnt = [[<span class="number">0</span>]*m <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]</span><br><span class="line">        sts = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(m):</span><br><span class="line">                dp[i][j] += dp[i][j<span class="number">-1</span>]*dp[i][j] <span class="keyword">if</span> j &gt; <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">                <span class="keyword">while</span> sts[j] <span class="keyword">and</span> dp[sts[j][<span class="number">-1</span>]][j] &gt;= dp[i][j]:</span><br><span class="line">                    sts[j].pop() </span><br><span class="line">                pre, precnt = <span class="number">-1</span>, <span class="number">0</span></span><br><span class="line">                <span class="keyword">if</span> sts[j]:</span><br><span class="line">                    pre, precnt = sts[j][<span class="number">-1</span>], cnt[sts[j][<span class="number">-1</span>]][j]</span><br><span class="line">                cnt[i][j] += precnt + (i-pre)*dp[i][j]</span><br><span class="line">                sums += cnt[i][j]</span><br><span class="line">                sts[j].append(i)</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> sums</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a href="https://leetcode.com/problems/reformat-date/" target="_blank" rel="noopener">1507. 转变日期格式</a></p>
+<p>字符串类的问题，使用Python 处理比 c++ 更容易一些。</p>
+<p>python 解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reformatDate</span><span class="params">(self, date: str)</span> -&gt; str:</span></span><br><span class="line">        date =date.split()</span><br><span class="line">        </span><br><span class="line">        months =[<span class="string">"Jan"</span>, <span class="string">"Feb"</span>, <span class="string">"Mar"</span>, <span class="string">"Apr"</span>, <span class="string">"May"</span>, <span class="string">"Jun"</span>, <span class="string">"Jul"</span>, <span class="string">"Aug"</span>, <span class="string">"Sep"</span>, <span class="string">"Oct"</span>, <span class="string">"Nov"</span>, <span class="string">"Dec"</span>]</span><br><span class="line">        </span><br><span class="line">        day =int(date[<span class="number">0</span>][:<span class="number">-2</span>])</span><br><span class="line">        month =months.index(date[<span class="number">1</span>]) +<span class="number">1</span></span><br><span class="line">        year =int(date[<span class="number">2</span>])</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'&#123;:04d&#125;-&#123;:02d&#125;-&#123;:02d&#125;'</span>.format(year, month, day)</span><br></pre></td></tr></table></figure>
+
+<p>还需要学习一下 format 的使用。（注意需要写的 int类型）</p>
+<p>c++ 处理字符串感觉有点复杂，暂时没有写。</p>
+<p><a href="https://leetcode.com/problems/range-sum-of-sorted-subarray-sums/submissions/" target="_blank" rel="noopener">1508. Range Sum of Sorted Subarray Sums</a></p>
+<p>c++实现。暴力枚举的方式。时间复杂度是$O(n^2 logn)$</p>
+<p>共有 $n^2$ 个区间，所以排序的时间复杂度是 $n^2 log n^2$ ，即 $n^2 logn$ 的时间复杂度。  这种算法会超时。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 先写个基本的解法，即暴力搜索</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rangeSum</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> n, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> mod =<span class="number">1000000007</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sums ;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i  =<span class="number">0</span>; i&lt; nums.<span class="built_in">size</span>() ; i ++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> s =<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j =i ; j&lt; nums.<span class="built_in">size</span>() ; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                s += nums[j];</span><br><span class="line">                sums.push_back(s);</span><br><span class="line">            &#125;   </span><br><span class="line">        &#125;</span><br><span class="line">        sort(sums.<span class="built_in">begin</span>(), sums.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">int</span> res =<span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =left<span class="number">-1</span> ; i&lt; right; i++)</span><br><span class="line">            res += sums[i];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> res%mod;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>c++ 解法<br>时间复杂度是 $O(nlog M)$ 其中 $M$ 是一个很大的数字，但是这个时间复杂度大概还是 $nlogn$ 的。主要的思路就是 二分+ 前缀和。</p>
+<p>将[a, b] 区间和转换成求解 [1, b] 和[1, a] 区间和的差值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="keyword">int</span>, LL&gt; PIL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MOD =<span class="number">1e9</span>+<span class="number">7</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;LL&gt; s, ss;</span><br><span class="line">    <span class="keyword">int</span> n ;</span><br><span class="line">    <span class="function">PIL <span class="title">get</span><span class="params">(LL mid)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cnt =<span class="number">0</span>; </span><br><span class="line">        LL sum =<span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>, j =<span class="number">0</span>; i&lt;=n ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">while</span>(s[i] - s[j] &gt; mid) j ++;</span><br><span class="line">            <span class="keyword">if</span>( j&lt; i)</span><br><span class="line">            &#123;</span><br><span class="line">                cnt += i -j;</span><br><span class="line">                sum += s[i] * (i -j) -ss[i<span class="number">-1</span>];</span><br><span class="line">                <span class="keyword">if</span>(j) sum += ss[j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> &#123;cnt, sum&#125;;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">LL <span class="title">f</span><span class="params">(<span class="keyword">int</span> m)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        LL l =<span class="number">0</span>, r =ss.back();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(l &lt;r)</span><br><span class="line">        &#123;</span><br><span class="line">            LL mid = l +r &gt;&gt; <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">auto</span> t  =<span class="built_in">get</span>(mid);</span><br><span class="line">            <span class="keyword">if</span>(t.first &gt;=m) r =mid;</span><br><span class="line">            <span class="keyword">else</span> l =mid +<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">auto</span> t =<span class="built_in">get</span>(r);</span><br><span class="line">        <span class="keyword">return</span> t.second - (t.first -m) * r;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rangeSum</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> _n, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">        n =_n ;</span><br><span class="line">        s.resize(n +<span class="number">1</span>), ss.resize(n +<span class="number">1</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            s[i] =s[i<span class="number">-1</span>] + nums[i<span class="number">-1</span>];</span><br><span class="line">            ss[i] =ss[i<span class="number">-1</span>] +s[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (f(right) -f(left <span class="number">-1</span>))% MOD;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="八月第三周（完成两道）"><a href="#八月第三周（完成两道）" class="headerlink" title="八月第三周（完成两道）"></a>八月第三周（完成两道）</h3><p>leetcode第30场双周赛</p>
+<p><a href="https://leetcode.com/problems/minimum-difference-between-largest-and-smallest-value-in-three-moves/submissions/" target="_blank" rel="noopener">1509. Minimum Difference Between Largest and Smallest Value in Three Moves</a></p>
+<p>c++ 解法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 这道题是非常具有技巧性的：通过移动三次，寻找最大和最小数字之间的差值。 最大的三个数字和最小的三个数字相互差值的最小值。</span></span><br><span class="line">    <span class="comment">//数据范围是 10^5 那麼使用sort 函數，nlogn 的時間複雜度就是可以接受的</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 貪心的做法：從直觀上講，我們會修改最大的若干數字或者最小的若干數字</span></span><br><span class="line">    <span class="comment">// 當修改三個數字時候，有四種選擇：最小的三个；最小的两个+最大的一个； 最小的一个+最大的两个；最大的三个</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minDifference</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> n =nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">4</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        sort(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>() );</span><br><span class="line">        <span class="keyword">return</span>  <span class="built_in">min</span>(<span class="built_in">min</span>(nums[n<span class="number">-1</span>]-nums[<span class="number">3</span>], nums[n<span class="number">-2</span>] -nums[<span class="number">2</span>]), <span class="built_in">min</span>(nums[n<span class="number">-3</span>]-nums[<span class="number">1</span>], nums[n<span class="number">-4</span>]-nums[<span class="number">0</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>python 解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minDifference</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> len(nums) &lt;<span class="number">4</span>: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        n =len(nums)</span><br><span class="line">        nums.sort()</span><br><span class="line">        <span class="keyword">return</span> min( nums[n<span class="number">-1</span>] -nums[<span class="number">3</span>], nums[n<span class="number">-2</span>]-nums[<span class="number">2</span>], nums[n<span class="number">-3</span>]-nums[<span class="number">1</span>], nums[n<span class="number">-4</span>] -nums[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a href="https://leetcode.com/problems/stone-game-iv/" target="_blank" rel="noopener">1510. Stone Game IV</a></p>
+<p>python 解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="comment"># 两个人都采取最优策略：这个是不太能理解的。</span></span><br><span class="line">    <span class="comment"># 解法：如果一方拿走stone 之后，剩下的个使得对方没有办法走下去，那么这个就是最优的策略。使用动态规划的思想 f[i] 表示剩下 i个元素 是否可以达成最优策略</span></span><br><span class="line">    <span class="comment"># 转移方程  j =1 开始枚举， j^2&lt;= i, 如果 f[j] ==false，那么f[i] =True</span></span><br><span class="line">    <span class="comment"># 时间复杂度 n\sqrt(n)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">winnerSquareGame</span><span class="params">(self, n: int)</span> -&gt; bool:</span></span><br><span class="line">        f =[<span class="literal">False</span>] *(n+<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n+<span class="number">1</span>):</span><br><span class="line">            j =<span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> j*j &lt;=i:</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> f[i-j*j] ==<span class="literal">False</span>: </span><br><span class="line">                    f[i] = <span class="literal">True</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                j +=<span class="number">1</span>        </span><br><span class="line">        <span class="keyword">return</span> f[n]</span><br></pre></td></tr></table></figure>
+
+
+<p>c++ 解法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">winnerSquareGame</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">f</span><span class="params">(n+<span class="number">1</span>)</span></span>;</span><br><span class="line">        f[<span class="number">0</span>] =<span class="literal">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>; i&lt;n+<span class="number">1</span>; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            f[i] =<span class="literal">false</span>; <span class="comment">//在这里进行初始化，非常nice</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j =<span class="number">1</span>; j *j&lt;= i; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(!f[i-j *j])</span><br><span class="line">                &#123;</span><br><span class="line">                    f[i] =<span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> f[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="八月第四周（完成两道）"><a href="#八月第四周（完成两道）" class="headerlink" title="八月第四周（完成两道）"></a>八月第四周（完成两道）</h3><p>LeetCode第197场周赛</p>
+<p><a href="https://leetcode.com/problems/number-of-good-pairs/" target="_blank" rel="noopener">1512. Number of Good Pairs</a></p>
+<p>题解： 从数据范围中可以知道，使用 $n^2$ 的算法是没有问题的，所以可以直接暴力求解。</p>
+<p>c++ 解法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numIdenticalPairs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>  n =nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> cnt =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j =i +<span class="number">1</span> ; j&lt; n; j++)</span><br><span class="line">                <span class="keyword">if</span> (nums[i] ==nums[j])</span><br><span class="line">                    cnt +=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> cnt;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>但还有更优的做法，可以实现 $O(n)$ 的算法复杂度。 思路：使用字典维护数字出现的频率，每次重复出现一次就在之前的基础上 +1.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numIdenticalPairs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; dict ;</span><br><span class="line">        <span class="keyword">int</span> cnt =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> num : nums)</span><br><span class="line">        &#123;</span><br><span class="line">            cnt += dict[num];</span><br><span class="line">            dict[num] +=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cnt;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>python 解法, 使用第二种思路，时间复杂度是$O(n)$ 空间复杂度是$O(n)$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numIdenticalPairs</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span></span><br><span class="line">        dic =&#123;&#125;</span><br><span class="line">        cnt =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> num <span class="keyword">in</span> dic:</span><br><span class="line">                cnt += dic[num]</span><br><span class="line">                dic[num] +=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dic[num] =<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> cnt</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><a href="https://leetcode.com/problems/number-of-substrings-with-only-1s/" target="_blank" rel="noopener">LeetCode 1513. Number of Substrings With Only 1s </a></p>
+<p>除了使用count 函数之外，没有其他的想法。从数据范围上看，应该是 $nlogn$ 或者 $n^2$ 的时间复杂度。</p>
+<p>正确的思路是这样的： [i, j] 表示区间是连续的1，那么所有字符为 1 的子字符串的书目录是  (c =j-i +1) </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c +c -1 + ... +1 &#x3D; c (c+1)&#x2F;2</span><br></pre></td></tr></table></figure>
+
+<p>所以先找出连续的字符串，然后使用上述的公式计算。找出连续的子串可以使用双指针算法。</p>
+<p>c++ 解法。使用双指针找出连续的字符串是很常见的解题思路。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numSub</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> MOD  =<span class="number">1000000000</span> +<span class="number">7</span>;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; MOD &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">int</span> res =<span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt; s.<span class="built_in">size</span>() ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] ==<span class="string">'1'</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> j =i +<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">while</span>(s[j] ==<span class="string">'1'</span> &amp;&amp; j &lt; s.<span class="built_in">size</span>()) </span><br><span class="line">                &#123;</span><br><span class="line">                    j ++;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> c =j -i ;</span><br><span class="line">                res = (res + c *(c+<span class="number">1l</span>l)/<span class="number">2</span> ) %MOD;</span><br><span class="line">                i =j <span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>python 解法</p>
+<p>下面的解法是错误的，在python 中 range() 函数中的i 会一直从 1, 2, 3 这样进行遍历。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numSub</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        res =<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)):</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (s[i] ==<span class="string">'1'</span>):</span><br><span class="line">                j =i</span><br><span class="line">                <span class="keyword">while</span> j &lt; len(s) <span class="keyword">and</span> s[j] ==<span class="string">'1'</span>:</span><br><span class="line">                    j +=<span class="number">1</span></span><br><span class="line">                c =j -i +<span class="number">1</span></span><br><span class="line">                print(c)</span><br><span class="line">                res = (res + c *(c+<span class="number">1</span>)) %  <span class="number">1000000007</span></span><br><span class="line">                i =j <span class="number">-1</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+
+<p>正确的 python代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numSub</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">    </span><br><span class="line">        res =<span class="number">0</span></span><br><span class="line">        len_ =len(s)</span><br><span class="line">        i =<span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; len_ :</span><br><span class="line">            <span class="keyword">if</span> s[i] ==<span class="string">'1'</span>:</span><br><span class="line">                j =i +<span class="number">1</span></span><br><span class="line">                <span class="keyword">while</span> j &lt; len_ <span class="keyword">and</span> s[j] ==<span class="string">'1'</span>:</span><br><span class="line">                    j +=<span class="number">1</span></span><br><span class="line">                c =j -i </span><br><span class="line">                <span class="comment">#print(c)</span></span><br><span class="line">                res += (c *(c+<span class="number">1</span>)/<span class="number">2</span>) % (<span class="number">1000000007</span>)</span><br><span class="line">                i =j +<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                i +=<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> int(res)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/07/linux_service_monitors/" rel="next" title="linux service monitors">
+                <i class="fa fa-chevron-left"></i> linux service monitors
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/07/elasticsearch_improvement2/" rel="prev" title="ElasticSerach 使用优化（二）">
+                ElasticSerach 使用优化（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">168</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#leetcode第194场周赛"><span class="nav-number">1.</span> <span class="nav-text">leetcode第194场周赛</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#leetcode第28场双周赛"><span class="nav-number">2.</span> <span class="nav-text">leetcode第28场双周赛</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#leetcode第195场周赛"><span class="nav-number">3.</span> <span class="nav-text">leetcode第195场周赛</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7月第四周（完成了两道）"><span class="nav-number">4.</span> <span class="nav-text">7月第四周（完成了两道）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八月第一周-完成三道"><span class="nav-number">5.</span> <span class="nav-text">八月第一周 (完成三道)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八月第二周（完成三道）"><span class="nav-number">6.</span> <span class="nav-text">八月第二周（完成三道）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八月第三周（完成两道）"><span class="nav-number">7.</span> <span class="nav-text">八月第三周（完成两道）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八月第四周（完成两道）"><span class="nav-number">8.</span> <span class="nav-text">八月第四周（完成两道）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/07/07/leetcode_weekly_contest/';
+          this.page.identifier = '2020/07/07/leetcode_weekly_contest/';
+          this.page.title = 'leetcode weekly contest';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

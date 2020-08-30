@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="nlp 中提取出 room type 的信息">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nlp 中提取room type">
+<meta property="og:url" content="http://yoursite.com/2020/07/17/nlp_room_type/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="nlp 中提取出 room type 的信息">
+<meta property="article:published_time" content="2020-07-17T00:54:05.000Z">
+<meta property="article:modified_time" content="2020-08-19T05:34:26.984Z">
+<meta property="article:author" content="Jijeng Jia">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/07/17/nlp_room_type/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>nlp 中提取room type | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/17/nlp_room_type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">nlp 中提取room type</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-17T08:54:05+08:00">
+                2020-07-17
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-08-19T13:34:26+08:00">
+                2020-08-19
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/17/nlp_room_type/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/07/17/nlp_room_type/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>nlp 中提取出 room type 的信息</p>
+<a id="more"></a>
+
+
+<p>常见的几个问题</p>
+<p>broad facets of text summarization. </p>
+<ul>
+<li>raw text extraction/summarization methods,</li>
+<li>sentiment analysis</li>
+<li>and named entity recognition</li>
+</ul>
+<p>In principle there are several problems that we face before we mine the text for information:</p>
+<ul>
+<li>Text is often a unstructured, with pertinent information may dotted around</li>
+<li>Text may be poorly formatted, with HTML, and non-ascii encodings. Further, text can contain spelling or grammatical errors</li>
+<li>Information may be given in different languages.</li>
+<li>Finally, responses may contain not only text and numbers, but emojis, pictures, links, and non-ascii characters</li>
+</ul>
+<p>Despite these problems of cleaning data, similar to all fields of machine learning, NLP methods can significantly facilitate the processing of the feedback. Below we will consider several approaches to text analysis and NLP methods and algorithms for the current task.</p>
+<p>Automatic Text Extraction and Summarization</p>
+<p>The first method of text summarization can be thought of keyword/keyphrase extraction. We can reduce millions of sentences to a few hundred (or even a tunable number of sentences – that trades informativeness to length, with some qualitative metrics). We try in this case to create a representative subset of the text that includes the information of the entire set.</p>
+<p>There are two approaches to automatic summarization, extraction and abstraction. The former is where we extract relevant existing words, phrases or sentences from the original text and the latter builds a more semantic summary using NLP techniques. </p>
+<p>Extractive text summarization methods function by identifying the important sentences or excerpts from the text and reproducing them verbatim as part of the summary. No new text is generated; only existing text is used in the summarization process.</p>
+<p>Abstractive text summarization methods employ more powerful natural language processing techniques to interpret text and generate new summary text, as opposed to selecting the most representative existing excerpts to perform the summarization.</p>
+<p>While both are valid approaches to text summarization, it should not be difficult to convince you that abstractive techniques are far more difficult to implement. In fact, the majority of summarization processes today are extraction-based. This doesn’t mean that abstractive methods should be discounted or ignored; on the contrary, research into their implementation — and true semantic understanding of human language in general — is a worthy pursuit, and much work is needed before we can confidently say that we have gained a true foothold in this endeavor.</p>
+<p>Extraction-based summarization</p>
+<p>The extractive text summarization technique involves pulling keyphrases from the source document and combining them to make a summary. The extraction is made according to the defined metric without making any changes to the texts.</p>
+<p>Here is an example:</p>
+<p>Source text: Joseph and Mary rode on a donkey to attend the annual event in Jerusalem. In the city, Mary gave birth to a child named Jesus.</p>
+<p>Extractive summary: Joseph and Mary attend event Jerusalem. Mary birth Jesus.</p>
+<p>Abstraction-based summarization</p>
+<p>The abstractive text summarization algorithms create new phrases and sentences that relay the most useful information from the original text — just like humans do.</p>
+<p>Therefore, abstraction performs better than extraction. However, the text summarization algorithms required to do abstraction are more difficult to develop; that’s why the use of extraction is still popular.</p>
+<p>Here is an example:</p>
+<p>Abstractive summary: Joseph and Mary came to Jerusalem where Jesus was born.</p>
+<p>Information Extraction Method</p>
+<p>用信息抽取(IE)的方法来回答，比如说一个人物传记类的问题答案通常包含人物的 生卒年月，国籍，教育程度，名望/荣誉等，一个定义类问题(definition)通常包括 属(genus)或者上位词(hypernym)，如 The Hajj is a type of ritual，一个关于用药的医学类问题通常包括 问题(medical condition)、治疗(intervention, the drug or procedure)和结果(outcome)</p>
+<p>Sentiment Analysis</p>
+<p>（这个是需要标注的）</p>
+<p>Training data is typically in the form of product/service reviews where text reviews are accompanied by labelled rating scores assigned by their reviewers, e.g., 0-10, or simply positive and negative classes that can be determined from the ratings.</p>
+<p>Named Entity Recognition</p>
+<p>The last approach, that we will discuss in this article, is “Entity recognition”. In this approach the problem is reduced to looking for meaningful objects in the text. Objects may for example be any of the following:</p>
+<p>Person<br>Company<br>Location<br>Brand</p>
+<ol>
+<li>Text summarization： 这种是不适合场景的。因为最后要的是 room type 而不是一个 reasonable 的一句话。</li>
+</ol>
+<blockquote>
+<p>Text summarization is a relatively novel field in machine learning. The goal is to automatically condense unstructured text articles into a summaries containing the most important information.</p>
+</blockquote>
+<p>应用场景：</p>
+<div><div class="fold_hider"><div class="close hider_title">开/合</div></div><div class="fold">
+<p>Original text:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Those Who Are Resilient Stay In The Game Longer</span><br><span class="line">“On the mountains of truth you can never climb in vain: either you will reach a point higher up today, or you will be training your powers so that you will be able to climb higher tomorrow.” — Friedrich Nietzsche</span><br><span class="line">Challenges and setbacks are not meant to defeat you, but promote you. However, I realise after many years of defeats, it can crush your spirit and it is easier to give up than risk further setbacks and disappointments. Have you experienced this before? To be honest, I don’t have the answers. I can’t tell you what the right course of action is; only you will know. However, it’s important not to be discouraged by failure when pursuing a goal or a dream, since failure itself means different things to different people. To a person with a Fixed Mindset failure is a blow to their self-esteem, yet to a person with a Growth Mindset, it’s an opportunity to improve and find new ways to overcome their obstacles. Same failure, yet different responses. Who is right and who is wrong? Neither. Each person has a different mindset that decides their outcome. Those who are resilient stay in the game longer and draw on their inner means to succeed.</span><br><span class="line">I’ve coached many clients who gave up after many years toiling away at their respective goal or dream. It was at that point their biggest breakthrough came. Perhaps all those years of perseverance finally paid off. It was the 19th Century’s minister Henry Ward Beecher who once said: “One’s best success comes after their greatest disappointments.” No one knows what the future holds, so your only guide is whether you can endure repeated defeats and disappointments and still pursue your dream. Consider the advice from the American academic and psychologist Angela Duckworth who writes in Grit: The Power of Passion and Perseverance: “Many of us, it seems, quit what we start far too early and far too often. Even more than the effort a gritty person puts in on a single day, what matters is that they wake up the next day, and the next, ready to get on that treadmill and keep going.”</span><br><span class="line">I know one thing for certain: don’t settle for less than what you’re capable of, but strive for something bigger. Some of you reading this might identify with this message because it resonates with you on a deeper level. For others, at the end of their tether the message might be nothing more than a trivial pep talk. What I wish to convey irrespective of where you are in your journey is: NEVER settle for less. If you settle for less, you will receive less than you deserve and convince yourself you are justified to receive it.</span><br><span class="line">“Two people on a precipice over Yosemite Valley” by Nathan Shipps on Unsplash</span><br><span class="line">Develop A Powerful Vision Of What You Want</span><br><span class="line">“Your problem is to bridge the gap which exists between where you are now and the goal you intend to reach.” — Earl Nightingale</span><br><span class="line">I recall a passage my father often used growing up in 1990s: “Don’t tell me your problems unless you’ve spent weeks trying to solve them yourself.” That advice has echoed in my mind for decades and became my motivator. Don’t leave it to other people or outside circumstances to motivate you because you will be let down every time. It must come from within you. Gnaw away at your problems until you solve them or find a solution. Problems are not stop signs, they are advising you that more work is required to overcome them. Most times, problems help you gain a skill or develop the resources to succeed later. So embrace your challenges and develop the grit to push past them instead of retreat in resignation. Where are you settling in your life right now? Could you be you playing for bigger stakes than you are? Are you willing to play bigger even if it means repeated failures and setbacks? You should ask yourself these questions to decide whether you’re willing to put yourself on the line or settle for less. And that’s fine if you’re content to receive less, as long as you’re not regretful later.</span><br><span class="line">If you have not achieved the success you deserve and are considering giving up, will you regret it in a few years or decades from now? Only you can answer that, but you should carve out time to discover your motivation for pursuing your goals. It’s a fact, if you don’t know what you want you’ll get what life hands you and it may not be in your best interest, affirms author Larry Weidel: “Winners know that if you don’t figure out what you want, you’ll get whatever life hands you.” The key is to develop a powerful vision of what you want and hold that image in your mind. Nurture it daily and give it life by taking purposeful action towards it.</span><br><span class="line">Vision + desire + dedication + patience + daily action leads to astonishing success. Are you willing to commit to this way of life or jump ship at the first sign of failure? I’m amused when I read questions written by millennials on Quora who ask how they can become rich and famous or the next Elon Musk. Success is a fickle and long game with highs and lows. Similarly, there are no assurances even if you’re an overnight sensation, to sustain it for long, particularly if you don’t have the mental and emotional means to endure it. This means you must rely on the one true constant in your favour: your personal development. The more you grow, the more you gain in terms of financial resources, status, success — simple. If you leave it to outside conditions to dictate your circumstances, you are rolling the dice on your future.</span><br><span class="line">So become intentional on what you want out of life. Commit to it. Nurture your dreams. Focus on your development and if you want to give up, know what’s involved before you take the plunge. Because I assure you, someone out there right now is working harder than you, reading more books, sleeping less and sacrificing all they have to realise their dreams and it may contest with yours. Don’t leave your dreams to chance.</span><br></pre></td></tr></table></figure>
+
+
+<p>Summarized text:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">To be honest, I don’t have the answers. Same failure, yet different responses. Neither. Don’t leave it to other people or outside circumstances to motivate you because you will be let down every time. It must come from within you. Commit to it. Nurture your dreams. Don’t leave your dreams to chance.</span><br></pre></td></tr></table></figure>
+
+
+<p><a href="https://becominghuman.ai/text-summarization-in-5-steps-using-nltk-65b21e352b65" target="_blank" rel="noopener">Text summarization in 5 steps using NLTK: WordFrequency Algorithm</a></p>
+
+</div></div>
+
+
+<ol start="2">
+<li>text extraction</li>
+</ol>
+<ol start="3">
+<li>Sentiment Analysis</li>
+</ol>
+<ol start="4">
+<li>Named Entity Recognition</li>
+</ol>
+<p>这个是比较好的综述类别的blog（里面有比较好的数据预处理的流程）</p>
+<p><a href="https://www.analyticsvidhya.com/blog/2019/06/comprehensive-guide-text-summarization-using-deep-learning-python/" target="_blank" rel="noopener">Comprehensive Guide to Text Summarization using Deep Learning in Python</a></p>
+<p>这里的数据预处理还是可以参考的</p>
+<p><a href="https://www.andyfitzgeraldconsulting.com/writing/keyword-extraction-nlp/" target="_blank" rel="noopener">A BEGINNER’S GUIDE TO KEYWORD EXTRACTION WITH NATURAL LANGUAGE PROCESSING</a></p>
+<p>结合自己的业务经验，张健罗列了观点挖掘可能涉及到的一些任务类型，具体而言：</p>
+<p>1</p>
+<p>情感分类</p>
+<p>我们所收集到的一些观点文本，可能都存在一定的情感倾向性，觉得XX是好的，XX是不好的，这可以帮助分析文本的倾向性；</p>
+<p>2</p>
+<p>观点抽取</p>
+<p>从一段文本中属于观点的文本内容抽取出来，主要是为了方便分析人员从文本中获取结构化的有用的信息；</p>
+<p>3</p>
+<p>观点过滤</p>
+<p>主要是由于海量数据当中会存在大量无效的信息，这需要被清理掉，以免影响观点挖掘的处理效率和准确率；</p>
+<p>4</p>
+<p>评价质量</p>
+<p>这并非评价好坏之分，而是对于分析人员来说，这些评价需要有足够的信息量，能够对销售决策更有帮助。这在电商场景当中最为常见；</p>
+<p>5</p>
+<p>意图识别</p>
+<p>在很多场景下，都是可以根据观点来发现观点持有者真正的意图，例如可以发现这个观点持有者究竟想不想要购买商品。</p>
+<p>短文本 room type关键词抽取</p>
+<p>需要做的事情：</p>
+<p>构建room type 的字典<br>文本的预处理 （）<br>使用正则表达式抽取 room type 关键词</p>
+<p>可能涉及到的任务</p>
+<p>Named Entity Recognition</p>
+<p>情感分析（正面还是负面评价） -&gt; 标注 (0, 1 or  score 机制)</p>
+<p>可以继续找的</p>
+<p><a href="https://paperswithcode.com/task/keyword-extraction" target="_blank" rel="noopener">Keyword Extraction</a></p>
+<p><a href="https://github.com/swisscom/ai-research-keyphrase-extraction" target="_blank" rel="noopener">ai-research-keyphrase-extraction</a></p>
+<p>paper</p>
+<p><a href="https://www.aclweb.org/anthology/P14-1119.pdf" target="_blank" rel="noopener">Automatic Keyphrase Extraction: A Survey of the State of the Art</a></p>
+<p><a href="https://keg.cs.tsinghua.edu.cn/jietang/publications/Tang-et-al-Information_Extraction.pdf" target="_blank" rel="noopener">Information Extraction: Methodologies and Applications </a></p>
+<p><a href="http://ceur-ws.org/Vol-706/poster13.pdf" target="_blank" rel="noopener">Automatic Keyphrase Extraction based on NLP and Statistical Methods </a></p>
+<p><a href="https://www.aclweb.org/anthology/K18-1022.pdf" target="_blank" rel="noopener">Simple Unsupervised Keyphrase Extraction using Sentence Embeddings</a></p>
+<p>不是很相关的资料：</p>
+<p><a href="https://github.com/topics/nlp-keywords-extraction" target="_blank" rel="noopener">nlp-keywords-extraction</a></p>
+<h2 id="关键字提取调研笔记"><a href="#关键字提取调研笔记" class="headerlink" title="关键字提取调研笔记"></a>关键字提取调研笔记</h2><ol>
+<li><a href="https://www.kaggle.com/c/tweet-sentiment-extraction/overview" target="_blank" rel="noopener">Tweet Sentiment Extraction</a></li>
+</ol>
+<p>这个是比较好的资料，可以仔细试试</p>
+<ol start="2">
+<li><a href="https://www.twilio.com/blog/openai-gpt-3-chatbot-python-twilio-sms" target="_blank" rel="noopener">Building a Chatbot with OpenAI’s GPT-3 engine, Twilio SMS and Python</a></li>
+</ol>
+<p>使用 GPT-3 新建一个 chatbot。</p>
+<ol start="3">
+<li><a href="https://github.com/ProsusAI/finBERT" target="_blank" rel="noopener">finBERT</a></li>
+</ol>
+<blockquote>
+<p>FinBERT is a pre-trained NLP model to analyze sentiment of financial text.<br>这种思路是很好的，将bert 应用到金融中的text analyze，是比较容易被人接受的，可以看看论文之类的。使用 financial corpus 进行fine-tune。是基于 hugging faces 的pytorch pretrained model 实现的，可以好好学习一下。</p>
+</blockquote>
+<ol start="4">
+<li><a href="https://blog.insightdatascience.com/how-to-solve-90-of-nlp-problems-a-step-by-step-guide-fda605278e4e" target="_blank" rel="noopener">How to solve 90% of NLP problems: a step-by-step guide</a><blockquote>
+<p>这是一个很好的教程，如何solve proble using NLP technique</p>
+</blockquote>
+</li>
+</ol>
+<ol start="5">
+<li><a href="https://medium.com/@ODSC/20-open-datasets-for-natural-language-processing-538fbfaf8e38" target="_blank" rel="noopener">20-open-datasets-for-natural-language-processing</a></li>
+</ol>
+<p>主要是总结了四个有用的数据集。</p>
+<p><a href="http://www.cs.jhu.edu/~mdredze/datasets/sentiment/" target="_blank" rel="noopener">MultiDomain Sentiment Analysis Dataset:</a></p>
+<blockquote>
+<p>Includes a wide range of Amazon reviews. Dataset can be converted to binary labels based on star review, and some product categories have thousands of entries.</p>
+</blockquote>
+<p><a href="https://www.yelp.com/dataset" target="_blank" rel="noopener">Yelp Reviews</a></p>
+<blockquote>
+<p>Restaurant rankings and reviews. It includes a variety of aspects including reviews for sentiment analysis plus a challenge with cash prizes for those working with Yelp’s datasets.</p>
+</blockquote>
+<p><a href="https://github.com/nproellochs/SentimentDictionaries" target="_blank" rel="noopener">Dictionaries for Movies and Finance</a></p>
+<blockquote>
+<p>Specific dictionaries for sentiment analysis using a specific field for testing data. Entries are clean and arranged in positive or negative connotations.</p>
+</blockquote>
+<p><a href="http://kavita-ganesan.com/entity-ranking-data/#.XQESU9NKgWq" target="_blank" rel="noopener">OpinRank Dataset</a></p>
+<p><a href="https://medium.com/@testandlearn/what-are-your-customers-saying-natural-language-processing-nlp-with-yelp-review-data-65c4ce57287b" target="_blank" rel="noopener">Natural Language Processing Using Yelp Reviews</a></p>
+<blockquote>
+<p>和标题上写的是一样的，Yelp Reviews 用于 NLP中的评价。</p>
+</blockquote>
+<p><a href="https://blog.cambridgespark.com/50-free-machine-learning-datasets-sentiment-analysis-b9388f79c124" target="_blank" rel="noopener">50 free Machine Learning datasets: Sentiment Analysis</a></p>
+<blockquote>
+<p>正如标题中说的，给出了 sentiment analysis 简单的介绍。</p>
+</blockquote>
+<p><a href="http://www.cs.jhu.edu/~mdredze/datasets/sentiment/" target="_blank" rel="noopener">Multidomain sentiment analysis dataset</a></p>
+<blockquote>
+<p>This dataset features slightly older product reviews from Amazon and derives from the Johns Hopkins University’s Department of Computer Science. The dataset is free to download and doesn’t require you to leave any details to access it.</p>
+</blockquote>
+<p><a href="http://ai.stanford.edu/~amaas/data/sentiment/" target="_blank" rel="noopener">IMDB reviews</a></p>
+<blockquote>
+<p>This is another older and relatively small dataset for binary sentiment classification, featuring 25,000 movie reviews for training and testing. You’ll find unlabeled data for use, as well as a README file within the file which contains more details about the dataset. You won’t need to register or leave your details to download the dataset, though you’ll need to cite the following ACL 2011 paper to use it in your projects:</p>
+</blockquote>
+<p><a href="http://nlp.stanford.edu/sentiment/code.html" target="_blank" rel="noopener">Stanford Sentiment Treebank</a></p>
+<blockquote>
+<p>This is a standard Rotten Tomatoes [an entertainment review website] dataset with sentiment annotations, deriving from the paper (which you’ll need to cite, if you use the dataset): The dataset — which is free to download and doesn’t require registration of any sorts — contains 10,605 processed snippets from a pool of Rotten Tomatoes HTML files. You’ll find the download also contains a README file which contains more details about the dataset.</p>
+</blockquote>
+<p><a href="http://help.sentiment140.com/for-students/" target="_blank" rel="noopener">Sentiment140</a></p>
+<blockquote>
+<p>This is a popular dataset, combining 160,000 tweets with emoticons pre-removed. The dataset was collected using the Twitter API for use in the paper:</p>
+</blockquote>
+<p><a href="https://www.kaggle.com/crowdflower/twitter-airline-sentiment" target="_blank" rel="noopener">Twitter US Airline Sentiment</a></p>
+<blockquote>
+<p>This dataset contains Twitter data on US airlines which was scraped from February 2015. Contributors classified the tweets as positive, negative, and neutral tweets. These negative reasons were then further categorised (for example “rude service”). As the dataset is downloadable from Kaggle, you’ll need to be logged in to start the download. You can register via Facebook, Google or Yahoo — meaning it can take as little time as one minute to register and download the dataset. From there you can click the below link or ‘Download (3MB)’ button to download your dataset.</p>
+</blockquote>
+<p><a href="https://archive.ics.uci.edu/ml/datasets/Paper+Reviews" target="_blank" rel="noopener">Paper Reviews</a></p>
+<blockquote>
+<p>This dataset contains sentiment labelled sentences deriving from scientific paper reviews from an international conference on computing and informatics.</p>
+</blockquote>
+<ol start="6">
+<li><a href="https://machinelearningmastery.com/datasets-natural-language-processing/" target="_blank" rel="noopener">Datasets for Natural Language Processing</a></li>
+</ol>
+<blockquote>
+<p>Text classification refers to labeling sentences or documents, such as email spam classification and sentiment analysis.<br>Below are some good beginner text classification datasets.<br>Reuters Newswire Topic Classification (Reuters-21578). A collection of news documents that appeared on Reuters in 1987 indexed by categories. Also see RCV1, RCV2 and TRC2.<br>IMDB Movie Review Sentiment Classification (stanford). A collection of movie reviews from the website imdb.com and their positive or negative sentiment.<br>News Group Movie Review Sentiment Classification (cornell). A collection of movie reviews from the website imdb.com and their positive or negative sentiment.<br>For more, see the post:<br><a href="http://ana.cachopo.org/datasets-for-single-label-text-categorization" target="_blank" rel="noopener">Datasets for single-label text categorization</a></p>
+</blockquote>
+<blockquote>
+<p>该作者写的内容是有保证的，可以多看看。</p>
+</blockquote>
+<ol start="7">
+<li><a href="https://www.kaggle.com/bittlingmayer/amazonreviews" target="_blank" rel="noopener">Amazon Reviews for Sentiment Analysis</a></li>
+</ol>
+<blockquote>
+<p>A few million Amazon reviews in fastText format<br>是可以尝试的做法。</p>
+</blockquote>
+<ol start="8">
+<li><a href="https://lionbridge.ai/datasets/the-best-25-datasets-for-natural-language-processing/" target="_blank" rel="noopener">The 25 Best Datasets for Natural Language Processing</a></li>
+</ol>
+<p>Machine learning models for sentiment analysis need to be trained with large, specialized datasets. The following list should hint at some of the ways that you can improve your sentiment analysis algorithm.</p>
+<ul>
+<li>Multidomain Sentiment Analysis Dataset: This is a slightly older dataset that features a variety of product reviews taken from Amazon.</li>
+<li>IMDB Reviews: Featuring 25,000 movie reviews, this relatively small dataset was compiled primarily for binary sentiment classification use cases.</li>
+<li>Stanford Sentiment Treebank: Also built from movie reviews, Stanford’s dataset was designed to train a model to identify sentiment in longer phrases. It contains over 10,000 snippets taken from Rotten Tomatoes.</li>
+<li>Sentiment140: This popular dataset contains 160,000 tweets formatted with 6 fields: polarity, ID, tweet date, query, user, and the text. Emoticons have been pre-removed.</li>
+<li>Twitter US Airline Sentiment: Scraped in February 2015, these tweets about US airlines are classified as classified as positive, negative, and neutral. Negative tweets have also been categorized by reason for complaint.</li>
+</ul>
+<blockquote>
+<p>给出了四个数据集可以做相关的任务。</p>
+</blockquote>
+<ol start="9">
+<li><a href="https://towardsdatascience.com/detecting-bad-customer-reviews-with-nlp-d8b36134dc7e" target="_blank" rel="noopener">Detecting bad customer reviews with NLP</a></li>
+</ol>
+<blockquote>
+<p>Sentiment analysis and text classification with Python<br>这个是数据预处理方面的。</p>
+</blockquote>
+<ol start="10">
+<li><a href="https://analyticsindiamag.com/10-popular-datasets-for-sentiment-analysis/" target="_blank" rel="noopener">10 Popular Datasets For Sentiment Analysis</a></li>
+</ol>
+<blockquote>
+<p>给出了10个数据集的简单的介绍，可以横向对比一下，哪个数据集是比较好的。</p>
+</blockquote>
+<ol start="11">
+<li><a href="https://github.com/iPieter/RobBERT" target="_blank" rel="noopener">RobBERT</a></li>
+</ol>
+<blockquote>
+<p>A Dutch language model based on RoBERTa with some tasks specific to Dutch.<br>这个是 Dutch（荷兰语）的 Robert。所以排除</p>
+</blockquote>
+<ol start="12">
+<li><a href="https://github.com/graykode/nlp-tutorial" target="_blank" rel="noopener">nlp-tutorial</a></li>
+</ol>
+<blockquote>
+<p>其中有 sentiment 相关的，但感觉方法比较老了，使用的attention，所以排除</p>
+</blockquote>
+<ol start="13">
+<li><a href="https://github.com/leelaylay/TweetSemEval" target="_blank" rel="noopener">TweetSemEval</a></li>
+</ol>
+<blockquote>
+<p>SemEval-2017 Task 4 is a text sentiment classification task: Given a message, classify whether the message is of positive, negative, or neutral sentiment.</p>
+</blockquote>
+<p>从实验结果上看：LSTMs 貌似要比 bert效果要好一些，所以这种方法是可以好好看看， F1 是怎么回事的。</p>
+<p>相应的paper 是在这里：<a href="http://alt.qcri.org/semeval2017/task4/data/uploads/semeval2017-task4.pdf" target="_blank" rel="noopener">SemEval-2017 Task 4: Sentiment Analysis in Twitter</a></p>
+<ol start="14">
+<li><a href="https://github.com/songyouwei/ABSA-PyTorch" target="_blank" rel="noopener">ABSA-PyTorch</a></li>
+</ol>
+<p>至少从更新频率上看，是比较可信的方案。具体尝试一下。</p>
+<ol start="15">
+<li><a href="https://github.com/munikarmanish/bert-sentiment" target="_blank" rel="noopener">Fine-grained Sentiment Classification using BERT</a></li>
+</ol>
+<p>这个是可以作为一种baseline，可以根据这种方式进行改造。值得尝试一下。是可以作为一个很base 的方法，论文: [<a href="https://arxiv.org/pdf/1910.03474.pdf" target="_blank" rel="noopener">Fine-grained Sentiment Classification using BERT</a></p>
+<ol start="16">
+<li><a href="https://github.com/abelriboulot/onnxt5" target="_blank" rel="noopener">onnxt5</a></li>
+</ol>
+<blockquote>
+<p>Summarization, translation, Q&amp;A, text generation and more at blazing speed using a T5 version implemented in ONNX.</p>
+</blockquote>
+<blockquote>
+<p>这个是经过封装的 python 的包，可以用来训练以下的任务。</p>
+</blockquote>
+<ol start="17">
+<li><a href="https://github.com/huggingface/transformers" target="_blank" rel="noopener">transformers</a></li>
+</ol>
+<blockquote>
+<p>这是一个极佳的封装之后的包，建议尝试一下这种方式。</p>
+</blockquote>
+<p>对应的paper： <a href="https://arxiv.org/pdf/1910.03771.pdf" target="_blank" rel="noopener">Transformers: State-of-the-Art Natural Language Processing</a></p>
+<ol start="18">
+<li><a href="https://lambdalabs.com/blog/demystifying-gpt-3/" target="_blank" rel="noopener">OpenAI’s GPT-3 Language Model: A Technical Overview</a></li>
+</ol>
+<blockquote>
+<p>是对于GPT-3 从技术的角度进行说明</p>
+</blockquote>
+<ol start="19">
+<li><a href="https://mariodian.com/blog/how-to-get-early-access-to-gpt-3-and-how-to-talk-to-it/" target="_blank" rel="noopener">How to to get an early access to GPT-3 and how to talk to it</a></li>
+</ol>
+<blockquote>
+<p>基于 GPT-3 做的对话机器人，这个是可行的。</p>
+</blockquote>
+<ol start="20">
+<li><a href="https://www.analyticsvidhya.com/blog/2018/07/hands-on-sentiment-analysis-dataset-python/?utm_source=blog&utm_medium=6-pretrained-models-text-classification" target="_blank" rel="noopener">Comprehensive Hands on Guide to Twitter Sentiment Analysis with dataset and code</a></li>
+</ol>
+<blockquote>
+<p>和标题上写的是一样的，做的是 sentiment任务，建议认真看一下，尝试一下。</p>
+</blockquote>
+<ol start="21">
+<li><a href="https://www.analyticssteps.com/blogs/what-openai-gpt-3" target="_blank" rel="noopener">What is the OpenAI GPT-3?</a></li>
+</ol>
+<blockquote>
+<p>理论讲解GPT-3</p>
+</blockquote>
+<ol start="22">
+<li><a href="http://nlpprogress.com/english/sentiment_analysis.html" target="_blank" rel="noopener"> NLP-progress Sentiment analysis</a></li>
+</ol>
+<blockquote>
+<p>这个是非常优秀的汇总篇幅，讲解了 sentiment analysis 的发展近况。给出某个数据集，然后给出了多个很好的训练模型。所以我需要找到和任务相关的 数据集和模型，就可以解决问题。</p>
+</blockquote>
+<ol start="23">
+<li><a href="https://explosion.ai/blog/spacy-transformers" target="_blank" rel="noopener">spaCy meets Transformers: Fine-tune BERT, XLNet and GPT-2</a></li>
+</ol>
+<blockquote>
+<p> 这个是一个同事推荐的，感觉还是挺好的教程，可以试一下。</p>
+</blockquote>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ol>
+<li><a href="https://www.kaggle.com/mattbast/google-landmark-retrieval-triplet-loss" target="_blank" rel="noopener">Google Landmark Retrieval - Triplet Loss</a></li>
+</ol>
+<blockquote>
+<p>使用 triloss 进行模型的训练，貌似是一个可信的方案，可以训练研究一下。应用场景：找相似图像</p>
+</blockquote>
+<h2 id="kaggle-站点搜集资料"><a href="#kaggle-站点搜集资料" class="headerlink" title="kaggle 站点搜集资料"></a>kaggle 站点搜集资料</h2><h3 id="博客"><a href="#博客" class="headerlink" title="博客"></a>博客</h3><ol>
+<li><a href="https://www.kaggle.com/cpmpml/spell-checker-using-word2vec" target="_blank" rel="noopener">Spell Checker using Word2vec</a></li>
+</ol>
+<p>原理</p>
+<blockquote>
+<p>It uses word2vec ordering of words to approximate word probabilities. Indeed, Google word2vec apparently orders words in decreasing order of frequency in the training corpus.</p>
+</blockquote>
+<p>下面是效果展示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">correction(&#39;quikly&#39;) returns quickly</span><br><span class="line"></span><br><span class="line">correction(&#39;israil&#39;) returns israel</span><br><span class="line"></span><br><span class="line">correction(&#39;neighbour&#39;) returns neighbor</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><a href="https://www.kaggle.com/currie32/the-importance-of-cleaning-text" target="_blank" rel="noopener">The Importance of Cleaning the Text</a></li>
+</ol>
+<p>功能</p>
+<ul>
+<li>正则表达式进行 data clean</li>
+<li>去掉 punctuation （optional）</li>
+<li>去掉 stop word (optional)</li>
+<li>shorten words to their stems (optional) 得到句子的主干</li>
+</ul>
+<p>原文：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">When do you use シ instead of し?</span><br><span class="line">When do you use &quot;&amp;&quot; instead of &quot;and&quot;?</span><br><span class="line"></span><br><span class="line">Motorola (company): Can I hack my Charter Motorolla DCX3400?</span><br><span class="line">How do I hack Motorola DCX3400 for free internet?</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">When do you use instead</span><br><span class="line">When do you use instead</span><br><span class="line"></span><br><span class="line">Motorola company Can I hack my Charter Motorolla DCX3400</span><br><span class="line">How do I hack Motorola DCX3400 free internet</span><br></pre></td></tr></table></figure>
+
+
+<ol start="3">
+<li><a href="https://www.kaggle.com/raenish/cheatsheet-text-helper-functions" target="_blank" rel="noopener">Cheatsheet - Text Helper Functions</a></li>
+</ol>
+<blockquote>
+<p>The aim of this kernel is to provide helper function for basic text processing.This functions can aid you to understand the data much better and perform EDA. My major focus will be on apply regex on text but still i have mentioned few basic starter codes on the 3rd part of kernel.Rest all sections will deal with text preprocessing.The whole kernel can be useful for everyone especially beginners.<br>Readers,I am making you lazy to code but at same time I am helping you out.Do utilize this kernel for any of your text oriented competitions.<br>对于数据预处理 已经非常全，可以在实践中好好尝试一下</p>
+</blockquote>
+<h3 id="需要进一步筛选的文章"><a href="#需要进一步筛选的文章" class="headerlink" title="需要进一步筛选的文章"></a>需要进一步筛选的文章</h3><p><a href="https://www.kaggle.com/tanulsingh077/twitter-sentiment-extaction-analysis-eda-and-model" target="_blank" rel="noopener">Twitter sentiment Extaction-Analysis,EDA and Model</a></p>
+<h3 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h3><ol>
+<li><a href="https://appen.com/resources/datasets/" target="_blank" rel="noopener">AI Resource Center</a></li>
+</ol>
+<blockquote>
+<p>Created and curated for teams working on world-class AI applications<br>如果寻找数据集，那么是可以参考这个网站，尤其是英文dataset</p>
+</blockquote>
+<ol start="2">
+<li><a href="https://jalammar.github.io/a-visual-guide-to-using-bert-for-the-first-time/" target="_blank" rel="noopener">A Visual Guide to Using BERT for the First Time</a><blockquote>
+<p>是一个blog，学习BERT 的资料</p>
+</blockquote>
+</li>
+</ol>
+<ol start="3">
+<li><a href="https://www.kaggle.com/c/google-quest-challenge/discussion/128420" target="_blank" rel="noopener">Everything you always wanted to know about BERT (but were afraid to ask)</a> <blockquote>
+<p>这里有5篇论文是需要打印 然后好好阅读一下的； 然后还有一些博客介绍，去理解关于 bert 的模型 （已经筛选）</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="关于-elasticsearch"><a href="#关于-elasticsearch" class="headerlink" title="关于 elasticsearch"></a>关于 elasticsearch</h3><p>elasticsearch </p>
+<p><a href="https://github.com/spinscale/elasticsearch-ingest-opennlp" target="_blank" rel="noopener">elasticsearch-ingest-opennlp</a></p>
+<blockquote>
+<p>An Elasticsearch ingest processor to do named entity extraction using Apache OpenNLP<br>使用 ES 处理 NER 问题</p>
+</blockquote>
+<p><a href="https://tsh.io/blog/elasticsearch-tutorial/" target="_blank" rel="noopener">Elasticsearch tutorial for beginners. Take your first steps and learn practical tips with Node.js specialist</a></p>
+<p><a href="https://www.elastic.co/cn/blog/search-for-things-not-strings-with-the-annotated-text-plugin" target="_blank" rel="noopener">Search for Things (not Strings) with the Annotated Text Plugin</a></p>
+<p><a href="https://github.com/elastic/elasticsearch-py" target="_blank" rel="noopener">elasticsearch-py</a></p>
+<p><a href="https://logz.io/blog/elasticsearch-tutorial/" target="_blank" rel="noopener">An Elasticsearch Tutorial: Getting Started</a></p>
+<h2 id="论文阅读笔记"><a href="#论文阅读笔记" class="headerlink" title="论文阅读笔记"></a>论文阅读笔记</h2><ol>
+<li><a href="https://arxiv.org/pdf/1908.02265.pdf" target="_blank" rel="noopener">ViLBERT: Pretraining Task-Agnostic Visiolinguistic Representations for Vision-and-Language Tasks</a></li>
+</ol>
+<p>github地址: <a href="https://github.com/facebookresearch/vilbert-multi-task" target="_blank" rel="noopener">vilbert-multi-task</a></p>
+<blockquote>
+<p>We present ViLBERT (short for Vision-and-Language BERT), a model for learning task-agnostic joint representations of image content and natural language. We extend the popular BERT architecture to a multi-modal two-stream model, processing both visual and textual inputs in separate streams that interact through co-attentional transformer layers. We pretrain our model through two proxy tasks on the large, automatically collected Conceptual Captions dataset and then transfer it to multiple established vision-and-language tasks – visual question answering, visual commonsense reasoning, referring expressions, and caption-based image retrieval – by making only minor additions to the base architecture. We observe significant improvements across tasks compared to existing task-specific models –achieving state-of-the-art on all four tasks. Our work represents a shift away from learning groundings between vision and language only as part of task training and towards treating visual grounding as a pretrainable and transferable capability.<br>这篇论文主要是从 模型优化（减少参数量）的角度分析；感觉暂时是不需要的。</p>
+</blockquote>
+<p>单单从代码实现的角度，还是可以考虑去尝试一下的。 </p>
+<ol start="2">
+<li>BERT- Pre-training of Deep Bidirectional Transformers for Language Understanding</li>
+</ol>
+<p>BERT， which stands for Bidirectional Encoder Representations from Transformers. </p>
+<blockquote>
+<p>There are two existing strategies for applying pre-trained language representations to down-stream tasks: feature-based and fine-tuning. The feature-based approach uses task-specific architectures that include the pre-trained representations as additional features. The fine-tuning approach introduces minimal task-specific parameters, and is trained on the downstream tasks by simply fine-tuning all pre-trained parameters.</p>
+</blockquote>
+<p>Pre-training BERT</p>
+<p>Task 1: Masked LM</p>
+<blockquote>
+<p>We refer to this procedure as a “masked LM”, although it is often referred to as a CLOSE task in literature. In all of our experiments, we mask   15% of all WordPiece to tokens in each sequence at random. A downside is that we are creating a mismatch between pre-training and fine-tuning, since the [MASK] doest not appear during fine-tune. To mitigate this, we do not always replace “masked” words with the actual [MASK] tokens.</p>
+</blockquote>
+<p>Task 2: Next Sentence Prediction (NSP)</p>
+<p>When choosing the sentences A and B for each pre-training example, 50% of the time B is the actual next sentence that follows A (labeled as IsNext), and 50% of the time it is a random sentence from the corpus (labeled as NotNext).</p>
+<p>Pre-training data</p>
+<p>use document-level corpus</p>
+<p>BooksCorpus (800M words)</p>
+<p>English Wikipedia (2500M words)</p>
+<p>The model is first pre-trained on a large unlabeled text corpus and subsequently finetuned using end-task labeled data.</p>
+<ol start="3">
+<li>RoBERTa</li>
+</ol>
+<p>Bert model 的细节</p>
+<p>train的一些细节： </p>
+<ul>
+<li>The model is first pretrained on a large unlabeled text corpus and subsequently finetuned using end-task labeled data.</li>
+<li>The learning rate is warmed up over  the first 10,000 steps to a peak value of 1e-4, and then linearly decayed.</li>
+</ul>
+<p>Data 方面</p>
+<p>BookCorpus + English Wikipedia </p>
+<p>使用的 adam 算法</p>
+<ul>
+<li>we additionally found training to be very sensitive to the Adam epsilon term , and  in some cases  we obtained better performance or improved stability after tuning it.</li>
+<li>Similarly, we found setting $\beta2 =0.98$ to improve stability when training with large batch size.</li>
+</ul>
+<p>RoBERTa 改进之处</p>
+<p>Data 方面</p>
+<ul>
+<li>BookCorpus plus English WIKIPEDIA  (16GB)</li>
+<li>CC-News (76GB) CommonCrawl News dataset  (76GB)</li>
+<li>OPENWEBTEXT  (38GB)</li>
+<li>STORIES （31GB）</li>
+</ul>
+<p>remainder 剩余物</p>
+<blockquote>
+<p>use dynamic masking in the remainder of the experiments</p>
+</blockquote>
+<ol start="4">
+<li>ALBERT</li>
+</ol>
+<p>总体的改进之处：</p>
+<ul>
+<li>we present two parameter-reduction techniques to lower memory consumption and increase the training speed of BERT.</li>
+<li>we also use a self-supervised loss that focuses on modeling inter-sentence coherence, and show it consistently helps downstream tasks with multi-sentences inputs.</li>
+</ul>
+<p>two parameter-reduction techniques:</p>
+<ul>
+<li>ALBERT incorporates two parameter reduction techniques that lift the major obstacles in scaling pre-trained models. The first one is a factorized embedding parameterization. By decomposing the large vocabulary embedding matrix into two small matrices, we separate the size of the hidden layers from the size of vocabulary embedding. This separation makes it easier to grow the hidden size without significantly increasingly increasing the parameter size of the vocabulary embeddings. </li>
+<li>The second technique is cross-layer parameter sharing. This technique prevents the parameter from growing with the depth of the network. </li>
+</ul>
+<p>conclusion </p>
+<p>While ALBERT-xxlarge has less parameters than BERT-large and gets significantly better results, it is computationally more expensive due to its large structure. </p>
+<ol start="5">
+<li>XLNet: Generalized Autoregressive Pretraining for Language Understanding.</li>
+</ol>
+<p>XLNet, a generalized autoregressive pretraining method that (1) enables learning bidirectional contexts by maximizing the expected likelihood over all permutations of the factorization order and (2) overcomes the limitations of BERT thanks to its autoregressive formulation. Furthermore, XLNet integrates ideas from Transformer-XL, the state-of-art autoregressive model, into pretraining.</p>
+<p>AR language modeling seeks to estimate the probability distribution of a text corpus with an autoregressive model. </p>
+<p>In comparison, AE based pretraining does not preform explicit density estimation but instead aims to reconstruct the original data from corrupted input.</p>
+<p>XLNet is a generalized AR pretraining method that uses a permutation language modeling objective to combine the advantages of AR and AE methods.</p>
+<h2 id="需要精读的文章"><a href="#需要精读的文章" class="headerlink" title="需要精读的文章"></a>需要精读的文章</h2><p><a href="https://towardsdatascience.com/beyond-word-embeddings-part-2-word-vectors-nlp-modeling-from-bow-to-bert-4ebd4711d0ec" target="_blank" rel="noopener">Beyond Word Embeddings Part 2</a></p>
+<p><a href="http://jalammar.github.io/illustrated-bert/" target="_blank" rel="noopener">The Illustrated BERT, ELMo, and co. (How NLP Cracked Transfer Learning)</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/09/image_caption/" rel="next" title="image caption">
+                <i class="fa fa-chevron-left"></i> image caption
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/17/vgg_vs_resnet/" rel="prev" title="VGG 和ResNet 的比较">
+                VGG 和ResNet 的比较 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">168</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键字提取调研笔记"><span class="nav-number">1.</span> <span class="nav-text">关键字提取调研笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">1.1.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kaggle-站点搜集资料"><span class="nav-number">2.</span> <span class="nav-text">kaggle 站点搜集资料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#博客"><span class="nav-number">2.1.</span> <span class="nav-text">博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#需要进一步筛选的文章"><span class="nav-number">2.2.</span> <span class="nav-text">需要进一步筛选的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源"><span class="nav-number">2.3.</span> <span class="nav-text">资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于-elasticsearch"><span class="nav-number">2.4.</span> <span class="nav-text">关于 elasticsearch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#论文阅读笔记"><span class="nav-number">3.</span> <span class="nav-text">论文阅读笔记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需要精读的文章"><span class="nav-number">4.</span> <span class="nav-text">需要精读的文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/07/17/nlp_room_type/';
+          this.page.identifier = '2020/07/17/nlp_room_type/';
+          this.page.title = 'nlp 中提取room type';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

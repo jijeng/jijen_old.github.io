@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="python 学习笔记，之前有两篇笔记，因为太多了，所以新开一篇。">
 <meta property="article:published_time" content="2019-11-04T11:16:02.000Z">
-<meta property="article:modified_time" content="2020-06-01T07:44:23.178Z">
+<meta property="article:modified_time" content="2020-07-31T05:52:22.250Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 
@@ -343,8 +343,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-06-01T15:44:23+08:00">
-                2020-06-01
+              <time title="Post modified" itemprop="dateModified" datetime="2020-07-31T13:52:22+08:00">
+                2020-07-31
               </time>
             
           </span>
@@ -694,6 +694,15 @@
 <p>下面是多进程的demo响应的计算请求。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing <span class="keyword">as</span> mp</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_func</span><span class="params">(x)</span>:</span></span><br><span class="line">    print(mp.current_process())</span><br><span class="line">    <span class="keyword">return</span> x ** x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    pool = mp.Pool(mp.cpu_count())</span><br><span class="line">    <span class="comment"># 这个还是很好的 pool 这个的个数和你的cpu count 是保持一致的</span></span><br><span class="line">    result = pool.map(my_func, [<span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">    result_set_2 = pool.map(my_func, [<span class="number">4</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">23</span>, <span class="number">4</span>, <span class="number">6</span>])</span><br><span class="line">    print(result)</span><br><span class="line">    print(result_set_2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
+
+
+<p>python 多进程下载图片的功能</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool <span class="keyword">as</span> ThreadPool</span><br><span class="line"><span class="keyword">import</span> pymongo</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span>  requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从数据库中查出来所要下载的图片 url，加入 ImgUrlList = [] 列表</span></span><br><span class="line">client = pymongo.MongoClient(host=<span class="string">''</span>, port=<span class="number">27017</span>)</span><br><span class="line">db = client.dwr</span><br><span class="line">collection = db.Accessories</span><br><span class="line"></span><br><span class="line">dic1 = collection.find(&#123;<span class="string">'Collection'</span>: <span class="string">'Accessories'</span>&#125;)</span><br><span class="line">ImgUrlList = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic1:</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> i[<span class="string">'ImageUrl'</span>]:</span><br><span class="line">        ImgUrlList.append(k)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 图片下载方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span>  <span class="title">downImg</span><span class="params">(url)</span>:</span></span><br><span class="line">        a= url.split(<span class="string">'/'</span>)[<span class="number">-1</span>]</span><br><span class="line">        name = re.findall(<span class="string">'(.*?)\?wid'</span>, a)[<span class="number">0</span>] + <span class="string">'.jpg'</span><span class="string">'</span></span><br><span class="line"><span class="string">        B ="target_dir" +name</span></span><br><span class="line"><span class="string">        if not os.path.exists(B):</span></span><br><span class="line"><span class="string">            r = requests.get(url)</span></span><br><span class="line"><span class="string">            with open(B, '</span>w<span class="string">b') as f:</span></span><br><span class="line"><span class="string">                f.write(r.content)</span></span><br><span class="line"><span class="string">                print(B)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 相当于上面是一个function，然后放入到多进程的池子中</span></span><br><span class="line"><span class="string">pool = ThreadPool()</span></span><br><span class="line"><span class="string">results = pool.map(downImg, ImgUrlList);</span></span><br><span class="line"><span class="string">pool.close();</span></span><br><span class="line"><span class="string">pool.join();</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
 <h3 id="python中-pickle-模块"><a href="#python中-pickle-模块" class="headerlink" title="python中 pickle 模块"></a>python中 pickle 模块</h3><p>pickle模块是python中用来持久化对象的一个模块。所谓对对象进行持久化，即将对象的数据类型、存储结构、存储内容等所有信息作为文件保存下来以便下次使用。在神经网络中训练的模型也是可以经过序列化处理的，需要注意的是以二进制保存和读取的内容，所以在读写的时候需要加上 <code>b</code> 超参数。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 向文件中写入 pickle 对象</span></span><br><span class="line"><span class="comment">#导入pickle模块</span></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个名为data1的对象</span></span><br><span class="line">data1 = &#123;<span class="string">'a'</span>: <span class="string">'123'</span>, <span class="string">'b'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#打开(或创建)一个名为data1.pkl的文件，打开方式为二进制写入(参数‘wb’)</span></span><br><span class="line">file_to_save = open(<span class="string">"data1.pkl"</span>, <span class="string">"wb"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#通过pickle模块中的dump函数将data1保存到data1.pkl文件中。</span></span><br><span class="line"><span class="comment">#第一个参数是要保存的对象名</span></span><br><span class="line"><span class="comment">#第二个参数是写入到的类文件对象file。file必须有write()接口， file可以是一个以'w'方式打开的文件或者一个StringIO对象或者其他任何实现write()接口的对象。如果protocol&gt;=1，文件对象需要是二进制模式打开的。</span></span><br><span class="line"><span class="comment">#第三个参数为序列化使用的协议版本，0：ASCII协议，所序列化的对象使用可打印的ASCII码表示；1：老式的二进制协议；2：2.3版本引入的新二进制协议，较以前的更高效；-1：使用当前版本支持的最高协议。其中协议0和1兼容老版本的python。protocol默认值为0。</span></span><br><span class="line">pickle.dump(data1, file_to_save, <span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#关闭文件对象</span></span><br><span class="line">file_to_save.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从文件中读取 pickle 对象</span></span><br><span class="line"><span class="comment">#导入pickle模块</span></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="comment">#打开一个名为data1.pkl的文件，打开方式为二进制读取(参数‘rb’)</span></span><br><span class="line">file_to_read = open(<span class="string">'data1.pkl'</span>, <span class="string">'rb'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#通过pickle的load函数读取data1.pkl中的对象，并赋值给data2</span></span><br><span class="line">data2 = pickle.load(file_to_read)</span><br><span class="line"></span><br><span class="line"><span class="comment">#打印data2</span></span><br><span class="line"><span class="keyword">print</span> data2</span><br><span class="line"></span><br><span class="line"><span class="comment">#关闭文件对象</span></span><br><span class="line">file_to_read.close()</span><br></pre></td></tr></table></figure>
 
@@ -728,6 +737,72 @@
 
 <p>使用类的形式 (更好的封装性能)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Switcher</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numbers_to_methods_to_strings</span><span class="params">(self, argument)</span>:</span></span><br><span class="line">        <span class="string">"""Dispatch method"""</span></span><br><span class="line">        <span class="comment"># prefix the method_name with 'number_' because method names</span></span><br><span class="line">        <span class="comment"># cannot begin with an integer.</span></span><br><span class="line">        method_name = <span class="string">'number_'</span> + str(argument)</span><br><span class="line">        <span class="comment"># Get the method from 'self'. Default to a lambda.</span></span><br><span class="line">        method = getattr(self, method_name, <span class="keyword">lambda</span>: <span class="string">"nothing"</span>)</span><br><span class="line">        <span class="comment"># Call the method as we return it</span></span><br><span class="line">        <span class="keyword">return</span> method()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">number_0</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"zero"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">number_1</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"one"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">number_2</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"two"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="python-中的with-statement"><a href="#python-中的with-statement" class="headerlink" title="python 中的with statement"></a>python 中的with statement</h2><p>遇到with是在文件那一章，with的作用是就是会自动关掉文件管道。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'path'</span>,<span class="string">'读写模式‘) as f:</span></span><br><span class="line"><span class="string">    do something</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的功能等价于</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">'path'</span>,<span class="string">'读写模式'</span>)</span><br><span class="line">do something</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+
+
+<p>with statement 适合在消耗比较多的资源的情况下使用，是一种更好的管理资源的方式。</p>
+<p>下面这种方式，需要手写 open 和close 语句。</p>
+<blockquote>
+<p>Perhaps the most common (and important) use of context managers is to properly manage resources. In fact, that’s the reason we use a context manager when reading from a file. The act of opening a file consumes a resource (called a file descriptor), and this resource is limited by your OS. That is to say, there are a maximum number of files a process can have open at one time. To prove it, try running this code:</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">files = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10000</span>):</span><br><span class="line">    f = open(<span class="string">'foo.txt'</span>, <span class="string">'w'</span>)</span><br><span class="line">    f.close()</span><br><span class="line">    files.append(f)</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>In other languages, developers are forced to use try…except…finally every time they work with a file (or any other type of resource that needs to be closed, like sockets or database connections). Luckily, Python loves us and gives us a simple way to make sure all resources we use are properly cleaned up, regardless of if the code returns or an exception is thrown: context managers.<br>是可以使用 try except 和finally 进行处理的，但是 python 中有更好的方式实现</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> something_that_returns_a_context_manager() <span class="keyword">as</span> my_resource:</span><br><span class="line">    do_something(my_resource)</span><br><span class="line">    ...</span><br><span class="line">    print(<span class="string">'done using my_resource'</span>)</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>That’s it! Using with, we can call anything that returns a context manager (like the built-in open() function). We assign it to a variable using … as <variable_name>. Crucially, the variable only exists within the indented block below the with statement. Think of with as creating a mini-function: we can use the variable freely in the indented portion, but once that block ends, the variable goes out of scope. When the variable goes out of scope, it automatically calls a special method that contains the code to clean up the resource.<br>这上面说 在with 之外的变量是无法访问的，但实际上就我的经验而言，貌似也是能够访问的。</p>
+</blockquote>
+<blockquote>
+<p>这里说的with 之外的变量是无法访问，是指的文件 as 之后的变量，但是对于 <code>with</code> 缩进之内的变量是可以访问的。</p>
+</blockquote>
+<p>with 是如何工作的？</p>
+<ul>
+<li>紧跟with后面的语句被求值后,返回对象的’<strong>enter</strong>()’方法被调用,这个方法的返回值将被赋值给as后面的变量.</li>
+<li>当with后面的代码块全部执行完之后,将被调用前面返回对象的<strong>exit</strong>()方法.</li>
+</ul>
+<p>总之，with-as表达式极大的简化了每次写finally的工作，这对保持代码的优雅性是有极大帮助的。如果有多个项，那么可以这样写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">"x.txt"</span>) <span class="keyword">as</span> f1, open(<span class="string">'xxx.txt'</span>) <span class="keyword">as</span> f2:</span><br><span class="line">    do something <span class="keyword">with</span> f1,f2</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="python-和numpy-中关于类型函数"><a href="#python-和numpy-中关于类型函数" class="headerlink" title="python 和numpy 中关于类型函数"></a>python 和numpy 中关于类型函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type()    返回参数的数据类型</span><br><span class="line">dtype    返回数组中元素的数据类型</span><br><span class="line">astype()    对数据类型进行转换</span><br></pre></td></tr></table></figure>
+
+<p>ndim返回的是数组的维度，返回的只有一个数，该数即表示数组的维度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(arr1.ndim, arr2.ndim, arr3.ndim)</span><br><span class="line"># 返回的是一个数字，表示数组的维度</span><br></pre></td></tr></table></figure>
+
+
+<p>shape：表示各位维度大小的元组。返回的是一个元组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(arr1.shape, arr2.shape, arr3.shape)</span><br><span class="line"># 返回的是一个元祖</span><br><span class="line"># (5,) (2, 3) (2, 2, 3)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(arr1.dtype, arr2.dtype, arr3.dtype)</span><br><span class="line"># 返回的是数组的数据类型</span><br><span class="line"># int64 int64 int64</span><br></pre></td></tr></table></figure>
+
+
+<ol start="3">
+<li>astype</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">arr1.astype(&#39;int32&#39;)</span><br><span class="line"># 转换数组的数据类型</span><br><span class="line"># array([1, 2, 3, 4, 5], dtype&#x3D;int32)</span><br><span class="line"># int32 --&gt; float64        完全ojbk</span><br><span class="line"># float64 --&gt; int32        会将小数部分截断</span><br><span class="line"># string_ --&gt; float64        如果字符串数组表示的全是数字，也可以用astype转化为数值类型</span><br></pre></td></tr></table></figure>
+
+
+<p>关于取整数 取小数的知识</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 数据转换 astype() 的知识</span><br><span class="line">a &#x3D;3.75</span><br><span class="line">int(a) # 向下取整</span><br><span class="line">round(a) # 四舍五入</span><br><span class="line"></span><br><span class="line">import math</span><br><span class="line">math.ceil(a) # 向上取整</span><br><span class="line"></span><br><span class="line"># 取整数和小数部分</span><br><span class="line">import math</span><br><span class="line">math.modf(3.25)</span><br><span class="line">#(0.25, 3.0)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 
 
 
@@ -770,8 +845,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/11/17/optimizer/" rel="prev" title="Optimizer">
-                Optimizer <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/17/entropy/" rel="prev" title="Entropy 相关的概念">
+                Entropy 相关的概念 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -863,7 +938,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -885,7 +960,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -935,7 +1010,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#python2-和python3-的差异"><span class="nav-number">1.</span> <span class="nav-text">python2 和python3 的差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中-的使用"><span class="nav-number">2.</span> <span class="nav-text">python中*的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机数"><span class="nav-number">3.</span> <span class="nav-text">随机数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-with-Python"><span class="nav-number">3.1.</span> <span class="nav-text">Random with Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Numbers-with-Numpy"><span class="nav-number">3.2.</span> <span class="nav-text">Random Numbers with Numpy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-中的import-函数"><span class="nav-number">4.</span> <span class="nav-text">python 中的import 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python多线程和多进程"><span class="nav-number">5.</span> <span class="nav-text">Python多线程和多进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#python中-pickle-模块"><span class="nav-number">5.1.</span> <span class="nav-text">python中 pickle 模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#easydict"><span class="nav-number">5.2.</span> <span class="nav-text">easydict</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python中的文件遍历"><span class="nav-number">5.3.</span> <span class="nav-text">python中的文件遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#switch-在python-中的实现"><span class="nav-number">5.4.</span> <span class="nav-text">switch 在python 中的实现</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#python2-和python3-的差异"><span class="nav-number">1.</span> <span class="nav-text">python2 和python3 的差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中-的使用"><span class="nav-number">2.</span> <span class="nav-text">python中*的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机数"><span class="nav-number">3.</span> <span class="nav-text">随机数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-with-Python"><span class="nav-number">3.1.</span> <span class="nav-text">Random with Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random-Numbers-with-Numpy"><span class="nav-number">3.2.</span> <span class="nav-text">Random Numbers with Numpy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-中的import-函数"><span class="nav-number">4.</span> <span class="nav-text">python 中的import 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python多线程和多进程"><span class="nav-number">5.</span> <span class="nav-text">Python多线程和多进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#python中-pickle-模块"><span class="nav-number">5.1.</span> <span class="nav-text">python中 pickle 模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#easydict"><span class="nav-number">5.2.</span> <span class="nav-text">easydict</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python中的文件遍历"><span class="nav-number">5.3.</span> <span class="nav-text">python中的文件遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#switch-在python-中的实现"><span class="nav-number">5.4.</span> <span class="nav-text">switch 在python 中的实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-中的with-statement"><span class="nav-number">6.</span> <span class="nav-text">python 中的with statement</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#python-和numpy-中关于类型函数"><span class="nav-number">6.1.</span> <span class="nav-text">python 和numpy 中关于类型函数</span></a></li></ol></li></ol></div>
             
 
           </div>

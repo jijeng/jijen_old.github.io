@@ -79,18 +79,19 @@
 
 
 
-<meta name="description" content="介绍 pix2pixHD 论文和 AED20K 数据集。">
+<meta name="description" content="介绍 pix2pixHD 论文，AED20K 数据集和CoCosNet 数据集。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pix2PixHD  &amp; ADE20k">
+<meta property="og:title" content="Pix2PixHD  &amp; ADE20k &amp; CoCosNet">
 <meta property="og:url" content="http://yoursite.com/2020/03/08/pix2pixhd/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="介绍 pix2pixHD 论文和 AED20K 数据集。">
+<meta property="og:description" content="介绍 pix2pixHD 论文，AED20K 数据集和CoCosNet 数据集。">
 <meta property="og:image" content="https://i.loli.net/2020/03/11/84gAhDlkXB3eiHV.png">
 <meta property="og:image" content="https://i.niupic.com/images/2020/03/11/70eG.png">
 <meta property="og:image" content="https://img.vim-cn.com/c3/be372d98a0384e34d260ebed523e1cfc42323d.png">
 <meta property="og:image" content="https://i.loli.net/2020/03/12/hR7lWrSiPeGVsKg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/14/txLxgI.png">
 <meta property="article:published_time" content="2020-03-08T03:22:17.000Z">
-<meta property="article:modified_time" content="2020-03-12T02:09:03.218Z">
+<meta property="article:modified_time" content="2020-07-08T05:43:45.155Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.loli.net/2020/03/11/84gAhDlkXB3eiHV.png">
@@ -142,7 +143,7 @@
 	})();
 </script>
 
-  <title>Pix2PixHD  & ADE20k | Jijeng's blog</title>
+  <title>Pix2PixHD  & ADE20k & CoCosNet | Jijeng's blog</title>
   
 
 
@@ -320,7 +321,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Pix2PixHD  & ADE20k</h1>
+          <h1 class="post-title" itemprop="name headline">Pix2PixHD  & ADE20k & CoCosNet</h1>
         
 
         <div class="post-meta">
@@ -348,8 +349,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-03-12T10:09:03+08:00">
-                2020-03-12
+              <time title="Post modified" itemprop="dateModified" datetime="2020-07-08T13:43:45+08:00">
+                2020-07-08
               </time>
             
           </span>
@@ -398,7 +399,7 @@
       
 
       
-        <p>介绍 pix2pixHD 论文和 AED20K 数据集。</p>
+        <p>介绍 pix2pixHD 论文，AED20K 数据集和CoCosNet 数据集。</p>
 <a id="more"></a>
 
 
@@ -429,6 +430,7 @@
 <p>Instance Maps 作輔助(Cityscapes資料集有提供)</p>
 <p>以往的影像合成方法都只透過 Semantic segmentation label 就生成影像， 但只是依靠 Semantic segmentation 获得的信息有限。如果两个</p>
 <p>下面说明  Semantic segmentation 和 instance segmentation 的差别。<br><img src="https://i.niupic.com/images/2020/03/11/70eG.png" alt=""></p>
+<p>Semantic segmentation 表示语义分解（是一个意思就可以划分成一个类别）  instance segmentation  是在语义分解的基础上，如果是同一类别的多个物体，那么也是会划分开来，这样能给出更多的detail 信息。</p>
 <p>当我们加入了 instance map 之后就能得到物体的边界，明白物体的位置。所以在训练的过程中 是原有的channel 数 + （boundary map） 一起作为输入的</p>
 <p><img src="https://img.vim-cn.com/c3/be372d98a0384e34d260ebed523e1cfc42323d.png" alt=""></p>
 <p>以往的图像使用 latent-code 来改变物体的输出，latent-code 学习的是整张图（一部分）的颜色或者纹理的变化，而不是基于单个物体进行改变。所以作者自行提出了加入一个低维度的 feature 当做输入来改变。实际训练的时候就是使用一个 encoder layer 来获得feature maps，並且對每個物件的 pixel 位置做 average pooling 並且填回去原本的位置，即为 Instance-wise average pooling。比如下图中不同的颜色分别表示不同的物体。</p>
@@ -457,9 +459,38 @@
 <p>ADE20K 数据集官网：<br><a href="https://groups.csail.mit.edu/vision/datasets/ADE20K/" target="_blank" rel="noopener">https://groups.csail.mit.edu/vision/datasets/ADE20K/</a></p>
 <p>ADE20K 在线查看：<br><a href="http://groups.csail.mit.edu/vision/datasets/ADE20K/browse.php/?dirname=/" target="_blank" rel="noopener">http://groups.csail.mit.edu/vision/datasets/ADE20K/browse.php/?dirname=/</a></p>
 <p>可以搜索的交互查看界面：<br><a href="http://groups.csail.mit.edu/vision/datasets/ADE20K/dataset_browser/" target="_blank" rel="noopener">http://groups.csail.mit.edu/vision/datasets/ADE20K/dataset_browser/</a></p>
-<ol>
-<li>数据集组成</li>
-</ol>
+<h2 id="Understanding-Mask-R-CNN"><a href="#Understanding-Mask-R-CNN" class="headerlink" title="Understanding Mask R-CNN"></a>Understanding Mask R-CNN</h2><p>Mask R-CNN is basically an extension of Faster R-CNN. Faster R-CNN is widely used for object detection tasks. For a given image, it returns the class label and bounding box coordinates for each object in the image. So, let’s say you pass the following image:</p>
+<img  src="https://s1.ax1x.com/2020/06/14/txLxgI.png" height ="60%" width ="80%">
+
+
+
+<p>The Mask R-CNN framework is built on top of Faster R-CNN. So, for a given image, Mask R-CNN, in addition to the class label and bounding box coordinates for each object, will also return the object mask.（上图的左半部分是原图，右半部分是结果图）</p>
+<p>Facebook AI Research (FAIR) 这个缩写真的是比较nice</p>
+<h2 id="CoCosNet"><a href="#CoCosNet" class="headerlink" title="CoCosNet"></a>CoCosNet</h2><p>这个是 image edition 最新的研究成果。</p>
+<h3 id="issues-中的问题"><a href="#issues-中的问题" class="headerlink" title="issues 中的问题"></a>issues 中的问题</h3><p><a href="https://github.com/microsoft/CoCosNet/issues/9" target="_blank" rel="noopener">How to use your model train or test other dataset? </a></p>
+<ul>
+<li>training resolution is 256x256</li>
+<li>.different datsets may have domain gap, which makes model perform differently. But you can try it</li>
+</ul>
+<p><a href="https://github.com/microsoft/CoCosNet/issues/8" target="_blank" rel="noopener">Domain alignment loss before channel-wise normalization </a></p>
+<p>每次在train 的时候, 尽可能使用最新的代码code， 这样作者可能修改一些bug</p>
+<p><a href="https://github.com/microsoft/CoCosNet/issues/6" target="_blank" rel="noopener">两种training 和test 模式</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">in test phase, the inputs include input mask, exemplar natural image, exemplar mask. However, exemplar mask is not necessary, depending on training setting. If opt.noise_for_mask &#x3D; false, training use three images as inputs, so test use three images as inputs.</span><br><span class="line">If opt.noise_for_mask &#x3D; true. training use three images as inputs during warmup, then use noise to replace exemplar mask and continue training, So test use two images(input mask, exemplar natural image) as inputs..</span><br><span class="line"></span><br><span class="line">So opt.noise_for_mask is true or false, depending on whether you want use exemplar mask as input in test phase.</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a href="https://github.com/microsoft/CoCosNet/issues/5" target="_blank" rel="noopener">Attention in SPADEGenerator </a></p>
+<blockquote>
+<p>we use attention model to get more globel feature to help synthesis. you can get more information in this paper <a href="https://arxiv.org/pdf/1711.07971.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1711.07971.pdf</a><br>关于attention 机制的使用</p>
+</blockquote>
+<p><a href="https://github.com/microsoft/CoCosNet/issues/4" target="_blank" rel="noopener">demo for makeup transfer?</a></p>
+<blockquote>
+<p>这里比较详细的说明了 makeup 是如何实现的</p>
+</blockquote>
+<p><a href="https://github.com/microsoft/CoCosNet/issues/3" target="_blank" rel="noopener">Error when running Celebahq (edge-to-face) </a></p>
+<blockquote>
+<p>这里给出了一个bug，然后通过修改代码解决了</p>
+</blockquote>
 
       
     </div>
@@ -494,8 +525,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/03/18/%E7%BB%8F%E6%B5%8E%E6%8A%95%E8%B5%84%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9C%AF%E8%AF%AD/" rel="prev" title="经济学和投资中的一些术语">
-                经济学和投资中的一些术语 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/03/20/NoSQL/" rel="prev" title="mongodb 和redis 简介">
+                mongodb 和redis 简介 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -587,7 +618,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -609,7 +640,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -659,7 +690,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pix2PixHD"><span class="nav-number">1.</span> <span class="nav-text">Pix2PixHD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">1.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两个输入"><span class="nav-number">1.2.</span> <span class="nav-text">两个输入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AED20K-数据集"><span class="nav-number">2.</span> <span class="nav-text">AED20K 数据集</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pix2PixHD"><span class="nav-number">1.</span> <span class="nav-text">Pix2PixHD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">1.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两个输入"><span class="nav-number">1.2.</span> <span class="nav-text">两个输入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AED20K-数据集"><span class="nav-number">2.</span> <span class="nav-text">AED20K 数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Understanding-Mask-R-CNN"><span class="nav-number">3.</span> <span class="nav-text">Understanding Mask R-CNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CoCosNet"><span class="nav-number">4.</span> <span class="nav-text">CoCosNet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#issues-中的问题"><span class="nav-number">4.1.</span> <span class="nav-text">issues 中的问题</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -857,7 +888,7 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2020/03/08/pix2pixhd/';
           this.page.identifier = '2020/03/08/pix2pixhd/';
-          this.page.title = 'Pix2PixHD  & ADE20k';
+          this.page.title = 'Pix2PixHD  & ADE20k & CoCosNet';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';

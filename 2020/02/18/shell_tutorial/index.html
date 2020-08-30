@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Jijeng&#39;s blog">
 <meta property="og:description" content="本文是介绍shell 语言的学习笔记。">
 <meta property="article:published_time" content="2020-02-18T05:20:39.000Z">
-<meta property="article:modified_time" content="2020-03-20T07:30:37.078Z">
+<meta property="article:modified_time" content="2020-06-18T09:59:54.261Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 
@@ -343,8 +343,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-03-20T15:30:37+08:00">
-                2020-03-20
+              <time title="Post modified" itemprop="dateModified" datetime="2020-06-18T17:59:54+08:00">
+                2020-06-18
               </time>
             
           </span>
@@ -584,6 +584,26 @@
 <p><a href="https://www.cnblogs.com/jingmoxukong/p/7867397.html" target="_blank" rel="noopener">一篇文章让你彻底掌握 shell 语言</a></p>
 <p>shell终端编辑命令行快捷键</p>
 <p>Ctrl + a        光标移动到行首（Ahead of line），相当于通常的Home键<br>Ctrl + e        光标移动到行尾（End of line）</p>
+<h3 id="多行命令的执行"><a href="#多行命令的执行" class="headerlink" title="多行命令的执行"></a>多行命令的执行</h3><p>命令之间的关系就是，并或的关系。</p>
+<ol>
+<li>[ ; ]</li>
+</ol>
+<p>如果被分号(;)所分隔的命令会连续的执行下去，就算是错误的命令也会继续执行后面的命令。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]<span class="comment"># lld ; echo “ok” ; lok</span></span><br><span class="line">-bash: lld: <span class="built_in">command</span> not found</span><br><span class="line">ok</span><br><span class="line">-bash: lok: <span class="built_in">command</span> not found</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>[ &amp;&amp; ]</li>
+</ol>
+<p>如果命令被 &amp;&amp; 所分隔，那么命令也会一直执行下去，但是中间有错误的命令存在就不会执行后面的命令，没错就直行至完为止。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# echo “ok” &amp;&amp; lld &amp;&amp; echo “ok”</span><br><span class="line">ok</span><br><span class="line">-bash: lld: command not found</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>[ || ]</li>
+</ol>
+<p>如果每个命令被双竖线 || 所分隔，那么一遇到可以执行成功的命令就会停止执行后面的命令，而不管后面的命令是否正确与否。如果执行到错误的命令就是继续执行后一个命令，一直执行到遇到正确的命令为止。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]<span class="comment"># echo “ok” || echo “haha”</span></span><br><span class="line">ok</span><br><span class="line">[root@localhost etc]<span class="comment"># lld || echo “ok” || echo “haha”</span></span><br><span class="line">-bash: lld: <span class="built_in">command</span> not found</span><br><span class="line">ok</span><br></pre></td></tr></table></figure>
+
+
 
       
     </div>
@@ -711,7 +731,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -733,7 +753,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -783,7 +803,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#shell变量"><span class="nav-number">1.</span> <span class="nav-text">shell变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell-注释"><span class="nav-number">2.</span> <span class="nav-text">shell 注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell字符串"><span class="nav-number">3.</span> <span class="nav-text">shell字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell数组"><span class="nav-number">4.</span> <span class="nav-text">shell数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运算符"><span class="nav-number">5.</span> <span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell输出s"><span class="nav-number">6.</span> <span class="nav-text">shell输出ß</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if-else条件语句"><span class="nav-number">7.</span> <span class="nav-text">if else条件语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for循环"><span class="nav-number">8.</span> <span class="nav-text">for循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-循环"><span class="nav-number">9.</span> <span class="nav-text">while 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#until-循环"><span class="nav-number">10.</span> <span class="nav-text">until 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支语句-case（select）"><span class="nav-number">11.</span> <span class="nav-text">分支语句 case（select）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell函数"><span class="nav-number">12.</span> <span class="nav-text">shell函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell输入输出重定向概括"><span class="nav-number">13.</span> <span class="nav-text">shell输入输出重定向概括</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件包含"><span class="nav-number">14.</span> <span class="nav-text">文件包含</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调试bash-脚本"><span class="nav-number">15.</span> <span class="nav-text">调试bash 脚本</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#shell变量"><span class="nav-number">1.</span> <span class="nav-text">shell变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell-注释"><span class="nav-number">2.</span> <span class="nav-text">shell 注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell字符串"><span class="nav-number">3.</span> <span class="nav-text">shell字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell数组"><span class="nav-number">4.</span> <span class="nav-text">shell数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运算符"><span class="nav-number">5.</span> <span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell输出s"><span class="nav-number">6.</span> <span class="nav-text">shell输出ß</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if-else条件语句"><span class="nav-number">7.</span> <span class="nav-text">if else条件语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for循环"><span class="nav-number">8.</span> <span class="nav-text">for循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-循环"><span class="nav-number">9.</span> <span class="nav-text">while 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#until-循环"><span class="nav-number">10.</span> <span class="nav-text">until 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支语句-case（select）"><span class="nav-number">11.</span> <span class="nav-text">分支语句 case（select）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell函数"><span class="nav-number">12.</span> <span class="nav-text">shell函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell输入输出重定向概括"><span class="nav-number">13.</span> <span class="nav-text">shell输入输出重定向概括</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件包含"><span class="nav-number">14.</span> <span class="nav-text">文件包含</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调试bash-脚本"><span class="nav-number">15.</span> <span class="nav-text">调试bash 脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多行命令的执行"><span class="nav-number">16.</span> <span class="nav-text">多行命令的执行</span></a></li></ol></div>
             
 
           </div>

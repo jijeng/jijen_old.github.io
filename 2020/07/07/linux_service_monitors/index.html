@@ -79,12 +79,14 @@
 
 
 
-<meta name="description" content="Solving Problems by Coding">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Jijeng&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/tags/github/index.html">
+<meta name="description" content="linux环境下，对进程自动监控的实现方案。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux service monitors">
+<meta property="og:url" content="http://yoursite.com/2020/07/07/linux_service_monitors/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="Solving Problems by Coding">
+<meta property="og:description" content="linux环境下，对进程自动监控的实现方案。">
+<meta property="article:published_time" content="2020-07-07T02:54:05.000Z">
+<meta property="article:modified_time" content="2020-06-18T09:56:20.002Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 
@@ -116,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/github/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/07/07/linux_service_monitors/"/>
 
 
 
@@ -135,7 +137,7 @@
 	})();
 </script>
 
-  <title>Tag: github | Jijeng's blog</title>
+  <title>linux service monitors | Jijeng's blog</title>
   
 
 
@@ -154,7 +156,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -282,54 +284,225 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>github<small>Tag</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/07/linux_service_monitors/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/02/18/linux-commands/" itemprop="url">
-              
-                <span itemprop="name">linux</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">linux service monitors</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-02-18T11:18:35+08:00"
-              content="2019-02-18" >
-          02-18
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-07T10:54:05+08:00">
+                2020-07-07
+              </time>
+            
 
-    </header>
-  </article>
+            
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-06-18T17:56:20+08:00">
+                2020-06-18
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/07/linux_service_monitors/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/07/07/linux_service_monitors/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>linux环境下，对进程自动监控的实现方案。</p>
+<a id="more"></a>
+
+
+
+<h2 id="基于linux-系统的定时服务的改进"><a href="#基于linux-系统的定时服务的改进" class="headerlink" title="基于linux 系统的定时服务的改进"></a>基于linux 系统的定时服务的改进</h2><p>实现原理： 使用linux 提供的crontab 机制，定时查询服务器进程是否存在，如果宕机则运行重启脚本</p>
+<p>核心代码：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/sh</span></span><br><span class="line"></span><br><span class="line">host_dir=`<span class="built_in">echo</span> ~`                                       <span class="comment"># 当前用户根目录</span></span><br><span class="line">proc_name=<span class="string">"/home/wkubuntu/named/sbin/named"</span>                             <span class="comment"># 进程名</span></span><br><span class="line">file_name=<span class="string">"/mnt/bindmonitor.log"</span>                         <span class="comment"># 日志文件</span></span><br><span class="line">pid=0</span><br><span class="line"></span><br><span class="line">proc_num()                                              <span class="comment"># 计算进程数</span></span><br><span class="line">&#123;</span><br><span class="line">    num=`ps -ef | grep <span class="variable">$proc_name</span> | grep -v grep | wc -l`</span><br><span class="line">    <span class="built_in">return</span> <span class="variable">$num</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">proc_id()                                               <span class="comment"># 进程号</span></span><br><span class="line">&#123;</span><br><span class="line">    pid=`ps -ef | grep <span class="variable">$proc_name</span> | grep -v grep | awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">proc_num</span><br><span class="line">number=$?</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$number</span> -eq 0 ]                                    <span class="comment"># 判断进程是否存在</span></span><br><span class="line"><span class="keyword">then</span> </span><br><span class="line">    /home/wkubuntu/named/sbin/named  -c /home/wkubuntu/named/etc/named.conf -n 1 &amp;</span><br><span class="line">                                                        <span class="comment"># 重启进程的命令，请相应修改</span></span><br><span class="line">    proc_id                                         <span class="comment"># 获取新进程号</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$&#123;pid&#125;</span>, `date` &gt;&gt; <span class="variable">$file_name</span>      <span class="comment"># 将新进程号和重启时间记录</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+
+<p><a href="https://www.jianshu.com/p/091aeefe6d2e" target="_blank" rel="noopener">linux进程监控和自动重启的简单实现</a></p>
+<h2 id="开源工具"><a href="#开源工具" class="headerlink" title="开源工具"></a>开源工具</h2><p>主要介绍两个 Monit 和Supervisor</p>
+<p>Monit monitors and manages any service, and Supervisor is a nice tool for managing persistent scripts and commands without having to write init scripts for them.</p>
+<ol>
+<li>Monit</li>
+</ol>
+<p>Monit is a good choice when you’re managing just a few machines, and don’t want to hassle with the complexity of something like Nagios or Chef. It works best as a single-host monitor, but it can also monitor remote services, which is useful when local services depend on them, such as database or file servers. The coolest feature is you can monitor any service, and you will see why in the configuration examples.</p>
+<ol start="2">
+<li>Supervisor</li>
+</ol>
+<blockquote>
+<p>Supervisor is a slick tool for managing scripts and commands that don’t have init scripts. It saves you from having to write your own, and it’s much easier to use than systemd.</p>
+</blockquote>
+<p>On Debian/Ubuntu, Supervisor starts automatically after installation. Verify with ps:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps ax|grep supervisord</span><br></pre></td></tr></table></figure>
+
+<p>Let’s take our <code>Python hello world script</code> from last week to practice with. Set it up in <code>/etc/supervisor/conf.d/helloworld.conf</code>:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[program:helloworld.py]</span><br><span class="line"><span class="built_in">command</span>=/bin/helloworld.py</span><br><span class="line">autostart=<span class="literal">true</span></span><br><span class="line">autorestart=<span class="literal">true</span></span><br><span class="line">stderr_logfile=/var/<span class="built_in">log</span>/hello/err.log</span><br><span class="line">stdout_logfile=/var/<span class="built_in">log</span>/hello/hello.log</span><br></pre></td></tr></table></figure>
+
+
+<p>Now Supervisor needs to re-read the <code>conf.d/</code> directory, and then apply the changes:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo supervisorctl reread</span><br><span class="line">$ sudo supervisorctl update</span><br></pre></td></tr></table></figure>
+<p>Check your new logfiles to verify that it’s running:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ sudo supervisorctl reread</span><br><span class="line">helloworld.py: available</span><br><span class="line">carla@studio:~$ sudo supervisorctl update</span><br><span class="line">helloworld.py: added process group</span><br><span class="line">carla@studio:~$ tail &#x2F;var&#x2F;log&#x2F;hello&#x2F;hello.log</span><br><span class="line">Hello World!</span><br><span class="line">Hello World!</span><br><span class="line">Hello World!</span><br><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+
+
+<p><a href="https://www.linux.com/training-tutorials/3-cool-linux-service-monitors/" target="_blank" rel="noopener">3 Cool Linux Service Monitors</a></p>
+<p>supervisor是Linux下一个便利的启动和监控服务的命令。<br>supervisor包括两个命令：supervisord和supervisorctl，分别是后台的守护进程以及命令行管理命令。要安装这两个命令只需要执行sudo apt-get install supervisor即可。</p>
+<p>ubuntu 18 系统下supervisor 的使用</p>
+<p>注意事项</p>
+<ul>
+<li>使用 apt 安装（不要使用pip，需要root 权限）</li>
+<li>在 conf.d 文件夹下 创建自己的配置文件</li>
+</ul>
+<p>查询命令</p>
+<p>我们可以检查一下 Supervisor 状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep supervisor</span><br></pre></td></tr></table></figure>
+
+<p>其次检查守护的进程的状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://oldtang.com/2463.html" target="_blank" rel="noopener">还可以进一步设置将其放到开机自动启动项</a></p>
+<p><a href="https://oldtang.com/2468.html" target="_blank" rel="noopener">Ubuntu 18.04 安装使用 Supervisor 进程守护并设置开机自动启动</a></p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/06/front_end/" rel="next" title="前端和Vue的笔记">
+                <i class="fa fa-chevron-left"></i> 前端和Vue的笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/07/leetcode_weekly_contest/" rel="prev" title="leetcode weekly contest">
+                leetcode weekly contest <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -337,6 +510,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -357,8 +544,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -377,7 +573,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -399,7 +595,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -439,6 +635,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于linux-系统的定时服务的改进"><span class="nav-number">1.</span> <span class="nav-text">基于linux 系统的定时服务的改进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开源工具"><span class="nav-number">2.</span> <span class="nav-text">开源工具</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -605,6 +817,10 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -622,6 +838,18 @@ You got  <span id="busuanzi_value_site_uv"></span> visitors
       <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/07/07/linux_service_monitors/';
+          this.page.identifier = '2020/07/07/linux_service_monitors/';
+          this.page.title = 'linux service monitors';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   

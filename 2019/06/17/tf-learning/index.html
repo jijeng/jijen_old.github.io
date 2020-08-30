@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="** linear_regression** 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071import numpy as npimport matplotlib.pyplot a">
+<meta name="description" content="tensorflow 的学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tensorflow learning">
 <meta property="og:url" content="http://yoursite.com/2019/06/17/tf-learning/index.html">
 <meta property="og:site_name" content="Jijeng&#39;s blog">
-<meta property="og:description" content="** linear_regression** 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071import numpy as npimport matplotlib.pyplot a">
+<meta property="og:description" content="tensorflow 的学习笔记">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/0060lm7Tly1g62nexcj88j30k007s74f.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/0060lm7Tly1g62nexnz8qj30k006pdfy.jpg">
 <meta property="article:published_time" content="2019-06-17T00:44:26.000Z">
-<meta property="article:modified_time" content="2019-08-17T07:49:46.000Z">
+<meta property="article:modified_time" content="2020-06-19T08:08:35.951Z">
 <meta property="article:author" content="Jijeng Jia">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://tva1.sinaimg.cn/large/0060lm7Tly1g62nexcj88j30k007s74f.jpg">
@@ -346,8 +346,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-08-17T15:49:46+08:00">
-                2019-08-17
+              <time title="Post modified" itemprop="dateModified" datetime="2020-06-19T16:08:35+08:00">
+                2020-06-19
               </time>
             
           </span>
@@ -418,7 +418,10 @@
       
 
       
-        <p>** linear_regression**</p>
+        <p>tensorflow 的学习笔记</p>
+<a id="more"></a>
+
+<p>** linear_regression**</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span>  xlrd <span class="comment"># 即xlrd是读excel，xlwt是写excel的库。</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> sklearn.utils <span class="keyword">import</span> check_random_state</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n =<span class="number">50</span></span><br><span class="line">XX =np.arange(n)</span><br><span class="line">rs =check_random_state(<span class="number">0</span>)</span><br><span class="line">YY =rs.randint(<span class="number">-10</span>, <span class="number">10</span>, size=(n, ))+ <span class="number">2.0</span>* XX</span><br><span class="line">data =np.stack([XX,YY], axis= <span class="number">1</span>) <span class="comment">#沿着的纵轴</span></span><br><span class="line"></span><br><span class="line">num_epochs =<span class="number">50</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 变量的初始化</span></span><br><span class="line">W =tf.Variable(<span class="number">0.0</span>, name=<span class="string">"weights"</span>)</span><br><span class="line">b =tf.Variable(<span class="number">0.0</span>, name =<span class="string">"bias"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义数据 placehold</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inputs</span><span class="params">()</span>:</span></span><br><span class="line">    X =tf.placeholder(tf.float32, name =<span class="string">"X"</span>)</span><br><span class="line">    Y =tf.placeholder(tf.float32, name =<span class="string">"Y"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> X,Y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inference</span><span class="params">(X)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> X* W+b</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loss</span><span class="params">(X, Y)</span>:</span></span><br><span class="line">    Y_predicted =inference(X)</span><br><span class="line">    <span class="comment"># square 是平方，平方差公式</span></span><br><span class="line">    <span class="keyword">return</span> tf.reduce_sum(tf.squared_difference(Y, Y_predicted))(<span class="number">2.0</span>* data.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># train 的过程就是 minimize loss 的过程</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(loss)</span>:</span></span><br><span class="line"></span><br><span class="line">    learning_rate =<span class="number">0.0001</span></span><br><span class="line">    <span class="keyword">return</span> tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line"></span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    X, Y =inputs()</span><br><span class="line">    train_loss =loss(X, Y)</span><br><span class="line">    train_op =train(train_loss)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> epoch_num <span class="keyword">in</span> range(num_epochs):</span><br><span class="line">        loss_value, _ =sess.run([train_loss, train_op], feed_dict=&#123;X :data[:, <span class="number">0</span>], Y:data[:, <span class="number">1</span>]&#125;)</span><br><span class="line"></span><br><span class="line">        print(<span class="string">"epoch %d, loss =%f"</span>%(epoch_num+<span class="number">1</span>, loss_value))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 已经  train之后，那么这个 run weights 和 bias 的意义</span></span><br><span class="line">        wcoeff, bias =sess.run([ W, b])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># show results</span></span><br><span class="line">Input_values =data[:, <span class="number">0</span>]</span><br><span class="line">Labels =data[:, <span class="number">1</span>]</span><br><span class="line">Prediction_values =data[:, <span class="number">0</span>] *wcoeff +bias</span><br><span class="line"></span><br><span class="line">plt.plot(Input_values, Labels, <span class="string">'ro'</span>, label =<span class="string">"main"</span>)</span><br><span class="line">plt.plot(Input_values, Prediction_values, label =<span class="string">"predicted"</span>)</span><br><span class="line"></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line">plt.close()</span><br></pre></td></tr></table></figure>
 
 
@@ -516,6 +519,15 @@
 
 
 
+<p><strong>check if tensorflow is now using GPU</strong></p>
+<p>检验 tensorflow 是GPU 还是CPU？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python # open your python terminal interface</span><br><span class="line">import tensorflow  # </span><br><span class="line">tf.test.gpu_device_name() # 如果有显示，那么就ok</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
 
 
 
@@ -546,8 +558,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/16/attention/" rel="next" title="注意力机制介绍">
-                <i class="fa fa-chevron-left"></i> 注意力机制介绍
+              <a href="/2019/06/16/improved_bert/" rel="next" title="关于BERT改进的几篇论文">
+                <i class="fa fa-chevron-left"></i> 关于BERT改进的几篇论文
               </a>
             
           </div>
@@ -640,7 +652,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -662,7 +674,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

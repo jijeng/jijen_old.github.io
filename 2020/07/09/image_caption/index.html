@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="看图说话（Image Caption）任务是结合CV和NLP两个领域的一种比较综合的任务，Image Caption模型的输入是一幅图像，输出是对该幅图像进行描述的一段文字。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="image caption">
+<meta property="og:url" content="http://yoursite.com/2020/07/09/image_caption/index.html">
+<meta property="og:site_name" content="Jijeng&#39;s blog">
+<meta property="og:description" content="看图说话（Image Caption）任务是结合CV和NLP两个领域的一种比较综合的任务，Image Caption模型的输入是一幅图像，输出是对该幅图像进行描述的一段文字。">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/14/tzYph6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/14/tzJBTI.png">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2020/06/cb9e90f666fb7fe7.png">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2020/06/e0c84b3f162f7ec4.png">
+<meta property="article:published_time" content="2020-07-09T00:54:05.000Z">
+<meta property="article:modified_time" content="2020-06-15T06:32:47.039Z">
+<meta property="article:author" content="Jijeng Jia">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/06/14/tzYph6.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/07/09/image_caption/"/>
+
+
+
+
+
+
+
+<script>
+	(function(){
+		if(''){
+			if (prompt('请输入文章密码','') !== ''){
+				alert('密码错误！');
+				history.back();
+			}
+		}
+	})();
+</script>
+
+  <title>image caption | Jijeng's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jijeng's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/09/image_caption/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jijeng Jia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jijeng's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">image caption</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-09T08:54:05+08:00">
+                2020-07-09
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-06-15T14:32:47+08:00">
+                2020-06-15
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/09/image_caption/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/07/09/image_caption/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>看图说话（Image Caption）任务是结合CV和NLP两个领域的一种比较综合的任务，Image Caption模型的输入是一幅图像，输出是对该幅图像进行描述的一段文字。</p>
+<a id="more"></a>
+
+
+
+<p>其实，图像描述（Image Caption）本质上是图像信息到文本信息的翻译，通俗来讲，就是“看图说话”。</p>
+<p>“看图说话”对人类而言很容易，但是对于机器却非常具有挑战性，它不仅需要利用模型去理解图片的内容并且还需要用自然语言去表达它们之间的关系。除此之外，模型还需要能够抓住图像的语义信息，并且生成人类可读的句子。</p>
+<p>此外，还存在一个困扰性难题，由于模型的结构过于简单，导致机器生成的句子风格往往过于单一。所以，本文将基于传统的Image Caption实现方式，介绍如何利用深度生成模型来生成多样化图片描述。</p>
+<h2 id="常用的数据集"><a href="#常用的数据集" class="headerlink" title="常用的数据集"></a>常用的数据集</h2><ol>
+<li>Microsoft COCO Caption数据集</li>
+</ol>
+<blockquote>
+<p>Common Objects in Context (COCO) literally implies that the images in the dataset are everyday objects captured from everyday scenes. This adds some “context” to the objects captured in the scenes.</p>
+</blockquote>
+<blockquote>
+<p>“COCO is a large-scale object detection, segmentation, and captioning dataset. COCO has several features: Object segmentation, Recognition in context, Superpixel stuff segmentation, 330K images (&gt;200K labeled), 1.5 million object instances, 80 object categories, 91 stuff categories, 5 captions per image, 250,000 people with keypoints.”<br>原COCO数据集中约330,000张图像，人工地为每张图像都生成了至少5句标注，标注语句总共超过了约150万句 </p>
+</blockquote>
+<p>（object category 和 stuff category 的区别？）</p>
+<p>关于 COCO 数据集更加详细的介绍</p>
+<div><div class="fold_hider"><div class="close hider_title">开/合</div></div><div class="fold">
+<ol>
+<li>coco dataset 的数据格式</li>
+</ol>
+<p>INFO</p>
+<p>LICENSES</p>
+<p>（上述两个对深度学习的训练不是很重要，可以忽略）</p>
+<p>IMAGES</p>
+<blockquote>
+<p>Note that image ids need to be unique (among other images), but they do not necessarily need to match the file name (unless the deep learning code you are using makes an assumption that they’ll be the same… developers are lazy, it wouldn’t surprise me).<br>注意 image 中的id 是唯一的，但是 file_name 和 id 不一定是一一对应的。</p>
+</blockquote>
+<ol start="2">
+<li>FIVE COCO ANNOTATION TYPES</li>
+</ol>
+<blockquote>
+<p>COCO has five annotation types: for object detection, keypoint detection, stuff segmentation, panoptic segmentation, and image captioning. The annotations are stored using JSON.<br>五种不同的标注，那么就可以对应着五种不同的任务</p>
+</blockquote>
+<p><strong>OBJECT DETECTION (SEGMENTATION)</strong></p>
+<img src="https://s1.ax1x.com/2020/06/14/tzYph6.png" height ="50%" width="60%">
+
+<p>This is the most popular one; it draws shapes around objects in an image. It has a list of categories and annotations.</p>
+<p>CATEGORIES</p>
+<p>The “categories” object contains a list of categories (e.g. dog, boat) and each of those belongs to a supercategory (e.g. animal, vehicle). The original COCO dataset contains 90 categories. </p>
+<p>ANNOTATIONS</p>
+<p>The “annotations” section is the trickiest to understand. It contains a list of every individual object annotation from every image in the dataset. For example, if there are 64 bicycles spread out across 100 images, there will be 64 bicycle annotations (along with a ton of annotations for other object categories). Often there will be multiple instances of an object in an image. Usually this results in a new annotation item for each one.</p>
+<blockquote>
+<p>两种标注的区别<br>I say “usually” because regions of interest indicated by these annotations are specified by “segmentations”, which are usually a list of polygon vertices around the object, but can also be a run-length-encoded (RLE) bit mask. Typically, RLE is used for groups of objects (like a large stack of books). I’ll explain how this works later in the article.</p>
+</blockquote>
+<blockquote>
+<p>bounding box 格式是一个非常小的细节<br>The COCO bounding box format is [top left x position, top left y position, width, height].</p>
+</blockquote>
+<p>pycocotools 下有三个模块：coco ，cocoeval，mask 和_mask </p>
+<ol start="2">
+<li>segmentation的两种格式：RLE（run-length encoding）和polygon</li>
+</ol>
+<p>The first annotation:</p>
+<ul>
+<li>Has a segmentation list of vertices (x, y pixel positions)</li>
+<li>Has an area of 702 pixels (pretty small) and a bounding box of [473.07,395.93,38.65,28.67]</li>
+<li>Is not a crowd (meaning it’s a single object)</li>
+<li>Is category id of 18 (which is a dog)</li>
+</ul>
+<p>Corresponds with an image with id 289343 (which is a person on a strange bicycle and a tiny dog)</p>
+<p>The second annotation:</p>
+<ul>
+<li>Has a Run-Length-Encoding style segmentation</li>
+<li>Has an area of 220834 pixels (much larger) and a bounding box of [0,34,639,388]</li>
+<li>Is a crowd (meaning it’s a group of objects)</li>
+<li>Is a category id of 1 (which is a person)</li>
+</ul>
+<p>Corresponds with an image with id 250282 (which is a vintage class photo of about 50 school children)</p>
+<p>iscrowd=1时表示格式是RLE，iscrowd=0时表示格式是polygon：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&quot;annotations&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;segmentation&quot;: [[510.66,423.01,511.72,420.03,...,510.45,423.01]],</span><br><span class="line">        &quot;area&quot;: 702.1057499999998,</span><br><span class="line">        &quot;iscrowd&quot;: 0,</span><br><span class="line">        &quot;image_id&quot;: 289343,</span><br><span class="line">        &quot;bbox&quot;: [473.07,395.93,38.65,28.67],</span><br><span class="line">        &quot;category_id&quot;: 18,</span><br><span class="line">        &quot;id&quot;: 1768</span><br><span class="line">    &#125;,</span><br><span class="line">    ...</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;segmentation&quot;: &#123;</span><br><span class="line">            &quot;counts&quot;: [179,27,392,41,…,55,20],</span><br><span class="line">            &quot;size&quot;: [426,640]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;area&quot;: 220834,</span><br><span class="line">        &quot;iscrowd&quot;: 1,</span><br><span class="line">        &quot;image_id&quot;: 250282,</span><br><span class="line">        &quot;bbox&quot;: [0,34,639,388],</span><br><span class="line">        &quot;category_id&quot;: 1,</span><br><span class="line">        &quot;id&quot;: 900100250282</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>KEYPOINT DETECTION FORMAT</strong></p>
+<p>关于这个segmentation 可以不考虑，因为没有类似的任务。</p>
+<p><strong>PANOPTIC SEGMENTATION</strong></p>
+<p>其实我的任务需要使用到的就是这种类型的segmentation</p>
+<img src="https://s1.ax1x.com/2020/06/14/tzJBTI.png" height ="60%" width="50%">
+
+
+<p>（注意对比和上面做 object detection 任务所用到的图片是不一样的。）</p>
+<p>这部分是需要进一步调研的，重点在于如何使用代码实现相应的功能。</p>
+<p><strong>IMAGE CAPTIONING</strong></p>
+<blockquote>
+<p>Image caption annotations are pretty simple. There are no categories in this JSON file, just annotations with caption descriptions. Both of the pictures I checked actually had 4 separate captions for each image, presumably from different people.<br>关键信息是每张配图有 5句描述性信息。（这种量级还是很好的）</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"annotations"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"image_id"</span>: <span class="number">289343</span>,</span><br><span class="line">        <span class="string">"id"</span>: <span class="number">433580</span>,</span><br><span class="line">        <span class="string">"caption"</span>: <span class="string">"A person riding a very tall bike in the street."</span></span><br><span class="line">    &#125;,</span><br><span class="line">    ...</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"image_id"</span>: <span class="number">250282</span>,</span><br><span class="line">        <span class="string">"id"</span>: <span class="number">511309</span>,</span><br><span class="line">        <span class="string">"caption"</span>: <span class="string">"A group of school children posing for a picture. "</span></span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<ol start="3">
+<li>对于coco data 的操作</li>
+</ol>
+<p>Class Filtering<br>（不用像之前那样重新解析 json 脚本，可以直接使用调用 api 进行相应的实现）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define the classes (out of the 81) which you want to see. Others will not be shown.</span></span><br><span class="line">filterClasses = [<span class="string">'laptop'</span>, <span class="string">'tv'</span>, <span class="string">'cell phone'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fetch class IDs only corresponding to the filterClasses</span></span><br><span class="line">catIds = coco.getCatIds(catNms=filterClasses) </span><br><span class="line"><span class="comment"># Get all images containing the above Category IDs</span></span><br><span class="line">imgIds = coco.getImgIds(catIds=catIds)</span><br><span class="line">print(<span class="string">"Number of images containing all the  classes:"</span>, len(imgIds))</span><br><span class="line"></span><br><span class="line"><span class="comment"># load and display a random image</span></span><br><span class="line">img = coco.loadImgs(imgIds[np.random.randint(<span class="number">0</span>,len(imgIds))])[<span class="number">0</span>]</span><br><span class="line">I = io.imread(<span class="string">'&#123;&#125;/images/&#123;&#125;/&#123;&#125;'</span>.format(dataDir,dataType,img[<span class="string">'file_name'</span>]))/<span class="number">255.0</span></span><br><span class="line"></span><br><span class="line">plt.axis(<span class="string">'off'</span>)</span><br><span class="line">plt.imshow(I)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>Now, the imgIDs variable contains all the images which contain all the filterClasses. The output of the print statement is:</p>
+<p>如果想要展示 annotation 标注信息，那么是可以使用以下的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Load and display instance annotations</span></span><br><span class="line">plt.imshow(I)</span><br><span class="line">plt.axis(<span class="string">'off'</span>)</span><br><span class="line">annIds = coco.getAnnIds(imgIds=img[<span class="string">'id'</span>], catIds=catIds, iscrowd=<span class="literal">None</span>)</span><br><span class="line">anns = coco.loadAnns(annIds)</span><br><span class="line">coco.showAnns(anns)</span><br></pre></td></tr></table></figure>
+
+<p>并且是可以个性化组合的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这里是有一个去重的 function</span></span><br><span class="line"></span><br><span class="line"><span class="comment">########## ALl POSSIBLE COMBINATIONS ########</span></span><br><span class="line">classes = [<span class="string">'laptop'</span>, <span class="string">'tv'</span>, <span class="string">'cell phone'</span>]</span><br><span class="line"></span><br><span class="line">images = []</span><br><span class="line"><span class="keyword">if</span> classes!=<span class="literal">None</span>:</span><br><span class="line">    <span class="comment"># iterate for each individual class in the list</span></span><br><span class="line">    <span class="keyword">for</span> className <span class="keyword">in</span> classes:</span><br><span class="line">        <span class="comment"># get all images containing given class</span></span><br><span class="line">        catIds = coco.getCatIds(catNms=className)</span><br><span class="line">        imgIds = coco.getImgIds(catIds=catIds)</span><br><span class="line">        images += coco.loadImgs(imgIds)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    imgIds = coco.getImgIds()</span><br><span class="line">    images = coco.loadImgs(imgIds)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Now, filter out the repeated images    </span></span><br><span class="line">unique_images = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(images)):</span><br><span class="line">    <span class="keyword">if</span> images[i] <span class="keyword">not</span> <span class="keyword">in</span> unique_images:</span><br><span class="line">        unique_images.append(images[i])</span><br><span class="line"></span><br><span class="line">dataset_size = len(unique_images)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Number of images containing the filter classes:"</span>, dataset_size)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p>上述信息的参考文献：</p>
+<ul>
+<li><a href="https://www.immersivelimit.com/tutorials/create-coco-annotations-from-scratch" target="_blank" rel="noopener">Create COCO Annotations From Scratch</a></li>
+<li><a href="https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocoDemo.ipynb" target="_blank" rel="noopener">pycocoDemo</a><br>给出了一些demo，如何调用api</li>
+<li><a href="https://towardsdatascience.com/master-the-coco-dataset-for-semantic-image-segmentation-part-1-of-2-732712631047" target="_blank" rel="noopener">master-the-coco-dataset-for-semantic-image-segmentation-part-1-of-2</a></li>
+</ul>
+
+</div></div>
+
+
+
+
+
+
+
+
+<ol start="2">
+<li>Flickr8K和30K</li>
+</ol>
+<p>图像数据来源是雅虎的相册网站Flickr ：<br>数据集中图像的数量分别是8,000张和30,000张</p>
+<p>数据集包含8,000张图像，每张图像都与五个不同的标题配对，这些标题提供了对图片中物体和事件的内容描述</p>
+<img src ="https://i.postimg.cc/gcQjsjbZ/q8saoyj98t.jpg" height ="50%" width ="50%">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#0    A child in a pink dress is climbing up a set of stairs in an entry way .</span><br><span class="line">#1    A girl going into a wooden building .</span><br><span class="line">#2    A little girl climbing into a wooden playhouse .</span><br><span class="line">#3    A little girl climbing the stairs to her playhouse .</span><br><span class="line">#4    A little girl in a pink dress going into a wooden cabin .</span><br></pre></td></tr></table></figure>
+
+
+
+<p>关于数据详细的信息 <a href="https://zhuanlan.zhihu.com/p/22408033" target="_blank" rel="noopener">图像标注</a></p>
+<h2 id="比较经典的论文"><a href="#比较经典的论文" class="headerlink" title="比较经典的论文"></a>比较经典的论文</h2><ol>
+<li>Show and Tell: A Neural Image Caption Generator</li>
+</ol>
+<p><a href="https://github.com/tensorflow/models/tree/master/research/im2txt" target="_blank" rel="noopener">Show and Tell: A Neural Image Caption Generator</a></p>
+<p>2.Show, Attend and Tell: Neural Image Caption Generation with Visual Attention</p>
+<h2 id="主要的框架"><a href="#主要的框架" class="headerlink" title="主要的框架"></a>主要的框架</h2><p>特征提取模型是一种神经网络。给定一张图像，它可以提取出显著的特征，通常用固定长度的向量表示。提取出的特征是该图像的内部表征，不是人类可以直接理解的东西。</p>
+<p>语言模型：一般而言，当一个序列已经给出了一些词时，语言模型可以预测该序列的下一个词的概率。</p>
+<ol>
+<li>Show and Tell: A Neural Image Caption Generator</li>
+</ol>
+<p>编码器-解码器架构：RNN  需要保证输入和输出等长, 但是 encoder-decoder 可以不等长度.</p>
+<ol start="2">
+<li>Show, Attend and Tell: Neural Image Caption Generation with Visual Attention</li>
+</ol>
+<p>使用注意机制的描述模型：</p>
+<p>编码器-解码器的一个局限性是使用了单个固定长度的表征来保存提取出的特征。</p>
+<p>基于注意力机制的方法也已经被用于改进用于图像描述的编码器-解码器架构的表现水平——让解码器可以学习在生成描述中每个词时应该关注图像中的哪些部分。</p>
+<p>生成的 caption 中还要考虑目标之间的关系，可以直观的表示为：</p>
+<img src="https://ftp.bmp.ovh/imgs/2020/06/cb9e90f666fb7fe7.png" height ="80%" width ="80%">
+
+<p>从网络结构上：可以看出整体仍是 Encoder-Decoder 结构，Encoder 部分没有做改变，在 Decoder 中引入了 attention。<br><img src="https://ftp.bmp.ovh/imgs/2020/06/e0c84b3f162f7ec4.png" height ="80%" width ="80%"></p>
+<p>2015年2月，《 Show, Attend and Tell: Neural Image Caption Generation with Visual Attention》将人类视觉系统中的 attention 机制引入深度学习</p>
+<h2 id="比较新的几篇论文"><a href="#比较新的几篇论文" class="headerlink" title="比较新的几篇论文"></a>比较新的几篇论文</h2><p>1) Diverse and Accurate Image Description Using a Variational Auto-Encoder with an Additive Gaussian Encoding Space</p>
+<p><a href="https://papers.nips.cc/paper/7158-diverse-and-accurate-image-description-using-a-variational-auto-encoder-with-an-additive-gaussian-encoding-space.pdf" target="_blank" rel="noopener">Diverse and Accurate Image Description Using a Variational Auto-Encoder with an Additive Gaussian Encoding Space</a></p>
+<p><a href="https://github.com/yiyang92/vae_captioning" target="_blank" rel="noopener">github vae_captioning</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/59980663" target="_blank" rel="noopener">样化Image Caption的尝试</a></p>
+<p>常规的做法</p>
+<p>pass： code 比较难跑起来</p>
+<p>2) asg2cap (Say As You Wish: Fine-grained Control of Image Caption Generation with Abstract Scene Graph, CVPR 2020)</p>
+<p><a href="https://github.com/cshizhe/asg2cap" target="_blank" rel="noopener">github</a></p>
+<p>Code accompanying the paper “Say As You Wish: Fine-grained Control of Image Caption Generation with Abstract Scene Graphs” (Chen et al., CVPR 2020, Oral).<br><a href="https://arxiv.org/abs/2003.00387" target="_blank" rel="noopener">论文</a></p>
+<p><a href="https://www.leiphone.com/news/202003/wOksv18DsRE5a1hx.html" target="_blank" rel="noopener">看图说话之随心所欲：细粒度可控的图像描述自动生成</a></p>
+<p>有点麻烦，但是是可行的。 重点看一下吧。</p>
+<p>3) <a href="https://github.com/LuoweiZhou/VLP" target="_blank" rel="noopener">Vision-Language Pre-training for Image Captioning and Question Answering</a></p>
+<p>可以试试，看一下code，可以尝试的。</p>
+<p>4) <a href="https://github.com/clovaai/CutMix-PyTorch" target="_blank" rel="noopener">CutMix</a></p>
+<p><a href="https://arxiv.org/abs/1905.04899" target="_blank" rel="noopener">CutMix: Regularization Strategy to Train Strong Classifiers with Localizable Features</a></p>
+<p>和场景不太吻合</p>
+<p>vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIjIzM3YyLmNvbV8xOC4xNjMuOTEuMTEyIiwNCiAgImFkZCI6ICIxOC4xNjMuOTEuMTEyIiwNCiAgInBvcnQiOiAiODAiLA0KICAiaWQiOiAiZDQ0NDQ0NjktZmE3OC00ODAwLWExMTEtZDE5YjhlZGIwMTlhIiwNCiAgImFpZCI6ICIyMzMiLA0KICAibmV0IjogInRjcCIsDQogICJ0eXBlIjogImh0dHAiLA0KICAiaG9zdCI6ICJ3d3cuYmFpZHUuY29tIiwNCiAgInBhdGgiOiAiIiwNCiAgInRscyI6ICIiDQp9</p>
+<h2 id="评价标注"><a href="#评价标注" class="headerlink" title="评价标注"></a>评价标注</h2><p>Image Caption评价标准</p>
+<p>BLEU</p>
+<p>• 图像标注结果评价中使用最广泛，设计初衷并不是针对图像标注问题，而是针对机器翻译问题 </p>
+<p>• 分析待评价的翻译语句和参考翻译语句之间n元组的相关性</p>
+<h2 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h2><p>图像标注问题如果能够得到很好的解决，那么价值是显而易见的</p>
+<p>辅助或者替代设计师进行图片描述的书写<br>图像检索（更细粒度的搜索）</p>
+<p><strong>其他的材料</strong></p>
+<p><a href="https://zhuanlan.zhihu.com/p/27771046" target="_blank" rel="noopener">Show and Tell——图像标注（Image Caption）任务技术综述</a></p>
+<p><a href="https://cloud.tencent.com/developer/article/1088965" target="_blank" rel="noopener">图像描述生成Image Caption知识资料全集</a></p>
+<p><a href="https://www.floydhub.com/api/v1/resources/xdVEtkPLJjMAAyD66cxNjB/data/annotations/stuff_train2017.json?content=true&amp;rename=stuff_train2017json" target="_blank" rel="noopener">https://www.floydhub.com/api/v1/resources/xdVEtkPLJjMAAyD66cxNjB/data/annotations/stuff_train2017.json?content=true&amp;rename=stuff_train2017json</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/08/linux_learning2/" rel="next" title="linux learning notes 2">
+                <i class="fa fa-chevron-left"></i> linux learning notes 2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/17/nlp_room_type/" rel="prev" title="nlp 中提取room type">
+                nlp 中提取room type <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Jijeng Jia" />
+            
+              <p class="site-author-name" itemprop="name">Jijeng Jia</p>
+              <p class="site-description motion-element" itemprop="description">Solving Problems by Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">168</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jijeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:jia1509309698@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          <script type="text/javascript" src="//rf.revolvermaps.com/0/0/5.js?i=5kk0u0mm50w&amp;m=0&amp;c=54ff00&amp;cr1=ff0000" async="async"></script>
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的数据集"><span class="nav-number">1.</span> <span class="nav-text">常用的数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较经典的论文"><span class="nav-number">2.</span> <span class="nav-text">比较经典的论文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要的框架"><span class="nav-number">3.</span> <span class="nav-text">主要的框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较新的几篇论文"><span class="nav-number">4.</span> <span class="nav-text">比较新的几篇论文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评价标注"><span class="nav-number">5.</span> <span class="nav-text">评价标注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实际应用"><span class="nav-number">6.</span> <span class="nav-text">实际应用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jijeng Jia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+Total  <span id="busuanzi_value_site_pv"></span> views
+You got  <span id="busuanzi_value_site_uv"></span> visitors
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-jijeng-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/07/09/image_caption/';
+          this.page.identifier = '2020/07/09/image_caption/';
+          this.page.title = 'image caption';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-jijeng-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
